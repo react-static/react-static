@@ -12,7 +12,7 @@ ReactDOM.render(
 )
 
 // Hot Module Replacement API
-if (module.hot) {
+if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./App', () => {
     const NextApp = require('./App').default
     ReactDOM.render(

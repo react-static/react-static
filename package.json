@@ -4,10 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "cross-env NODE_ENV=development IS_SERVER=true babel-node ./build.js",
+    "build": "cross-env NODE_ENV=development babel-node ./build.js",
     "start": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js"
   },
   "devDependencies": {
+    "axios": "^0.16.2",
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -25,13 +26,18 @@
     "react-tree-walker": "^2.1.2",
     "serve": "^6.0.6",
     "webpack": "^3.5.6",
+    "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
     "ascii-json": "^0.2.0",
     "cross-env": "^5.0.5",
+    "preact": "^8.2.5",
+    "preact-compat": "^3.17.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
-    "react-router": "^4.2.0"
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "styled-components": "^2.1.2"
   }
 }

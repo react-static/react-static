@@ -1,60 +1,25 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router'
+import { Router as BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import createBrowserHistory from 'history/createBrowserHistory'
+
 // Need to abstract
-import { GetRouteProps } from '../react-static'
-
-const getPostBySlug = async slug => {
-  const post = await Promise.resolve({
-    title: 'Hello world!',
-    body: `Well hello there ${slug}!`,
-  })
-  return post
-}
-
-const Post2 = GetRouteProps(async ({ match }) => {
-  const post = await getPostBySlug(match.params.slug)
-  return {
-    post,
-  }
-})(({ post = {} }) =>
-  (<div>
-    <h1>
-      {post.title}
-    </h1>
-    <div>
-      {post.body}
-    </div>
-  </div>),
-)
-
-const Post = GetRouteProps(async ({ match }) => {
-  const post = await getPostBySlug(match.params.slug)
-  return {
-    post,
-  }
-})(({ post = {}, ...rest }) =>
-  (<div>
-    <h1>
-      {post.title}
-    </h1>
-    <div>
-      {post.body}
-      <Post2 {...rest} />
-    </div>
-  </div>),
-)
+import Home from './Home'
+import Blog from './Blog'
+import Post from './Post'
 
 let Router = BrowserRouter
-
-if (process.env.IS_SERVER === 'true') {
+let history
+if (process.env.IS_STATIC === 'true') {
   Router = require('react-router').StaticRouter
+} else {
+  history = createBrowserHistory()
 }
 
 export default ({ URL, context = {} }) =>
-  (<Router location={URL} context={context}>
+  (<Router location={URL} context={context} history={history}>
     <Switch>
-      <Route exact path="/" component={() => <h1>Welcome Home!</h1>} />
-      <Route exact path="/blog" component={() => <h1>Here is the blog.</h1>} />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/blog" component={Blog} />
       <Route path="/blog/:slug" component={Post} />
       <Redirect to="/" />
     </Switch>

@@ -1,3 +1,6 @@
+const webpack = require('webpack')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 module.exports = {
   entry: ['babel-polyfill', 'react-hot-loader/patch', './src/index.js'],
   output: {
@@ -7,6 +10,15 @@ module.exports = {
   },
   devServer: {
     contentBase: './dist',
+  },
+  resolve: {
+    alias:
+      process.env.NODE_ENV === 'production'
+        ? {
+          react: 'preact-compat',
+          'react-dom': 'preact-compat',
+        }
+        : {},
   },
   module: {
     rules: [
@@ -19,4 +31,9 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'IS_STATIC']),
+    // new webpack.optimize.UglifyJsPlugin(),
+    // new BundleAnalyzerPlugin(),
+  ],
 }

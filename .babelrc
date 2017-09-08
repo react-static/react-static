@@ -5,7 +5,7 @@
       "react-hot-loader/babel",
       "transform-runtime",
       {
-        "polyfill": false,
+        "polyfill": true,
         "regenerator": true
       }
     ]
