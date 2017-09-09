@@ -4,42 +4,45 @@ import axios from 'axios'
 
 const propsCache = {}
 
-export const GetRouteProps = selector => (Comp, options = {}) =>
+export const GetRouteProps = (Comp, options = {}) =>
   class AsyncPropsComponent extends Component {
     static contextTypes = {
       router: PropTypes.object,
       initialProps: PropTypes.object,
     }
-    state = { loading: true, data: null }
+    state = { data: null }
     async componentWillMount () {
-      if (global.window) {
+      if (typeof window !== 'undefined') {
         const url = `${this.context.router.route.match.url}/initialProps.json`
+        // Hit the cache first
         if (propsCache[url]) {
           return this.setState({
-            loading: false,
             data: propsCache[url],
           })
         }
 
-        this.setState({
-          loading: true,
-        })
+        // Then try for the embedded data
+        if (window.__routeInfo.path === this.context.router.route.match.url) {
+          propsCache[url] = window.__routeInfo.initialProps
+          this.setState({
+            data: propsCache[url],
+          })
+          return
+        }
+
+        // Then retrieve async
         const { data } = await axios.get(url)
         propsCache[url] = data
         this.setState({
-          loading: false,
           data,
         })
       }
     }
-    getInitialProps () {
-      return selector(this.props)
-    }
     render () {
       const initialProps = this.context.initialProps || this.state.data
-      if (this.state.loading) {
+      if (!initialProps) {
         return options.loading ? <options.loading /> : <span>Loading...</span>
       }
-      return initialProps ? <Comp {...this.props} {...initialProps} /> : null
+      return <Comp {...this.props} {...initialProps} />
     }
   }

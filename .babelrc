@@ -1,13 +1,4 @@
 {
   "presets": ["es2015", "stage-2", "react"],
-  "plugins": [
-    [
-      "react-hot-loader/babel",
-      "transform-runtime",
-      {
-        "polyfill": true,
-        "regenerator": true
-      }
-    ]
-  ]
+  "plugins": ["react-hot-loader/babel"]
 }
