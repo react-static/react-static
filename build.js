@@ -87,7 +87,7 @@ const preRoutes = async ({ config, siteContext }) => {
 
     const component = (
       <Html scripts={scripts.map(script => <script key={script} src={script} />)}>
-        <Comp URL={config.path} />
+        <Comp URL={route.path} />
       </Html>
     )
 
@@ -102,7 +102,6 @@ const preRoutes = async ({ config, siteContext }) => {
     const childrenPromises = route.children ? route.children.map(r => recurse(r, route)) : []
 
     const initialProps = await preRoutePromise
-    console.log(initialProps)
     await Promise.all(childrenPromises)
 
     // Write the initialProps to a json file
@@ -147,7 +146,7 @@ const writeRoutesToStatic = async ({ config, siteContext }) => {
     }
 
     // let html = renderToString(
-    let html = renderToStaticMarkup(
+    let html = renderToString(
       <InitialPropsContext>
         {component}
       </InitialPropsContext>,
@@ -195,6 +194,7 @@ const build = async () => {
       ...staticConfig,
     }
     const siteContext = {}
+
     // Normalize the routes
     console.log('Building Routes...')
     config.routes = normalizeRoutes(config.routes)
@@ -207,15 +207,13 @@ const build = async () => {
     console.log('Running preRoutes...')
     await preRoutes({ config, siteContext })
 
-    // Bundle with webpack
-    console.log('Bundling app...')
-    await buildAppBundle()
-
     // Build static pages and JSON
     console.log('Writing static files...')
     await writeRoutesToStatic({ config, siteContext })
 
-    console.log('Done!')
+    // Bundle with webpack
+    console.log('Bundling app...')
+    await buildAppBundle()
   } catch (err) {
     console.log(err)
   }

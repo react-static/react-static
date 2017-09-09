@@ -81,8 +81,7 @@ export default {
   preRoute: async ({ component }) => {
     let initialProps
     const perNode = async (element, instance) => {
-      console.log(instance && instance.getInitialProps)
-      if (instance && instance.getInitialProps) {
+      if (instance && typeof instance.getInitialProps === 'function') {
         initialProps = await instance.getInitialProps()
       }
       return true

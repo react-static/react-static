@@ -35,9 +35,11 @@ export default GetRouteProps(async () => {
     <ul>
       {posts.map(post =>
         (<li key={post.title}>
-          <h2>
-            {post.title}
-          </h2>
+          <Link to={`/blog/${post.title}`}>
+            <h2>
+              {post.title}
+            </h2>
+          </Link>
           <p>
             {post.body}
           </p>

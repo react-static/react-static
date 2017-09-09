@@ -1,7 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 // import styled, { css, keyframes } from 'styled-components'
 //
-import { GetRouteProps } from '../react-static'
+import { GetRouteProps, MakeRouteProps } from '../react-static'
 
 const getPostBySlug = async slug => {
   const post = await Promise.resolve({
@@ -16,13 +17,18 @@ export default GetRouteProps(async ({ match }) => {
   return {
     post,
   }
-})(({ post = {} }) =>
-  (<div>
-    <h1>
-      {post.title}
-    </h1>
-    <div>
-      {post.body}
-    </div>
-  </div>),
+})(
+  ({ post = {} }) =>
+    (<div>
+      <Link to="/blog">Back to Blog</Link>
+      <h1>
+        {post.title}
+      </h1>
+      <div>
+        {post.body}
+      </div>
+    </div>),
+  {
+    loading: () => <span>Loading...</span>,
+  },
 )
