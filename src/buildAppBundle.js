@@ -3,6 +3,7 @@ import chalk from 'chalk'
 //
 import webpackConfig from './webpack.config.prod'
 import copyPublicFolder from './copyPublicFolder'
+import { DIST } from './paths'
 
 const env = process.env.NODE_ENV
 const compiler = webpack(webpackConfig)
@@ -21,7 +22,6 @@ export default () =>
         reject()
         return 1
       }
-      resolve()
 
       stats.toJson('verbose')
 
@@ -56,13 +56,13 @@ export default () =>
       console.log(
         chalk.green(
           `
-:)  PROJECT FILES ARE COMPILED!
+[\u2713] PROJECT FILES ARE COMPILED!
     `,
         ),
       )
 
       console.log(chalk.green('Syncing files from public to dist'))
-      copyPublicFolder()
+      copyPublicFolder(DIST)
 
       if (buildWarnings) {
         console.log(
@@ -74,6 +74,7 @@ export default () =>
         )
       }
 
+      // resolve()
       return 0
     }),
   )

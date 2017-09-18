@@ -15,19 +15,19 @@ export default [
     ],
   },
 
-  {
-    test: [/\.js?$/, /\.jsx?$/],
-    include: SRC,
-    enforce: 'pre',
-    use: [
-      {
-        loader: 'eslint-loader',
-        options: {
-          emitWarning: true,
-        },
-      },
-    ],
-  },
+  // {
+  //   test: [/\.js?$/, /\.jsx?$/],
+  //   include: SRC,
+  //   enforce: 'pre',
+  //   use: [
+  //     {
+  //       loader: 'eslint-loader',
+  //       options: {
+  //         emitWarning: false,
+  //       },
+  //     },
+  //   ],
+  // },
   {
     test: /\.(gif|jpe?g|png|webp)$/,
     include: SRC,

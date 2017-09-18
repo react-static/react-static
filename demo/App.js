@@ -1,22 +1,20 @@
 import React from 'react'
-import { Router as BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
-import createBrowserHistory from 'history/createBrowserHistory'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+//
 
-// Need to abstract
 import Home from './Home'
 import Blog from './Blog'
 import Post from './Post'
 
 let Router = BrowserRouter
-let history
+
+// If statically rendering, use the static router
 if (process.env.IS_STATIC === 'true') {
   Router = require('react-router').StaticRouter
-} else {
-  history = createBrowserHistory()
 }
 
-export default ({ URL, context = {} }) =>
-  (<Router location={URL} context={context} history={history}>
+export default ({ URL, context }) =>
+  (<Router location={URL} context={context}>
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/blog" component={Blog} />

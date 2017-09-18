@@ -1,11 +1,17 @@
+import React from 'react'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
 import chalk from 'chalk'
+import fs from 'fs-extra'
+import path from 'path'
+import { renderToStaticMarkup } from 'react-dom/server'
 //
-import webpackConfig from './utils/webpack.config.dev'
-import copyPublicFolder from './utils/copyPublicFolder'
-import { DIST } from './utils/paths'
+
+import webpackConfig from '../webpack.config.dev'
+import copyPublicFolder from '../copyPublicFolder'
+import { getConfig } from '../static'
+import { TEMP } from '../paths'
 
 const isInteractive = process.stdout.isTTY
 const port = process.env.PORT || '3000'
@@ -58,7 +64,7 @@ function startDevServer () {
     hot: true,
     port,
     disableHostCheck: true,
-    contentBase: DIST,
+    contentBase: TEMP,
     publicPath: '/',
     historyApiFallback: true,
     compress: true,
@@ -77,10 +83,21 @@ function startDevServer () {
   })
 }
 
-function run () {
-  copyPublicFolder()
+export default async () => {
+  const config = getConfig()
+  await fs.remove(TEMP)
+
+  const Html = config.Html
+
+  const html = renderToStaticMarkup(
+    <Html meta={{}} scripts={<script async src="/app.js" />}>
+      <div id="root" />
+    </Html>,
+  )
+
+  await fs.outputFile(path.join(TEMP, 'index.html'), html)
+
+  copyPublicFolder(TEMP)
   buildCompiler()
   startDevServer()
 }
-
-run()

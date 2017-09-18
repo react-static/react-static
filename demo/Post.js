@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-// import styled, { css, keyframes } from 'styled-components'
 //
 import { GetRouteProps } from '../react-static'
 
