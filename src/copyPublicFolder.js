@@ -7,5 +7,4 @@ export default function copyPublicFolder (dest) {
     dereference: true,
     filter: file => file !== INDEX,
   })
-  console.log(chalk.green('=>  [\u2713] Synced files from public to dist'))
 }

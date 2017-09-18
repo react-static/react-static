@@ -7,7 +7,7 @@ import MinifyPlugin from 'babel-minify-webpack-plugin'
 
 //
 import rules from './rules'
-import { DIST, NODE_MODULES, SRC } from './paths'
+import { DIST, NODE_MODULES, SRC, ROOT } from './paths'
 
 export default {
   context: path.resolve(__dirname, '../node_modules'),
@@ -24,6 +24,7 @@ export default {
     modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC],
     extensions: ['.js', '.json', '.jsx'],
     alias: {
+      '__static-config': path.resolve(__dirname, 'empty-config.js'),
       react: path.resolve(__dirname, 'react.hot.js'),
       'react-dom': path.resolve(__dirname, 'react.hot.js'),
     },
@@ -33,9 +34,8 @@ export default {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
     }),
-    // new webpack.optimize.UglifyJsPlugin(),
-    new MinifyPlugin(),
     new CaseSensitivePathsPlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
     new ImageminPlugin({
       gifsicle: {
         interlaced: true,
