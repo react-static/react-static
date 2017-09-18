@@ -1,0 +1,37 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/tannerlinsley/.nvm/versions/node/v7.2.0/bin/node',
+1 verbose cli   '/Users/tannerlinsley/.nvm/versions/node/v7.2.0/bin/npm',
+1 verbose cli   'version',
+1 verbose cli   'patch' ]
+2 info using npm@2.15.12
+3 info using node@v7.2.0
+4 info git [ 'status', '--porcelain' ]
+5 verbose stack Error: Git working directory not clean.
+5 verbose stack D .tempdist/favicon.ico
+5 verbose stack D .tempdist/index.html
+5 verbose stack M package.json
+5 verbose stack D polyfills.js
+5 verbose stack D public/favicon.ico
+5 verbose stack     at /Users/tannerlinsley/.config/yarn/global/node_modules/npm/lib/version.js:171:21
+5 verbose stack     at ChildProcess.exithandler (child_process.js:202:7)
+5 verbose stack     at emitTwo (events.js:106:13)
+5 verbose stack     at ChildProcess.emit (events.js:191:7)
+5 verbose stack     at maybeClose (internal/child_process.js:885:16)
+5 verbose stack     at Socket.<anonymous> (internal/child_process.js:334:11)
+5 verbose stack     at emitOne (events.js:96:13)
+5 verbose stack     at Socket.emit (events.js:188:7)
+5 verbose stack     at Pipe._handle.close [as _onclose] (net.js:501:12)
+6 verbose cwd /Users/tannerlinsley/Github/react-static
+7 error Darwin 16.6.0
+8 error argv "/Users/tannerlinsley/.nvm/versions/node/v7.2.0/bin/node" "/Users/tannerlinsley/.nvm/versions/node/v7.2.0/bin/npm" "version" "patch"
+9 error node v7.2.0
+10 error npm  v2.15.12
+11 error Git working directory not clean.
+11 error D .tempdist/favicon.ico
+11 error D .tempdist/index.html
+11 error M package.json
+11 error D polyfills.js
+11 error D public/favicon.ico
+12 error If you need help, you may report this error at:
+12 error     <https://github.com/npm/npm/issues>
+13 verbose exit [ 1, true ]
