@@ -7,10 +7,14 @@ export default function () {
   const cmd = process.argv[2]
 
   if (cmd === 'start') {
-    start()
+    return start()
   }
 
   if (cmd === 'build') {
-    build()
+    return build()
   }
+
+  console.log(
+    'Please use `react-static start` to start the development server and `react-static build` to build for production.',
+  )
 }

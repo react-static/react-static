@@ -3,7 +3,7 @@ import ImageminPlugin from 'imagemin-webpack-plugin'
 import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import MinifyPlugin from 'babel-minify-webpack-plugin'
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 //
 import rules from './rules'
@@ -44,7 +44,7 @@ export default {
         progressive: true,
       },
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 
   devtool: 'source-map',
