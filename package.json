@@ -1,6 +1,6 @@
 {
   "name": "react-static",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "license": "MIT",
   "bin": {
@@ -19,7 +19,11 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0"
   },
-  "files": ["dist/", "bin", ".babelrc"],
+  "files": [
+    "dist/",
+    "bin",
+    ".babelrc"
+  ],
   "dependencies": {
     "ascii-json": "^0.2.0",
     "axios": "^0.16.2",
