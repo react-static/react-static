@@ -8,8 +8,8 @@
   },
   "scripts": {
     "watch": "babel -w src --out-dir dist",
-    "build": "babel-node ./scripts/build.js",
-    "prerelease": "yarn build"
+    "build": "babel src --out-dir dist",
+    "prepublish": "yarn build"
   },
   "devDependencies": {
     "eslint": "^4.3.0",
@@ -19,12 +19,7 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0"
   },
-  "files": [
-    "dist",
-    "bin",
-    ".babelrc",
-    "yarn.lock"
-  ],
+  "files": ["dist", "bin", ".babelrc", "yarn.lock"],
   "dependencies": {
     "ascii-json": "^0.2.0",
     "axios": "^0.16.2",
