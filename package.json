@@ -1,6 +1,6 @@
 {
   "name": "react-static",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "dist/index.js",
   "license": "MIT",
   "bin": {
