@@ -38,7 +38,7 @@ export default () =>
           chalk.red.bold(
             `
     ERRORS DURING COMPILATION! :(
-=>  Fix them and try again!`,
+=> Fix them and try again!`,
           ),
         )
       }

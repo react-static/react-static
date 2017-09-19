@@ -1,4 +1,3 @@
-import chalk from 'chalk'
 import fs from 'fs-extra'
 import { PUBLIC, INDEX } from './paths'
 

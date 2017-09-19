@@ -11,36 +11,36 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import webpackConfig from '../webpack.config.dev'
 import copyPublicFolder from '../copyPublicFolder'
 import { getConfig } from '../static'
-import { TEMP } from '../paths'
+import { DIST } from '../paths'
 
-const isInteractive = process.stdout.isTTY
 const port = process.env.PORT || '3000'
 
+let first = true
 let compiler
 
 function buildCompiler () {
   compiler = webpack(webpackConfig)
-  let isFirstCompile = true
 
   compiler.plugin('invalid', () => {
-    console.log('Compiling...')
+    console.log('=> Rebuilding...')
+    console.time(chalk.green('=> [\u2713] Build Complete'))
   })
 
   compiler.plugin('done', stats => {
     const messages = formatWebpackMessages(stats.toJson({}, true))
     const isSuccessful = !messages.errors.length && !messages.warnings.length
-    const showInstructions = isSuccessful && (isInteractive || isFirstCompile)
 
-    if (showInstructions) {
-      console.log()
-      console.log(
-        chalk.green(`=>  [\u2713] Compile successful, the app is running at localhost:${port}`),
-      )
-      isFirstCompile = false
+    if (isSuccessful) {
+      console.timeEnd(chalk.green('=> [\u2713] Build Complete'))
+    }
+
+    if (first) {
+      first = false
+      console.log(chalk.green('=> [\u2713] App serving at'), `http://localhost:${port}`)
     }
 
     if (messages.errors.length) {
-      console.log(chalk.red('Failed to compile.'))
+      console.log(chalk.red('Failed to rebuild.'))
       messages.errors.forEach(message => {
         console.log(message)
         console.log()
@@ -49,7 +49,7 @@ function buildCompiler () {
     }
 
     if (messages.warnings.length) {
-      console.log(chalk.yellow('Compiled with warnings.'))
+      console.log(chalk.yellow('Built complete with warnings.'))
       console.log()
       messages.warnings.forEach(message => {
         console.log(message)
@@ -64,7 +64,7 @@ function startDevServer () {
     hot: true,
     port,
     disableHostCheck: true,
-    contentBase: TEMP,
+    contentBase: DIST,
     publicPath: '/',
     historyApiFallback: true,
     compress: true,
@@ -78,14 +78,12 @@ function startDevServer () {
     if (err) {
       return console.log(err)
     }
-
-    console.log(chalk.green('=>  [\u2713] Development server starting...'))
   })
 }
 
 export default async () => {
   const config = getConfig()
-  await fs.remove(TEMP)
+  await fs.remove(DIST)
 
   const Html = config.Html
 
@@ -95,9 +93,15 @@ export default async () => {
     </Html>,
   )
 
-  await fs.outputFile(path.join(TEMP, 'index.html'), html)
+  await fs.outputFile(path.join(DIST, 'index.html'), html)
 
-  copyPublicFolder(TEMP)
+  console.log('=> Copying public directory...')
+  console.time(chalk.green('=> [\u2713] Public directory copied'))
+  copyPublicFolder(DIST)
+  console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
+
+  console.log('=> Building...')
+  console.time(chalk.green('=> [\u2713] Build Complete'))
   buildCompiler()
   startDevServer()
 }

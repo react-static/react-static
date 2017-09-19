@@ -5,7 +5,6 @@ export const ROOT = path.resolve(process.cwd())
 const resolvePath = relativePath => path.resolve(path.join(ROOT, relativePath))
 
 export const LOCAL_NODE_MODULES = path.resolve(__dirname, '../node_modules')
-export const TEMP = resolvePath('dist')
 export const SRC = resolvePath('src')
 export const DIST = resolvePath('dist')
 export const PUBLIC = resolvePath('public')
