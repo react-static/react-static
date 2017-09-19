@@ -17,20 +17,20 @@ const fetchAssets = async href => {
   try {
     const { data } = await axios.get(pathJoin(href, 'routeData.json'))
     propsCache[href] = data
-    if (data.preload) {
-      data.preload.forEach(async p => {
-        // Do not double prefetch or attempt on previously failed assets
-        if (preloadCache[p]) {
-          return
-        }
-        try {
-          await axios.get(p)
-          preloadCache[p] = true
-        } catch (err) {
-          //
-        }
-      })
-    }
+    // if (data.preload) {
+    //   data.preload.forEach(async p => {
+    //     // Do not double prefetch or attempt on previously failed assets
+    //     if (preloadCache[p]) {
+    //       return
+    //     }
+    //     try {
+    //       await axios.get(p)
+    //       preloadCache[p] = true
+    //     } catch (err) {
+    //       //
+    //     }
+    //   })
+    // }
   } catch (err) {
     failedCache[href] = true
     if (process.env.NODE_ENV === 'development') {
@@ -87,10 +87,6 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
     setTimeout(() => throttledRunPreload(), 1000)
     return originalReplaceState.apply(history, args)
   }
-
-  window.show = () => {
-    console.log(propsCache)
-  }
 }
 
 export const GetRouteProps = (Comp, options = {}) =>
@@ -112,20 +108,20 @@ export const GetRouteProps = (Comp, options = {}) =>
     }
     async _update () {
       if (typeof window !== 'undefined') {
-        this.setState({
-          data: null,
-        })
         const currentPath = pathJoin(window.location.pathname, window.location.search)
 
         // Hit the cache first
         if (propsCache[currentPath]) {
           return this.setState({
-            data: propsCache[currentPath].props,
+            data: propsCache[currentPath].initialProps,
           })
         }
 
         // For dev mode, hit the async getProps for the route
         if (process.env.NODE_ENV === 'development') {
+          this.setState({
+            data: null,
+          })
           const userConfig = require('__static-config').default
           const routes = normalizeRoutes(await userConfig.getRoutes({ prod: false }))
           const currentRoute = routes.find(d => d.path === currentPath)
@@ -135,31 +131,35 @@ export const GetRouteProps = (Comp, options = {}) =>
           }
 
           if (currentRoute.getProps) {
-            const props = await currentRoute.getProps({ route: currentRoute })
+            const initialProps = await currentRoute.getProps({ route: currentRoute })
             propsCache[currentPath] = {
-              props,
+              initialProps,
             }
             return this.setState({
-              data: props,
+              data: initialProps,
             })
           }
           console.warn('No getProps function defined for route:', currentRoute.path)
+          return
         }
 
         // Then try for the embedded data
         if (window.__routeData && window.__routeData.path === currentPath) {
           propsCache[currentPath] = window.__routeData
           this.setState({
-            data: propsCache[currentPath].props,
+            data: propsCache[currentPath].initialProps,
           })
           return
         }
 
         // Then retrieve async
+        this.setState({
+          data: null,
+        })
         const { data } = await axios.get(pathJoin(currentPath, 'routeData.json'))
         propsCache[currentPath] = data
         return this.setState({
-          data: data.props,
+          data: data.initialProps,
         })
       }
     }

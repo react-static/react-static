@@ -107,7 +107,7 @@ export const writeRoutesToStatic = async ({ config }) => {
       const writeJSON = fs.outputFile(
         initialPropsFilename,
         JSON.stringify({
-          props: initialProps,
+          initialProps,
           preload: urls,
         }),
       )
