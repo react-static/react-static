@@ -17,6 +17,7 @@ export default {
     `${require.resolve('webpack-dev-server/client')}?http://localhost:${port}`,
     require.resolve('webpack/hot/only-dev-server'),
     path.join(SRC, './index.js'),
+    'preact/debug', // include devtools
   ],
   output: {
     filename: 'app.js',

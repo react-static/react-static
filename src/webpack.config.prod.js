@@ -7,7 +7,7 @@ import MinifyPlugin from 'babel-minify-webpack-plugin'
 
 //
 import rules from './rules'
-import { DIST, NODE_MODULES, SRC, ROOT } from './paths'
+import { DIST, NODE_MODULES, SRC } from './paths'
 
 export default {
   context: path.resolve(__dirname, '../node_modules'),
