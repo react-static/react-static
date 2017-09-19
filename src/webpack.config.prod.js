@@ -1,8 +1,6 @@
 import webpack from 'webpack'
-import ImageminPlugin from 'imagemin-webpack-plugin'
 import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
-import MinifyPlugin from 'babel-minify-webpack-plugin'
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 //
@@ -36,14 +34,6 @@ export default {
     }),
     new CaseSensitivePathsPlugin(),
     new webpack.optimize.UglifyJsPlugin(),
-    new ImageminPlugin({
-      gifsicle: {
-        interlaced: true,
-      },
-      jpegtran: {
-        progressive: true,
-      },
-    }),
     // new BundleAnalyzerPlugin(),
   ],
 
