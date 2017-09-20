@@ -6,7 +6,10 @@ import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
 import nodepath from 'path'
 //
+import DefaultHtml from './DefaultHtml'
 import { ROOT, DIST } from './paths'
+
+const defaultComponentPath = './src/App'
 
 const loadComponentForStatic = src => {
   // Require a copy of the component (important to do this in `IS_STATIC` environment variable)
@@ -20,8 +23,8 @@ export const getConfig = () =>
   require(nodepath.resolve(nodepath.join(process.cwd(), 'static.config.js'))).default
 
 export const writeRoutesToStatic = async ({ config }) => {
-  const Html = config.Html
-  const Comp = loadComponentForStatic(config.componentPath)
+  const Html = config.Html || DefaultHtml
+  const Comp = loadComponentForStatic(config.componentPath || defaultComponentPath)
 
   return Promise.all(
     config.routes.map(async route => {
