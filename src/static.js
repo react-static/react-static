@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { renderToStaticMarkup } from 'react-dom/server'
+import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
 import nodepath from 'path'
 //
@@ -78,7 +78,7 @@ export const writeRoutesToStatic = async ({ config }) => {
         }
       }
 
-      const html = renderToStaticMarkup(
+      const html = renderToString(
         <Html
           data={data}
           scripts={
