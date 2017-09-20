@@ -34,14 +34,18 @@ export const writeRoutesToStatic = async ({ config }) => {
         )
       }
 
+      const URL = route.path
+
       // Inject initialProps into static build
       class InitialPropsContext extends Component {
         static childContextTypes = {
           initialProps: PropTypes.object,
+          URL: PropTypes.string,
         }
         getChildContext () {
           return {
             initialProps,
+            URL,
           }
         }
         render () {
@@ -51,7 +55,7 @@ export const writeRoutesToStatic = async ({ config }) => {
 
       const ContextualComp = (
         <InitialPropsContext>
-          <Comp URL={route.path} context={{}} />
+          <Comp />
         </InitialPropsContext>
       )
 
@@ -125,3 +129,44 @@ function getMatches (regex, string, index) {
   }
   return matches
 }
+
+// function createSiteMap (pages) {
+//   const xml = generateXML({
+//     hostname: Info.siteRoot,
+//     urls: pages.map(page => ({
+//       url: page.permalink,
+//       changefreq: 600000,
+//       priority: page.priority || 0.5,
+//       lastmod: formatDate(page.sys.updatedAt),
+//     })),
+//   })
+//   fs.writeFile('./sitemap.xml', xml, () => console.log('[\u2713] Sitemap Generated'))
+// }
+//
+// function generateXML ({ urls, hostname }) {
+//   let xml =
+//     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+//   for (let i in urls) {
+//     xml += '<url>'
+//     xml += `<loc>${hostname}${urls[i].url}</loc>`
+//     xml += urls[i].lastmod ? `<lastmod>${urls[i].lastmod}</lastmod>` : ''
+//     xml += `<changefreq>${urls[i].changefreq}</changefreq>`
+//     xml += `<priority>${urls[i].priority}</priority>`
+//     xml += '</url>'
+//     i++
+//   }
+//   xml += '</urlset>'
+//   return xml
+// }
+//
+// function formatDate (date) {
+//   const d = new Date(date)
+//   let month = `${d.getMonth() + 1}`
+//   let day = `${d.getDate()}`
+//   const year = d.getFullYear()
+//
+//   if (month.length < 2) month = `0${month}`
+//   if (day.length < 2) day = `0${day}`
+//
+//   return [year, month, day].join('-')
+// }

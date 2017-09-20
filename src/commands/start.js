@@ -61,8 +61,8 @@ function buildCompiler () {
 
 function startDevServer () {
   const devServer = new WebpackDevServer(compiler, {
-    hot: true,
     port,
+    hot: true,
     disableHostCheck: true,
     contentBase: DIST,
     publicPath: '/',

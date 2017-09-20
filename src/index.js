@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+import { Router as ReactRouter } from 'react-router-dom'
+import createBrowserHistory from 'history/createBrowserHistory'
 //
 import { normalizeRoutes, pathJoin } from './shared'
 
@@ -10,7 +12,60 @@ const failed = {}
 
 // const preloadCache = {}
 
-export const prefetch = async path => {
+let routesPromise
+let InitialLoading
+
+if (process.env.NODE_ENV === 'development') {
+  routesPromise = (async () => {
+    const userConfig = require('__static-config').default
+    return normalizeRoutes(await userConfig.getRoutes({ prod: false }))
+  })()
+  InitialLoading = () =>
+    (<div
+      style={{
+        display: 'block',
+        width: '100%',
+        textAlign: 'center',
+        padding: '10px',
+      }}
+    >
+      <style>
+        {`
+        @keyframes react-static-loader {
+          0% {
+            transform: rotate(0deg)
+          }
+          100% {
+            transform: rotate(360deg)
+          }
+        }
+      `}
+      </style>
+      <svg
+        style={{
+          width: '50px',
+          height: '50px',
+        }}
+      >
+        <circle
+          style={{
+            transformOrigin: '50% 50% 0px',
+            animation: 'react-static-loader 1s infinite',
+            r: 20,
+            stroke: 'rgba(0,0,0,0.4)',
+            strokeWidth: 4,
+            cx: 25,
+            cy: 25,
+            strokeDasharray: 10.4,
+            strokeLinecap: 'round',
+            fill: 'transparent',
+          }}
+        />
+      </svg>
+    </div>)
+}
+
+export async function prefetch (path) {
   // Resolve the local path
   if (!path) {
     return
@@ -35,6 +90,45 @@ export const prefetch = async path => {
     return
   }
 
+  // For dev mode, hit the async getProps for the route
+  if (process.env.NODE_ENV === 'development') {
+    const routes = await routesPromise
+    const currentRoute = routes.find(d => d.path === path)
+
+    // Warn for missing routes
+    if (!currentRoute) {
+      console.warn('No route defined for:', path)
+      return
+    }
+
+    if (currentRoute.getProps) {
+      // Reuse request for duplicate inflight requests
+      try {
+        if (!inflight[path]) {
+          inflight[path] = currentRoute.getProps({ route: currentRoute })
+        }
+        const initialProps = await inflight[path]
+
+        // Place it in the cache
+        propsCache[path] = {
+          initialProps,
+        }
+      } catch (err) {
+        console.warn('There was an error during getProps() for route:', path)
+        console.error(err)
+      }
+      delete inflight[path]
+      return propsCache[path]
+    }
+    return
+  }
+
+  // Then try for the embedded data
+  if (window.__routeData && window.__routeData.path === path) {
+    propsCache[path] = window.__routeData
+    return propsCache[path]
+  }
+
   // Fallback to fetching the path's route data
   try {
     // Reuse request for duplicate inflight requests
@@ -43,141 +137,50 @@ export const prefetch = async path => {
 
     // Place it in the cache
     propsCache[path] = data
-    delete inflight[path]
-
-    return data
   } catch (err) {
+    // Mark the request as failed
     failed[path] = true
-    delete inflight[path]
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('No props were found for route:', path)
-    }
-    throw err
+    console.warn('There was an error during getProps() for route:', path)
+    console.error(err)
   }
+  delete inflight[path]
+  return propsCache[path]
 }
 
-const DefaultLoading = () =>
-  (<div
-    style={{
-      display: 'block',
-      width: '100%',
-      textAlign: 'center',
-      padding: '10px',
-    }}
-  >
-    <style>
-      {`
-        @keyframes react-static-loader {
-          0% {
-            transform: rotate(0deg)
-          }
-          100% {
-            transform: rotate(360deg)
-          }
-        }
-      `}
-    </style>
-    <svg
-      style={{
-        width: '50px',
-        height: '50px',
-      }}
-    >
-      <circle
-        style={{
-          transformOrigin: '50% 50% 0px',
-          animation: 'react-static-loader 1s infinite',
-          r: '20',
-          stroke: 'rgba(0,0,0,0.4)',
-          strokeWidth: '4px',
-          cx: '25',
-          cy: '25',
-          strokeDasharray: '10.4',
-          strokeLinecap: 'round',
-          fill: 'transparent',
-        }}
-      />
-    </svg>
-  </div>)
-
-export const GetRouteProps = (Comp, options = {}) =>
+export const GetRouteProps = Comp =>
   class AsyncPropsComponent extends Component {
     static contextTypes = {
       initialProps: PropTypes.object,
-      static: PropTypes.object,
+      router: PropTypes.object,
     }
-    constructor () {
-      super()
-      this._update = this._update.bind(this)
-    }
-    state = { data: null }
-    componentWillMount () {
-      this._update()
-    }
-    componentWillReceiveProps () {
-      this._update()
-    }
-    async _update () {
-      if (typeof window !== 'undefined') {
-        const currentPath = pathJoin(window.location.pathname, window.location.search)
-
-        // Hit the cache first
-        if (propsCache[currentPath]) {
-          return this.setState({
-            data: propsCache[currentPath].initialProps,
-          })
-        }
-
-        // For dev mode, hit the async getProps for the route
-        if (process.env.NODE_ENV === 'development') {
-          this.setState({
-            data: null,
-          })
-          const userConfig = require('__static-config').default
-          const routes = normalizeRoutes(await userConfig.getRoutes({ prod: false }))
-          const currentRoute = routes.find(d => d.path === currentPath)
-
-          if (!currentRoute) {
-            console.warn('No routed defined for:', currentPath)
-          }
-
-          if (currentRoute.getProps) {
-            const initialProps = await currentRoute.getProps({ route: currentRoute })
-            propsCache[currentPath] = {
-              initialProps,
-            }
-            return this.setState({
-              data: initialProps,
-            })
-          }
-          console.warn('No getProps function defined for route:', currentRoute.path)
-          return
-        }
-
-        // Then try for the embedded data
-        if (window.__routeData && window.__routeData.path === currentPath) {
-          propsCache[currentPath] = window.__routeData
-          this.setState({
-            data: propsCache[currentPath].initialProps,
-          })
-          return
-        }
-
-        // Then retrieve async
-        this.setState({
-          data: null,
-        })
-        const { data } = await axios.get(pathJoin(currentPath, 'routeData.json'))
-        propsCache[currentPath] = data
-        return this.setState({
-          data: data.initialProps,
-        })
+    async componentWillMount () {
+      if (process.env.NODE_ENV === 'development') {
+        const { url } = this.context.router.route.match
+        const path = pathJoin(url)
+        await prefetch(path)
+        this.setState({})
       }
     }
     render () {
-      const initialProps = this.context.initialProps || this.state.data
+      const { url } = this.context.router.route.match
+      const path = pathJoin(url)
+
+      let embeddedProps
+      if (typeof window !== 'undefined') {
+        if (window.__routeData && window.__routeData.path === path) {
+          embeddedProps = window.__routeData.initialProps
+        }
+      }
+
+      const initialProps =
+        embeddedProps ||
+        (propsCache[path] ? propsCache[path].initialProps : this.context.initialProps)
+
       if (!initialProps) {
-        return options.loading ? <options.loading /> : <DefaultLoading />
+        if (process.env.NODE_ENV === 'development') {
+          return <InitialLoading />
+        }
+        return null
       }
       return <Comp {...this.props} {...initialProps} />
     }
@@ -185,33 +188,96 @@ export const GetRouteProps = (Comp, options = {}) =>
 
 export class Prefetch extends Component {
   static defaultProps = {
+    children: null,
     path: null,
     onLoad: () => {},
   }
   async componentDidMount () {
-    if (process.env.NODE_ENV === 'production') {
-      const { path, onLoad } = this.props
+    const { path, onLoad } = this.props
 
-      const data = await prefetch(path)
-      onLoad(data, path)
-      // Warm the cache for any known assets
-      // if (data.preload) {
-      //   data.preload.forEach(async p => {
-      //     // Do not double prefetch or attempt on previously failed assets
-      //     if (preloadCache[p]) {
-      //       return
-      //     }
-      //     try {
-      //       await axios.get(p)
-      //       preloadCache[p] = true
-      //     } catch (err) {
-      //       //
-      //     }
-      //   })
-      // }
-    }
+    const data = await prefetch(path)
+    onLoad(data, path)
   }
   render () {
-    return this.props.children || null
+    return this.props.children
   }
 }
+
+let loading = false
+let subscribers = []
+const setLoading = d => {
+  loading = d
+  subscribers.forEach(s => s())
+}
+
+export class Router extends Component {
+  static subscribe = cb => {
+    const ccb = () => cb(loading)
+    subscribers.push(ccb)
+    return () => {
+      subscribers = subscribers.filter(d => d !== ccb)
+    }
+  }
+  static contextTypes = {
+    URL: PropTypes.string,
+  }
+  render () {
+    const { history, ...rest } = this.props
+    const { URL } = this.context
+    const context = URL ? {} : undefined
+
+    let ResolvedRouter
+    let resolvedHistory
+
+    // If statically rendering, use the static router
+    if (URL) {
+      ResolvedRouter = require('react-router').StaticRouter
+      resolvedHistory = undefined
+    } else {
+      ResolvedRouter = ReactRouter
+      resolvedHistory = history || createBrowserHistory()
+      ;['push', 'replace'].forEach(method => {
+        const originalMethod = resolvedHistory[method]
+        resolvedHistory[method] = async (...args) => {
+          try {
+            const path = typeof args[0] === 'string' ? args[0] : args[0].pathname + args[0].search
+            setLoading(true)
+            await prefetch(path)
+          } catch (err) {
+            console.error(err)
+            console.warn('Uh oh! We should probably display a soft 404 here')
+          }
+          originalMethod.apply(resolvedHistory, args)
+          setLoading(false)
+        }
+      })
+    }
+
+    return <ResolvedRouter history={resolvedHistory} location={URL} context={context} {...rest} />
+  }
+}
+
+export const withLoading = Comp =>
+  class WithLoading extends Component {
+    constructor () {
+      super()
+      this.update = this.update.bind(this)
+    }
+    componentWillMount () {
+      subscribers.push(this.update)
+      this.setState({
+        loading: this.context.loading,
+      })
+    }
+    componentWillUnmount () {
+      subscribers = subscribers.filter(d => d !== this.update)
+    }
+    update () {
+      this.setState({
+        loading,
+      })
+    }
+    render () {
+      return <Comp {...this.props} loading={this.state.loading} />
+    }
+  }
