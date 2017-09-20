@@ -5,7 +5,10 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 
 //
 import rules from './rules'
+import { getConfig } from './static'
 import { DIST, NODE_MODULES, SRC } from './paths'
+
+const config = getConfig()
 
 export default {
   context: path.resolve(__dirname, '../node_modules'),
@@ -23,8 +26,12 @@ export default {
     extensions: ['.js', '.json', '.jsx'],
     alias: {
       '__static-config': path.resolve(__dirname, 'empty-config.js'),
-      react: path.resolve(__dirname, 'react.hot.js'),
-      'react-dom': path.resolve(__dirname, 'react.hot.js'),
+      ...(config.usePreact
+        ? {
+          react: path.resolve(__dirname, 'react.hot.js'),
+          'react-dom': path.resolve(__dirname, 'react.hot.js'),
+        }
+        : {}),
     },
   },
 
