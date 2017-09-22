@@ -1,6 +1,33 @@
-# react-static
+<div style="text-align:center;">
+  <a href="https://github.com/react-tools/react-static" target="\_parent"><img src="https://github.com/react-tools/media/raw/master/logo-react-static.png" alt="React Static Logo" style="width:450px;"/></a>
+</div>
 
-React Static turns your react app into a super-charged static website, optimized for extreme speed an instant user satisfaction.
+# React Static
+`react-static` is a powerful static-site framework for React apps.
+
+<a href="https://travis-ci.org/react-tools/react-static" target="\_parent">
+  <img alt="" src="https://travis-ci.org/react-tools/react-static.svg?branch=master" />
+</a>
+<a href="https://npmjs.com/package/react-static" target="\_parent">
+  <img alt="" src="https://img.shields.io/npm/dm/react-static.svg" />
+</a>
+<a href="https://react-chat-signup.herokuapp.com/" target="\_parent">
+  <img alt="" src="https://img.shields.io/badge/slack-react--chat-blue.svg" />
+</a>
+<a href="https://github.com/react-tools/react-static" target="\_parent">
+  <img alt="" src="https://img.shields.io/github/stars/react-tools/react-static.svg?style=social&label=Star" />
+</a>
+<a href="https://twitter.com/tannerlinsley" target="\_parent">
+  <img alt="" src="https://img.shields.io/twitter/follow/tannerlinsley.svg?style=social&label=Follow" />
+</a>
+<a href="https://cash.me/$tannerlinsley" target="\_parent">
+  <img alt="" src="https://img.shields.io/badge/%24-Donate-brightgreen.svg" />
+</a>
+
+<br />
+<br />
+
+[![Sponsor](https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/react-tools/react-static.svg)](https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/react-tools/react-static)
 
 ## Features
 - Static route generation
