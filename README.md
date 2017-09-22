@@ -36,7 +36,7 @@
 - Preloading
 - Dev server
 
-## The Challenge
+## The challenge
 - Generally:
   - React apps don't play well with SEO & crawlers
   - Universal react apps are a lot of work and require a server. :(
@@ -85,7 +85,7 @@ These docs are for version `1.x.x`
   - `<Prefetch url=''/>`
   - `prefetch(url)`
 
-#### Project Setup
+## Project Setup
 For react-static to be amazing, it needs a few directories and files in the right places:
 
 - Project Root
@@ -126,7 +126,7 @@ For react-static to be amazing, it needs a few directories and files in the righ
       ```
       You may find you need more than this, especially if you are using something like Redux.
 
-#### Configuration
+## Configuration
 A `static.config.js` file is required at your project root to configure react-static. It must export an object with the following interface:
 ```javascript
 module.exports = {
@@ -188,9 +188,9 @@ module.exports = {
 }
 ```
 
-#### Components & Tools
+## Components & Tools
 
-##### `<Router />`
+### `<Router />`
 The `Router` component is react-static's special version of React-Router's `Router` component. It is to be used in conjunction with other React Router components. By using react-static's `Router` at the base of your app, you won't have to worry about switching between static routing and browser routing. It accepts a `history` object like you're used to (to support things like react-router-redux), and also provides a helper method to subscribe to loading events.
 
 Example:
@@ -230,7 +230,7 @@ Router.subscribe(loading => {
 })
 ```
 
-##### `getRouteProps(Component)`
+### `getRouteProps(Component)`
 `getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:
 
 **static.config.js**
@@ -259,7 +259,7 @@ const TopHundredSongsPage = getRouteProps(({songs}) =>
 ...
 ```
 
-##### `<Head />`
+### `<Head />`
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
 - It can be used anywhere in your app.
@@ -282,7 +282,7 @@ export () => (
 )
 ```
 
-##### `<Prefetch url=''/>`
+### `<Prefetch url=''/>`
 Prefetch is a react component that accespts a `url` prop and an optional single child to render. When this component is rendered, any data resolved by the `url`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
 
 - If the url doesn't match a route, no data will be loaded.
@@ -306,7 +306,7 @@ import { Link } from 'react-router-dom'
 </Prefetch>
 ```
 
-##### `prefetch(url)`
+### `prefetch(url)`
 `prefetch` is an imperative version of the `Prefetch` component that you can use anywhere in your code.
 
 Example:
