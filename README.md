@@ -78,7 +78,7 @@ Starts the development server.
 Builds your site for production. Outputs to a `dist` directory in your project.
 
 ## Project Setup
-For react-static to be amazing, it needs a few directories and files in the right places:
+`react-static` needs a few directories and files in the right places to function properly:
 
 - Project Root
   - `static.config.js` - A javascript configuration file for react-static. More information on this below.
@@ -116,7 +116,6 @@ For react-static to be amazing, it needs a few directories and files in the righ
         }
       }
       ```
-      You may find you need more than this, especially if you are using something like Redux.
 
 ## Configuration
 A `static.config.js` file is required at your project root to configure react-static. It must export an object with the following interface:
@@ -149,9 +148,9 @@ module.exports = {
   // An optional custom React component that renders the base
   // Html for every page, including the dev server. Must utilize the
   // `Html`, `Head`, `Body` and `children` for react-static to work. The optional
-  // `data` prop refers to any data you potentially returned from
-  // the `postRenderData` function.
-  Html: ({ Html, Head, Body, children, data }) => (
+  // `staticMeta` prop refers to any data you potentially returned from
+  // the `preRenderMeta` and `postRenderMeta` function.
+  Html: ({ Html, Head, Body, children, staticMeta }) => (
     <Html lang="en-US">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -171,12 +170,12 @@ module.exports = {
   // An optional asynchronous function that is pass the JSX component
   // BEFORE it is rendered to a static string. It can return a javascript
   // object that will be made available to a custom Html component
-  preRenderData: async JSX => {...},
+  preRenderMeta: async JSX => {...},
 
   // An optional asynchronous function that is passed the statically
   // rendered HTML for each page and returns a javascript object
   // that will be made available to a custom Html component
-  postRenderData: async staticHTML => {...},
+  postRenderMeta: async staticHTML => {...},
 }
 ```
 
@@ -310,3 +309,78 @@ const myFunc = async => {
   console.log('The preloaded data:', data)
 }
 ```
+
+## Tips and Tricks
+
+#### Using `styled-components`
+To use `styled-components`, you'll need to define a custom `Html` component in your `static.config.js` that can render `styled-components` styles on the server. This should suffice:
+```javascript
+import React, { Component } from 'react'
+import { ServerStyleSheet } from 'styled-components'
+
+export default class CustomHtml extends Component {
+  render () {
+    const { Html, Head, Body, children } = this.props
+
+    const sheet = new ServerStyleSheet()
+    const newChildren = sheet.collectStyles(children)
+    const styleTags = sheet.getStyleElement()
+
+    return (
+      <Html>
+        <Head>
+          {styleTags}
+        </Head>
+        <Body>{newChildren}</Body>
+      </Html>
+    )
+  }
+}
+```
+
+#### Using `glamorous`
+To use `glamorous`, you'll need to:
+1. define a custom `postRenderMeta` callback in your `static.config.js` to retrieve the glamorous styles from a every page:
+  ```javascript
+  module.exports = {
+    ...
+    postRenderMeta: async html => {
+      return {
+        glamorousData: renderStatic(html)
+      }
+    }
+  }
+  ```
+2. define a custom `Html` component in your `static.config.js` that can utilize the `glamorousData` styles you returned in `postRenderMeta`:
+  ```javascript
+  import React, { Component } from 'react'
+  import { renderStatic } from 'glamor/server'
+
+  export default class CustomHtml extends Component {
+    render () {
+      const {
+        Html,
+        Head,
+        Body,
+        children,
+        staticMeta: {
+          glamorousData: {
+            css
+          }
+        }
+      } = this.props
+
+      return (
+        <Html>
+          <Head>
+            <style dangerouslySetInnerHTML={{ __html: css }} />
+          </Head>
+          <Body>{children}</Body>
+        </Html>
+      )
+    }
+  }
+  ```
+
+#### Using `redux`
+There is nothing special about using redux, other than making sure your create your `store` in your entry file, and that it is used in both the static export and rendered component. Other than that, you could follow any online tutorial about setting up redux with hot-reloading.

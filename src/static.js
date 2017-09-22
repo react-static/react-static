@@ -59,12 +59,12 @@ export const writeRoutesToStatic = async ({ config }) => {
 
       const ContextualComp = <InitialPropsContext>{Comp}</InitialPropsContext>
 
-      let data = {}
-      if (config.preRenderData) {
+      let staticMeta = {}
+      if (config.preRenderMeta) {
         // Allow the user to perform custom rendering logic (important for styles and helmet)
-        data = {
-          ...data,
-          ...(await config.preRenderData(ContextualComp)),
+        staticMeta = {
+          ...staticMeta,
+          ...(await config.preRenderMeta(ContextualComp)),
         }
       }
 
@@ -84,13 +84,13 @@ export const writeRoutesToStatic = async ({ config }) => {
         title: helmet.title.toComponent(),
       }
 
-      data.head = head
+      staticMeta.head = head
 
-      if (config.postRenderData) {
+      if (config.postRenderMeta) {
         // Allow the user to perform custom rendering logic (important for styles and helmet)
-        data = {
-          ...data,
-          ...(await config.postRenderData(appHtml)),
+        staticMeta = {
+          ...staticMeta,
+          ...(await config.postRenderMeta(appHtml)),
         }
       }
 
@@ -128,7 +128,7 @@ export const writeRoutesToStatic = async ({ config }) => {
       )
 
       const html = renderToStaticMarkup(
-        <HtmlTemplate data={data} Html={Html} Head={Head} Body={Body}>
+        <HtmlTemplate staticMeta={staticMeta} Html={Html} Head={Head} Body={Body}>
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </HtmlTemplate>,
       )
