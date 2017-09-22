@@ -57,6 +57,7 @@ Coming soon... For now you'll need to follow the documentation below
 ## Documentation
 These docs are for version `1.x.x`
 
+- [Installation](#installation)
 - [CLI](#cli)
   - [`react-static start`](#react-static-start)
   - [`react-static build`](#react-static-build)
@@ -68,6 +69,13 @@ These docs are for version `1.x.x`
   - [`<Head />`](#head-)
   - [`<Prefetch url=''/>`](#prefetch-url)
   - [`prefetch(url)`](#prefetchurl)
+
+## Installation
+```bash
+$ yarn add react-static
+# or
+$ npm install react-static --save
+``
 
 ## CLI
 
