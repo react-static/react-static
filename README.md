@@ -57,17 +57,17 @@ Coming soon... For now you'll need to follow the documentation below
 ## Documentation
 These docs are for version `1.x.x`
 
-- CLI
-  - `react-static start`
-  - `react-static build`
-- Project Setup
-- Configuration
-- Components & Tools
-  - `<Router />`
-  - `getRouteProps(Component)`
-  - `<Head />`
-  - `<Prefetch url=''/>`
-  - `prefetch(url)`
+- [CLI](#cli)
+  - [`react-static start`](#react-static-start)
+  - [`react-static build`](#react-static-build)
+- [Project Setup](#project-setup)
+- [Configuration](#configuration)
+- [Components & Tools](#components--tools)
+  - [`<Router />`](#router-)
+  - [`getRouteProps(Component)`](#getroutepropscomponent)
+  - [`<Head />`](#head-)
+  - [`<Prefetch url=''/>`](#prefetch-url)
+  - [`prefetch(url)`](#prefetchurl)
 
 ## CLI
 
