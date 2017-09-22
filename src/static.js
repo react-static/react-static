@@ -2,14 +2,15 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { renderToStaticMarkup } from 'react-dom/server'
 import fs from 'fs-extra'
 import nodepath from 'path'
+import Helmet from 'react-helmet'
 //
 import DefaultHtml from './DefaultHtml'
 import { ROOT, DIST } from './paths'
 
-const defaultComponentPath = './src/App'
+const defaultEntry = './src/index'
 
 const loadComponentForStatic = src => {
   // Require a copy of the component (important to do this in `IS_STATIC` environment variable)
@@ -23,8 +24,8 @@ export const getConfig = () =>
   require(nodepath.resolve(nodepath.join(process.cwd(), 'static.config.js'))).default
 
 export const writeRoutesToStatic = async ({ config }) => {
-  const Html = config.Html || DefaultHtml
-  const Comp = loadComponentForStatic(config.componentPath || defaultComponentPath)
+  const HtmlTemplate = config.Html || DefaultHtml
+  const Comp = loadComponentForStatic(config.entry || defaultEntry)
 
   return Promise.all(
     config.routes.map(async route => {
@@ -56,11 +57,7 @@ export const writeRoutesToStatic = async ({ config }) => {
         }
       }
 
-      const ContextualComp = (
-        <InitialPropsContext>
-          <Comp />
-        </InitialPropsContext>
-      )
+      const ContextualComp = <InitialPropsContext>{Comp}</InitialPropsContext>
 
       let data = {}
       if (config.preRenderData) {
@@ -73,6 +70,22 @@ export const writeRoutesToStatic = async ({ config }) => {
 
       const appHtml = renderToStaticMarkup(ContextualComp)
 
+      // Extract head calls using Helmet
+      const helmet = Helmet.renderStatic()
+      const head = {
+        htmlProps: helmet.htmlAttributes.toComponent(),
+        bodyProps: helmet.bodyAttributes.toComponent(),
+        base: helmet.base.toComponent(),
+        link: helmet.link.toComponent(),
+        meta: helmet.meta.toComponent(),
+        noscript: helmet.noscript.toComponent(),
+        script: helmet.script.toComponent(),
+        style: helmet.style.toComponent(),
+        title: helmet.title.toComponent(),
+      }
+
+      data.head = head
+
       if (config.postRenderData) {
         // Allow the user to perform custom rendering logic (important for styles and helmet)
         data = {
@@ -81,26 +94,43 @@ export const writeRoutesToStatic = async ({ config }) => {
         }
       }
 
-      const html = renderToString(
-        <Html
-          data={data}
-          scripts={
-            <div>
-              <script
-                type="text/javascript"
-                dangerouslySetInnerHTML={{
-                  __html: `window.__routeData = ${JSON.stringify({
-                    path: route.path,
-                    initialProps,
-                  })}`,
-                }}
-              />
-              <script async src="/app.js" />
-            </div>
-          }
-        >
+      const Html = ({ children, ...rest }) => (
+        <html lang="en" {...head.htmlprops} {...rest}>
+          {children}
+        </html>
+      )
+      const Head = ({ children, ...rest }) => (
+        <head {...rest}>
+          {head.base}
+          {head.link}
+          {head.meta}
+          {head.noscript}
+          {head.script}
+          {head.style}
+          {head.title}
+          {children}
+        </head>
+      )
+      const Body = ({ children, ...rest }) => (
+        <body {...head.bodyProps} {...rest}>
+          {children}
+          <script
+            type="text/javascript"
+            dangerouslySetInnerHTML={{
+              __html: `window.__routeData = ${JSON.stringify({
+                path: route.path,
+                initialProps,
+              })}`,
+            }}
+          />
+          <script async src="/app.js" />
+        </body>
+      )
+
+      const html = renderToStaticMarkup(
+        <HtmlTemplate data={data} Html={Html} Head={Head} Body={Body}>
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
-        </Html>,
+        </HtmlTemplate>,
       )
 
       const urls = getMatches(

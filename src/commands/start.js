@@ -7,7 +7,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import { renderToStaticMarkup } from 'react-dom/server'
 //
-import DefaultHtml from './DefaultHtml'
+import DefaultHtml from '../DefaultHtml'
 import webpackConfig from '../webpack.config.dev'
 import copyPublicFolder from '../copyPublicFolder'
 import { getConfig } from '../static'
@@ -85,12 +85,25 @@ export default async () => {
   const config = getConfig()
   await fs.remove(DIST)
 
-  const Html = config.Html || DefaultHtml
+  const HtmlTemplate = config.Html || DefaultHtml
+
+  const Html = ({ children, ...rest }) => (
+    <html lang="en" {...rest}>
+      {children}
+    </html>
+  )
+  const Head = ({ children, ...rest }) => <head {...rest}>{children}</head>
+  const Body = ({ children, ...rest }) => (
+    <body {...rest}>
+      {children}
+      <script async src="/app.js" />
+    </body>
+  )
 
   const html = renderToStaticMarkup(
-    <Html meta={{}} scripts={<script async src="/app.js" />}>
+    <HtmlTemplate Html={Html} Head={Head} Body={Body}>
       <div id="root" />
-    </Html>,
+    </HtmlTemplate>,
   )
 
   await fs.outputFile(path.join(DIST, 'index.html'), html)

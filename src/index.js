@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import { Router as ReactRouter } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
+import { Helmet } from 'react-helmet'
 //
 import { normalizeRoutes, pathJoin } from './shared'
 
@@ -20,8 +21,8 @@ if (process.env.NODE_ENV === 'development') {
     const userConfig = require('__static-config').default
     return normalizeRoutes(await userConfig.getRoutes({ prod: false }))
   })()
-  InitialLoading = () =>
-    (<div
+  InitialLoading = () => (
+    <div
       style={{
         display: 'block',
         width: '100%',
@@ -62,7 +63,8 @@ if (process.env.NODE_ENV === 'development') {
           }}
         />
       </svg>
-    </div>)
+    </div>
+  )
 }
 
 export async function prefetch (path) {
@@ -147,7 +149,7 @@ export async function prefetch (path) {
   return propsCache[path]
 }
 
-export const GetRouteProps = Comp =>
+export const getRouteProps = Comp =>
   class AsyncPropsComponent extends Component {
     static contextTypes = {
       initialProps: PropTypes.object,
@@ -257,27 +259,4 @@ export class Router extends Component {
   }
 }
 
-export const withLoading = Comp =>
-  class WithLoading extends Component {
-    constructor () {
-      super()
-      this.update = this.update.bind(this)
-    }
-    componentWillMount () {
-      subscribers.push(this.update)
-      this.setState({
-        loading: this.context.loading,
-      })
-    }
-    componentWillUnmount () {
-      subscribers = subscribers.filter(d => d !== this.update)
-    }
-    update () {
-      this.setState({
-        loading,
-      })
-    }
-    render () {
-      return <Comp {...this.props} loading={this.state.loading} />
-    }
-  }
+export const Head = Helmet

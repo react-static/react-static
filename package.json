@@ -44,6 +44,7 @@
     "react": "^15.6.1",
     "react-dev-utils": "^4.0.1",
     "react-dom": "^15.6.1",
+    "react-helmet": "^5.2.0",
     "react-hot-loader": "next",
     "react-router-dom": "^4.2.2",
     "webpack": "^3.6.0",

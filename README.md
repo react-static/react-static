@@ -49,33 +49,64 @@ React Static turns your react app into a super-charged static website, optimized
 ## Documentation
 These docs are for version `1.x.x`
 
-#### static.config.js
-A `static.config.js` file is required. It must export an object with the following interface:
+- Project Setup
+- Configuration
+- Components & Tools
+  - `<Router />`
+  - `getRouteProps(Component)`
+  - `<Head />`
+  - `<Prefetch url=''/>`
+  - `prefetch(url)`
+
+#### Project Setup
+For react-static to be amazing, it needs a few directories and files in the right places:
+
+- Project Root
+  - `static.config.js` - A javascript configuration file for react-static. More information on this below.
+  - `public/` - Anything in this directory will be merged into your static `dist` directory. All files in this directory can be accessed at the root of your site.
+  - `src/` - a place for all of your code
+    - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. This is a perfectly sufficient `index.js` file:
+      ```javascript
+      import React from 'react'
+      import ReactDOM from 'react-dom'
+      import { AppContainer } from 'react-hot-loader'
+
+      // Your top level component
+      import App from './App'
+
+      // Export your top level component as JSX (for static rendering)
+      export default <App />
+
+      // Render your app
+      if (typeof document !== 'undefined') {
+        const render = () => {
+          ReactDOM.render(
+            <AppContainer>
+              <App />
+            </AppContainer>,
+            document.getElementById('root'),
+          )
+        }
+
+        // Render!
+        render()
+
+        // Hot Module Replacement
+        if (module.hot) {
+          module.hot.accept('./App', render)
+        }
+      }
+      ```
+      You may find you need more than this, especially if you are using something like Redux.
+
+#### Configuration
+A `static.config.js` file is required at your project root to configure react-static. It must export an object with the following interface:
 ```javascript
 module.exports = {
-  componentPath: './src/App',
-  // The location of your top-level
-  // react component (not your index.js file)
-
-  postRenderData: async staticHTML => {...}
-  // An optional asynchronous function that is passed the statically
-  // rendered HTML for each page and returns a javascript object
-  // that will be made available to a custom Html component
-
-  Html: ({ children, scripts, data }) => (
-    <html>
-      <head></head>
-      <body>
-        {children}
-        {scripts}
-      </body>
-    </html>
-  ), // An optional custom React component that renders the base
-  // Html for every page, including the dev server. Must utilize
-  // `children` and `scripts` for react-static to work. The optional
-  // `data` prop refers to any data you potentially returned from
-  // the `postRenderData` function.
-
+  // getRoutes is the only required method for the entire config.
+  // It is an asynchronous function that should
+  // resolve an array of route objects. It is also passed a `prod`
+  // boolean indicating whether this is a production build or not.
   getRoutes: async ({prod}) => [{
     path: '/' // A route object only requires a `path` string
   }, {
@@ -94,9 +125,169 @@ module.exports = {
       nofollow: false, // used to generate the sitemap.xml
       noindex: false, // used to generate the sitemap.xml
     }],
+  }],
+
+  // The entry location for your app, defaulting to `./src/index.js`
+  // This file must export the JSX of your app as the default export,
+  // eg. `default export <MyApp />`.
+  // It also handles the rendering of your app while in development mode
+  // (including hot reloading). For a brief example, see the Project
+  // Setup section above.
+  entry: './src/index.js',
+
+  // An optional asynchronous function that is pass the JSX component
+  // BEFORE it is rendered to a static string. It can return a javascript
+  // object that will be made available to a custom Html component
+  preRenderData: async JSX => {...},
+
+  // An optional asynchronous function that is passed the statically
+  // rendered HTML for each page and returns a javascript object
+  // that will be made available to a custom Html component
+  postRenderData: async staticHTML => {...},
+
+  // An optional custom React component that renders the base
+  // Html for every page, including the dev server. Must utilize the
+  // `Html`, `Head`, `Body` and `children` for react-static to work. The optional
+  // `data` prop refers to any data you potentially returned from
+  // the `postRenderData` function.
+  Html: ({ Html, Head, Body, children, data }) => (
+    <Html lang="en-US">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <Body>{children}</Body>
+    </Html>
+  ),
+}
+```
+
+#### Components & Tools
+
+##### `<Router />`
+The `Router` component is react-static's special version of React-Router's `Router` component. It is to be used in conjunction with other React Router components. By using react-static's `Router` at the base of your app, you won't have to worry about switching between static routing and browser routing. It accepts a `history` object like you're used to (to support things like react-router-redux), and also provides a helper method to subscribe to loading events.
+
+Example:
+```javascript
+import { Router } from 'react-static'
+import { Switch, Route } from 'react-router'
+
+import Home from './containers/Home'
+import About from './containers/About'
+import Blog from './containers/Blog'
+
+export default () => (
+  <Router>
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/blog" component={Blog} />
+      <Redirect to="/" />
+    </Switch>
+  </Router>
+)
+```
+
+To Subscribe to Router loading events, use `Router.subscribe(callback)`.
+The subscribe callback will fire whenever the loading state changes.
+
+Example:
+```javascript
+import { Router } from 'react-static'
+
+Router.subscribe(loading => {
+  if (loading) {
+    console.log('A page is loading!')
+  } else {
+    console.log('A page is done loading!')
+  }
+})
+```
+
+##### `getRouteProps(Component)`
+`getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:
+
+**static.config.js**
+```javascript
+module.exports = {
+  getRoutes: () => [{
+    path: '/top-100-songs',
+    getProps: async () => ({
+      songs: await SpotifyAPI.getTopSongs(100)
+    })
   }]
-  // getRoutes is a required, asynchronous function that should
-  // resolve an array of route objects. It is also passed a `prod`
-  // boolean indicating whether this is a production build or not.
+}
+```
+
+**App.js**
+```javascript
+
+const TopHundredSongsPage = getRouteProps(({songs}) =>
+  <ul>
+    {songs.map(song => <li key={song}>{song}</li>)}
+  </ul>
+)
+
+...
+<Route exact path="/top-100-songs" component={TopHundredSongsPage} />
+...
+```
+
+##### `<Head />`
+`Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
+
+- It can be used anywhere in your app.
+- If called more than once on a route, it will append and merge them together (and overwrite some tags with the latest tag used).
+- For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that `react-static` uses to accomplish this.
+
+Example:
+```javascript
+import { Head } from 'react-static'
+
+export () => (
+  <div>
+    <Head>
+      <title>This is my page title!</title>
+    </Head>
+    <div>
+      My page content...
+    </div>
+  </div>
+)
+```
+
+##### `<Prefetch url=''/>`
+Prefetch is a react component that accespts a `url` prop and an optional single child to render. When this component is rendered, any data resolved by the `url`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
+
+- If the url doesn't match a route, no data will be loaded.
+- If the route has already been loaded in the session, the cache will be used instead.
+- If multiple instances of the same `url` are prefetched at the same time, only a single request will be made for all instances.
+- If used more often than needed, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
+
+Example:
+```javascript
+import { Prefetch } from 'react-static'
+import { Link } from 'react-router-dom'
+
+// Standalone
+<Prefetch url='/blog' />
+
+// With children
+<Prefetch url='/blog'>
+  <Link to='/blog'>
+    Go to blog
+  </Prefetch>
+</Prefetch>
+```
+
+##### `prefetch(url)`
+`prefetch` is an imperative version of the `Prefetch` component that you can use anywhere in your code.
+
+Example:
+```javascript
+import { prefetch } from 'react-static'
+
+const myFunc = async => {  
+  const data = await prefetch('/blog')
+  console.log('The preloaded data:', data)
 }
 ```

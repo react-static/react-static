@@ -1,19 +1,15 @@
 import React, { Component } from 'react'
 
-export default class Html extends Component {
+export default class CustomHtml extends Component {
   render () {
-    const { children, scripts } = this.props
+    const { Html, Head, Body, children } = this.props
     return (
-      <html lang="en-US">
-        <head>
-          <title>React Static Starter</title>
+      <Html lang="en-US">
+        <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </head>
-        <body>
-          {children}
-          {scripts}
-        </body>
-      </html>
+        </Head>
+        <Body>{children}</Body>
+      </Html>
     )
   }
 }
