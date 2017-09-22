@@ -75,7 +75,7 @@ These docs are for version `1.x.x`
 $ yarn add react-static
 # or
 $ npm install react-static --save
-``
+```
 
 ## CLI
 
