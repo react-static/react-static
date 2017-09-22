@@ -52,30 +52,14 @@
 - You can download, cache, import, query, and display your data however you'd like from any imaginable source including CMSaaS's, your favorite HTTP request library, databases, JSON files, etc.
 
 ## Quick Start
-1. Clone the starter repo:
-  ```bash
-  $ git clone https://github.com/react-static/react-static-starter
-  $ cd react-static-starter
-  ```
-2. Install dependencies
-  ```bash
-  $ yarn
-  # or npm install
-  ```
-3. Run the dev server
-  ```bash
-  $ yarn start
-  # or npm run start
-  ```
-4. Build for production
-  ```bash
-  $ yarn build
-  # or npm run build
-  ```
+Coming soon... For now you'll need to follow the documentation below
 
 ## Documentation
 These docs are for version `1.x.x`
 
+- CLI
+  - `react-static start`
+  - `react-static build`
 - Project Setup
 - Configuration
 - Components & Tools
@@ -84,6 +68,14 @@ These docs are for version `1.x.x`
   - `<Head />`
   - `<Prefetch url=''/>`
   - `prefetch(url)`
+
+## CLI
+
+#### `react-static start`
+Starts the development server.
+
+#### `react-static build`
+Builds your site for production. Outputs to a `dist` directory in your project.
 
 ## Project Setup
 For react-static to be amazing, it needs a few directories and files in the right places:
@@ -154,6 +146,20 @@ module.exports = {
     }],
   }],
 
+  // An optional custom React component that renders the base
+  // Html for every page, including the dev server. Must utilize the
+  // `Html`, `Head`, `Body` and `children` for react-static to work. The optional
+  // `data` prop refers to any data you potentially returned from
+  // the `postRenderData` function.
+  Html: ({ Html, Head, Body, children, data }) => (
+    <Html lang="en-US">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <Body>{children}</Body>
+    </Html>
+  ),
+
   // The entry location for your app, defaulting to `./src/index.js`
   // This file must export the JSX of your app as the default export,
   // eg. `default export <MyApp />`.
@@ -171,26 +177,12 @@ module.exports = {
   // rendered HTML for each page and returns a javascript object
   // that will be made available to a custom Html component
   postRenderData: async staticHTML => {...},
-
-  // An optional custom React component that renders the base
-  // Html for every page, including the dev server. Must utilize the
-  // `Html`, `Head`, `Body` and `children` for react-static to work. The optional
-  // `data` prop refers to any data you potentially returned from
-  // the `postRenderData` function.
-  Html: ({ Html, Head, Body, children, data }) => (
-    <Html lang="en-US">
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <Body>{children}</Body>
-    </Html>
-  ),
 }
 ```
 
 ## Components & Tools
 
-### `<Router />`
+#### `<Router />`
 The `Router` component is react-static's special version of React-Router's `Router` component. It is to be used in conjunction with other React Router components. By using react-static's `Router` at the base of your app, you won't have to worry about switching between static routing and browser routing. It accepts a `history` object like you're used to (to support things like react-router-redux), and also provides a helper method to subscribe to loading events.
 
 Example:
@@ -230,7 +222,7 @@ Router.subscribe(loading => {
 })
 ```
 
-### `getRouteProps(Component)`
+#### `getRouteProps(Component)`
 `getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:
 
 **static.config.js**
@@ -259,7 +251,7 @@ const TopHundredSongsPage = getRouteProps(({songs}) =>
 ...
 ```
 
-### `<Head />`
+#### `<Head />`
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
 - It can be used anywhere in your app.
@@ -282,7 +274,7 @@ export () => (
 )
 ```
 
-### `<Prefetch url=''/>`
+#### `<Prefetch url=''/>`
 Prefetch is a react component that accespts a `url` prop and an optional single child to render. When this component is rendered, any data resolved by the `url`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
 
 - If the url doesn't match a route, no data will be loaded.
@@ -306,7 +298,7 @@ import { Link } from 'react-router-dom'
 </Prefetch>
 ```
 
-### `prefetch(url)`
+#### `prefetch(url)`
 `prefetch` is an imperative version of the `Prefetch` component that you can use anywhere in your code.
 
 Example:
