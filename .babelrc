@@ -1,19 +1,18 @@
 {
   "presets": [
     [
-      "es2015",
+      "latest",
       {
-        "es2015": {
-          "loose": true,
-          "modules": false
-        }
+        "loose": true,
+        "modules": false
       }
     ],
-    "stage-2",
+    "stage-0",
     "react"
   ],
   "plugins": [
     "react-hot-loader/babel",
+    "transform-class-properties",
     [
       "transform-runtime",
       {

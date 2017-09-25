@@ -1,17 +1,18 @@
 import 'babel-register'
 
-import start from './start'
-import build from './build'
-
 export default function () {
   const cmd = process.argv[2]
 
   if (cmd === 'start') {
-    return start()
+    return require('./start').default()
   }
 
   if (cmd === 'build') {
-    return build()
+    return require('./build').default()
+  }
+
+  if (cmd === 'create') {
+    return require('./create').default(process.argv[3])
   }
 
   console.log(
