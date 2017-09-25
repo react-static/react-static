@@ -160,8 +160,12 @@ export default {
       // whether this is a production build or not. This function
       // should resolve any data the route needs to render eg. blog
       // posts, API data, etc.
-      nofollow: false, // used to generate the sitemap.xml
-      noindex: false, // used to generate the sitemap.xml
+      
+      noindex: false, // Optional. Defaults to `false`. If `true`, will exclude this route from the sitemap XML
+      permalink: '', // Optional. If not set, will default to (siteRoot + path)
+      changeFreq: 60000, // Optional.
+      lastModified: '', // Optional. String('YYYY-MM-DD')
+      priority: 0.5 // Optional.
     }],
   }],
 

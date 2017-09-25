@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 //
 import { DIST, SRC } from '../paths'
-import { getConfig, writeRoutesToStatic } from '../static'
+import { getConfig, writeRoutesToStatic, buildXMLandRSS } from '../static'
 import buildAppBundle from '../buildAppBundle'
 import copyPublicFolder from '../copyPublicFolder'
 import { normalizeRoutes } from '../shared'
@@ -28,6 +28,7 @@ export default async () => {
     console.log('=> Exporting Routes...')
     console.time(chalk.green('=> [\u2713] Routes Exported'))
     await writeRoutesToStatic({ config })
+    await buildXMLandRSS({ config })
     console.timeEnd(chalk.green('=> [\u2713] Routes Exported'))
 
     console.log('=> Bundling App...')

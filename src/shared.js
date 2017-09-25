@@ -11,22 +11,10 @@ export const normalizeRoutes = routes => {
       ...route,
       parent,
       path,
-      query: {},
+      noIndex: typeof route.noIndex === 'undefined' ? parent.noIndex : route.noIndex,
     }
 
     flatRoutes.push(normalizedRoute)
-
-    if (route.queries) {
-      route.queries.forEach(query => {
-        flatRoutes.push({
-          ...normalizedRoute,
-          path: `${normalizedRoute.path}?${query.param}${query.value && `=${query.value}`}`,
-          query: {
-            [query.param]: query.value || true,
-          },
-        })
-      })
-    }
 
     if (route.children) {
       route.children.forEach(d => recurse(d, normalizedRoute))
