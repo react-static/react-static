@@ -113,23 +113,26 @@ Builds your site for production. Outputs to a `dist` directory in your project.
 
     // Render your app
     if (typeof document !== 'undefined') {
-      const render = () => {
+      const render = Comp => {
         ReactDOM.render(
           <AppContainer>
-            <App />
+            <Comp />
           </AppContainer>,
           document.getElementById('root'),
         )
       }
 
       // Render!
-      render()
+      render(App)
 
       // Hot Module Replacement
       if (module.hot) {
-        module.hot.accept('./App', render)
+        module.hot.accept('./App', () => {
+          render(require('./App').default)
+        })
       }
     }
+
     ```
 
 ## Configuration

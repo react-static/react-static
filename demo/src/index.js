@@ -15,7 +15,7 @@ if (typeof document !== 'undefined') {
       <AppContainer>
         <Comp />
       </AppContainer>,
-      document.getElementById('root')
+      document.getElementById('root'),
     )
   }
 
