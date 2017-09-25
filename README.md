@@ -96,42 +96,41 @@ Builds your site for production. Outputs to a `dist` directory in your project.
 ## Project Setup
 `react-static` needs a few directories and files in the right places to function properly:
 
-- Project Root
-  - `static.config.js` - A javascript configuration file for react-static. More information on this below.
-  - `public/` - Anything in this directory will be merged into your static `dist` directory. All files in this directory can be accessed at the root of your site.
-  - `src/` - a place for all of your code
-    - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. This is a perfectly sufficient `index.js` file:
-      ```javascript
-      import React from 'react'
-      import ReactDOM from 'react-dom'
-      import { AppContainer } from 'react-hot-loader'
+- `static.config.js` - A javascript configuration file for react-static. More information on this below.
+- `public/` - Anything in this directory will be merged into your static `dist` directory. All files in this directory can be accessed at the root of your site.
+- `src/` - a place for all of your code
+  - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. This is a perfectly sufficient `index.js` file:
+    ```javascript
+    import React from 'react'
+    import ReactDOM from 'react-dom'
+    import { AppContainer } from 'react-hot-loader'
 
-      // Your top level component
-      import App from './App'
+    // Your top level component
+    import App from './App'
 
-      // Export your top level component as JSX (for static rendering)
-      export default <App />
+    // Export your top level component as JSX (for static rendering)
+    export default <App />
 
-      // Render your app
-      if (typeof document !== 'undefined') {
-        const render = () => {
-          ReactDOM.render(
-            <AppContainer>
-              <App />
-            </AppContainer>,
-            document.getElementById('root'),
-          )
-        }
-
-        // Render!
-        render()
-
-        // Hot Module Replacement
-        if (module.hot) {
-          module.hot.accept('./App', render)
-        }
+    // Render your app
+    if (typeof document !== 'undefined') {
+      const render = () => {
+        ReactDOM.render(
+          <AppContainer>
+            <App />
+          </AppContainer>,
+          document.getElementById('root'),
+        )
       }
-      ```
+
+      // Render!
+      render()
+
+      // Hot Module Replacement
+      if (module.hot) {
+        module.hot.accept('./App', render)
+      }
+    }
+    ```
 
 ## Configuration
 A `static.config.js` file is required at your project root to configure react-static. It must export an object with the following interface:
