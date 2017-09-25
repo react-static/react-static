@@ -69,7 +69,7 @@ These docs are for version `1.x.x`
   - [`react-static start`](#react-static-start)
   - [`react-static build`](#react-static-build)
 - [Project Setup](#project-setup)
-- [Configuration](#configuration)
+- [Configuration (`static.config.js`)](configuration-staticconfigjs)
 - [Components & Tools](#components--tools)
   - [`<Router />`](#router-)
   - [`getRouteProps(Component)`](#getroutepropscomponent)
