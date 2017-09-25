@@ -35,6 +35,7 @@
 - Progressive content loading
 - Powerful Preloading
 - Built-in dev server
+- Ready-to-use Babel & Webpack
 
 ## The challenge
 - Generally:
@@ -136,9 +137,9 @@ Builds your site for production. Outputs to a `dist` directory in your project.
     ```
 
 ## Configuration
-A `static.config.js` file is required at your project root to configure react-static. It must export an object with the following interface:
+A `static.config.js` file is required at your project root to configure react-static. It must export a **default** object with the following interface:
 ```javascript
-module.exports = {
+export default {
   // getRoutes is the only required method for the entire config.
   // It is an asynchronous function that should
   // resolve an array of route objects. It is also passed a `prod`

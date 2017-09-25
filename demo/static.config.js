@@ -1,35 +1,31 @@
 import axios from 'axios'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 export default {
   getRoutes: async () => {
-    const { data: posts } = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
-    )
+    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     return [
       {
-        path: '/'
+        path: '/',
       },
       {
-        path: '/about'
+        path: '/about',
       },
       {
         path: '/blog',
         getProps: () => ({
-          posts
+          posts,
         }),
-        children: posts.map(post => {
-          return {
-            path: `/post/${post.id}`,
-            getProps: () => ({
-              post
-            })
-          }
-        })
-      }
+        children: posts.map(post => ({
+          path: `/post/${post.id}`,
+          getProps: () => ({
+            post,
+          }),
+        })),
+      },
     ]
   },
-    Html: class CustomHtml extends Component {
+  Html: class CustomHtml extends Component {
     render () {
       const { Html, Head, Body, children } = this.props
       return (
@@ -47,5 +43,5 @@ export default {
         </Html>
       )
     }
-  }
+  },
 }
