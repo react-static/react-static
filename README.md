@@ -3,7 +3,7 @@
 </div>
 
 # React Static
-`react-static` is a powerful static-site framework for React apps.
+`react-static` is a powerful static-site framework for React.
 
 <a href="https://travis-ci.org/react-tools/react-static" target="\_parent">
   <img alt="" src="https://travis-ci.org/react-tools/react-static.svg?branch=master" />
@@ -31,10 +31,10 @@
 
 ## Features
 - Static route generation
-- Asynchronous routes
 - Sitemap & RSS generation
-- Preloading
-- Dev server
+- Progressive content loading
+- Powerful Preloading
+- Built-in dev server
 
 ## The challenge
 - Generally:
@@ -52,7 +52,12 @@
 - You can download, cache, import, query, and display your data however you'd like from any imaginable source including CMSaaS's, your favorite HTTP request library, databases, JSON files, etc.
 
 ## Quick Start
-Coming soon... For now you'll need to follow the documentation below
+```bash
+$ yarn global add react-static
+# or npm install -g react-static
+
+$ react-static create my-static-site
+```
 
 ## Documentation
 These docs are for version `1.x.x`
@@ -78,6 +83,9 @@ $ npm install react-static --save
 ```
 
 ## CLI
+
+#### `react-static create [project-name]`
+Creates a new react-static project at the directory name your provide using the template project located in this repository's `demo/` directory.
 
 #### `react-static start`
 Starts the development server.
