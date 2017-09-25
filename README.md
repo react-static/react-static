@@ -65,6 +65,7 @@ These docs are for version `1.x.x`
 
 - [Installation](#installation)
 - [CLI](#cli)
+  - [`react-static create](#react-static-create-project-name)
   - [`react-static start`](#react-static-start)
   - [`react-static build`](#react-static-build)
 - [Project Setup](#project-setup)
@@ -136,7 +137,7 @@ Builds your site for production. Outputs to a `dist` directory in your project.
 
     ```
 
-## Configuration
+## Configuration (`static.config.js`)
 A `static.config.js` file is required at your project root to configure react-static. It must export a **default** object with the following interface:
 ```javascript
 export default {
