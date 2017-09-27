@@ -1,12 +1,12 @@
 <div style="text-align:center;">
-  <a href="https://github.com/react-tools/react-static" target="\_parent"><img src="https://github.com/react-tools/media/raw/master/logo-react-static.png" alt="React Static Logo" style="width:450px;"/></a>
+  <a href="https://github.com/nozzle/react-static" target="\_parent"><img src="https://github.com/react-tools/media/raw/master/logo-react-static.png" alt="React Static Logo" style="width:450px;"/></a>
 </div>
 
 # React Static
 `react-static` is a powerful static-site framework for React.
 
-<a href="https://travis-ci.org/react-tools/react-static" target="\_parent">
-  <img alt="" src="https://travis-ci.org/react-tools/react-static.svg?branch=master" />
+<a href="https://travis-ci.org/nozzle/react-static" target="\_parent">
+  <img alt="" src="https://travis-ci.org/nozzle/react-static.svg?branch=master" />
 </a>
 <a href="https://npmjs.com/package/react-static" target="\_parent">
   <img alt="" src="https://img.shields.io/npm/dm/react-static.svg" />
@@ -14,8 +14,8 @@
 <a href="https://react-chat-signup.herokuapp.com/" target="\_parent">
   <img alt="" src="https://img.shields.io/badge/slack-react--chat-blue.svg" />
 </a>
-<a href="https://github.com/react-tools/react-static" target="\_parent">
-  <img alt="" src="https://img.shields.io/github/stars/react-tools/react-static.svg?style=social&label=Star" />
+<a href="https://github.com/nozzle/react-static" target="\_parent">
+  <img alt="" src="https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star" />
 </a>
 <a href="https://twitter.com/tannerlinsley" target="\_parent">
   <img alt="" src="https://img.shields.io/twitter/follow/tannerlinsley.svg?style=social&label=Follow" />
@@ -27,7 +27,7 @@
 <br />
 <br />
 
-[![Sponsor](https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/react-tools/react-static.svg)](https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/react-tools/react-static)
+[![Sponsor](https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg)](https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static)
 
 ## Features
 - Static route generation
@@ -160,7 +160,7 @@ export default {
       // whether this is a production build or not. This function
       // should resolve any data the route needs to render eg. blog
       // posts, API data, etc.
-      
+
       noindex: false, // Optional. Defaults to `false`. If `true`, will exclude this route from the sitemap XML
       permalink: '', // Optional. If not set, will default to (siteRoot + path)
       changeFreq: 60000, // Optional.
