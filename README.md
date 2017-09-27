@@ -65,7 +65,7 @@ These docs are for version `1.x.x`
 
 - [Installation](#installation)
 - [CLI](#cli)
-  - [`react-static create](#react-static-create-project-name)
+  - [`react-static create`](#react-static-create-project-name)
   - [`react-static start`](#react-static-start)
   - [`react-static build`](#react-static-build)
 - [Project Setup](#project-setup)
