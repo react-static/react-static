@@ -127,11 +127,11 @@ export const writeRoutesToStatic = async ({ config }) => {
         </body>
       )
 
-      const html = renderToStaticMarkup(
+      const html = `<!DOCTYPE html>${renderToStaticMarkup(
         <HtmlTemplate staticMeta={staticMeta} Html={Html} Head={Head} Body={Body}>
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </HtmlTemplate>,
-      )
+      )}`
 
       const urls = getMatches(
         /(?:\(|"|')((?:(?:\/\/)|(?:\/))(?!\.)(?:[^(),'"\s](?:(?!\/\/|<|>|;|:|@|\s)[^"|'])*)(?:\.(?:jpg|png|gif))(?:.*?))(?:"|'|\)|\s)/gm,
