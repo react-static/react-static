@@ -1,11 +1,17 @@
-export const pathJoin = (...paths) => `${paths.join('/')}/`.replace(/\/{2,}/g, '/')
+export const pathJoin = (...paths) => {
+  let newPath = `${paths.join('/')}`.replace(/\/{2,}/g, '/')
+  if (newPath !== '/') {
+    newPath = newPath.replace(/\/$/g, '')
+  }
+  return newPath
+}
 
 // Normalize routes with parents, full paths, context, etc.
 export const normalizeRoutes = routes => {
   const flatRoutes = []
 
   const recurse = (route, parent = { path: '/' }) => {
-    const path = pathJoin(parent.path, route.path, '/')
+    const path = pathJoin(parent.path, route.path)
 
     const normalizedRoute = {
       ...route,
