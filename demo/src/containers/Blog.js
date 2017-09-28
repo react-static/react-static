@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import { getRouteProps } from 'react-static'

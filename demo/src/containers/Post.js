@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { getRouteProps } from 'react-static'
 //
 
-export default getRouteProps(({ match, post }) => (
+export default getRouteProps(({ post }) => (
   <div>
     <Link to="/blog">{'<'} All Posts</Link>
     <br />
