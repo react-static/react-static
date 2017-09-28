@@ -155,9 +155,10 @@ export const writeRoutesToStatic = async ({ config }) => {
 
 export async function buildXMLandRSS ({ config }) {
   if (!config.siteRoot) {
-    throw new Error(
-      'No `siteRoot` defined in `static.config.js`. This is required to build a sitemap!',
+    console.log(
+      'Warning: No `siteRoot` defined in `static.config.js`. This is required to build a sitemap.xml!',
     )
+    return
   }
   const xml = generateXML({
     routes: config.routes.map(route => ({
