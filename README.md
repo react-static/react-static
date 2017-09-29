@@ -42,12 +42,12 @@
 - Instead of creating a single `index.html` file, it generates a static html file (and accompanying json file) for each of these routes.
 - React-Static then compiles your entire site to a single, good old classic react app, just like create-react-app!
 - Site navigation then functions as follows:
-  1. Any entry route (eg. `/about`) is requested by the user.
-  2. `/about/index.html` is fetched, parsed, and painted at the speed of light!
-  3. The one and only site bundle, `app.js`, is then loaded asynchronously, and react invisibly hydrates using the existing HTML. At this point, the site will function almost exactly like a standard react app!
-  4. A user clicks a link to navigate to another page (eg. `/blog`)
-  5. Magically, react-static loads `/blog/routeData.json`, which contains any asynchronous data dependencies for the route.
-  6. The `/blog` route is then loaded via react.
+  - Any entry route (eg. `/about`) is requested by the user.
+  - `/about/index.html` is fetched, parsed, and painted at the speed of light!
+  - The one and only site bundle, `app.js`, is then loaded asynchronously, and react invisibly hydrates using the existing HTML. At this point, the site will function almost exactly like a standard react app!
+  - A user clicks a link to navigate to another page (eg. `/blog`)
+  - Magically, react-static loads `/blog/routeData.json`, which contains any asynchronous data dependencies for the route.
+  - The `/blog` route is then loaded via react.
 
 ## Why is this cool?
 - React-Static is a **React-first framework**. This means using all of the tooling and components you already know and love! Anything from CSS-in-JS libraries to Apollo or GraphQL, even Redux!
