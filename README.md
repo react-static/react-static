@@ -54,7 +54,7 @@
 - Search engines **love** react-static sites.
 - Preloading routes on your site is **several times faster** and easier than other frameworks.
 - You're not forced to use any proprietary query layer. Fancy that!
-- Since individual pages don't require their own app bundle (there is only one bundle for your entire site) there is **very little code duplication, and exporting is 10x faster** than with other frameworks.
+- Since individual pages don't require their own app bundle (there is only one bundle for your entire site) there is **very little code duplication, navigation is blazing fast, and building for production is 10x faster** than with other frameworks.
 
 ## Quick Start
 ```bash
