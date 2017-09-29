@@ -3,7 +3,7 @@
 </div>
 
 # React Static
-`react-static` is a powerful static-site framework for React.
+`react-static` is a **progressively enhanced static-site** framework for React.
 
 <a href="https://travis-ci.org/nozzle/react-static" target="\_parent">
   <img alt="" src="https://travis-ci.org/nozzle/react-static.svg?branch=master" />
@@ -31,28 +31,30 @@
   <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
 </a>
 
-## Features
-- Static route generation
-- Sitemap & RSS generation
-- Progressive content loading
-- Powerful Preloading
-- Built-in dev server
-- Ready-to-use Babel & Webpack
+## Why?
+- You shouldn't have to compromise your React dev-experience for SEO and blazing-fast performance. It should be as simple as using [create-react-app](https://github.com/facebookincubator/create-react-app).
+- Traditional static sites have been great to us, but [static-progressive web apps are the future](https://medium.com/dev-channel/treebo-a-react-and-preact-progressive-web-app-performance-case-study-5e4f450d5299)!
+- Universal react apps require very complex frameworks and a server to run them. Static sites scale **like wildfire** and can practically be hosted for free (I'm looking at you [Netlify](https://netlify.com) ;)
+- You should never be forced into a proprietary CMS or query language. **React-Static is CMS agnostic**.
 
-## The challenge
-- Generally:
-  - React apps don't play well with SEO & crawlers
-  - Universal react apps are a lot of work and require a server. :(
-- Other solutions usually:
-  - Force you into very rigid CMS paradigms
-  - Unnecessarily duplicate code across per-page bundles
-  - Require that you use a routing system other than the ever popular react-router.
+## How does it work?
+- For each route on your site, data is sourced from anywhere you want eg. CMSaaS, API's, GraphQL, JSON, Markdown, etc.
+- Instead of creating a single `index.html` file, it generates a static html file (and accompanying json file) for each of these routes.
+- React-Static then compiles your entire site to a single, good old classic react app, just like create-react-app!
+- Site navigation then functions as follows:
+  1. Any entry route (eg. `/about`) is requested by the user.
+  2. `/about/index.html` is fetched, parsed, and painted at the speed of light!
+  3. The one and only site bundle, `app.js`, is then loaded asynchronously, and react invisibly hydrates using the existing HTML. At this point, the site will function almost exactly like a standard react app!
+  4. A user clicks a link to navigate to another page (eg. `/blog`)
+  5. Magically, react-static loads `/blog/routeData.json`, which contains any asynchronous data dependencies for the route.
+  6. The `/blog` route is then loaded via react.
 
-## The solution
-- React-Static compiles to a good old standard react app. This means you can use whatever react technology you're already familiar with, even Redux!
-- It generates static html files (and accompanying data dependency files) for every route you define
-- It directly integrates with (and enhances) React-Router v4 for an amazingly fast and friendly user-experience.
-- You can download, cache, import, query, and display your data however you'd like from any imaginable source including CMSaaS's, your favorite HTTP request library, databases, JSON files, etc.
+## Why is this cool?
+- React-Static is a **React-first framework**. This means using all of the tooling and components you already know and love! Anything from CSS-in-JS libraries to Apollo or GraphQL, even Redux!
+- Search engines **love** react-static sites.
+- Preloading routes on your site is **several times faster** and easier than other frameworks.
+- You're not forced to use any proprietary query layer. Fancy that!
+- Since individual pages don't require their own app bundle (there is only one bundle for your entire site) there is **very little code duplication, and exporting is 10x faster** than with other frameworks.
 
 ## Quick Start
 ```bash
