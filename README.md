@@ -3,7 +3,7 @@
 </div>
 
 # React Static
-`react-static` is a **A progressive static-site framework** for React.
+`react-static` is a **progressive static-site framework** for React.
 
 <a href="https://travis-ci.org/nozzle/react-static" target="\_parent">
   <img alt="" src="https://travis-ci.org/nozzle/react-static.svg?branch=master" />
