@@ -34,7 +34,7 @@
 <br />
 <br />
 
-[Read the introduction article on medium](#)
+#### [Read the introduction article on Medium](#)
 
 At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We’ve launched sites with plenty of static site tools that claim to solve some of those goals, but as never all of them together. React-Static is a framework and tool designed for building next generation progressive static websites in React.
 
