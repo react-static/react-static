@@ -31,6 +31,8 @@
   <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
 </a>
 
+<br />
+
 [Read the introduction article on medium](#)
 
 At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We’ve launched sites with plenty of static site tools that claim to solve some of those goals, but as never all of them together. React-Static is a framework and tool designed for building next generation progressive static websites in React.
