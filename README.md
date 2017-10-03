@@ -1,5 +1,5 @@
 <div style="text-align:center;">
-  <a href="https://github.com/nozzle/react-static" target="\_parent"><img src="https://github.com/react-tools/media/raw/master/logo-react-static.png" alt="React Static Logo" style="width:450px;"/></a>
+  <a href="https://github.com/nozzle/react-static" target="\_parent"><img src="https://github.com/nozzle/react-static/raw/master/media/logo.png" alt="React Static Logo" style="width:450px;"/></a>
 </div>
 
 # React Static
