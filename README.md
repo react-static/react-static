@@ -2,30 +2,33 @@
   <a href="https://github.com/nozzle/react-static" target="\_parent"><img src="https://github.com/nozzle/react-static/raw/master/media/logo.png" alt="React Static Logo" style="width:450px;"/></a>
 </div>
 
-# React Static
-A **progressive static-site framework** for React.
+<br />
+<br />
 
 <a href="https://travis-ci.org/nozzle/react-static" target="\_parent">
-  <img alt="" src="https://travis-ci.org/nozzle/react-static.svg?branch=master" />
+<img alt="" src="https://travis-ci.org/nozzle/react-static.svg?branch=master" />
 </a>
 <a href="https://npmjs.com/package/react-static" target="\_parent">
-  <img alt="" src="https://img.shields.io/npm/dm/react-static.svg" />
+<img alt="" src="https://img.shields.io/npm/dm/react-static.svg" />
 </a>
 <a href="https://react-chat-signup.herokuapp.com/" target="\_parent">
-  <img alt="" src="https://img.shields.io/badge/slack-react--chat-blue.svg" />
+<img alt="" src="https://img.shields.io/badge/slack-react--chat-blue.svg" />
 </a>
 <a href="https://github.com/nozzle/react-static" target="\_parent">
-  <img alt="" src="https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star" />
+<img alt="" src="https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star" />
 </a>
 <a href="https://twitter.com/tannerlinsley" target="\_parent">
-  <img alt="" src="https://img.shields.io/twitter/follow/tannerlinsley.svg?style=social&label=Follow" />
+<img alt="" src="https://img.shields.io/twitter/follow/tannerlinsley.svg?style=social&label=Follow" />
 </a>
 <a href="https://cash.me/$tannerlinsley" target="\_parent">
-  <img alt="" src="https://img.shields.io/badge/%24-Donate-brightgreen.svg" />
+<img alt="" src="https://img.shields.io/badge/%24-Donate-brightgreen.svg" />
 </a>
 
 <br />
 <br />
+
+# React Static
+A **progressive static-site framework** for React.
 
 <a target='\_blank' rel='nofollow' href='https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static'>
   <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
