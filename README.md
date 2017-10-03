@@ -17,11 +17,8 @@
 <a href="https://github.com/nozzle/react-static" target="\_parent">
 <img alt="" src="https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star" />
 </a>
-<a href="https://twitter.com/tannerlinsley" target="\_parent">
-<img alt="" src="https://img.shields.io/twitter/follow/tannerlinsley.svg?style=social&label=Follow" />
-</a>
-<a href="https://cash.me/$tannerlinsley" target="\_parent">
-<img alt="" src="https://img.shields.io/badge/%24-Donate-brightgreen.svg" />
+<a href="https://twitter.com/nozzleio" target="\_parent">
+<img alt="" src="https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow" />
 </a>
 
 <br />
@@ -39,10 +36,11 @@ A **progressive static-site framework** for React.
 
 [**Read the introduction article on Medium**](#)
 
-At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We’ve launched sites with plenty of static site tools that claim to solve some of those goals, but as never all of them together. React-Static is a framework and tool designed for building next generation progressive static websites in React.
+At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We’ve launched sites with plenty of static site tools that claim to solve some of those goals, but never all of them together. React-Static is the framework and tool we've designed to solve all of these problems and help everyone build the next generation of high-performance websites for the internet.
 
 ## Features
-- Flippin' fast.
+- React. Enough said.
+- Blazing fast performance.
 - Data Agnostic. Feed your site data from anywhere, **however you want**.
 - Built for **SEO**, by SEO professionals
 - React-first developer experience
