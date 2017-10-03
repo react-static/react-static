@@ -31,42 +31,24 @@
   <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
 </a>
 
-## Why?
-- You shouldn't have to compromise your React dev-experience for SEO and blazing-fast performance. It should be as simple as using [create-react-app](https://github.com/facebookincubator/create-react-app).
-- Traditional static sites have been great to us, but [static-progressive web apps are the future](https://medium.com/dev-channel/treebo-a-react-and-preact-progressive-web-app-performance-case-study-5e4f450d5299)!
-- Universal react apps require very complex frameworks and a server to run them. Static sites scale **like wildfire** and can practically be hosted for free (I'm looking at you [Netlify](https://netlify.com) ;)
-- You should never be forced into a proprietary CMS or query language. **React-Static is CMS agnostic**.
+[Read the introduction article on medium](#)
 
-## How does it work?
-- For each route on your site, data is sourced from anywhere you want eg. CMSaaS, API's, GraphQL, JSON, Markdown, etc.
-- Instead of creating a single `index.html` file, it generates a static html file (and accompanying json file) for each of these routes.
-- React-Static then compiles your entire site to a single, good old classic react app, just like create-react-app!
-- Site navigation then functions as follows:
-  - Any entry route (eg. `/about`) is requested by the user.
-  - `/about/index.html` is fetched, parsed, and painted at the speed of light!
-  - The one and only site bundle, `app.js`, is then loaded asynchronously, and react invisibly hydrates using the existing HTML. At this point, the site will function almost exactly like a standard react app!
-  - A user clicks a link to navigate to another page (eg. `/blog`)
-  - Magically, react-static loads `/blog/routeData.json`, which contains any asynchronous data dependencies for the route.
-  - The `/blog` route is then loaded via react.
+At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We’ve launched sites with plenty of static site tools that claim to solve some of those goals, but as never all of them together. React-Static is a framework and tool designed for building next generation progressive static websites in React.
 
-## Why is this cool?
-- React-Static is a **React-first framework**. This means using all of the tooling and components you already know and love! Anything from CSS-in-JS libraries to Apollo or GraphQL, even Redux!
-- Search engines **love** react-static sites.
-- Preloading routes on your site is **several times faster** and easier than other frameworks.
-- You're not forced to use any proprietary query layer. Fancy that!
-- Since individual pages don't require their own app bundle (there is only one bundle for your entire site) there is **very little code duplication, navigation is blazing fast, and building for production is 10x faster** than with other frameworks.
-
-## Quick Start
-```bash
-$ yarn global add react-static
-# or npm install -g react-static
-
-$ react-static create my-static-site
-```
+## Features
+- Flippin' fast.
+- Data Agnostic. Feed your site data from anywhere, **however you want**.
+- Built for **SEO**, by SEO professionals
+- React-first developer experience
+- Painless project setup & migration
+- Supports 99.9% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux!
+- Aggressive and flexible reloading.
+- Leaner, faster, and more performant than the competition. React-Static goes to extreme lengths to ensure your build times will scale with the size of your website.
 
 ## Documentation
 These docs are for version `1.x.x`
 
+- [Quick Start](#quick-start)
 - [Installation](#installation)
 - [CLI](#cli)
   - [`react-static create`](#react-static-create-project-name)
@@ -80,6 +62,14 @@ These docs are for version `1.x.x`
   - [`<Head />`](#head-)
   - [`<Prefetch url=''/>`](#prefetch-url)
   - [`prefetch(url)`](#prefetchurl)
+
+## Quick Start
+```bash
+$ yarn global add react-static
+# or npm install -g react-static
+
+$ react-static create my-static-site
+```
 
 ## Installation
 ```bash
