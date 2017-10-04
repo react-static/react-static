@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { renderToStaticMarkup } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
 import nodepath from 'path'
 import Helmet from 'react-helmet'
@@ -68,7 +68,7 @@ export const writeRoutesToStatic = async ({ config }) => {
         }
       }
 
-      const appHtml = renderToStaticMarkup(ContextualComp)
+      const appHtml = renderToString(ContextualComp)
 
       // Extract head calls using Helmet
       const helmet = Helmet.renderStatic()
@@ -127,7 +127,7 @@ export const writeRoutesToStatic = async ({ config }) => {
         </body>
       )
 
-      const html = `<!DOCTYPE html>${renderToStaticMarkup(
+      const html = `<!DOCTYPE html>${renderToString(
         <HtmlTemplate staticMeta={staticMeta} Html={Html} Head={Head} Body={Body}>
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </HtmlTemplate>,

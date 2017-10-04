@@ -11,7 +11,7 @@ export default <App />
 // Render your app
 if (typeof document !== 'undefined') {
   const render = Comp => {
-    ReactDOM.render(
+    ReactDOM.hydrate(
       <AppContainer>
         <Comp />
       </AppContainer>,
