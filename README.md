@@ -52,7 +52,7 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 ## Lifecycle Overview
 
 <div align="center">
-    <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" width="600"/>
+  <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" width="600"/>
 </div>
 
 ## Documentation
