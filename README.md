@@ -102,44 +102,10 @@ Builds your site for production. Outputs to a `dist` directory in your project.
 ## Project Setup
 `react-static` needs a few directories and files in the right places to function properly:
 
-- `static.config.js` - A javascript configuration file for react-static. More information on this below.
+- `static.config.js` - A javascript configuration file for react-static. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/demo/static.config.js)
 - `public/` - Anything in this directory will be merged into your static `dist` directory. All files in this directory can be accessed at the root of your site.
 - `src/` - a place for all of your code
-  - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. This is a perfectly sufficient `index.js` file:
-    ```javascript
-    import React from 'react'
-    import ReactDOM from 'react-dom'
-    import { AppContainer } from 'react-hot-loader'
-
-    // Your top level component
-    import App from './App'
-
-    // Export your top level component as JSX (for static rendering)
-    export default <App />
-
-    // Render your app
-    if (typeof document !== 'undefined') {
-      const render = Comp => {
-        ReactDOM.render(
-          <AppContainer>
-            <Comp />
-          </AppContainer>,
-          document.getElementById('root'),
-        )
-      }
-
-      // Render!
-      render(App)
-
-      // Hot Module Replacement
-      if (module.hot) {
-        module.hot.accept('./App', () => {
-          render(require('./App').default)
-        })
-      }
-    }
-
-    ```
+  - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/demo/src/index.js).
 
 ## Configuration (`static.config.js`)
 A `static.config.js` file is required at your project root to configure react-static. It must export a **default** object with the following interface:
@@ -172,6 +138,8 @@ export default {
       priority: 0.5 // Optional.
     }],
   }],
+
+  siteRoot: 'https://mysite.com', // Optional, but necessary for the sitemap.xml
 
   // An optional custom React component that renders the base
   // Html for every page, including the dev server. Must utilize the
