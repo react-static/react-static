@@ -51,13 +51,9 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 
 ## Lifecycle Overview
 
-<a href="https://github.com/nozzle/react-static/raw/master/media/flow.png" target="\_blank">
-  <div align="center">
-      <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" width="600"/>
-      <br />
-      Click to enlarge
-  </div>
-</a>
+<div align="center">
+    <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" width="600"/>
+</div>
 
 ## Documentation
 These docs are for version `1.x.x`
