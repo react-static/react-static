@@ -45,13 +45,14 @@
     "fs-extra": "^4.0.2",
     "prop-types": "^15.5.10",
     "react": "^16",
-    "react-dom": "^16",
     "react-dev-utils": "^4.0.1",
+    "react-dom": "^16",
     "react-helmet": "^5.2.0",
     "react-hot-loader": "next",
     "react-router-dom": "^4.2.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-configurator": "^0.3.1",
     "webpack-dev-server": "^2.8.2"
   }
 }

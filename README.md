@@ -112,20 +112,20 @@ A `static.config.js` file is required at your project root to configure react-st
 export default {
   // getRoutes is the only required method for the entire config.
   // It is an asynchronous function that should
-  // resolve an array of route objects. It is also passed a `prod`
+  // resolve an array of route objects. It is also passed a `dev`
   // boolean indicating whether this is a production build or not.
-  getRoutes: async ({prod}) => [{
+  getRoutes: async ({dev}) => [{
     path: '/' // A route object only requires a `path` string
   }, {
     path: '/blog',
     children: [{ // It can also contained nested routes
       path: '/post-1',
-      getProps: async ({route, prod}) => ({
+      getProps: async ({route, dev}) => ({
         post: {...},
         otherProp: {...}
       })
       // getProps is a n asynchronous function that is passed the
-      // resolved `route` object and a `prod` boolean indicating
+      // resolved `route` object and a `dev` boolean indicating
       // whether this is a production build or not. This function
       // should resolve any data the route needs to render eg. blog
       // posts, API data, etc.
@@ -153,6 +153,13 @@ export default {
       <Body>{children}</Body>
     </Html>
   ),
+
+  // An optional callback, used to modify the webpack config for both dev
+  // and production. The function you provide will be passed an instance of
+  // webpack-configurator (see https://github.com/lewie9021/webpack-configurator
+  // for more information), and an object containing a `dev` boolean, denoting
+  // whether you are in development or production mode.
+  webpack: (webpackConfigurator, { dev }) => {...},
 
   // The entry location for your app, defaulting to `./src/index.js`
   // This file must export the JSX of your app as the default export,
@@ -269,7 +276,7 @@ export () => (
 ```
 
 #### `<Prefetch url=''/>`
-Prefetch is a react component that accespts a `url` prop and an optional single child to render. When this component is rendered, any data resolved by the `url`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
+Prefetch is a react component that accepts a `url` prop and an optional single child to render. When this component is rendered, any data resolved by the `url`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
 
 - If the url doesn't match a route, no data will be loaded.
 - If the route has already been loaded in the session, the cache will be used instead.

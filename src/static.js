@@ -30,7 +30,7 @@ export const writeRoutesToStatic = async ({ config }) => {
   return Promise.all(
     config.routes.map(async route => {
       // Fetch initialProps from each route
-      const initialProps = route.getProps && (await route.getProps({ route, prod: true }))
+      const initialProps = route.getProps && (await route.getProps({ route, dev: false }))
       if (initialProps) {
         await fs.outputFile(
           nodepath.join(DIST, route.path, 'routeData.json'),

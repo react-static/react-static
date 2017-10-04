@@ -22,7 +22,7 @@ export default async () => {
     console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
     const config = getConfig()
-    config.routes = normalizeRoutes(await config.getRoutes({ prod: true }))
+    config.routes = normalizeRoutes(await config.getRoutes({ dev: false }))
 
     // Build static pages and JSON
     console.log('=> Exporting Routes...')

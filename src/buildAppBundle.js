@@ -1,9 +1,20 @@
 import webpack from 'webpack'
 import chalk from 'chalk'
+import WebpackConfigurator from 'webpack-configurator'
 //
-import webpackConfig from './webpack.config.prod'
+import webpackConfigProd from './webpack.config.prod'
+import { getConfig } from './static'
 
-const compiler = webpack(webpackConfig)
+const config = getConfig()
+const webpackConfig = new WebpackConfigurator()
+
+webpackConfig.merge(webpackConfigProd)
+if (config.webpack) {
+  config.webpack(webpackConfig, { dev: false })
+}
+const finalWebpackConfig = webpackConfig.resolve()
+
+const compiler = webpack(finalWebpackConfig)
 
 export default () =>
   new Promise((resolve, reject) =>

@@ -6,9 +6,10 @@ import chalk from 'chalk'
 import fs from 'fs-extra'
 import path from 'path'
 import { renderToStaticMarkup } from 'react-dom/server'
+import WebpackConfigurator from 'webpack-configurator'
 //
 import DefaultHtml from '../DefaultHtml'
-import webpackConfig from '../webpack.config.dev'
+import webpackConfigDev from '../webpack.config.dev'
 import copyPublicFolder from '../copyPublicFolder'
 import { getConfig } from '../static'
 import { DIST } from '../paths'
@@ -19,7 +20,16 @@ let first = true
 let compiler
 
 function buildCompiler () {
-  compiler = webpack(webpackConfig)
+  const config = getConfig()
+  const webpackConfig = new WebpackConfigurator()
+
+  webpackConfig.merge(webpackConfigDev)
+  if (config.webpack) {
+    config.webpack(webpackConfig, { dev: true })
+  }
+  const finalWebpackConfig = webpackConfig.resolve()
+
+  compiler = webpack(finalWebpackConfig)
 
   compiler.plugin('invalid', () => {
     console.log('=> Rebuilding...')

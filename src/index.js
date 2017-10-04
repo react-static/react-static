@@ -19,7 +19,7 @@ let InitialLoading
 if (process.env.NODE_ENV === 'development') {
   routesPromise = (async () => {
     const userConfig = require('__static-config').default
-    return normalizeRoutes(await userConfig.getRoutes({ prod: false }))
+    return normalizeRoutes(await userConfig.getRoutes({ dev: true }))
   })()
   InitialLoading = () => (
     <div
@@ -67,7 +67,7 @@ if (process.env.NODE_ENV === 'development') {
   )
 }
 
-export async function prefetch (path) {
+function cleanPath (path) {
   // Resolve the local path
   if (!path) {
     return
@@ -80,7 +80,26 @@ export async function prefetch (path) {
   }
   let end = path.indexOf('#')
   end = end === -1 ? undefined : end
-  path = pathJoin(path.substring(hasOrigin ? window.location.origin.length : 0, end))
+  return pathJoin(path.substring(hasOrigin ? window.location.origin.length : 0, end))
+}
+
+function isPrefetched (path) {
+  path = cleanPath(path)
+  if (!path) {
+    return
+  }
+
+  if (propsCache[path]) {
+    return propsCache[path]
+  }
+}
+
+export async function prefetch (path) {
+  path = cleanPath(path)
+
+  if (!path) {
+    return
+  }
 
   // Defer to the cache first
   if (propsCache[path]) {
@@ -107,7 +126,7 @@ export async function prefetch (path) {
       // Reuse request for duplicate inflight requests
       try {
         if (!inflight[path]) {
-          inflight[path] = currentRoute.getProps({ route: currentRoute })
+          inflight[path] = currentRoute.getProps({ route: currentRoute, dev: true })
         }
         const initialProps = await inflight[path]
 
@@ -241,16 +260,18 @@ export class Router extends Component {
       ;['push', 'replace'].forEach(method => {
         const originalMethod = resolvedHistory[method]
         resolvedHistory[method] = async (...args) => {
-          try {
-            const path = typeof args[0] === 'string' ? args[0] : args[0].pathname + args[0].search
-            setLoading(true)
-            await prefetch(path)
-          } catch (err) {
-            console.error(err)
-            console.warn('Uh oh! We should probably display a soft 404 here')
+          const path = typeof args[0] === 'string' ? args[0] : args[0].pathname + args[0].search
+          if (!isPrefetched(path)) {
+            try {
+              setLoading(true)
+              await prefetch(path)
+            } catch (err) {
+              console.error(err)
+              console.warn('Uh oh! We should probably display a soft 404 here')
+            }
+            setLoading(false)
           }
           originalMethod.apply(resolvedHistory, args)
-          setLoading(false)
         }
       })
     }
