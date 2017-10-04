@@ -47,7 +47,6 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 - Painless project setup & migration
 - Supports 99.9% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux!
 - Aggressive and flexible reloading.
-- Leaner, faster, and more performant than the competition. React-Static goes to extreme lengths to ensure your build times will scale with the size of your website.
 
 ## Lifecycle Overview
 
