@@ -1,4 +1,5 @@
 import 'babel-register'
+import chalk from 'chalk'
 
 export default function () {
   const cmd = process.argv[2]
@@ -16,6 +17,12 @@ export default function () {
   }
 
   console.log(
-    'Please use `react-static start` to start the development server and `react-static build` to build for production.',
+    `
+Usage: react-static <command>
+
+- ${chalk.green('create <project-name>')}  -  create a new project
+- ${chalk.green('start')}  -  start the development server
+- ${chalk.green('build')}  -  build site for production
+`,
   )
 }
