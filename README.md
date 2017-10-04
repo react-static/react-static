@@ -53,7 +53,7 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 
 <a href="https://github.com/nozzle/react-static/raw/master/media/flow.png" target="\_blank">
   <div align="center">
-      <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" width="500"/>
+      <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" width="600"/>
       <br />
       Click to enlarge
   </div>
