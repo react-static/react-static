@@ -49,8 +49,8 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 - Aggressive and flexible reloading.
 - Leaner, faster, and more performant than the competition. React-Static goes to extreme lengths to ensure your build times will scale with the size of your website.
 
-<a href="https://github.com/nozzle/react-static/raw/master/media/flow.png" target="\_blank" style="display:block; margin: 0 auto; width: 500px;">
-  <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" />
+<a href="https://github.com/nozzle/react-static/raw/master/media/flow.png" target="\_blank">
+  <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" width="500"/>
 </a>
 
 ## Documentation
