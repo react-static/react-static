@@ -111,7 +111,7 @@ export default async () => {
   )
 
   const html = renderToStaticMarkup(
-    <HtmlTemplate Html={Html} Head={Head} Body={Body}>
+    <HtmlTemplate staticMeta={{}} Html={Html} Head={Head} Body={Body}>
       <div id="root" />
     </HtmlTemplate>,
   )
