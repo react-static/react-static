@@ -30,6 +30,10 @@ export default async () => {
     await buildAppBundle()
     console.timeEnd(chalk.green('=> [\u2713] App Bundled'))
 
+    if (config.bundleAnalyzer) {
+      await new Promise(() => {})
+    }
+
     console.log('=> Exporting Routes...')
     console.time(chalk.green('=> [\u2713] Routes Exported'))
     await writeRoutesToStatic({ config })
