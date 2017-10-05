@@ -8,24 +8,17 @@ import nodepath from 'path'
 import Helmet from 'react-helmet'
 //
 import DefaultHtml from './DefaultHtml'
-import { ROOT, DIST } from './paths'
+import { DIST, ROOT } from './paths'
 
 const defaultEntry = './src/index'
-
-const loadComponentForStatic = src => {
-  // Require a copy of the component (important to do this in `IS_STATIC` environment variable)
-  process.env.IS_STATIC = 'true'
-  const Comp = require(nodepath.resolve(nodepath.join(ROOT, src))).default
-  process.env.IS_STATIC = 'false'
-  return Comp
-}
 
 export const getConfig = () =>
   require(nodepath.resolve(nodepath.join(process.cwd(), 'static.config.js'))).default
 
 export const writeRoutesToStatic = async ({ config }) => {
+  const userConfig = getConfig()
   const HtmlTemplate = config.Html || DefaultHtml
-  const Comp = loadComponentForStatic(config.entry || defaultEntry)
+  const Comp = require(nodepath.join(ROOT, userConfig.entry || defaultEntry)).default
 
   return Promise.all(
     config.routes.map(async route => {
@@ -127,16 +120,16 @@ export const writeRoutesToStatic = async ({ config }) => {
         </body>
       )
 
-      const html = `<!DOCTYPE html>${renderToString(
+      let html = `<!DOCTYPE html>${renderToString(
         <HtmlTemplate staticMeta={staticMeta} Html={Html} Head={Head} Body={Body}>
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </HtmlTemplate>,
       )}`
 
-      const urls = getMatches(
-        /(?:\(|"|')((?:(?:\/\/)|(?:\/))(?!\.)(?:[^(),'"\s](?:(?!\/\/|<|>|;|:|@|\s)[^"|'])*)(?:\.(?:jpg|png|gif))(?:.*?))(?:"|'|\)|\s)/gm,
-        html,
-      ).filter((d, index, self) => self.indexOf(d) === index)
+      html = html.replace(
+        /(href=["'])(\/)/gm,
+        `$1${config.siteRoot ? `${config.siteRoot}/` : '/'}`.replace(/\/{2,}/g, '/'),
+      )
 
       const htmlFilename = nodepath.join(DIST, route.path, 'index.html')
       const initialPropsFilename = nodepath.join(DIST, route.path, 'routeData.json')
@@ -145,7 +138,6 @@ export const writeRoutesToStatic = async ({ config }) => {
         initialPropsFilename,
         JSON.stringify({
           initialProps,
-          preload: urls,
         }),
       )
       await Promise.all([writeHTML, writeJSON])
@@ -156,7 +148,10 @@ export const writeRoutesToStatic = async ({ config }) => {
 export async function buildXMLandRSS ({ config }) {
   if (!config.siteRoot) {
     console.log(
-      'Warning: No `siteRoot` defined in `static.config.js`. This is required to build a sitemap.xml!',
+      `
+=> Warning: No 'siteRoot' defined in 'static.config.js'!
+=> This is required for both absolute url's and a sitemap.xml to be exported.
+`,
     )
     return
   }

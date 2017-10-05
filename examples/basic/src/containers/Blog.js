@@ -1,21 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
-import { getRouteProps } from 'react-static'
+import { getRouteProps, Switch, Route, Link } from 'react-static'
 //
 import Post from './Post'
 
 export default getRouteProps(({ match, posts }) => (
   <div>
-    <Link to="/">Go home</Link>
-    <br />
-    <h1>It's blog time.</h1>
     <Switch>
       <Route
         path={match.url}
         exact
         render={() => (
           <div>
+            <h1>It's blog time.</h1>
+            <br />
             All Posts:
             <ul>
               {posts.map(post => (

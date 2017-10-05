@@ -67,6 +67,7 @@ These docs are for version `1.x.x`
 - [Configuration (`static.config.js`)](configuration-staticconfigjs)
 - [Components & Tools](#components--tools)
   - [`<Router />`](#router-)
+  - [React-Router Components](#react-router-components)
   - [`getRouteProps(Component)`](#getroutepropscomponent)
   - [`<Head />`](#head-)
   - [`<Prefetch url=''/>`](#prefetch-url)
@@ -222,6 +223,22 @@ Router.subscribe(loading => {
   }
 })
 ```
+
+#### Routing Components
+`react-static` also provides you with all other necessary routing components and utils via `react-router`.
+
+These include:
+- <Link>
+- <NavLink>
+- <Prompt>
+- <Redirect>
+- <Route>
+- <Switch>
+- history
+- matchPath
+- withRouter
+
+To learn how these `react-router` components work, visit [React-Router-Web's documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
 #### `getRouteProps(Component)`
 `getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:

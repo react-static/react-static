@@ -1,11 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { getRouteProps } from 'react-static'
+import { getRouteProps, Link } from 'react-static'
 //
 
 export default getRouteProps(({ post }) => (
   <div>
-    <Link to="/blog">{'<'} All Posts</Link>
+    <Link to="/blog">{'<'} Back</Link>
     <br />
     <h3>{post.title}</h3>
     <p>{post.body}</p>

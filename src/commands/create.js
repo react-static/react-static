@@ -2,6 +2,7 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 import path from 'path'
 import { execSync } from 'child_process'
+import inquirer from 'inquirer'
 
 export default async name => {
   if (!name) {
@@ -10,9 +11,27 @@ export default async name => {
     return
   }
 
+  const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
+
+  const answers = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'dest',
+      message: 'What should we name this project?',
+      default: 'my-static-site',
+    },
+    {
+      type: 'list',
+      name: 'styleFormat',
+      message: 'Select a template from below...',
+      choices: files.filter(d => !d.startsWith('.')),
+    },
+  ])
+
   console.log('=> Creating new react-static project...')
   console.time(chalk.green(`=> [\u2713] Project "${name}" created`))
-  await fs.copy(path.resolve(__dirname, '../../demo'), path.resolve(process.cwd(), name))
+  const dest = path.resolve(process.cwd(), answers.dest)
+  await fs.copy(path.resolve(__dirname, `../../examples/${answers.template}`), dest)
   console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
 
   const isYarn = shouldUseYarn()

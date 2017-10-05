@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
-import { Router as ReactRouter } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 import { Helmet } from 'react-helmet'
+import * as ReactRouter from 'react-router-dom'
 //
 import { normalizeRoutes, pathJoin } from './shared'
 
 const propsCache = {}
 const inflight = {}
 const failed = {}
-
-// const preloadCache = {}
 
 let routesPromise
 let InitialLoading
@@ -94,7 +92,7 @@ function isPrefetched (path) {
   }
 }
 
-export async function prefetch (path) {
+async function prefetch (path) {
   path = cleanPath(path)
 
   if (!path) {
@@ -168,23 +166,23 @@ export async function prefetch (path) {
   return propsCache[path]
 }
 
-export const getRouteProps = Comp =>
-  class AsyncPropsComponent extends Component {
+function getRouteProps (Comp) {
+  return class AsyncPropsComponent extends Component {
     static contextTypes = {
       initialProps: PropTypes.object,
       router: PropTypes.object,
     }
     async componentWillMount () {
       if (process.env.NODE_ENV === 'development') {
-        const { url } = this.context.router.route.match
-        const path = pathJoin(url)
+        const { pathname } = this.context.router.route.location
+        const path = pathJoin(pathname)
         await prefetch(path)
         this.setState({})
       }
     }
     render () {
-      const { url } = this.context.router.route.match
-      const path = pathJoin(url)
+      const { pathname } = this.context.router.route.location
+      const path = pathJoin(pathname)
 
       let embeddedProps
       if (typeof window !== 'undefined') {
@@ -206,8 +204,9 @@ export const getRouteProps = Comp =>
       return <Comp {...this.props} {...initialProps} />
     }
   }
+}
 
-export class Prefetch extends Component {
+class Prefetch extends Component {
   static defaultProps = {
     children: null,
     path: null,
@@ -231,7 +230,7 @@ const setLoading = d => {
   subscribers.forEach(s => s())
 }
 
-export class Router extends Component {
+class Router extends Component {
   static subscribe = cb => {
     const ccb = () => cb(loading)
     subscribers.push(ccb)
@@ -255,7 +254,7 @@ export class Router extends Component {
       ResolvedRouter = require('react-router').StaticRouter
       resolvedHistory = undefined
     } else {
-      ResolvedRouter = ReactRouter
+      ResolvedRouter = ReactRouter.Router
       resolvedHistory = history || createBrowserHistory()
       ;['push', 'replace'].forEach(method => {
         const originalMethod = resolvedHistory[method]
@@ -280,4 +279,15 @@ export class Router extends Component {
   }
 }
 
-export const Head = Helmet
+module.exports = {
+  ...ReactRouter,
+  BrowserRouter: undefined,
+  HashRouter: undefined,
+  MemoryRouter: undefined,
+  StaticRouter: undefined,
+  Router,
+  getRouteProps,
+  Prefetch,
+  prefetch,
+  Head: Helmet,
+}

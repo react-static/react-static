@@ -1,6 +1,9 @@
 import 'babel-register'
 import chalk from 'chalk'
 
+require.extensions['.scss'] = () => {}
+require.extensions['.css'] = () => {}
+
 export default function () {
   const cmd = process.argv[2]
 
