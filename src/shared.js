@@ -13,11 +13,16 @@ export const normalizeRoutes = routes => {
   const recurse = (route, parent = { path: '/' }) => {
     const path = pathJoin(parent.path, route.path)
 
+    if (typeof route.noIndex !== 'undefined') {
+      console.log(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
+      route.noindex = route.noIndex
+    }
+
     const normalizedRoute = {
       ...route,
       parent,
       path,
-      noIndex: typeof route.noIndex === 'undefined' ? parent.noIndex : route.noIndex,
+      noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
     }
 
     flatRoutes.push(normalizedRoute)
