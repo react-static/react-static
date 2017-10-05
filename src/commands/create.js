@@ -22,7 +22,7 @@ export default async name => {
     },
     {
       type: 'list',
-      name: 'styleFormat',
+      name: 'template',
       message: 'Select a template from below...',
       choices: files.filter(d => !d.startsWith('.')),
     },
