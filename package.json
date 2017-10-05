@@ -20,13 +20,7 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0"
   },
-  "files": [
-    "dist",
-    "bin",
-    "exmaples",
-    ".babelrc",
-    "yarn.lock"
-  ],
+  "files": ["dist", "bin", "examples", ".babelrc", "yarn.lock"],
   "dependencies": {
     "autoprefixer": "^7.1.4",
     "axios": "^0.16.2",
