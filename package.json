@@ -10,7 +10,7 @@
     "watch": "babel -w src --out-dir dist",
     "build": "babel src --out-dir dist",
     "prepublish": "yarn build",
-    "test": "eslint src demo"
+    "test": "eslint src examples"
   },
   "devDependencies": {
     "eslint": "^4.3.0",
@@ -20,13 +20,7 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0"
   },
-  "files": [
-    "dist",
-    "bin",
-    "demo",
-    ".babelrc",
-    "yarn.lock"
-  ],
+  "files": ["dist", "bin", "demo", ".babelrc", "yarn.lock"],
   "dependencies": {
     "autoprefixer": "^7.1.4",
     "axios": "^0.16.2",

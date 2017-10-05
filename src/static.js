@@ -185,13 +185,3 @@ export async function buildXMLandRSS ({ config }) {
     return xml
   }
 }
-
-function getMatches (regex, string, index) {
-  index = index || 1
-  const matches = []
-  let match
-  while ((match = regex.exec(string))) {
-    matches.push(match[index])
-  }
-  return matches
-}
