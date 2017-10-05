@@ -27,13 +27,6 @@
 # React Static
 A **progressive static-site framework** for React.
 
-<a target='\_blank' rel='nofollow' href='https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
-</a>
-
-<br />
-<br />
-
 [**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
 
 At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We’ve launched many sites using different static site tools that claim to solve these goals, but we have yet to find one that satisfies our requirements completely. React-Static is the framework we carefully designed to meet those standards and help everyone build next generation, high-performance websites for the internet.
@@ -53,6 +46,13 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 <div align="center">
   <img src="https://github.com/nozzle/react-static/raw/master/media/flow.png" width="600"/>
 </div>
+
+<br />
+<br />
+
+<a target='\_blank' rel='nofollow' href='https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
+</a>
 
 ## Documentation
 These docs are for version `1.x.x`
