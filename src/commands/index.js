@@ -23,7 +23,7 @@ export default function () {
     `
 Usage: react-static <command>
 
-- ${chalk.green('create <project-name>')}  -  create a new project
+- ${chalk.green('create')}  -  create a new project
 - ${chalk.green('start')}  -  start the development server
 - ${chalk.green('build')}  -  build site for production
 `,

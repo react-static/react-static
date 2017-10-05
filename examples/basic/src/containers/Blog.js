@@ -18,14 +18,14 @@ export default getRouteProps(({ match, posts }) => (
             <ul>
               {posts.map(post => (
                 <li key={post.id}>
-                  <Link to={`/blog/post/${post.id}`}>{post.title}</Link>
+                  <Link to={`/blog/post/${post.id}/`}>{post.title}</Link>
                 </li>
               ))}
             </ul>
           </div>
         )}
       />
-      <Route path={`${match.url}/post/:postID`} component={Post} />
+      <Route path={`${match.url}/post/:postID/`} component={Post} />
     </Switch>
   </div>
 ))

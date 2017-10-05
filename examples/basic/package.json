@@ -1,5 +1,5 @@
 {
-  "name": "react-static-starter",
+  "name": "react-static-example-basic",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -13,7 +13,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-router": "^4.2.0",
-    "react-static": "^1.0.26"
+    "react-static": "^1.0.32"
   },
   "devDependencies": {
     "eslint-config-react-tools": "^1.0.6",

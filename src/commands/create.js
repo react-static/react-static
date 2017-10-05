@@ -3,53 +3,55 @@ import chalk from 'chalk'
 import path from 'path'
 import { execSync } from 'child_process'
 import inquirer from 'inquirer'
+import autoCompletePrompt from 'inquirer-autocomplete-prompt'
+import matchSorter from 'match-sorter'
 
-export default async name => {
-  if (!name) {
-    console.log('=> A project name is required!')
-    console.log('=> eg. react-static create my-new-project')
-    return
-  }
+inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
+export default async () => {
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
+
+  console.log('')
+
+  const exampleList = files.filter(d => !d.startsWith('.'))
 
   const answers = await inquirer.prompt([
     {
       type: 'input',
-      name: 'dest',
+      name: 'name',
       message: 'What should we name this project?',
       default: 'my-static-site',
     },
     {
-      type: 'list',
+      type: 'autocomplete',
       name: 'template',
-      message: 'Select a template from below...',
-      choices: files.filter(d => !d.startsWith('.')),
+      message: 'Select a template below...',
+      source: async (answersSoFar, input) =>
+        (!input ? exampleList : matchSorter(exampleList, input)),
     },
   ])
 
+  console.time(chalk.green(`=> [\u2713] Project "${answers.name}" created`))
   console.log('=> Creating new react-static project...')
-  console.time(chalk.green(`=> [\u2713] Project "${name}" created`))
-  const dest = path.resolve(process.cwd(), answers.dest)
+  const dest = path.resolve(process.cwd(), answers.name)
   await fs.copy(path.resolve(__dirname, `../../examples/${answers.template}`), dest)
-  console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
 
   const isYarn = shouldUseYarn()
 
-  console.log()
-  console.log(chalk.green('=> To install dependencies:'))
-  console.log()
-  console.log(`   cd ${name}`)
-  console.log(`   ${isYarn ? 'yarn' : 'npm install'}`)
-  console.log()
-  console.log(chalk.green('=> To start the development server:'))
-  console.log()
-  console.log(`   ${isYarn ? 'yarn' : 'npm run'} start`)
-  console.log()
-  console.log(chalk.green('=> To build for production:'))
-  console.log()
-  console.log(`   ${isYarn ? 'yarn' : 'npm run'} build`)
-  console.log()
+  console.log('=> Installing dependencies...')
+  execSync(`cd ${answers.name} && ${isYarn ? 'yarn' : 'npm install'}`)
+  console.log('')
+  console.timeEnd(chalk.green(`=> [\u2713] Project "${answers.name}" created`))
+
+  console.log(`
+${chalk.green('=> To get started:')}
+
+    cd ${answers.name}
+
+    ${isYarn ? 'yarn' : 'npm run'} start ${chalk.green('- Start the development server')}
+    ${isYarn ? 'yarn' : 'npm run'} build ${chalk.green('- Build for production')}
+    ${isYarn ? 'yarn' : 'npm run'} serve ${chalk.green('- Test a production build locally')}
+  `)
 }
 
 function shouldUseYarn () {
