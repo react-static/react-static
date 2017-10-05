@@ -70,8 +70,8 @@ These docs are for version `1.x.x`
   - [React-Router Components](#react-router-components)
   - [`getRouteProps(Component)`](#getroutepropscomponent)
   - [`<Head />`](#head-)
-  - [`<Prefetch url=''/>`](#prefetch-url)
-  - [`prefetch(url)`](#prefetchurl)
+  - [`<Prefetch path=''/>`](#prefetch-path)
+  - [`prefetch(path)`](#prefetchpath)
 
 ## Quick Start
 ```bash
@@ -295,12 +295,12 @@ export () => (
 )
 ```
 
-#### `<Prefetch url=''/>`
-Prefetch is a react component that accepts a `url` prop and an optional single child to render. When this component is rendered, any data resolved by the `url`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
+#### `<Prefetch path=''/>`
+Prefetch is a react component that accepts a `path` prop and an optional single child to render. When this component is rendered, any data resolved by the `path`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
 
-- If the url doesn't match a route, no data will be loaded.
+- If the path doesn't match a route, no data will be loaded.
 - If the route has already been loaded in the session, the cache will be used instead.
-- If multiple instances of the same `url` are prefetched at the same time, only a single request will be made for all instances.
+- If multiple instances of the same `path` are prefetched at the same time, only a single request will be made for all instances.
 - If used more often than needed, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
 
 Example:
@@ -309,17 +309,17 @@ import { Prefetch } from 'react-static'
 import { Link } from 'react-router-dom'
 
 // Standalone
-<Prefetch url='/blog' />
+<Prefetch path='/blog' />
 
 // With children
-<Prefetch url='/blog'>
+<Prefetch path='/blog'>
   <Link to='/blog'>
     Go to blog
   </Prefetch>
 </Prefetch>
 ```
 
-#### `prefetch(url)`
+#### `prefetch(path)`
 `prefetch` is an imperative version of the `Prefetch` component that you can use anywhere in your code.
 
 Example:
