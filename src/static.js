@@ -127,7 +127,7 @@ export const writeRoutesToStatic = async ({ config }) => {
       )}`
 
       html = html.replace(
-        /(href=["'])(\/)/gm,
+        /(href=["'])(\/[^/])/gm,
         `$1${config.siteRoot ? `${config.siteRoot}/`.replace(/\/{2,}$/g, '/') : '/'}`.replace(
           /\/{2,}$/g,
           '/',
