@@ -90,8 +90,10 @@ $ npm install react-static --save
 
 ## CLI
 
-#### `react-static create [project-name]`
-Creates a new react-static project at the directory name your provide using the template project located in this repository's `demo/` directory.
+#### `react-static create`
+Creates a new react-static project.
+- Prompts for a project name/location
+- Prompts to select one of the templates located in this repository's `examples/` directory.
 
 #### `react-static start`
 Starts the development server.
@@ -102,10 +104,10 @@ Builds your site for production. Outputs to a `dist` directory in your project.
 ## Project Setup
 `react-static` needs a few directories and files in the right places to function properly:
 
-- `static.config.js` - A javascript configuration file for react-static. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/demo/static.config.js)
+- `static.config.js` - A javascript configuration file for react-static. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/examples/basic/static.config.js)
 - `public/` - Anything in this directory will be merged into your static `dist` directory. All files in this directory can be accessed at the root of your site.
 - `src/` - a place for all of your code
-  - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/demo/src/index.js).
+  - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/examples/basic/src/index.js).
 
 ## Configuration (`static.config.js`)
 A `static.config.js` file is required at your project root to configure react-static. It must export a **default** object with the following interface:
