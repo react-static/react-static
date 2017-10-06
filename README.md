@@ -339,4 +339,4 @@ We are always looking for people to help us grow `react-static`'s capabilities a
 
 ## License
 
-React Static uses the MIT license. For mor information on this license, [click here](https://github.com/nozzle/react-static/blog/master/LICENSE).
+React Static uses the MIT license. For mor information on this license, [click here](https://github.com/nozzle/react-static/blob/master/LICENSE).
