@@ -233,15 +233,15 @@ Router.subscribe(loading => {
 `react-static` also provides you with all other necessary routing components and utils via `react-router`.
 
 These include:
-- <Link>
-- <NavLink>
-- <Prompt>
-- <Redirect>
-- <Route>
-- <Switch>
-- history
-- matchPath
-- withRouter
+- `<Link>`
+- `<NavLink>`
+- `<Prompt>`
+- `<Redirect>`
+- `<Route>`
+- `<Switch>`
+- `history`
+- `matchPath`
+- `withRouter`
 
 To learn how these `react-router` components work, visit [React-Router-Web's documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
