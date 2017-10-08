@@ -43,16 +43,17 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 
 ## Introduction Video
 
-<div align="center">
+<a href="https://www.youtube.com/watch?v=OqbJ5swVpDQ" align="center">
   <img src="https://github.com/nozzle/react-static/raw/master/media/videoLink.png" width="600"/>
-</div>
+</a>
+<br />
+<br />
+<a target='\_blank' rel='nofollow' href='https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static'>
+<img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
+</a>
 
 ## Documentation
 These docs are for version `1.x.x`.
-
-<a target='\_blank' rel='nofollow' href='https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
-</a>
 
 - [Quick Start](#quick-start)
 - [Installation](#installation)
