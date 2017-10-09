@@ -174,7 +174,7 @@ export const writeRoutesToStatic = async ({ config }) => {
       )}`
 
       if (config.siteRoot) {
-        html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteroot}$2`)
+        html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteRoot}$2`)
       }
 
       const htmlFilename = nodepath.join(DIST, route.path, 'index.html')
