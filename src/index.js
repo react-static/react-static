@@ -258,7 +258,8 @@ class Router extends Component {
       resolvedHistory = undefined
     } else {
       ResolvedRouter = ReactRouter.Router
-      resolvedHistory = history || createBrowserHistory()
+      resolvedHistory = history || global.__reactStaticRouterHistory || createBrowserHistory()
+      global.__reactStaticRouterHistory = resolvedHistory
       ;['push', 'replace'].forEach(method => {
         const originalMethod = resolvedHistory[method]
         resolvedHistory[method] = async (...args) => {
