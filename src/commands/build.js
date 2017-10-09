@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 //
 import { DIST, SRC } from '../paths'
-import { getConfig, writeRoutesToStatic, buildXMLandRSS, normalizeRoutes } from '../static'
+import { getConfig, writeRoutesToStatic, buildXMLandRSS } from '../static'
 import buildAppBundle from '../buildAppBundle'
 import copyPublicFolder from '../copyPublicFolder'
 
@@ -21,7 +21,7 @@ export default async () => {
     console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
     const config = getConfig()
-    config.routes = normalizeRoutes(await config.getRoutes({ dev: false }))
+    config.routes = await config.getRoutes({ dev: false })
 
     // Build static pages and JSON
     console.log('=> Bundling App...')

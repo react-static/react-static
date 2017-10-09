@@ -13,7 +13,7 @@ import cors from 'cors'
 //
 import DefaultHtml from '../DefaultHtml'
 import copyPublicFolder from '../copyPublicFolder'
-import { getConfig, normalizeRoutes } from '../static'
+import { getConfig } from '../static'
 import { DIST } from '../paths'
 
 const port = process.env.PORT || '3000'
@@ -39,7 +39,7 @@ async function startConfigServer () {
 
   configApp.get('/getRoutes', async (req, res, next) => {
     try {
-      const routes = normalizeRoutes(await config.getRoutes({ dev: true }))
+      const routes = await config.getRoutes({ dev: true })
 
       routes.forEach(route => {
         configApp.get(`/route${route.path}`, async (req, res, next) => {

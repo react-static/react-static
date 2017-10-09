@@ -13,11 +13,8 @@ import { DIST, ROOT } from './paths'
 
 const defaultEntry = './src/index'
 
-export const getConfig = () =>
-  require(nodepath.resolve(nodepath.join(process.cwd(), 'static.config.js'))).default
-
 // Normalize routes with parents, full paths, context, etc.
-export const normalizeRoutes = routes => {
+const normalizeRoutes = routes => {
   const flatRoutes = []
 
   const recurse = (route, parent = { path: '/' }) => {
@@ -43,6 +40,7 @@ export const normalizeRoutes = routes => {
     }
   }
   routes.forEach(d => recurse(d))
+
   flatRoutes.forEach(route => {
     const found = flatRoutes.find(d => d.path === route.path)
     if (found !== route) {
@@ -50,6 +48,18 @@ export const normalizeRoutes = routes => {
     }
   })
   return flatRoutes
+}
+
+export const getConfig = () => {
+  const config = require(nodepath.resolve(nodepath.join(process.cwd(), 'static.config.js'))).default
+  return {
+    ...config,
+    siteRoot: config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null,
+    getRoutes: async (...args) => {
+      const routes = await config.getRoutes(...args)
+      return normalizeRoutes(routes)
+    },
+  }
 }
 
 export const writeRoutesToStatic = async ({ config }) => {
@@ -164,10 +174,7 @@ export const writeRoutesToStatic = async ({ config }) => {
       )}`
 
       if (config.siteRoot) {
-        html = html.replace(
-          /(href=["'])(\/[^/])/gm,
-          `$1${config.siteRoot.replace(/\/{0,}$/g, '')}$2`,
-        )
+        html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteroot}$2`)
       }
 
       const htmlFilename = nodepath.join(DIST, route.path, 'index.html')
@@ -196,7 +203,7 @@ export async function buildXMLandRSS ({ config }) {
   }
   const xml = generateXML({
     routes: config.routes.map(route => ({
-      permalink: nodepath.join(config.siteRoot, route.path),
+      permalink: config.siteRoot + route.path,
       lastModified: '',
       priority: 0.5,
       ...route,
