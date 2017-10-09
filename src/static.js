@@ -197,7 +197,6 @@ export async function buildXMLandRSS ({ config }) {
   const xml = generateXML({
     routes: config.routes.map(route => ({
       permalink: nodepath.join(config.siteRoot, route.path),
-      changeFreq: 600000,
       lastModified: '',
       priority: 0.5,
       ...route,
@@ -214,9 +213,8 @@ export async function buildXMLandRSS ({ config }) {
         return
       }
       xml += '<url>'
-      xml += `<loc>${route.permalink}</loc>`
+      xml += `<loc>${`${route.permalink}/`.replace(/\/{1,}$/gm, '/')}</loc>`
       xml += route.lastModified ? `<lastmod>${route.lastModified}</lastmod>` : ''
-      xml += route.changeFreq ? `<changefreq>${route.changeFreq}</changefreq>` : ''
       xml += route.priority ? `<priority>${route.priority}</priority>` : ''
       xml += '</url>'
     })
