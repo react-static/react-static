@@ -163,10 +163,12 @@ export const writeRoutesToStatic = async ({ config }) => {
         </HtmlTemplate>,
       )}`
 
-      html = html.replace(
-        /(href=["'])(\/[^/])/gm,
-        `$1${config.siteRoot ? config.siteRoot.replace(/\/{1,}$/g, '') : '$1'}$2`,
-      )
+      if (config.siteRoot) {
+        html = html.replace(
+          /(href=["'])(\/[^/])/gm,
+          `$1${config.siteRoot.replace(/\/{0,}$/g, '')}$2`,
+        )
+      }
 
       const htmlFilename = nodepath.join(DIST, route.path, 'index.html')
       const initialPropsFilename = nodepath.join(DIST, route.path, 'routeData.json')
