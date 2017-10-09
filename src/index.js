@@ -5,7 +5,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import { Helmet } from 'react-helmet'
 import * as ReactRouter from 'react-router-dom'
 //
-import { normalizeRoutes, pathJoin } from './shared'
+import { pathJoin } from './shared'
 
 const propsCache = {}
 const inflight = {}
@@ -16,8 +16,8 @@ let InitialLoading
 
 if (process.env.NODE_ENV === 'development') {
   routesPromise = (async () => {
-    const userConfig = require('__static-config').default
-    return normalizeRoutes(await userConfig.getRoutes({ dev: true }))
+    const res = await axios.get(`${process.env.STATIC_ENDPOINT}/getroutes`)
+    return res.data
   })()
   InitialLoading = () => (
     <div
@@ -120,26 +120,29 @@ async function prefetch (path) {
       return
     }
 
-    if (currentRoute.getProps) {
-      // Reuse request for duplicate inflight requests
-      try {
-        if (!inflight[path]) {
-          inflight[path] = currentRoute.getProps({ route: currentRoute, dev: true })
-        }
-        const initialProps = await inflight[path]
-
-        // Place it in the cache
-        propsCache[path] = {
-          initialProps,
-        }
-      } catch (err) {
-        console.warn('There was an error during getProps() for route:', path)
-        console.error(err)
-      }
-      delete inflight[path]
-      return propsCache[path]
+    // Warn for missing routes
+    if (!currentRoute.hasGetProps) {
+      console.info('getProps not defined for:', path)
+      return
     }
-    return
+
+    // Reuse request for duplicate inflight requests
+    try {
+      if (!inflight[path]) {
+        inflight[path] = axios.get(`${process.env.STATIC_ENDPOINT}/route${currentRoute.path}`)
+      }
+      const { data: initialProps } = await inflight[path]
+
+      // Place it in the cache
+      propsCache[path] = {
+        initialProps,
+      }
+    } catch (err) {
+      console.warn('There was an error during getProps() for route:', path)
+      console.error(err)
+    }
+    delete inflight[path]
+    return propsCache[path]
   }
 
   // Then try for the embedded data

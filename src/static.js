@@ -8,12 +8,49 @@ import nodepath from 'path'
 import Helmet from 'react-helmet'
 //
 import DefaultHtml from './DefaultHtml'
+import { pathJoin } from './shared'
 import { DIST, ROOT } from './paths'
 
 const defaultEntry = './src/index'
 
 export const getConfig = () =>
   require(nodepath.resolve(nodepath.join(process.cwd(), 'static.config.js'))).default
+
+// Normalize routes with parents, full paths, context, etc.
+export const normalizeRoutes = routes => {
+  const flatRoutes = []
+
+  const recurse = (route, parent = { path: '/' }) => {
+    const path = pathJoin(parent.path, route.path)
+
+    if (typeof route.noIndex !== 'undefined') {
+      console.log(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
+      route.noindex = route.noIndex
+    }
+
+    const normalizedRoute = {
+      ...route,
+      parent,
+      path,
+      noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
+      hasGetProps: !!route.getProps,
+    }
+
+    flatRoutes.push(normalizedRoute)
+
+    if (route.children) {
+      route.children.forEach(d => recurse(d, normalizedRoute))
+    }
+  }
+  routes.forEach(d => recurse(d))
+  flatRoutes.forEach(route => {
+    const found = flatRoutes.find(d => d.path === route.path)
+    if (found !== route) {
+      console.warn('More than one route is defined for path:', route.path)
+    }
+  })
+  return flatRoutes
+}
 
 export const writeRoutesToStatic = async ({ config }) => {
   const userConfig = getConfig()

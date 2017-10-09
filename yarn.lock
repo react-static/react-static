@@ -261,6 +261,10 @@ async@^2.1.2:
   dependencies:
     lodash "^4.14.0"
 
+async@~0.2.9:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -1555,6 +1559,13 @@ core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
+cors@^2.8.4:
+  version "2.8.4"
+  resolved "https://registry.yarnpkg.com/cors/-/cors-2.8.4.tgz#2bd381f2eb201020105cd50ea59da63090694686"
+  dependencies:
+    object-assign "^4"
+    vary "^1"
+
 cosmiconfig@^2.1.0, cosmiconfig@^2.1.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-2.2.2.tgz#6173cebd56fac042c1f4390edf7af6c07c7cb892"
@@ -2457,6 +2468,12 @@ find-cache-dir@^1.0.0:
     commondir "^1.0.1"
     make-dir "^1.0.0"
     pkg-dir "^2.0.0"
+
+find-port@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/find-port/-/find-port-2.0.1.tgz#e59923ce3283fcdfb1dfe029f8c19cc5c020a827"
+  dependencies:
+    async "~0.2.9"
 
 find-up@^1.0.0:
   version "1.1.2"
@@ -3758,7 +3775,7 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -5516,6 +5533,10 @@ validate-npm-package-license@^3.0.1:
 value-equal@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-0.4.0.tgz#c5bdd2f54ee093c04839d71ce2e4758a6890abc7"
+
+vary@^1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
 vary@~1.1.1:
   version "1.1.1"

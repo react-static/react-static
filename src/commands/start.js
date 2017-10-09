@@ -7,11 +7,13 @@ import fs from 'fs-extra'
 import path from 'path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import WebpackConfigurator from 'webpack-configurator'
+import findPort from 'find-port'
+import express from 'express'
+import cors from 'cors'
 //
 import DefaultHtml from '../DefaultHtml'
-import webpackConfigDev from '../webpack.config.dev'
 import copyPublicFolder from '../copyPublicFolder'
-import { getConfig } from '../static'
+import { getConfig, normalizeRoutes } from '../static'
 import { DIST } from '../paths'
 
 const port = process.env.PORT || '3000'
@@ -19,9 +21,56 @@ const port = process.env.PORT || '3000'
 let first = true
 let compiler
 
+const config = getConfig()
+
+async function startConfigServer () {
+  // scan a range
+  const ports = await new Promise(resolve =>
+    findPort('127.0.0.1', 8000, 8500, ports => {
+      resolve(ports)
+    }),
+  )
+  const port = ports[0]
+  process.env.STATIC_ENDPOINT = `http://127.0.0.1:${port}`
+
+  const configApp = express()
+
+  configApp.use(cors())
+
+  configApp.get('/getRoutes', async (req, res, next) => {
+    try {
+      const routes = normalizeRoutes(await config.getRoutes({ dev: true }))
+
+      routes.forEach(route => {
+        configApp.get(`/route${route.path}`, async (req, res, next) => {
+          try {
+            const initialProps = await route.getProps({ dev: true })
+            res.json(initialProps)
+          } catch (err) {
+            res.status(500)
+            next(err)
+          }
+        })
+      })
+
+      res.json(routes)
+    } catch (err) {
+      res.status(500)
+      next(err)
+    }
+  })
+
+  configApp.listen(port, err => {
+    if (err) {
+      throw err
+    }
+  })
+}
+
 function buildCompiler () {
-  const config = getConfig()
   const webpackConfig = new WebpackConfigurator()
+
+  const webpackConfigDev = require('../webpack.config.dev').default
 
   webpackConfig.merge(webpackConfigDev)
   if (config.webpack) {
@@ -32,8 +81,8 @@ function buildCompiler () {
   compiler = webpack(finalWebpackConfig)
 
   compiler.plugin('invalid', () => {
-    console.log('=> Rebuilding...')
     console.time(chalk.green('=> [\u2713] Build Complete'))
+    console.log('=> Rebuilding...')
   })
 
   compiler.plugin('done', stats => {
@@ -125,6 +174,7 @@ export default async () => {
 
   console.log('=> Building...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
+  await startConfigServer()
   buildCompiler()
   startDevServer()
 }

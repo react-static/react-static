@@ -2,10 +2,9 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 //
 import { DIST, SRC } from '../paths'
-import { getConfig, writeRoutesToStatic, buildXMLandRSS } from '../static'
+import { getConfig, writeRoutesToStatic, buildXMLandRSS, normalizeRoutes } from '../static'
 import buildAppBundle from '../buildAppBundle'
 import copyPublicFolder from '../copyPublicFolder'
-import { normalizeRoutes } from '../shared'
 
 export default async () => {
   process.env.NODE_PATH = SRC
