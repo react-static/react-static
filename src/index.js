@@ -122,7 +122,6 @@ async function prefetch (path) {
 
     // Warn for missing routes
     if (!currentRoute.hasGetProps) {
-      console.info('getProps not defined for:', path)
       return
     }
 
@@ -187,15 +186,17 @@ function getRouteProps (Comp) {
       const { pathname } = this.context.router.route.location
       const path = pathJoin(pathname)
 
-      let embeddedProps
+      let initialProps
       if (typeof window !== 'undefined') {
         if (window.__routeData && window.__routeData.path === path) {
-          embeddedProps = window.__routeData.initialProps
+          initialProps = window.__routeData.initialProps
+        } else {
+          console.info('getProps not defined for:', path)
         }
       }
 
-      const initialProps =
-        embeddedProps ||
+      initialProps =
+        initialProps ||
         (propsCache[path] ? propsCache[path].initialProps : this.context.initialProps)
 
       if (!initialProps) {
@@ -204,6 +205,7 @@ function getRouteProps (Comp) {
         }
         return null
       }
+
       return <Comp {...this.props} {...initialProps} />
     }
   }
