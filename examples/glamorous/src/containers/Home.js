@@ -1,3 +1,4 @@
 import React from 'react'
+import { getSiteProps } from 'react-static'
 //
-export default () => <h1>Welcome Home!</h1>
+export default getSiteProps(({ title }) => <h1>Welcome to {title}!</h1>)

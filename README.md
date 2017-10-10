@@ -164,14 +164,21 @@ export default {
     }],
   }],
 
+  // getSiteProps is very similar to a route's getProps, but is made available
+  // to the entire site via the `getSiteProps` HOC
+  // IMPORTANT: Any data you return here, although loaded once per session, will
+  // be embedded in every page that is exported on your site. So tread lightly ;)
+  getSiteProps: async ({dev}) => ({...})
+
   siteRoot: 'https://mysite.com', // Optional, but necessary for the sitemap.xml
 
   // An optional custom React component that renders the base
   // Html for every page, including the dev server. Must utilize the
   // `Html`, `Head`, `Body` and `children` for react-static to work. The optional
-  // `staticMeta` prop refers to any data you potentially returned from
+  // `siteProps` prop will contain any data returned by `getSiteProps` in your config
+  // and `staticMeta` prop refers to any data you potentially returned from
   // the `preRenderMeta` and `postRenderMeta` function.
-  Html: ({ Html, Head, Body, children, staticMeta }) => (
+  Html: ({ Html, Head, Body, children, siteProps, staticMeta }) => (
     <Html lang="en-US">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -374,6 +381,30 @@ const TopHundredSongsPage = getRouteProps(({songs}) =>
 ...
 <Route exact path="/top-100-songs" component={TopHundredSongsPage} />
 ...
+```
+
+#### `getSiteProps(Component)`
+`getSiteProps` is an HOC that provides a component with the results of the `getSiteProps` function as defined in your `static.config.js`. Here is a simple example:
+
+**static.config.js**
+```javascript
+module.exports = {
+  getSiteProps: () => ({
+    title: 'React Static',
+    metaDescription: 'A progressive static-site framework for React'
+  })
+}
+```
+
+**App.js**
+```javascript
+
+const AnyComponent = getSiteProps(({ title, metaDescription }) =>
+  <div>
+    Welcome to {title}! I am a {metaDescription} :)
+  </div>
+)
+
 ```
 
 #### `<Head />`

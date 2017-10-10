@@ -37,6 +37,16 @@ async function startConfigServer () {
 
   configApp.use(cors())
 
+  configApp.get('/siteProps', async (req, res, next) => {
+    try {
+      const siteProps = await config.getSiteProps({ dev: true })
+      res.json(siteProps)
+    } catch (err) {
+      res.status(500)
+      next(err)
+    }
+  })
+
   configApp.get('/getRoutes', async (req, res, next) => {
     try {
       const routes = await config.getRoutes({ dev: true })

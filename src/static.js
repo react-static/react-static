@@ -9,7 +9,7 @@ import Helmet from 'react-helmet'
 //
 import DefaultHtml from './DefaultHtml'
 import { pathJoin } from './shared'
-import { DIST, ROOT, SRC } from './paths'
+import { DIST, ROOT } from './paths'
 
 const defaultEntry = './src/index'
 
@@ -53,6 +53,7 @@ const normalizeRoutes = routes => {
 export const getConfig = () => {
   const config = require(path.resolve(path.join(process.cwd(), 'static.config.js'))).default
   return {
+    getSiteProps: () => ({}),
     ...config,
     siteRoot: config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null,
     getRoutes: async (...args) => {
@@ -66,6 +67,8 @@ export const writeRoutesToStatic = async ({ config }) => {
   const userConfig = getConfig()
   const HtmlTemplate = config.Html || DefaultHtml
   const Comp = require(path.join(ROOT, userConfig.entry || defaultEntry)).default
+
+  const siteProps = await userConfig.getSiteProps({ dev: false })
 
   return Promise.all(
     config.routes.map(async route => {
@@ -160,6 +163,7 @@ export const writeRoutesToStatic = async ({ config }) => {
               __html: `window.__routeData = ${JSON.stringify({
                 path: route.path,
                 initialProps,
+                siteProps,
               })}`,
             }}
           />
@@ -168,7 +172,13 @@ export const writeRoutesToStatic = async ({ config }) => {
       )
 
       let html = `<!DOCTYPE html>${renderToString(
-        <HtmlTemplate staticMeta={staticMeta} Html={Html} Head={Head} Body={Body}>
+        <HtmlTemplate
+          staticMeta={staticMeta}
+          Html={Html}
+          Head={Head}
+          Body={Body}
+          siteProps={siteProps}
+        >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </HtmlTemplate>,
       )}`

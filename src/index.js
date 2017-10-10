@@ -11,6 +11,7 @@ const propsCache = {}
 const inflight = {}
 const failed = {}
 
+let sitePropsPromise
 let routesPromise
 let InitialLoading
 
@@ -224,6 +225,56 @@ function getRouteProps (Comp) {
   }
 }
 
+function getSiteProps (Comp) {
+  return class AsyncPropsComponent extends Component {
+    static contextTypes = {
+      siteProps: PropTypes.object,
+    }
+    state = {
+      siteProps: false,
+    }
+    async componentWillMount () {
+      if (process.env.NODE_ENV === 'development') {
+        const { data: siteProps } = await (() => {
+          if (sitePropsPromise) {
+            return sitePropsPromise
+          }
+          sitePropsPromise = axios.get(`${process.env.STATIC_ENDPOINT}/siteProps`)
+          return sitePropsPromise
+        })()
+        this.setState({
+          siteProps,
+        })
+      }
+    }
+    render () {
+      let siteProps
+      if (typeof window !== 'undefined') {
+        if (window.__routeData) {
+          siteProps = window.__routeData.siteProps
+        }
+      }
+
+      if (!siteProps && this.context.siteProps) {
+        siteProps = this.context.siteProps
+      }
+
+      if (!siteProps && this.state.siteProps) {
+        siteProps = this.state.siteProps
+      }
+
+      if (!siteProps) {
+        if (process.env.NODE_ENV === 'development') {
+          return <InitialLoading />
+        }
+        return null
+      }
+
+      return <Comp {...this.props} {...siteProps} />
+    }
+  }
+}
+
 class Prefetch extends Component {
   static defaultProps = {
     children: null,
@@ -305,6 +356,7 @@ module.exports = {
   StaticRouter: undefined,
   Router,
   getRouteProps,
+  getSiteProps,
   Prefetch,
   prefetch,
   Head: Helmet,
