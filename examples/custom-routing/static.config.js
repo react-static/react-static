@@ -7,21 +7,17 @@ export default {
     return [
       {
         path: '/',
-        component: 'src/containers/Home',
       },
       {
         path: '/about',
-        component: 'src/containers/About',
       },
       {
         path: '/blog',
-        component: 'src/containers/Blog',
         getProps: () => ({
           posts,
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
-          component: 'src/containers/Post',
           getProps: () => ({
             post,
           }),

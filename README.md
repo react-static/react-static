@@ -82,11 +82,29 @@ $ react-static create my-static-site
 ```
 
 ## Installation
+
+#### New Projects
+To start a new project, install `react-static` globally:
+```bash
+$ yarn global add react-static
+# or
+$ npm install react-static -g
+```
+
+To create a new project:
+```bash
+$ react-static create
+```
+
+#### Existing Projects
+To migrate a project, install `react-static` locally:
 ```bash
 $ yarn add react-static
 # or
 $ npm install react-static --save
 ```
+For more details on migrating an existing app, see the [Project Setup](project-setup) section.
+
 
 ## CLI
 
@@ -118,11 +136,14 @@ export default {
   // resolve an array of route objects. It is also passed a `dev`
   // boolean indicating whether this is a production build or not.
   getRoutes: async ({dev}) => [{
-    path: '/' // A route object only requires a `path` string
+    path: '/' // A route object requires a `path` string
+    component: 'src/containers/Home', // specify the react component that will render this route
   }, {
     path: '/blog',
+    component: 'src/containers/Blog',
     children: [{ // It can also contained nested routes
       path: '/post-1',
+      component: 'src/containers/Post',
       getProps: async ({route, dev}) => ({
         post: {...},
         otherProp: {...}
@@ -135,7 +156,6 @@ export default {
 
       noindex: false, // Optional. Defaults to `false`. If `true`, will exclude this route from the sitemap XML
       permalink: '', // Optional. If not set, will default to (siteRoot + path)
-      changeFreq: 60000, // Optional.
       lastModified: '', // Optional. String('YYYY-MM-DD')
       priority: 0.5 // Optional.
     }],
@@ -190,17 +210,27 @@ export default {
 ## Components & Tools
 
 #### `<Router />`
-The `Router` component is react-static's special version of React-Router's `Router` component. It is to be used in conjunction with other React Router components. By using react-static's `Router` at the base of your app, you won't have to worry about switching between static routing and browser routing. It accepts a `history` object like you're used to (to support things like react-router-redux), and also provides a helper method to subscribe to loading events.
+The `Router` component is required, and provides the underlying React-Router context to its children. It is often the root component of a react-static app.
+
+`Router` automatically handles rendering both static and browser environments. It optionally accepts a `history` object (most-often used for things like react-router-redux), and also provides a helper method to subscribe to loading events.
 
 Example:
 ```javascript
 import { Router } from 'react-static'
-import { Switch, Route } from 'react-router'
+import { Switch, Routes, Route } from 'react-router'
 
 import Home from './containers/Home'
 import About from './containers/About'
 import Blog from './containers/Blog'
 
+// For standard component routing:
+export default () => (
+  <Router>
+    <Routes />
+  </Router>
+)
+
+// For custom routing
 export default () => (
   <Router>
     <Switch>
@@ -214,9 +244,8 @@ export default () => (
 ```
 
 To Subscribe to Router loading events, use `Router.subscribe(callback)`.
-The subscribe callback will fire whenever the loading state changes.
-
-Example:
+This can be extremely useful when using a library like `nprogress` to show a loading status.
+The subscribe callback will fire whenever the loading state changes:
 ```javascript
 import { Router } from 'react-static'
 
@@ -229,21 +258,91 @@ Router.subscribe(loading => {
 })
 ```
 
-#### Routing Components
-`react-static` also provides you with all other necessary routing components and utils via `react-router`.
+#### Automatic Routing with  `<Routes />`
+`react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` path (relative to the root of your project) that should be used to render a route in your `static.config.js`
 
-These include:
-- `<Link>`
-- `<NavLink>`
-- `<Prompt>`
-- `<Redirect>`
+`static.config.js` example:
+```javascript
+export default {
+  getRoutes: async () => [{
+    path: '/'
+    component: 'src/containers/Home',
+  }]
+}
+```
+
+When your site is built (both in dev and production mode), the special `<Routes />` component will automatically handle all of your routing based on the paths you define in your `static.config.js`
+
+`App.js` example:
+```javascript
+import { Router } from 'react-static'
+import Routes from 'react-static-routes' // A special `react-static-routes` import is used for Automatic Routing
+
+export default () => (
+  <Router>
+    <Routes /> // Your <Routes /> can be nested anywhere inside the <Router /> component.
+  </Router>
+)
+```
+
+To see a working example, refer to our [`basic` example template](https://github.com/nozzle/react-static/blob/master/examples/basic)
+
+#### Custom Routing
+If you end up needing more control than `<Routes />` offers, have no fear. `react-static` provides you with all of the custom routing components you are normally used to with `react-router`:
+
+**NOTE: These components are available via `react-static`. There is no need to import them via `react-router`**
+
 - `<Route>`
 - `<Switch>`
+- `<Redirect>`
+- `<Prompt>`
+
+To build your own custom routing, simply remove (or don't use)  the `<Routes />` component in your app, and use the above components instead.
+
+To see a working example, refer to our [`custom-routing` example template](https://github.com/nozzle/react-static/blob/master/examples/custom-routing)
+
+To learn more about how `react-router` components work, visit [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
+
+
+#### `<Link />` and `<NavLink />`
+`react-static` also gives you access to `react-router`'s `<Link />` and `<NavLink />` components. Use these component to allow your users to navigate around your site!
+
+Usage:
+```javascript
+<Link to={'/blog/post/1'}>
+  Go to Blog Post 1
+</Link>
+```
+
+Example:
+```javascript
+import React from 'react'
+import { Router, Link } from 'react-static'
+//
+import Routes from 'react-static-routes'
+
+export default () => (
+  <Router>
+    <div>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/about/">About</Link>
+        <Link to="/blog/">Blog</Link>
+      </nav>
+      <Routes />
+    </div>
+  </Router>
+)
+```
+
+For more information about `<Link />` and `<NavLink />`, see [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
+
+#### Other Routing Utilities
+For your convenience, `react-static` also exports the following utilities normally exported by `react-router`.
+
 - `history`
 - `matchPath`
 - `withRouter`
-
-To learn how these `react-router` components work, visit [React-Router-Web's documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
 #### `getRouteProps(Component)`
 `getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:

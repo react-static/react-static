@@ -1,5 +1,4 @@
 import webpack from 'webpack'
-import CircularDependencyPlugin from 'circular-dependency-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import path from 'path'
 
@@ -28,11 +27,11 @@ export default {
     rules,
   },
   resolve: {
-    modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC],
+    modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC, DIST],
     extensions: ['.js', '.json', '.jsx'],
-    alias: {
-      '__static-config': path.join(ROOT, 'static.config.js'),
-    },
+    // alias: {
+    //   'react-static-routes': path.resolve(DIST, 'react-static-routes.js'),
+    // },
   },
   plugins: [
     new webpack.EnvironmentPlugin({
@@ -43,10 +42,6 @@ export default {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
     new CaseSensitivePathsPlugin(),
-    new CircularDependencyPlugin({
-      exclude: /a\.js|node_modules/, // exclude node_modules
-      failOnError: false, // show a warning when there is a circular dependency
-    }),
   ],
   devtool: 'eval-source-map',
 }

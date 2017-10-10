@@ -13,8 +13,8 @@ import cors from 'cors'
 //
 import DefaultHtml from '../DefaultHtml'
 import copyPublicFolder from '../copyPublicFolder'
-import { getConfig } from '../static'
-import { DIST } from '../paths'
+import { getConfig, writeRouteComponentsToFile } from '../static'
+import { DIST, SRC } from '../paths'
 
 const port = process.env.PORT || '3000'
 
@@ -141,40 +141,53 @@ function startDevServer () {
 }
 
 export default async () => {
-  const config = getConfig()
-  await fs.remove(DIST)
+  try {
+    process.env.NODE_PATH = `${DIST}:${SRC}`
+    require('module').Module._initPaths()
+    const config = getConfig()
+    await fs.remove(DIST)
 
-  const HtmlTemplate = config.Html || DefaultHtml
+    const HtmlTemplate = config.Html || DefaultHtml
 
-  const Html = ({ children, ...rest }) => (
-    <html lang="en" {...rest}>
-      {children}
-    </html>
-  )
-  const Head = ({ children, ...rest }) => <head {...rest}>{children}</head>
-  const Body = ({ children, ...rest }) => (
-    <body {...rest}>
-      {children}
-      <script async src="/app.js" />
-    </body>
-  )
+    const Html = ({ children, ...rest }) => (
+      <html lang="en" {...rest}>
+        {children}
+      </html>
+    )
+    const Head = ({ children, ...rest }) => <head {...rest}>{children}</head>
+    const Body = ({ children, ...rest }) => (
+      <body {...rest}>
+        {children}
+        <script async src="/app.js" />
+      </body>
+    )
 
-  const html = renderToStaticMarkup(
-    <HtmlTemplate staticMeta={{}} Html={Html} Head={Head} Body={Body}>
-      <div id="root" />
-    </HtmlTemplate>,
-  )
+    const html = renderToStaticMarkup(
+      <HtmlTemplate staticMeta={{}} Html={Html} Head={Head} Body={Body}>
+        <div id="root" />
+      </HtmlTemplate>,
+    )
 
-  await fs.outputFile(path.join(DIST, 'index.html'), html)
+    await fs.outputFile(path.join(DIST, 'index.html'), html)
 
-  console.log('=> Copying public directory...')
-  console.time(chalk.green('=> [\u2713] Public directory copied'))
-  copyPublicFolder(DIST)
-  console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
+    console.log('=> Copying public directory...')
+    console.time(chalk.green('=> [\u2713] Public directory copied'))
+    copyPublicFolder(DIST)
+    console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
-  console.log('=> Building...')
-  console.time(chalk.green('=> [\u2713] Build Complete'))
-  await startConfigServer()
-  buildCompiler()
-  startDevServer()
+    console.log('=> Building Routes...')
+    console.time(chalk.green('=> [\u2713] Routes Built'))
+    config.routes = await config.getRoutes({ dev: true })
+    await writeRouteComponentsToFile(config.routes)
+    console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
+
+    console.log('=> Building...')
+    console.time(chalk.green('=> [\u2713] Build Complete'))
+    await startConfigServer()
+    buildCompiler()
+    startDevServer()
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
 }

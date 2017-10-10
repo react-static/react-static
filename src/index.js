@@ -116,7 +116,9 @@ async function prefetch (path) {
 
     // Warn for missing routes
     if (!currentRoute) {
-      console.warn('No route defined for:', path)
+      console.warn(
+        `Warning: There is no route defined for ${path}. This page will not be exported unless you create a valid route!`,
+      )
       return
     }
 
@@ -137,7 +139,7 @@ async function prefetch (path) {
         initialProps,
       }
     } catch (err) {
-      console.warn('There was an error during getProps() for route:', path)
+      console.error('Error: There was an error during getProps() for route:', path)
       console.error(err)
     }
     delete inflight[path]
@@ -161,7 +163,7 @@ async function prefetch (path) {
   } catch (err) {
     // Mark the request as failed
     failed[path] = true
-    console.warn('There was an error during getProps() for route:', path)
+    console.warn('Warning: There was an error during getProps() for route:', path)
     console.error(err)
   }
   delete inflight[path]
@@ -174,12 +176,17 @@ function getRouteProps (Comp) {
       initialProps: PropTypes.object,
       router: PropTypes.object,
     }
+    state = {
+      loaded: false,
+    }
     async componentWillMount () {
       if (process.env.NODE_ENV === 'development') {
         const { pathname } = this.context.router.route.location
         const path = pathJoin(pathname)
         await prefetch(path)
-        this.setState({})
+        this.setState({
+          loaded: true,
+        })
       }
     }
     render () {
@@ -190,14 +197,20 @@ function getRouteProps (Comp) {
       if (typeof window !== 'undefined') {
         if (window.__routeData && window.__routeData.path === path) {
           initialProps = window.__routeData.initialProps
-        } else {
-          console.info('getProps not defined for:', path)
         }
       }
 
-      initialProps =
-        initialProps ||
-        (propsCache[path] ? propsCache[path].initialProps : this.context.initialProps)
+      if (!initialProps && this.context.initialProps) {
+        initialProps = this.context.initialProps
+      } else {
+        initialProps = propsCache[path] ? propsCache[path].initialProps : initialProps
+      }
+
+      if (!initialProps && this.state.loaded) {
+        console.error(
+          `Warning: getRouteProps could not find any props for route: ${path}. Either you are missing a getProps function for this route in your static.config.js or you are using the getRouteProps HOC when you don't need to.`,
+        )
+      }
 
       if (!initialProps) {
         if (process.env.NODE_ENV === 'development') {
@@ -272,7 +285,6 @@ class Router extends Component {
               await prefetch(path)
             } catch (err) {
               console.error(err)
-              console.warn('Uh oh! We should probably display a soft 404 here')
             }
             setLoading(false)
           }

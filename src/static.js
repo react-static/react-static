@@ -4,12 +4,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
-import nodepath from 'path'
+import path from 'path'
 import Helmet from 'react-helmet'
 //
 import DefaultHtml from './DefaultHtml'
 import { pathJoin } from './shared'
-import { DIST, ROOT } from './paths'
+import { DIST, ROOT, SRC } from './paths'
 
 const defaultEntry = './src/index'
 
@@ -18,7 +18,7 @@ const normalizeRoutes = routes => {
   const flatRoutes = []
 
   const recurse = (route, parent = { path: '/' }) => {
-    const path = pathJoin(parent.path, route.path)
+    const routePath = pathJoin(parent.path, route.path)
 
     if (typeof route.noIndex !== 'undefined') {
       console.log(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
@@ -28,7 +28,7 @@ const normalizeRoutes = routes => {
     const normalizedRoute = {
       ...route,
       parent,
-      path,
+      path: routePath,
       noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
       hasGetProps: !!route.getProps,
     }
@@ -51,7 +51,7 @@ const normalizeRoutes = routes => {
 }
 
 export const getConfig = () => {
-  const config = require(nodepath.resolve(nodepath.join(process.cwd(), 'static.config.js'))).default
+  const config = require(path.resolve(path.join(process.cwd(), 'static.config.js'))).default
   return {
     ...config,
     siteRoot: config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null,
@@ -65,7 +65,7 @@ export const getConfig = () => {
 export const writeRoutesToStatic = async ({ config }) => {
   const userConfig = getConfig()
   const HtmlTemplate = config.Html || DefaultHtml
-  const Comp = require(nodepath.join(ROOT, userConfig.entry || defaultEntry)).default
+  const Comp = require(path.join(ROOT, userConfig.entry || defaultEntry)).default
 
   return Promise.all(
     config.routes.map(async route => {
@@ -73,7 +73,7 @@ export const writeRoutesToStatic = async ({ config }) => {
       const initialProps = route.getProps && (await route.getProps({ route, dev: false }))
       if (initialProps) {
         await fs.outputFile(
-          nodepath.join(DIST, route.path, 'routeData.json'),
+          path.join(DIST, route.path, 'routeData.json'),
           JSON.stringify(initialProps || {}),
         )
       }
@@ -177,8 +177,8 @@ export const writeRoutesToStatic = async ({ config }) => {
         html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteRoot}$2`)
       }
 
-      const htmlFilename = nodepath.join(DIST, route.path, 'index.html')
-      const initialPropsFilename = nodepath.join(DIST, route.path, 'routeData.json')
+      const htmlFilename = path.join(DIST, route.path, 'index.html')
+      const initialPropsFilename = path.join(DIST, route.path, 'routeData.json')
       const writeHTML = fs.outputFile(htmlFilename, html)
       const writeJSON = fs.outputFile(
         initialPropsFilename,
@@ -210,7 +210,7 @@ export async function buildXMLandRSS ({ config }) {
     })),
   })
 
-  await fs.writeFile(nodepath.join(DIST, 'sitemap.xml'), xml)
+  await fs.writeFile(path.join(DIST, 'sitemap.xml'), xml)
 
   function generateXML ({ routes }) {
     let xml =
@@ -228,4 +228,50 @@ export async function buildXMLandRSS ({ config }) {
     xml += '</urlset>'
     return xml
   }
+}
+
+export const writeRouteComponentsToFile = async routes => {
+  const templates = []
+  routes.filter(d => d.component).forEach(route => {
+    if (!templates.includes(route.component)) {
+      templates.push(route.component)
+    }
+  })
+  const file = `
+    import React, { Component } from 'react'
+    import { Switch, Route } from 'react-router-dom'
+
+    ${templates
+    .map(
+      template =>
+        `import ${template.replace(/[^a-zA-Z]/g, '_')} from '${path.resolve(ROOT, template)}'`,
+    )
+    .join('\n')}
+
+    export default class Routes extends Component {
+      render () {
+        return (
+          <Switch>
+              ${routes
+    .filter(d => d.component)
+    .map(
+      route =>
+        `<Route exact path={'${route.path}'} component={${route.component.replace(
+          /[^a-zA-Z]/g,
+          '_',
+        )}} />`,
+    )
+    .join(',\n')}
+          </Switch>
+        )
+      }
+    }
+  `
+
+  const filepath = path.resolve(DIST, 'react-static-routes.js')
+  await fs.remove(filepath)
+  await fs.writeFile(filepath, file)
+  const now = Date.now() / 1000
+  const then = now - 1000
+  fs.utimesSync(filepath, then, then)
 }

@@ -2,26 +2,35 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 //
 import { DIST, SRC } from '../paths'
-import { getConfig, writeRoutesToStatic, buildXMLandRSS } from '../static'
+import {
+  getConfig,
+  writeRoutesToStatic,
+  buildXMLandRSS,
+  writeRouteComponentsToFile,
+} from '../static'
 import buildAppBundle from '../buildAppBundle'
 import copyPublicFolder from '../copyPublicFolder'
 
 export default async () => {
-  process.env.NODE_PATH = SRC
-  require('module').Module._initPaths()
-
-  console.log('')
   try {
+    process.env.NODE_PATH = `${SRC}:${DIST}`
+    require('module').Module._initPaths()
+    const config = getConfig()
+    await fs.remove(DIST)
+
+    console.log('')
     console.time('=> Site is ready for production!')
-    // Clean the dist folder
+
     console.log('=> Copying public directory...')
     console.time(chalk.green('=> [\u2713] Public directory copied'))
-    await fs.remove(DIST)
     copyPublicFolder(DIST)
     console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
-    const config = getConfig()
+    console.log('=> Building Routes...')
+    console.time(chalk.green('=> [\u2713] Routes Built'))
     config.routes = await config.getRoutes({ dev: false })
+    await writeRouteComponentsToFile(config.routes)
+    console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
     // Build static pages and JSON
     console.log('=> Bundling App...')

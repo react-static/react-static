@@ -23,11 +23,11 @@ export default {
     rules,
   },
   resolve: {
-    modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC],
+    modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC, DIST],
     extensions: ['.js', '.json', '.jsx'],
-    alias: {
-      '__static-config': path.resolve(__dirname, 'empty-config.js'),
-    },
+    // alias: {
+    //   'react-static-routes': path.resolve(DIST, 'react-static-routes.js'),
+    // },
   },
   plugins: [
     new webpack.EnvironmentPlugin({
