@@ -157,6 +157,8 @@ export default async () => {
     const config = getConfig()
     await fs.remove(DIST)
 
+    const siteProps = await config.getSiteProps({ dev: true })
+
     const HtmlTemplate = config.Html || DefaultHtml
 
     const Html = ({ children, ...rest }) => (
@@ -173,7 +175,7 @@ export default async () => {
     )
 
     const html = renderToStaticMarkup(
-      <HtmlTemplate staticMeta={{}} Html={Html} Head={Head} Body={Body}>
+      <HtmlTemplate staticMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
         <div id="root" />
       </HtmlTemplate>,
     )
