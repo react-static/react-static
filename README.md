@@ -20,6 +20,9 @@
 <a href="https://twitter.com/nozzleio" target="\_parent">
 <img alt="" src="https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow" />
 </a>
+<a href="https://www.producthunt.com/posts/react-static" target="\_parent">
+<img alt="" src="https://img.shields.io/badge/product-hunt-orange.svg" />
+</a>
 
 <br />
 <br />
