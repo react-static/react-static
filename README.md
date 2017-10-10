@@ -20,6 +20,9 @@
 <a href="https://twitter.com/nozzleio" target="\_parent">
 <img alt="" src="https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow" />
 </a>
+<a href="https://www.producthunt.com/posts/react-static" target="\_parent">
+<img alt="" src="https://img.shields.io/badge/product-hunt-orange.svg" />
+</a>
 
 <br />
 <br />
@@ -64,7 +67,7 @@ These docs are for version `1.x.x`.
   - [`react-static start`](#react-static-start)
   - [`react-static build`](#react-static-build)
 - [Project Setup](#project-setup)
-- [Configuration (`static.config.js`)](configuration-staticconfigjs)
+- [Configuration (`static.config.js`)](#configuration-staticconfigjs)
 - [Components & Tools](#components--tools)
   - [`<Router />`](#router-)
   - [React-Router Components](#react-router-components)
