@@ -27,17 +27,18 @@ const normalizeRoutes = routes => {
 
     const normalizedRoute = {
       ...route,
-      parent,
       path: routePath,
       noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
       hasGetProps: !!route.getProps,
     }
 
-    flatRoutes.push(normalizedRoute)
-
     if (route.children) {
       route.children.forEach(d => recurse(d, normalizedRoute))
     }
+
+    delete normalizedRoute.children
+
+    flatRoutes.push(normalizedRoute)
   }
   routes.forEach(d => recurse(d))
 
