@@ -15,20 +15,9 @@
   },
   "devDependencies": {
     "eslint": "^4.3.0",
-    "eslint-config-react-tools": "^1.0.6",
-    "eslint-loader": "^1.9.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0"
+    "eslint-config-react-tools": "^1.0.6"
   },
-  "files": [
-    "dist",
-    "bin",
-    "examples",
-    ".babelrc",
-    "yarn.lock",
-    "LICENSE"
-  ],
+  "files": ["dist", "bin", "examples", ".babelrc", "yarn.lock", "LICENSE"],
   "dependencies": {
     "autoprefixer": "^7.1.4",
     "axios": "^0.16.2",

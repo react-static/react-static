@@ -30,6 +30,10 @@ export default {
           }),
         })),
       },
+      {
+        is404: true,
+        component: 'src/containers/404',
+      },
     ]
   },
   Html: class CustomHtml extends Component {

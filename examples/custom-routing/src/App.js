@@ -1,9 +1,10 @@
 import React from 'react'
-import { Router, Route, Switch, Redirect, Link } from 'react-static'
+import { Router, Route, Switch, Link } from 'react-static'
 //
 import Home from 'containers/Home'
 import About from 'containers/About'
 import Blog from 'containers/Blog'
+import NotFound from 'containers/404'
 
 export default () => (
   <Router>
@@ -18,7 +19,7 @@ export default () => (
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />
-          <Redirect to="/" />
+          <Route component={NotFound} />
         </Switch>
       </div>
     </div>

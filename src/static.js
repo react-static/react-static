@@ -1,4 +1,4 @@
-/* eslint-disable import/no-dynamic-require, react/no-danger, no-cond-assign */
+/* eslint-disable import/no-dynamic-require, react/no-danger */
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -12,13 +12,14 @@ import { pathJoin } from './shared'
 import { DIST, ROOT } from './paths'
 
 const defaultEntry = './src/index'
+const path404 = '/404'
 
 // Normalize routes with parents, full paths, context, etc.
 const normalizeRoutes = routes => {
   const flatRoutes = []
 
   const recurse = (route, parent = { path: '/' }) => {
-    const routePath = pathJoin(parent.path, route.path)
+    const routePath = route.is404 ? path404 : pathJoin(parent.path, route.path)
 
     if (typeof route.noIndex !== 'undefined') {
       console.log(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
@@ -48,6 +49,14 @@ const normalizeRoutes = routes => {
       console.warn('More than one route is defined for path:', route.path)
     }
   })
+
+  if (!flatRoutes.find(d => d.is404)) {
+    flatRoutes.push({
+      is404: true,
+      path: path404,
+    })
+  }
+
   return flatRoutes
 }
 
@@ -190,7 +199,10 @@ export const writeRoutesToStatic = async ({ config }) => {
         html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteRoot}$2`)
       }
 
-      const htmlFilename = path.join(DIST, route.path, 'index.html')
+      console.log(route)
+      const htmlFilename = route.is404
+        ? path.join(DIST, '404.html')
+        : path.join(DIST, route.path, 'index.html')
       const initialPropsFilename = path.join(DIST, route.path, 'routeData.json')
       const writeHTML = fs.outputFile(htmlFilename, html)
       const writeJSON = fs.outputFile(
@@ -215,7 +227,7 @@ export async function buildXMLandRSS ({ config }) {
     return
   }
   const xml = generateXML({
-    routes: config.routes.map(route => ({
+    routes: config.routes.filter(d => !d.is404).map(route => ({
       permalink: config.siteRoot + route.path,
       lastModified: '',
       priority: 0.5,
@@ -245,11 +257,17 @@ export async function buildXMLandRSS ({ config }) {
 
 export const writeRouteComponentsToFile = async routes => {
   const templates = []
-  routes.filter(d => d.component).forEach(route => {
+  routes = routes.filter(d => d.component)
+  routes.forEach(route => {
     if (!templates.includes(route.component)) {
       templates.push(route.component)
     }
   })
+
+  const standardRoutes = routes.filter(d => !d.is404)
+
+  const notFoundRoute = routes.find(d => d.is404)
+
   const file = `
     import React, { Component } from 'react'
     import { Switch, Route } from 'react-router-dom'
@@ -265,8 +283,7 @@ export const writeRouteComponentsToFile = async routes => {
       render () {
         return (
           <Switch>
-              ${routes
-    .filter(d => d.component)
+              ${standardRoutes
     .map(
       route =>
         `<Route exact path={'${route.path}'} component={${route.component.replace(
@@ -275,6 +292,9 @@ export const writeRouteComponentsToFile = async routes => {
         )}} />`,
     )
     .join(',\n')}
+              ${notFoundRoute
+    ? `<Route component={${notFoundRoute.component.replace(/[^a-zA-Z]/g, '_')}} />`
+    : ''}
           </Switch>
         )
       }

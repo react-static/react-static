@@ -70,6 +70,8 @@ These docs are for version `1.x.x`.
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
 - [Components & Tools](#components--tools)
   - [`<Router />`](#router-)
+  - [Automatic Routing with `<Routes />`](#automatic-routing-with--routes-)
+  - [Custom Routing](#custom-routing)
   - [React-Router Components](#react-router-components)
   - [`getRouteProps(Component)`](#getroutepropscomponent)
   - [`<Head />`](#head-)
@@ -161,6 +163,12 @@ export default {
       permalink: '', // Optional. If not set, will default to (siteRoot + path)
       lastModified: '', // Optional. String('YYYY-MM-DD')
       priority: 0.5 // Optional.
+    }, {
+      // If using automatica routing, you can specify a component to render the
+      // 404 page by creating a route with `is404` set to `true` and defining a
+      // `component` to use.
+      is404: true,
+      component: 'src/containers/NotFound'
     }],
   }],
 
@@ -219,7 +227,7 @@ export default {
 
 ## Components & Tools
 
-#### `<Router />`
+### `<Router />`
 The `Router` component is required, and provides the underlying React-Router context to its children. It is often the root component of a react-static app.
 
 `Router` automatically handles rendering both static and browser environments. It optionally accepts a `history` object (most-often used for things like react-router-redux), and also provides a helper method to subscribe to loading events.
@@ -232,6 +240,7 @@ import { Switch, Routes, Route } from 'react-router'
 import Home from './containers/Home'
 import About from './containers/About'
 import Blog from './containers/Blog'
+import NotFound from './containers/NotFound'
 
 // For standard component routing:
 export default () => (
@@ -247,7 +256,7 @@ export default () => (
       <Route exact path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/blog" component={Blog} />
-      <Redirect to="/" />
+      <Route component={NotFound} />
     </Switch>
   </Router>
 )
@@ -268,7 +277,7 @@ Router.subscribe(loading => {
 })
 ```
 
-#### Automatic Routing with  `<Routes />`
+### Automatic Routing with  `<Routes />`
 `react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` path (relative to the root of your project) that should be used to render a route in your `static.config.js`
 
 `static.config.js` example:
@@ -297,7 +306,7 @@ export default () => (
 
 To see a working example, refer to our [`basic` example template](https://github.com/nozzle/react-static/blob/master/examples/basic)
 
-#### Custom Routing
+### Custom Routing
 If you end up needing more control than `<Routes />` offers, have no fear. `react-static` provides you with all of the custom routing components you are normally used to with `react-router`:
 
 **NOTE: These components are available via `react-static`. There is no need to import them via `react-router`**
@@ -313,8 +322,18 @@ To see a working example, refer to our [`custom-routing` example template](https
 
 To learn more about how `react-router` components work, visit [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
+### 404 Handling
+Making a 404 page in `react-static` is extremely simple for both automatic and custom routing configurations.
 
-#### `<Link />` and `<NavLink />`
+##### Automatic Routing
+To define a 404 page using automatic routing, define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build time and run time, the rendered result of this `component` will be used for any routes that are not found.
+
+##### Custom Routing
+When using custom routing, there are 2 types of 404 pages:
+- **Static 404 page** - At build time, `react-static` will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
+- **Dynamic 404 pages** - For `<Link />`s and in-app navigations that don't match your custom routing structure, you must handle those sitations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
+
+### `<Link />` and `<NavLink />`
 `react-static` also gives you access to `react-router`'s `<Link />` and `<NavLink />` components. Use these component to allow your users to navigate around your site!
 
 Usage:
@@ -347,14 +366,14 @@ export default () => (
 
 For more information about `<Link />` and `<NavLink />`, see [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
-#### Other Routing Utilities
+### Other Routing Utilities
 For your convenience, `react-static` also exports the following utilities normally exported by `react-router`.
 
 - `history`
 - `matchPath`
 - `withRouter`
 
-#### `getRouteProps(Component)`
+### `getRouteProps(Component)`
 `getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:
 
 **static.config.js**
@@ -383,7 +402,7 @@ const TopHundredSongsPage = getRouteProps(({songs}) =>
 ...
 ```
 
-#### `getSiteProps(Component)`
+### `getSiteProps(Component)`
 `getSiteProps` is an HOC that provides a component with the results of the `getSiteProps` function as defined in your `static.config.js`. Here is a simple example:
 
 **static.config.js**
@@ -407,7 +426,7 @@ const AnyComponent = getSiteProps(({ title, metaDescription }) =>
 
 ```
 
-#### `<Head />`
+### `<Head />`
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
 - It can be used anywhere in your app.
@@ -430,7 +449,7 @@ export () => (
 )
 ```
 
-#### `<Prefetch path=''/>`
+### `<Prefetch path=''/>`
 Prefetch is a react component that accepts a `path` prop and an optional single child to render. When this component is rendered, any data resolved by the `path`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
 
 - If the path doesn't match a route, no data will be loaded.
@@ -454,7 +473,7 @@ import { Link } from 'react-router-dom'
 </Prefetch>
 ```
 
-#### `prefetch(path)`
+### `prefetch(path)`
 `prefetch` is an imperative version of the `Prefetch` component that you can use anywhere in your code.
 
 Example:
