@@ -88,11 +88,13 @@ export const writeRoutesToStatic = async ({ config }) => {
       class InitialPropsContext extends Component {
         static childContextTypes = {
           initialProps: PropTypes.object,
+          siteProps: PropTypes.object,
           URL: PropTypes.string,
         }
         getChildContext () {
           return {
             initialProps,
+            siteProps,
             URL,
           }
         }
