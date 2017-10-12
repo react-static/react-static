@@ -69,12 +69,15 @@ These docs are for version `1.x.x`.
 - [Project Setup](#project-setup)
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
 - [Components & Tools](#components--tools)
-  - [`<Router />`](#router-)
-  - [Automatic Routing with `<Routes />`](#automatic-routing-with--routes-)
+  - [`<Router>`](#router)
+  - [Automatic Routing with `<Routes>`](#automatic-routing-with--routes)
   - [Custom Routing](#custom-routing)
-  - [React-Router Components](#react-router-components)
+  - [404 Handling](#404-handling)
+  - [`<Link>` and `<NavLink>`](#link--and-navlink-)
+  - [Other Routing Utilities](#other-routing-utilities)
   - [`getRouteProps(Component)`](#getroutepropscomponent)
-  - [`<Head />`](#head-)
+  - [`getSiteProps(Component)`](#getsitepropscomponent)
+  - [`<Head>`](#head)
   - [`<Prefetch path=''/>`](#prefetch-path)
   - [`prefetch(path)`](#prefetchpath)
 
@@ -227,7 +230,7 @@ export default {
 
 ## Components & Tools
 
-### `<Router />`
+### `<Router>`
 The `Router` component is required, and provides the underlying React-Router context to its children. It is often the root component of a react-static app.
 
 `Router` automatically handles rendering both static and browser environments. It optionally accepts a `history` object (most-often used for things like react-router-redux), and also provides a helper method to subscribe to loading events.
@@ -277,7 +280,7 @@ Router.subscribe(loading => {
 })
 ```
 
-### Automatic Routing with  `<Routes />`
+### Automatic Routing with  `<Routes>`
 `react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` path (relative to the root of your project) that should be used to render a route in your `static.config.js`
 
 `static.config.js` example:
@@ -290,7 +293,7 @@ export default {
 }
 ```
 
-When your site is built (both in dev and production mode), the special `<Routes />` component will automatically handle all of your routing based on the paths you define in your `static.config.js`
+When your site is built (both in dev and production mode), the special `<Routes>` component will automatically handle all of your routing based on the paths you define in your `static.config.js`
 
 `App.js` example:
 ```javascript
@@ -316,7 +319,7 @@ If you end up needing more control than `<Routes />` offers, have no fear. `reac
 - `<Redirect>`
 - `<Prompt>`
 
-To build your own custom routing, simply remove (or don't use)  the `<Routes />` component in your app, and use the above components instead.
+To build your own custom routing, simply remove (or don't use)  the `<Routes>` component in your app, and use the above components instead.
 
 To see a working example, refer to our [`custom-routing` example template](https://github.com/nozzle/react-static/blob/master/examples/custom-routing)
 
@@ -331,10 +334,10 @@ To define a 404 page using automatic routing, define a route with `is404` set to
 ##### Custom Routing
 When using custom routing, there are 2 types of 404 pages:
 - **Static 404 page** - At build time, `react-static` will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
-- **Dynamic 404 pages** - For `<Link />`s and in-app navigations that don't match your custom routing structure, you must handle those sitations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
+- **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those sitations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
 
-### `<Link />` and `<NavLink />`
-`react-static` also gives you access to `react-router`'s `<Link />` and `<NavLink />` components. Use these component to allow your users to navigate around your site!
+### `<Link>` and `<NavLink>`
+`react-static` also gives you access to `react-router`'s `<Link>` and `<NavLink>` components. Use these component to allow your users to navigate around your site!
 
 Usage:
 ```javascript
@@ -364,7 +367,7 @@ export default () => (
 )
 ```
 
-For more information about `<Link />` and `<NavLink />`, see [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
+For more information about `<Link>` and `<NavLink>`, see [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
 ### Other Routing Utilities
 For your convenience, `react-static` also exports the following utilities normally exported by `react-router`.
@@ -426,7 +429,7 @@ const AnyComponent = getSiteProps(({ title, metaDescription }) =>
 
 ```
 
-### `<Head />`
+### `<Head>`
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
 - It can be used anywhere in your app.
