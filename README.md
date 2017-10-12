@@ -73,7 +73,7 @@ These docs are for version `1.x.x`.
   - [Automatic Routing with `<Routes>`](#automatic-routing-with--routes)
   - [Custom Routing](#custom-routing)
   - [404 Handling](#404-handling)
-  - [`<Link>` and `<NavLink>`](#link--and-navlink-)
+  - [`<Link>` and `<NavLink>`](#link--and-navlink)
   - [Other Routing Utilities](#other-routing-utilities)
   - [`getRouteProps(Component)`](#getroutepropscomponent)
   - [`getSiteProps(Component)`](#getsitepropscomponent)
