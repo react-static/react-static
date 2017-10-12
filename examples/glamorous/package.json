@@ -19,7 +19,7 @@
     "react-static": "1.x.x"
   },
   "devDependencies": {
-    "eslint-config-react-tools": "^1.0.6",
+    "eslint-config-react-tools": "1.x.x",
     "serve": "^6.1.0"
   }
 }

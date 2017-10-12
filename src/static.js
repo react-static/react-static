@@ -33,6 +33,10 @@ const normalizeRoutes = routes => {
       hasGetProps: !!route.getProps,
     }
 
+    if (!normalizedRoute.path) {
+      throw new Error('No path defined for route:', normalizedRoute)
+    }
+
     if (route.children) {
       route.children.forEach(d => recurse(d, normalizedRoute))
     }
