@@ -108,7 +108,7 @@ $ yarn add react-static
 # or
 $ npm install react-static --save
 ```
-For more details on migrating an existing app, see the [Project Setup](project-setup) section.
+For more details on migrating an existing app, see the [Project Setup](#project-setup) section.
 
 
 ## CLI
