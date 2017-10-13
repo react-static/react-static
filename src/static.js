@@ -204,7 +204,6 @@ export const writeRoutesToStatic = async ({ config }) => {
         html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteRoot}$2`)
       }
 
-      console.log(route)
       const htmlFilename = route.is404
         ? path.join(DIST, '404.html')
         : path.join(DIST, route.path, 'index.html')
@@ -278,10 +277,7 @@ export const writeRouteComponentsToFile = async routes => {
     import { Switch, Route } from 'react-router-dom'
 
     ${templates
-    .map(
-      template =>
-        `import ${template.replace(/[^a-zA-Z]/g, '_')} from '${path.resolve(ROOT, template)}'`,
-    )
+    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '../${template}'`)
     .join('\n')}
 
     export default class Routes extends Component {
