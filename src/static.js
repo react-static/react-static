@@ -274,20 +274,21 @@ export const writeRouteComponentsToFile = async routes => {
   const notFoundRoute = routes.find(d => d.is404)
 
   const file = `
-    import React, { Component } from 'react'
-    import { Switch, Route } from 'react-router-dom'
+import React, { Component } from 'react'
+import { Switch, Route } from 'react-router-dom'
 
     ${templates
     .map(
       template =>
-        `import ${template.replace(/[^a-zA-Z]/g, '_')} from '${path.resolve(ROOT, template)}'`,
+        "import " + template.replace(/[^a-zA-Z]/g, '_') 
+        + " from '" + path.resolve(ROOT, template).replace(/\\/g,'/') + "'"
     )
     .join('\n')}
 
-    export default class Routes extends Component {
-      render () {
-        return (
-          <Switch>
+export default class Routes extends Component {
+  render () {
+    return (
+      <Switch>
               ${standardRoutes
     .map(
       route =>
