@@ -6,6 +6,7 @@ import { renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
 import path from 'path'
 import Helmet from 'react-helmet'
+import OpenPort from 'openport'
 //
 import DefaultHtml from './DefaultHtml'
 import { pathJoin } from './shared'
@@ -312,3 +313,19 @@ export const writeRouteComponentsToFile = async routes => {
   const then = now - 1000
   fs.utimesSync(filepath, then, then)
 }
+
+export const findAvailablePort = start =>
+  new Promise((resolve, reject) =>
+    OpenPort.find(
+      {
+        startingPort: start,
+        endingPort: start + 1000,
+      },
+      (err, port) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve(port)
+      },
+    ),
+  )

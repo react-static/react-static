@@ -7,16 +7,13 @@ import fs from 'fs-extra'
 import path from 'path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import WebpackConfigurator from 'webpack-configurator'
-import findPort from 'find-port'
 import express from 'express'
 import cors from 'cors'
 //
 import DefaultHtml from '../DefaultHtml'
 import copyPublicFolder from '../copyPublicFolder'
-import { getConfig, writeRouteComponentsToFile } from '../static'
+import { getConfig, writeRouteComponentsToFile, findAvailablePort } from '../static'
 import { DIST, SRC } from '../paths'
-
-const port = process.env.PORT || '3000'
 
 let first = true
 let compiler
@@ -25,12 +22,7 @@ const config = getConfig()
 
 async function startConfigServer () {
   // scan a range
-  const ports = await new Promise(resolve =>
-    findPort('127.0.0.1', 8000, 8500, ports => {
-      resolve(ports)
-    }),
-  )
-  const port = ports[0]
+  const port = await findAvailablePort(8000)
   process.env.STATIC_ENDPOINT = `http://127.0.0.1:${port}`
 
   const configApp = express()
@@ -77,7 +69,7 @@ async function startConfigServer () {
   })
 }
 
-function buildCompiler () {
+function buildCompiler ({ port }) {
   const webpackConfig = new WebpackConfigurator()
 
   const webpackConfigDev = require('../webpack.config.dev').default
@@ -128,7 +120,7 @@ function buildCompiler () {
   })
 }
 
-function startDevServer () {
+function startDevServer ({ port }) {
   const devServer = new WebpackDevServer(compiler, {
     port,
     hot: true,
@@ -156,6 +148,8 @@ export default async () => {
     require('module').Module._initPaths()
     const config = getConfig()
     await fs.remove(DIST)
+
+    const port = await findAvailablePort(3000)
 
     const siteProps = await config.getSiteProps({ dev: true })
 
@@ -196,8 +190,8 @@ export default async () => {
     console.log('=> Building...')
     console.time(chalk.green('=> [\u2713] Build Complete'))
     await startConfigServer()
-    buildCompiler()
-    startDevServer()
+    buildCompiler({ port })
+    startDevServer({ port })
   } catch (err) {
     console.log(err)
     process.exit(1)
