@@ -5,8 +5,8 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 //
 import rules from './rules'
-import { getConfig } from './static'
-import { ROOT, DIST, NODE_MODULES, SRC } from './paths'
+import { getConfig } from '../static'
+import { ROOT, DIST, NODE_MODULES, SRC } from '../paths'
 
 const defaultEntry = './src/index'
 const config = getConfig()

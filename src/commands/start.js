@@ -11,11 +11,15 @@ import WebpackConfigurator from 'webpack-configurator'
 import express from 'express'
 import cors from 'cors'
 //
-import DefaultHtml from '../DefaultHtml'
-import copyPublicFolder from '../copyPublicFolder'
-import { getConfig, writeRouteComponentsToFile, findAvailablePort } from '../static'
 import { DIST, SRC } from '../paths'
-
+import {
+  getConfig,
+  writeRouteComponentsToFile,
+  findAvailablePort,
+  copyPublicFolder,
+} from '../static'
+import DefaultHtml from '../DefaultHtml'
+//
 let first = true
 let compiler
 
@@ -73,7 +77,7 @@ async function startConfigServer () {
 function buildCompiler ({ port }) {
   const webpackConfig = new WebpackConfigurator()
 
-  const webpackConfigDev = require('../webpack.config.dev').default
+  const webpackConfigDev = require('../webpack/webpack.config.dev').default
 
   webpackConfig.merge(webpackConfigDev)
   if (config.webpack) {
