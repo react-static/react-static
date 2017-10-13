@@ -10,7 +10,7 @@ import OpenPort from 'openport'
 //
 import DefaultHtml from './DefaultHtml'
 import { pathJoin } from './shared'
-import { DIST, ROOT } from './paths'
+import { DIST, ROOT, PUBLIC, INDEX } from './paths'
 
 const defaultEntry = './src/index'
 const path404 = '/404'
@@ -325,3 +325,12 @@ export const findAvailablePort = start =>
       },
     ),
   )
+
+export function copyPublicFolder (dest) {
+  fs.ensureDirSync(PUBLIC)
+
+  fs.copySync(PUBLIC, dest, {
+    dereference: true,
+    filter: file => file !== INDEX,
+  })
+}
