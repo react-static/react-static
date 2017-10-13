@@ -8,13 +8,12 @@ import { ROOT, DIST, NODE_MODULES, SRC } from '../paths'
 
 const defaultEntry = './src/index'
 const config = getConfig()
-const port = process.env.PORT || '3000'
 
 export default {
   context: path.resolve(__dirname, '../node_modules'),
   entry: [
     require.resolve('react-hot-loader/patch'),
-    `${require.resolve('webpack-dev-server/client')}?http://localhost:${port}`,
+    require.resolve('react-dev-utils/webpackHotDevClient'),
     require.resolve('webpack/hot/only-dev-server'),
     path.resolve(ROOT, config.entry || defaultEntry),
   ],

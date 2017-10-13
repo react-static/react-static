@@ -2,6 +2,7 @@ import React from 'react'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
+import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 import chalk from 'chalk'
 import fs from 'fs-extra'
 import path from 'path'
@@ -136,6 +137,9 @@ function startDevServer ({ port }) {
     quiet: true,
     watchOptions: {
       ignored: /node_modules/,
+    },
+    before (app) {
+      app.use(errorOverlayMiddleware())
     },
   })
 
