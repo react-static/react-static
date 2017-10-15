@@ -192,6 +192,7 @@ export default {
   Html: ({ Html, Head, Body, children, siteProps, staticMeta }) => (
     <Html lang="en-US">
       <Head>
+        <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Body>{children}</Body>
@@ -443,6 +444,7 @@ import { Head } from 'react-static'
 export () => (
   <div>
     <Head>
+      <meta charSet="UTF-8" />
       <title>This is my page title!</title>
     </Head>
     <div>
