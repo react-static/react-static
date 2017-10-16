@@ -10,7 +10,9 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import WebpackConfigurator from 'webpack-configurator'
 import express from 'express'
 import cors from 'cors'
+
 //
+
 import { DIST, SRC } from '../paths'
 import {
   getConfig,
@@ -18,20 +20,23 @@ import {
   findAvailablePort,
   copyPublicFolder,
 } from '../static'
-import DefaultHtml from '../DefaultHtml'
+import { DefaultDocument, Html, Head, Body } from '../RootComponents'
+
 //
+
 let first = true
 let compiler
 
+const isWin = /^win/.test(process.platform)
 const config = getConfig()
 
+// Starts an express development sever to communicate between browser and node environments
 async function startConfigServer () {
   // scan a range
   const port = await findAvailablePort(8000)
   process.env.STATIC_ENDPOINT = `http://127.0.0.1:${port}`
 
   const configApp = express()
-
   configApp.use(cors())
 
   configApp.get('/siteProps', async (req, res, next) => {
@@ -48,6 +53,8 @@ async function startConfigServer () {
     try {
       const routes = await config.getRoutes({ dev: true })
 
+      // Once all of the routes have been resolved, listen on individual
+      // route endpoints
       routes.forEach(route => {
         configApp.get(`/route${route.path}`, async (req, res, next) => {
           try {
@@ -74,6 +81,7 @@ async function startConfigServer () {
   })
 }
 
+// Builds the dev compiler for the browser bundle
 function buildCompiler ({ port }) {
   const webpackConfig = new WebpackConfigurator()
 
@@ -125,6 +133,7 @@ function buildCompiler ({ port }) {
   })
 }
 
+// Starts the development server
 function startDevServer ({ port }) {
   const devServer = new WebpackDevServer(compiler, {
     port,
@@ -152,49 +161,50 @@ function startDevServer ({ port }) {
 
 export default async () => {
   try {
-    process.env.NODE_PATH = `${DIST}:${SRC}`
+    // For now, add the dist and src paths to the node_path so as to
+    // resolve imports from those locations, eg. react-static-paths
+    process.env.NODE_PATH = isWin ? `${DIST};${SRC}` : `${DIST}:${SRC}`
     require('module').Module._initPaths()
+
+    // Get the config
     const config = getConfig()
+
+    // Clean the dist folder
     await fs.remove(DIST)
 
+    // Find an available port to serve on.
     const port = await findAvailablePort(3000)
 
+    // Get the site props
     const siteProps = await config.getSiteProps({ dev: true })
 
-    const HtmlTemplate = config.Html || DefaultHtml
+    // Resolve the base HTML template
+    const DocumentTemplate = config.Html || DefaultDocument
 
-    const Html = ({ children, ...rest }) => (
-      <html lang="en" {...rest}>
-        {children}
-      </html>
-    )
-    const Head = ({ children, ...rest }) => <head {...rest}>{children}</head>
-    const Body = ({ children, ...rest }) => (
-      <body {...rest}>
-        {children}
-        <script async src="/app.js" />
-      </body>
-    )
-
+    // Render the base document component to string with siteprops
     const html = renderToStaticMarkup(
-      <HtmlTemplate staticMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
+      <DocumentTemplate staticMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
         <div id="root" />
-      </HtmlTemplate>,
+      </DocumentTemplate>,
     )
 
+    // Write the Document to index.html
     await fs.outputFile(path.join(DIST, 'index.html'), html)
 
+    // Copy the public directory over
     console.log('=> Copying public directory...')
     console.time(chalk.green('=> [\u2713] Public directory copied'))
     copyPublicFolder(DIST)
     console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
+    // Build the dynamic routes file (react-static-routes)
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
     config.routes = await config.getRoutes({ dev: true })
     await writeRouteComponentsToFile(config.routes)
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
+    // Build the JS bundle
     console.log('=> Building...')
     console.time(chalk.green('=> [\u2713] Build Complete'))
     await startConfigServer()

@@ -8,7 +8,7 @@ import path from 'path'
 import Helmet from 'react-helmet'
 import OpenPort from 'openport'
 //
-import DefaultHtml from './DefaultHtml'
+import { DefaultDocument } from './RootComponents'
 import { pathJoin } from './shared'
 import { DIST, ROOT, PUBLIC, INDEX } from './paths'
 
@@ -65,6 +65,7 @@ const normalizeRoutes = routes => {
   return flatRoutes
 }
 
+// Retrieves the static.config.js from the current project directory
 export const getConfig = () => {
   const config = require(path.resolve(path.join(process.cwd(), 'static.config.js'))).default
   return {
@@ -78,9 +79,10 @@ export const getConfig = () => {
   }
 }
 
+// Exporting route HTML and JSON happens here. It's a big one.
 export const writeRoutesToStatic = async ({ config }) => {
   const userConfig = getConfig()
-  const HtmlTemplate = config.Html || DefaultHtml
+  const HtmlTemplate = config.Html || DefaultDocument
   const Comp = require(path.join(ROOT, userConfig.entry || defaultEntry)).default
 
   const siteProps = await userConfig.getSiteProps({ dev: false })
@@ -190,11 +192,11 @@ export const writeRoutesToStatic = async ({ config }) => {
 
       let html = `<!DOCTYPE html>${renderToString(
         <HtmlTemplate
-          staticMeta={staticMeta}
           Html={Html}
           Head={Head}
           Body={Body}
           siteProps={siteProps}
+          staticMeta={staticMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </HtmlTemplate>,

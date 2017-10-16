@@ -25,9 +25,6 @@ export default {
   resolve: {
     modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC, DIST],
     extensions: ['.js', '.json', '.jsx'],
-    // alias: {
-    //   'react-static-routes': path.resolve(DIST, 'react-static-routes.js'),
-    // },
   },
   plugins: [
     new webpack.EnvironmentPlugin({
