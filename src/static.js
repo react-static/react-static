@@ -8,7 +8,7 @@ import path from 'path'
 import Helmet from 'react-helmet'
 import OpenPort from 'openport'
 //
-import DefaultHtml from './DefaultHtml'
+import { DefaultDocument } from './RootComponents'
 import { pathJoin } from './shared'
 import { DIST, ROOT, PUBLIC, INDEX } from './paths'
 
@@ -65,6 +65,7 @@ const normalizeRoutes = routes => {
   return flatRoutes
 }
 
+// Retrieves the static.config.js from the current project directory
 export const getConfig = () => {
   const config = require(path.resolve(path.join(process.cwd(), 'static.config.js'))).default
   return {
@@ -78,9 +79,10 @@ export const getConfig = () => {
   }
 }
 
+// Exporting route HTML and JSON happens here. It's a big one.
 export const writeRoutesToStatic = async ({ config }) => {
   const userConfig = getConfig()
-  const HtmlTemplate = config.Html || DefaultHtml
+  const DocumentTemplate = config.Html || DefaultDocument
   const Comp = require(path.join(ROOT, userConfig.entry || defaultEntry)).default
 
   const siteProps = await userConfig.getSiteProps({ dev: false })
@@ -154,12 +156,14 @@ export const writeRoutesToStatic = async ({ config }) => {
         }
       }
 
-      const Html = ({ children, ...rest }) => (
+      // Instead of using the default components, we need to hard code meta
+      // from react-helmet into the components
+      const HtmlWithMeta = ({ children, ...rest }) => (
         <html lang="en" {...head.htmlprops} {...rest}>
           {children}
         </html>
       )
-      const Head = ({ children, ...rest }) => (
+      const HeadWithMeta = ({ children, ...rest }) => (
         <head {...rest}>
           {head.base}
           {head.link}
@@ -171,7 +175,10 @@ export const writeRoutesToStatic = async ({ config }) => {
           {children}
         </head>
       )
-      const Body = ({ children, ...rest }) => (
+      // Not only do we pass react-helmet attributes and the app.js here, but
+      // we also need to  hard code site props and route props into the page to
+      // prevent flashing when react mounts onto the HTML.
+      const BodyWithMeta = ({ children, ...rest }) => (
         <body {...head.bodyProps} {...rest}>
           {children}
           <script
@@ -188,22 +195,26 @@ export const writeRoutesToStatic = async ({ config }) => {
         </body>
       )
 
+      // Render the html for the page inside of the base document.
       let html = `<!DOCTYPE html>${renderToString(
-        <HtmlTemplate
-          staticMeta={staticMeta}
-          Html={Html}
-          Head={Head}
-          Body={Body}
+        <DocumentTemplate
+          Html={HtmlWithMeta}
+          Head={HeadWithMeta}
+          Body={BodyWithMeta}
           siteProps={siteProps}
+          staticMeta={staticMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
-        </HtmlTemplate>,
+        </DocumentTemplate>,
       )}`
 
+      // If the siteRoot is set, prefix all absolute URL's
       if (config.siteRoot) {
         html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteRoot}$2`)
       }
 
+      // If the route is a 404 page, write it directly to 404.html, instead of
+      // inside a directory.
       const htmlFilename = route.is404
         ? path.join(DIST, '404.html')
         : path.join(DIST, route.path, 'index.html')
@@ -292,7 +303,7 @@ export const writeRouteComponentsToFile = async routes => {
           '_',
         )}} />`,
     )
-    .join(',\n')}
+    .join('\n')}
               ${notFoundRoute
     ? `<Route component={${notFoundRoute.component.replace(/[^a-zA-Z]/g, '_')}} />`
     : ''}
