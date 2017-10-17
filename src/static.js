@@ -294,7 +294,7 @@ export const writeRouteComponentsToFile = async routes => {
           '_',
         )}} />`,
     )
-    .join(',\n')}
+    .join('\n')}
               ${notFoundRoute
     ? `<Route component={${notFoundRoute.component.replace(/[^a-zA-Z]/g, '_')}} />`
     : ''}
