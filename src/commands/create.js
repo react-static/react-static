@@ -36,6 +36,26 @@ export default async () => {
   const dest = path.resolve(process.cwd(), answers.name)
   await fs.copy(path.resolve(__dirname, `../../examples/${answers.template}`), dest)
 
+  // Rename gitignore after the fact to prevent npm from renaming it to .npmignore
+  // See: https://github.com/npm/npm/issues/1862
+  fs.move(
+    path.join(dest, 'gitignore'),
+    path.join(dest, '.gitignore'),
+    [],
+    err => {
+      if (err) {
+        // Append if there's already a `.gitignore` file there
+        if (err.code === 'EEXIST') {
+          const data = fs.readFileSync(path.join(dest, 'gitignore'))
+          fs.appendFileSync(path.join(dest, '.gitignore'), data)
+          fs.unlinkSync(path.join(dest, 'gitignore'))
+        } else {
+          throw err
+        }
+      }
+    },
+  )
+
   const isYarn = shouldUseYarn()
 
   console.log('=> Installing dependencies...')
