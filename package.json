@@ -9,6 +9,7 @@
   "scripts": {
     "watch": "babel -w src --out-dir dist",
     "build": "babel src --out-dir dist",
+    "publishnext": "npm publish --tag next",
     "prepublish": "yarn build",
     "postpublish": "git push --tags",
     "test": "eslint src examples"
@@ -17,14 +18,7 @@
     "eslint": "^4.3.0",
     "eslint-config-react-tools": "^1.0.6"
   },
-  "files": [
-    "dist",
-    "bin",
-    "examples",
-    ".babelrc",
-    "yarn.lock",
-    "LICENSE"
-  ],
+  "files": ["dist", "bin", "examples", ".babelrc", "yarn.lock", "LICENSE"],
   "dependencies": {
     "autoprefixer": "^7.1.4",
     "axios": "^0.16.2",
