@@ -78,8 +78,8 @@ export function normalizeRoutes (routes) {
   routes.forEach(d => recurse(d))
 
   flatRoutes.forEach(route => {
-    const found = flatRoutes.find(d => d.path === route.path)
-    if (found !== route) {
+    const found = flatRoutes.filter(d => d.path === route.path)
+    if (found.length > 1) {
       console.warn('More than one route is defined for path:', route.path)
     }
   })
