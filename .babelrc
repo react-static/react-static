@@ -11,6 +11,7 @@
     "stage-3",
     "react"
   ],
+  "ignore": "app.static.js",
   "plugins": [
     "react-hot-loader/babel",
     "transform-class-properties",

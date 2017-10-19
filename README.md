@@ -202,9 +202,9 @@ export default {
   // An optional callback, used to modify the webpack config for both dev
   // and production. The function you provide will be passed an instance of
   // webpack-configurator (see https://github.com/lewie9021/webpack-configurator
-  // for more information), and an object containing a `dev` boolean, denoting
-  // whether you are in development or production mode.
-  webpack: (webpackConfigurator, { dev }) => {...},
+  // for more information), and an object containing a `stage` string, denoting
+  // whether the webpack configuration is for the 'dev', 'prod', or 'node' build stage.
+  webpack: (webpackConfigurator, { stage }) => {...},
 
   // The entry location for your app, defaulting to `./src/index.js`
   // This file must export the JSX of your app as the default export,
