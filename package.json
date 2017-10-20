@@ -1,14 +1,14 @@
 {
   "name": "react-static",
   "version": "1.5.0-alpha.4",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "bin": {
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "watch": "babel -w src --out-dir dist",
-    "build": "babel src --out-dir dist",
+    "watch": "babel -w src --out-dir lib",
+    "build": "babel src --out-dir lib",
     "publishnext": "npm publish --tag next",
     "prepublish": "yarn build",
     "postpublish": "git push --tags",
