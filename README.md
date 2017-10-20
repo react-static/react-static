@@ -68,6 +68,7 @@ These docs are for version `1.x.x`.
   - [`react-static build`](#react-static-build)
 - [Project Setup](#project-setup)
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
+  - [Webpack Config and Plugins](#webpack-config-and-plugins)
 - [Components & Tools](#components--tools)
   - [`<Router>`](#router)
   - [Automatic Routing with `<Routes>`](#automatic-routing-with--routes)
@@ -204,7 +205,7 @@ export default {
   // webpack-configurator (see https://github.com/lewie9021/webpack-configurator
   // for more information), and an object containing a `stage` string, denoting
   // whether the webpack configuration is for the 'dev', 'prod', or 'node' build stage.
-  webpack: (webpackConfigurator, { stage }) => {...},
+  webpack: (webpackConfig, { stage }) => {...},
 
   // The entry location for your app, defaulting to `./src/index.js`
   // This file must export the JSX of your app as the default export,
@@ -227,6 +228,25 @@ export default {
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
 }
+```
+## Webpack Config and Plugins
+To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
+
+`webpack: []Function(previousConfig, { stage }) => newConfig`
+  - The value can be an array of functions or a single function.
+  - Each function will receive the previous webpack config, and expect a modified or new config to be returned.
+
+Since this `webpack` callback accepts an array of transformer functions, the concept of plugins is easy to implement. These transformer functions are applied in order from top to bottom and have total control over the webpack config. Thus, the following is possible
+  ```javascript
+  import withCssLoader from 'react-static/lib/plugins/withCssLoader'
+  import withFileLoader from 'react-static/lib/plugins/withFileLoader'
+
+  ...
+
+  webpack: [
+    withCssLoader,
+    withFileLoader
+  ]
 ```
 
 ## Components & Tools
