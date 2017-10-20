@@ -3,6 +3,7 @@
 
 # production
 /examples/*/dist
+/examples/*/yarn.lock
 /src
 
 # misc

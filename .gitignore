@@ -9,6 +9,7 @@ dist
 lib
 *.log
 .DS_Store
+examples/*/yarn.lock
 
 # misc
 .DS_Store

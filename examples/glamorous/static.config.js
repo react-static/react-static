@@ -2,6 +2,9 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import { renderStatic } from 'glamor/server'
+//
+import withCssLoader from 'react-static/lib/plugins/withCssLoader'
+import withFileLoader from 'react-static/lib/plugins/withFileLoader'
 
 export default {
   getRoutes: async () => {
@@ -60,4 +63,5 @@ export default {
       )
     }
   },
+  webpack: [withFileLoader, withCssLoader],
 }

@@ -1,5 +1,7 @@
 import axios from 'axios'
-import React, { Component } from 'react'
+//
+import withCss from 'react-static/lib/plugins/withCssLoader'
+import withFiles from 'react-static/lib/plugins/withFileLoader'
 
 export default {
   getSiteProps: () => ({
@@ -28,19 +30,5 @@ export default {
       },
     ]
   },
-  Html: class CustomHtml extends Component {
-    render () {
-      const { Html, Head, Body, children } = this.props
-      return (
-        <Html lang="en-US">
-          <Head>
-            <meta charSet="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <link rel="stylesheet" href="/app.css" />
-          </Head>
-          <Body>{children}</Body>
-        </Html>
-      )
-    }
-  },
+  webpack: [withCss, withFiles],
 }

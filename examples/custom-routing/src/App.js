@@ -6,6 +6,8 @@ import About from 'containers/About'
 import Blog from 'containers/Blog'
 import NotFound from 'containers/404'
 
+import './app.css'
+
 export default () => (
   <Router>
     <div>
