@@ -229,6 +229,7 @@ export default {
   bundleAnalyzer: false,
 }
 ```
+
 ## Webpack Config and Plugins
 To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
 
@@ -236,7 +237,7 @@ To modify the webpack configuration, use the `webpack` option in your `static.co
   - The value can be an array of functions or a single function.
   - Each function will receive the previous webpack config, and expect a modified or new config to be returned.
 
-Since this `webpack` callback accepts an array of transformer functions, the concept of plugins is easy to implement. These transformer functions are applied in order from top to bottom and have total control over the webpack config. Thus, the following is possible
+Since this `webpack` callback accepts an array of functions, the concept of plugins is easy to implement. These functions are applied in order from top to bottom and have total control over the webpack config. Thus, the following is possible
   ```javascript
   import withCssLoader from 'react-static/lib/plugins/withCssLoader'
   import withFileLoader from 'react-static/lib/plugins/withFileLoader'
@@ -244,10 +245,19 @@ Since this `webpack` callback accepts an array of transformer functions, the con
   ...
 
   webpack: [
+    // Custom, on-the-fly webpack customization
+    (config, {stage}) => {
+      if (stage === 'prod') {
+        config.module.rules.push({...})
+      }
+      return config
+    }
+    // Or use a predefined / shared customization
     withCssLoader,
     withFileLoader
   ]
-```
+  ```
+For a list of available plugins, visit [https://github.com/nozzle/react-static/tree/master/src/plugins](https://github.com/nozzle/react-static/tree/master/src/plugins).
 
 ## Components & Tools
 
