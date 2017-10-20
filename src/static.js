@@ -6,84 +6,18 @@ import { renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
 import path from 'path'
 import Helmet from 'react-helmet'
-import OpenPort from 'openport'
 //
 import { DefaultDocument } from './RootComponents'
-import { pathJoin } from './shared'
-import { DIST, ROOT, PUBLIC, INDEX } from './paths'
-
-const defaultEntry = './src/index'
-const path404 = '/404'
-
-// Normalize routes with parents, full paths, context, etc.
-const normalizeRoutes = routes => {
-  const flatRoutes = []
-
-  const recurse = (route, parent = { path: '/' }) => {
-    const routePath = route.is404 ? path404 : pathJoin(parent.path, route.path)
-
-    if (typeof route.noIndex !== 'undefined') {
-      console.log(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
-      route.noindex = route.noIndex
-    }
-
-    const normalizedRoute = {
-      ...route,
-      path: routePath,
-      noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
-      hasGetProps: !!route.getProps,
-    }
-
-    if (!normalizedRoute.path) {
-      throw new Error('No path defined for route:', normalizedRoute)
-    }
-
-    if (route.children) {
-      route.children.forEach(d => recurse(d, normalizedRoute))
-    }
-
-    delete normalizedRoute.children
-
-    flatRoutes.push(normalizedRoute)
-  }
-  routes.forEach(d => recurse(d))
-
-  flatRoutes.forEach(route => {
-    const found = flatRoutes.find(d => d.path === route.path)
-    if (found !== route) {
-      console.warn('More than one route is defined for path:', route.path)
-    }
-  })
-
-  if (!flatRoutes.find(d => d.is404)) {
-    flatRoutes.push({
-      is404: true,
-      path: path404,
-    })
-  }
-
-  return flatRoutes
-}
-
-// Retrieves the static.config.js from the current project directory
-export const getConfig = () => {
-  const config = require(path.resolve(path.join(process.cwd(), 'static.config.js'))).default
-  return {
-    getSiteProps: () => ({}),
-    ...config,
-    siteRoot: config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null,
-    getRoutes: async (...args) => {
-      const routes = await config.getRoutes(...args)
-      return normalizeRoutes(routes)
-    },
-  }
-}
+import { getConfig } from './utils'
+import { DIST } from './paths'
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const writeRoutesToStatic = async ({ config }) => {
   const userConfig = getConfig()
   const DocumentTemplate = config.Html || DefaultDocument
-  const Comp = require(path.join(ROOT, userConfig.entry || defaultEntry)).default
+
+  // Use the node version of the app created with webpack
+  const Comp = require(path.resolve(DIST, 'app.static.js')).default
 
   const siteProps = await userConfig.getSiteProps({ dev: false })
 
@@ -170,6 +104,9 @@ export const writeRoutesToStatic = async ({ config }) => {
           {head.meta}
           {head.noscript}
           {head.script}
+          {process.env.extractedCSSpath && (
+            <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
+          )}
           {head.style}
           {head.title}
           {children}
@@ -319,29 +256,4 @@ export const writeRouteComponentsToFile = async routes => {
   const now = Date.now() / 1000
   const then = now - 1000
   fs.utimesSync(filepath, then, then)
-}
-
-export const findAvailablePort = start =>
-  new Promise((resolve, reject) =>
-    OpenPort.find(
-      {
-        startingPort: start,
-        endingPort: start + 1000,
-      },
-      (err, port) => {
-        if (err) {
-          return reject(err)
-        }
-        resolve(port)
-      },
-    ),
-  )
-
-export function copyPublicFolder (dest) {
-  fs.ensureDirSync(PUBLIC)
-
-  fs.copySync(PUBLIC, dest, {
-    dereference: true,
-    filter: file => file !== INDEX,
-  })
 }

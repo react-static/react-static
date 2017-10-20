@@ -1,77 +1,13 @@
 import fs from 'fs-extra'
 import chalk from 'chalk'
-import webpack from 'webpack'
-import WebpackConfigurator from 'webpack-configurator'
 //
-import { DIST, SRC } from '../paths'
-import {
-  getConfig,
-  writeRoutesToStatic,
-  buildXMLandRSS,
-  writeRouteComponentsToFile,
-  copyPublicFolder,
-} from '../static'
-import defaultWebpackConfigProd from '../webpack/webpack.config.prod'
-
-const config = getConfig()
-const webpackConfigProd = new WebpackConfigurator()
-webpackConfigProd.merge(defaultWebpackConfigProd)
-if (config.webpack) {
-  config.webpack(webpackConfigProd, { stage: 'production' })
-}
-const finalWebpackConfigProd = webpackConfigProd.resolve()
-const compilerProd = webpack(finalWebpackConfigProd)
-
-const buildAppBundle = () => {
-  const build = (stage, compiler) =>
-    new Promise((resolve, reject) => {
-      compiler.run((err, stats) => {
-        if (err) {
-          console.log(chalk.red(err.stack || err))
-          if (err.details) {
-            console.log(chalk.red(err.details))
-          }
-          return reject(err)
-        }
-
-        stats.toJson('verbose')
-
-        const buildErrors = stats.hasErrors()
-        const buildWarnings = stats.hasWarnings()
-
-        if (buildErrors || buildWarnings) {
-          console.log(
-            stats.toString({
-              context: webpackConfigProd.context,
-              performance: false,
-              hash: false,
-              timings: true,
-              entrypoints: false,
-              chunkOrigins: false,
-              chunkModules: false,
-              colors: true,
-            }),
-          )
-          console.log(
-            chalk.red.bold(
-              `
-=> There were ERRORS during the ${stage} build stage! :(
-=> Fix them and try again!`,
-            ),
-          )
-        }
-
-        resolve()
-      })
-    })
-
-  return Promise.all([build('production', compilerProd)])
-}
+import { DIST } from '../paths'
+import { writeRoutesToStatic, buildXMLandRSS, writeRouteComponentsToFile } from '../static'
+import { buildProductionBundles } from '../webpack'
+import { getConfig, copyPublicFolder } from '../utils'
 
 export default async () => {
   try {
-    process.env.NODE_PATH = `${SRC}:${DIST}`
-    require('module').Module._initPaths()
     const config = getConfig()
     await fs.remove(DIST)
 
@@ -92,7 +28,7 @@ export default async () => {
     // Build static pages and JSON
     console.log('=> Bundling App...')
     console.time(chalk.green('=> [\u2713] App Bundled'))
-    await buildAppBundle()
+    await buildProductionBundles({ config })
     console.timeEnd(chalk.green('=> [\u2713] App Bundled'))
 
     if (config.bundleAnalyzer) {

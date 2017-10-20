@@ -2,39 +2,47 @@ import webpack from 'webpack'
 import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 //
 import rules from './rules'
-import { getConfig } from '../static'
 import { ROOT, DIST, NODE_MODULES, SRC } from '../paths'
 
-const defaultEntry = './src/index'
-const config = getConfig()
+export default function ({ config, isNode }) {
+  return {
+    context: path.resolve(__dirname, '../node_modules'),
+    entry: path.resolve(ROOT, config.entry),
+    output: {
+      filename: isNode ? 'app.static.js' : 'app.js',
+      path: DIST,
+      publicPath: '/',
+      libraryTarget: isNode ? 'umd' : undefined,
+    },
+    target: isNode ? 'node' : undefined,
+    module: {
+      rules: rules(),
+    },
+    resolve: {
+      modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
+      extensions: ['.js', '.json', '.jsx'],
+    },
+    plugins: [
+      new webpack.EnvironmentPlugin({
+        ...process.env,
+        NODE_ENV: 'production',
+      }),
+      new CaseSensitivePathsPlugin(),
+      new ExtractTextPlugin({
+        filename: getPath => {
+          process.env.extractedCSSpath = 'styles.css'
+          return getPath('styles.css')
+        },
+        allChunks: true,
+      }),
+      !isNode ? new webpack.optimize.UglifyJsPlugin() : null,
+      config.bundleAnalyzer ? new BundleAnalyzerPlugin() : null,
+    ].filter(d => d),
 
-export default {
-  context: path.resolve(__dirname, '../node_modules'),
-  entry: [path.resolve(ROOT, config.entry || defaultEntry)],
-  output: {
-    filename: 'app.js',
-    path: DIST,
-    publicPath: '/',
-  },
-  module: {
-    rules,
-  },
-  resolve: {
-    modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC, DIST],
-    extensions: ['.js', '.json', '.jsx'],
-  },
-  plugins: [
-    new webpack.EnvironmentPlugin({
-      ...process.env,
-      NODE_ENV: 'production',
-    }),
-    new CaseSensitivePathsPlugin(),
-    new webpack.optimize.UglifyJsPlugin(),
-    config.bundleAnalyzer ? new BundleAnalyzerPlugin() : null,
-  ].filter(d => d),
-
-  devtool: 'source-map',
+    devtool: 'source-map',
+  }
 }

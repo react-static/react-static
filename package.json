@@ -1,14 +1,15 @@
 {
   "name": "react-static",
-  "version": "1.4.1",
-  "main": "dist/index.js",
+  "version": "1.5.0-alpha.6",
+  "main": "lib/index.js",
   "license": "MIT",
   "bin": {
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "watch": "babel -w src --out-dir dist",
-    "build": "babel src --out-dir dist",
+    "watch": "babel -w src --out-dir lib",
+    "build": "babel src --out-dir lib",
+    "publishnext": "npm publish --tag next",
     "prepublish": "yarn build",
     "postpublish": "git push --tags",
     "test": "eslint src examples"
@@ -17,16 +18,8 @@
     "eslint": "^4.3.0",
     "eslint-config-react-tools": "^1.0.6"
   },
-  "files": [
-    "dist",
-    "bin",
-    "examples",
-    ".babelrc",
-    "yarn.lock",
-    "LICENSE"
-  ],
   "dependencies": {
-    "autoprefixer": "^7.1.4",
+    "autoprefixer": "^7.1.5",
     "axios": "^0.16.2",
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -45,7 +38,9 @@
     "cross-spawn": "^5.1.0",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
+    "extract-text-webpack-plugin": "^3.0.1",
     "fs-extra": "^4.0.2",
+    "html-webpack-plugin": "^2.30.1",
     "inquirer": "^3.3.0",
     "inquirer-autocomplete-prompt": "^0.11.1",
     "match-sorter": "^2.0.2",
