@@ -1,0 +1,18 @@
+# testing
+/coverage
+
+# production
+/examples/*/dist
+/src
+
+# misc
+.DS_Store
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
