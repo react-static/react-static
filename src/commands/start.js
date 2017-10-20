@@ -14,10 +14,6 @@ import { startConfigServer } from '../configServer'
 
 export default async () => {
   try {
-    // For now, add the dist and src paths to the node_path so as to
-    // resolve imports from those locations, eg. react-static-paths
-    require('module').Module._initPaths()
-
     // Get the config
     const config = getConfig()
 

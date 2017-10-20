@@ -20,10 +20,10 @@ export default function ({ config }) {
       publicPath: '/',
     },
     module: {
-      rules,
+      rules: rules({ dev: true }),
     },
     resolve: {
-      modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC, DIST],
+      modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [

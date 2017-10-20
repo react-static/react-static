@@ -104,6 +104,9 @@ export const writeRoutesToStatic = async ({ config }) => {
           {head.meta}
           {head.noscript}
           {head.script}
+          {process.env.extractedCSSpath && (
+            <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
+          )}
           {head.style}
           {head.title}
           {children}

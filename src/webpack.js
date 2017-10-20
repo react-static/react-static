@@ -1,7 +1,6 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger */
 import webpack from 'webpack'
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
-import WebpackConfigurator from 'webpack-configurator'
 import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
@@ -11,25 +10,25 @@ import { DIST } from './paths'
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
 export async function buildCompiler ({ config, stage }) {
-  const webpackConfig = new WebpackConfigurator()
-
-  let stageConfig
+  let webpackConfig
   if (stage === 'dev') {
-    stageConfig = require('./webpack/webpack.config.dev').default({ config })
+    webpackConfig = require('./webpack/webpack.config.dev').default({ config })
   } else if (stage === 'prod') {
-    stageConfig = require('./webpack/webpack.config.prod').default({ config })
+    webpackConfig = require('./webpack/webpack.config.prod').default({ config })
   } else if (stage === 'node') {
-    stageConfig = require('./webpack/webpack.config.prod').default({ config, isNode: true })
+    webpackConfig = require('./webpack/webpack.config.prod').default({ config, isNode: true })
   } else {
     throw new Error('A stage is required when building a compiler.')
   }
 
-  webpackConfig.merge(stageConfig)
   if (config.webpack) {
-    config.webpack(webpackConfig, { stage })
+    let transformers = config.webpack
+    if (!Array.isArray(config.webpack)) {
+      transformers = [config.webpack]
+    }
+    webpackConfig = transformers.reduce((prev, current) => current(prev, { stage }), webpackConfig)
   }
-  const finalWebpackConfig = webpackConfig.resolve()
-  return webpack(finalWebpackConfig)
+  return webpack(webpackConfig)
 }
 
 // Starts the development server
@@ -147,8 +146,14 @@ export async function buildProductionBundles ({ config }) {
       })
     })
 
-  const prodCompiler = await buildCompiler({ config, stage: 'prod' })
-  const nodeCompiler = await buildCompiler({ config, stage: 'node' })
+  const prodCompiler = await buildCompiler({
+    config,
+    stage: 'prod',
+  })
+  const nodeCompiler = await buildCompiler({
+    config,
+    stage: 'node',
+  })
 
-  return Promise.all([build('prod', prodCompiler), build('node', nodeCompiler)])
+  await Promise.all([build('prod', prodCompiler), build('node', nodeCompiler)])
 }

@@ -1,5 +1,8 @@
-import axios from 'axios'
 import React, { Component } from 'react'
+import axios from 'axios'
+//
+import withCss from 'react-static/plugins/withCss'
+import withFiles from 'react-static/plugins/withFiles'
 
 export default {
   getSiteProps: () => ({
@@ -51,4 +54,5 @@ export default {
       )
     }
   },
+  webpack: [withCss, withFiles],
 }

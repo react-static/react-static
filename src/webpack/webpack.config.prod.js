@@ -2,6 +2,7 @@ import webpack from 'webpack'
 import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 //
 import rules from './rules'
@@ -19,10 +20,10 @@ export default function ({ config, isNode }) {
     },
     target: isNode ? 'node' : undefined,
     module: {
-      rules,
+      rules: rules(),
     },
     resolve: {
-      modules: [NODE_MODULES, path.resolve(__dirname, '../node_modules'), SRC, DIST],
+      modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [
@@ -31,6 +32,13 @@ export default function ({ config, isNode }) {
         NODE_ENV: 'production',
       }),
       new CaseSensitivePathsPlugin(),
+      new ExtractTextPlugin({
+        filename: getPath => {
+          process.env.extractedCSSpath = 'styles.css'
+          return getPath('styles.css')
+        },
+        allChunks: true,
+      }),
       !isNode ? new webpack.optimize.UglifyJsPlugin() : null,
       config.bundleAnalyzer ? new BundleAnalyzerPlugin() : null,
     ].filter(d => d),
