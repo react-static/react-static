@@ -26,7 +26,12 @@ export async function buildCompiler ({ config, stage }) {
     if (!Array.isArray(config.webpack)) {
       transformers = [config.webpack]
     }
-    webpackConfig = transformers.reduce((prev, current) => current(prev, { stage }), webpackConfig)
+    transformers.forEach(transformer => {
+      const modification = transformer(webpackConfig, { stage })
+      if (modification !== undefined) {
+        webpackConfig = modification
+      }
+    })
   }
   return webpack(webpackConfig)
 }
