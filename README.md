@@ -232,19 +232,52 @@ To modify the webpack configuration, use the `webpack` option in your `static.co
 
 `webpack: []Function(previousConfig, { stage }) => newConfig`
   - The value can be an array of functions or a single function.
-  - Each function will receive the previous webpack config, and expect a modified or new config to be returned.
+  - Each function will receive the previous webpack config, and can return a modified or new config.
 
-Since this `webpack` callback accepts an array of transformer functions, the concept of plugins is easy to implement. These transformer functions are applied in order from top to bottom and have total control over the webpack config. Thus, the following is possible
+Since this `webpack` callback accepts an array of transformer functions, the concept of plugins is easy to implement. These transformer functions are applied in order from top to bottom and have total control over the webpack config.
+
+By default, our Webpack toolchain compiles `.js` and `.css` files. Anything that is not supposed to be compiled (images, fonts, etc.) in your `./src` folder will move to `./dist`.
+If you want to use custom loaders, you will have to replace our existing toolchain completely, because order often matters. You can do this by simply calling our `addRules` and `withoutRules` helpers. You can wrap these functions inside a arrow function to work like a transformer, to pass the previous webpack config and other arguments to them. They will return a modified config with the added or without any module rules.
+
+All used loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules) and by default the following loaders are applied:
+  `loadJavascript`
+  `loadCSS`
+  `loadAnything`
+
+Thus, overall things like the following are possible:
   ```javascript
-  import withCssLoader from 'react-static/lib/plugins/withCssLoader'
-  import withFileLoader from 'react-static/lib/plugins/withFileLoader'
+import { withoutRules, addRules } from 'react-static/lib/webpack/rules';
+import loadJavascript from 'react-static/lib/webpack/rules/loadJavascript';
+import loadFonts from 'react-static/lib/webpack/rules/loadFonts';
+import loadCSS from 'react-static/lib/webpack/rules/loadCSS';
+
+export default {
 
   ...
 
-  webpack: [
-    withCssLoader,
-    withFileLoader
-  ]
+	webpack: [
+		(config, args) => // this arrow function is used as a transformer
+			addRules(
+				withoutRules(config), //remove all current module rules
+				[
+					loadJavascript, // compile javascript files
+					loadCSS, // allow importing .css files
+					{
+						loader: 'file-loader',
+						test: /\.(fancyFileExtension)$/,
+						query: {
+							limit: 10000,
+							name: 'static/[name].[hash:8].[ext]',
+						},
+					},
+				],
+				args, // passing every provided argument like the { stage } attribute
+			),
+		config => { // transformer functions do not need to return a new webpack configuration
+			console.log(config.module.rules);
+		},
+	],
+};
 ```
 
 ## Components & Tools
