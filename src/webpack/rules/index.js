@@ -1,6 +1,6 @@
-import loadJavascript from './loadJavascript'
-import loadCSS from './loadCSS'
-import loadAnything from './loadAnything'
+import jsLoader from './jsLoader'
+import cssLoader from './cssLoader'
+import universalLoader from './universalLoader'
 
 export const withoutRules = config => {
   config.module.rules = []
@@ -18,4 +18,4 @@ export const addRules = (config, moduleRules, args) => {
   return config
 }
 
-export default args => [...loadJavascript(args), ...loadCSS(args), ...loadAnything(args)]
+export default args => [...jsLoader(args), ...cssLoader(args), ...universalLoader(args)]
