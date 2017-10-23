@@ -292,6 +292,54 @@ class Prefetch extends Component {
   }
 }
 
+const ioIsSupported = typeof window !== 'undefined' && 'IntersectionObserver' in window
+const handleIntersection = (element, callback) => {
+  const io = new window.IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (element === entry.target) {
+        if (entry.isIntersecting) {
+          io.unobserve(element)
+          io.disconnect()
+          callback()
+        }
+      }
+    })
+  })
+
+  io.observe(element)
+}
+
+class PrefetchWhenSeen extends Component {
+  static defaultProps = {
+    children: null,
+    path: null,
+    onLoad: () => {},
+  }
+
+  componentDidMount () {
+    if (!ioIsSupported) {
+      this.runPrefetch()
+    }
+  }
+
+  runPrefetch = () => {
+    const { path, onLoad } = this.props
+    prefetch(path).then(data => {
+      onLoad(data, path)
+    })
+  }
+
+  handleRef = ref => {
+    if (ioIsSupported && ref) {
+      handleIntersection(ref, this.runPrefetch)
+    }
+  }
+
+  render () {
+    return <div ref={this.handleRef}>{this.props.children}</div>
+  }
+}
+
 let loading = false
 let subscribers = []
 const setLoading = d => {
@@ -358,6 +406,7 @@ module.exports = {
   getRouteProps,
   getSiteProps,
   Prefetch,
+  PrefetchWhenSeen,
   prefetch,
   Head: Helmet,
 }
