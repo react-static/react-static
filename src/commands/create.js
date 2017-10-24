@@ -54,10 +54,12 @@ export default async () => {
   const isYarn = shouldUseYarn()
 
   console.log('=> Installing dependencies...')
-  execSync(`cd ${answers.name}`)
-  execSync(`${isYarn ? 'yarn' : 'npm install'}`)
   // We install react-static separately to ensure we always have the latest stable release
-  execSync(`${isYarn ? 'yarn add react-static' : 'npm install react-static --save'}`)
+  execSync(
+    `cd ${answers.name} && ${isYarn ? 'yarn' : 'npm install'} && ${isYarn
+      ? 'yarn add react-static'
+      : 'npm install react-static --save'}`,
+  )
   console.log('')
   console.timeEnd(chalk.green(`=> [\u2713] Project "${answers.name}" created`))
 
