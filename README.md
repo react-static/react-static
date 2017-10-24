@@ -80,6 +80,7 @@ These docs are for version `1.x.x`.
   - [`getSiteProps(Component)`](#getsitepropscomponent)
   - [`<Head>`](#head)
   - [`<Prefetch path=''/>`](#prefetch-path)
+  - [`<PrefetchWhenSeen path=''/>`](#prefetchwhenseen-path)
   - [`prefetch(path)`](#prefetchpath)
 
 ## Quick Start
@@ -168,7 +169,7 @@ export default {
       lastModified: '', // Optional. String('YYYY-MM-DD')
       priority: 0.5 // Optional.
     }, {
-      // If using automatica routing, you can specify a component to render the
+      // If using automatic routing, you can specify a component to render the
       // 404 page by creating a route with `is404` set to `true` and defining a
       // `component` to use.
       is404: true,
@@ -366,7 +367,7 @@ To define a 404 page using automatic routing, define a route with `is404` set to
 ##### Custom Routing
 When using custom routing, there are 2 types of 404 pages:
 - **Static 404 page** - At build time, `react-static` will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
-- **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those sitations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
+- **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those situations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
 
 ### `<Link>` and `<NavLink>`
 `react-static` also gives you access to `react-router`'s `<Link>` and `<NavLink>` components. Use these component to allow your users to navigate around your site!
@@ -505,8 +506,27 @@ import { Link } from 'react-router-dom'
 <Prefetch path='/blog'>
   <Link to='/blog'>
     Go to blog
-  </Prefetch>
+  </Link>
 </Prefetch>
+```
+
+### `<PrefetchWhenSeen path=''/>`
+PrefetchWhenSeen is almost identical to the Prefetch component, except that it will not fire its prefetch until the component is visible in the view. If the user's browser doesn't support the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), it will work just like the Prefetch component.
+
+Example:
+```javascript
+import { PrefetchWhenSeen } from 'react-static'
+import { Link } from 'react-router-dom'
+
+// Standalone
+<PrefetchWhenSeen path='/blog' />
+
+// With children
+<PrefetchWhenSeen path='/blog'>
+  <Link to='/blog'>
+    Go to blog
+  </Link>
+</PrefetchWhenSeen>
 ```
 
 ### `prefetch(path)`
@@ -527,4 +547,4 @@ We are always looking for people to help us grow `react-static`'s capabilities a
 
 ## License
 
-React Static uses the MIT license. For mor information on this license, [click here](https://github.com/nozzle/react-static/blob/master/LICENSE).
+React Static uses the MIT license. For more information on this license, [click here](https://github.com/nozzle/react-static/blob/master/LICENSE).
