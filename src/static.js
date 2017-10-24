@@ -14,7 +14,7 @@ import { DIST } from './paths'
 // Exporting route HTML and JSON happens here. It's a big one.
 export const writeRoutesToStatic = async ({ config }) => {
   const userConfig = getConfig()
-  const DocumentTemplate = config.Html || DefaultDocument
+  const DocumentTemplate = config.Document || DefaultDocument
 
   // Use the node version of the app created with webpack
   const Comp = require(path.resolve(DIST, 'app.static.js')).default

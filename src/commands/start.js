@@ -27,7 +27,7 @@ export default async () => {
     const siteProps = await config.getSiteProps({ dev: true })
 
     // Resolve the base HTML template
-    const DocumentTemplate = config.Html || DefaultDocument
+    const DocumentTemplate = config.Document || DefaultDocument
 
     // Render the base document component to string with siteprops
     const html = renderToStaticMarkup(
