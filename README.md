@@ -185,12 +185,12 @@ export default {
   siteRoot: 'https://mysite.com', // Optional, but necessary for the sitemap.xml
 
   // An optional custom React component that renders the base
-  // Html for every page, including the dev server. Must utilize the
+  // Document for every page, including the dev server. If used, it must utilize the
   // `Html`, `Head`, `Body` and `children` for react-static to work. The optional
   // `siteProps` prop will contain any data returned by `getSiteProps` in your config
-  // and `staticMeta` prop refers to any data you potentially returned from
-  // the `preRenderMeta` and `postRenderMeta` function.
-  Html: ({ Html, Head, Body, children, siteProps, staticMeta }) => (
+  // and `renderMeta` prop refers to any data you potentially assigned to it during
+  // the custom `renderToHtml` hook.
+  Document: ({ Html, Head, Body, children, siteProps, renderMeta }) => (
     <Html lang="en-US">
       <Head>
         <meta charSet="UTF-8" />
@@ -215,15 +215,16 @@ export default {
   // Setup section above.
   entry: './src/index.js',
 
-  // An optional asynchronous function that is pass the JSX component
-  // BEFORE it is rendered to a static string. It can return a javascript
-  // object that will be made available to a custom Html component
-  preRenderMeta: async JSX => {...},
-
-  // An optional asynchronous function that is passed the statically
-  // rendered HTML for each page and returns a javascript object
-  // that will be made available to a custom Html component
-  postRenderMeta: async staticHTML => {...},
+  // An optional function to customize the server rendering logic. Receives:
+  // - render: renders the JSX to and html string
+  // - Component: the final react component to be rendered to HTML
+  // - meta, a MUTABLE object that is exposed to the optional Document component as a prop
+  // Expected to return an HTML string
+  // This is the perfect place for css-in-js integration (see styled-components and glamorous examples for more information)
+  renderToHtml: (render, Component, meta) => {
+    meta.hello = 'world'
+    return render(<Component />)
+  },
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,

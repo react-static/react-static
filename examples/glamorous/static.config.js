@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import axios from 'axios'
 import React, { Component } from 'react'
-import { renderStatic } from 'glamor/server'
+import { renderStaticOptimized } from 'glamor/server'
 //
 import withCssLoader from 'react-static/lib/plugins/withCssLoader'
 import withFileLoader from 'react-static/lib/plugins/withFileLoader'
@@ -38,30 +38,27 @@ export default {
       },
     ]
   },
-  postRenderMeta: async html => ({
-    glamorousData: renderStatic(() => html),
-  }),
-  Html: class CustomHtml extends Component {
+  renderToHtml: async (render, Comp, meta) => {
+    const html = render(<Comp />)
+    const { css } = renderStaticOptimized(() => html)
+    meta.glamStyles = css
+    return html
+  },
+  Document: class CustomDocument extends Component {
     render () {
-      const {
-        Html,
-        Head,
-        Body,
-        children,
-        staticMeta: { glamorousData: { css } = {} } = {},
-      } = this.props
+      const { Html, Head, Body, children, renderMeta } = this.props
 
       return (
         <Html>
           <Head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <style dangerouslySetInnerHTML={{ __html: css }} />
+            <style dangerouslySetInnerHTML={{ __html: renderMeta.glamStyles }} />
           </Head>
           <Body>{children}</Body>
         </Html>
       )
     }
   },
-  webpack: [withFileLoader, withCssLoader],
+  webpack: [withCssLoader, withFileLoader],
 }
