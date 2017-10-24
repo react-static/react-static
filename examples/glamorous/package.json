@@ -15,8 +15,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-router": "^4.2.0",
-    "react-static": "2.x.x"
+    "react-router": "^4.2.0"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
