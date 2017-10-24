@@ -4,6 +4,8 @@ import glamorous from 'glamorous'
 //
 import Routes from 'react-static-routes'
 
+import './app.css'
+
 const AppStyles = glamorous.div({
   fontFamily:
     "'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif",

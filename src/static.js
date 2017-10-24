@@ -53,18 +53,16 @@ export const writeRoutesToStatic = async ({ config }) => {
         }
       }
 
-      const ContextualComp = <InitialPropsContext>{Comp}</InitialPropsContext>
+      const ContextualComp = props => (
+        <InitialPropsContext>
+          <Comp {...props} />
+        </InitialPropsContext>
+      )
 
-      let staticMeta = {}
-      if (config.preRenderMeta) {
-        // Allow the user to perform custom rendering logic (important for styles and helmet)
-        staticMeta = {
-          ...staticMeta,
-          ...(await config.preRenderMeta(ContextualComp)),
-        }
-      }
+      const renderMeta = {}
 
-      const appHtml = renderToString(ContextualComp)
+      // Allow extractionso of meta via config.renderToString
+      const appHtml = await config.renderToHtml(renderToString, ContextualComp, renderMeta)
 
       // Extract head calls using Helmet
       const helmet = Helmet.renderStatic()
@@ -80,16 +78,6 @@ export const writeRoutesToStatic = async ({ config }) => {
         title: helmet.title.toComponent(),
       }
 
-      staticMeta.head = head
-
-      if (config.postRenderMeta) {
-        // Allow the user to perform custom rendering logic (important for styles and helmet)
-        staticMeta = {
-          ...staticMeta,
-          ...(await config.postRenderMeta(appHtml)),
-        }
-      }
-
       // Instead of using the default components, we need to hard code meta
       // from react-helmet into the components
       const HtmlWithMeta = ({ children, ...rest }) => (
@@ -100,15 +88,15 @@ export const writeRoutesToStatic = async ({ config }) => {
       const HeadWithMeta = ({ children, ...rest }) => (
         <head {...rest}>
           {head.base}
-          {head.link}
+          {head.title}
           {head.meta}
-          {head.noscript}
-          {head.script}
+          {head.link}
           {process.env.extractedCSSpath && (
             <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
           )}
+          {head.noscript}
+          {head.script}
           {head.style}
-          {head.title}
           {children}
         </head>
       )
@@ -139,7 +127,7 @@ export const writeRoutesToStatic = async ({ config }) => {
           Head={HeadWithMeta}
           Body={BodyWithMeta}
           siteProps={siteProps}
-          staticMeta={staticMeta}
+          renderMeta={renderMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </DocumentTemplate>,

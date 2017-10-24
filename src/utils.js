@@ -1,5 +1,5 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger */
-
+import React from 'react'
 import OpenPort from 'openport'
 import path from 'path'
 import fs from 'fs-extra'
@@ -33,6 +33,7 @@ export const getConfig = () => {
   return {
     entry: defaultEntry,
     getSiteProps: () => ({}),
+    renderToHtml: (render, Comp) => render(<Comp />),
     ...config,
     siteRoot: config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null,
     getRoutes: async (...args) => {
