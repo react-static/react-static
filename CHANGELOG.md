@@ -5,6 +5,9 @@
 - The `preRenderMeta` and `postRenderMeta` hooks in `static.config.js` have been deprecated in favor of the new `renderToHtml` hook. This is a very important change, so please check the readme if you are using these hooks!
 - The new `renderToHtml` hook now uses a **mutable** meta object. This object is passed as a prop to the base `Document` component as `renderMeta` now, instead of the previous `staticMeta`.
 
+#### Features
+- New `PrefetchWhenSeen` component allows for prefetching when component becomes visible in the viewport.
+
 #### Fixes & Optimizations
 - Exporting is now up to 2x faster after switching from a dual pass to a single pass render strategy.
 - Fixed a very elusive and angering bug where imported node_modules were not being shared between the node context and the node webpack build of the app used for exporting.
