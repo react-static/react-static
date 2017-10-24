@@ -10,7 +10,7 @@
     "watch": "babel -w src --out-dir lib",
     "build": "babel src --out-dir lib",
     "publishnext": "npm publish --tag next",
-    "prepublish": "yarn build",
+    "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
     "test": "eslint src examples"
   },
