@@ -80,6 +80,7 @@ These docs are for version `1.x.x`.
   - [`getSiteProps(Component)`](#getsitepropscomponent)
   - [`<Head>`](#head)
   - [`<Prefetch path=''/>`](#prefetch-path)
+  - [`<PrefetchWhenSeen path=''/>`](#prefetchwhenseen-path)
   - [`prefetch(path)`](#prefetchpath)
 
 ## Quick Start
@@ -496,6 +497,25 @@ import { Link } from 'react-router-dom'
     Go to blog
   </Prefetch>
 </Prefetch>
+```
+
+### `<PrefetchWhenSeen path=''/>`
+PrefetchWhenSeen is almost identical to the Prefetch component, except that it will not fire its prefetch until the the component is visible in the view. If the user's browser doesn't support the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), it will work just like the Prefetch component.
+
+Example:
+```javascript
+import { PrefetchWhenSeen } from 'react-static'
+import { Link } from 'react-router-dom'
+
+// Standalone
+<PrefetchWhenSeen path='/blog' />
+
+// With children
+<PrefetchWhenSeen path='/blog'>
+  <Link to='/blog'>
+    Go to blog
+  </Link>
+</PrefetchWhenSeen>
 ```
 
 ### `prefetch(path)`
