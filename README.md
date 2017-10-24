@@ -500,7 +500,7 @@ import { Link } from 'react-router-dom'
 ```
 
 ### `<PrefetchWhenSeen path=''/>`
-PrefetchWhenSeen is almost identical to the Prefetch component, except that it will not fire its prefetch until the the component is visible in the view. If the user's browser doesn't support the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), it will work just like the Prefetch component.
+PrefetchWhenSeen is almost identical to the Prefetch component, except that it will not fire its prefetch until the component is visible in the view. If the user's browser doesn't support the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), it will work just like the Prefetch component.
 
 Example:
 ```javascript
