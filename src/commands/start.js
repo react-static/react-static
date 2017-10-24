@@ -31,7 +31,7 @@ export default async () => {
 
     // Render the base document component to string with siteprops
     const html = renderToStaticMarkup(
-      <DocumentTemplate staticMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
+      <DocumentTemplate renderMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
         <div id="root" />
       </DocumentTemplate>,
     )
