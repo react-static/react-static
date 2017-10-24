@@ -495,7 +495,7 @@ import { Link } from 'react-router-dom'
 <Prefetch path='/blog'>
   <Link to='/blog'>
     Go to blog
-  </Prefetch>
+  </Link>
 </Prefetch>
 ```
 
