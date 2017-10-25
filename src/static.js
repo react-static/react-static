@@ -204,35 +204,78 @@ export const writeRouteComponentsToFile = async routes => {
     }
   })
 
-  const standardRoutes = routes.filter(d => !d.is404)
+  const templateImports = templates
+    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '../${template}'`)
+    .join('\n')
 
-  const notFoundRoute = routes.find(d => d.is404)
+  const templateMap = `const templateMap = {
+    ${templates
+    .map((template, index) => `t_${index}: ${template.replace(/[^a-zA-Z]/g, '_')}`)
+    .join(',\n')}
+  }`
+
+  const tree = {}
+  routes.forEach(route => {
+    const parts = route.path === '/' ? ['/'] : route.path.split('/').filter(d => d)
+    let cursor = tree
+    parts.forEach((part, partIndex) => {
+      const isLeaf = parts.length === partIndex + 1
+      if (!cursor.c) {
+        cursor.c = {}
+      }
+      cursor = cursor.c
+      if (!cursor[part]) {
+        cursor[part] = {}
+      }
+      cursor = cursor[part]
+      if (isLeaf) {
+        cursor.t = `t_${templates.indexOf(route.component)}`
+      }
+    })
+  })
+
+  const templateTree = `const templateTree = ${JSON.stringify(tree)
+    .replace(/"(\w)":/gm, '$1:')
+    .replace(/template: '(.+)'/gm, 'template: $1')}`
+
+  const getTemplateForPath = `
+    const getTemplateForPath = path => {
+      const parts = path === '/' ? ['/'] : path.split('/').filter(d => d)
+      let cursor = templateTree
+      try {
+        parts.forEach(part => {
+          cursor = cursor.c[part]
+        })
+        return templateMap[cursor.t]
+      } catch (e) {
+        return false
+      }
+    }
+  `
+
+  const mainRouteComp = `
+    <Route path='*' render={props => {
+      let Template = getTemplateForPath(props.location.pathname)
+      if (!Template) {
+        Template = getTemplateForPath('404')
+      }
+      return <Template {...props} />
+    }} />
+  `
 
   const file = `
     import React, { Component } from 'react'
-    import { Switch, Route } from 'react-router-dom'
+    import { Route } from 'react-router-dom'
 
-    ${templates
-    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '../${template}'`)
-    .join('\n')}
+    ${templateImports}
+    ${templateMap}
+    ${templateTree}
+    ${getTemplateForPath}
 
     export default class Routes extends Component {
       render () {
         return (
-          <Switch>
-              ${standardRoutes
-    .map(
-      route =>
-        `<Route exact path={'${route.path}'} component={${route.component.replace(
-          /[^a-zA-Z]/g,
-          '_',
-        )}} />`,
-    )
-    .join('\n')}
-              ${notFoundRoute
-    ? `<Route component={${notFoundRoute.component.replace(/[^a-zA-Z]/g, '_')}} />`
-    : ''}
-          </Switch>
+            ${mainRouteComp}
         )
       }
     }
