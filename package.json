@@ -58,7 +58,6 @@
     "url-loader": "^0.6.1",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-configurator": "^0.3.1",
     "webpack-dev-server": "^2.8.2",
     "webpack-node-externals": "^1.6.0"
   }

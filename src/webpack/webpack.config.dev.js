@@ -20,7 +20,7 @@ export default function ({ config }) {
       publicPath: '/',
     },
     module: {
-      rules: rules({ dev: true }),
+      rules: rules({ stage: 'dev' }),
     },
     resolve: {
       modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],

@@ -2,9 +2,6 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import { renderStaticOptimized } from 'glamor/server'
-//
-import withCssLoader from 'react-static/lib/plugins/withCssLoader'
-import withFileLoader from 'react-static/lib/plugins/withFileLoader'
 
 export default {
   getRoutes: async () => {
@@ -55,10 +52,11 @@ export default {
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <style dangerouslySetInnerHTML={{ __html: renderMeta.glamStyles }} />
           </Head>
-          <Body>{children}</Body>
+          <Body>
+            {children}
+          </Body>
         </Html>
       )
     }
   },
-  webpack: [withCssLoader, withFileLoader],
 }

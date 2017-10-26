@@ -1,8 +1,6 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
-//
-import withFiles from 'react-static/lib/plugins/withFileLoader'
 
 export default {
   getSiteProps: () => ({
@@ -56,10 +54,11 @@ export default {
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             {renderMeta.styleTags}
           </Head>
-          <Body>{children}</Body>
+          <Body>
+            {children}
+          </Body>
         </Html>
       )
     }
   },
-  webpack: [withFiles],
 }

@@ -1,4 +1,4 @@
-import { NODE_MODULES } from '../paths'
+import { NODE_MODULES } from '../../paths'
 
 export default function () {
   return [
