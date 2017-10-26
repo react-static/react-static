@@ -1,10 +1,11 @@
-# React-Static - Basic Example
+# React-Static - Dynamic Imports Example
 
-This example is the most basic version of react-static available. It includes:
+This example of React Static includes:
 - Babel
 - CSS imports
 - Image imports
 - File imports
 - Automatic Routing
+- Runtime Code Splitting
 
-To get started, run `react-static create` and use the `basic` template.
+To get started, run `react-static create` and use the `dynamic-imports` template.
