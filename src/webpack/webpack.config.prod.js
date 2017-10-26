@@ -3,6 +3,7 @@ import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import nodeExternals from 'webpack-node-externals'
 
 //
 import rules from './rules'
@@ -19,6 +20,7 @@ export default function ({ config, isNode }) {
       libraryTarget: isNode ? 'umd' : undefined,
     },
     target: isNode ? 'node' : undefined,
+    externals: isNode ? [nodeExternals()] : [],
     module: {
       rules: rules(),
     },

@@ -57,6 +57,9 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
   <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
 </a>
 
+## Sites Built with React-Static
+- [Nozzle.io](https://nozzle.io)
+
 ## Documentation
 These docs are for version `1.x.x`.
 
@@ -80,6 +83,7 @@ These docs are for version `1.x.x`.
   - [`getSiteProps(Component)`](#getsitepropscomponent)
   - [`<Head>`](#head)
   - [`<Prefetch path=''/>`](#prefetch-path)
+  - [`<PrefetchWhenSeen path=''/>`](#prefetchwhenseen-path)
   - [`prefetch(path)`](#prefetchpath)
 
 ## Quick Start
@@ -168,7 +172,7 @@ export default {
       lastModified: '', // Optional. String('YYYY-MM-DD')
       priority: 0.5 // Optional.
     }, {
-      // If using automatica routing, you can specify a component to render the
+      // If using automatic routing, you can specify a component to render the
       // 404 page by creating a route with `is404` set to `true` and defining a
       // `component` to use.
       is404: true,
@@ -185,12 +189,12 @@ export default {
   siteRoot: 'https://mysite.com', // Optional, but necessary for the sitemap.xml
 
   // An optional custom React component that renders the base
-  // Html for every page, including the dev server. Must utilize the
+  // Document for every page, including the dev server. If used, it must utilize the
   // `Html`, `Head`, `Body` and `children` for react-static to work. The optional
   // `siteProps` prop will contain any data returned by `getSiteProps` in your config
-  // and `staticMeta` prop refers to any data you potentially returned from
-  // the `preRenderMeta` and `postRenderMeta` function.
-  Html: ({ Html, Head, Body, children, siteProps, staticMeta }) => (
+  // and `renderMeta` prop refers to any data you potentially assigned to it during
+  // the custom `renderToHtml` hook.
+  Document: ({ Html, Head, Body, children, siteProps, renderMeta }) => (
     <Html lang="en-US">
       <Head>
         <meta charSet="UTF-8" />
@@ -213,20 +217,22 @@ export default {
   // Setup section above.
   entry: './src/index.js',
 
-  // An optional asynchronous function that is pass the JSX component
-  // BEFORE it is rendered to a static string. It can return a javascript
-  // object that will be made available to a custom Html component
-  preRenderMeta: async JSX => {...},
-
-  // An optional asynchronous function that is passed the statically
-  // rendered HTML for each page and returns a javascript object
-  // that will be made available to a custom Html component
-  postRenderMeta: async staticHTML => {...},
+  // An optional function to customize the server rendering logic. Receives:
+  // - render: renders the JSX to and html string
+  // - Component: the final react component to be rendered to HTML
+  // - meta, a MUTABLE object that is exposed to the optional Document component as a prop
+  // Expected to return an HTML string
+  // This is the perfect place for css-in-js integration (see styled-components and glamorous examples for more information)
+  renderToHtml: (render, Component, meta) => {
+    meta.hello = 'world'
+    return render(<Component />)
+  },
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
 }
 ```
+
 ## Webpack Config and Plugins
 To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
 
@@ -245,6 +251,7 @@ All used loaders can be found in [react-static/lib/webpack/rules/](./src/webpack
   `loadAnything`
 
 Thus, overall things like the following are possible:
+
   ```javascript
 import { withoutRules, addRules } from 'react-static/lib/webpack/rules';
 import loadJavascript from 'react-static/lib/webpack/rules/loadJavascript';
@@ -386,7 +393,7 @@ To define a 404 page using automatic routing, define a route with `is404` set to
 ##### Custom Routing
 When using custom routing, there are 2 types of 404 pages:
 - **Static 404 page** - At build time, `react-static` will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
-- **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those sitations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
+- **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those situations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
 
 ### `<Link>` and `<NavLink>`
 `react-static` also gives you access to `react-router`'s `<Link>` and `<NavLink>` components. Use these component to allow your users to navigate around your site!
@@ -525,8 +532,27 @@ import { Link } from 'react-router-dom'
 <Prefetch path='/blog'>
   <Link to='/blog'>
     Go to blog
-  </Prefetch>
+  </Link>
 </Prefetch>
+```
+
+### `<PrefetchWhenSeen path=''/>`
+PrefetchWhenSeen is almost identical to the Prefetch component, except that it will not fire its prefetch until the component is visible in the view. If the user's browser doesn't support the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), it will work just like the Prefetch component.
+
+Example:
+```javascript
+import { PrefetchWhenSeen } from 'react-static'
+import { Link } from 'react-router-dom'
+
+// Standalone
+<PrefetchWhenSeen path='/blog' />
+
+// With children
+<PrefetchWhenSeen path='/blog'>
+  <Link to='/blog'>
+    Go to blog
+  </Link>
+</PrefetchWhenSeen>
 ```
 
 ### `prefetch(path)`
@@ -547,4 +573,4 @@ We are always looking for people to help us grow `react-static`'s capabilities a
 
 ## License
 
-React Static uses the MIT license. For mor information on this license, [click here](https://github.com/nozzle/react-static/blob/master/LICENSE).
+React Static uses the MIT license. For more information on this license, [click here](https://github.com/nozzle/react-static/blob/master/LICENSE).

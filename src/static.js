@@ -14,7 +14,7 @@ import { DIST } from './paths'
 // Exporting route HTML and JSON happens here. It's a big one.
 export const writeRoutesToStatic = async ({ config }) => {
   const userConfig = getConfig()
-  const DocumentTemplate = config.Html || DefaultDocument
+  const DocumentTemplate = config.Document || DefaultDocument
 
   // Use the node version of the app created with webpack
   const Comp = require(path.resolve(DIST, 'app.static.js')).default
@@ -53,18 +53,16 @@ export const writeRoutesToStatic = async ({ config }) => {
         }
       }
 
-      const ContextualComp = <InitialPropsContext>{Comp}</InitialPropsContext>
+      const ContextualComp = props => (
+        <InitialPropsContext>
+          <Comp {...props} />
+        </InitialPropsContext>
+      )
 
-      let staticMeta = {}
-      if (config.preRenderMeta) {
-        // Allow the user to perform custom rendering logic (important for styles and helmet)
-        staticMeta = {
-          ...staticMeta,
-          ...(await config.preRenderMeta(ContextualComp)),
-        }
-      }
+      const renderMeta = {}
 
-      const appHtml = renderToString(ContextualComp)
+      // Allow extractionso of meta via config.renderToString
+      const appHtml = await config.renderToHtml(renderToString, ContextualComp, renderMeta)
 
       // Extract head calls using Helmet
       const helmet = Helmet.renderStatic()
@@ -80,16 +78,6 @@ export const writeRoutesToStatic = async ({ config }) => {
         title: helmet.title.toComponent(),
       }
 
-      staticMeta.head = head
-
-      if (config.postRenderMeta) {
-        // Allow the user to perform custom rendering logic (important for styles and helmet)
-        staticMeta = {
-          ...staticMeta,
-          ...(await config.postRenderMeta(appHtml)),
-        }
-      }
-
       // Instead of using the default components, we need to hard code meta
       // from react-helmet into the components
       const HtmlWithMeta = ({ children, ...rest }) => (
@@ -100,15 +88,15 @@ export const writeRoutesToStatic = async ({ config }) => {
       const HeadWithMeta = ({ children, ...rest }) => (
         <head {...rest}>
           {head.base}
-          {head.link}
+          {head.title}
           {head.meta}
-          {head.noscript}
-          {head.script}
+          {head.link}
           {process.env.extractedCSSpath && (
             <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
           )}
+          {head.noscript}
+          {head.script}
           {head.style}
-          {head.title}
           {children}
         </head>
       )
@@ -139,7 +127,7 @@ export const writeRoutesToStatic = async ({ config }) => {
           Head={HeadWithMeta}
           Body={BodyWithMeta}
           siteProps={siteProps}
-          staticMeta={staticMeta}
+          renderMeta={renderMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </DocumentTemplate>,
@@ -216,35 +204,78 @@ export const writeRouteComponentsToFile = async routes => {
     }
   })
 
-  const standardRoutes = routes.filter(d => !d.is404)
+  const templateImports = templates
+    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '../${template}'`)
+    .join('\n')
 
-  const notFoundRoute = routes.find(d => d.is404)
+  const templateMap = `const templateMap = {
+    ${templates
+    .map((template, index) => `t_${index}: ${template.replace(/[^a-zA-Z]/g, '_')}`)
+    .join(',\n')}
+  }`
+
+  const tree = {}
+  routes.forEach(route => {
+    const parts = route.path === '/' ? ['/'] : route.path.split('/').filter(d => d)
+    let cursor = tree
+    parts.forEach((part, partIndex) => {
+      const isLeaf = parts.length === partIndex + 1
+      if (!cursor.c) {
+        cursor.c = {}
+      }
+      cursor = cursor.c
+      if (!cursor[part]) {
+        cursor[part] = {}
+      }
+      cursor = cursor[part]
+      if (isLeaf) {
+        cursor.t = `t_${templates.indexOf(route.component)}`
+      }
+    })
+  })
+
+  const templateTree = `const templateTree = ${JSON.stringify(tree)
+    .replace(/"(\w)":/gm, '$1:')
+    .replace(/template: '(.+)'/gm, 'template: $1')}`
+
+  const getTemplateForPath = `
+    const getTemplateForPath = path => {
+      const parts = path === '/' ? ['/'] : path.split('/').filter(d => d)
+      let cursor = templateTree
+      try {
+        parts.forEach(part => {
+          cursor = cursor.c[part]
+        })
+        return templateMap[cursor.t]
+      } catch (e) {
+        return false
+      }
+    }
+  `
+
+  const mainRouteComp = `
+    <Route path='*' render={props => {
+      let Template = getTemplateForPath(props.location.pathname)
+      if (!Template) {
+        Template = getTemplateForPath('404')
+      }
+      return <Template {...props} />
+    }} />
+  `
 
   const file = `
     import React, { Component } from 'react'
-    import { Switch, Route } from 'react-router-dom'
+    import { Route } from 'react-router-dom'
 
-    ${templates
-    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '../${template}'`)
-    .join('\n')}
+    ${templateImports}
+    ${templateMap}
+    ${templateTree}
+    ${getTemplateForPath}
 
     export default class Routes extends Component {
       render () {
         return (
-          <Switch>
-              ${standardRoutes
-    .map(
-      route =>
-        `<Route exact path={'${route.path}'} component={${route.component.replace(
-          /[^a-zA-Z]/g,
-          '_',
-        )}} />`,
-    )
-    .join('\n')}
-              ${notFoundRoute
-    ? `<Route component={${notFoundRoute.component.replace(/[^a-zA-Z]/g, '_')}} />`
-    : ''}
-          </Switch>
+            ${mainRouteComp}
         )
       }
     }

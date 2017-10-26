@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
+//
+import withFiles from 'react-static/lib/plugins/withFileLoader'
 
 export default {
   getSiteProps: () => ({
@@ -37,24 +39,27 @@ export default {
       },
     ]
   },
-  Html: class CustomHtml extends Component {
+  renderToHtml: (render, Comp, meta) => {
+    const sheet = new ServerStyleSheet()
+    const html = render(sheet.collectStyles(<Comp />))
+    meta.styleTags = sheet.getStyleElement()
+    return html
+  },
+  Document: class CustomHtml extends Component {
     render () {
-      const { Html, Head, Body, children } = this.props
-
-      const sheet = new ServerStyleSheet()
-      const newChildren = sheet.collectStyles(children)
-      const styleTags = sheet.getStyleElement()
+      const { Html, Head, Body, children, renderMeta } = this.props
 
       return (
         <Html>
           <Head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            {styleTags}
+            {renderMeta.styleTags}
           </Head>
-          <Body>{newChildren}</Body>
+          <Body>{children}</Body>
         </Html>
       )
     }
   },
+  webpack: [withFiles],
 }

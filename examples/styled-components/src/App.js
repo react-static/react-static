@@ -36,6 +36,10 @@ const AppStyles = styled.div`
   .content {
     padding: 1rem;
   }
+
+  img {
+    max-width: 100%;
+  }
 `
 
 export default () => (

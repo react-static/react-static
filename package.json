@@ -1,6 +1,6 @@
 {
   "name": "react-static",
-  "version": "1.5.0-alpha.6",
+  "version": "3.0.6",
   "main": "lib/index.js",
   "license": "MIT",
   "bin": {
@@ -10,7 +10,7 @@
     "watch": "babel -w src --out-dir lib",
     "build": "babel src --out-dir lib",
     "publishnext": "npm publish --tag next",
-    "prepublish": "yarn build",
+    "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
     "test": "eslint src examples"
   },
@@ -58,6 +58,7 @@
     "url-loader": "^0.6.1",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.8.2"
+    "webpack-dev-server": "^2.8.2",
+    "webpack-node-externals": "^1.6.0"
   }
 }
