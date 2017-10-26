@@ -15,7 +15,7 @@ const Loading = () => (
 )
 
 export default class About extends React.Component {
-  constructor(...args) {
+  constructor (...args) {
     super(...args)
     this.state = { MyComponent: null }
   }
@@ -41,13 +41,13 @@ export default class About extends React.Component {
   //   - UnLoaded component on static build
   //   - UnLoaded component when react rehydrates
   //   - Loaded component when dynamic import resolves
-  componentWillMount() {
+  componentWillMount () {
     import('../components/MyComponent')
       .then(({ MyComponent }) => this.setState({ MyComponent }))
-      .catch(error => this.setState({ MyComponent: Failed }))
+      .catch(() => this.setState({ MyComponent: Failed }))
   }
   // /////////////////////////////////////////////////////////////////////////
-  render() {
+  render () {
     const { MyComponent } = this.state
     if (MyComponent !== null) {
       return (
