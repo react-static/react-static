@@ -61,7 +61,7 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 - [Nozzle.io](https://nozzle.io)
 
 ## Documentation
-These docs are for version `1.x.x`.
+These docs are for version `3.x.x`.
 
 - [Quick Start](#quick-start)
 - [Installation](#installation)
