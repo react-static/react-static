@@ -22,7 +22,7 @@ export default function ({ config, isNode }) {
     target: isNode ? 'node' : undefined,
     externals: isNode ? [nodeExternals()] : [],
     module: {
-      rules: rules(),
+      rules: rules({ stage: 'prod' }),
     },
     resolve: {
       modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
