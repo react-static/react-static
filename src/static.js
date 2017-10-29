@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
+import glob from 'glob'
 import path from 'path'
 import Helmet from 'react-helmet'
 //
@@ -17,7 +18,10 @@ export const writeRoutesToStatic = async ({ config }) => {
   const DocumentTemplate = config.Document || DefaultDocument
 
   // Use the node version of the app created with webpack
-  const Comp = require(path.resolve(DIST, 'app.static.js')).default
+  const appJsPath = glob.sync(path.resolve(DIST, 'app!(.static).*.js'))[0]
+  const appJs = appJsPath.split('/').pop()
+  const appStaticJsPath = glob.sync(path.resolve(DIST, 'app.static.*.js'))[0]
+  const Comp = require(appStaticJsPath).default
 
   const siteProps = await userConfig.getSiteProps({ dev: false })
 
@@ -116,7 +120,7 @@ export const writeRoutesToStatic = async ({ config }) => {
               })}`,
             }}
           />
-          <script async src="/app.js" />
+          <script async src={`/${appJs}`} />
         </body>
       )
 

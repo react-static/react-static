@@ -24,6 +24,5 @@ export const Head = ({ children, ...rest }) => <head {...rest}>{children}</head>
 export const Body = ({ children, ...rest }) => (
   <body {...rest}>
     {children}
-    <script async src="/app.js" />
   </body>
 )
