@@ -6,6 +6,7 @@ import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { DIST } from './paths'
+import { getStagedRules } from './webpack/rules/'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
@@ -26,10 +27,13 @@ export async function buildCompiler ({ config, stage }) {
     if (!Array.isArray(config.webpack)) {
       transformers = [config.webpack]
     }
+
+    const defaultLoaders = getStagedRules({ stage })
+
     transformers.forEach(transformer => {
-      const modification = transformer(webpackConfig, { stage })
-      if (modification !== undefined) {
-        webpackConfig = modification
+      const modifiedConfig = transformer(webpackConfig, { stage, defaultLoaders })
+      if (modifiedConfig) {
+        webpackConfig = modifiedConfig
       }
     })
   }

@@ -206,8 +206,9 @@ export default {
 
   // An optional function or array of functions to transform the webpack config.
   // Each function will receive the previous webpack config, and expect a
-  // modified or new config to be returned.
-  webpack: [(previousConfig, { stage }) => {}],
+  // modified or new config to be returned (or undefined if you wish not to modify
+  // the config)
+  webpack: [(previousConfig, args) => newConfig],
 
   // The entry location for your app, defaulting to `./src/index.js`
   // This file must export the JSX of your app as the default export,
@@ -236,55 +237,128 @@ export default {
 ## Webpack Config and Plugins
 To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
 
-`webpack: []Function(previousConfig, { stage }) => newConfig`
+```javascript
+webpack: []Function(
+  previousConfig,
+  args: {
+    stage,
+    defaultLoaders
+  }
+) => {
+  return newConfig // or a falsey value to cancel transformation
+}
+```
   - The value can be an array of functions or a single function.
   - Each function will receive the previous webpack config, and can return a modified or new config.
+  - Return any falsey value to cancel the transformation
+  - `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
+  - `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
+    - `jsLoader` - The default loader for all `.js` files (uses babel)
+    - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
+    - `universalLoader` - The default catch-all loader for any other file that isn't matched. Uses `url-loader` and `file-loader`
 
-Since this `webpack` callback accepts an array of transformer functions, the concept of plugins is easy to implement. These transformer functions are applied in order from top to bottom and have total control over the webpack config.
+When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
 
-By default, our Webpack toolchain compiles `.js` and `.css` files. Anything that is not supposed to be compiled (images, fonts, etc.) in your `./src` folder will move to `./dist`.
-If you want to use custom loaders, you will have to replace our existing toolchain completely, because order often matters. You can do this by simply calling our `addRules` and `withoutRules` helpers. You can wrap these functions inside a arrow function to work like a transformer, to pass the previous webpack config and other arguments to them. They will return a modified config with the added or without any module rules.
+By default, React Static's webpack toolchain compiles `.js` and `.css` files. Everything else that is imported via webpack is processed with the `universalLoader` (images, fonts, etc.) will move to `./dist` on build. The source for all default loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules).
 
-All used loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules) and by default the following loaders are applied:
-  `loadJavascript`
-  `loadCSS`
-  `loadAnything`
+Our default loaders are organized like so:
+```javascript
+const webpackConfig = {
+  ...
+  module: {
+    rules: [{
+      oneOf: [
+        jsLoader, // Compiles all .js files with babel
+        cssLoader, // Supports basic css imports and css modules
+        universalLoader // Catch-all url-loader/file-loader for anything else
+    }]
+  }
+  ...
+}
+```
 
-Thus, overall things like the following are possible:
+**Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
 
-  ```javascript
-import { withoutRules, addRules } from 'react-static/lib/webpack/rules';
-import loadJavascript from 'react-static/lib/webpack/rules/loadJavascript';
-import loadFonts from 'react-static/lib/webpack/rules/loadFonts';
-import loadCSS from 'react-static/lib/webpack/rules/loadCSS';
+**Replacing all rules:**
+```javascript
+// static.config.js
 
 export default {
+  webpack: (config) = {
+    config.module.rules = [
+      // Your own rules here...
+    ]
+    return config
+  }
+}
+```
 
-  ...
+**Replacing a default loader for a different one:**
+```javascript
+// static.config.js
+import { jsLoader, cssLoader, universalLoader } from 'react-static/lib/webpack/rules'
 
-	webpack: [
-		(config, args) => // this arrow function is used as a transformer
-			addRules(
-				withoutRules(config), //remove all current module rules
-				[
-					loadJavascript, // compile javascript files
-					loadCSS, // allow importing .css files
-					{
-						loader: 'file-loader',
-						test: /\.(fancyFileExtension)$/,
-						query: {
-							limit: 10000,
-							name: 'static/[name].[hash:8].[ext]',
-						},
-					},
-				],
-				args, // passing every provided argument like the { stage } attribute
-			),
-		config => { // transformer functions do not need to return a new webpack configuration
-			console.log(config.module.rules);
-		},
-	],
-};
+export default {
+  webpack: (config, { defaultLoaders }) = {
+    config.module.rules = [{
+      oneOf: [
+        defaultLoaders.jsLoader,
+        {
+          // Use this special loader
+          // instead of the cssLoader
+        }
+        defaultLoaders.universalLoader,
+      ]
+    }]
+    return config
+  }
+}
+```
+
+**Adding a plugin:**
+```javascript
+// static.config.js
+import AwesomeWebpackPlugin from 'awesome-webpack-plugin'
+
+export default {
+  webpack: (config) = {
+    config.plugins.push(new AwesomeWebpackPlugin())
+    return config
+  }
+}
+```
+
+**Using multiple transformers:**
+
+```javascript
+// static.config.js
+import { jsLoader, cssLoader, universalLoader } from 'react-static/lib/webpack/rules'
+
+export default {
+  webpack: [
+    (config, { defaultLoaders }) = {
+      config.module.rules = [{
+        oneOf: [
+          defaultLoaders.jsLoader,
+          defaultLoaders.cssLoader,
+          {
+            loader: 'file-loader',
+            test: /\.(fancyFileExtension)$/,
+            query: {
+              limit: 10000,
+              name: 'static/[name].[hash:8].[ext]',
+            },
+          },
+          defaultLoaders.universalLoader,
+        ]
+      }]
+      return config
+    },
+    config => {
+      console.log(config.module.rules) // Log out the final set of rules
+    }
+  ]
+}
 ```
 
 ## Components & Tools
