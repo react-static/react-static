@@ -35,14 +35,13 @@ A **progressive static-site framework** for React.
 At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We’ve launched many sites using different static site tools that claim to solve these goals, but we have yet to find one that satisfies our requirements completely. React-Static is the framework we carefully designed to meet those standards and help everyone build next generation, high-performance websites for the internet.
 
 ## Features
-- React. Enough said.
-- Blazing fast performance.
+- 100% React!
+- Blazing fast runtime and build performance.
 - Data Agnostic. Feed your site data from anywhere, **however you want**.
 - Built for **SEO**, by SEO professionals
 - React-first developer experience
 - Painless project setup & migration
-- Supports 99.9% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux!
-- Aggressive and flexible reloading.
+- Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux!
 
 ## Introduction Video
 
@@ -59,6 +58,9 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 
 ## Sites Built with React-Static
 - [Nozzle.io](https://nozzle.io)
+
+## Chat with us on Slack!
+[Click here to sign up for the React-Tools slack Organization](https://react-chat-signup.herokuapp.com), and join us in the **#react-static** channel! We are constantly discussing implementation details, answering questions and planning features. :)
 
 ## Documentation
 These docs are for version `3.x.x`.
