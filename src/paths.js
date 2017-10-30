@@ -1,4 +1,5 @@
 import path from 'path'
+import os from 'os'
 
 export const ROOT = path.resolve(process.cwd())
 
@@ -10,3 +11,4 @@ export const DIST = resolvePath('dist')
 export const PUBLIC = resolvePath('public')
 export const NODE_MODULES = resolvePath('node_modules')
 export const PACKAGE = resolvePath('package.json')
+export const HTML_TEMPLATE = `${os.tmpdir()}/react.static.template.html`

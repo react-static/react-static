@@ -1,10 +1,9 @@
 import React from 'react'
 import chalk from 'chalk'
 import fs from 'fs-extra'
-import path from 'path'
 import { renderToStaticMarkup } from 'react-dom/server'
 //
-import { DIST } from '../paths'
+import { DIST, HTML_TEMPLATE } from '../paths'
 import { writeRouteComponentsToFile } from '../static'
 import { DefaultDocument, Html, Head, Body } from '../RootComponents'
 import { startDevServer } from '../webpack'
@@ -37,7 +36,7 @@ export default async () => {
     )
 
     // Write the Document to index.html
-    await fs.outputFile(path.join(DIST, 'index.html'), html)
+    await fs.outputFile(HTML_TEMPLATE, html)
 
     // Copy the public directory over
     console.log('')
