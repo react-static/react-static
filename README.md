@@ -244,7 +244,11 @@ webpack: []Function(
   previousConfig,
   args: {
     stage,
-    defaultLoaders
+    defaultLoaders: {
+      jsLoader,
+      cssLoader,
+      fileLoader
+    }
   }
 ) => {
   return newConfig // or a falsey value to cancel transformation
@@ -286,7 +290,7 @@ const webpackConfig = {
 // static.config.js
 
 export default {
-  webpack: (config) = {
+  webpack: (config) => {
     config.module.rules = [
       // Your own rules here...
     ]
@@ -301,7 +305,7 @@ export default {
 import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
 
 export default {
-  webpack: (config, { defaultLoaders }) = {
+  webpack: (config, { defaultLoaders }) => {
     config.module.rules = [{
       oneOf: [
         defaultLoaders.jsLoader,
@@ -323,7 +327,7 @@ export default {
 import AwesomeWebpackPlugin from 'awesome-webpack-plugin'
 
 export default {
-  webpack: (config) = {
+  webpack: (config) => {
     config.plugins.push(new AwesomeWebpackPlugin())
     return config
   }
@@ -338,7 +342,7 @@ import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
 
 export default {
   webpack: [
-    (config, { defaultLoaders }) = {
+    (config, { defaultLoaders }) => {
       config.module.rules = [{
         oneOf: [
           defaultLoaders.jsLoader,
