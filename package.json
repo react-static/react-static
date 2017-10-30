@@ -14,6 +14,7 @@
     "postpublish": "git push --tags",
     "test": "eslint src examples"
   },
+  "repository": "nozzle/react-static",
   "devDependencies": {
     "eslint": "^4.3.0",
     "eslint-config-react-tools": "^1.0.6"
