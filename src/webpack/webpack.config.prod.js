@@ -35,22 +35,24 @@ export default function ({ config, isNode }) {
         ...process.env,
         NODE_ENV: 'production',
       }),
+      new ExtractTextPlugin({
+        filename: getPath => {
+          process.env.extractedCSSpath = getPath('styles.[hash:8].css')
+          return process.env.extractedCSSpath
+        },
+        allChunks: true,
+      }),
       new HtmlWebpackPlugin({
         inject: true,
-        template: HTML_TEMPLATE,
-        filename: path.join(DIST, 'index.html'),
+        filename: HTML_TEMPLATE,
+        // We dont use a template here because we are only concerned with the
+        // output files, given that the index.html will also be overwritten by
+        // the static export in the end.
       }),
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'async',
       }),
       new CaseSensitivePathsPlugin(),
-      new ExtractTextPlugin({
-        filename: getPath => {
-          process.env.extractedCSSpath = 'styles.css'
-          return getPath('styles.css')
-        },
-        allChunks: true,
-      }),
       !isNode ? new webpack.optimize.UglifyJsPlugin() : null,
       config.bundleAnalyzer ? new BundleAnalyzerPlugin() : null,
     ].filter(d => d),

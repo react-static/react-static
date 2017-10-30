@@ -35,8 +35,7 @@ export default function ({ config }) {
       }),
       new HtmlWebpackPlugin({
         inject: true,
-        template: HTML_TEMPLATE,
-        filename: path.join(DIST, 'index.html'),
+        template: `!!raw-loader!${HTML_TEMPLATE}`,
       }),
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'async',

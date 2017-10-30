@@ -1,13 +1,16 @@
-import React from 'react'
 import chalk from 'chalk'
 import fs from 'fs-extra'
-import { renderToStaticMarkup } from 'react-dom/server'
 //
-import { DIST, HTML_TEMPLATE } from '../paths'
+import { DIST } from '../paths'
 import { writeRouteComponentsToFile } from '../static'
-import { DefaultDocument, Html, Head, Body } from '../RootComponents'
+import { DefaultDocument } from '../RootComponents'
 import { startDevServer } from '../webpack'
-import { findAvailablePort, getConfig, copyPublicFolder } from '../utils'
+import {
+  findAvailablePort,
+  getConfig,
+  copyPublicFolder,
+  createIndexFilePlaceholder,
+} from '../utils'
 import { startConfigServer } from '../configServer'
 //
 
@@ -26,17 +29,13 @@ export default async () => {
     const siteProps = await config.getSiteProps({ dev: true })
 
     // Resolve the base HTML template
-    const DocumentTemplate = config.Document || DefaultDocument
+    const Component = config.Document || DefaultDocument
 
-    // Render the base document component to string with siteprops
-    const html = renderToStaticMarkup(
-      <DocumentTemplate renderMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
-        <div id="root" />
-      </DocumentTemplate>,
-    )
-
-    // Write the Document to index.html
-    await fs.outputFile(HTML_TEMPLATE, html)
+    // Render an index.html placeholder
+    await createIndexFilePlaceholder({
+      Component,
+      siteProps,
+    })
 
     // Copy the public directory over
     console.log('')

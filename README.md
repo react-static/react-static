@@ -255,11 +255,11 @@ webpack: []Function(
   - `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
     - `jsLoader` - The default loader for all `.js` files (uses babel)
     - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
-    - `universalLoader` - The default catch-all loader for any other file that isn't matched. Uses `url-loader` and `file-loader`
+    - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
 
 When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
 
-By default, React Static's webpack toolchain compiles `.js` and `.css` files. Everything else that is imported via webpack is processed with the `universalLoader` (images, fonts, etc.) will move to `./dist` on build. The source for all default loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules).
+By default, React Static's webpack toolchain compiles `.js` and `.css` files. Any other file that is not a `.js` `.json` or `.html` file is also processed with the `fileLoader` (images, fonts, etc.) and will move to `./dist` directory on build. The source for all default loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules).
 
 Our default loaders are organized like so:
 ```javascript
@@ -270,7 +270,7 @@ const webpackConfig = {
       oneOf: [
         jsLoader, // Compiles all .js files with babel
         cssLoader, // Supports basic css imports and css modules
-        universalLoader // Catch-all url-loader/file-loader for anything else
+        fileLoader // Catch-all url-loader/file-loader for anything else
     }]
   }
   ...
@@ -296,7 +296,7 @@ export default {
 **Replacing a default loader for a different one:**
 ```javascript
 // static.config.js
-import { jsLoader, cssLoader, universalLoader } from 'react-static/lib/webpack/rules'
+import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
 
 export default {
   webpack: (config, { defaultLoaders }) = {
@@ -307,7 +307,7 @@ export default {
           // Use this special loader
           // instead of the cssLoader
         }
-        defaultLoaders.universalLoader,
+        defaultLoaders.fileLoader,
       ]
     }]
     return config
@@ -332,7 +332,7 @@ export default {
 
 ```javascript
 // static.config.js
-import { jsLoader, cssLoader, universalLoader } from 'react-static/lib/webpack/rules'
+import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
 
 export default {
   webpack: [
@@ -349,7 +349,7 @@ export default {
               name: 'static/[name].[hash:8].[ext]',
             },
           },
-          defaultLoaders.universalLoader,
+          defaultLoaders.fileLoader,
         ]
       }]
       return config
