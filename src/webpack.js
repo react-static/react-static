@@ -47,7 +47,7 @@ export async function startDevServer ({ config, port }) {
 
   let first = true
 
-  devCompiler.plugin('invalid', args => {
+  devCompiler.plugin('invalid', () => {
     console.time(chalk.green('=> [\u2713] Build Complete'))
     console.log('=> Rebuilding...')
   })
