@@ -53,7 +53,7 @@ export default {
         oneOf: [
           {
             test: /\.(js|jsx|ts|tsx)$/,
-            exclude: config.module.rules[0].exclude,
+            exclude: defaultLoaders.jsLoader.exclude, // as std jsLoader exclude
             use: [
               {
                 loader: 'babel-loader',
