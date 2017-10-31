@@ -2,6 +2,29 @@ import 'babel-register'
 import chalk from 'chalk'
 import fs from 'fs'
 
+const ignoredExtensions = [
+  'css',
+  'scss',
+  'styl',
+  'png',
+  'gif',
+  'jpg',
+  'jpeg',
+  'svg',
+  'woff',
+  'ttf',
+  'eot',
+  'otf',
+  'mp4',
+  'webm',
+  'ogg',
+  'mp3',
+  'wav',
+]
+ignoredExtensions.forEach(ext => {
+  require.extensions[`.${ext}`] = () => {}
+})
+
 export default function () {
   const cmd = process.argv[2]
 
