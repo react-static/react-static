@@ -11,6 +11,7 @@ export default function ({ stage }) {
         {
           loader: 'css-loader',
           options: {
+            sourceMap: true,
             importLoaders: 1,
           },
         },
@@ -19,6 +20,7 @@ export default function ({ stage }) {
           options: {
             // Necessary for external CSS imports to work
             // https://github.com/facebookincubator/create-react-app/issues/2677
+            sourceMap: true,
             ident: 'postcss',
             plugins: () => [
               postcssFlexbugsFixes,
@@ -43,6 +45,7 @@ export default function ({ stage }) {
       fallback: {
         loader: 'style-loader',
         options: {
+          sourceMap: false,
           hmr: false,
         },
       },
@@ -52,7 +55,7 @@ export default function ({ stage }) {
           options: {
             importLoaders: 1,
             minimize: true,
-            sourceMap: true,
+            sourceMap: false,
           },
         },
         {
@@ -60,6 +63,7 @@ export default function ({ stage }) {
           options: {
             // Necessary for external CSS imports to work
             // https://github.com/facebookincubator/create-react-app/issues/2677
+            sourceMap: true,
             ident: 'postcss',
             plugins: () => [
               postcssFlexbugsFixes,
