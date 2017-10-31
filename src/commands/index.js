@@ -6,6 +6,7 @@ const ignoredExtensions = [
   'css',
   'scss',
   'styl',
+  'less',
   'png',
   'gif',
   'jpg',

@@ -246,18 +246,6 @@ export default {
         allChunks: true,
       })
 
-
-    /*
-    * In the future, this segment will change or be unnecessary.
-    * Whitelisting Extensions from pre-parser and universal url-loader
-    * */
-
-    // Tell pre-processor (babel) to no-op styles since, though they are
-    // imported as modules, are not parseable code.
-    require('babel-register')
-    require.extensions['.less'] = () => {}
-    require.extensions['.css'] = () => {}
-
     return config
   },
 }
