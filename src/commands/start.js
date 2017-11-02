@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import fs from 'fs-extra'
 //
 import { DIST } from '../paths'
-import { writeRouteComponentsToFile } from '../static'
+import { prepareRoutes } from '../static'
 import { DefaultDocument } from '../RootComponents'
 import { startDevServer } from '../webpack'
 import {
@@ -48,7 +48,7 @@ export default async () => {
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
     config.routes = await config.getRoutes({ dev: true })
-    await writeRouteComponentsToFile(config.routes)
+    await prepareRoutes(config.routes)
     await startConfigServer()
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 

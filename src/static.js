@@ -13,7 +13,7 @@ import { getConfig } from './utils'
 import { DIST } from './paths'
 
 // Exporting route HTML and JSON happens here. It's a big one.
-export const writeRoutesToStatic = async ({ config }) => {
+export const exportRoutes = async ({ config }) => {
   const userConfig = getConfig()
   const DocumentTemplate = config.Document || DefaultDocument
 
@@ -199,7 +199,15 @@ export async function buildXMLandRSS ({ config }) {
   }
 }
 
-export const writeRouteComponentsToFile = async routes => {
+export const prepareRoutes = async routes => {
+  // First, write all of the routes to a json file in the smallest form possible
+  const tinyRoutes = routes
+  const pathRoutes = path.resolve(DIST, '__routes.js')
+  await fs.remove(pathRoutes)
+  await fs.writeFile(pathRoutes, JSON.stringify(tinyRoutes))
+  fs.utimesSync(pathRoutes, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
+
+  // Then dynamically create the auto-routing component
   const templates = []
   routes = routes.filter(d => d.component)
   routes.forEach(route => {
@@ -285,10 +293,8 @@ export const writeRouteComponentsToFile = async routes => {
     }
   `
 
-  const filepath = path.resolve(DIST, 'react-static-routes.js')
-  await fs.remove(filepath)
-  await fs.writeFile(filepath, file)
-  const now = Date.now() / 1000
-  const then = now - 1000
-  fs.utimesSync(filepath, then, then)
+  const dynamicRoutesPath = path.resolve(DIST, 'react-static-routes.js')
+  await fs.remove(dynamicRoutesPath)
+  await fs.writeFile(dynamicRoutesPath, file)
+  fs.utimesSync(dynamicRoutesPath, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
 }

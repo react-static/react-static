@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 //
 import { DIST } from '../paths'
-import { writeRoutesToStatic, buildXMLandRSS, writeRouteComponentsToFile } from '../static'
+import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import { buildProductionBundles } from '../webpack'
 import { getConfig, copyPublicFolder } from '../utils'
 
@@ -22,7 +22,7 @@ export default async () => {
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
     config.routes = await config.getRoutes({ dev: false })
-    await writeRouteComponentsToFile(config.routes)
+    await prepareRoutes(config.routes)
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
     // Build static pages and JSON
@@ -37,7 +37,7 @@ export default async () => {
 
     console.log('=> Exporting Routes...')
     console.time(chalk.green('=> [\u2713] Routes Exported'))
-    await writeRoutesToStatic({ config })
+    await exportRoutes({ config })
     await buildXMLandRSS({ config })
     console.timeEnd(chalk.green('=> [\u2713] Routes Exported'))
 

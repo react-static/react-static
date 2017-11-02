@@ -38,10 +38,18 @@ export const getConfig = () => {
     renderToHtml: (render, Comp) => render(<Comp />),
     ...config,
     siteRoot: config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null,
-    getRoutes: async (...args) => {
-      const routes = await config.getRoutes(...args)
-      return normalizeRoutes(routes)
-    },
+    getRoutes: config.getRoutes
+      ? async (...args) => {
+        const routes = await config.getRoutes(...args)
+        return normalizeRoutes(routes)
+      }
+      : async () =>
+      // At least ensure the index page is defined for export
+        normalizeRoutes([
+          {
+            path: '/',
+          },
+        ]),
   }
 }
 
