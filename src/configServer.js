@@ -7,7 +7,7 @@ import { findAvailablePort, getConfig } from './utils'
 export async function startConfigServer () {
   const config = getConfig()
   // scan a range
-  const port = process.env.PORT || await findAvailablePort(8000)
+  const port = process.env.PORT || (await findAvailablePort(8000))
   process.env.STATIC_ENDPOINT = `http://127.0.0.1:${port}`
 
   const configApp = express()
@@ -41,7 +41,7 @@ export async function startConfigServer () {
         })
       })
 
-      res.json(routes)
+      res.json(routes.filter(d => d.hasGetProps).map(d => d.path))
     } catch (err) {
       res.status(500)
       next(err)

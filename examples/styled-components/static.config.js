@@ -54,9 +54,7 @@ export default {
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             {renderMeta.styleTags}
           </Head>
-          <Body>
-            {children}
-          </Body>
+          <Body>{children}</Body>
         </Html>
       )
     }

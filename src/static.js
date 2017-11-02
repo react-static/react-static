@@ -63,6 +63,7 @@ export const exportRoutes = async ({ config }) => {
         </InitialPropsContext>
       )
 
+      const routesList = config.routes.filter(d => d.hasGetProps).map(d => d.path)
       const renderMeta = {}
 
       // Allow extractionso of meta via config.renderToString
@@ -113,11 +114,14 @@ export const exportRoutes = async ({ config }) => {
           <script
             type="text/javascript"
             dangerouslySetInnerHTML={{
-              __html: `window.__routeData = ${JSON.stringify({
-                path: route.path,
-                initialProps,
-                siteProps,
-              })}`,
+              __html: `
+                window.__routeData = ${JSON.stringify({
+          path: route.path,
+          initialProps,
+          siteProps,
+        })};
+                window.__routesList = ${JSON.stringify(routesList)};
+              `,
             }}
           />
           <script async src={`/${appJs}`} />
@@ -200,14 +204,7 @@ export async function buildXMLandRSS ({ config }) {
 }
 
 export const prepareRoutes = async routes => {
-  // First, write all of the routes to a json file in the smallest form possible
-  const tinyRoutes = routes
-  const pathRoutes = path.resolve(DIST, '__routes.js')
-  await fs.remove(pathRoutes)
-  await fs.writeFile(pathRoutes, JSON.stringify(tinyRoutes))
-  fs.utimesSync(pathRoutes, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
-
-  // Then dynamically create the auto-routing component
+  // Dynamically create the auto-routing component
   const templates = []
   routes = routes.filter(d => d.component)
   routes.forEach(route => {

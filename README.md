@@ -59,6 +59,18 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 ## Sites Built with React-Static
 - [Nozzle.io](https://nozzle.io)
 
+## Examples and Templates
+All of the following examples can be used as a template at project creation.
+- [Basic](https://github.com/nozzle/react-static/tree/master/examples/basic)
+- [Blank (Create-React-App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
+- [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
+- [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
+- [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
+- [LESS & Antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
+- [Styled-Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
+
+Can't find an example? We invite you to write it! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
+
 ## Chat with us on Slack!
 [Click here to sign up for the React-Tools slack Organization](https://react-chat-signup.herokuapp.com), and join us in the **#react-static** channel! We are constantly discussing implementation details, answering questions and planning features. :)
 

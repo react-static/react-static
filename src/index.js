@@ -12,14 +12,22 @@ const inflight = {}
 const failed = {}
 
 let sitePropsPromise
-let routesPromise
 let InitialLoading
 
-if (process.env.NODE_ENV === 'development') {
+let routesPromise
+
+if (typeof document !== 'undefined') {
   routesPromise = (async () => {
-    const res = await axios.get(`${process.env.STATIC_ENDPOINT}/getroutes`)
-    return res.data
+    let res
+    if (process.env.NODE_ENV === 'development') {
+      res = await axios.get(`${process.env.STATIC_ENDPOINT}/getroutes`)
+      return res.data
+    }
+    return window.__routesList
   })()
+}
+
+if (process.env.NODE_ENV === 'development') {
   InitialLoading = () => (
     <div
       style={{
@@ -110,28 +118,19 @@ async function prefetch (path) {
     return
   }
 
-  // For dev mode, hit the async getProps for the route
+  // Find the current route (or lack of route)
+  const routes = await routesPromise
+  const isStaticRoute = routes.indexOf(path) > -1
+
+  if (!isStaticRoute) {
+    return
+  }
+
   if (process.env.NODE_ENV === 'development') {
-    const routes = await routesPromise
-    const currentRoute = routes.find(d => d.path === path)
-
-    // Warn for missing routes
-    if (!currentRoute) {
-      console.warn(
-        `Warning: There is no route defined for ${path}. This page will not be exported unless you create a valid route!`,
-      )
-      return
-    }
-
-    // Warn for missing routes
-    if (!currentRoute.hasGetProps) {
-      return
-    }
-
     // Reuse request for duplicate inflight requests
     try {
       if (!inflight[path]) {
-        inflight[path] = axios.get(`${process.env.STATIC_ENDPOINT}/route${currentRoute.path}`)
+        inflight[path] = axios.get(`${process.env.STATIC_ENDPOINT}/route${path}`)
       }
       const { data: initialProps } = await inflight[path]
 
