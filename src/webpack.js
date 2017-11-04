@@ -10,7 +10,7 @@ import { getStagedRules } from './webpack/rules'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
-export async function buildCompiler ({ config, stage }) {
+export function webpackConfig ({ config, stage }) {
   let webpackConfig
   if (stage === 'dev') {
     webpackConfig = require('./webpack/webpack.config.dev').default({ config })
@@ -37,8 +37,11 @@ export async function buildCompiler ({ config, stage }) {
       }
     })
   }
+  return webpackConfig
+}
 
-  return webpack(webpackConfig)
+export async function buildCompiler ({ config, stage }) {
+  return webpack(webpackConfig({ config, stage }))
 }
 
 // Starts the development server
