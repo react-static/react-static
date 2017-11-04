@@ -1,3 +1,28 @@
+# 4.0.0
+#### Breaking Changes
+- The `webpack` function in `static.config.js` has a new function signature.
+  - Each function is now **not** required to return a new config object. If a falsey value is returned, the transformation will be ignored, and the next transformation will carry on as normal. Even so, avoid mutating the config object at all costs ;)
+  - A new argument is now available in the `args` parameter called `defaultLoaders`:
+  ```javascript
+    webpack: (
+      config, {
+        defaultLoaders: {
+          jsLoader,
+          cssLoader,
+          fileLoader
+        }
+      }
+    ) => {...}
+  ```
+  These loaders are here for convenience. Please read the documentation for more information.
+
+#### Features
+- A dynamic code-splitting example and typescript example are now available! Huzzah!
+
+#### Fixes & Optimizations
+- Webpack files are now hashed for better cache invalidation. It's about time right?!
+
+
 # 3.0.0
 #### Breaking Changes
 - Your `index.js` file must now export your app in NON-JSX form, eg. `export default App`, not `<App />`. With this change, builds can be faster, leaner, and have more control over the build pipeline.

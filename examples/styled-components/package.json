@@ -13,7 +13,8 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-router": "^4.2.0",
-    "styled-components": "2.2.0"
+    "styled-components": "2.2.0",
+    "react-static": "latest"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",

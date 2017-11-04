@@ -57,8 +57,8 @@ export default async () => {
   // We install react-static separately to ensure we always have the latest stable release
   execSync(
     `cd ${answers.name} && ${isYarn ? 'yarn' : 'npm install'} && ${isYarn
-      ? 'yarn add react-static'
-      : 'npm install react-static --save'}`,
+      ? 'yarn add react-static@latest'
+      : 'npm install react-static@latest --save'}`,
   )
   console.log('')
   console.timeEnd(chalk.green(`=> [\u2713] Project "${answers.name}" created`))

@@ -25,7 +25,7 @@ export default class About extends React.Component {
   // //   - Loaded component on static build
   // //   - UnLoaded component when react rehydrates
   // //   - Loaded component when dynamic import resolves
-  // componentWillMount() {
+  // componentDidMount() {
   //   if (typeof document === 'undefined') {
   //     const { MyComponent } = require('../components/MyComponent')
   //     this.setState({ MyComponent })
@@ -41,7 +41,7 @@ export default class About extends React.Component {
   //   - UnLoaded component on static build
   //   - UnLoaded component when react rehydrates
   //   - Loaded component when dynamic import resolves
-  componentWillMount () {
+  componentDidMount () {
     import('../components/MyComponent')
       .then(({ MyComponent }) => this.setState({ MyComponent }))
       .catch(() => this.setState({ MyComponent: Failed }))

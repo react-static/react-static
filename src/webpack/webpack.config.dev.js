@@ -1,9 +1,11 @@
 import webpack from 'webpack'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import path from 'path'
 
 import rules from './rules'
-import { ROOT, DIST, NODE_MODULES, SRC } from '../paths'
+import { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } from '../paths'
 
 export default function ({ config }) {
   return {
@@ -15,12 +17,12 @@ export default function ({ config }) {
       path.resolve(ROOT, config.entry),
     ],
     output: {
-      filename: 'app.js',
+      filename: 'app.[hash:8].js',
       path: DIST,
       publicPath: '/',
     },
     module: {
-      rules: rules({ dev: true }),
+      rules: rules({ stage: 'dev' }),
     },
     resolve: {
       modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
@@ -30,6 +32,13 @@ export default function ({ config }) {
       new webpack.EnvironmentPlugin({
         ...process.env,
         NODE_ENV: 'development',
+      }),
+      new HtmlWebpackPlugin({
+        inject: true,
+        template: `!!raw-loader!${HTML_TEMPLATE}`,
+      }),
+      new ScriptExtHtmlWebpackPlugin({
+        defaultAttribute: 'async',
       }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),

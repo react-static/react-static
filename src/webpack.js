@@ -6,6 +6,7 @@ import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { DIST } from './paths'
+import { getStagedRules } from './webpack/rules'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
@@ -21,13 +22,22 @@ export async function buildCompiler ({ config, stage }) {
     throw new Error('A stage is required when building a compiler.')
   }
 
+  const defaultLoaders = getStagedRules({ stage })
+
   if (config.webpack) {
     let transformers = config.webpack
     if (!Array.isArray(config.webpack)) {
       transformers = [config.webpack]
     }
-    webpackConfig = transformers.reduce((prev, current) => current(prev, { stage }), webpackConfig)
+
+    transformers.forEach(transformer => {
+      const modifiedConfig = transformer(webpackConfig, { stage, defaultLoaders })
+      if (modifiedConfig) {
+        webpackConfig = modifiedConfig
+      }
+    })
   }
+
   return webpack(webpackConfig)
 }
 
@@ -88,9 +98,6 @@ export async function startDevServer ({ config, port }) {
     watchOptions: {
       ignored: /node_modules/,
     },
-    // before: app => {
-    //   app.use(errorOverlayMiddleware())
-    // },
   })
 
   return new Promise((resolve, reject) => {

@@ -1,5 +1,6 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger */
 import React from 'react'
+import { renderToString } from 'react-dom/server'
 import OpenPort from 'openport'
 import path from 'path'
 import fs from 'fs-extra'
@@ -7,7 +8,8 @@ import fs from 'fs-extra'
 //
 
 import { pathJoin } from './shared'
-import { PUBLIC, INDEX } from './paths'
+import { PUBLIC, INDEX, HTML_TEMPLATE } from './paths'
+import { Html, Head, Body } from './RootComponents'
 
 const defaultEntry = './src/index'
 
@@ -36,10 +38,18 @@ export const getConfig = () => {
     renderToHtml: (render, Comp) => render(<Comp />),
     ...config,
     siteRoot: config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null,
-    getRoutes: async (...args) => {
-      const routes = await config.getRoutes(...args)
-      return normalizeRoutes(routes)
-    },
+    getRoutes: config.getRoutes
+      ? async (...args) => {
+        const routes = await config.getRoutes(...args)
+        return normalizeRoutes(routes)
+      }
+      : async () =>
+      // At least ensure the index page is defined for export
+        normalizeRoutes([
+          {
+            path: '/',
+          },
+        ]),
   }
 }
 
@@ -102,4 +112,16 @@ export function copyPublicFolder (dest) {
     dereference: true,
     filter: file => file !== INDEX,
   })
+}
+
+export async function createIndexFilePlaceholder ({ Component, siteProps }) {
+  // Render the base document component to string with siteprops
+  const html = `<!DOCTYPE html>${renderToString(
+    <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
+      <div id="root" />
+    </Component>,
+  )}`
+
+  // Write the Document to index.html
+  await fs.outputFile(HTML_TEMPLATE, html)
 }

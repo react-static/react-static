@@ -1,8 +1,6 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
-//
-import withFiles from 'react-static/lib/plugins/withFileLoader'
 
 export default {
   getSiteProps: () => ({
@@ -61,5 +59,4 @@ export default {
       )
     }
   },
-  webpack: [withFiles],
 }

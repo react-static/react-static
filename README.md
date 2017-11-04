@@ -35,14 +35,13 @@ A **progressive static-site framework** for React.
 At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We’ve launched many sites using different static site tools that claim to solve these goals, but we have yet to find one that satisfies our requirements completely. React-Static is the framework we carefully designed to meet those standards and help everyone build next generation, high-performance websites for the internet.
 
 ## Features
-- React. Enough said.
-- Blazing fast performance.
+- 100% React!
+- Blazing fast runtime and build performance.
 - Data Agnostic. Feed your site data from anywhere, **however you want**.
 - Built for **SEO**, by SEO professionals
 - React-first developer experience
 - Painless project setup & migration
-- Supports 99.9% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux!
-- Aggressive and flexible reloading.
+- Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux!
 
 ## Introduction Video
 
@@ -60,8 +59,23 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 ## Sites Built with React-Static
 - [Nozzle.io](https://nozzle.io)
 
+## Examples and Templates
+All of the following examples can be used as a template at project creation.
+- [Basic](https://github.com/nozzle/react-static/tree/master/examples/basic)
+- [Blank (Create-React-App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
+- [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
+- [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
+- [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
+- [LESS & Antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
+- [Styled-Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
+
+Can't find an example? We invite you to write it! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
+
+## Chat with us on Slack!
+[Click here to sign up for the React-Tools slack Organization](https://react-chat-signup.herokuapp.com), and join us in the **#react-static** channel! We are constantly discussing implementation details, answering questions and planning features. :)
+
 ## Documentation
-These docs are for version `1.x.x`.
+These docs are for version `3.x.x`.
 
 - [Quick Start](#quick-start)
 - [Installation](#installation)
@@ -204,12 +218,11 @@ export default {
     </Html>
   ),
 
-  // An optional callback, used to modify the webpack config for both dev
-  // and production. The function you provide will be passed an instance of
-  // webpack-configurator (see https://github.com/lewie9021/webpack-configurator
-  // for more information), and an object containing a `stage` string, denoting
-  // whether the webpack configuration is for the 'dev', 'prod', or 'node' build stage.
-  webpack: (webpackConfig, { stage }) => {...},
+  // An optional function or array of functions to transform the webpack config.
+  // Each function will receive the previous webpack config, and expect a
+  // modified or new config to be returned (or undefined if you wish not to modify
+  // the config)
+  webpack: [(previousConfig, args) => newConfig],
 
   // The entry location for your app, defaulting to `./src/index.js`
   // This file must export the JSX of your app as the default export,
@@ -238,31 +251,133 @@ export default {
 ## Webpack Config and Plugins
 To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
 
-`webpack: []Function(previousConfig, { stage }) => newConfig`
-  - The value can be an array of functions or a single function.
-  - Each function will receive the previous webpack config, and expect a modified or new config to be returned.
-
-Since this `webpack` callback accepts an array of functions, the concept of plugins is easy to implement. These functions are applied in order from top to bottom and have total control over the webpack config. Thus, the following is possible
-  ```javascript
-  import withCssLoader from 'react-static/lib/plugins/withCssLoader'
-  import withFileLoader from 'react-static/lib/plugins/withFileLoader'
-
-  ...
-
-  webpack: [
-    // Custom, on-the-fly webpack customization
-    (config, {stage}) => {
-      if (stage === 'prod') {
-        config.module.rules.push({...})
-      }
-      return config
+```javascript
+webpack: []Function(
+  previousConfig,
+  args: {
+    stage,
+    defaultLoaders: {
+      jsLoader,
+      cssLoader,
+      fileLoader
     }
-    // Or use a predefined / shared customization
-    withCssLoader,
-    withFileLoader
+  }
+) => {
+  return newConfig // or a falsey value to cancel transformation
+}
+```
+  - The value can be an array of functions or a single function.
+  - Each function will receive the previous webpack config, and can return a modified or new config.
+  - Return any falsey value to cancel the transformation
+  - `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
+  - `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
+    - `jsLoader` - The default loader for all `.js` files (uses babel)
+    - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
+    - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
+
+When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
+
+By default, React Static's webpack toolchain compiles `.js` and `.css` files. Any other file that is not a `.js` `.json` or `.html` file is also processed with the `fileLoader` (images, fonts, etc.) and will move to `./dist` directory on build. The source for all default loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules).
+
+Our default loaders are organized like so:
+```javascript
+const webpackConfig = {
+  ...
+  module: {
+    rules: [{
+      oneOf: [
+        jsLoader, // Compiles all .js files with babel
+        cssLoader, // Supports basic css imports and css modules
+        fileLoader // Catch-all url-loader/file-loader for anything else
+    }]
+  }
+  ...
+}
+```
+
+**Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
+
+**Replacing all rules:**
+```javascript
+// static.config.js
+
+export default {
+  webpack: (config) => {
+    config.module.rules = [
+      // Your own rules here...
+    ]
+    return config
+  }
+}
+```
+
+**Replacing a default loader for a different one:**
+```javascript
+// static.config.js
+import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
+
+export default {
+  webpack: (config, { defaultLoaders }) => {
+    config.module.rules = [{
+      oneOf: [
+        defaultLoaders.jsLoader,
+        {
+          // Use this special loader
+          // instead of the cssLoader
+        }
+        defaultLoaders.fileLoader,
+      ]
+    }]
+    return config
+  }
+}
+```
+
+**Adding a plugin:**
+```javascript
+// static.config.js
+import AwesomeWebpackPlugin from 'awesome-webpack-plugin'
+
+export default {
+  webpack: (config) => {
+    config.plugins.push(new AwesomeWebpackPlugin())
+    return config
+  }
+}
+```
+
+**Using multiple transformers:**
+
+```javascript
+// static.config.js
+import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
+
+export default {
+  webpack: [
+    (config, { defaultLoaders }) => {
+      config.module.rules = [{
+        oneOf: [
+          defaultLoaders.jsLoader,
+          defaultLoaders.cssLoader,
+          {
+            loader: 'file-loader',
+            test: /\.(fancyFileExtension)$/,
+            query: {
+              limit: 10000,
+              name: 'static/[name].[hash:8].[ext]',
+            },
+          },
+          defaultLoaders.fileLoader,
+        ]
+      }]
+      return config
+    },
+    config => {
+      console.log(config.module.rules) // Log out the final set of rules
+    }
   ]
-  ```
-For a list of available plugins, visit [https://github.com/nozzle/react-static/tree/master/src/plugins](https://github.com/nozzle/react-static/tree/master/src/plugins).
+}
+```
 
 ## Components & Tools
 

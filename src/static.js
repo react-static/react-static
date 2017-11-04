@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
+import glob from 'glob'
 import path from 'path'
 import Helmet from 'react-helmet'
 //
@@ -12,12 +13,15 @@ import { getConfig } from './utils'
 import { DIST } from './paths'
 
 // Exporting route HTML and JSON happens here. It's a big one.
-export const writeRoutesToStatic = async ({ config }) => {
+export const exportRoutes = async ({ config }) => {
   const userConfig = getConfig()
   const DocumentTemplate = config.Document || DefaultDocument
 
   // Use the node version of the app created with webpack
-  const Comp = require(path.resolve(DIST, 'app.static.js')).default
+  const appJsPath = glob.sync(path.resolve(DIST, 'app!(.static).*.js'))[0]
+  const appJs = appJsPath.split('/').pop()
+  const appStaticJsPath = glob.sync(path.resolve(DIST, 'app.static.*.js'))[0]
+  const Comp = require(appStaticJsPath).default
 
   const siteProps = await userConfig.getSiteProps({ dev: false })
 
@@ -59,6 +63,7 @@ export const writeRoutesToStatic = async ({ config }) => {
         </InitialPropsContext>
       )
 
+      const routesList = config.routes.filter(d => d.hasGetProps).map(d => d.path)
       const renderMeta = {}
 
       // Allow extractionso of meta via config.renderToString
@@ -109,14 +114,17 @@ export const writeRoutesToStatic = async ({ config }) => {
           <script
             type="text/javascript"
             dangerouslySetInnerHTML={{
-              __html: `window.__routeData = ${JSON.stringify({
-                path: route.path,
-                initialProps,
-                siteProps,
-              })}`,
+              __html: `
+                window.__routeData = ${JSON.stringify({
+          path: route.path,
+          initialProps,
+          siteProps,
+        })};
+                window.__routesList = ${JSON.stringify(routesList)};
+              `,
             }}
           />
-          <script async src="/app.js" />
+          <script async src={`/${appJs}`} />
         </body>
       )
 
@@ -195,7 +203,8 @@ export async function buildXMLandRSS ({ config }) {
   }
 }
 
-export const writeRouteComponentsToFile = async routes => {
+export const prepareRoutes = async routes => {
+  // Dynamically create the auto-routing component
   const templates = []
   routes = routes.filter(d => d.component)
   routes.forEach(route => {
@@ -281,10 +290,8 @@ export const writeRouteComponentsToFile = async routes => {
     }
   `
 
-  const filepath = path.resolve(DIST, 'react-static-routes.js')
-  await fs.remove(filepath)
-  await fs.writeFile(filepath, file)
-  const now = Date.now() / 1000
-  const then = now - 1000
-  fs.utimesSync(filepath, then, then)
+  const dynamicRoutesPath = path.resolve(DIST, 'react-static-routes.js')
+  await fs.remove(dynamicRoutesPath)
+  await fs.writeFile(dynamicRoutesPath, file)
+  fs.utimesSync(dynamicRoutesPath, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
 }
