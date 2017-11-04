@@ -143,13 +143,22 @@ export async function buildProductionBundles ({ config }) {
               colors: true,
             }),
           )
-          console.log(
-            chalk.red.bold(
-              `
+          if (buildErrors) {
+            console.log(
+              chalk.red.bold(
+                `
 => There were ERRORS during the ${stage} build stage! :(
 => Fix them and try again!`,
-            ),
-          )
+              ),
+            )
+          } else if (buildWarnings) {
+            console.log(
+              chalk.yellow.bold(
+                `
+=> There were WARNINGS during the ${stage} build stage!`,
+              ),
+            )
+          }
         }
 
         resolve()
