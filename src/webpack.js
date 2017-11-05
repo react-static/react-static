@@ -10,7 +10,7 @@ import { getStagedRules } from './webpack/rules'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
-export async function buildCompiler ({ config, stage }) {
+export function webpackConfig ({ config, stage }) {
   let webpackConfig
   if (stage === 'dev') {
     webpackConfig = require('./webpack/webpack.config.dev').default({ config })
@@ -37,8 +37,11 @@ export async function buildCompiler ({ config, stage }) {
       }
     })
   }
+  return webpackConfig
+}
 
-  return webpack(webpackConfig)
+export async function buildCompiler ({ config, stage }) {
+  return webpack(webpackConfig({ config, stage }))
 }
 
 // Starts the development server
@@ -140,13 +143,22 @@ export async function buildProductionBundles ({ config }) {
               colors: true,
             }),
           )
-          console.log(
-            chalk.red.bold(
-              `
+          if (buildErrors) {
+            console.log(
+              chalk.red.bold(
+                `
 => There were ERRORS during the ${stage} build stage! :(
 => Fix them and try again!`,
-            ),
-          )
+              ),
+            )
+          } else if (buildWarnings) {
+            console.log(
+              chalk.yellow.bold(
+                `
+=> There were WARNINGS during the ${stage} build stage!`,
+              ),
+            )
+          }
         }
 
         resolve()

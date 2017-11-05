@@ -90,21 +90,37 @@ export const exportRoutes = async ({ config }) => {
           {children}
         </html>
       )
-      const HeadWithMeta = ({ children, ...rest }) => (
-        <head {...rest}>
-          {head.base}
-          {head.title}
-          {head.meta}
-          {head.link}
-          {process.env.extractedCSSpath && (
-            <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
-          )}
-          {head.noscript}
-          {head.script}
-          {head.style}
-          {children}
-        </head>
-      )
+      const HeadWithMeta = ({ children, ...rest }) => {
+        let showHelmetTitle = true
+        const childrenArray = React.Children.toArray(children).filter(child => {
+          if (child.type === 'title') {
+            // Filter out the title of the Document in static.config.js
+            // if there is a helmet title on this route
+            const helmetTitleIsEmpty = head.title[0].props.children === ''
+            if (!helmetTitleIsEmpty) {
+              return false
+            }
+            showHelmetTitle = false
+          }
+          return true
+        })
+
+        return (
+          <head {...rest}>
+            {head.base}
+            {showHelmetTitle && head.title}
+            {head.meta}
+            {head.link}
+            {process.env.extractedCSSpath && (
+              <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
+            )}
+            {head.noscript}
+            {head.script}
+            {head.style}
+            {childrenArray}
+          </head>
+        )
+      }
       // Not only do we pass react-helmet attributes and the app.js here, but
       // we also need to  hard code site props and route props into the page to
       // prevent flashing when react mounts onto the HTML.
