@@ -1,28 +1,23 @@
 {
   "presets": [
-    [
-      "latest",
-      {
-        "loose": true,
-        "modules": false
-      }
-    ],
-    "stage-0",
-    "stage-3",
+    ["env", {
+      "loose": true,
+      "exclude": [
+        "transform-regenerator",
+        "transform-async-to-generator"
+      ]
+    }],
     "react"
   ],
   "ignore": "app.static.js",
   "plugins": [
     "react-hot-loader/babel",
+    "transform-export-extensions",
+    "syntax-dynamic-import",
     "transform-class-properties",
-    [
-      "transform-runtime",
-      {
-        "helpers": false,
-        "polyfill": false,
-        "regenerator": true,
-        "moduleName": "babel-runtime"
-      }
-    ]
+    "transform-object-rest-spread",
+    ["fast-async", {
+      "spec":true
+    }]
   ]
 }
