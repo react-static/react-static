@@ -8,6 +8,7 @@ import WebpackDevServer from "webpack-dev-server";
 import { DIST } from "./paths";
 import { getStagedRules } from "./webpack/rules";
 
+
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
 export function webpackConfig({ config, stage }) {
@@ -58,6 +59,7 @@ export async function startDevServer({ config, port }) {
 
   let first = true;
 
+
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
    * HOTFIX FOR ISSUE #124
@@ -70,13 +72,12 @@ export async function startDevServer({ config, port }) {
    * After the devCompiler finishes it removes the timefix by-
    * subtracting {timefix} from {startTime}
    */
-  const timefix = 11000;
+
+	//	Move startTime from Modulo 10s
+	const timefix = 11000;
   devCompiler.plugin("watch-run", (watching, callback) => {
     watching.startTime += timefix;
     callback();
-  });
-  devCompiler.plugin("done", stats => {
-    stats.startTime -= timefix;
   });
   // ================== PER HOTFIX #124 ==================
 
@@ -99,7 +100,10 @@ export async function startDevServer({ config, port }) {
       console.log(
         chalk.green("=> [\u2713] App serving at"),
         `http://localhost:${port}`
-      );
+			);
+
+			//	Move the startTime back to before {timefix}
+			stats.startTime -= timefix
     }
 
     if (messages.errors.length) {
@@ -118,7 +122,7 @@ export async function startDevServer({ config, port }) {
         console.log(message);
         console.log();
       });
-    }
+		}
   });
 
   console.log("=> Building App Bundle...");
