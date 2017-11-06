@@ -58,6 +58,7 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 
 ## Sites Built with React-Static
 - [Nozzle.io](https://nozzle.io)
+- [Timber.io](https://timber.io)
 
 ## Examples and Templates
 All of the following examples can be used as a template at project creation.
