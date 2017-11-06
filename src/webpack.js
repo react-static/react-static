@@ -1,163 +1,168 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger */
-import webpack from 'webpack'
-import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
-import chalk from 'chalk'
-import WebpackDevServer from 'webpack-dev-server'
+import webpack from "webpack";
+import formatWebpackMessages from "react-dev-utils/formatWebpackMessages";
+import chalk from "chalk";
+import WebpackDevServer from "webpack-dev-server";
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
-import { DIST } from './paths'
-import { getStagedRules } from './webpack/rules'
+import { DIST } from "./paths";
+import { getStagedRules } from "./webpack/rules";
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
-export function webpackConfig ({ config, stage }) {
-  let webpackConfig
-  if (stage === 'dev') {
-    webpackConfig = require('./webpack/webpack.config.dev').default({ config })
-  } else if (stage === 'prod') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({ config })
-  } else if (stage === 'node') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({ config, isNode: true })
+export function webpackConfig({ config, stage }) {
+  let webpackConfig;
+  if (stage === "dev") {
+    webpackConfig = require("./webpack/webpack.config.dev").default({ config });
+  } else if (stage === "prod") {
+    webpackConfig = require("./webpack/webpack.config.prod").default({
+      config
+    });
+  } else if (stage === "node") {
+    webpackConfig = require("./webpack/webpack.config.prod").default({
+      config,
+      isNode: true
+    });
   } else {
-    throw new Error('A stage is required when building a compiler.')
+    throw new Error("A stage is required when building a compiler.");
   }
 
-  const defaultLoaders = getStagedRules({ stage })
+  const defaultLoaders = getStagedRules({ stage });
 
   if (config.webpack) {
-    let transformers = config.webpack
+    let transformers = config.webpack;
     if (!Array.isArray(config.webpack)) {
-      transformers = [config.webpack]
+      transformers = [config.webpack];
     }
 
     transformers.forEach(transformer => {
-      const modifiedConfig = transformer(webpackConfig, { stage, defaultLoaders })
+      const modifiedConfig = transformer(webpackConfig, {
+        stage,
+        defaultLoaders
+      });
       if (modifiedConfig) {
-        webpackConfig = modifiedConfig
+        webpackConfig = modifiedConfig;
       }
-    })
+    });
   }
-  return webpackConfig
+  return webpackConfig;
 }
 
-export async function buildCompiler ({ config, stage }) {
-  return webpack(webpackConfig({ config, stage }))
+export async function buildCompiler({ config, stage }) {
+  return webpack(webpackConfig({ config, stage }));
 }
-
 
 // Starts the development server
-export async function startDevServer ({ config, port }) {
-  const devCompiler = await buildCompiler({ config, stage: 'dev' })
+export async function startDevServer({ config, port }) {
+  const devCompiler = await buildCompiler({ config, stage: "dev" });
 
-  let first = true
-
+  let first = true;
 
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
    * HOTFIX FOR ISSUE #124
-   * 
+   *
    * This fix is from: https://github.com/nozzle/react-static/issues/124#issuecomment-342008635
-   * 
+   *
    * This implements a watcher when webpack runs to assign the timefix to {startTime}-
    * -and run the callback.
-   * 
+   *
    * After the devCompiler finishes it removes the timefix by-
    * subtracting {timefix} from {startTime}
    */
   const timefix = 11000;
-  devCompiler.plugin('watch-run', (watching, callback) => {
+  devCompiler.plugin("watch-run", (watching, callback) => {
     watching.startTime += timefix;
-    callback()
-  })
-  devCompiler.plugin('done', (stats) => {
+    callback();
+  });
+  devCompiler.plugin("done", stats => {
     stats.startTime -= timefix;
-  })
-  /**
-   * ==================
-   * PER HOTFIX #124
-   * ==================
-   */
-  
+  });
+  // ================== PER HOTFIX #124 ==================
 
-  devCompiler.plugin('invalid', () => {
-    console.time(chalk.green('=> [\u2713] Build Complete'))
-    console.log('=> Rebuilding...')
-  })
 
-  devCompiler.plugin('done', stats => {
-    const messages = formatWebpackMessages(stats.toJson({}, true))
-    const isSuccessful = !messages.errors.length && !messages.warnings.length
+  devCompiler.plugin("invalid", () => {
+    console.time(chalk.green("=> [\u2713] Build Complete"));
+    console.log("=> Rebuilding...");
+  });
+
+  devCompiler.plugin("done", stats => {
+    const messages = formatWebpackMessages(stats.toJson({}, true));
+    const isSuccessful = !messages.errors.length && !messages.warnings.length;
 
     if (isSuccessful) {
-      console.timeEnd(chalk.green('=> [\u2713] Build Complete'))
+      console.timeEnd(chalk.green("=> [\u2713] Build Complete"));
     }
 
     if (first) {
-      first = false
-      console.log(chalk.green('=> [\u2713] App serving at'), `http://localhost:${port}`)
+      first = false;
+      console.log(
+        chalk.green("=> [\u2713] App serving at"),
+        `http://localhost:${port}`
+      );
     }
 
     if (messages.errors.length) {
-      console.log(chalk.red('Failed to rebuild.'))
+      console.log(chalk.red("Failed to rebuild."));
       messages.errors.forEach(message => {
-        console.log(message)
-        console.log()
-      })
-      return
+        console.log(message);
+        console.log();
+      });
+      return;
     }
 
     if (messages.warnings.length) {
-      console.log(chalk.yellow('Built complete with warnings.'))
-      console.log()
+      console.log(chalk.yellow("Built complete with warnings."));
+      console.log();
       messages.warnings.forEach(message => {
-        console.log(message)
-        console.log()
-      })
+        console.log(message);
+        console.log();
+      });
     }
-  })
+  });
 
-  console.log('=> Building App Bundle...')
-  console.time(chalk.green('=> [\u2713] Build Complete'))
+  console.log("=> Building App Bundle...");
+  console.time(chalk.green("=> [\u2713] Build Complete"));
   const devServer = new WebpackDevServer(devCompiler, {
     port,
     hot: true,
     disableHostCheck: true,
     contentBase: DIST,
-    publicPath: '/',
+    publicPath: "/",
     historyApiFallback: true,
     compress: true,
     quiet: true,
     watchOptions: {
-      ignored: /node_modules/,
-    },
-  })
+      ignored: /node_modules/
+    }
+  });
 
   return new Promise((resolve, reject) => {
     devServer.listen(port, err => {
       if (err) {
-        return reject(err)
+        return reject(err);
       }
-      resolve()
-    })
-  })
+      resolve();
+    });
+  });
 }
 
-export async function buildProductionBundles ({ config }) {
+export async function buildProductionBundles({ config }) {
   const build = (stage, compiler) =>
     new Promise((resolve, reject) => {
       compiler.run((err, stats) => {
         if (err) {
-          console.log(chalk.red(err.stack || err))
+          console.log(chalk.red(err.stack || err));
           if (err.details) {
-            console.log(chalk.red(err.details))
+            console.log(chalk.red(err.details));
           }
-          return reject(err)
+          return reject(err);
         }
 
-        stats.toJson('verbose')
+        stats.toJson("verbose");
 
-        const buildErrors = stats.hasErrors()
-        const buildWarnings = stats.hasWarnings()
+        const buildErrors = stats.hasErrors();
+        const buildWarnings = stats.hasWarnings();
 
         if (buildErrors || buildWarnings) {
           console.log(
@@ -169,39 +174,39 @@ export async function buildProductionBundles ({ config }) {
               entrypoints: false,
               chunkOrigins: false,
               chunkModules: false,
-              colors: true,
-            }),
-          )
+              colors: true
+            })
+          );
           if (buildErrors) {
             console.log(
               chalk.red.bold(
                 `
 => There were ERRORS during the ${stage} build stage! :(
-=> Fix them and try again!`,
-              ),
-            )
+=> Fix them and try again!`
+              )
+            );
           } else if (buildWarnings) {
             console.log(
               chalk.yellow.bold(
                 `
-=> There were WARNINGS during the ${stage} build stage!`,
-              ),
-            )
+=> There were WARNINGS during the ${stage} build stage!`
+              )
+            );
           }
         }
 
-        resolve()
-      })
-    })
+        resolve();
+      });
+    });
 
   const prodCompiler = await buildCompiler({
     config,
-    stage: 'prod',
-  })
+    stage: "prod"
+  });
   const nodeCompiler = await buildCompiler({
     config,
-    stage: 'node',
-  })
+    stage: "node"
+  });
 
-  await Promise.all([build('prod', prodCompiler), build('node', nodeCompiler)])
+  await Promise.all([build("prod", prodCompiler), build("node", nodeCompiler)]);
 }
