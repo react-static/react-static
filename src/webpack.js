@@ -62,8 +62,9 @@ export async function startDevServer({ config, port }) {
 
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
+	 * Nov 6, 2017
+	 *
    * HOTFIX FOR ISSUE #124
-   *
    * This fix is from: https://github.com/nozzle/react-static/issues/124#issuecomment-342008635
    *
    * This implements a watcher when webpack runs to assign the timefix to {startTime}-
@@ -102,6 +103,8 @@ export async function startDevServer({ config, port }) {
         `http://localhost:${port}`
 			);
 
+			//	Corbin Matchull (cgmx) - basedjux@gmail.com
+			//	Nov 6, 2017
 			//	Move the startTime back to before {timefix}
 			stats.startTime -= timefix
     }
