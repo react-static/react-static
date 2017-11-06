@@ -44,11 +44,40 @@ export async function buildCompiler ({ config, stage }) {
   return webpack(webpackConfig({ config, stage }))
 }
 
+
 // Starts the development server
 export async function startDevServer ({ config, port }) {
   const devCompiler = await buildCompiler({ config, stage: 'dev' })
 
   let first = true
+
+
+  /**
+   * Corbin Matschull (cgmx) - basedjux@gmail.com
+   * HOTFIX FOR ISSUE #124
+   * 
+   * This fix is from: https://github.com/nozzle/react-static/issues/124#issuecomment-342008635
+   * 
+   * This implements a watcher when webpack runs to assign the timefix to {startTime}-
+   * -and run the callback.
+   * 
+   * After the devCompiler finishes it removes the timefix by-
+   * subtracting {timefix} from {startTime}
+   */
+  const timefix = 11000;
+  devCompiler.plugin('watch-run', (watching, callback) => {
+    watching.startTime += timefix;
+    callback()
+  })
+  devCompiler.plugin('done', (stats) => {
+    stats.startTime -= timefix;
+  })
+  /**
+   * ==================
+   * PER HOTFIX #124
+   * ==================
+   */
+  
 
   devCompiler.plugin('invalid', () => {
     console.time(chalk.green('=> [\u2713] Build Complete'))
