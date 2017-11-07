@@ -5,6 +5,7 @@ import { execSync } from 'child_process'
 import inquirer from 'inquirer'
 import autoCompletePrompt from 'inquirer-autocomplete-prompt'
 import matchSorter from 'match-sorter'
+import { ChalkColor } from '../utils'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
@@ -53,7 +54,7 @@ export default async () => {
 
   const isYarn = shouldUseYarn()
 
-  console.log(`=> Installing dependencies with: ${isYarn ? chalk.hex('#2c8ebb')('Yarn') : chalk.hex('#CB3837')('NPM')}...`)
+  console.log(`=> Installing dependencies with: ${isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')}...`)
   // We install react-static separately to ensure we always have the latest stable release
   execSync(
     `cd ${answers.name} && ${isYarn ? 'yarn' : 'npm install'} && ${isYarn
@@ -68,9 +69,9 @@ ${chalk.green('=> To get started:')}
 
     cd ${answers.name}
 
-    ${isYarn ? chalk.hex('#2c8ebb')('yarn') : chalk.hex('#CB3837')('npm run')} start ${chalk.green('- Start the development server')}
-    ${isYarn ? chalk.hex('#2c8ebb')('yarn') : chalk.hex('#CB3837')('npm run')} build ${chalk.green('- Build for production')}
-    ${isYarn ? chalk.hex('#2c8ebb')('yarn') : chalk.hex('#CB3837')('npm run')} serve ${chalk.green('- Test a production build locally')}
+    ${isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')} start ${chalk.green('- Start the development server')}
+    ${isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')} build ${chalk.green('- Build for production')}
+    ${isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')} serve ${chalk.green('- Test a production build locally')}
   `)
 }
 

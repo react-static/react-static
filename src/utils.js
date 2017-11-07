@@ -13,6 +13,11 @@ import { Html, Head, Body } from './RootComponents'
 
 const defaultEntry = './src/index'
 
+export const ChalkColor = {
+  yarn: '#2c8ebb',
+  npm: '#cb3837',
+}
+
 export const findAvailablePort = start =>
   new Promise((resolve, reject) =>
     OpenPort.find(
