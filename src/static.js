@@ -309,5 +309,19 @@ export const prepareRoutes = async routes => {
   const dynamicRoutesPath = path.resolve(DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
   await fs.writeFile(dynamicRoutesPath, file)
-  fs.utimesSync(dynamicRoutesPath, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
+
+
+  /**
+   * Corbin Matschull [cgmx] - basedjux@gmail.com
+   *
+   * HOTFIX FOR ISSUE #124
+   * Commenting this out per #124 so I can test the hotfix.
+   * Hotfix is implemented in /master/src/webpack.js:#L47
+   *
+   * This hotfix was implemented due to FS_ACCURACY causing isssues with webpack-dev-server -
+   * builds.
+   * This "hack" was removed due to it causing builds to increase in time over n-milliseconds
+   *    (See: https://github.com/nozzle/react-static/issues/124#issuecomment-341959542)
+   */
+  // fs.utimesSync(dynamicRoutesPath, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
 }

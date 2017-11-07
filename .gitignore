@@ -25,3 +25,6 @@ yarn-error.log*
 .idea
 .vscode
 .history
+
+# Editorconfig (for now)
+.editorconfig
