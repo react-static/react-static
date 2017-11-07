@@ -53,12 +53,6 @@ export default async () => {
 
   const isYarn = shouldUseYarn()
 
-  /**
-   * Corbin Matschull (cgmx) - basedjux@gmail.com
-   *
-   * Deps install output will now show WHAT dependency manager-
-   * - you're using before the install steps.
-   */
   console.log(`=> Installing dependencies with: ${isYarn ? chalk.hex('#2c8ebb')('Yarn') : chalk.hex('#CB3837')('NPM')}...`)
   // We install react-static separately to ensure we always have the latest stable release
   execSync(
@@ -74,9 +68,9 @@ ${chalk.green('=> To get started:')}
 
     cd ${answers.name}
 
-    ${isYarn ? 'yarn' : 'npm run'} start ${chalk.green('- Start the development server')}
-    ${isYarn ? 'yarn' : 'npm run'} build ${chalk.green('- Build for production')}
-    ${isYarn ? 'yarn' : 'npm run'} serve ${chalk.green('- Test a production build locally')}
+    ${isYarn ? chalk.hex('#2c8ebb')('yarn') : chalk.hex('#CB3837')('npm run')} start ${chalk.green('- Start the development server')}
+    ${isYarn ? chalk.hex('#2c8ebb')('yarn') : chalk.hex('#CB3837')('npm run')} build ${chalk.green('- Build for production')}
+    ${isYarn ? chalk.hex('#2c8ebb')('yarn') : chalk.hex('#CB3837')('npm run')} serve ${chalk.green('- Test a production build locally')}
   `)
 }
 
