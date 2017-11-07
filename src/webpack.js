@@ -82,7 +82,6 @@ export async function startDevServer ({ config, port }) {
     watching.startTime += timefix
     callback()
   })
-  // ================== PER HOTFIX #124 ==================
 
 
   devCompiler.plugin('invalid', () => {
