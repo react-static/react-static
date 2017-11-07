@@ -12,7 +12,7 @@
     "publishnext": "npm publish --tag next",
     "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
-    "test": "eslint src examples",
+    "test": "eslint src examples | eslint --fix src",
     "test-webpack": "jest"
   },
   "repository": "nozzle/react-static",

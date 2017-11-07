@@ -53,7 +53,7 @@ export default async () => {
 
   const isYarn = shouldUseYarn()
 
-  console.log('=> Installing dependencies...')
+  console.log(`=> Installing dependencies with: ${isYarn ? chalk.hex('#2c8ebb')('Yarn') : chalk.hex('#CB3837')('NPM')}...`)
   // We install react-static separately to ensure we always have the latest stable release
   execSync(
     `cd ${answers.name} && ${isYarn ? 'yarn' : 'npm install'} && ${isYarn
