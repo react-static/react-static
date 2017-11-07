@@ -16,5 +16,5 @@ added later)
 - Automatic Routing
 
 
-To get started, run `react-static create` and use the `typescript-enabled` 
+To get started, run `react-static create` and use the `typescript` 
 template.
