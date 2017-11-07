@@ -4,12 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "react-static start",
-    "build": "react-static build",
+    "start": "cross-env NODE_ENV=development react-static start",
+    "build": "cross-env NODE_ENV=production react-static build",
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "cross-env": "^5.1.1",
     "glamor": "^2.20.40",
     "glamorous": "^4.9.7",
     "prop-types": "^15.6.0",
