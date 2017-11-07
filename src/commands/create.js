@@ -53,6 +53,12 @@ export default async () => {
 
   const isYarn = shouldUseYarn()
 
+  /**
+   * Corbin Matschull (cgmx) - basedjux@gmail.com
+   *
+   * Deps install output will now show WHAT dependency manager-
+   * - you're using before the install steps.
+   */
   console.log(`=> Installing dependencies with: ${isYarn ? chalk.hex('#2c8ebb')('Yarn') : chalk.hex('#CB3837')('NPM')}...`)
   // We install react-static separately to ensure we always have the latest stable release
   execSync(
