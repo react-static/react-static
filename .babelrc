@@ -24,5 +24,15 @@
         "moduleName": "babel-runtime"
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["latest", {"modules": true}], 
+        "stage-0",
+        "stage-3",
+        "react"
+      ]
+    }
+  }
 }

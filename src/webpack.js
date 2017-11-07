@@ -8,6 +8,7 @@ import WebpackDevServer from 'webpack-dev-server'
 import { DIST } from './paths'
 import { getStagedRules } from './webpack/rules'
 
+
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
 export function webpackConfig ({ config, stage }) {
@@ -15,9 +16,14 @@ export function webpackConfig ({ config, stage }) {
   if (stage === 'dev') {
     webpackConfig = require('./webpack/webpack.config.dev').default({ config })
   } else if (stage === 'prod') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({ config })
+    webpackConfig = require('./webpack/webpack.config.prod').default({
+      config,
+    })
   } else if (stage === 'node') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({ config, isNode: true })
+    webpackConfig = require('./webpack/webpack.config.prod').default({
+      config,
+      isNode: true,
+    })
   } else {
     throw new Error('A stage is required when building a compiler.')
   }
@@ -31,7 +37,10 @@ export function webpackConfig ({ config, stage }) {
     }
 
     transformers.forEach(transformer => {
-      const modifiedConfig = transformer(webpackConfig, { stage, defaultLoaders })
+      const modifiedConfig = transformer(webpackConfig, {
+        stage,
+        defaultLoaders,
+      })
       if (modifiedConfig) {
         webpackConfig = modifiedConfig
       }
@@ -50,6 +59,30 @@ export async function startDevServer ({ config, port }) {
 
   let first = true
 
+
+  /**
+   * Corbin Matschull (cgmx) - basedjux@gmail.com
+   * Nov 6, 2017
+   *
+   * HOTFIX FOR ISSUE #124
+   * This fix is from: https://github.com/nozzle/react-static/issues/124#issuecomment-342008635
+   *
+   * This implements a watcher when webpack runs to assign the timefix to {startTime}-
+   * -and run the callback.
+   *
+   * After the devCompiler finishes it removes the timefix by-
+   * subtracting {timefix} from {startTime}
+   */
+
+  // Move startTime from Modulo 10s
+  const timefix = 11000
+  devCompiler.plugin('watch-run', (watching, callback) => {
+    watching.startTime += timefix
+    callback()
+  })
+  // ================== PER HOTFIX #124 ==================
+
+
   devCompiler.plugin('invalid', () => {
     console.time(chalk.green('=> [\u2713] Build Complete'))
     console.log('=> Rebuilding...')
@@ -65,7 +98,15 @@ export async function startDevServer ({ config, port }) {
 
     if (first) {
       first = false
-      console.log(chalk.green('=> [\u2713] App serving at'), `http://localhost:${port}`)
+      console.log(
+        chalk.green('=> [\u2713] App serving at'),
+        `http://localhost:${port}`,
+      )
+
+      //  Corbin Matchull (cgmx) - basedjux@gmail.com
+      //  Nov 6, 2017
+      //  Move the startTime back to before {timefix}
+      stats.startTime -= timefix
     }
 
     if (messages.errors.length) {
