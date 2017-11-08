@@ -24,7 +24,7 @@ export default function ({ config, isNode }) {
     target: isNode ? 'node' : undefined,
     externals: isNode ? [nodeExternals()] : [],
     module: {
-      rules: rules(config, { stage: 'prod' }),
+      rules: rules({ config, stage: 'prod' }),
     },
     resolve: {
       modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
