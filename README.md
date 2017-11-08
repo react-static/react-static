@@ -229,14 +229,6 @@ export default {
   // the config)
   webpack: [(previousConfig, args) => newConfig],
 
-  // The entry location for your app, defaulting to `./src/index.js`
-  // This file must export the JSX of your app as the default export,
-  // eg. `default export <MyApp />`.
-  // It also handles the rendering of your app while in development mode
-  // (including hot reloading). For a brief example, see the Project
-  // Setup section above.
-  entry: './src/index.js',
-
   // An optional function to customize the server rendering logic. Receives:
   // - render: renders the JSX to and html string
   // - Component: the final react component to be rendered to HTML
@@ -246,6 +238,14 @@ export default {
   renderToHtml: (render, Component, meta) => {
     meta.hello = 'world'
     return render(<Component />)
+  },
+
+  // Internal directories used by react-static can be overwritten using this object.
+  // Each path is relative to your project root and defaults to:
+  paths: {
+    src: 'src', // The source directory. Must include an index.js entry file.
+    dist: 'dist', // The output directory.
+    public: 'public' // The public directory (files copied to dist during build)
   },
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
