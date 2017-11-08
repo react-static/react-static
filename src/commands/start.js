@@ -6,7 +6,6 @@ import { prepareRoutes } from '../static'
 import { DefaultDocument } from '../RootComponents'
 import { startDevServer } from '../webpack'
 import {
-  findAvailablePort,
   getConfig,
   copyPublicFolder,
   createIndexFilePlaceholder,
@@ -21,9 +20,6 @@ export default async () => {
 
     // Clean the dist folder
     await fs.remove(DIST)
-
-    // Find an available port to serve on.
-    const port = await findAvailablePort(3000)
 
     // Get the site props
     const siteProps = await config.getSiteProps({ dev: true })
@@ -53,7 +49,7 @@ export default async () => {
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
     // Build the JS bundle
-    await startDevServer({ config, port })
+    await startDevServer({ config })
   } catch (err) {
     console.log(err)
     process.exit(1)

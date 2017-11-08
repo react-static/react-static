@@ -7,6 +7,7 @@ import WebpackDevServer from 'webpack-dev-server'
 //
 import { DIST } from './paths'
 import { getStagedRules } from './webpack/rules'
+import { findAvailablePort } from './utils'
 
 
 // Builds a compiler using a stage preset, then allows extension via
@@ -54,11 +55,25 @@ export async function buildCompiler ({ config, stage }) {
 }
 
 // Starts the development server
-export async function startDevServer ({ config, port }) {
+export async function startDevServer ({ config }) {
   const devCompiler = await buildCompiler({ config, stage: 'dev' })
 
   let first = true
 
+  // Define the port to use
+  let port = await findAvailablePort(3000)
+  if (config.devServer && config.devServer.port) {
+    port = config.devServer.port
+  }
+  if (process.env.PORT) {
+    port = process.env.PORT
+  }
+
+  // Default to localhost, use a custom host if it is defined in static.config.js
+  let host = 'http://localhost'
+  if (config.devServer && config.devServer.host) {
+    host = config.devServer.host
+  }
 
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
@@ -100,7 +115,7 @@ export async function startDevServer ({ config, port }) {
       first = false
       console.log(
         chalk.green('=> [\u2713] App serving at'),
-        `http://localhost:${port}`,
+        `${host}:${port}`,
       )
 
       //  Corbin Matchull (cgmx) - basedjux@gmail.com
@@ -133,6 +148,7 @@ export async function startDevServer ({ config, port }) {
   
   const defaultDevServerConfig = {
     port,
+    host,
     hot: true,
     disableHostCheck: true,
     contentBase: DIST,
