@@ -387,6 +387,22 @@ export default {
 }
 ```
 
+**Using Custom devServer properties:**
+
+This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
+
+```javascript
+// static.config.js
+
+export default {
+  devServer: {
+    port: 8080,
+    host: 127.0.0.1,
+    hot: true
+  }
+}
+```
+
 ## Components & Tools
 
 ### `<Router>`
