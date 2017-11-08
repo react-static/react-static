@@ -135,9 +135,7 @@ export async function startDevServer ({ config }) {
 
   console.log('=> Building App Bundle...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
-  const defaultDevServerConfig = {
-    port,
-    host,
+  const devServer = new WebpackDevServer(devCompiler, {
     hot: true,
     disableHostCheck: true,
     contentBase: config.paths.DIST,
@@ -148,9 +146,10 @@ export async function startDevServer ({ config }) {
     watchOptions: {
       ignored: /node_modules/,
     },
-  }
-  const devServerConfig = Object.assign(defaultDevServerConfig, config.devServer)
-  const devServer = new WebpackDevServer(devCompiler, devServerConfig)
+    ...config.devServer,
+    port,
+    host,
+  })
 
   return new Promise((resolve, reject) => {
     devServer.listen(port, err => {
