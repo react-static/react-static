@@ -6,6 +6,7 @@ import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
+import { findAvailablePort } from './utils'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
@@ -52,10 +53,25 @@ export async function buildCompiler ({ config, stage }) {
 }
 
 // Starts the development server
-export async function startDevServer ({ config, port }) {
+export async function startDevServer ({ config }) {
   const devCompiler = await buildCompiler({ config, stage: 'dev' })
 
   let first = true
+
+  // Default to localhost:3000, or use a custom combo if defined in static.config.js
+  // or environment variables
+  const intendedPort = (config.devServer && config.devServer.port) || process.env.PORT || 3000
+  const port = await findAvailablePort(intendedPort)
+  if (intendedPort !== port) {
+    console.time(
+      chalk.red(
+        `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
+          intendedPort,
+        )} instead!`,
+      ),
+    )
+  }
+  const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
 
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
@@ -94,11 +110,7 @@ export async function startDevServer ({ config, port }) {
 
     if (first) {
       first = false
-      console.log(chalk.green('=> [\u2713] App serving at'), `http://localhost:${port}`)
-
-      //  Corbin Matchull (cgmx) - basedjux@gmail.com
-      //  Nov 6, 2017
-      //  Move the startTime back to before {timefix}
+      console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
       stats.startTime -= timefix
     }
 
@@ -123,8 +135,9 @@ export async function startDevServer ({ config, port }) {
 
   console.log('=> Building App Bundle...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
-  const devServer = new WebpackDevServer(devCompiler, {
+  const defaultDevServerConfig = {
     port,
+    host,
     hot: true,
     disableHostCheck: true,
     contentBase: config.paths.DIST,
@@ -135,7 +148,9 @@ export async function startDevServer ({ config, port }) {
     watchOptions: {
       ignored: /node_modules/,
     },
-  })
+  }
+  const devServerConfig = Object.assign(defaultDevServerConfig, config.devServer)
+  const devServer = new WebpackDevServer(devCompiler, devServerConfig)
 
   return new Promise((resolve, reject) => {
     devServer.listen(port, err => {
