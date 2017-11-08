@@ -5,23 +5,21 @@ import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
-import { DIST } from './paths'
-import { getStagedRules } from './webpack/rules'
+import { getStagedRules } from './rules'
 import { findAvailablePort } from './utils'
-
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
 export function webpackConfig ({ config, stage }) {
   let webpackConfig
   if (stage === 'dev') {
-    webpackConfig = require('./webpack/webpack.config.dev').default({ config })
+    webpackConfig = require('./webpack.config.dev').default({ config })
   } else if (stage === 'prod') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({
+    webpackConfig = require('./webpack.config.prod').default({
       config,
     })
   } else if (stage === 'node') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({
+    webpackConfig = require('./webpack.config.prod').default({
       config,
       isNode: true,
     })
@@ -29,7 +27,7 @@ export function webpackConfig ({ config, stage }) {
     throw new Error('A stage is required when building a compiler.')
   }
 
-  const defaultLoaders = getStagedRules({ stage })
+  const defaultLoaders = getStagedRules({ config, stage })
 
   if (config.webpack) {
     let transformers = config.webpack
@@ -60,20 +58,20 @@ export async function startDevServer ({ config }) {
 
   let first = true
 
-  // Define the port to use
-  let port = await findAvailablePort(3000)
-  if (config.devServer && config.devServer.port) {
-    port = config.devServer.port
+  // Default to localhost:3000, or use a custom combo if defined in static.config.js
+  // or environment variables
+  const intendedPort = (config.devServer && config.devServer.port) || process.env.PORT || 3000
+  const port = await findAvailablePort(intendedPort)
+  if (intendedPort !== port) {
+    console.time(
+      chalk.red(
+        `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
+          intendedPort,
+        )} instead!`,
+      ),
+    )
   }
-  if (process.env.PORT) {
-    port = process.env.PORT
-  }
-
-  // Default to localhost, use a custom host if it is defined in static.config.js
-  let host = 'http://localhost'
-  if (config.devServer && config.devServer.host) {
-    host = config.devServer.host
-  }
+  const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
 
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
@@ -97,7 +95,6 @@ export async function startDevServer ({ config }) {
   })
   // ================== PER HOTFIX #124 ==================
 
-
   devCompiler.plugin('invalid', () => {
     console.time(chalk.green('=> [\u2713] Build Complete'))
     console.log('=> Rebuilding...')
@@ -113,14 +110,7 @@ export async function startDevServer ({ config }) {
 
     if (first) {
       first = false
-      console.log(
-        chalk.green('=> [\u2713] App serving at'),
-        `${host}:${port}`,
-      )
-
-      //  Corbin Matchull (cgmx) - basedjux@gmail.com
-      //  Nov 6, 2017
-      //  Move the startTime back to before {timefix}
+      console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
       stats.startTime -= timefix
     }
 
@@ -150,7 +140,7 @@ export async function startDevServer ({ config }) {
     host,
     hot: true,
     disableHostCheck: true,
-    contentBase: DIST,
+    contentBase: config.paths.DIST,
     publicPath: '/',
     historyApiFallback: true,
     compress: true,

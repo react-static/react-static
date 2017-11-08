@@ -8,7 +8,6 @@ import fs from 'fs-extra'
 //
 
 import { pathJoin } from './shared'
-import { PUBLIC, INDEX, HTML_TEMPLATE } from './paths'
 import { Html, Head, Body } from './RootComponents'
 
 const defaultEntry = './src/index'
@@ -32,24 +31,59 @@ export const findAvailablePort = start =>
 // Retrieves the static.config.js from the current project directory
 export const getConfig = () => {
   const config = require(path.resolve(path.join(process.cwd(), 'static.config.js'))).default
+
+  // path defaults
+  config.paths = {
+    src: 'src',
+    dist: 'dist',
+    public: 'public',
+    ...(config.paths || {}),
+  }
+
+  // Resolve the root of the project
+  const ROOT = path.resolve(process.cwd())
+
+  // Use the root to resolve all other relative paths
+  const resolvePath = relativePath => path.resolve(path.join(ROOT, relativePath))
+
+  // Resolve all paths
+  const paths = {
+    ROOT,
+    LOCAL_NODE_MODULES: path.resolve(__dirname, '../node_modules'),
+    SRC: resolvePath(config.paths.src),
+    DIST: resolvePath(config.paths.dist),
+    PUBLIC: resolvePath(config.paths.public),
+    NODE_MODULES: resolvePath('node_modules'),
+    PACKAGE: resolvePath('package.json'),
+    HTML_TEMPLATE: path.join(resolvePath('dist'), 'index.html'),
+  }
+
+  const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null
+
+  const getRoutes = config.getRoutes
+    ? async (...args) => {
+      const routes = await config.getRoutes(...args)
+      return normalizeRoutes(routes)
+    }
+    : async () =>
+    // At least ensure the index page is defined for export
+      normalizeRoutes([
+        {
+          path: '/',
+        },
+      ])
+
   return {
+    // Defaults
     entry: defaultEntry,
     getSiteProps: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
+    // Config Overrides
     ...config,
-    siteRoot: config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null,
-    getRoutes: config.getRoutes
-      ? async (...args) => {
-        const routes = await config.getRoutes(...args)
-        return normalizeRoutes(routes)
-      }
-      : async () =>
-      // At least ensure the index page is defined for export
-        normalizeRoutes([
-          {
-            path: '/',
-          },
-        ]),
+    // Materialized Overrides
+    paths,
+    siteRoot,
+    getRoutes,
   }
 }
 
@@ -105,16 +139,16 @@ export function normalizeRoutes (routes) {
   return flatRoutes
 }
 
-export function copyPublicFolder (dest) {
-  fs.ensureDirSync(PUBLIC)
+export function copyPublicFolder (config) {
+  fs.ensureDirSync(config.paths.PUBLIC)
 
-  fs.copySync(PUBLIC, dest, {
+  fs.copySync(config.paths.PUBLIC, config.paths.DIST, {
     dereference: true,
-    filter: file => file !== INDEX,
+    filter: file => file !== config.paths.INDEX,
   })
 }
 
-export async function createIndexFilePlaceholder ({ Component, siteProps }) {
+export async function createIndexFilePlaceholder ({ config, Component, siteProps }) {
   // Render the base document component to string with siteprops
   const html = `<!DOCTYPE html>${renderToString(
     <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
@@ -123,5 +157,5 @@ export async function createIndexFilePlaceholder ({ Component, siteProps }) {
   )}`
 
   // Write the Document to index.html
-  await fs.outputFile(HTML_TEMPLATE, html)
+  await fs.outputFile(config.paths.HTML_TEMPLATE, html)
 }
