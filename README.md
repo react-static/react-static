@@ -229,6 +229,9 @@ export default {
   // the config)
   webpack: [(previousConfig, args) => newConfig],
 
+  // An optional object to overwrite properties in the webpack devServer configuration.
+  devServer: {...}
+
   // The entry location for your app, defaulting to `./src/index.js`
   // This file must export the JSX of your app as the default export,
   // eg. `default export <MyApp />`.
