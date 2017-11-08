@@ -79,7 +79,7 @@ export async function startDevServer ({ config }) {
     contentBase: config.paths.DIST,
     publicPath: '/',
     historyApiFallback: true,
-    compress: true,
+    compress: false,
     quiet: true,
     watchOptions: {
       ignored: /node_modules/,
