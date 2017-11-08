@@ -145,7 +145,6 @@ export async function startDevServer ({ config }) {
 
   console.log('=> Building App Bundle...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
-  
   const defaultDevServerConfig = {
     port,
     host,
