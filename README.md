@@ -397,7 +397,7 @@ This project uses webpack-dev-server. The `devServer` config object can be used 
 export default {
   devServer: {
     port: 8080,
-    host: 127.0.0.1,
+    host: '127.0.0.1',
     hot: true
   }
 }
