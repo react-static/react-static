@@ -281,7 +281,7 @@ export const prepareRoutes = async config => {
       if (!Template) {
         Template = getTemplateForPath('404')
       }
-      return <Template {...props} />
+      return Template && <Template {...props} />
     }} />
   `
 
