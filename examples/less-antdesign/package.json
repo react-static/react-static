@@ -9,17 +9,17 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "antd": "^2.13.8",
-    "axios": "^0.16.2",
+    "antd": "^next",
+    "axios": "^0.17.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-router": "^4.2.0",
     "react-static": "latest",
-    "styled-components": "2.2.0"
+    "styled-components": "2.2.3"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/node": "^8.0.47",
+    "@types/node": "^8.0.49",
     "@types/react": "^16.0.18",
     "@types/react-dom": "^16.0.2",
     "@types/react-hot-loader": "^3.0.5",
@@ -34,8 +34,8 @@
     "less-loader": "^4.0.5",
     "less-vars-to-js": "^1.2.0",
     "postcss-flexbugs-fixes": "^3.2.0",
-    "serve": "^6.1.0",
-    "ts-loader": "^3.1.0",
-    "typescript": "^2.5.3"
+    "serve": "^6.4.1",
+    "ts-loader": "^3.1.1",
+    "typescript": "^2.6.1"
   }
 }
