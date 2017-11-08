@@ -9,21 +9,18 @@ import path from 'path'
 import Helmet from 'react-helmet'
 //
 import { DefaultDocument } from './RootComponents'
-import { getConfig } from './utils'
-import { DIST } from './paths'
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config }) => {
-  const userConfig = getConfig()
-  const DocumentTemplate = config.Document || DefaultDocument
-
   // Use the node version of the app created with webpack
-  const appJsPath = glob.sync(path.resolve(DIST, 'app!(.static).*.js'))[0]
+  const appJsPath = glob.sync(path.resolve(config.paths.DIST, 'app!(.static).*.js'))[0]
   const appJs = appJsPath.split('/').pop()
-  const appStaticJsPath = glob.sync(path.resolve(DIST, 'app.static.*.js'))[0]
+  const appStaticJsPath = glob.sync(path.resolve(config.paths.DIST, 'app.static.*.js'))[0]
   const Comp = require(appStaticJsPath).default
 
-  const siteProps = await userConfig.getSiteProps({ dev: false })
+  const DocumentTemplate = config.Document || DefaultDocument
+
+  const siteProps = await config.getSiteProps({ dev: false })
 
   return Promise.all(
     config.routes.map(async route => {
@@ -31,7 +28,7 @@ export const exportRoutes = async ({ config }) => {
       const initialProps = route.getProps && (await route.getProps({ route, dev: false }))
       if (initialProps) {
         await fs.outputFile(
-          path.join(DIST, route.path, 'routeData.json'),
+          path.join(config.paths.DIST, route.path, 'routeData.json'),
           JSON.stringify(initialProps || {}),
         )
       }
@@ -165,9 +162,9 @@ export const exportRoutes = async ({ config }) => {
       // If the route is a 404 page, write it directly to 404.html, instead of
       // inside a directory.
       const htmlFilename = route.is404
-        ? path.join(DIST, '404.html')
-        : path.join(DIST, route.path, 'index.html')
-      const initialPropsFilename = path.join(DIST, route.path, 'routeData.json')
+        ? path.join(config.paths.DIST, '404.html')
+        : path.join(config.paths.DIST, route.path, 'index.html')
+      const initialPropsFilename = path.join(config.paths.DIST, route.path, 'routeData.json')
       const writeHTML = fs.outputFile(htmlFilename, html)
       const writeJSON = fs.outputFile(
         initialPropsFilename,
@@ -199,7 +196,7 @@ export async function buildXMLandRSS ({ config }) {
     })),
   })
 
-  await fs.writeFile(path.join(DIST, 'sitemap.xml'), xml)
+  await fs.writeFile(path.join(config.paths.DIST, 'sitemap.xml'), xml)
 
   function generateXML ({ routes }) {
     let xml =
@@ -219,10 +216,10 @@ export async function buildXMLandRSS ({ config }) {
   }
 }
 
-export const prepareRoutes = async routes => {
+export const prepareRoutes = async config => {
   // Dynamically create the auto-routing component
   const templates = []
-  routes = routes.filter(d => d.component)
+  const routes = config.routes.filter(d => d.component)
   routes.forEach(route => {
     if (!templates.includes(route.component)) {
       templates.push(route.component)
@@ -306,10 +303,9 @@ export const prepareRoutes = async routes => {
     }
   `
 
-  const dynamicRoutesPath = path.resolve(DIST, 'react-static-routes.js')
+  const dynamicRoutesPath = path.resolve(config.paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
   await fs.writeFile(dynamicRoutesPath, file)
-
 
   /**
    * Corbin Matschull [cgmx] - basedjux@gmail.com

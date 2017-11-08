@@ -5,9 +5,9 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import path from 'path'
 
 import rules from './rules'
-import { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } from '../paths'
 
 export default function ({ config }) {
+  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: [
@@ -22,7 +22,7 @@ export default function ({ config }) {
       publicPath: '/',
     },
     module: {
-      rules: rules({ stage: 'dev' }),
+      rules: rules({ config, stage: 'dev' }),
     },
     resolve: {
       modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],

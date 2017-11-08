@@ -5,22 +5,20 @@ import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
-import { DIST } from './paths'
-import { getStagedRules } from './webpack/rules'
-
+import { getStagedRules } from './rules'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
 export function webpackConfig ({ config, stage }) {
   let webpackConfig
   if (stage === 'dev') {
-    webpackConfig = require('./webpack/webpack.config.dev').default({ config })
+    webpackConfig = require('./webpack.config.dev').default({ config })
   } else if (stage === 'prod') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({
+    webpackConfig = require('./webpack.config.prod').default({
       config,
     })
   } else if (stage === 'node') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({
+    webpackConfig = require('./webpack.config.prod').default({
       config,
       isNode: true,
     })
@@ -28,7 +26,7 @@ export function webpackConfig ({ config, stage }) {
     throw new Error('A stage is required when building a compiler.')
   }
 
-  const defaultLoaders = getStagedRules({ stage })
+  const defaultLoaders = getStagedRules({ config, stage })
 
   if (config.webpack) {
     let transformers = config.webpack
@@ -59,7 +57,6 @@ export async function startDevServer ({ config, port }) {
 
   let first = true
 
-
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
    * Nov 6, 2017
@@ -82,7 +79,6 @@ export async function startDevServer ({ config, port }) {
   })
   // ================== PER HOTFIX #124 ==================
 
-
   devCompiler.plugin('invalid', () => {
     console.time(chalk.green('=> [\u2713] Build Complete'))
     console.log('=> Rebuilding...')
@@ -98,10 +94,7 @@ export async function startDevServer ({ config, port }) {
 
     if (first) {
       first = false
-      console.log(
-        chalk.green('=> [\u2713] App serving at'),
-        `http://localhost:${port}`,
-      )
+      console.log(chalk.green('=> [\u2713] App serving at'), `http://localhost:${port}`)
 
       //  Corbin Matchull (cgmx) - basedjux@gmail.com
       //  Nov 6, 2017
@@ -134,7 +127,7 @@ export async function startDevServer ({ config, port }) {
     port,
     hot: true,
     disableHostCheck: true,
-    contentBase: DIST,
+    contentBase: config.paths.DIST,
     publicPath: '/',
     historyApiFallback: true,
     compress: true,
