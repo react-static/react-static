@@ -248,6 +248,10 @@ export default {
     public: 'public' // The public directory (files copied to dist during build)
   },
 
+  // onStart is a utility hook that runs when the dev server starts up successfully.
+  // It provides you with the final, READONLY devServer config object for convenience.
+  onStart: ({ devServerConfig }) => {...}
+
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
 }
