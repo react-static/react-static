@@ -73,6 +73,22 @@ export async function startDevServer ({ config }) {
   }
   const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
 
+  const devServerConfig = {
+    hot: true,
+    disableHostCheck: true,
+    contentBase: config.paths.DIST,
+    publicPath: '/',
+    historyApiFallback: true,
+    compress: true,
+    quiet: true,
+    watchOptions: {
+      ignored: /node_modules/,
+    },
+    ...config.devServer,
+    port,
+    host,
+  }
+
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
    * Nov 6, 2017
@@ -112,6 +128,9 @@ export async function startDevServer ({ config }) {
       first = false
       console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
       stats.startTime -= timefix
+      if (config.onStart) {
+        config.onStart({ devServerConfig })
+      }
     }
 
     if (messages.errors.length) {
@@ -136,21 +155,6 @@ export async function startDevServer ({ config }) {
   console.log('=> Building App Bundle...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
 
-  const devServerConfig = {
-    hot: true,
-    disableHostCheck: true,
-    contentBase: config.paths.DIST,
-    publicPath: '/',
-    historyApiFallback: true,
-    compress: true,
-    quiet: true,
-    watchOptions: {
-      ignored: /node_modules/,
-    },
-    ...config.devServer,
-    port,
-    host,
-  }
   const devServer = new WebpackDevServer(devCompiler, devServerConfig)
 
   return new Promise((resolve, reject) => {
@@ -158,7 +162,6 @@ export async function startDevServer ({ config }) {
       if (err) {
         return reject(err)
       }
-      config.onStart(devServerConfig)
       resolve()
     })
   })

@@ -55,7 +55,7 @@ export const getConfig = () => {
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath('node_modules'),
     PACKAGE: resolvePath('package.json'),
-    HTML_TEMPLATE: path.join(resolvePath('dist'), 'index.html'),
+    HTML_TEMPLATE: path.join(resolvePath(config.paths.dist), 'index.html'),
   }
 
   const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null
