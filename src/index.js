@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import createBrowserHistory from 'history/createBrowserHistory'
+import createMemoryHistory from 'history/createMemoryHistory'
+import createHashHistory from 'history/createHashHistory'
 import { Helmet } from 'react-helmet'
 import * as ReactRouter from 'react-router-dom'
 //
@@ -171,7 +173,7 @@ async function prefetch (path) {
 }
 
 function getRouteProps (Comp) {
-  return class AsyncPropsComponent extends Component {
+  return class GetRouteProps extends Component {
     static contextTypes = {
       initialProps: PropTypes.object,
       router: PropTypes.object,
@@ -184,10 +186,16 @@ function getRouteProps (Comp) {
         const { pathname } = this.context.router.route.location
         const path = pathJoin(pathname)
         await prefetch(path)
+        if (this.unmounting) {
+          return
+        }
         this.setState({
           loaded: true,
         })
       }
+    }
+    componentWillUnmount () {
+      this.unmounting = true
     }
     render () {
       const { pathname } = this.context.router.route.location
@@ -225,7 +233,7 @@ function getRouteProps (Comp) {
 }
 
 function getSiteProps (Comp) {
-  return class AsyncPropsComponent extends Component {
+  return class GetSiteProps extends Component {
     static contextTypes = {
       siteProps: PropTypes.object,
     }
@@ -241,10 +249,16 @@ function getSiteProps (Comp) {
           sitePropsPromise = axios.get(`${process.env.STATIC_ENDPOINT}/siteProps`)
           return sitePropsPromise
         })()
+        if (this.unmounting) {
+          return
+        }
         this.setState({
           siteProps,
         })
       }
+    }
+    componentWillUnmount () {
+      this.unmounting = true
     }
     render () {
       let siteProps
@@ -347,6 +361,9 @@ const setLoading = d => {
 }
 
 class Router extends Component {
+  static defaultProps = {
+    type: 'browser',
+  }
   static subscribe = cb => {
     const ccb = () => cb(loading)
     subscribers.push(ccb)
@@ -358,7 +375,7 @@ class Router extends Component {
     URL: PropTypes.string,
   }
   render () {
-    const { history, ...rest } = this.props
+    const { history, type, ...rest } = this.props
     const { URL } = this.context
     const context = URL ? {} : undefined
 
@@ -371,7 +388,17 @@ class Router extends Component {
       resolvedHistory = undefined
     } else {
       ResolvedRouter = ReactRouter.Router
-      resolvedHistory = history || global.__reactStaticRouterHistory || createBrowserHistory()
+      resolvedHistory = history || global.__reactStaticRouterHistory
+      if (!resolvedHistory) {
+        if (type === 'memory') {
+          resolvedHistory = createMemoryHistory()
+        } else if (type === 'hash') {
+          console.log('hash!')
+          resolvedHistory = createHashHistory()
+        } else {
+          resolvedHistory = createBrowserHistory()
+        }
+      }
       global.__reactStaticRouterHistory = resolvedHistory
       ;['push', 'replace'].forEach(method => {
         const originalMethod = resolvedHistory[method]
