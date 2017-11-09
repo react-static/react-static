@@ -14,7 +14,6 @@ injectGlobal`
     font-size: 16px;
     margin: 0;
     padding: 0;
-    padding-top: constant(safe-area-inset-top);
   }
 `
 
@@ -28,6 +27,7 @@ const AppStyles = styled.div`
   nav {
     width: 100%;
     background: #108db8;
+    padding-top: constant(safe-area-inset-top);
 
     a {
       color: white;
