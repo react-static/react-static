@@ -41,6 +41,9 @@ export default async () => {
     console.timeEnd(chalk.green('=> [\u2713] Routes Exported'))
 
     console.timeEnd('=> Site is ready for production!')
+    if (config.onBuild) {
+      await config.onBuild({ config })
+    }
     process.exit(0)
   } catch (err) {
     console.log(err)
