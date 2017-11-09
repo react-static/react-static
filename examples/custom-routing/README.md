@@ -8,7 +8,7 @@ This example includes:
 
 To get started, run `react-static create` and use the `custom-routing` template.
 
-##Automatic component routing vs custom routing
+## Automatic component routing vs custom routing
 
 In automatic component routing, you setup your routes in getRoutes of static.config.js, where you specify the path and the appropriate component for that path:  
 ```{path: 'foo', component: 'src/components/MyFoo'}``` This is the easiest way to specify routes.
