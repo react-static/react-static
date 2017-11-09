@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "react-static start",
-    "build": "react-static build & cordova build"
+    "build": "react-static build && cordova run"
   },
   "dependencies": {
     "axios": "^0.16.2",

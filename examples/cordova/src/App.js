@@ -45,7 +45,7 @@ const AppStyles = styled.div`
 `
 
 export default () => (
-  <Router>
+  <Router type="hash">
     <AppStyles>
       <nav>
         <Link to="/">Home</Link>

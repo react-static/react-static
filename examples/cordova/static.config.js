@@ -3,6 +3,9 @@ import { ServerStyleSheet } from 'styled-components'
 import { execSync } from 'child_process'
 import WriteFilePlugin from 'write-file-webpack-plugin'
 import path from 'path'
+import fs from 'fs-extra'
+
+const filePath = path.resolve('./config.xml')
 
 export default {
   paths: {
@@ -47,10 +50,20 @@ export default {
   webpack: (config, { stage }) => {
     if (stage === 'dev') {
       config.plugins.push(new WriteFilePlugin())
+    } else {
+      config.output.publicPath = ''
     }
     return config
   },
-  onStart: ({ devServerConfig }) => {
+  onStart: async () => {
+    const cordovaConfig = await fs.readFile(filePath, 'utf8')
+    const replacement = cordovaConfig.replace('src="index.html"', 'src="http://localhost:3000"')
+    await fs.writeFile(filePath, replacement, 'utf8')
     execSync('cordova run', { stdio: [null, null, 2] })
+  },
+  onBuild: async () => {
+    const cordovaConfig = await fs.readFile(filePath, 'utf8')
+    const replacement = cordovaConfig.replace('src="http://localhost:3000"', 'src="index.html"')
+    await fs.writeFile(filePath, replacement, 'utf8')
   },
 }

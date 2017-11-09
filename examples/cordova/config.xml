@@ -7,7 +7,7 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
-    <content src="http://localhost:3000" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="http://localhost*" />
     <allow-navigation href="ws://localhost*" />
