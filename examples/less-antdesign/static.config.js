@@ -92,6 +92,10 @@ export default {
     // to react-statics alias resolution
     config.resolve.alias = typescriptWebpackPaths.resolve.alias
 
+    // Needed for momoent js resolution in React 16
+    // See: https://github.com/moment/moment/issues/2979#issuecomment-332217206
+    config.resolve.alias.moment$ = 'moment/moment.js'
+
     // We replace the existing JS rule with one, that allows us to use
     // both TypeScript and JavaScript interchangeably
     const jsTsLoader = {

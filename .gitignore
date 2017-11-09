@@ -28,3 +28,8 @@ yarn-error.log*
 
 # Editorconfig (for now)
 .editorconfig
+
+# cordova
+platforms
+plugins
+www

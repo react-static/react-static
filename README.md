@@ -229,14 +229,6 @@ export default {
   // the config)
   webpack: [(previousConfig, args) => newConfig],
 
-  // The entry location for your app, defaulting to `./src/index.js`
-  // This file must export the JSX of your app as the default export,
-  // eg. `default export <MyApp />`.
-  // It also handles the rendering of your app while in development mode
-  // (including hot reloading). For a brief example, see the Project
-  // Setup section above.
-  entry: './src/index.js',
-
   // An optional function to customize the server rendering logic. Receives:
   // - render: renders the JSX to and html string
   // - Component: the final react component to be rendered to HTML
@@ -247,6 +239,21 @@ export default {
     meta.hello = 'world'
     return render(<Component />)
   },
+
+  // Internal directories used by react-static can be overwritten using this object.
+  // Each path is relative to your project root and defaults to:
+  paths: {
+    src: 'src', // The source directory. Must include an index.js entry file.
+    dist: 'dist', // The output directory.
+    public: 'public' // The public directory (files copied to dist during build)
+  },
+
+  // onStart and onBuild are utility hooks that run when the dev server starts up successfully
+  // and after a build has completed.
+  // onStart provides you with the final, READONLY devServer config object for convenience.
+  // onBuild currently does NOT provide any parameters
+  onStart: ({ devServerConfig }) => {...}
+  onBuild: async () => {...}
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
@@ -381,6 +388,21 @@ export default {
       console.log(config.module.rules) // Log out the final set of rules
     }
   ]
+}
+```
+
+**Using Custom devServer properties:**
+
+This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
+
+```javascript
+// static.config.js
+
+export default {
+  devServer: {
+    port: 8080,
+    host: '127.0.0.1'
+  }
 }
 ```
 
