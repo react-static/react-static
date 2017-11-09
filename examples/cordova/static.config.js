@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
 import { execSync } from 'child_process'
-import WriteFilePlugin from 'write-file-webpack-plugin'
 import path from 'path'
 import fs from 'fs-extra'
 
@@ -28,7 +27,14 @@ export default {
             <meta name="msapplication-tap-highlight" content="no" />
             <meta
               name="viewport"
-              content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"
+              content={`
+                user-scalable=no,
+                initial-scale=1,
+                maximum-scale=1,
+                minimum-scale=1,
+                width=device-width,
+                viewport-fit=cover
+              `}
             />
             <title>Hello World</title>
             {renderMeta.styleTags}

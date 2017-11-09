@@ -3,7 +3,7 @@ import { Router, Link, Route, Switch } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 //
 import Home from 'containers/Home'
-import About from 'containers/About'
+import Geolocation from 'containers/Geolocation'
 import NotFound from 'containers/404'
 
 injectGlobal`
@@ -14,6 +14,7 @@ injectGlobal`
     font-size: 16px;
     margin: 0;
     padding: 0;
+    padding-top: constant(safe-area-inset-top);
   }
 `
 
@@ -49,12 +50,12 @@ export default () => (
     <AppStyles>
       <nav>
         <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
+        <Link to="/geolocation">Geolocation</Link>
       </nav>
       <div className="content">
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
+          <Route path="/geolocation" component={Geolocation} />
           <Route component={NotFound} />
         </Switch>
       </div>

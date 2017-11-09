@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+
 import React from 'react'
 import { getRouteProps, Link } from 'react-static'
 //
