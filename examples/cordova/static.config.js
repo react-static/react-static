@@ -9,7 +9,7 @@ const filePath = path.resolve('./config.xml')
 
 export default {
   paths: {
-    dist: 'www',
+    dist: 'www', // Cordova loves it's triple dubs!
   },
   renderToHtml: (render, Comp, meta) => {
     const sheet = new ServerStyleSheet()
@@ -42,26 +42,25 @@ export default {
     }
   },
   devServer: {
+    // Serve from the ios build folder
     contentBase: path.resolve(__dirname, './platforms/ios/www/'),
-    watchOptions: {
-      ignored: [/node_modules/, `${path.resolve(__dirname, './www')}/**`],
-    },
   },
   webpack: (config, { stage }) => {
-    if (stage === 'dev') {
-      config.plugins.push(new WriteFilePlugin())
-    } else {
+    if (stage !== 'dev') {
+      // Cordova serves from file, so relative links, please.
       config.output.publicPath = ''
     }
     return config
   },
   onStart: async () => {
+    // Replace content src with webpack dev server
     const cordovaConfig = await fs.readFile(filePath, 'utf8')
     const replacement = cordovaConfig.replace('src="index.html"', 'src="http://localhost:3000"')
     await fs.writeFile(filePath, replacement, 'utf8')
     execSync('cordova run', { stdio: [null, null, 2] })
   },
   onBuild: async () => {
+    // Replace content src with index.html
     const cordovaConfig = await fs.readFile(filePath, 'utf8')
     const replacement = cordovaConfig.replace('src="http://localhost:3000"', 'src="index.html"')
     await fs.writeFile(filePath, replacement, 'utf8')
