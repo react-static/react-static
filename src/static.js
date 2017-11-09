@@ -137,7 +137,7 @@ export const exportRoutes = async ({ config }) => {
               `,
             }}
           />
-          <script async src={`/${appJs}`} />
+          <script async src={`${config.publicPath}${appJs}`} />
         </body>
       )
 

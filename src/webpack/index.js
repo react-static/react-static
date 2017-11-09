@@ -45,6 +45,7 @@ export function webpackConfig ({ config, stage }) {
       }
     })
   }
+  config.publicPath = webpackConfig.output.publicPath
   return webpackConfig
 }
 
