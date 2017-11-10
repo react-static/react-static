@@ -9,7 +9,6 @@
 - `config.getRoutes` is no longer required and will default to exporting a single root path.
 - Webpack configurations can now be exported and used externally. (Thanks [@crubier](https://github.com/crubier)!)
 - `<Router>` component now supports a `type` prop that can be: `browser`, `hash`, or `memory`, which defines which type of `history` object to create and use internally. Useful for non-web environments or situations where your app will be accessed in a filesystem or nested domain as opposed to a web server.
-- CLI has better colors now! ()
 - Added Redux example (Thanks [@crubier](https://github.com/crubier)!)
 - Added Apollo GraphQL example (Thanks [@crubier](https://github.com/crubier)!)
 - Added Redux + Apollo example (Thanks [@crubier](https://github.com/crubier)!)
