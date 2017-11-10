@@ -1,4 +1,4 @@
-# 4.0.2
+# 4.1.0
 #### Features
 - Added `config.paths`, which can now be used to customize `dist` folder location and other file locations used by react-static
 - Added `onStart` hook. Fires after the first successful dev build when running `react-static start`
