@@ -1,3 +1,25 @@
+# 4.0.2
+#### Features
+- Added `config.paths`, which can now be used to customize `dist` folder location and other file locations used by react-static
+- Added `onStart` hook. Fires after the first successful dev build when running `react-static start`
+- Added `onBuild` hook. Fires after a successful production build when running `react-static build`
+- Added `config.devServer`, which can be used to customize the configuration for the webpack-dev-server used in development. (Thanks [@rywils21](https://github.com/rywils21)!)
+- Added TypeScript typings for React-Static core exports (Thanks [@D1no](https://github.com/D1no)!)
+- Allow customization of dev server PORT and HOST via those environment variables. (Thanks [@rywils21](https://github.com/rywils21)!)
+- `config.getRoutes` is no longer required and will default to exporting a single root path.
+- Webpack configurations can now be exported and used externally. (Thanks [@crubier](https://github.com/crubier)!)
+- `<Router>` component now supports a `type` prop that can be: `browser`, `hash`, or `memory`, which defines which type of `history` object to create and use internally. Useful for non-web environments or situations where your app will be accessed in a filesystem or nested domain as opposed to a web server.
+- CLI has better colors now! ()
+- Added Redux example (Thanks [@crubier](https://github.com/crubier)!)
+- Added Apollo GraphQL example (Thanks [@crubier](https://github.com/crubier)!)
+- Added Redux + Apollo example (Thanks [@crubier](https://github.com/crubier)!)
+- Added Typscript example (Thanks [@D1no](https://github.com/D1no)!)
+
+#### Fixes & Optimization
+- The `Document`'s `<title>` tag can now be used as a fallback to any `<title>` tag produced via the `<Head>` component. (Thanks [@EmilTholin](https://github.com/EmilTholin)!)
+- Fixed a bug where not defining a 404 component resulted in an error during production build. (Thanks [@mplis](https://github.com/mplis)!)
+- Fixed a bug where the webpack dev server would rebuild the app multiple times in a row when started up for the first time. (Thanks [@cgmx](https://github.com/cgmx)!)
+
 # 4.0.0
 #### Breaking Changes
 - The `webpack` function in `static.config.js` has a new function signature.

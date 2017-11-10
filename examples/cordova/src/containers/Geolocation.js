@@ -9,7 +9,6 @@ export default class MyLocation extends Component {
   async componentDidMount () {
     // get current position
     const startingLocation = await Geolocation.getCurrentPosition()
-    console.log(startingLocation)
     this.setState({
       startingLocation,
     })

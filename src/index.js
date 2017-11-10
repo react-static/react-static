@@ -393,7 +393,6 @@ class Router extends Component {
         if (type === 'memory') {
           resolvedHistory = createMemoryHistory()
         } else if (type === 'hash') {
-          console.log('hash!')
           resolvedHistory = createHashHistory()
         } else {
           resolvedHistory = createBrowserHistory()
