@@ -5,6 +5,7 @@
 /examples/*/dist
 /examples/*/yarn.lock
 /src
+!/src/index.d.ts
 
 # misc
 .DS_Store
