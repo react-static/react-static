@@ -2,9 +2,6 @@
   <a href="https://github.com/nozzle/react-static" target="\_parent"><img src="https://github.com/nozzle/react-static/raw/master/media/logo.png" alt="React Static Logo" style="width:450px;"/></a>
 </div>
 
-<br />
-<br />
-
 <a href="https://travis-ci.org/nozzle/react-static" target="\_parent">
 <img alt="" src="https://travis-ci.org/nozzle/react-static.svg?branch=master" />
 </a>
