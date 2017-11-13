@@ -5,7 +5,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import createMemoryHistory from 'history/createMemoryHistory'
 import createHashHistory from 'history/createHashHistory'
 import { Helmet } from 'react-helmet'
-import { Router as ReactRouter, StaticRouter } from 'react-router-dom'
+import * as ReactRouter from 'react-router-dom'
 //
 import { pathJoin } from './shared'
 
@@ -384,10 +384,10 @@ class Router extends Component {
 
     // If statically rendering, use the static router
     if (URL) {
-      ResolvedRouter = StaticRouter
+      ResolvedRouter = require('react-router').StaticRouter
       resolvedHistory = undefined
     } else {
-      ResolvedRouter = ReactRouter
+      ResolvedRouter = ReactRouter.Router
       resolvedHistory = history || global.__reactStaticRouterHistory
       if (!resolvedHistory) {
         if (type === 'memory') {
@@ -421,22 +421,17 @@ class Router extends Component {
   }
 }
 
-export {
-  Link,
-  NavLink,
-  Prompt,
-  Redirect,
-  Route,
-  Switch,
-  matchPath,
-  withRouter,
-} from 'react-router-dom'
-export {
+module.exports = {
+  ...ReactRouter,
+  BrowserRouter: undefined,
+  HashRouter: undefined,
+  MemoryRouter: undefined,
+  StaticRouter: undefined,
   Router,
   getRouteProps,
   getSiteProps,
   Prefetch,
   PrefetchWhenSeen,
   prefetch,
-  Helmet as Head,
+  Head: Helmet,
 }
