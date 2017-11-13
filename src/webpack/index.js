@@ -103,6 +103,8 @@ export async function startDevServer ({ config }) {
    *
    * After the devCompiler finishes it removes the timefix by-
    * subtracting {timefix} from {startTime}
+   *
+   * TODO: Wait for webpack-dev-server to implement a true fix for this.
    */
 
   // Move startTime from Modulo 10s
@@ -111,7 +113,6 @@ export async function startDevServer ({ config }) {
     watching.startTime += timefix
     callback()
   })
-  // ================== PER HOTFIX #124 ==================
 
   devCompiler.plugin('invalid', () => {
     console.time(chalk.green('=> [\u2713] Build Complete'))
