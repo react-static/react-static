@@ -4,4 +4,4 @@ This example is based on the most basic version of react-static available, and a
 
 - React Redux
 
-To get started, run `react-static create` and use the `basic` template.
+To get started, run `react-static create` and use the `redux` template.

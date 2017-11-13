@@ -1,6 +1,6 @@
 {
   "name": "react-static",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "main": "lib/index.js",
   "types": "src/index.d.ts",
   "license": "MIT",
