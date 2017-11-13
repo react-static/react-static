@@ -5,22 +5,21 @@ import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
-import { DIST } from './paths'
-import { getStagedRules } from './webpack/rules'
-
+import { getStagedRules } from './rules'
+import { findAvailablePort } from '../utils'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
 export function webpackConfig ({ config, stage }) {
   let webpackConfig
   if (stage === 'dev') {
-    webpackConfig = require('./webpack/webpack.config.dev').default({ config })
+    webpackConfig = require('./webpack.config.dev').default({ config })
   } else if (stage === 'prod') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({
+    webpackConfig = require('./webpack.config.prod').default({
       config,
     })
   } else if (stage === 'node') {
-    webpackConfig = require('./webpack/webpack.config.prod').default({
+    webpackConfig = require('./webpack.config.prod').default({
       config,
       isNode: true,
     })
@@ -28,7 +27,7 @@ export function webpackConfig ({ config, stage }) {
     throw new Error('A stage is required when building a compiler.')
   }
 
-  const defaultLoaders = getStagedRules({ stage })
+  const defaultLoaders = getStagedRules({ config, stage })
 
   if (config.webpack) {
     let transformers = config.webpack
@@ -46,6 +45,7 @@ export function webpackConfig ({ config, stage }) {
       }
     })
   }
+  config.publicPath = webpackConfig.output.publicPath
   return webpackConfig
 }
 
@@ -54,11 +54,41 @@ export async function buildCompiler ({ config, stage }) {
 }
 
 // Starts the development server
-export async function startDevServer ({ config, port }) {
+export async function startDevServer ({ config }) {
   const devCompiler = await buildCompiler({ config, stage: 'dev' })
 
   let first = true
 
+  // Default to localhost:3000, or use a custom combo if defined in static.config.js
+  // or environment variables
+  const intendedPort = (config.devServer && config.devServer.port) || process.env.PORT || 3000
+  const port = await findAvailablePort(intendedPort)
+  if (intendedPort !== port) {
+    console.time(
+      chalk.red(
+        `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
+          intendedPort,
+        )} instead!`,
+      ),
+    )
+  }
+  const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
+
+  const devServerConfig = {
+    hot: true,
+    disableHostCheck: true,
+    contentBase: config.paths.DIST,
+    publicPath: '/',
+    historyApiFallback: true,
+    compress: false,
+    quiet: true,
+    watchOptions: {
+      ignored: /node_modules/,
+    },
+    ...config.devServer,
+    port,
+    host,
+  }
 
   /**
    * Corbin Matschull (cgmx) - basedjux@gmail.com
@@ -83,7 +113,6 @@ export async function startDevServer ({ config, port }) {
     callback()
   })
 
-
   devCompiler.plugin('invalid', () => {
     console.time(chalk.green('=> [\u2713] Build Complete'))
     console.log('=> Rebuilding...')
@@ -99,15 +128,11 @@ export async function startDevServer ({ config, port }) {
 
     if (first) {
       first = false
-      console.log(
-        chalk.green('=> [\u2713] App serving at'),
-        `http://localhost:${port}`,
-      )
-
-      //  Corbin Matchull (cgmx) - basedjux@gmail.com
-      //  Nov 6, 2017
-      //  Move the startTime back to before {timefix}
+      console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
       stats.startTime -= timefix
+      if (config.onStart) {
+        config.onStart({ devServerConfig })
+      }
     }
 
     if (messages.errors.length) {
@@ -131,19 +156,8 @@ export async function startDevServer ({ config, port }) {
 
   console.log('=> Building App Bundle...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
-  const devServer = new WebpackDevServer(devCompiler, {
-    port,
-    hot: true,
-    disableHostCheck: true,
-    contentBase: DIST,
-    publicPath: '/',
-    historyApiFallback: true,
-    compress: true,
-    quiet: true,
-    watchOptions: {
-      ignored: /node_modules/,
-    },
-  })
+
+  const devServer = new WebpackDevServer(devCompiler, devServerConfig)
 
   return new Promise((resolve, reject) => {
     devServer.listen(port, err => {

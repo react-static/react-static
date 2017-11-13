@@ -7,4 +7,4 @@ This example is based on the most basic version of react-static available, and a
 
 Both libraries are now losely coupled so it is very easy to use only one of them, just remove the code you do not want.
 
-To get started, run `react-static create` and use the `basic` template.
+To get started, run `react-static create` and use the `apollo-redux` template.

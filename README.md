@@ -2,9 +2,6 @@
   <a href="https://github.com/nozzle/react-static" target="\_parent"><img src="https://github.com/nozzle/react-static/raw/master/media/logo.png" alt="React Static Logo" style="width:450px;"/></a>
 </div>
 
-<br />
-<br />
-
 <a href="https://travis-ci.org/nozzle/react-static" target="\_parent">
 <img alt="" src="https://travis-ci.org/nozzle/react-static.svg?branch=master" />
 </a>
@@ -229,14 +226,6 @@ export default {
   // the config)
   webpack: [(previousConfig, args) => newConfig],
 
-  // The entry location for your app, defaulting to `./src/index.js`
-  // This file must export the JSX of your app as the default export,
-  // eg. `default export <MyApp />`.
-  // It also handles the rendering of your app while in development mode
-  // (including hot reloading). For a brief example, see the Project
-  // Setup section above.
-  entry: './src/index.js',
-
   // An optional function to customize the server rendering logic. Receives:
   // - render: renders the JSX to and html string
   // - Component: the final react component to be rendered to HTML
@@ -247,6 +236,21 @@ export default {
     meta.hello = 'world'
     return render(<Component />)
   },
+
+  // Internal directories used by react-static can be overwritten using this object.
+  // Each path is relative to your project root and defaults to:
+  paths: {
+    src: 'src', // The source directory. Must include an index.js entry file.
+    dist: 'dist', // The output directory.
+    public: 'public' // The public directory (files copied to dist during build)
+  },
+
+  // onStart and onBuild are utility hooks that run when the dev server starts up successfully
+  // and after a build has completed.
+  // onStart provides you with the final, READONLY devServer config object for convenience.
+  // onBuild currently does NOT provide any parameters
+  onStart: ({ devServerConfig }) => {...}
+  onBuild: async () => {...}
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
@@ -384,12 +388,32 @@ export default {
 }
 ```
 
+**Using Custom devServer properties:**
+
+This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
+
+```javascript
+// static.config.js
+
+export default {
+  devServer: {
+    port: 8080,
+    host: '127.0.0.1'
+  }
+}
+```
+
 ## Components & Tools
 
 ### `<Router>`
-The `Router` component is required, and provides the underlying React-Router context to its children. It is often the root component of a react-static app.
+The `Router` component is required, and provides the underlying React-Router context to its children. It is recommended to always be the root component of a react-static app.
 
-`Router` automatically handles rendering both static and browser environments. It optionally accepts a `history` object (most-often used for things like react-router-redux), and also provides a helper method to subscribe to loading events.
+- `Router` automatically handles rendering both static and browser environments.
+- Supports an optional `type` prop that can be one of:
+  - `browser` - Uses `history.createBrowserHistory`
+  - `hash` - Uses `history.createHashHistory`
+  - `memory` - Uses `history.createMemoryHistory`
+- It optionally accepts a `history` object (most-often used for things like react-router-redux), and also provides a helper method to subscribe to loading events. Note that this will override the `type` prop above.
 
 Example:
 ```javascript

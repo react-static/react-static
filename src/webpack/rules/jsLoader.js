@@ -1,9 +1,7 @@
-import { NODE_MODULES } from '../../paths'
-
-export default function () {
+export default function ({ config }) {
   return {
     test: /\.(js|jsx)$/,
-    exclude: NODE_MODULES,
+    exclude: config.paths.NODE_MODULES,
     use: [
       {
         loader: 'babel-loader',

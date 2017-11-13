@@ -7,8 +7,9 @@ import { findAvailablePort, getConfig } from './utils'
 export async function startConfigServer () {
   const config = getConfig()
   // scan a range
-  const port = process.env.PORT || (await findAvailablePort(8000))
-  process.env.STATIC_ENDPOINT = `http://127.0.0.1:${port}`
+  const port = await findAvailablePort(8000)
+  const host = process.env.HOST || 'http://localhost'
+  process.env.STATIC_ENDPOINT = `${host}:${port}`
 
   const configApp = express()
   configApp.use(cors())

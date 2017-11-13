@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+
 import React from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'

@@ -6,12 +6,11 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
-
 //
 import rules from './rules'
-import { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } from '../paths'
 
 export default function ({ config, isNode }) {
+  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: path.resolve(ROOT, config.entry),
@@ -24,7 +23,7 @@ export default function ({ config, isNode }) {
     target: isNode ? 'node' : undefined,
     externals: isNode ? [nodeExternals()] : [],
     module: {
-      rules: rules({ stage: 'prod' }),
+      rules: rules({ config, stage: 'prod' }),
     },
     resolve: {
       modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
