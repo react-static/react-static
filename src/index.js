@@ -9,6 +9,23 @@ import { Router as ReactRouter, StaticRouter } from 'react-router-dom'
 //
 import { pathJoin } from './shared'
 
+// Proxy React Router
+export {
+  Link,
+  NavLink,
+  Prompt,
+  Redirect,
+  Route,
+  Switch,
+  matchPath,
+  withRouter,
+} from 'react-router-dom'
+
+// Proxy Helmet as Head
+export { Helmet as Head }
+
+//
+
 const propsCache = {}
 const inflight = {}
 const failed = {}
@@ -103,7 +120,7 @@ function isPrefetched (path) {
   }
 }
 
-async function prefetch (path) {
+export async function prefetch (path) {
   path = cleanPath(path)
 
   if (!path) {
@@ -172,7 +189,7 @@ async function prefetch (path) {
   return propsCache[path]
 }
 
-function getRouteProps (Comp) {
+export function getRouteProps (Comp) {
   return class GetRouteProps extends Component {
     static contextTypes = {
       initialProps: PropTypes.object,
@@ -232,7 +249,7 @@ function getRouteProps (Comp) {
   }
 }
 
-function getSiteProps (Comp) {
+export function getSiteProps (Comp) {
   return class GetSiteProps extends Component {
     static contextTypes = {
       siteProps: PropTypes.object,
@@ -288,7 +305,7 @@ function getSiteProps (Comp) {
   }
 }
 
-class Prefetch extends Component {
+export class Prefetch extends Component {
   static defaultProps = {
     children: null,
     path: null,
@@ -322,7 +339,7 @@ const handleIntersection = (element, callback) => {
   io.observe(element)
 }
 
-class PrefetchWhenSeen extends Component {
+export class PrefetchWhenSeen extends Component {
   static defaultProps = {
     children: null,
     path: null,
@@ -360,7 +377,7 @@ const setLoading = d => {
   subscribers.forEach(s => s())
 }
 
-class Router extends Component {
+export class Router extends Component {
   static defaultProps = {
     type: 'browser',
   }
@@ -374,6 +391,17 @@ class Router extends Component {
   static contextTypes = {
     URL: PropTypes.string,
   }
+  state = {
+    error: null,
+    errorInfo: null,
+  }
+  componentDidCatch (error, errorInfo) {
+    // Catch errors in any child components and re-renders with an error message
+    this.setState({
+      error,
+      errorInfo,
+    })
+  }
   render () {
     const { history, type, ...rest } = this.props
     const { URL } = this.context
@@ -381,6 +409,29 @@ class Router extends Component {
 
     let ResolvedRouter
     let resolvedHistory
+
+    if (this.state.error) {
+      // Fallback UI if an error occurs
+      return (
+        <div
+          style={{
+            margin: '1rem',
+            padding: '1rem',
+            background: 'rgba(0,0,0,0.05)',
+          }}
+        >
+          <h2>Oh-no! Something's gone wrong!</h2>
+          <pre style={{ whiteSpace: 'normal', color: 'red' }}>
+            <code>{this.state.error && this.state.error.toString()}</code>
+          </pre>
+          <h3>This error occurred here:</h3>
+          <pre style={{ color: 'red', overflow: 'auto' }}>
+            <code>{this.state.errorInfo.componentStack}</code>
+          </pre>
+          <p>For more information, please see the console.</p>
+        </div>
+      )
+    }
 
     // If statically rendering, use the static router
     if (URL) {
@@ -419,24 +470,4 @@ class Router extends Component {
 
     return <ResolvedRouter history={resolvedHistory} location={URL} context={context} {...rest} />
   }
-}
-
-export {
-  Link,
-  NavLink,
-  Prompt,
-  Redirect,
-  Route,
-  Switch,
-  matchPath,
-  withRouter,
-} from 'react-router-dom'
-export {
-  Router,
-  getRouteProps,
-  getSiteProps,
-  Prefetch,
-  PrefetchWhenSeen,
-  prefetch,
-  Helmet as Head,
 }
