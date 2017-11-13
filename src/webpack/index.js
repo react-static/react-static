@@ -1,13 +1,12 @@
+/* eslint-disable import/no-dynamic-require, react/no-danger */
 import webpack from 'webpack'
+import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
 import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
-
-const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages')
-
-/* eslint-disable import/first */
+// import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
+//
 import { getStagedRules } from './rules'
 import { findAvailablePort } from '../utils'
-/* eslint-enable import/first */
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator

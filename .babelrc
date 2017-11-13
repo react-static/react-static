@@ -1,4 +1,38 @@
 {
-  "presets": ["./babel-preset.js"],
-  "ignore": ["app.static.js"]
+  "presets": [
+    [
+      "latest",
+      {
+        "loose": true,
+        "modules": false
+      }
+    ],
+    "stage-0",
+    "stage-3",
+    "react"
+  ],
+  "ignore": "app.static.js",
+  "plugins": [
+    "react-hot-loader/babel",
+    "transform-class-properties",
+    [
+      "transform-runtime",
+      {
+        "helpers": false,
+        "polyfill": false,
+        "regenerator": true,
+        "moduleName": "babel-runtime"
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["latest", {"modules": true}], 
+        "stage-0",
+        "stage-3",
+        "react"
+      ]
+    }
+  }
 }
