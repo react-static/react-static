@@ -227,7 +227,7 @@ export const prepareRoutes = async config => {
   })
 
   const templateImports = templates
-    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '../${template}'`)
+    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '${path.resolve(config.paths.ROOT, template)}'`)
     .join('\n')
 
   const templateMap = `const templateMap = {
