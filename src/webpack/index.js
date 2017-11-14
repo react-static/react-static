@@ -87,7 +87,7 @@ export async function startDevServer ({ config }) {
     },
     ...config.devServer,
     before: app => {
-      app.get('/__config__/siteProps', async (req, res, next) => {
+      app.get('/__react-static__/siteProps', async (req, res, next) => {
         try {
           const siteProps = await config.getSiteProps({ dev: true })
           res.json(siteProps)
@@ -97,14 +97,14 @@ export async function startDevServer ({ config }) {
         }
       })
 
-      app.get('/__config__/getRoutes', async (req, res, next) => {
+      app.get('/__react-static__/getRoutes', async (req, res, next) => {
         try {
           const routes = await config.getRoutes({ dev: true })
 
           // Once all of the routes have been resolved, listen on individual
           // route endpoints
           routes.forEach(route => {
-            app.get(`/__config__/route${route.path}`, async (req, res, next) => {
+            app.get(`/__react-static__/route${route.path}`, async (req, res, next) => {
               try {
                 const initialProps = await route.getProps({ dev: true })
                 res.json(initialProps)

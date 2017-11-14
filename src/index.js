@@ -39,7 +39,7 @@ if (typeof document !== 'undefined') {
   routesPromise = (async () => {
     let res
     if (process.env.NODE_ENV === 'development') {
-      res = await axios.get(`${process.env.STATIC_ENDPOINT}/getroutes`)
+      res = await axios.get('__react-static__/getroutes')
       return res.data
     }
     return window.__routesList
@@ -149,7 +149,7 @@ export async function prefetch (path) {
     // Reuse request for duplicate inflight requests
     try {
       if (!inflight[path]) {
-        inflight[path] = axios.get(`/__config__/route${path}`)
+        inflight[path] = axios.get(`/__react-static__/route${path}`)
       }
       const { data: initialProps } = await inflight[path]
 
@@ -263,7 +263,7 @@ export function getSiteProps (Comp) {
           if (sitePropsPromise) {
             return sitePropsPromise
           }
-          sitePropsPromise = axios.get('/__config__/siteProps')
+          sitePropsPromise = axios.get('/__react-static__/siteProps')
           return sitePropsPromise
         })()
         if (this.unmounting) {
