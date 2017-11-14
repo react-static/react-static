@@ -4,12 +4,7 @@ import fs from 'fs-extra'
 import { prepareRoutes } from '../static'
 import { DefaultDocument } from '../RootComponents'
 import { startDevServer } from '../webpack'
-import {
-  getConfig,
-  copyPublicFolder,
-  createIndexFilePlaceholder,
-} from '../utils'
-import { startConfigServer } from '../configServer'
+import { getConfig, copyPublicFolder, createIndexFilePlaceholder } from '../utils'
 //
 
 export default async () => {
@@ -45,7 +40,6 @@ export default async () => {
     console.time(chalk.green('=> [\u2713] Routes Built'))
     config.routes = await config.getRoutes({ dev: true })
     await prepareRoutes(config)
-    await startConfigServer()
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
     // Build the JS bundle
