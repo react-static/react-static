@@ -62,7 +62,7 @@ export async function startDevServer ({ config }) {
   // Default to localhost:3000, or use a custom combo if defined in static.config.js
   // or environment variables
   const intendedPort = (config.devServer && config.devServer.port) || process.env.PORT || 3000
-  const port = await findAvailablePort(intendedPort)
+  const port = await findAvailablePort(Number(intendedPort))
   if (intendedPort !== port) {
     console.time(
       chalk.red(
