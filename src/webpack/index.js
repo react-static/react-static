@@ -86,8 +86,7 @@ export async function startDevServer ({ config }) {
       ignored: /node_modules/,
     },
     ...config.devServer,
-    setup: app => {
-      process.env.STATIC_ENDPOINT = `${host}:${port}/__config__`
+    before: app => {
       app.get('/__config__/siteProps', async (req, res, next) => {
         try {
           const siteProps = await config.getSiteProps({ dev: true })
@@ -123,8 +122,8 @@ export async function startDevServer ({ config }) {
         }
       })
 
-      if (config.devServer && config.devServer.setup) {
-        config.devServer.setup(app)
+      if (config.devServer && config.devServer.before) {
+        config.devServer.before(app)
       }
     },
     port,
