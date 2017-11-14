@@ -77,7 +77,7 @@ Can't find an example? We invite you to write it! Simply copy the `basic` or `bl
 [Click here to sign up for the React-Tools slack Organization](https://react-chat-signup.herokuapp.com), and join us in the **#react-static** channel! We are constantly discussing implementation details, answering questions and planning features. :)
 
 ## Documentation
-These docs are for version `3.x.x`.
+If you read these docs on `npmjs.com`, they correspond to the [published version on npm](https://www.npmjs.com/package/react-static#documentation). The latest, potentially not yet published docs (HEAD), correspond to the [README.md on github](https://github.com/nozzle/react-static#documentation).
 
 - [Quick Start](#quick-start)
 - [Installation](#installation)
