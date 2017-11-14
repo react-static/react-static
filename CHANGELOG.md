@@ -1,3 +1,14 @@
+# 4.2.0
+#### Features
+- Added Probot to the github repo! Hooray!
+- Better yarn/npm colors in cli. [@cgmx](https://github.com/cgmx)
+- Router now uses `componentDidCatch` to gracefully display runtime errors for you.
+
+#### Fixes & Optimizations
+- `react-static-routes` now uses dynamic template imports. [@EmilTholin](https://github.com/emiltholin)
+- Helmet meta tags are more reliably extracted. [@EmilTholin](https://github.com/emiltholin)
+- Config server is no longer served separately, but piggybacks on webpack dev server. [@rileylnapier](https://github.com/rileylnapier)
+
 # 4.1.0
 #### Features
 - Added `config.paths`, which can now be used to customize `dist` folder location and other file locations used by react-static
