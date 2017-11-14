@@ -13,8 +13,8 @@ export default function ({ config }) {
     entry: [
       require.resolve('react-hot-loader/patch'),
 
-      // require.resolve('react-dev-utils/webpackHotDevClient'),
-      `${require.resolve('webpack-dev-server/client')}?/`,
+      require.resolve('react-dev-utils/webpackHotDevClient'),
+      // `${require.resolve('webpack-dev-server/client')}?/`,
 
       require.resolve('webpack/hot/only-dev-server'),
       path.resolve(ROOT, config.entry),
