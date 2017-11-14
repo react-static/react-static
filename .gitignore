@@ -7,6 +7,7 @@ coverage
 # production
 dist
 lib
+
 *.log
 .DS_Store
 examples/*/yarn.lock

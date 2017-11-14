@@ -62,7 +62,7 @@ export async function startDevServer ({ config }) {
   // Default to localhost:3000, or use a custom combo if defined in static.config.js
   // or environment variables
   const intendedPort = (config.devServer && config.devServer.port) || process.env.PORT || 3000
-  const port = await findAvailablePort(intendedPort)
+  const port = await findAvailablePort(Number(intendedPort))
   if (intendedPort !== port) {
     console.time(
       chalk.red(
@@ -86,6 +86,46 @@ export async function startDevServer ({ config }) {
       ignored: /node_modules/,
     },
     ...config.devServer,
+    before: app => {
+      app.get('/__config__/siteProps', async (req, res, next) => {
+        try {
+          const siteProps = await config.getSiteProps({ dev: true })
+          res.json(siteProps)
+        } catch (err) {
+          res.status(500)
+          next(err)
+        }
+      })
+
+      app.get('/__config__/getRoutes', async (req, res, next) => {
+        try {
+          const routes = await config.getRoutes({ dev: true })
+
+          // Once all of the routes have been resolved, listen on individual
+          // route endpoints
+          routes.forEach(route => {
+            app.get(`/__config__/route${route.path}`, async (req, res, next) => {
+              try {
+                const initialProps = await route.getProps({ dev: true })
+                res.json(initialProps)
+              } catch (err) {
+                res.status(500)
+                next(err)
+              }
+            })
+          })
+
+          res.json(routes.filter(d => d.hasGetProps).map(d => d.path))
+        } catch (err) {
+          res.status(500)
+          next(err)
+        }
+      })
+
+      if (config.devServer && config.devServer.before) {
+        config.devServer.before(app)
+      }
+    },
     port,
     host,
   }

@@ -149,7 +149,7 @@ export async function prefetch (path) {
     // Reuse request for duplicate inflight requests
     try {
       if (!inflight[path]) {
-        inflight[path] = axios.get(`${process.env.STATIC_ENDPOINT}/route${path}`)
+        inflight[path] = axios.get(`/__config__/route${path}`)
       }
       const { data: initialProps } = await inflight[path]
 
@@ -263,7 +263,7 @@ export function getSiteProps (Comp) {
           if (sitePropsPromise) {
             return sitePropsPromise
           }
-          sitePropsPromise = axios.get(`${process.env.STATIC_ENDPOINT}/siteProps`)
+          sitePropsPromise = axios.get('/__config__/siteProps')
           return sitePropsPromise
         })()
         if (this.unmounting) {
