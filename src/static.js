@@ -62,23 +62,30 @@ export const exportRoutes = async ({ config }) => {
 
       const routesList = config.routes.filter(d => d.hasGetProps).map(d => d.path)
       const renderMeta = {}
+      let head
 
-      // Allow extractionso of meta via config.renderToString
-      const appHtml = await config.renderToHtml(renderToString, ContextualComp, renderMeta)
+      const renderStringAndHead = Comp => {
+        const appHtml = renderToString(Comp)
+        // Extract head calls using Helmet synchronously right after renderToString
+        // to not introduce any race conditions in the meta data rendering
+        const helmet = Helmet.renderStatic()
+        head = {
+          htmlProps: helmet.htmlAttributes.toComponent(),
+          bodyProps: helmet.bodyAttributes.toComponent(),
+          base: helmet.base.toComponent(),
+          link: helmet.link.toComponent(),
+          meta: helmet.meta.toComponent(),
+          noscript: helmet.noscript.toComponent(),
+          script: helmet.script.toComponent(),
+          style: helmet.style.toComponent(),
+          title: helmet.title.toComponent(),
+        }
 
-      // Extract head calls using Helmet
-      const helmet = Helmet.renderStatic()
-      const head = {
-        htmlProps: helmet.htmlAttributes.toComponent(),
-        bodyProps: helmet.bodyAttributes.toComponent(),
-        base: helmet.base.toComponent(),
-        link: helmet.link.toComponent(),
-        meta: helmet.meta.toComponent(),
-        noscript: helmet.noscript.toComponent(),
-        script: helmet.script.toComponent(),
-        style: helmet.style.toComponent(),
-        title: helmet.title.toComponent(),
+        return appHtml
       }
+
+      // Allow extractions of meta via config.renderToString
+      const appHtml = await config.renderToHtml(renderStringAndHead, ContextualComp, renderMeta)
 
       // Instead of using the default components, we need to hard code meta
       // from react-helmet into the components
