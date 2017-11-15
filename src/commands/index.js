@@ -21,6 +21,8 @@ const ignoredExtensions = [
   'ogg',
   'mp3',
   'wav',
+  'md',
+  'yaml'
 ]
 ignoredExtensions.forEach(ext => {
   require.extensions[`.${ext}`] = () => {}
