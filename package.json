@@ -42,6 +42,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
+    "chalk": "^2.3.0",
     "circular-dependency-plugin": "^4.2.1",
     "cors": "^2.8.4",
     "cross-spawn": "^5.1.0",
