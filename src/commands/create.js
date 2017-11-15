@@ -14,7 +14,8 @@ export default async () => {
 
   console.log('')
 
-  const exampleList = files.filter(d => !d.startsWith('.'))
+  let exampleList = files.filter(d => !d.startsWith('.'))
+  exampleList = ['basic', ...exampleList.filter(d => d !== 'basic')]
 
   const answers = await inquirer.prompt([
     {
