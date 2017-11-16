@@ -139,7 +139,7 @@ export const exportRoutes = async ({ config }) => {
           path: route.path,
           initialProps,
           siteProps,
-        })};
+        }).replace(/<(\/)?(script)/ig, '<"+"$1$2')};
                 window.__routesList = ${JSON.stringify(routesList)};
               `,
             }}
