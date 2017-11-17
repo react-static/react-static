@@ -241,7 +241,8 @@ export default {
   // Each path is relative to your project root and defaults to:
   paths: {
     src: 'src', // The source directory. Must include an index.js entry file.
-    dist: 'dist', // The output directory.
+    dist: 'dist', // The production output directory.
+    devDist: 'dist', // The development scratch directory.
     public: 'public' // The public directory (files copied to dist during build)
   },
 

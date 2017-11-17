@@ -1,3 +1,10 @@
+# 4.3.0
+#### Features
+- `config.paths.devDist` can now be set to specify a different scratch output directory when in development mode.
+
+#### Fixes & Optimizations
+- `react-static-routes` imports are now relative, thus avoiding absolute path madness... hopefully? :)
+
 # 4.2.0
 #### Features
 - Added Probot to the github repo! Hooray!

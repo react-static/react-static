@@ -56,7 +56,10 @@ export const getConfig = () => {
     ROOT,
     LOCAL_NODE_MODULES: path.resolve(__dirname, '../node_modules'),
     SRC: resolvePath(config.paths.src),
-    DIST: resolvePath(config.paths.dist),
+    DIST:
+      process.env.NODE_ENV === 'development'
+        ? resolvePath(config.paths.devDist || config.paths.dist)
+        : resolvePath(config.paths.dist),
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath('node_modules'),
     PACKAGE: resolvePath('package.json'),
