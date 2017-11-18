@@ -40,18 +40,10 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 - Painless project setup & migration
 - Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux!
 
-## Introduction Video
+## Videos & Tutorials
 
-<a href="https://www.youtube.com/watch?v=OqbJ5swVpDQ" align="center">
-  <img src="https://github.com/nozzle/react-static/raw/master/media/videoLink.png" width="600"/>
-</a>
-
-<br />
-<br />
-
-<a target='\_blank' rel='nofollow' href='https://app.codesponsor.io/link/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/zpmS8V9r31sBSCeVzP7Wm6Sr/nozzle/react-static.svg' />
-</a>
+- [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ)
+- [Walkthrough - Installing and creating a new project with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs)
 
 ## Sites Built with React-Static
 - [Nozzle.io](https://nozzle.io)
