@@ -326,12 +326,11 @@ const ioIsSupported = typeof window !== 'undefined' && 'IntersectionObserver' in
 const handleIntersection = (element, callback) => {
   const io = new window.IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (element === entry.target) {
-        if (entry.isIntersecting) {
-          io.unobserve(element)
-          io.disconnect()
-          callback()
-        }
+      // Edge doesn't support isIntersecting. intersectionRatio > 0 works as a fallback
+      if (element === entry.target && (entry.isIntersecting || entry.intersectionRatio > 0)) {
+        io.unobserve(element)
+        io.disconnect()
+        callback()
       }
     })
   })
@@ -343,6 +342,7 @@ export class PrefetchWhenSeen extends Component {
   static defaultProps = {
     children: null,
     path: null,
+    className: null,
     onLoad: () => {},
   }
 
@@ -366,7 +366,8 @@ export class PrefetchWhenSeen extends Component {
   }
 
   render () {
-    return <div ref={this.handleRef}>{this.props.children}</div>
+    const { children, className } = this.props
+    return <div className={className} ref={this.handleRef}>{children}</div>
   }
 }
 
