@@ -52,18 +52,18 @@ export const getConfig = () => {
   const resolvePath = relativePath => path.resolve(path.join(ROOT, relativePath))
 
   // Resolve all paths
+  const distPath = process.env.NODE_ENV === 'development'
+    ? resolvePath(config.paths.devDist || config.paths.dist)
+    : resolvePath(config.paths.dist)
   const paths = {
     ROOT,
     LOCAL_NODE_MODULES: path.resolve(__dirname, '../node_modules'),
     SRC: resolvePath(config.paths.src),
-    DIST:
-      process.env.NODE_ENV === 'development'
-        ? resolvePath(config.paths.devDist || config.paths.dist)
-        : resolvePath(config.paths.dist),
+    DIST: distPath,
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath('node_modules'),
     PACKAGE: resolvePath('package.json'),
-    HTML_TEMPLATE: path.join(resolvePath(config.paths.dist), 'index.html'),
+    HTML_TEMPLATE: path.join(distPath, 'index.html'),
   }
 
   const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null
