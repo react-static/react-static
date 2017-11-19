@@ -42,8 +42,9 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 
 ## Videos & Tutorials
 
-- [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80min)
-- [Walkthrough - Installing and creating a new project with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20min)
+- [Get started in 5 minutes! (create-react-app template))](https://youtu.be/1pBzh7IM1s8) (5 min)
+- [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
+- [Walkthrough - Installing and creating a new project with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
 
 ## Sites Built with React-Static
 - [Nozzle.io](https://nozzle.io)
