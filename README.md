@@ -62,6 +62,7 @@ All of the following examples can be used as a template at project creation.
 - [Apollo GraphQL](https://github.com/nozzle/react-static/tree/master/examples/apollo)
 - [Apollo & Redux](https://github.com/nozzle/react-static/tree/master/examples/apollo-redux)
 - [TypeScript](https://github.com/nozzle/react-static/tree/master/examples/typescript)
+- [Cordova (Hybrid App)](https://github.com/nozzle/react-static/tree/master/examples/cordova)
 
 Can't find an example? We invite you to write it! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 
@@ -165,16 +166,15 @@ export default {
     children: [{ // It can also contained nested routes
       path: '/post-1',
       component: 'src/containers/Post',
+      // getProps is an asynchronous function that is passed the
+      // resolved `route` object and a `dev` boolean indicating
+      // whether this is a production build or not. This function
+      // should resolve any data the route needs to render e.g. blog
+      // posts, API data, etc.
       getProps: async ({route, dev}) => ({
         post: {...},
         otherProp: {...}
       })
-      // getProps is a n asynchronous function that is passed the
-      // resolved `route` object and a `dev` boolean indicating
-      // whether this is a production build or not. This function
-      // should resolve any data the route needs to render eg. blog
-      // posts, API data, etc.
-
       noindex: false, // Optional. Defaults to `false`. If `true`, will exclude this route from the sitemap XML
       permalink: '', // Optional. If not set, will default to (siteRoot + path)
       lastModified: '', // Optional. String('YYYY-MM-DD')
@@ -218,13 +218,19 @@ export default {
   // the config)
   webpack: [(previousConfig, args) => newConfig],
 
+  // An optional object for customizing the options for the webpack-dev-server
+  devServer: {
+    port: 8080,
+    host: '127.0.0.1'
+  },
+
   // An optional function to customize the server rendering logic. Receives:
   // - render: renders the JSX to and html string
   // - Component: the final react component to be rendered to HTML
   // - meta, a MUTABLE object that is exposed to the optional Document component as a prop
   // Expected to return an HTML string
   // This is the perfect place for css-in-js integration (see styled-components and glamorous examples for more information)
-  renderToHtml: (render, Component, meta) => {
+  renderToHtml: async (render, Component, meta) => {
     meta.hello = 'world'
     return render(<Component />)
   },
@@ -242,8 +248,8 @@ export default {
   // and after a build has completed.
   // onStart provides you with the final, READONLY devServer config object for convenience.
   // onBuild currently does NOT provide any parameters
-  onStart: ({ devServerConfig }) => {...}
-  onBuild: async () => {...}
+  onStart: ({ devServerConfig }) => {...},
+  onBuild: async () => {...},
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
@@ -410,8 +416,8 @@ The `Router` component is required, and provides the underlying React-Router con
 
 Example:
 ```javascript
-import { Router } from 'react-static'
-import { Switch, Routes, Route } from 'react-router'
+import { Router, Switch, Route } from 'react-static'
+import Routes from 'react-static-routes'
 
 import Home from './containers/Home'
 import About from './containers/About'
@@ -636,8 +642,7 @@ Prefetch is a react component that accepts a `path` prop and an optional single 
 
 Example:
 ```javascript
-import { Prefetch } from 'react-static'
-import { Link } from 'react-router-dom'
+import { Prefetch, Link } from 'react-static'
 
 // Standalone
 <Prefetch path='/blog' />
@@ -655,8 +660,7 @@ PrefetchWhenSeen is almost identical to the Prefetch component, except that it w
 
 Example:
 ```javascript
-import { PrefetchWhenSeen } from 'react-static'
-import { Link } from 'react-router-dom'
+import { PrefetchWhenSeen, Link } from 'react-static'
 
 // Standalone
 <PrefetchWhenSeen path='/blog' />
@@ -676,7 +680,7 @@ Example:
 ```javascript
 import { prefetch } from 'react-static'
 
-const myFunc = async => {  
+const myFunc = async () => {  
   const data = await prefetch('/blog')
   console.log('The preloaded data:', data)
 }
