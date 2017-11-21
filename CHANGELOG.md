@@ -1,3 +1,7 @@
+# 4.3.1
+#### Fixes & Optimizations
+- Fixed a bug where component names with numbers would not render propertly. (Thanks [@muloka](https://github.com/muloka)!)
+
 # 4.3.0
 #### Features
 - `config.paths.devDist` can now be set to specify a different scratch output directory when in development mode.
