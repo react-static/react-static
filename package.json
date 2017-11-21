@@ -11,7 +11,7 @@
     "watch": "rimraf lib && babel -w src --out-dir lib",
     "build": "rimraf lib && babel src --out-dir lib",
     "publishnext": "npm publish --tag next",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "yarn build && sleep 2",
     "postpublish": "git push --tags",
     "test": "eslint src examples",
     "test-webpack": "jest"
