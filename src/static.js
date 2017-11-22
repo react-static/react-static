@@ -223,6 +223,16 @@ export async function buildXMLandRSS ({ config }) {
   }
 }
 
+function fixPathSepWin32(componentPath) {
+  const os = require('os');  
+  if (os.platform() === 'win32') {
+    console.warn('Fix path sep on win32');    
+    return componentPath.indexOf(/\\/g) < 0 ? componentPath.replace(/[\\]/g,'\\\\') : componentPath;
+  } else {
+    return componentPath;
+  }
+}
+
 export const prepareRoutes = async config => {
   // Dynamically create the auto-routing component
   const templates = []
@@ -236,12 +246,12 @@ export const prepareRoutes = async config => {
   const templateImports = templates
     .map(
       template =>
-        `import ${template.replace(/[^a-zA-Z0-9]/g, '_')} from '${path.relative(
+        `import ${template.replace(/[^a-zA-Z0-9]/g, '_')} from '${fixPathSepWin32(path.relative(
           config.paths.DIST,
           path.resolve(config.paths.ROOT, template),
-        )}'`,
+        ))}'`,
     )
-    .join('\n')
+    .join('\n') 
 
   const templateMap = `const templateMap = {
     ${templates
