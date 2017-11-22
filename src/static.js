@@ -242,6 +242,7 @@ export const prepareRoutes = async config => {
         )}'`,
     )
     .join('\n')
+    .replace(/\\/g, '/')
 
   const templateMap = `const templateMap = {
     ${templates
