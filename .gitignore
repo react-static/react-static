@@ -32,6 +32,6 @@ yarn-error.log*
 .editorconfig
 
 # cordova
-platforms
-plugins
-www
+*/cordova/platforms
+*/cordova/plugins
+*/cordova/www
