@@ -17,6 +17,7 @@
     "react-static": "latest"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^1.3.0",
     "eslint-config-react-tools": "1.x.x",
     "serve": "^6.1.0"
   }
