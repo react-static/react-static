@@ -1,3 +1,17 @@
+# 4.3.4
+#### Fixes & Optimizations
+- Cordova example's `res` directory is no longer included in the npm distribution making releases and installations much faster.
+
+
+# 4.3.3
+#### Fixes & Optimizations
+- Fixed a bug where windows users could not serve or build a project. (Thanks [@karland](https://github/karland)!)
+
+# 4.3.2
+#### Fixes & Optimizations
+- Fixed a bug where some directories or files weren't being included in npm distributions
+
+
 # 4.3.1
 #### Fixes & Optimizations
 - Fixed a bug where component names with numbers would not render propertly. (Thanks [@muloka](https://github.com/muloka)!)
