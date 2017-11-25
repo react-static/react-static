@@ -36,7 +36,7 @@ export default async () => {
 
     console.log('=> Exporting Routes...')
     console.time(chalk.green('=> [\u2713] Routes Exported'))
-    await exportRoutes({ config, stats: nodeStats })
+    await exportRoutes({ config, stats: prodStats })
     await buildXMLandRSS({ config })
     console.timeEnd(chalk.green('=> [\u2713] Routes Exported'))
 

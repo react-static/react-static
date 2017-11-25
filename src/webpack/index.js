@@ -255,7 +255,7 @@ export async function buildProductionBundles ({ config }) {
           }
         }
 
-        resolve(stats)
+        resolve(stats.toJson())
       })
     })
 
