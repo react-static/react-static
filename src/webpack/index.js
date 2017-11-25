@@ -241,23 +241,21 @@ export async function buildProductionBundles ({ config }) {
           )
           if (buildErrors) {
             console.log(
-              chalk.red.bold(
-                `
-=> There were ERRORS during the ${stage} build stage! :(
-=> Fix them and try again!`,
-              ),
+              chalk.red.bold(`
+                => There were ERRORS during the ${stage} build stage! :(
+                => Fix them and try again!
+              `),
             )
           } else if (buildWarnings) {
             console.log(
-              chalk.yellow.bold(
-                `
-=> There were WARNINGS during the ${stage} build stage!`,
-              ),
+              chalk.yellow.bold(`
+                => There were WARNINGS during the ${stage} build stage!
+              `),
             )
           }
         }
 
-        resolve()
+        resolve(stats)
       })
     })
 
@@ -270,5 +268,5 @@ export async function buildProductionBundles ({ config }) {
     stage: 'node',
   })
 
-  await Promise.all([build('prod', prodCompiler), build('node', nodeCompiler)])
+  return Promise.all([build('prod', prodCompiler), build('node', nodeCompiler)])
 }
