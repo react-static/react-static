@@ -27,7 +27,7 @@ export default async () => {
     // Build static pages and JSON
     console.log('=> Bundling App...')
     console.time(chalk.green('=> [\u2713] App Bundled'))
-    const [prodStats, nodeStats] = await buildProductionBundles({ config })
+    const clientStats = await buildProductionBundles({ config })
     console.timeEnd(chalk.green('=> [\u2713] App Bundled'))
 
     if (config.bundleAnalyzer) {
@@ -38,10 +38,7 @@ export default async () => {
     console.time(chalk.green('=> [\u2713] Routes Exported'))
     await exportRoutes({
       config,
-      webpackStats: {
-        prod: prodStats,
-        node: nodeStats,
-      },
+      clientStats,
     })
     await buildXMLandRSS({ config })
     console.timeEnd(chalk.green('=> [\u2713] Routes Exported'))
