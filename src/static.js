@@ -11,7 +11,7 @@ import Helmet from 'react-helmet'
 import { DefaultDocument } from './RootComponents'
 
 // Exporting route HTML and JSON happens here. It's a big one.
-export const exportRoutes = async ({ config, stats }) => {
+export const exportRoutes = async ({ config, webpackStats }) => {
   // Use the node version of the app created with webpack
   const appJsPath = glob.sync(path.resolve(config.paths.DIST, 'app!(.static).*.js'))[0]
   const appJs = appJsPath.split('/').pop()
@@ -89,7 +89,7 @@ export const exportRoutes = async ({ config, stats }) => {
         renderStringAndHead,
         ContextualComp,
         renderMeta,
-        stats,
+        webpackStats,
       )
 
       // Instead of using the default components, we need to hard code meta

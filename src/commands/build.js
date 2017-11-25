@@ -38,7 +38,7 @@ export default async () => {
     console.time(chalk.green('=> [\u2713] Routes Exported'))
     await exportRoutes({
       config,
-      stats: {
+      webpackStats: {
         prod: prodStats,
         node: nodeStats,
       },
