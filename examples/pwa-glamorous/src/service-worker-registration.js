@@ -1,21 +1,3 @@
-/**
- * Copyright 2015 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/* eslint-env browser */
-
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
@@ -25,52 +7,101 @@
 
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
+
+const isLocalhost = Boolean(
+  window.location.hostname === 'localhost' ||
+    // [::1] is the IPv6 localhost address.
+    window.location.hostname === '[::1]' ||
+    // 127.0.0.1/8 is considered localhost for IPv4.
+    window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/),
+)
+
 export default function register () {
-  // Register the service worker
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+    // The URL constructor is available in all browsers that support SW.
+    const publicUrl = new URL(process.env.PUBLIC_URL, window.location)
+    if (publicUrl.origin !== window.location.origin) {
+      // Our service worker won't work if PUBLIC_URL is on a different origin
+      // from what our page is served on. This might happen if a CDN is used to
+      // serve assets; see https://github.com/facebookincubator/create-react-app/issues/2374
+      return
+    }
+
     window.addEventListener('load', () => {
-      const swUrl = 'service-worker.js'
-      navigator.serviceWorker
-        .register(swUrl)
-        .then(reg => {
-          // updatefound is fired if service-worker.js changes.
-          reg.onupdatefound = () => {
-            // The updatefound event implies that reg.installing is set; see
-            // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
-            const installingWorker = reg.installing
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
 
-            installingWorker.onstatechange = () => {
-              switch (installingWorker.state) {
-                case 'installed':
-                  if (navigator.serviceWorker.controller) {
-                    /* At this point, the old content will have been purged
-                    and the fresh content will have been added to the cache.
+      if (isLocalhost) {
+        // This is running on localhost. Lets check if a service worker still exists or not.
+        checkValidServiceWorker(swUrl)
 
-                    It's the perfect time to display a "New content is
-                    available; please refresh." message in the page's
-                    interface. */
-                    console.log('New or updated content is available.')
-                  } else {
-                    /* At this point, everything has been precached.
-
-                    It's the perfect time to display a "Content is cached for
-                    offline use." message. */
-                    console.log('Content is now available offline!')
-                  }
-                  break
-                case 'redundant':
-                  console.error('The installing service worker became redundant.')
-                  break
-                default:
-              }
-            }
-          }
+        // Add some additional logging to localhost, pointing developers to the
+        // service worker/PWA documentation.
+        navigator.serviceWorker.ready.then(() => {
+          console.log(
+            'This web app is being served cache-first by a service ' +
+              'worker. To learn more, visit https://goo.gl/SC7cgQ',
+          )
         })
-        .catch(error => {
-          console.error('Error during service worker registration:', error)
-        })
+      } else {
+        // Is not local host. Just register service worker
+        registerValidSW(swUrl)
+      }
     })
   }
+}
+
+function registerValidSW (swUrl) {
+  navigator.serviceWorker
+    .register(swUrl)
+    .then(registration => {
+      registration.onupdatefound = () => {
+        const installingWorker = registration.installing
+        installingWorker.onstatechange = () => {
+          if (installingWorker.state === 'installed') {
+            if (navigator.serviceWorker.controller) {
+              // At this point, the old content will have been purged and
+              // the fresh content will have been added to the cache.
+              // It's the perfect time to display a "New content is
+              // available; please refresh." message in your web app.
+              console.log('New content is available; please refresh.')
+            } else {
+              // At this point, everything has been precached.
+              // It's the perfect time to display a
+              // "Content is cached for offline use." message.
+              console.log('Content is cached for offline use.')
+            }
+          }
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error during service worker registration:', error)
+    })
+}
+
+function checkValidServiceWorker (swUrl) {
+  // Check if the service worker can be found. If it can't reload the page.
+  fetch(swUrl)
+    .then(response => {
+      // Ensure service worker exists, and that we really are getting a JS file.
+      if (
+        response.status === 404 ||
+        response.headers.get('content-type').indexOf('javascript') === -1
+      ) {
+        // No service worker found. Probably a different app. Reload the page.
+        navigator.serviceWorker.ready.then(registration => {
+          registration.unregister().then(() => {
+            window.location.reload()
+          })
+        })
+      } else {
+        // Service worker found. Proceed as normal.
+        registerValidSW(swUrl)
+      }
+    })
+    .catch(() => {
+      console.log('No internet connection found. App is running in offline mode.')
+    })
 }
 
 export function unregister () {
