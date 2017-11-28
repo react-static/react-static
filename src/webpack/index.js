@@ -233,8 +233,8 @@ export async function buildProductionBundles ({ config }) {
       const nodeBuildErrors = nodeStats.hasErrors()
       const nodeBuildWarnings = nodeStats.hasWarnings()
 
-      checkStats('prod', prodStats, prodBuildErrors, prodBuildWarnings)
-      checkStats('node', nodeStats, nodeBuildErrors, nodeBuildWarnings)
+      checkBuildStats('prod', prodStats, prodBuildErrors, prodBuildWarnings)
+      checkBuildStats('node', nodeStats, nodeBuildErrors, nodeBuildWarnings)
 
       function checkBuildStats (stage, stageStats, buildErrors, buildWarnings) {
         if (buildErrors || buildWarnings) {
