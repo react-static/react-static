@@ -225,41 +225,49 @@ export async function buildProductionBundles ({ config }) {
 
       stats.toJson('verbose')
 
-      const buildErrors = stats.hasErrors()
-      const buildWarnings = stats.hasWarnings()
+      const [prodStats, nodeStats] = stats.stats
 
-      if (buildErrors || buildWarnings) {
-        console.log(
-          stats.toString({
-            context: config.context,
-            performance: false,
-            hash: false,
-            timings: true,
-            entrypoints: false,
-            chunkOrigins: false,
-            chunkModules: false,
-            colors: true,
-          }),
-        )
-        if (buildErrors) {
+      const prodBuildErrors = prodStats.hasErrors()
+      const prodBuildWarnings = prodStats.hasWarnings()
+
+      const nodeBuildErrors = nodeStats.hasErrors()
+      const nodeBuildWarnings = nodeStats.hasWarnings()
+
+      checkStats('prod', prodStats, prodBuildErrors, prodBuildWarnings)
+      checkStats('node', nodeStats, nodeBuildErrors, nodeBuildWarnings)
+
+      function checkBuildStats (stage, stageStats, buildErrors, buildWarnings) {
+        if (buildErrors || buildWarnings) {
           console.log(
-            chalk.red.bold(`
-              => There were ERRORS during the ${stage} build stage! :(
-              => Fix them and try again!
-            `),
+            stageStats.toString({
+              context: config.context,
+              performance: false,
+              hash: false,
+              timings: true,
+              entrypoints: false,
+              chunkOrigins: false,
+              chunkModules: false,
+              colors: true,
+            }),
           )
-        } else if (buildWarnings) {
-          console.log(
-            chalk.yellow.bold(`
-              => There were WARNINGS during the ${stage} build stage!
-            `),
-          )
+          if (buildErrors) {
+            console.log(
+              chalk.red.bold(`
+                => There were ERRORS during the ${stage} build stage! :(
+                => Fix them and try again!
+              `),
+            )
+          } else if (buildWarnings) {
+            console.log(
+              chalk.yellow.bold(`
+                => There were WARNINGS during the ${stage} build stage!
+              `),
+            )
+          }
         }
       }
 
-      const clientStats = stats.toJson().children[0]
-
-      resolve(clientStats)
+      resolve(prodStats.toJson())
     })
   })
 }
