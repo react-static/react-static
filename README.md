@@ -585,6 +585,37 @@ const TopHundredSongsPage = getRouteProps(({songs}) =>
 ...
 ```
 
+**App.js (Class)**
+```javascript
+
+class TopHundredSongsPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {};
+    }
+
+    render() {
+        return (
+            <ul>
+                {this.props.songs.map(song => <li key={song}>{song}</li>)}
+            </ul>
+
+        );
+    }
+}
+
+TopHundredSongsPage.propTypes = {
+    songs: PropTypes.arrayOf(PropTypes.string).isRequired
+};
+
+export default getRouteProps(TopHundredSongsPage);
+
+...
+<Route exact path="/top-100-songs" component={TopHundredSongsPage} />
+...
+```
+
 ### `getSiteProps(Component)`
 `getSiteProps` is an HOC that provides a component with the results of the `getSiteProps` function as defined in your `static.config.js`. Here is a simple example:
 
