@@ -89,7 +89,7 @@ $ yarn global add react-static
 # or
 $ npm install -g react-static
 ```
-*Note*: You make require ```root``` permission depending on the Operating System.
+
 #### New Project
 To create a new project:
 ```bash
