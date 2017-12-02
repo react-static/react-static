@@ -5,7 +5,7 @@ import { getRouteProps, Link } from 'react-static'
 
 export default getRouteProps(({ posts }) => (
   <div>
-    <h1>It's blog time.</h1>
+    <h1>It’s blog time.</h1>
     <br />
     All Posts:
     <ul>
