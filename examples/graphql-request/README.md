@@ -1,10 +1,5 @@
-# React-Static - Basic Example
+# React-Static - GraphQL Example
 
-This example is the most basic version of react-static available. It includes:
-- Babel
-- CSS imports
-- Image imports
-- File imports
-- Automatic Routing
+This example is based on the most basic version of react-static available, and adds:
 
-To get started, run `react-static create` and use the `basic` template.
+- Getting data during build time using `graphql-request`
