@@ -1,0 +1,22 @@
+{
+  "name": "graphql-request-blog",
+  "version": "1.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-static start",
+    "build": "react-static build",
+    "serve": "serve dist -p 3000"
+  },
+  "dependencies": {
+    "graphql-request": "^1.4.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router": "^4.2.0",
+    "react-static": "^4.3.4"
+  },
+  "devDependencies": {
+    "eslint-config-react-tools": "^1.0.10",
+    "serve": "^6.1.0"
+  }
+}
