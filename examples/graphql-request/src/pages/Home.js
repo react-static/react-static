@@ -3,13 +3,13 @@ import { getRouteProps, Link } from 'react-static'
 
 export default getRouteProps(({ allPosts }) => (
   <section>
-    <ul className='home-ul'>
+    <ul className="home-ul">
       {allPosts.map(post => (
-        <li className='home-li' key={post.id}>
-          <Link to={`/post/${post.slug}`} className='home-link'>
-            <div className='home-placeholder'>
+        <li className="home-li" key={post.id}>
+          <Link to={`/post/${post.slug}`} className="home-link">
+            <div className="home-placeholder">
               <img
-                className='home-link'
+                className="home-link"
                 alt={post.title}
                 src={`https://media.graphcms.com/resize=w:100,h:100,fit:crop/${post.coverImage.handle}`}
               />

@@ -4,10 +4,10 @@ import { getRouteProps } from 'react-static'
 export default getRouteProps(({ allAuthors }) => (
   <Fragment>
     {allAuthors.map(author => (
-      <div className='about-author' key={author.id}>
-        <div className='about-header'>
+      <div className="about-author" key={author.id}>
+        <div className="about-header">
           <img
-            className='about-avatar'
+            className="about-avatar"
             alt={author.name}
             src={`https://media.graphcms.com/resize=w:100,h:100,fit:crop/${author.avatar.handle}`}
           />
