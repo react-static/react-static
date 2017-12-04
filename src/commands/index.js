@@ -37,12 +37,10 @@ export default function () {
   }
 
   if (cmd === 'start') {
-    process.env.NODE_ENV = 'development'
     return require('./start').default()
   }
 
   if (cmd === 'build') {
-    process.env.NODE_ENV = 'production'
     return require('./build').default()
   }
 
