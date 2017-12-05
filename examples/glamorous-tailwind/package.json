@@ -25,5 +25,8 @@
     "postcss-cli": "^4.1.1",
     "serve": "^6.1.0",
     "tailwindcss": "^0.3.0"
-  }
+  },
+  "eslintIgnore": [
+    "tailwind.js"
+  ]
 }
