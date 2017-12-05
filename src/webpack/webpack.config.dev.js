@@ -32,10 +32,7 @@ export default function ({ config }) {
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [
-      new webpack.EnvironmentPlugin({
-        ...process.env,
-        NODE_ENV: 'development',
-      }),
+      new webpack.EnvironmentPlugin(process.env),
       new HtmlWebpackPlugin({
         inject: true,
         template: `!!raw-loader!${HTML_TEMPLATE}`,

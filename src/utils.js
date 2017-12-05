@@ -52,9 +52,10 @@ export const getConfig = () => {
   const resolvePath = relativePath => path.resolve(path.join(ROOT, relativePath))
 
   // Resolve all paths
-  const distPath = process.env.NODE_ENV === 'development'
-    ? resolvePath(config.paths.devDist || config.paths.dist)
-    : resolvePath(config.paths.dist)
+  const distPath =
+    process.env.REACT_STATIC_ENV === 'development'
+      ? resolvePath(config.paths.devDist || config.paths.dist)
+      : resolvePath(config.paths.dist)
   const paths = {
     ROOT,
     LOCAL_NODE_MODULES: path.resolve(__dirname, '../node_modules'),

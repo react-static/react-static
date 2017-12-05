@@ -30,10 +30,7 @@ export default function ({ config, isNode }) {
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [
-      new webpack.EnvironmentPlugin({
-        ...process.env,
-        NODE_ENV: 'production',
-      }),
+      new webpack.EnvironmentPlugin(process.env),
       new ExtractTextPlugin({
         filename: getPath => {
           process.env.extractedCSSpath = getPath('styles.[hash:8].css')

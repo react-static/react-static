@@ -38,7 +38,7 @@ let routesPromise
 if (typeof document !== 'undefined') {
   routesPromise = (async () => {
     let res
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.REACT_STATIC_ENV === 'development') {
       res = await axios.get('/__react-static__/getRoutes')
       return res.data
     }
@@ -46,7 +46,7 @@ if (typeof document !== 'undefined') {
   })()
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.REACT_STATIC_ENV === 'development') {
   InitialLoading = () => (
     <div
       style={{
@@ -145,7 +145,7 @@ export async function prefetch (path) {
     return
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.REACT_STATIC_ENV === 'development') {
     // Reuse request for duplicate inflight requests
     try {
       if (!inflight[path]) {
@@ -199,7 +199,7 @@ export function getRouteProps (Comp) {
       loaded: false,
     }
     async componentWillMount () {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.REACT_STATIC_ENV === 'development') {
         const { pathname } = this.context.router.route.location
         const path = pathJoin(pathname)
         await prefetch(path)
@@ -238,7 +238,7 @@ export function getRouteProps (Comp) {
       }
 
       if (!initialProps) {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.REACT_STATIC_ENV === 'development') {
           return <InitialLoading />
         }
         return null
@@ -258,7 +258,7 @@ export function getSiteProps (Comp) {
       siteProps: false,
     }
     async componentWillMount () {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.REACT_STATIC_ENV === 'development') {
         const { data: siteProps } = await (() => {
           if (sitePropsPromise) {
             return sitePropsPromise
@@ -294,7 +294,7 @@ export function getSiteProps (Comp) {
       }
 
       if (!siteProps) {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.REACT_STATIC_ENV === 'development') {
           return <InitialLoading />
         }
         return null
@@ -367,7 +367,11 @@ export class PrefetchWhenSeen extends Component {
 
   render () {
     const { children, className } = this.props
-    return <div className={className} ref={this.handleRef}>{children}</div>
+    return (
+      <div className={className} ref={this.handleRef}>
+        {children}
+      </div>
+    )
   }
 }
 

@@ -1,3 +1,9 @@
+# 4.4.0
+#### Features
+- Added `graphql-request` example. (Thanks [@ChrisNLott](https://github/ChrisNLott)!)
+#### Fixes & Optimizations
+- Use ReactDOM.render instead of ReactDOM.hydrate in dev (Thanks [@EmilTholin](https://github.com/emiltholin)!)
+
 # 4.3.4
 #### Fixes & Optimizations
 - Cordova example's `res` directory is no longer included in the npm distribution making releases and installations much faster.
