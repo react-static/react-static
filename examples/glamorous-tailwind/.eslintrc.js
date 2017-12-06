@@ -1,3 +1,6 @@
 module.exports = {
-  extends: 'react-tools'
+  extends: 'react-tools',
+  globals: {
+  	'tw': true,
+  }
 }
