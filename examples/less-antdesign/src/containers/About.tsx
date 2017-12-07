@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+
 import React from 'react'
 
 // Example of using paths alias via tsconfig.json to easily re-use legacy code

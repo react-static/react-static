@@ -1,17 +1,10 @@
 import chalk from 'chalk'
 import fs from 'fs-extra'
 //
-import { DIST } from '../paths'
 import { prepareRoutes } from '../static'
 import { DefaultDocument } from '../RootComponents'
 import { startDevServer } from '../webpack'
-import {
-  findAvailablePort,
-  getConfig,
-  copyPublicFolder,
-  createIndexFilePlaceholder,
-} from '../utils'
-import { startConfigServer } from '../configServer'
+import { getConfig, copyPublicFolder, createIndexFilePlaceholder } from '../utils'
 //
 
 export default async () => {
@@ -20,10 +13,7 @@ export default async () => {
     const config = getConfig()
 
     // Clean the dist folder
-    await fs.remove(DIST)
-
-    // Find an available port to serve on.
-    const port = await findAvailablePort(3000)
+    await fs.remove(config.paths.DIST)
 
     // Get the site props
     const siteProps = await config.getSiteProps({ dev: true })
@@ -33,6 +23,7 @@ export default async () => {
 
     // Render an index.html placeholder
     await createIndexFilePlaceholder({
+      config,
       Component,
       siteProps,
     })
@@ -41,19 +32,18 @@ export default async () => {
     console.log('')
     console.log('=> Copying public directory...')
     console.time(chalk.green('=> [\u2713] Public directory copied'))
-    copyPublicFolder(DIST)
+    copyPublicFolder(config)
     console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
     // Build the dynamic routes file (react-static-routes)
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
     config.routes = await config.getRoutes({ dev: true })
-    await prepareRoutes(config.routes)
-    await startConfigServer()
+    await prepareRoutes(config)
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
     // Build the JS bundle
-    await startDevServer({ config, port })
+    await startDevServer({ config })
   } catch (err) {
     console.log(err)
     process.exit(1)

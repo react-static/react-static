@@ -21,6 +21,8 @@ const ignoredExtensions = [
   'ogg',
   'mp3',
   'wav',
+  'md',
+  'yaml',
 ]
 ignoredExtensions.forEach(ext => {
   require.extensions[`.${ext}`] = () => {}
@@ -35,10 +37,18 @@ export default function () {
   }
 
   if (cmd === 'start') {
+    if (typeof process.env.NODE_ENV === 'undefined') {
+      process.env.NODE_ENV = 'development'
+    }
+    process.env.REACT_STATIC_ENV = 'development'
     return require('./start').default()
   }
 
   if (cmd === 'build') {
+    if (typeof process.env.NODE_ENV === 'undefined') {
+      process.env.NODE_ENV = 'production'
+    }
+    process.env.REACT_STATIC_ENV = 'production'
     return require('./build').default()
   }
 

@@ -9,21 +9,18 @@ import path from 'path'
 import Helmet from 'react-helmet'
 //
 import { DefaultDocument } from './RootComponents'
-import { getConfig } from './utils'
-import { DIST } from './paths'
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config }) => {
-  const userConfig = getConfig()
-  const DocumentTemplate = config.Document || DefaultDocument
-
   // Use the node version of the app created with webpack
-  const appJsPath = glob.sync(path.resolve(DIST, 'app!(.static).*.js'))[0]
+  const appJsPath = glob.sync(path.resolve(config.paths.DIST, 'app!(.static).*.js'))[0]
   const appJs = appJsPath.split('/').pop()
-  const appStaticJsPath = glob.sync(path.resolve(DIST, 'app.static.*.js'))[0]
+  const appStaticJsPath = glob.sync(path.resolve(config.paths.DIST, 'app.static.*.js'))[0]
   const Comp = require(appStaticJsPath).default
 
-  const siteProps = await userConfig.getSiteProps({ dev: false })
+  const DocumentTemplate = config.Document || DefaultDocument
+
+  const siteProps = await config.getSiteProps({ dev: false })
 
   return Promise.all(
     config.routes.map(async route => {
@@ -31,7 +28,7 @@ export const exportRoutes = async ({ config }) => {
       const initialProps = route.getProps && (await route.getProps({ route, dev: false }))
       if (initialProps) {
         await fs.outputFile(
-          path.join(DIST, route.path, 'routeData.json'),
+          path.join(config.paths.DIST, route.path, 'routeData.json'),
           JSON.stringify(initialProps || {}),
         )
       }
@@ -65,23 +62,30 @@ export const exportRoutes = async ({ config }) => {
 
       const routesList = config.routes.filter(d => d.hasGetProps).map(d => d.path)
       const renderMeta = {}
+      let head
 
-      // Allow extractionso of meta via config.renderToString
-      const appHtml = await config.renderToHtml(renderToString, ContextualComp, renderMeta)
+      const renderStringAndHead = Comp => {
+        const appHtml = renderToString(Comp)
+        // Extract head calls using Helmet synchronously right after renderToString
+        // to not introduce any race conditions in the meta data rendering
+        const helmet = Helmet.renderStatic()
+        head = {
+          htmlProps: helmet.htmlAttributes.toComponent(),
+          bodyProps: helmet.bodyAttributes.toComponent(),
+          base: helmet.base.toComponent(),
+          link: helmet.link.toComponent(),
+          meta: helmet.meta.toComponent(),
+          noscript: helmet.noscript.toComponent(),
+          script: helmet.script.toComponent(),
+          style: helmet.style.toComponent(),
+          title: helmet.title.toComponent(),
+        }
 
-      // Extract head calls using Helmet
-      const helmet = Helmet.renderStatic()
-      const head = {
-        htmlProps: helmet.htmlAttributes.toComponent(),
-        bodyProps: helmet.bodyAttributes.toComponent(),
-        base: helmet.base.toComponent(),
-        link: helmet.link.toComponent(),
-        meta: helmet.meta.toComponent(),
-        noscript: helmet.noscript.toComponent(),
-        script: helmet.script.toComponent(),
-        style: helmet.style.toComponent(),
-        title: helmet.title.toComponent(),
+        return appHtml
       }
+
+      // Allow extractions of meta via config.renderToString
+      const appHtml = await config.renderToHtml(renderStringAndHead, ContextualComp, renderMeta)
 
       // Instead of using the default components, we need to hard code meta
       // from react-helmet into the components
@@ -90,21 +94,37 @@ export const exportRoutes = async ({ config }) => {
           {children}
         </html>
       )
-      const HeadWithMeta = ({ children, ...rest }) => (
-        <head {...rest}>
-          {head.base}
-          {head.title}
-          {head.meta}
-          {head.link}
-          {process.env.extractedCSSpath && (
-            <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
-          )}
-          {head.noscript}
-          {head.script}
-          {head.style}
-          {children}
-        </head>
-      )
+      const HeadWithMeta = ({ children, ...rest }) => {
+        let showHelmetTitle = true
+        const childrenArray = React.Children.toArray(children).filter(child => {
+          if (child.type === 'title') {
+            // Filter out the title of the Document in static.config.js
+            // if there is a helmet title on this route
+            const helmetTitleIsEmpty = head.title[0].props.children === ''
+            if (!helmetTitleIsEmpty) {
+              return false
+            }
+            showHelmetTitle = false
+          }
+          return true
+        })
+
+        return (
+          <head {...rest}>
+            {head.base}
+            {showHelmetTitle && head.title}
+            {head.meta}
+            {head.link}
+            {process.env.extractedCSSpath && (
+              <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
+            )}
+            {head.noscript}
+            {head.script}
+            {head.style}
+            {childrenArray}
+          </head>
+        )
+      }
       // Not only do we pass react-helmet attributes and the app.js here, but
       // we also need to  hard code site props and route props into the page to
       // prevent flashing when react mounts onto the HTML.
@@ -119,12 +139,12 @@ export const exportRoutes = async ({ config }) => {
           path: route.path,
           initialProps,
           siteProps,
-        })};
+        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};
                 window.__routesList = ${JSON.stringify(routesList)};
               `,
             }}
           />
-          <script async src={`/${appJs}`} />
+          <script async src={`${config.publicPath}${appJs}`} />
         </body>
       )
 
@@ -149,9 +169,9 @@ export const exportRoutes = async ({ config }) => {
       // If the route is a 404 page, write it directly to 404.html, instead of
       // inside a directory.
       const htmlFilename = route.is404
-        ? path.join(DIST, '404.html')
-        : path.join(DIST, route.path, 'index.html')
-      const initialPropsFilename = path.join(DIST, route.path, 'routeData.json')
+        ? path.join(config.paths.DIST, '404.html')
+        : path.join(config.paths.DIST, route.path, 'index.html')
+      const initialPropsFilename = path.join(config.paths.DIST, route.path, 'routeData.json')
       const writeHTML = fs.outputFile(htmlFilename, html)
       const writeJSON = fs.outputFile(
         initialPropsFilename,
@@ -183,7 +203,7 @@ export async function buildXMLandRSS ({ config }) {
     })),
   })
 
-  await fs.writeFile(path.join(DIST, 'sitemap.xml'), xml)
+  await fs.writeFile(path.join(config.paths.DIST, 'sitemap.xml'), xml)
 
   function generateXML ({ routes }) {
     let xml =
@@ -203,10 +223,10 @@ export async function buildXMLandRSS ({ config }) {
   }
 }
 
-export const prepareRoutes = async routes => {
+export const prepareRoutes = async config => {
   // Dynamically create the auto-routing component
   const templates = []
-  routes = routes.filter(d => d.component)
+  const routes = config.routes.filter(d => d.component)
   routes.forEach(route => {
     if (!templates.includes(route.component)) {
       templates.push(route.component)
@@ -214,12 +234,19 @@ export const prepareRoutes = async routes => {
   })
 
   const templateImports = templates
-    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '../${template}'`)
+    .map(
+      template =>
+        `import ${template.replace(/[^a-zA-Z0-9]/g, '_')} from '${path.relative(
+          config.paths.DIST,
+          path.resolve(config.paths.ROOT, template),
+        )}'`,
+    )
     .join('\n')
+    .replace(/\\/g, '/')
 
   const templateMap = `const templateMap = {
     ${templates
-    .map((template, index) => `t_${index}: ${template.replace(/[^a-zA-Z]/g, '_')}`)
+    .map((template, index) => `t_${index}: ${template.replace(/[^a-zA-Z0-9]/g, '_')}`)
     .join(',\n')}
   }`
 
@@ -268,7 +295,7 @@ export const prepareRoutes = async routes => {
       if (!Template) {
         Template = getTemplateForPath('404')
       }
-      return <Template {...props} />
+      return Template && <Template {...props} />
     }} />
   `
 
@@ -290,8 +317,21 @@ export const prepareRoutes = async routes => {
     }
   `
 
-  const dynamicRoutesPath = path.resolve(DIST, 'react-static-routes.js')
+  const dynamicRoutesPath = path.resolve(config.paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
   await fs.writeFile(dynamicRoutesPath, file)
-  fs.utimesSync(dynamicRoutesPath, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
+
+  /**
+   * Corbin Matschull [cgmx] - basedjux@gmail.com
+   *
+   * HOTFIX FOR ISSUE #124
+   * Commenting this out per #124 so I can test the hotfix.
+   * Hotfix is implemented in /master/src/webpack.js:#L47
+   *
+   * This hotfix was implemented due to FS_ACCURACY causing isssues with webpack-dev-server -
+   * builds.
+   * This "hack" was removed due to it causing builds to increase in time over n-milliseconds
+   *    (See: https://github.com/nozzle/react-static/issues/124#issuecomment-341959542)
+   */
+  // fs.utimesSync(dynamicRoutesPath, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
 }

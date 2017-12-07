@@ -2,10 +2,29 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import createBrowserHistory from 'history/createBrowserHistory'
+import createMemoryHistory from 'history/createMemoryHistory'
+import createHashHistory from 'history/createHashHistory'
 import { Helmet } from 'react-helmet'
-import * as ReactRouter from 'react-router-dom'
+import { Router as ReactRouter, StaticRouter } from 'react-router-dom'
 //
 import { pathJoin } from './shared'
+
+// Proxy React Router
+export {
+  Link,
+  NavLink,
+  Prompt,
+  Redirect,
+  Route,
+  Switch,
+  matchPath,
+  withRouter,
+} from 'react-router-dom'
+
+// Proxy Helmet as Head
+export { Helmet as Head }
+
+//
 
 const propsCache = {}
 const inflight = {}
@@ -19,15 +38,15 @@ let routesPromise
 if (typeof document !== 'undefined') {
   routesPromise = (async () => {
     let res
-    if (process.env.NODE_ENV === 'development') {
-      res = await axios.get(`${process.env.STATIC_ENDPOINT}/getroutes`)
+    if (process.env.REACT_STATIC_ENV === 'development') {
+      res = await axios.get('/__react-static__/getRoutes')
       return res.data
     }
     return window.__routesList
   })()
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.REACT_STATIC_ENV === 'development') {
   InitialLoading = () => (
     <div
       style={{
@@ -101,7 +120,7 @@ function isPrefetched (path) {
   }
 }
 
-async function prefetch (path) {
+export async function prefetch (path) {
   path = cleanPath(path)
 
   if (!path) {
@@ -126,11 +145,11 @@ async function prefetch (path) {
     return
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.REACT_STATIC_ENV === 'development') {
     // Reuse request for duplicate inflight requests
     try {
       if (!inflight[path]) {
-        inflight[path] = axios.get(`${process.env.STATIC_ENDPOINT}/route${path}`)
+        inflight[path] = axios.get(`/__react-static__/route${path}`)
       }
       const { data: initialProps } = await inflight[path]
 
@@ -170,8 +189,8 @@ async function prefetch (path) {
   return propsCache[path]
 }
 
-function getRouteProps (Comp) {
-  return class AsyncPropsComponent extends Component {
+export function getRouteProps (Comp) {
+  return class GetRouteProps extends Component {
     static contextTypes = {
       initialProps: PropTypes.object,
       router: PropTypes.object,
@@ -180,14 +199,20 @@ function getRouteProps (Comp) {
       loaded: false,
     }
     async componentWillMount () {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.REACT_STATIC_ENV === 'development') {
         const { pathname } = this.context.router.route.location
         const path = pathJoin(pathname)
         await prefetch(path)
+        if (this.unmounting) {
+          return
+        }
         this.setState({
           loaded: true,
         })
       }
+    }
+    componentWillUnmount () {
+      this.unmounting = true
     }
     render () {
       const { pathname } = this.context.router.route.location
@@ -213,7 +238,7 @@ function getRouteProps (Comp) {
       }
 
       if (!initialProps) {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.REACT_STATIC_ENV === 'development') {
           return <InitialLoading />
         }
         return null
@@ -224,8 +249,8 @@ function getRouteProps (Comp) {
   }
 }
 
-function getSiteProps (Comp) {
-  return class AsyncPropsComponent extends Component {
+export function getSiteProps (Comp) {
+  return class GetSiteProps extends Component {
     static contextTypes = {
       siteProps: PropTypes.object,
     }
@@ -233,18 +258,24 @@ function getSiteProps (Comp) {
       siteProps: false,
     }
     async componentWillMount () {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.REACT_STATIC_ENV === 'development') {
         const { data: siteProps } = await (() => {
           if (sitePropsPromise) {
             return sitePropsPromise
           }
-          sitePropsPromise = axios.get(`${process.env.STATIC_ENDPOINT}/siteProps`)
+          sitePropsPromise = axios.get('/__react-static__/siteProps')
           return sitePropsPromise
         })()
+        if (this.unmounting) {
+          return
+        }
         this.setState({
           siteProps,
         })
       }
+    }
+    componentWillUnmount () {
+      this.unmounting = true
     }
     render () {
       let siteProps
@@ -263,7 +294,7 @@ function getSiteProps (Comp) {
       }
 
       if (!siteProps) {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.REACT_STATIC_ENV === 'development') {
           return <InitialLoading />
         }
         return null
@@ -274,7 +305,7 @@ function getSiteProps (Comp) {
   }
 }
 
-class Prefetch extends Component {
+export class Prefetch extends Component {
   static defaultProps = {
     children: null,
     path: null,
@@ -295,12 +326,11 @@ const ioIsSupported = typeof window !== 'undefined' && 'IntersectionObserver' in
 const handleIntersection = (element, callback) => {
   const io = new window.IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (element === entry.target) {
-        if (entry.isIntersecting) {
-          io.unobserve(element)
-          io.disconnect()
-          callback()
-        }
+      // Edge doesn't support isIntersecting. intersectionRatio > 0 works as a fallback
+      if (element === entry.target && (entry.isIntersecting || entry.intersectionRatio > 0)) {
+        io.unobserve(element)
+        io.disconnect()
+        callback()
       }
     })
   })
@@ -308,10 +338,11 @@ const handleIntersection = (element, callback) => {
   io.observe(element)
 }
 
-class PrefetchWhenSeen extends Component {
+export class PrefetchWhenSeen extends Component {
   static defaultProps = {
     children: null,
     path: null,
+    className: null,
     onLoad: () => {},
   }
 
@@ -335,7 +366,12 @@ class PrefetchWhenSeen extends Component {
   }
 
   render () {
-    return <div ref={this.handleRef}>{this.props.children}</div>
+    const { children, className } = this.props
+    return (
+      <div className={className} ref={this.handleRef}>
+        {children}
+      </div>
+    )
   }
 }
 
@@ -346,7 +382,10 @@ const setLoading = d => {
   subscribers.forEach(s => s())
 }
 
-class Router extends Component {
+export class Router extends Component {
+  static defaultProps = {
+    type: 'browser',
+  }
   static subscribe = cb => {
     const ccb = () => cb(loading)
     subscribers.push(ccb)
@@ -357,21 +396,64 @@ class Router extends Component {
   static contextTypes = {
     URL: PropTypes.string,
   }
+  state = {
+    error: null,
+    errorInfo: null,
+  }
+  componentDidCatch (error, errorInfo) {
+    // Catch errors in any child components and re-renders with an error message
+    this.setState({
+      error,
+      errorInfo,
+    })
+  }
   render () {
-    const { history, ...rest } = this.props
+    const { history, type, ...rest } = this.props
     const { URL } = this.context
     const context = URL ? {} : undefined
 
     let ResolvedRouter
     let resolvedHistory
 
+    if (this.state.error) {
+      // Fallback UI if an error occurs
+      return (
+        <div
+          style={{
+            margin: '1rem',
+            padding: '1rem',
+            background: 'rgba(0,0,0,0.05)',
+          }}
+        >
+          <h2>Oh-no! Something's gone wrong!</h2>
+          <pre style={{ whiteSpace: 'normal', color: 'red' }}>
+            <code>{this.state.error && this.state.error.toString()}</code>
+          </pre>
+          <h3>This error occurred here:</h3>
+          <pre style={{ color: 'red', overflow: 'auto' }}>
+            <code>{this.state.errorInfo.componentStack}</code>
+          </pre>
+          <p>For more information, please see the console.</p>
+        </div>
+      )
+    }
+
     // If statically rendering, use the static router
     if (URL) {
-      ResolvedRouter = require('react-router').StaticRouter
+      ResolvedRouter = StaticRouter
       resolvedHistory = undefined
     } else {
-      ResolvedRouter = ReactRouter.Router
-      resolvedHistory = history || global.__reactStaticRouterHistory || createBrowserHistory()
+      ResolvedRouter = ReactRouter
+      resolvedHistory = history || global.__reactStaticRouterHistory
+      if (!resolvedHistory) {
+        if (type === 'memory') {
+          resolvedHistory = createMemoryHistory()
+        } else if (type === 'hash') {
+          resolvedHistory = createHashHistory()
+        } else {
+          resolvedHistory = createBrowserHistory()
+        }
+      }
       global.__reactStaticRouterHistory = resolvedHistory
       ;['push', 'replace'].forEach(method => {
         const originalMethod = resolvedHistory[method]
@@ -393,19 +475,4 @@ class Router extends Component {
 
     return <ResolvedRouter history={resolvedHistory} location={URL} context={context} {...rest} />
   }
-}
-
-module.exports = {
-  ...ReactRouter,
-  BrowserRouter: undefined,
-  HashRouter: undefined,
-  MemoryRouter: undefined,
-  StaticRouter: undefined,
-  Router,
-  getRouteProps,
-  getSiteProps,
-  Prefetch,
-  PrefetchWhenSeen,
-  prefetch,
-  Head: Helmet,
 }

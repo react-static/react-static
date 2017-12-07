@@ -1,7 +1,8 @@
 {
   "name": "react-static",
-  "version": "4.0.1",
+  "version": "4.4.0",
   "main": "lib/index.js",
+  "types": "src/index.d.ts",
   "license": "MIT",
   "bin": {
     "react-static": "./bin/react-static"
@@ -9,18 +10,23 @@
   "scripts": {
     "watch": "rimraf lib && babel -w src --out-dir lib",
     "build": "rimraf lib && babel src --out-dir lib",
-    "publishnext": "npm publish --tag next",
+    "publishnext": "yarn publish --tag next",
     "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
-    "test": "eslint src examples"
+    "test": "eslint src examples",
+    "test-webpack": "jest"
   },
   "repository": "nozzle/react-static",
   "devDependencies": {
     "eslint": "^4.3.0",
     "eslint-config-react-tools": "^1.0.6",
+    "jest": "^21.2.1",
     "rimraf": "^2.6.2"
   },
   "dependencies": {
+    "@types/react": "^16.0.18",
+    "@types/react-helmet": "^5.0.3",
+    "@types/react-router-dom": "^4.2.0",
     "autoprefixer": "^7.1.5",
     "axios": "^0.16.2",
     "babel-cli": "^6.26.0",
@@ -28,6 +34,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
@@ -35,6 +42,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
+    "chalk": "^2.3.0",
     "circular-dependency-plugin": "^4.2.1",
     "cors": "^2.8.4",
     "cross-spawn": "^5.1.0",
