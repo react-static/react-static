@@ -10,7 +10,7 @@ import fs from 'fs-extra'
 import { pathJoin } from './shared'
 import { Html, Head, Body } from './RootComponents'
 
-const defaultEntry = 'index'
+const defaultEntry = 'index.js'
 
 export const ChalkColor = {
   yarn: '#2c8ebb',
