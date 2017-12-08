@@ -138,7 +138,7 @@ export default {
   // boolean indicating whether this is a production build or not.
   getRoutes: async ({dev}) => [{
     path: '/' // A route object requires a `path` string
-    component: 'src/containers/Home', // specify the react component that will render this route
+    component: 'src/containers/Home', // specify the path of a react component that will render this route
   }, {
     path: '/blog',
     component: 'src/containers/Blog',
@@ -439,7 +439,7 @@ Router.subscribe(loading => {
 ```
 
 ### Automatic Routing with  `<Routes>`
-`react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` path (relative to the root of your project) that should be used to render a route in your `static.config.js`
+`react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` **path** (relative to the root of your project) that should be used to render a route in your `static.config.js`.
 
 `static.config.js` example:
 ```javascript
