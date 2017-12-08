@@ -10,7 +10,7 @@ import fs from 'fs-extra'
 import { pathJoin } from './shared'
 import { Html, Head, Body } from './RootComponents'
 
-const defaultEntry = './src/index'
+const defaultEntry = 'index.js'
 
 export const ChalkColor = {
   yarn: '#2c8ebb',
@@ -84,7 +84,7 @@ export const getConfig = () => {
 
   return {
     // Defaults
-    entry: defaultEntry,
+    entry: path.join(paths.SRC, defaultEntry),
     getSiteProps: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
     // Config Overrides
