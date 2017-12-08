@@ -58,13 +58,6 @@ export default {
         defaultLoaders.fileLoader,
       ],
     }]
-    config.plugins.push(
-      new ExtractTextPlugin({
-        disable: stage === 'dev',
-        filename: 'style.css',
-        allChunks: true,
-      }),
-    )
     return config
   },
 }
