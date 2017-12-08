@@ -1,3 +1,14 @@
+# 4.5.0
+#### Features
+- Added `sass` example. (Thanks [@2metres](https://github/2metres)!)
+- Added `glamorous-tailwind` example. (Thanks [@deden](https://github/deden)!)
+- The `REACT_STATIC_ENV` environment variable is now used internally (and set deterministically via usage of the `start` and `build` commands) instead of `NODE_ENV`. This means you can finally set your own `NODE_ENV` variables and use tools like `cross-env`. Yay!
+#### Fixes & Optimizations
+- Fixed some misleading phrasing where a route component path could be assumed to be compatible with a class, function, or react component, when in fact it is the path to that. (Thanks [@Jonarod](https://github/Jonarod)!)
+- `config.path.src` is now taken into account when constructing the `config.path.entry` path. (Thanks [@crubier](https://github/crubier)!)
+- Added `manta.life` to list of sites built with React Static. (Thanks [@hql287](https://github/hql287)!)
+- Updated the `graphql-request` example to use `react-markdown` instead of `dangerouslySetInnterHTML`. (Thanks [@hmeissner](https://github/hmeissner)!)
+
 # 4.4.0
 #### Features
 - Added `graphql-request` example. (Thanks [@ChrisNLott](https://github/ChrisNLott)!)
