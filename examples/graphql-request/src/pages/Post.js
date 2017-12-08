@@ -12,7 +12,7 @@ export default getRouteProps(({ post }) => (
       />
     </div>
     <Markdown
-      content={post.content}
+      source={post.content}
       escapeHtml={false}
     />
   </article>
