@@ -36,6 +36,7 @@ React-Static is a minimalistic framework for server-rendered React applications 
 ## Sites Built with React-Static
 - [Nozzle.io](https://nozzle.io)
 - [Timber.io](https://timber.io)
+- [Manta.life](https://manta.life)
 
 ## Examples and Templates
 All of the following examples can be used as a template at project creation.
