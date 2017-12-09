@@ -37,12 +37,17 @@ export default {
     ]
   },
   webpack: (config, { stage, defaultLoaders }) => {
+    const extractSass = new ExtractTextPlugin({
+      filename: 'styles.[hash:8].css',
+      disable: stage === 'dev',
+    })
     config.module.rules = [{
       oneOf: [
         defaultLoaders.jsLoader,
         {
           test: /\.s(a|c)ss$/,
-          use: ExtractTextPlugin.extract({
+          use: extractSass.extract({
+            // use style-loader in development
             fallback: 'style-loader',
             use: [
               {
@@ -51,14 +56,17 @@ export default {
                   minimize: stage === 'prod',
                 },
               },
-              { loader: 'sass-loader' },
+              {
+                loader: 'sass-loader',
+                options: { includePaths: ['src/'] },
+              },
             ],
           }),
         },
         defaultLoaders.fileLoader,
       ],
     }]
-    config.plugins.push(new ExtractTextPlugin('styles.css'))
+    config.plugins.push(extractSass)
     return config
   },
 }
