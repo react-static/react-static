@@ -1,34 +1,30 @@
-<div style="text-align:center;">
-  <a href="https://github.com/nozzle/react-static" target="\_parent">
-  <img src="https://github.com/nozzle/react-static/raw/master/media/logo.png" alt="React Static Logo" style="width:450px;">
-</a>
-</div>
+![React Static Logo](https://github.com/nozzle/react-static/raw/master/media/logo.png)
 
-[![](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![](https://img.shields.io/badge/slack-react--chat-blue.svg)](https://react-chat-signup.herokuapp.com/) [![](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio) [![](https://img.shields.io/badge/product-hunt-orange.svg)](https://www.producthunt.com/posts/react-static)
+[![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Slack](https://img.shields.io/badge/slack-react--chat-blue.svg)](https://react-chat-signup.herokuapp.com/) [![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
 
 <br><br>
 
 # React Static
 
-A **progressive static-site framework** for React.
+A **progressive static-site generator** for React.
 
 [**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
 
-At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/developer experience** very seriously. We've launched many sites using different static site tools that claim to solve these goals, but we have yet to find one that satisfies our requirements completely. React-Static is the framework we carefully designed to meet those standards and help everyone build next generation, high-performance websites for the internet.
+React-Static is a minimalistic framework for server-rendered React applications carefully designed to meet standards of **SEO, site performance, and user/developer experience**.
 
 ## Features
 
-- 100% React!
-- Blazing fast runtime and build performance.
+- :100:% React.
+- :rocket: Blazing fast runtime and build performance.
 - Data Agnostic. Feed your site data from anywhere, **however you want**.
-- Built for **SEO**, by SEO professionals
-- React-first developer experience
-- Painless project setup & migration
-- Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux!
+- Built for **SEO**.
+- ⚛️ React-first developer experience.
+- Painless project setup & migration.
+- Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux.
 
 ## Videos & Tutorials
 
-- [Get started in 5 minutes! (create-react-app template))](https://youtu.be/1pBzh7IM1s8) (5 min)
+- [Get started in 5 minutes! (create-react-app template)](https://youtu.be/1pBzh7IM1s8) (5 min)
 - [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
 - [Walkthrough - Installing and creating a new project with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
 
@@ -36,6 +32,7 @@ At [Nozzle.io](https://nozzle.io), we take **SEO, site performance, and user/dev
 
 - [Nozzle.io](https://nozzle.io)
 - [Timber.io](https://timber.io)
+- [Manta.life](https://manta.life)
 
 ## Examples and Templates
 
@@ -54,7 +51,7 @@ All of the following examples can be used as a template at project creation.
 - [TypeScript](https://github.com/nozzle/react-static/tree/master/examples/typescript)
 - [Cordova (Hybrid App)](https://github.com/nozzle/react-static/tree/master/examples/cordova)
 
-Can't find an example? We invite you to write it! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
+Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 
 ## Chat with us on Slack!
 
@@ -64,7 +61,6 @@ Can't find an example? We invite you to write it! Simply copy the `basic` or `bl
 
 If you read these docs on `npmjs.com`, they correspond to the [published version on npm](https://www.npmjs.com/package/react-static#documentation). The latest, potentially not yet published docs (HEAD), correspond to the [README.md on github](https://github.com/nozzle/react-static#documentation).
 
-- [Quick Start](#quick-start)
 - [Installation](#installation)
 - [CLI](#cli)
 
@@ -92,26 +88,17 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [`<PrefetchWhenSeen path=''/>`](#prefetchwhenseen-path)
   - [`prefetch(path)`](#prefetchpath)
 
-## Quick Start
-
-```bash
-$ yarn global add react-static
-# or npm install -g react-static
-
-$ react-static create my-static-site
-```
-
 ## Installation
 
-### New Projects
-
-To start a new project, install `react-static` globally:
+Install react-static globally:
 
 ```bash
 $ yarn global add react-static
 # or
-$ npm install react-static -g
+$ npm install -g react-static
 ```
+
+### New Project
 
 To create a new project:
 
@@ -121,7 +108,7 @@ $ react-static create
 
 ### Existing Projects
 
-To migrate a project, install `react-static` locally:
+To migrate an existing project, install `react-static` locally:
 
 ```bash
 $ yarn add react-static
@@ -170,7 +157,7 @@ export default {
   // boolean indicating whether this is a production build or not.
   getRoutes: async ({dev}) => [{
     path: '/' // A route object requires a `path` string
-    component: 'src/containers/Home', // specify the react component that will render this route
+    component: 'src/containers/Home', // specify the path of a react component that will render this route
   }, {
     path: '/blog',
     component: 'src/containers/Blog',
@@ -482,7 +469,7 @@ Router.subscribe(loading => {
 
 ### Automatic Routing with `<Routes>`
 
-`react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` path (relative to the root of your project) that should be used to render a route in your `static.config.js`
+`react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` **path** (relative to the root of your project) that should be used to render a route in your `static.config.js`.
 
 `static.config.js` example:
 
@@ -614,6 +601,38 @@ const TopHundredSongsPage = getRouteProps(({songs}) =>
     {songs.map(song => <li key={song}>{song}</li>)}
   </ul>
 )
+
+...
+<Route exact path="/top-100-songs" component={TopHundredSongsPage} />
+...
+```
+
+**App.js (Class)**
+
+```javascript
+
+class TopHundredSongsPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {};
+    }
+
+    render() {
+        return (
+            <ul>
+                {this.props.songs.map(song => <li key={song}>{song}</li>)}
+            </ul>
+
+        );
+    }
+}
+
+TopHundredSongsPage.propTypes = {
+    songs: PropTypes.arrayOf(PropTypes.string).isRequired
+};
+
+export default getRouteProps(TopHundredSongsPage);
 
 ...
 <Route exact path="/top-100-songs" component={TopHundredSongsPage} />
