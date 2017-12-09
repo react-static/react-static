@@ -58,6 +58,7 @@ export default {
         defaultLoaders.fileLoader,
       ],
     }]
+    config.plugins.push(new ExtractTextPlugin('styles.css'))
     return config
   },
 }
