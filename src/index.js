@@ -11,8 +11,6 @@ import { pathJoin } from './shared'
 
 // Proxy React Router
 export {
-  Link,
-  NavLink,
   Prompt,
   Redirect,
   Route,
@@ -20,6 +18,8 @@ export {
   matchPath,
   withRouter,
 } from 'react-router-dom'
+
+export { Link, NavLink } from './links'
 
 // Proxy Helmet as Head
 export { Helmet as Head }
