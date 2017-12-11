@@ -6,7 +6,7 @@ import {
 
 function isRoutingUrl (to) {
   if (typeof to !== 'string') return true
-  return !to.match(/^#/) && !to.match(/^[a-z]{1,10}:\/\//)
+  return !to.match(/^#/) && !to.match(/^[a-z]{1,10}:\/\//) && !to.match(/^(data|mailto):/) && !to.match(/^\/\//)
 }
 
 export function Link (props) {
