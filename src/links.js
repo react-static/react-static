@@ -16,5 +16,8 @@ export function Link (props) {
 
 export function NavLink (props) {
   if (isRoutingUrl(props.to)) return <ReactRouterNavLink {...props} />
+  if (props.activeClassName || props.activeStyle) {
+    console.warn(`Warning: activeClassName and activeStyle make no sense on a <NavLink to="${props.to}">.`)
+  }
   return <a href={props.to}>{props.children}</a>
 }
