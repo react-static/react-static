@@ -36,28 +36,38 @@ export default {
       },
     ]
   },
-  webpack: (config, { stage, defaultLoaders }) => {
-    config.module.rules = [{
-      oneOf: [
-        defaultLoaders.jsLoader,
-        {
-          test: /\.s(a|c)ss$/,
-          use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  minimize: stage === 'prod',
-                },
-              },
-              { loader: 'sass-loader' },
-            ],
-          }),
-        },
-        defaultLoaders.fileLoader,
-      ],
-    }]
+  webpack: (config, { defaultLoaders, stage }) => {
+    config.module.rules = [
+      {
+        oneOf: [
+          {
+            test: /\.s(a|c)ss$/,
+            use:
+              stage === 'dev'
+                ? [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }]
+                : ExtractTextPlugin.extract({
+                  use: [
+                    {
+                      loader: 'css-loader',
+                      options: {
+                        importLoaders: 1,
+                        minimize: true,
+                        sourceMap: false,
+                      },
+                    },
+                    {
+                      loader: 'sass-loader',
+                      options: { includePaths: 'src/' },
+                    },
+                  ],
+                }),
+          },
+          defaultLoaders.cssLoader,
+          defaultLoaders.jsLoader,
+          defaultLoaders.fileLoader,
+        ],
+      },
+    ]
     return config
   },
 }
