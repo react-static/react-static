@@ -11,7 +11,7 @@ import Helmet from 'react-helmet'
 import { DefaultDocument } from './RootComponents'
 
 // Exporting route HTML and JSON happens here. It's a big one.
-export const exportRoutes = async ({ config }) => {
+export const exportRoutes = async ({ config, clientStats }) => {
   // Use the node version of the app created with webpack
   const appJsPath = glob.sync(path.resolve(config.paths.DIST, 'app!(.static).*.js'))[0]
   const appJs = appJsPath.split('/').pop()
@@ -85,7 +85,12 @@ export const exportRoutes = async ({ config }) => {
       }
 
       // Allow extractions of meta via config.renderToString
-      const appHtml = await config.renderToHtml(renderStringAndHead, ContextualComp, renderMeta)
+      const appHtml = await config.renderToHtml(
+        renderStringAndHead,
+        ContextualComp,
+        renderMeta,
+        clientStats,
+      )
 
       // Instead of using the default components, we need to hard code meta
       // from react-helmet into the components
@@ -186,12 +191,10 @@ export const exportRoutes = async ({ config }) => {
 
 export async function buildXMLandRSS ({ config }) {
   if (!config.siteRoot) {
-    console.log(
-      `
-=> Warning: No 'siteRoot' defined in 'static.config.js'!
-=> This is required for both absolute url's and a sitemap.xml to be exported.
-`,
-    )
+    console.log(`
+      => Warning: No 'siteRoot' defined in 'static.config.js'!
+      => This is required for both absolute url's and a sitemap.xml to be exported.
+    `)
     return
   }
   const xml = generateXML({

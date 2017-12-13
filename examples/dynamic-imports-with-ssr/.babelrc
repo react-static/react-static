@@ -1,0 +1,6 @@
+{
+  "extends": "react-static/.babelrc",
+  "plugins": [
+    "universal-import"
+  ]
+}
