@@ -1,3 +1,8 @@
+# 4.5.1
+#### Fixes & Optimizations
+- `Link` and `NavLink` now properly render hash links and external links. (Thanks [@denis-sokolov](https://github/denis-sokolov)!)
+- `sass` example now uses a proper webpack loader configuration for style extraction. (Thanks [@talves](https://github/talves)!)
+
 # 4.5.0
 #### Features
 - Added `sass` example. (Thanks [@2metres](https://github/2metres)!)
