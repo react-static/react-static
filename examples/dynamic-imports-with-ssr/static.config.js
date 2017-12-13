@@ -73,7 +73,7 @@ export default {
     meta.scripts = scripts.filter(script => script.split('.')[0] !== 'app')
     return appHtml
   },
-  Document: ({ Html, Head, Body, children, siteProps, renderMeta }) => (
+  Document: ({ Html, Head, Body, children, renderMeta }) => (
     <Html lang="en-US">
       <Head>
         <meta charSet="UTF-8" />
@@ -89,7 +89,7 @@ export default {
       </Body>
     </Html>
   ),
-  webpack: (config, { stage, defaultLoaders }) => {
+  webpack: (config, { stage }) => {
     if (stage === 'node') {
       config.externals = externals
 
