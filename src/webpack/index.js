@@ -227,16 +227,13 @@ export async function buildProductionBundles ({ config }) {
 
       const [prodStats, nodeStats] = stats.stats
 
-      const prodBuildErrors = prodStats.hasErrors()
-      const prodBuildWarnings = prodStats.hasWarnings()
+      checkBuildStats('prod', prodStats)
+      checkBuildStats('node', nodeStats)
 
-      const nodeBuildErrors = nodeStats.hasErrors()
-      const nodeBuildWarnings = nodeStats.hasWarnings()
+      function checkBuildStats (stage, stageStats) {
+        const buildErrors = stageStats.hasErrors()
+        const buildWarnings = stageStats.hasWarnings()
 
-      checkBuildStats('prod', prodStats, prodBuildErrors, prodBuildWarnings)
-      checkBuildStats('node', nodeStats, nodeBuildErrors, nodeBuildWarnings)
-
-      function checkBuildStats (stage, stageStats, buildErrors, buildWarnings) {
         if (buildErrors || buildWarnings) {
           console.log(
             stageStats.toString({

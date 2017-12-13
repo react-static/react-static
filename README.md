@@ -1,8 +1,9 @@
 ![React Static Logo](https://github.com/nozzle/react-static/raw/master/media/logo.png)
 
-[![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Slack](https://img.shields.io/badge/slack-react--chat-blue.svg)](https://react-chat-signup.herokuapp.com/) [![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
+[![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![David Dependancy Status](https://david-dm.org/nozzle/react-static.svg)](https://david-dm.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Slack](https://img.shields.io/badge/slack-react--chat-blue.svg)](https://react-chat-signup.herokuapp.com/) [![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
 
-<br><br>
+<br>
+<br>
 
 # React Static
 
@@ -41,7 +42,8 @@ All of the following examples can be used as a template at project creation.
 - [Basic](https://github.com/nozzle/react-static/tree/master/examples/basic)
 - [Blank (Create-React-App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
 - [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
-- [Dynamic Imports (code-splitting with SSR)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
+- [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
+- [Dynamic Imports (code-splitting with SSR)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports-with-ssr)
 - [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
 - [LESS & Antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
 - [Styled-Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
@@ -69,6 +71,7 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [`react-static build`](#react-static-build)
 
 - [Project Setup](#project-setup)
+
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
 
   - [Webpack Config and Plugins](#webpack-config-and-plugins)
@@ -226,9 +229,10 @@ export default {
   // - render: renders the JSX to and html string
   // - Component: the final react component to be rendered to HTML
   // - meta, a MUTABLE object that is exposed to the optional Document component as a prop
+  // - webpackStats, the webpack stats generated from the "prod" stage
   // Expected to return an HTML string
   // This is the perfect place for css-in-js integration (see styled-components and glamorous examples for more information)
-  renderToHtml: async (render, Component, meta) => {
+  renderToHtml: async (render, Component, meta, webpackStats) => {
     meta.hello = 'world'
     return render(<Component />)
   },

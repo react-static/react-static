@@ -10,7 +10,7 @@ import fs from 'fs-extra'
 import { pathJoin } from './shared'
 import { Html, Head, Body } from './RootComponents'
 
-const defaultEntry = './src/index'
+const defaultEntry = 'index.js'
 
 export const ChalkColor = {
   yarn: '#2c8ebb',
@@ -52,9 +52,10 @@ export const getConfig = () => {
   const resolvePath = relativePath => path.resolve(path.join(ROOT, relativePath))
 
   // Resolve all paths
-  const distPath = process.env.NODE_ENV === 'development'
-    ? resolvePath(config.paths.devDist || config.paths.dist)
-    : resolvePath(config.paths.dist)
+  const distPath =
+    process.env.REACT_STATIC_ENV === 'development'
+      ? resolvePath(config.paths.devDist || config.paths.dist)
+      : resolvePath(config.paths.dist)
   const paths = {
     ROOT,
     LOCAL_NODE_MODULES: path.resolve(__dirname, '../node_modules'),
@@ -83,7 +84,7 @@ export const getConfig = () => {
 
   return {
     // Defaults
-    entry: defaultEntry,
+    entry: path.join(paths.SRC, defaultEntry),
     getSiteProps: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
     // Config Overrides

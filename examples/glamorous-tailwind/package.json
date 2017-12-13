@@ -1,0 +1,32 @@
+{
+  "name": "react-static-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run generate:tailwindcss && react-static start",
+    "build": "npm run generate:tailwindcss && react-static build",
+    "serve": "serve dist -p 3000",
+    "generate:tailwindcss": "postcss ./tailwind.css -o ./tailwind.custom.css"    
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "glamor": "^2.20.40",
+    "glamorous": "^4.9.7",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router": "^4.2.0",
+    "react-static": "^4.4.0"
+  },
+  "devDependencies": {
+    "babel-plugin-tailwind": "^0.1.8",
+    "eslint-config-react-tools": "1.x.x",
+    "postcss-cli": "^4.1.1",
+    "serve": "^6.1.0",
+    "tailwindcss": "^0.3.0"
+  },
+  "eslintIgnore": [
+    "tailwind.js"
+  ]
+}

@@ -37,12 +37,18 @@ export default function () {
   }
 
   if (cmd === 'start') {
-    process.env.NODE_ENV = 'development'
+    if (typeof process.env.NODE_ENV === 'undefined') {
+      process.env.NODE_ENV = 'development'
+    }
+    process.env.REACT_STATIC_ENV = 'development'
     return require('./start').default()
   }
 
   if (cmd === 'build') {
-    process.env.NODE_ENV = 'production'
+    if (typeof process.env.NODE_ENV === 'undefined') {
+      process.env.NODE_ENV = 'production'
+    }
+    process.env.REACT_STATIC_ENV = 'production'
     return require('./build').default()
   }
 
