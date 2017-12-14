@@ -33,20 +33,20 @@ export const exportRoutes = async ({ config }) => {
         )
       }
 
-      const URL = route.path
+      const staticURL = route.path
 
       // Inject initialProps into static build
       class InitialPropsContext extends Component {
         static childContextTypes = {
           initialProps: PropTypes.object,
           siteProps: PropTypes.object,
-          URL: PropTypes.string,
+          staticURL: PropTypes.string,
         }
         getChildContext () {
           return {
             initialProps,
             siteProps,
-            URL,
+            staticURL,
           }
         }
         render () {

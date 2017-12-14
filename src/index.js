@@ -387,7 +387,7 @@ export class Router extends Component {
     }
   }
   static contextTypes = {
-    URL: PropTypes.string,
+    staticURL: PropTypes.string,
   }
   state = {
     error: null,
@@ -402,8 +402,8 @@ export class Router extends Component {
   }
   render () {
     const { history, type, ...rest } = this.props
-    const { URL } = this.context
-    const context = URL ? {} : undefined
+    const { staticURL } = this.context
+    const context = staticURL ? {} : undefined
 
     let ResolvedRouter
     let resolvedHistory
@@ -432,7 +432,7 @@ export class Router extends Component {
     }
 
     // If statically rendering, use the static router
-    if (URL) {
+    if (staticURL) {
       ResolvedRouter = StaticRouter
       resolvedHistory = undefined
     } else {
@@ -466,6 +466,8 @@ export class Router extends Component {
       })
     }
 
-    return <ResolvedRouter history={resolvedHistory} location={URL} context={context} {...rest} />
+    return (
+      <ResolvedRouter history={resolvedHistory} location={staticURL} context={context} {...rest} />
+    )
   }
 }
