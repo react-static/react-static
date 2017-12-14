@@ -1,0 +1,25 @@
+{
+  "name": "react-static-example-basic",
+  "version": "1.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-static start",
+    "build": "react-static build",
+    "serve": "serve dist -p 3000"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "d3-ease": "^1.0.3",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-move": "^2.6.0",
+    "react-router": "^4.2.0",
+    "react-static": "latest",
+    "recompose": "^0.26.0"
+  },
+  "devDependencies": {
+    "eslint-config-react-tools": "1.x.x",
+    "serve": "^6.1.0"
+  }
+}
