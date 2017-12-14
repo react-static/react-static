@@ -1,25 +1,20 @@
-<img src="https://github.com/nozzle/react-static/raw/master/media/logo.png" alt="React Static Logo" style="width:450px;"/>
+![React Static Logo](https://github.com/nozzle/react-static/raw/master/media/logo.png)
 
-[![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static)
-[![David Dependancy Status](https://david-dm.org/nozzle/react-static.svg)](https://david-dm.org/nozzle/react-static)
-[![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static)
-[![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static)
-[![Join the community on Slack](https://img.shields.io/badge/slack-react--chat-blue.svg)](https://react-chat-signup.herokuapp.com/)
-[![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static)
-[![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
+[![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![David Dependancy Status](https://david-dm.org/nozzle/react-static.svg)](https://david-dm.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Slack](https://img.shields.io/badge/slack-react--chat-blue.svg)](https://react-chat-signup.herokuapp.com/) [![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
 
-<br />
-<br />
+<br>
+<br>
 
 # React Static
+
 A **progressive static-site generator** for React.
 
 [**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
 
 React-Static is a minimalistic framework for server-rendered React applications carefully designed to meet standards of **SEO, site performance, and user/developer experience**.
 
-
 ## Features
+
 - :100:% React.
 - :rocket: Blazing fast runtime and build performance.
 - Data Agnostic. Feed your site data from anywhere, **however you want**.
@@ -35,17 +30,22 @@ React-Static is a minimalistic framework for server-rendered React applications 
 - [Walkthrough - Installing and creating a new project with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
 
 ## Sites Built with React-Static
+
 - [Nozzle.io](https://nozzle.io)
 - [Timber.io](https://timber.io)
 - [Manta.life](https://manta.life)
+- [Manticore Games](http://manticoregames.com)
 
 ## Examples and Templates
+
 All of the following examples can be used as a template at project creation.
+
 - [Basic](https://github.com/nozzle/react-static/tree/master/examples/basic)
 - [Blank (Create-React-App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
 - [Animated Routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes)
 - [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
 - [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
+- [Dynamic Imports (code-splitting with SSR)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports-with-ssr)
 - [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
 - [LESS & Antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
 - [Styled-Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
@@ -58,20 +58,28 @@ All of the following examples can be used as a template at project creation.
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 
 ## Chat with us on Slack!
+
 [Click here to sign up for the React-Tools slack Organization](https://react-chat-signup.herokuapp.com), and join us in the **#react-static** channel! We are constantly discussing implementation details, answering questions and planning features. :)
 
 ## Documentation
+
 If you read these docs on `npmjs.com`, they correspond to the [published version on npm](https://www.npmjs.com/package/react-static#documentation). The latest, potentially not yet published docs (HEAD), correspond to the [README.md on github](https://github.com/nozzle/react-static#documentation).
 
 - [Installation](#installation)
 - [CLI](#cli)
+
   - [`react-static create`](#react-static-create)
   - [`react-static start`](#react-static-start)
   - [`react-static build`](#react-static-build)
+
 - [Project Setup](#project-setup)
+
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
+
   - [Webpack Config and Plugins](#webpack-config-and-plugins)
+
 - [Components & Tools](#components--tools)
+
   - [`<Router>`](#router)
   - [Automatic Routing with `<Routes>`](#automatic-routing-with--routes)
   - [Custom Routing](#custom-routing)
@@ -87,52 +95,66 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [`prefetch(path)`](#prefetchpath)
 
 ## Installation
+
 Install react-static globally:
+
 ```bash
 $ yarn global add react-static
 # or
 $ npm install -g react-static
 ```
 
-#### New Project
+### New Project
+
 To create a new project:
+
 ```bash
 $ react-static create
 ```
 
-#### Existing Projects
+### Existing Projects
+
 To migrate an existing project, install `react-static` locally:
+
 ```bash
 $ yarn add react-static
 # or
 $ npm install react-static --save
 ```
-For more details on migrating an existing app, see the [Project Setup](#project-setup) section.
 
+For more details on migrating an existing app, see the [Project Setup](#project-setup) section.
 
 ## CLI
 
-#### `react-static create`
+### `react-static create`
+
 Creates a new react-static project.
+
 - Prompts for a project name/location
 - Prompts to select one of the templates located in this repository's `examples/` directory.
 
-#### `react-static start`
+### `react-static start`
+
 Starts the development server.
 
-#### `react-static build`
+### `react-static build`
+
 Builds your site for production. Outputs to a `dist` directory in your project.
 
 ## Project Setup
+
 `react-static` needs a few directories and files in the right places to function properly:
 
 - `static.config.js` - A javascript configuration file for react-static. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/examples/basic/static.config.js)
 - `public/` - Anything in this directory will be merged into your static `dist` directory. All files in this directory can be accessed at the root of your site.
 - `src/` - a place for all of your code
+
   - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/examples/basic/src/index.js).
 
 ## Configuration (`static.config.js`)
+
 A `static.config.js` file is required at your project root to configure react-static. It must export a **default** object with the following interface:
+
 ```javascript
 export default {
   // getRoutes is the only required method for the entire config.
@@ -210,9 +232,10 @@ export default {
   // - render: renders the JSX to and html string
   // - Component: the final react component to be rendered to HTML
   // - meta, a MUTABLE object that is exposed to the optional Document component as a prop
+  // - webpackStats, the webpack stats generated from the "prod" stage
   // Expected to return an HTML string
   // This is the perfect place for css-in-js integration (see styled-components and glamorous examples for more information)
-  renderToHtml: async (render, Component, meta) => {
+  renderToHtml: async (render, Component, meta, webpackStats) => {
     meta.hello = 'world'
     return render(<Component />)
   },
@@ -239,6 +262,7 @@ export default {
 ```
 
 ## Webpack Config and Plugins
+
 To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
 
 ```javascript
@@ -256,20 +280,23 @@ webpack: []Function(
   return newConfig // or a falsey value to cancel transformation
 }
 ```
-  - The value can be an array of functions or a single function.
-  - Each function will receive the previous webpack config, and can return a modified or new config.
-  - Return any falsey value to cancel the transformation
-  - `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
-  - `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
-    - `jsLoader` - The default loader for all `.js` files (uses babel)
-    - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
-    - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
+
+- The value can be an array of functions or a single function.
+- Each function will receive the previous webpack config, and can return a modified or new config.
+- Return any falsey value to cancel the transformation
+- `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
+- `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
+
+  - `jsLoader` - The default loader for all `.js` files (uses babel)
+  - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
+  - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
 
 When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
 
 By default, React Static's webpack toolchain compiles `.js` and `.css` files. Any other file that is not a `.js` `.json` or `.html` file is also processed with the `fileLoader` (images, fonts, etc.) and will move to `./dist` directory on build. The source for all default loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules).
 
 Our default loaders are organized like so:
+
 ```javascript
 const webpackConfig = {
   ...
@@ -288,6 +315,7 @@ const webpackConfig = {
 **Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
 
 **Replacing all rules:**
+
 ```javascript
 // static.config.js
 
@@ -302,6 +330,7 @@ export default {
 ```
 
 **Replacing a default loader for a different one:**
+
 ```javascript
 // static.config.js
 import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
@@ -324,6 +353,7 @@ export default {
 ```
 
 **Adding a plugin:**
+
 ```javascript
 // static.config.js
 import AwesomeWebpackPlugin from 'awesome-webpack-plugin'
@@ -387,16 +417,20 @@ export default {
 ## Components & Tools
 
 ### `<Router>`
+
 The `Router` component is required, and provides the underlying React-Router context to its children. It is recommended to always be the root component of a react-static app.
 
 - `Router` automatically handles rendering both static and browser environments.
 - Supports an optional `type` prop that can be one of:
+
   - `browser` - Uses `history.createBrowserHistory`
   - `hash` - Uses `history.createHashHistory`
   - `memory` - Uses `history.createMemoryHistory`
+
 - It optionally accepts a `history` object (most-often used for things like react-router-redux), and also provides a helper method to subscribe to loading events. Note that this will override the `type` prop above.
 
 Example:
+
 ```javascript
 import { Router, Switch, Route } from 'react-static'
 import Routes from 'react-static-routes'
@@ -426,9 +460,8 @@ export default () => (
 )
 ```
 
-To Subscribe to Router loading events, use `Router.subscribe(callback)`.
-This can be extremely useful when using a library like `nprogress` to show a loading status.
-The subscribe callback will fire whenever the loading state changes:
+To Subscribe to Router loading events, use `Router.subscribe(callback)`. This can be extremely useful when using a library like `nprogress` to show a loading status. The subscribe callback will fire whenever the loading state changes:
+
 ```javascript
 import { Router } from 'react-static'
 
@@ -441,10 +474,12 @@ Router.subscribe(loading => {
 })
 ```
 
-### Automatic Routing with  `<Routes>`
+### Automatic Routing with `<Routes>`
+
 `react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` **path** (relative to the root of your project) that should be used to render a route in your `static.config.js`.
 
 `static.config.js` example:
+
 ```javascript
 export default {
   getRoutes: async () => [{
@@ -457,6 +492,7 @@ export default {
 When your site is built (both in dev and production mode), the special `<Routes>` component will automatically handle all of your routing based on the paths you define in your `static.config.js`
 
 `App.js` example:
+
 ```javascript
 import { Router } from 'react-static'
 import Routes from 'react-static-routes' // A special `react-static-routes` import is used for Automatic Routing
@@ -471,6 +507,7 @@ export default () => (
 To see an example of using , refer to our [`basic` example template](https://github.com/nozzle/react-static/blob/master/examples/basic)
 
 ### Custom Routing
+
 If you end up needing more control than `<Routes />` offers, have no fear. `react-static` provides you with all of the custom routing components you are normally used to with `react-router`:
 
 **NOTE: These components are available via `react-static`. There is no need to import them via `react-router`**
@@ -480,20 +517,24 @@ If you end up needing more control than `<Routes />` offers, have no fear. `reac
 - `<Redirect>`
 - `<Prompt>`
 
-To build your own custom routing, simply remove (or don't use)  the `<Routes>` component in your app, and use the above components instead.
+To build your own custom routing, simply remove (or don't use) the `<Routes>` component in your app, and use the above components instead.
 
 To see a working example, refer to our [`custom-routing` example template](https://github.com/nozzle/react-static/blob/master/examples/custom-routing)
 
 To learn more about how `react-router` components work, visit [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
 ### 404 Handling
+
 Making a 404 page in `react-static` is extremely simple for both automatic and custom routing configurations.
 
 ##### With Automatic Routing
+
 To define a 404 page using automatic routing, define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build time and run time, the rendered result of this `component` will be used for any routes that are not found.
 
 ##### With Custom Routing
+
 When using custom routing, there are 2 types of 404 pages:
+
 - **Static 404 page** - At build time, `react-static` will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
 - **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those situations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
 
@@ -565,9 +606,11 @@ export default () => (
 ```
 
 ### `<Link>` and `<NavLink>`
+
 `react-static` also gives you access to `react-router`'s `<Link>` and `<NavLink>` components. Use these component to allow your users to navigate around your site!
 
 Usage:
+
 ```javascript
 <Link to={'/blog/post/1'}>
   Go to Blog Post 1
@@ -575,6 +618,7 @@ Usage:
 ```
 
 Example:
+
 ```javascript
 import React from 'react'
 import { Router, Link } from 'react-static'
@@ -598,6 +642,7 @@ export default () => (
 For more information about `<Link>` and `<NavLink>`, see [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
 ### Other Routing Utilities
+
 For your convenience, `react-static` also exports the following utilities normally exported by `react-router`.
 
 - `history`
@@ -605,9 +650,11 @@ For your convenience, `react-static` also exports the following utilities normal
 - `withRouter`
 
 ### `getRouteProps(Component)`
+
 `getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:
 
 **static.config.js**
+
 ```javascript
 module.exports = {
   getRoutes: () => [{
@@ -620,6 +667,7 @@ module.exports = {
 ```
 
 **App.js**
+
 ```javascript
 
 const TopHundredSongsPage = getRouteProps(({songs}) =>
@@ -634,6 +682,7 @@ const TopHundredSongsPage = getRouteProps(({songs}) =>
 ```
 
 **App.js (Class)**
+
 ```javascript
 
 class TopHundredSongsPage extends React.Component {
@@ -665,9 +714,11 @@ export default getRouteProps(TopHundredSongsPage);
 ```
 
 ### `getSiteProps(Component)`
+
 `getSiteProps` is an HOC that provides a component with the results of the `getSiteProps` function as defined in your `static.config.js`. Here is a simple example:
 
 **static.config.js**
+
 ```javascript
 module.exports = {
   getSiteProps: () => ({
@@ -678,6 +729,7 @@ module.exports = {
 ```
 
 **App.js**
+
 ```javascript
 
 const AnyComponent = getSiteProps(({ title, metaDescription }) =>
@@ -685,10 +737,10 @@ const AnyComponent = getSiteProps(({ title, metaDescription }) =>
     Welcome to {title}! I am a {metaDescription} :)
   </div>
 )
-
 ```
 
 ### `<Head>`
+
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
 - It can be used anywhere in your app.
@@ -696,6 +748,7 @@ const AnyComponent = getSiteProps(({ title, metaDescription }) =>
 - For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that `react-static` uses to accomplish this.
 
 Example:
+
 ```javascript
 import { Head } from 'react-static'
 
@@ -713,6 +766,7 @@ export () => (
 ```
 
 ### `<Prefetch path=''/>`
+
 Prefetch is a react component that accepts a `path` prop and an optional single child to render. When this component is rendered, any data resolved by the `path`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
 
 - If the path doesn't match a route, no data will be loaded.
@@ -721,6 +775,7 @@ Prefetch is a react component that accepts a `path` prop and an optional single 
 - If used more often than needed, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
 
 Example:
+
 ```javascript
 import { Prefetch, Link } from 'react-static'
 
@@ -736,9 +791,11 @@ import { Prefetch, Link } from 'react-static'
 ```
 
 ### `<PrefetchWhenSeen path=''/>`
+
 PrefetchWhenSeen is almost identical to the Prefetch component, except that it will not fire its prefetch until the component is visible in the view. If the user's browser doesn't support the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), it will work just like the Prefetch component.
 
 Example:
+
 ```javascript
 import { PrefetchWhenSeen, Link } from 'react-static'
 
@@ -754,9 +811,11 @@ import { PrefetchWhenSeen, Link } from 'react-static'
 ```
 
 ### `prefetch(path)`
+
 `prefetch` is an imperative version of the `Prefetch` component that you can use anywhere in your code.
 
 Example:
+
 ```javascript
 import { prefetch } from 'react-static'
 
@@ -767,6 +826,7 @@ const myFunc = async () => {
 ```
 
 ## Contributing
+
 We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have an issue, feature request, or pull request, let us know!
 
 ## License

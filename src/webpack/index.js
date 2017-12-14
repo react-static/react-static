@@ -210,25 +210,33 @@ export async function startDevServer ({ config }) {
 }
 
 export async function buildProductionBundles ({ config }) {
-  const build = (stage, compiler) =>
-    new Promise((resolve, reject) => {
-      compiler.run((err, stats) => {
-        if (err) {
-          console.log(chalk.red(err.stack || err))
-          if (err.details) {
-            console.log(chalk.red(err.details))
-          }
-          return reject(err)
+  return new Promise((resolve, reject) => {
+    webpack([
+      webpackConfig({ config, stage: 'prod' }),
+      webpackConfig({ config, stage: 'node' }),
+    ]).run((err, stats) => {
+      if (err) {
+        console.log(chalk.red(err.stack || err))
+        if (err.details) {
+          console.log(chalk.red(err.details))
         }
+        return reject(err)
+      }
 
-        stats.toJson('verbose')
+      stats.toJson('verbose')
 
-        const buildErrors = stats.hasErrors()
-        const buildWarnings = stats.hasWarnings()
+      const [prodStats, nodeStats] = stats.stats
+
+      checkBuildStats('prod', prodStats)
+      checkBuildStats('node', nodeStats)
+
+      function checkBuildStats (stage, stageStats) {
+        const buildErrors = stageStats.hasErrors()
+        const buildWarnings = stageStats.hasWarnings()
 
         if (buildErrors || buildWarnings) {
           console.log(
-            stats.toString({
+            stageStats.toString({
               context: config.context,
               performance: false,
               hash: false,
@@ -241,34 +249,22 @@ export async function buildProductionBundles ({ config }) {
           )
           if (buildErrors) {
             console.log(
-              chalk.red.bold(
-                `
-=> There were ERRORS during the ${stage} build stage! :(
-=> Fix them and try again!`,
-              ),
+              chalk.red.bold(`
+                => There were ERRORS during the ${stage} build stage! :(
+                => Fix them and try again!
+              `),
             )
           } else if (buildWarnings) {
             console.log(
-              chalk.yellow.bold(
-                `
-=> There were WARNINGS during the ${stage} build stage!`,
-              ),
+              chalk.yellow.bold(`
+                => There were WARNINGS during the ${stage} build stage!
+              `),
             )
           }
         }
+      }
 
-        resolve()
-      })
+      resolve(prodStats.toJson())
     })
-
-  const prodCompiler = await buildCompiler({
-    config,
-    stage: 'prod',
   })
-  const nodeCompiler = await buildCompiler({
-    config,
-    stage: 'node',
-  })
-
-  await Promise.all([build('prod', prodCompiler), build('node', nodeCompiler)])
 }
