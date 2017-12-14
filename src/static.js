@@ -233,23 +233,6 @@ export const prepareRoutes = async config => {
     }
   })
 
-  const templateImports = templates
-    .map(
-      template =>
-        `import ${template.replace(/[^a-zA-Z0-9]/g, '_')} from '${path.relative(
-          config.paths.DIST,
-          path.resolve(config.paths.ROOT, template),
-        )}'`,
-    )
-    .join('\n')
-    .replace(/\\/g, '/')
-
-  const templateMap = `const templateMap = {
-    ${templates
-    .map((template, index) => `t_${index}: ${template.replace(/[^a-zA-Z0-9]/g, '_')}`)
-    .join(',\n')}
-  }`
-
   const tree = {}
   routes.forEach(route => {
     const parts = route.path === '/' ? ['/'] : route.path.split('/').filter(d => d)
@@ -270,12 +253,36 @@ export const prepareRoutes = async config => {
     })
   })
 
-  const templateTree = `const templateTree = ${JSON.stringify(tree)
-    .replace(/"(\w)":/gm, '$1:')
-    .replace(/template: '(.+)'/gm, 'template: $1')}`
+  const file = `
+    import React, { Component } from 'react'
+    import { Route } from 'react-router-dom'
 
-  const getTemplateForPath = `
-    const getTemplateForPath = path => {
+    // Template Imports
+    ${templates
+    .map(
+      template =>
+        `import ${template.replace(/[^a-zA-Z0-9]/g, '_')} from '${path.relative(
+          config.paths.DIST,
+          path.resolve(config.paths.ROOT, template),
+        )}'`,
+    )
+    .join('\n')
+    .replace(/\\/g, '/')}
+
+    // Template Map
+    const templateMap = {
+      ${templates
+    .map((template, index) => `t_${index}: ${template.replace(/[^a-zA-Z0-9]/g, '_')}`)
+    .join(',\n')}
+    }
+
+    // Template Tree
+    const templateTree = ${JSON.stringify(tree)
+    .replace(/"(\w)":/gm, '$1:')
+    .replace(/template: '(.+)'/gm, 'template: $1')}
+
+    // Get template for given path
+    const getComponentForPath = path => {
       const parts = path === '/' ? ['/'] : path.split('/').filter(d => d)
       let cursor = templateTree
       try {
@@ -287,31 +294,35 @@ export const prepareRoutes = async config => {
         return false
       }
     }
-  `
-
-  const mainRouteComp = `
-    <Route path='*' render={props => {
-      let Template = getTemplateForPath(props.location.pathname)
-      if (!Template) {
-        Template = getTemplateForPath('404')
-      }
-      return Template && <Template {...props} />
-    }} />
-  `
-
-  const file = `
-    import React, { Component } from 'react'
-    import { Route } from 'react-router-dom'
-
-    ${templateImports}
-    ${templateMap}
-    ${templateTree}
-    ${getTemplateForPath}
 
     export default class Routes extends Component {
       render () {
+        const { component: Comp, render, children } = this.props
+        const renderProps = {
+          templateMap,
+          templateTree,
+          getComponentForPath
+        }
+        if (Comp) {
+          return (
+            <Comp
+              {...renderProps}
+            />
+          )
+        }
+        if (render || children) {
+          return (render || children)(renderProps)
+        }
+
+        // This is the default auto-routing renderer
         return (
-            ${mainRouteComp}
+          <Route path='*' render={props => {
+            let Comp = getComponentForPath(props.location.pathname)
+            if (!Comp) {
+              Comp = getComponentForPath('404')
+            }
+            return Comp && <Comp {...props} />
+          }} />
         )
       }
     }

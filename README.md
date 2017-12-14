@@ -43,6 +43,7 @@ React-Static is a minimalistic framework for server-rendered React applications 
 All of the following examples can be used as a template at project creation.
 - [Basic](https://github.com/nozzle/react-static/tree/master/examples/basic)
 - [Blank (Create-React-App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
+- [Animated Routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes)
 - [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
 - [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
 - [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
@@ -75,6 +76,7 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [Automatic Routing with `<Routes>`](#automatic-routing-with--routes)
   - [Custom Routing](#custom-routing)
   - [404 Handling](#404-handling)
+  - [Automatic Routing with Custom Render Props](#automatic-routing-with-custom-render-props)
   - [`<Link>` and `<NavLink>`](#link-and-navlink)
   - [Other Routing Utilities](#other-routing-utilities)
   - [`getRouteProps(Component)`](#getroutepropscomponent)
@@ -466,7 +468,7 @@ export default () => (
 )
 ```
 
-To see a working example, refer to our [`basic` example template](https://github.com/nozzle/react-static/blob/master/examples/basic)
+To see an example of using , refer to our [`basic` example template](https://github.com/nozzle/react-static/blob/master/examples/basic)
 
 ### Custom Routing
 If you end up needing more control than `<Routes />` offers, have no fear. `react-static` provides you with all of the custom routing components you are normally used to with `react-router`:
@@ -487,13 +489,80 @@ To learn more about how `react-router` components work, visit [React-Router's Do
 ### 404 Handling
 Making a 404 page in `react-static` is extremely simple for both automatic and custom routing configurations.
 
-##### Automatic Routing
+##### With Automatic Routing
 To define a 404 page using automatic routing, define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build time and run time, the rendered result of this `component` will be used for any routes that are not found.
 
-##### Custom Routing
+##### With Custom Routing
 When using custom routing, there are 2 types of 404 pages:
 - **Static 404 page** - At build time, `react-static` will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
 - **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those situations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
+
+### Automatic Routing with Custom Render Props
+Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize one of these three render prop formats:
+
+**Render Prop Formats**
+```javascript
+import { Router } from 'react-static'
+import Routes from 'react-static-routes'
+
+export default () => (
+  <Router>
+    // pass a component
+    <Routes
+      component={RenderRoutes}
+    />
+
+    // or, pass a render function
+    <Routes
+      render={({ getTemplateForPath }) => (
+        ...
+      )}
+    />
+
+    // or, pass a function as a child
+    <Routes>
+      {({ getTemplateForPath }) => (
+        ...
+      )}
+    </Routes>
+  </Router>
+)
+```
+
+**Render Props** - These special props are sent to your rendered component or function
+- `getTemplateForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no template is found.
+<!-- - `templateMap{}` - An object mapping template ids to Components
+- `templateTree{}` - A nested object structure mapping paths and their children to a template ID.
+  - `c` - the children of the path
+  - `t` - the template ID of the path -->
+
+**Default Route Renderer**
+Below is the default renderer for the `<Routes>` component. It will serve as a good starting point.
+
+```javascript
+import { Router } from 'react-static'
+import Routes from 'react-static-routes'
+
+export default () => (
+  <Router>
+    <Routes
+      render={( getTemplateForPath ) => (
+        // The default renderer uses a catch all route to recieve the pathname
+        <Route path='*' render={props => {
+          // The pathname is used to retrieve the component for that path
+          let Comp = getComponentForPath(props.location.pathname)
+          // The 404 component is used as a fallback
+          if (!Comp) {
+            Comp = getComponentForPath('404')
+          }
+          // The component is rendered!
+          return Comp && <Comp {...props} />
+        }} />
+      )}
+    />
+  </Router>
+)
+```
 
 ### `<Link>` and `<NavLink>`
 `react-static` also gives you access to `react-router`'s `<Link>` and `<NavLink>` components. Use these component to allow your users to navigate around your site!

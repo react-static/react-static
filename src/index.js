@@ -10,14 +10,7 @@ import { Router as ReactRouter, StaticRouter } from 'react-router-dom'
 import { pathJoin } from './shared'
 
 // Proxy React Router
-export {
-  Prompt,
-  Redirect,
-  Route,
-  Switch,
-  matchPath,
-  withRouter,
-} from 'react-router-dom'
+export { Prompt, Redirect, Route, Switch, matchPath, withRouter } from 'react-router-dom'
 
 export { Link, NavLink } from './links'
 
