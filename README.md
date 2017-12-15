@@ -304,6 +304,7 @@ Automatic data and prop splitting is based on identity comparison `===`. If you 
 
 <details>
 <summary>**An example of what not do**</summary>
+<br/>
 ```javascript
 import axios from 'axios'
 
@@ -335,6 +336,7 @@ export default {
   },
 }
 ```
+
 </details>
 
 ## Webpack Config and Plugins
