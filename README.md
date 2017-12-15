@@ -46,6 +46,8 @@ All of the following examples can be used as a template at project creation.
 - [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
 - [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
 - [Dynamic Imports (code-splitting with SSR)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports-with-ssr)
+- [Firebase Auth](https://github.com/nozzle/react-static/tree/master/examples/firebase-auth)
+- [Glamorous & Tailwind CSS](https://github.com/nozzle/react-static/tree/master/examples/glamorous-tailwind)
 - [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
 - [LESS & Antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
 - [Styled-Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
