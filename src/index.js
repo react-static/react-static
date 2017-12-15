@@ -19,24 +19,30 @@ export { Helmet as Head }
 
 //
 
-const propsCache = {}
+const propsByHash = {}
+const pathProps = {}
 const inflight = {}
-const failed = {}
 
 let sitePropsPromise
 let InitialLoading
 
 let routesPromise
 
-if (typeof document !== 'undefined') {
-  routesPromise = (async () => {
-    let res
-    if (process.env.REACT_STATIC_ENV === 'development') {
-      res = await axios.get('/__react-static__/getRoutes')
-      return res.data
+const getRouteInfo = async () => {
+  if (typeof document !== 'undefined') {
+    if (!routesPromise) {
+      routesPromise = (async () => {
+        let res
+        if (process.env.REACT_STATIC_ENV === 'development') {
+          res = await axios.get('/__react-static__/routeInfo')
+        } else {
+          res = await axios.get('/routeInfo.json')
+        }
+        return res.data
+      })()
     }
-    return window.__routesList
-  })()
+    return routesPromise
+  }
 }
 
 if (process.env.REACT_STATIC_ENV === 'development') {
@@ -108,8 +114,8 @@ function isPrefetched (path) {
     return
   }
 
-  if (propsCache[path]) {
-    return propsCache[path]
+  if (pathProps[path]) {
+    return pathProps[path]
   }
 }
 
@@ -121,24 +127,27 @@ export async function prefetch (path) {
   }
 
   // Defer to the cache first
-  if (propsCache[path]) {
-    return propsCache[path]
+  if (pathProps[path]) {
+    return pathProps[path]
   }
 
-  // Don't attempt previously failed prefetches
-  if (failed[path]) {
-    return
-  }
+  // Now, try and find the current route info (or lack of route)
+  const routes = await getRouteInfo()
 
-  // Find the current route (or lack of route)
-  const routes = await routesPromise
-  const isStaticRoute = routes.indexOf(path) > -1
-
-  if (!isStaticRoute) {
-    return
-  }
-
+  // In development request all props in one go.
   if (process.env.REACT_STATIC_ENV === 'development') {
+    const isStaticRoute = routes.indexOf(path) > -1
+
+    // Not a static route? Bail out.
+    if (!isStaticRoute) {
+      return
+    }
+
+    // Then try for the embedded data first and return it
+    if (window.__routeData && window.__routeData.path === path) {
+      pathProps[path] = window.__routeData
+      return pathProps[path]
+    }
     // Reuse request for duplicate inflight requests
     try {
       if (!inflight[path]) {
@@ -147,39 +156,71 @@ export async function prefetch (path) {
       const { data: initialProps } = await inflight[path]
 
       // Place it in the cache
-      propsCache[path] = {
+      pathProps[path] = {
         initialProps,
       }
     } catch (err) {
-      console.error('Error: There was an error during getProps() for route:', path)
-      console.error(err)
+      console.error('Error: There was an error retrieving props for this route! path:', path)
+      throw err
     }
     delete inflight[path]
-    return propsCache[path]
+    return pathProps[path]
   }
 
-  // Then try for the embedded data
-  if (window.__routeData && window.__routeData.path === path) {
-    propsCache[path] = window.__routeData
-    return propsCache[path]
+  // for production, we'll need the full route
+  const propsMap = routes[path]
+
+  // Not a static route? Bail out.
+  if (!propsMap) {
+    return
   }
 
-  // Fallback to fetching the path's route data
-  try {
-    // Reuse request for duplicate inflight requests
-    inflight[path] = inflight[path] || axios.get(pathJoin(path, 'routeData.json'))
-    const { data } = await inflight[path]
+  // Request and build the props one by one
+  let initialProps = {}
 
-    // Place it in the cache
-    propsCache[path] = data
-  } catch (err) {
-    // Mark the request as failed
-    failed[path] = true
-    console.warn('Warning: There was an error during getProps() for route:', path)
-    console.error(err)
+  // Loop over the propsMap, and request each prop
+  await Promise.all(
+    Object.keys(propsMap).map(async key => {
+      const hash = propsMap[key]
+
+      // Check the propsByHash first
+      if (!propsByHash[hash]) {
+        // Reuse request for duplicate inflight requests
+        try {
+          if (!inflight[hash]) {
+            inflight[hash] = axios.get(`/staticData/${hash}.json`)
+          }
+          const { data: prop } = await inflight[hash]
+
+          // Place it in the cache
+          propsByHash[hash] = prop
+        } catch (err) {
+          console.error('Error: There was an error retrieving a prop for this route! hashID:', hash)
+          console.error(err)
+        }
+        delete inflight[hash]
+      }
+
+      // If this prop was the local prop, spread it on the entire prop object
+      if (key === '__local') {
+        initialProps = {
+          ...initialProps,
+          ...propsByHash[hash],
+        }
+      } else {
+        // Otherwise, just set it as the key
+        initialProps[key] = propsByHash[hash]
+      }
+    }),
+  )
+
+  // Cache the entire props for the route
+  pathProps[path] = {
+    initialProps,
   }
-  delete inflight[path]
-  return propsCache[path]
+
+  // Return the props
+  return pathProps[path]
 }
 
 export function getRouteProps (Comp) {
@@ -193,8 +234,8 @@ export function getRouteProps (Comp) {
     }
     async componentWillMount () {
       if (process.env.REACT_STATIC_ENV === 'development') {
-        const { pathname } = this.context.router.route.location
-        const path = pathJoin(pathname)
+        const { pathname, search } = this.context.router.route.location
+        const path = pathJoin(`${pathname}${search}`)
         await prefetch(path)
         if (this.unmounting) {
           return
@@ -208,10 +249,11 @@ export function getRouteProps (Comp) {
       this.unmounting = true
     }
     render () {
-      const { pathname } = this.context.router.route.location
-      const path = pathJoin(pathname)
+      const { pathname, search } = this.context.router.route.location
+      const path = pathJoin(`${pathname}${search}`)
 
       let initialProps
+
       if (typeof window !== 'undefined') {
         if (window.__routeData && window.__routeData.path === path) {
           initialProps = window.__routeData.initialProps
@@ -221,7 +263,7 @@ export function getRouteProps (Comp) {
       if (!initialProps && this.context.initialProps) {
         initialProps = this.context.initialProps
       } else {
-        initialProps = propsCache[path] ? propsCache[path].initialProps : initialProps
+        initialProps = pathProps[path] ? pathProps[path].initialProps : initialProps
       }
 
       if (!initialProps && this.state.loaded) {
@@ -393,6 +435,21 @@ export class Router extends Component {
     error: null,
     errorInfo: null,
   }
+  componentWillMount () {
+    getRouteInfo()
+  }
+  componentDidMount () {
+    if (typeof window !== 'undefined') {
+      const { href, origin } = window.location
+      const path = pathJoin(href.replace(origin, ''))
+      if (window.__routeData && window.__routeData.path === path) {
+        const initialProps = window.__routeData.initialProps
+        Object.keys(initialProps).forEach(key => {
+          propsByHash[window.__routeData.propsMap[key]] = initialProps[key]
+        })
+      }
+    }
+  }
   componentDidCatch (error, errorInfo) {
     // Catch errors in any child components and re-renders with an error message
     this.setState({
@@ -451,14 +508,10 @@ export class Router extends Component {
       ;['push', 'replace'].forEach(method => {
         const originalMethod = resolvedHistory[method]
         resolvedHistory[method] = async (...args) => {
-          const path = typeof args[0] === 'string' ? args[0] : args[0].pathname + args[0].search
+          const path = typeof args[0] === 'string' ? args[0] : args[0].path + args[0].search
           if (!isPrefetched(path)) {
-            try {
-              setLoading(true)
-              await prefetch(path)
-            } catch (err) {
-              console.error(err)
-            }
+            setLoading(true)
+            await prefetch(path)
             setLoading(false)
           }
           originalMethod.apply(resolvedHistory, args)
