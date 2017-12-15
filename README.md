@@ -302,8 +302,7 @@ export default {
 #### Important Notes
 Automatic data and prop splitting is based on identity comparison `===`. If you break this referential integrity, React Static cannot detect that two props are the same.
 
-<details>
-<summary>**An example of what not do**</summary>
+**An example of what not do**
 <br/>
 ```javascript
 import axios from 'axios'
@@ -337,7 +336,6 @@ export default {
 }
 ```
 
-</details>
 
 ## Webpack Config and Plugins
 
@@ -392,8 +390,7 @@ const webpackConfig = {
 
 **Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
 
-<details>
-<summary>**Replacing all rules**</summary>
+**Replacing all rules**
 
 ```javascript
 // static.config.js
@@ -407,10 +404,8 @@ export default {
   }
 }
 ```
-</details>
 
-<details>
-<summary>**Replacing a default loader for a different one**</summary>
+**Replacing a default loader for a different one**
 
 ```javascript
 // static.config.js
@@ -432,10 +427,8 @@ export default {
   }
 }
 ```
-</details>
 
-<details>
-<summary>**Adding a plugin**</summary>
+**Adding a plugin**
 
 ```javascript
 // static.config.js
@@ -448,10 +441,8 @@ export default {
   }
 }
 ```
-</details>
 
-<details>
-<summary>**Using multiple transformers**</summary>
+**Using multiple transformers**
 
 ```javascript
 // static.config.js
@@ -483,10 +474,8 @@ export default {
   ]
 }
 ```
-</details>
 
-<details>
-<summary>**Using Custom devServer properties**</summary>
+**Using Custom devServer properties**
 
 This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
 
@@ -500,7 +489,6 @@ export default {
   }
 }
 ```
-</details>
 
 ## Components & Tools
 
