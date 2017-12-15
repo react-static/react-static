@@ -67,19 +67,13 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
 
 - [Installation](#installation)
 - [CLI](#cli)
-
   - [`react-static create`](#react-static-create)
   - [`react-static start`](#react-static-start)
   - [`react-static build`](#react-static-build)
-
 - [Project Setup](#project-setup)
-
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
-
   - [Webpack Config and Plugins](#webpack-config-and-plugins)
-
 - [Components & Tools](#components--tools)
-
   - [`<Router>`](#router)
   - [Automatic Routing with `<Routes>`](#automatic-routing-with--routes)
   - [Custom Routing](#custom-routing)
@@ -148,8 +142,9 @@ Builds your site for production. Outputs to a `dist` directory in your project.
 - `static.config.js` - A javascript configuration file for react-static. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/examples/basic/static.config.js)
 - `public/` - Anything in this directory will be merged into your static `dist` directory. All files in this directory can be accessed at the root of your site.
 - `src/` - a place for all of your code
-
   - `index.js` - the main entry for your app. This file should export your app as its default export and also handle the rendering of the app when using the development server. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/examples/basic/src/index.js).
+
+Some of these directories can be changed too! Read on to see how!
 
 ## Configuration (`static.config.js`)
 
@@ -258,6 +253,54 @@ export default {
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
+}
+```
+
+## Automatic Data and Prop Splitting
+React Static has a very unique and clever way of requesting the least amount of data to display any given page at just the right moment.
+
+##### How does it work?
+When you return an object of props in a route's `getProps` function, each prop is compared to all other props for `===` equality. When a prop is found to be used in more than one location, it is promoted to a **shared prop** and stored in it's very own JSON file.
+
+##### Why is that cool?
+By storing common props in separate files, your site avoids wastefully serving duplicate data for pages that share some or all of their data with others. This decreases the overall bandwidth your site uses and also considerably speeds up your sites ability to serve data as fast as possible!
+
+##### Example
+Consider a dynamic menu structure that is present only on some of your pages, but not all of them. In this case, the menu data would only be loaded on those pages, and only once per session, instead of on every page.
+
+```javascript
+import axios from 'axios'
+
+export default {
+  getRoutes: async () => {
+    const supportMenu = getMyDynamicMenuFromMyCMS()
+    return [
+      {
+        path: '/',
+        component: 'src/containers/Home',
+      },
+      {
+        path: '/docs',
+        component: 'src/containers/Docs',
+        getProps: async () => ({
+          supportMenu // Use it once here
+        })
+      },
+      {
+        path: '/help',
+        component: 'src/containers/Help',
+        getProps: async () => ({
+          supportMenu, // since this `supportMenu` is equal `===` to the
+          // `supportMenu` used in the docs route, it will be promoted to a shared prop!
+          helpStuff: {...}
+        })
+      },
+      {
+        is404: true,
+        component: 'src/containers/404',
+      },
+    ]
+  },
 }
 ```
 
