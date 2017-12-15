@@ -299,6 +299,44 @@ export default {
 }
 ```
 
+#### Important Notes
+Automatic data and prop splitting is based on identity comparison `===`. If you break this referential integrity, React Static cannot detect that two props are the same.
+
+<details>
+<summary>**An example of what not do**</summary>
+```javascript
+import axios from 'axios'
+
+export default {
+  getRoutes: async () => {
+    const supportMenu = getMyDynamicMenuFromMyCMS()
+    return [
+      {
+        path: '/',
+        component: 'src/containers/Home',
+      },
+      {
+        path: '/docs',
+        component: 'src/containers/Docs',
+        getProps: async () => ({
+          supportMenu
+        })
+      },
+      {
+        path: '/help',
+        component: 'src/containers/Help',
+        getProps: async () => ({
+          supportMenu { ...supportMenu } // Even though this supportMenu obejct
+          // is exactly the same as the original, it is not the actual original.
+          // This would not work!
+        })
+      },
+    ]
+  },
+}
+```
+</details>
+
 ## Webpack Config and Plugins
 
 To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
@@ -352,7 +390,8 @@ const webpackConfig = {
 
 **Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
 
-**Replacing all rules:**
+<details>
+<summary>**Replacing all rules**</summary>
 
 ```javascript
 // static.config.js
@@ -366,8 +405,10 @@ export default {
   }
 }
 ```
+</details>
 
-**Replacing a default loader for a different one:**
+<details>
+<summary>**Replacing a default loader for a different one**</summary>
 
 ```javascript
 // static.config.js
@@ -389,8 +430,10 @@ export default {
   }
 }
 ```
+</details>
 
-**Adding a plugin:**
+<details>
+<summary>**Adding a plugin**</summary>
 
 ```javascript
 // static.config.js
@@ -403,8 +446,10 @@ export default {
   }
 }
 ```
+</details>
 
-**Using multiple transformers:**
+<details>
+<summary>**Using multiple transformers**</summary>
 
 ```javascript
 // static.config.js
@@ -436,8 +481,10 @@ export default {
   ]
 }
 ```
+</details>
 
-**Using Custom devServer properties:**
+<details>
+<summary>**Using Custom devServer properties**</summary>
 
 This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
 
@@ -451,6 +498,7 @@ export default {
   }
 }
 ```
+</details>
 
 ## Components & Tools
 
