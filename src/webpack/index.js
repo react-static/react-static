@@ -97,7 +97,7 @@ export async function startDevServer ({ config }) {
         }
       })
 
-      app.get('/__react-static__/getRoutes', async (req, res, next) => {
+      app.get('/__react-static__/routeInfo', async (req, res, next) => {
         try {
           const routes = await config.getRoutes({ dev: true })
 

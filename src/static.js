@@ -7,6 +7,8 @@ import fs from 'fs-extra'
 import glob from 'glob'
 import path from 'path'
 import Helmet from 'react-helmet'
+import shorthash from 'shorthash'
+
 //
 import { DefaultDocument } from './RootComponents'
 
@@ -22,29 +24,101 @@ export const exportRoutes = async ({ config, clientStats }) => {
 
   const siteProps = await config.getSiteProps({ dev: false })
 
-  return Promise.all(
+  const seenProps = new Map()
+  const sharedProps = new Map()
+
+  await Promise.all(
     config.routes.map(async route => {
       // Fetch initialProps from each route
-      const initialProps = route.getProps && (await route.getProps({ route, dev: false }))
-      if (initialProps) {
-        await fs.outputFile(
-          path.join(config.paths.DIST, route.path, 'routeData.json'),
-          JSON.stringify(initialProps || {}),
-        )
+      route.initialProps = !!route.getProps && (await route.getProps({ route, dev: false }))
+
+      if (!route.initialProps) {
+        route.initialProps = {}
       }
 
+      // Loop through the props
+      Object.values(route.initialProps).forEach(prop => {
+        // Have we seen this prop before?
+        if (seenProps.get(prop)) {
+          // Only cache each shared prop once
+          if (sharedProps.get(prop)) {
+            return
+          }
+          // Cache the prop
+          const jsonString = JSON.stringify(prop)
+          sharedProps.set(prop, {
+            jsonString,
+            hash: shorthash.unique(jsonString),
+          })
+        } else {
+          // Mark the prop as seen
+          seenProps.set(prop, true)
+        }
+      })
+    }),
+  )
+
+  await Promise.all(
+    config.routes.map(async route => {
+      // Loop through the props and build the prop maps
+      route.localProps = {}
+      route.propsMap = {}
+      Object.keys(route.initialProps).forEach(key => {
+        const value = route.initialProps[key]
+        const cached = sharedProps.get(value)
+        if (cached) {
+          route.propsMap[key] = cached.hash
+        } else {
+          route.localProps[key] = value
+        }
+      })
+      if (Object.keys(route.localProps).length) {
+        route.localPropsDataString = JSON.stringify(route.localProps)
+        route.localPropsHash = shorthash.unique(route.localPropsDataString)
+        // Make sure local props are tracked in a special key
+        route.propsMap.__local = route.localPropsHash
+        return fs.outputFile(
+          path.join(config.paths.STATIC_DATA, `${route.localPropsHash}.json`),
+          route.localPropsDataString || '{}',
+        )
+      }
+    }),
+  )
+
+  // Write all shared props to file
+  await Promise.all(
+    Array.from(sharedProps).map(cachedProp =>
+      fs.outputFile(
+        path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
+        cachedProp[1].jsonString || '{}',
+      ),
+    ),
+  )
+
+  const routeInfo = {}
+  config.routes.filter(d => d.hasGetProps).forEach(({ path, propsMap }) => {
+    routeInfo[path] = propsMap
+  })
+
+  // Write routeInfo to file
+  await fs.outputFile(path.join(config.paths.DIST, 'routeInfo.json'), JSON.stringify(routeInfo))
+
+  return Promise.all(
+    config.routes.map(async route => {
       const staticURL = route.path
 
       // Inject initialProps into static build
       class InitialPropsContext extends Component {
         static childContextTypes = {
+          propsMap: PropTypes.object,
           initialProps: PropTypes.object,
           siteProps: PropTypes.object,
           staticURL: PropTypes.string,
         }
         getChildContext () {
           return {
-            initialProps,
+            propsMap: route.propsMap,
+            initialProps: route.initialProps,
             siteProps,
             staticURL,
           }
@@ -60,7 +134,6 @@ export const exportRoutes = async ({ config, clientStats }) => {
         </InitialPropsContext>
       )
 
-      const routesList = config.routes.filter(d => d.hasGetProps).map(d => d.path)
       const renderMeta = {}
       let head
 
@@ -142,11 +215,10 @@ export const exportRoutes = async ({ config, clientStats }) => {
               __html: `
                 window.__routeData = ${JSON.stringify({
           path: route.path,
-          initialProps,
+          propsMap: route.propsMap,
+          initialProps: route.initialProps,
           siteProps,
-        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};
-                window.__routesList = ${JSON.stringify(routesList)};
-              `,
+        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
             }}
           />
           <script async src={`${config.publicPath}${appJs}`} />
@@ -176,15 +248,8 @@ export const exportRoutes = async ({ config, clientStats }) => {
       const htmlFilename = route.is404
         ? path.join(config.paths.DIST, '404.html')
         : path.join(config.paths.DIST, route.path, 'index.html')
-      const initialPropsFilename = path.join(config.paths.DIST, route.path, 'routeData.json')
-      const writeHTML = fs.outputFile(htmlFilename, html)
-      const writeJSON = fs.outputFile(
-        initialPropsFilename,
-        JSON.stringify({
-          initialProps,
-        }),
-      )
-      await Promise.all([writeHTML, writeJSON])
+
+      await fs.outputFile(htmlFilename, html)
     }),
   )
 }
