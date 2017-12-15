@@ -72,6 +72,7 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [`react-static build`](#react-static-build)
 - [Project Setup](#project-setup)
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
+  - [Automatic Data and Prop Splitting](#automatic-data-and-prop-splitting)
   - [Webpack Config and Plugins](#webpack-config-and-plugins)
 - [Components & Tools](#components--tools)
   - [`<Router>`](#router)
