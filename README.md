@@ -517,7 +517,8 @@ If you end up needing more control than `<Routes />` offers, have no fear. `reac
 - `<Redirect>`
 - `<Prompt>`
 
-To build your own custom routing, simply remove (or don't use) the `<Routes>` component in your app, and use the above components instead.
+To build your own custom routing, simply remove (or don't use) the `<Routes>` component in your app, and use the above components instead. 
+**Be careful**, by using your own custom routing, you will be responsible for maintaining route synchronization between automatic and custom routing: _automatic_ routing in `static.config.js` will generate pages **along with their respective `routeData.json` files !** no matter how _custom_ client routes are defined.
 
 To see a working example, refer to our [`custom-routing` example template](https://github.com/nozzle/react-static/blob/master/examples/custom-routing)
 
