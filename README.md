@@ -292,13 +292,11 @@ export default {
         component: 'src/containers/Help',
         getProps: async () => ({
           supportMenu, // since this `supportMenu` is equal `===` to the
-          // `supportMenu` used in the docs route, it will be promoted to a shared prop!
-          helpStuff: {...}
+          // `supportMenu` used in the docs route, both instances will be promoted to a shared prop
+          // and only loaded once per session!
+          helpStuff: {...} // All other props that are unique to the route are
+          // still stored in their own JSON file.
         })
-      },
-      {
-        is404: true,
-        component: 'src/containers/404',
       },
     ]
   },
@@ -561,7 +559,7 @@ If you end up needing more control than `<Routes />` offers, have no fear. `reac
 - `<Redirect>`
 - `<Prompt>`
 
-To build your own custom routing, simply remove (or don't use) the `<Routes>` component in your app, and use the above components instead. 
+To build your own custom routing, simply remove (or don't use) the `<Routes>` component in your app, and use the above components instead.
 **Be careful**, by using your own custom routing, you will be responsible for maintaining route synchronization between automatic and custom routing: _automatic_ routing in `static.config.js` will generate pages **along with their respective `routeData.json` files !** no matter how _custom_ client routes are defined.
 
 To see a working example, refer to our [`custom-routing` example template](https://github.com/nozzle/react-static/blob/master/examples/custom-routing)
