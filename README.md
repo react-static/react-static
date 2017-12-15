@@ -121,24 +121,20 @@ For more details on migrating an existing app, see the [Project Setup](#project-
 
 ## CLI
 
-### `react-static create`
-
+#### `react-static create`
 Creates a new react-static project.
 
 - Prompts for a project name/location
 - Prompts to select one of the templates located in this repository's `examples/` directory.
 
-### `react-static start`
-
+#### `react-static start`
 Starts the development server.
 
-### `react-static build`
-
+#### `react-static build`
 Builds your site for production. Outputs to a `dist` directory in your project.
 
 ## Project Setup
-
-`react-static` needs a few directories and files in the right places to function properly:
+React Static requires a few directories and files to function out of the box:
 
 - `static.config.js` - A javascript configuration file for react-static. [Click here to see an example](https://github.com/nozzle/react-static/blob/master/examples/basic/static.config.js)
 - `public/` - Anything in this directory will be merged into your static `dist` directory. All files in this directory can be accessed at the root of your site.
@@ -260,13 +256,13 @@ export default {
 ## Automatic Data and Prop Splitting
 React Static has a very unique and clever way of requesting the least amount of data to display any given page at just the right moment.
 
-##### How does it work?
+#### How does it work?
 When you return an object of props in a route's `getProps` function, each prop is compared to all other props for `===` equality. When a prop is found to be used in more than one location, it is promoted to a **shared prop** and stored in it's very own JSON file.
 
-##### Why is that cool?
+#### Why is that cool?
 By storing common props in separate files, your site avoids wastefully serving duplicate data for pages that share some or all of their data with others. This decreases the overall bandwidth your site uses and also considerably speeds up your sites ability to serve data as fast as possible!
 
-##### Example
+#### Example
 Consider a dynamic menu structure that is present only on some of your pages, but not all of them. In this case, the menu data would only be loaded on those pages, and only once per session, instead of on every page.
 
 ```javascript
@@ -516,9 +512,10 @@ Router.subscribe(loading => {
 })
 ```
 
+---
 ### Automatic Routing with `<Routes>`
 
-`react-static` comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` **path** (relative to the root of your project) that should be used to render a route in your `static.config.js`.
+React Static comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` **path** (relative to the root of your project) that should be used to render a route in your `static.config.js`.
 
 `static.config.js` example:
 
@@ -548,11 +545,12 @@ export default () => (
 
 To see an example of using , refer to our [`basic` example template](https://github.com/nozzle/react-static/blob/master/examples/basic)
 
+---
 ### Custom Routing
 
-If you end up needing more control than `<Routes />` offers, have no fear. `react-static` provides you with all of the custom routing components you are normally used to with `react-router`:
+If you end up needing more control than `<Routes />` offers, have no fear. React Static provides you with all of the custom routing components you are normally used to with `react-router`:
 
-**NOTE: These components are available via `react-static`. There is no need to import them via `react-router`**
+**NOTE: These components are available via the `react-static` import. There is no need to import them via `react-router`**
 
 - `<Route>`
 - `<Switch>`
@@ -566,9 +564,10 @@ To see a working example, refer to our [`custom-routing` example template](https
 
 To learn more about how `react-router` components work, visit [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
+---
 ### 404 Handling
 
-Making a 404 page in `react-static` is extremely simple for both automatic and custom routing configurations.
+Making a 404 page in React Static is extremely simple for both automatic and custom routing configurations.
 
 ##### With Automatic Routing
 
@@ -578,9 +577,10 @@ To define a 404 page using automatic routing, define a route with `is404` set to
 
 When using custom routing, there are 2 types of 404 pages:
 
-- **Static 404 page** - At build time, `react-static` will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
+- **Static 404 page** - At build time, React Static will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
 - **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those situations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
 
+---
 ### Automatic Routing with Custom Render Props
 Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize one of these three render prop formats:
 
@@ -648,9 +648,10 @@ export default () => (
 )
 ```
 
+---
 ### `<Link>` and `<NavLink>`
 
-`react-static` also gives you access to `react-router`'s `<Link>` and `<NavLink>` components. Use these component to allow your users to navigate around your site!
+React Static also gives you access to `react-router`'s `<Link>` and `<NavLink>` components. Use these component to allow your users to navigate around your site!
 
 Usage:
 
@@ -684,14 +685,16 @@ export default () => (
 
 For more information about `<Link>` and `<NavLink>`, see [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
+---
 ### Other Routing Utilities
 
-For your convenience, `react-static` also exports the following utilities normally exported by `react-router`.
+For your convenience, React Static also exports the following utilities normally exported by `react-router`.
 
 - `history`
 - `matchPath`
 - `withRouter`
 
+---
 ### `getRouteProps(Component)`
 
 `getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:
@@ -756,6 +759,7 @@ export default getRouteProps(TopHundredSongsPage);
 ...
 ```
 
+---
 ### `getSiteProps(Component)`
 
 `getSiteProps` is an HOC that provides a component with the results of the `getSiteProps` function as defined in your `static.config.js`. Here is a simple example:
@@ -782,13 +786,14 @@ const AnyComponent = getSiteProps(({ title, metaDescription }) =>
 )
 ```
 
+---
 ### `<Head>`
 
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
 - It can be used anywhere in your app.
 - If called more than once on a route, it will append and merge them together (and overwrite some tags with the latest tag used).
-- For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that `react-static` uses to accomplish this.
+- For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that React Static uses to accomplish this.
 
 Example:
 
@@ -808,6 +813,7 @@ export () => (
 )
 ```
 
+---
 ### `<Prefetch path=''/>`
 
 Prefetch is a react component that accepts a `path` prop and an optional single child to render. When this component is rendered, any data resolved by the `path`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
@@ -833,6 +839,7 @@ import { Prefetch, Link } from 'react-static'
 </Prefetch>
 ```
 
+---
 ### `<PrefetchWhenSeen path=''/>`
 
 PrefetchWhenSeen is almost identical to the Prefetch component, except that it will not fire its prefetch until the component is visible in the view. If the user's browser doesn't support the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), it will work just like the Prefetch component.
@@ -853,6 +860,7 @@ import { PrefetchWhenSeen, Link } from 'react-static'
 </PrefetchWhenSeen>
 ```
 
+---
 ### `prefetch(path)`
 
 `prefetch` is an imperative version of the `Prefetch` component that you can use anywhere in your code.
