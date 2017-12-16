@@ -7,7 +7,7 @@ import { startDevServer } from '../webpack'
 import { getConfig, copyPublicFolder, createIndexFilePlaceholder } from '../utils'
 //
 
-export default async (cliArguments) => {
+export default async cliArguments => {
   try {
     // Get the config
     const config = getConfig()

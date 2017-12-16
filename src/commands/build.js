@@ -5,7 +5,7 @@ import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import { buildProductionBundles } from '../webpack'
 import { getConfig, copyPublicFolder } from '../utils'
 
-export default async (cliArguments) => {
+export default async cliArguments => {
   try {
     const config = getConfig()
     await fs.remove(config.paths.DIST)
