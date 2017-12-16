@@ -30,6 +30,7 @@ ignoredExtensions.forEach(ext => {
 
 export default function () {
   const cmd = process.argv[2]
+  const cliArguments = process.argv.slice(3)
 
   if (['-v', '--version'].indexOf(cmd) !== -1) {
     const packageJson = JSON.parse(fs.readFileSync(`${__dirname}/../../package.json`, 'utf8'))
@@ -41,7 +42,7 @@ export default function () {
       process.env.NODE_ENV = 'development'
     }
     process.env.REACT_STATIC_ENV = 'development'
-    return require('./start').default()
+    return require('./start').default(cliArguments)
   }
 
   if (cmd === 'build') {
@@ -49,7 +50,7 @@ export default function () {
       process.env.NODE_ENV = 'production'
     }
     process.env.REACT_STATIC_ENV = 'production'
-    return require('./build').default()
+    return require('./build').default(cliArguments)
   }
 
   if (cmd === 'create') {

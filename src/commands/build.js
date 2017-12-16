@@ -5,7 +5,7 @@ import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import { buildProductionBundles } from '../webpack'
 import { getConfig, copyPublicFolder } from '../utils'
 
-export default async () => {
+export default async cliArguments => {
   try {
     const config = getConfig()
     await fs.remove(config.paths.DIST)
@@ -39,6 +39,7 @@ export default async () => {
     await exportRoutes({
       config,
       clientStats,
+      cliArguments,
     })
     await buildXMLandRSS({ config })
     console.timeEnd(chalk.green('=> [\u2713] Routes Exported'))

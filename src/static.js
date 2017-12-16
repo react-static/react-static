@@ -13,7 +13,7 @@ import shorthash from 'shorthash'
 import { DefaultDocument } from './RootComponents'
 
 // Exporting route HTML and JSON happens here. It's a big one.
-export const exportRoutes = async ({ config, clientStats }) => {
+export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Use the node version of the app created with webpack
   const appJsPath = glob.sync(path.resolve(config.paths.DIST, 'app!(.static).*.js'))[0]
   const appJs = appJsPath.split('/').pop()
@@ -22,7 +22,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
 
   const DocumentTemplate = config.Document || DefaultDocument
 
-  const siteProps = await config.getSiteProps({ dev: false })
+  const siteProps = await config.getSiteProps({ dev: false, cliArguments })
 
   const seenProps = new Map()
   const sharedProps = new Map()

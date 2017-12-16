@@ -7,7 +7,7 @@ import { startDevServer } from '../webpack'
 import { getConfig, copyPublicFolder, createIndexFilePlaceholder } from '../utils'
 //
 
-export default async () => {
+export default async cliArguments => {
   try {
     // Get the config
     const config = getConfig()
@@ -16,7 +16,7 @@ export default async () => {
     await fs.remove(config.paths.DIST)
 
     // Get the site props
-    const siteProps = await config.getSiteProps({ dev: true })
+    const siteProps = await config.getSiteProps({ dev: true, cliArguments })
 
     // Resolve the base HTML template
     const Component = config.Document || DefaultDocument
