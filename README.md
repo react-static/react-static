@@ -243,12 +243,15 @@ export default {
     public: 'public' // The public directory (files copied to dist during build)
   },
 
-  // onStart and onBuild are utility hooks that run when the dev server starts up successfully
-  // and after a build has completed.
-  // onStart provides you with the final, READONLY devServer config object for convenience.
-  // onBuild currently does NOT provide any parameters
+  // onStart runs when the dev server starts up successfully
+  // and provides you with the final, READONLY devServer config object for convenience.
   onStart: ({ devServerConfig }) => {...},
-  onBuild: async () => {...},
+
+  // beforeBuild runs before the build starts and provides you with the config object.
+  beforeBuild: async ({ config }) => {...},
+
+  // onBuild runs after the build finishes and provides you with the config object.
+  onBuild: async ({ config }) => {...},
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
