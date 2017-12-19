@@ -11,7 +11,11 @@ export default async cliArguments => {
     await fs.remove(config.paths.DIST)
 
     console.log('')
-    console.time('=> Site is ready for production!')
+    console.time('=> Preparing site for production!')
+
+    if (config.beforeBuild) {
+      await config.beforeBuild({ config })
+    }
 
     console.log('=> Copying public directory...')
     console.time(chalk.green('=> [\u2713] Public directory copied'))
