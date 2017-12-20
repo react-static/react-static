@@ -93,6 +93,7 @@ export async function startDevServer ({ config }) {
           res.json(siteProps)
         } catch (err) {
           res.status(500)
+          res.json(err)
           next(err)
         }
       })
