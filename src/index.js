@@ -517,7 +517,7 @@ export class Router extends Component {
         const originalMethod = resolvedHistory[method]
         resolvedHistory[method] = async (...args) => {
           const path = typeof args[0] === 'string' ? args[0] : args[0].path + args[0].search
-          if (!isPrefetched(path)) {
+          if (await shouldPrefetch(path) && !isPrefetched(path)) {
             setLoading(true)
             await prefetch(path)
             setLoading(false)
