@@ -1,3 +1,13 @@
+# 4.7.1
+#### Features
+- Added Firebase Authentication example (Thanks [@deden](https://github/deden)!)
+#### Fixes & Optimizations
+- Better error logging for unhandled promise rejections
+- Handle Routes with spaces (Thanks [@etimberg](https://github/etimberg)!)
+- Add shouldPrefetch() method to avoid setting loading state  (Thanks [@chrisbrown-io](https://github/chrisbrown-io)!)
+- Pass DOM props through in links (Thanks [@denis-sokolov](https://github/denis-sokolov)!)
+- Pass additional CLI arguments through to getSiteProps() (Thanks [@etimberg](https://github/etimberg)!)
+
 # 4.7.0
 #### Features
 - Common props returned by `getRouteProps` (props that `===` one another) now promoted to **shared props** and only requested once per session. Learn more in the docs: [Automatic Data and Prop Splitting](https://github.com/nozzle/react-static#automatic-data-and-prop-splitting). Depending on your site, this may significantly decrease site bandwidth and increase both initial page load speed and subsequent page load performance.
