@@ -119,6 +119,14 @@ function isPrefetched (path) {
   }
 }
 
+async function shouldPrefetch (path) {
+  path = cleanPath(path)
+  // Get route info so we can check if path has any data
+  const routes = await getRouteInfo()
+  // Returns true if data exists for path
+  return routes[path] !== undefined
+}
+
 export async function prefetch (path) {
   path = cleanPath(path)
 
@@ -509,7 +517,7 @@ export class Router extends Component {
         const originalMethod = resolvedHistory[method]
         resolvedHistory[method] = async (...args) => {
           const path = typeof args[0] === 'string' ? args[0] : args[0].path + args[0].search
-          if (!isPrefetched(path)) {
+          if (await shouldPrefetch(path) && !isPrefetched(path)) {
             setLoading(true)
             await prefetch(path)
             setLoading(false)
