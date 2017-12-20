@@ -104,7 +104,7 @@ export async function startDevServer ({ config }) {
           // Once all of the routes have been resolved, listen on individual
           // route endpoints
           routes.forEach(route => {
-            app.get(`/__react-static__/route${route.path}`, async (req, res, next) => {
+            app.get(`/__react-static__/route${encodeURI(route.path)}`, async (req, res, next) => {
               try {
                 const initialProps = await route.getProps({ dev: true })
                 res.json(initialProps)
