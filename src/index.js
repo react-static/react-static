@@ -119,6 +119,14 @@ function isPrefetched (path) {
   }
 }
 
+async function shouldPrefetch (path) {
+  path = cleanPath(path)
+  // Get route info so we can check if path has any data
+  const routes = await getRouteInfo()
+  // Returns true if data exists for path
+  return routes[path] !== undefined
+}
+
 export async function prefetch (path) {
   path = cleanPath(path)
 
