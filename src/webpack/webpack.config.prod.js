@@ -26,7 +26,13 @@ export default function ({ config, isNode }) {
       rules: rules({ config, stage: 'prod' }),
     },
     resolve: {
-      modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
+      modules: [
+        path.resolve(__dirname, '../node_modules'),
+        'node_modules',
+        NODE_MODULES,
+        SRC,
+        DIST,
+      ],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [

@@ -28,7 +28,13 @@ export default function ({ config }) {
       rules: rules({ config, stage: 'dev' }),
     },
     resolve: {
-      modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
+      modules: [
+        path.resolve(__dirname, '../node_modules'),
+        'node_modules',
+        NODE_MODULES,
+        SRC,
+        DIST,
+      ],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [
