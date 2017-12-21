@@ -1,4 +1,9 @@
+# 4.8.2
+#### Fixes & Optimizations
+- `getRouteProps` was fixed to always have access to the router props, thus supporting `getRouteProps` as nested components instead of top-level page components.
+
 # 4.8.1
+#### Fixes & Optimizations
 - Node version was rolled back to `<=6.10.0`, to allow some existing users continued usage.
 
 # 4.8.0
