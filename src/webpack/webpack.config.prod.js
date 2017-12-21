@@ -26,6 +26,12 @@ export default function ({ config, isNode }) {
       rules: rules({ config, stage: 'prod' }),
     },
     resolve: {
+      alias: config.preact
+        ? {
+          react: 'preact-compat',
+          'react-dom': 'preact-compat',
+        }
+        : {},
       modules: [
         path.resolve(__dirname, '../node_modules'),
         'node_modules',

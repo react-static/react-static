@@ -61,6 +61,8 @@
     "openport": "^0.0.4",
     "postcss-flexbugs-fixes": "^3.2.0",
     "postcss-loader": "^2.0.6",
+    "preact": "^8.2.7",
+    "preact-compat": "^3.17.0",
     "prop-types": "^15.5.10",
     "raw-loader": "^0.5.1",
     "react": "^16",

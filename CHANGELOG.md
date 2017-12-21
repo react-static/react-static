@@ -1,3 +1,8 @@
+# 4.8.0
+#### Features
+- Preact can now be used in production by setting `preact: true` in your `static.config.js`! Remember to use `ReactDOM.render` instead of `hydrate` in production too :)
+- Added the `preact` example.
+
 # 4.7.2
 #### Fixes & Optimizations
 - `getRouteProps` now functions as it should when it's wrapped component receives new props without remounting. (Thanks [@EmilTholin](https://github/EmilTholin)!)

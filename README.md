@@ -42,6 +42,7 @@ All of the following examples can be used as a template at project creation.
 
 - [Basic](https://github.com/nozzle/react-static/tree/master/examples/basic)
 - [Blank (Create-React-App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
+- [Preact](https://github.com/nozzle/react-static/tree/master/examples/preact)
 - [Animated Routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes)
 - [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
 - [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
@@ -76,6 +77,7 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
   - [Automatic Data and Prop Splitting](#automatic-data-and-prop-splitting)
   - [Webpack Config and Plugins](#webpack-config-and-plugins)
+  - [Use Preact in Production](#use-preact-in-production)
 - [Components & Tools](#components--tools)
   - [`<Router>`](#router)
   - [Automatic Routing with `<Routes>`](#automatic-routing-with--routes)
@@ -491,6 +493,21 @@ export default {
   }
 }
 ```
+
+## Use Preact in Production
+Want to make your bundle even smaller? Simply set `preact: true` in your `static.config.js` and React-Static will ship preact with your site instead of React. This can significantly reduce the size of your app and load times!
+
+**Example**
+```javascript
+// static.config.js
+export default {
+  preact: true,
+  ...
+}
+```
+
+**Important**
+Due to the complexity of maintaining a fully tooled development experience, React is still used in development mode if `preact` is set to `true`. This ensures that stable hot-reloading tooling, dev tools, ect. are used. This is by no means permanent though! If you know what it takes to emulate React Static's development environment using Preact tooling, please submit a PR!
 
 ## Components & Tools
 
