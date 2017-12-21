@@ -168,7 +168,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       // Instead of using the default components, we need to hard code meta
       // from react-helmet into the components
       const HtmlWithMeta = ({ children, ...rest }) => (
-        <html lang="en" {...head.htmlprops} {...rest}>
+        <html lang="en" {...head.htmlProps} {...rest}>
           {children}
         </html>
       )
