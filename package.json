@@ -7,6 +7,9 @@
   "bin": {
     "react-static": "./bin/react-static"
   },
+  "engines": {
+    "node": ">=7.5.0"
+  },
   "scripts": {
     "watch": "rimraf lib && babel -w src --out-dir lib",
     "build": "rimraf lib && babel src --out-dir lib",
