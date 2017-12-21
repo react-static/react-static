@@ -1,6 +1,6 @@
 {
   "name": "react-static",
-  "version": "4.8.0",
+  "version": "4.8.1",
   "main": "lib/index.js",
   "types": "src/index.d.ts",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "react-static": "./bin/react-static"
   },
   "engines": {
-    "node": ">=7.5.0"
+    "node": ">=6.10.0"
   },
   "scripts": {
     "watch": "rimraf lib && babel -w src --out-dir lib",

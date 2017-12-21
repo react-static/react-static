@@ -1,3 +1,6 @@
+# 4.8.1
+- Node version was rolled back to `<=6.10.0`, to allow some existing users continued usage.
+
 # 4.8.0
 #### Features
 - Preact can now be used in production by setting `preact: true` in your `static.config.js`! Remember to use `ReactDOM.render` instead of `hydrate` in production too :)
@@ -6,7 +9,7 @@
 # 4.7.2
 #### Fixes & Optimizations
 - `getRouteProps` now functions as it should when it's wrapped component receives new props without remounting. (Thanks [@EmilTholin](https://github/EmilTholin)!)
-- Node >=7.5.0 is now stated as required, instead of implied.
+- Node ~~>=7.5.0~~ `<=6.10.0` is now stated as required, instead of implied.
 - When building for `node` stage, the `main` is now preferred in package imports, instead of `module`
 - Better module resolution locations, which allows overriding react-static module versions by installing them locally.
 
