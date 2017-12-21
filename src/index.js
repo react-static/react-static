@@ -240,21 +240,31 @@ export function getRouteProps (Comp) {
     state = {
       loaded: false,
     }
-    async componentWillMount () {
+    componentWillMount () {
       if (process.env.REACT_STATIC_ENV === 'development') {
-        const { pathname, search } = this.context.router.route.location
-        const path = pathJoin(`${pathname}${search}`)
-        await prefetch(path)
-        if (this.unmounting) {
-          return
+        this.loadRouteProps()
+      }
+    }
+    componentWillReceiveProps (nextProps) {
+      if (process.env.REACT_STATIC_ENV === 'development') {
+        if (this.props.match.url !== nextProps.match.url) {
+          this.setState({ loaded: false }, this.loadRouteProps)
         }
-        this.setState({
-          loaded: true,
-        })
       }
     }
     componentWillUnmount () {
       this.unmounting = true
+    }
+    loadRouteProps = async () => {
+      const { pathname, search } = this.context.router.route.location
+      const path = pathJoin(`${pathname}${search}`)
+      await prefetch(path)
+      if (this.unmounting) {
+        return
+      }
+      this.setState({
+        loaded: true,
+      })
     }
     render () {
       const { pathname, search } = this.context.router.route.location
