@@ -11,7 +11,7 @@ A **progressive static-site generator** for React.
 
 [**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
 
-React-Static is a minimalistic framework for building static-progressive React applications, carefully designed to meet standards of **SEO, site performance, and user/developer experience**.
+React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of **SEO, site performance, and user/developer experience**.
 
 ## Features
 
