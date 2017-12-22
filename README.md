@@ -11,13 +11,14 @@ A **progressive static-site generator** for React.
 
 [**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
 
-React-Static is a minimalistic framework for server-rendered React applications carefully designed to meet standards of **SEO, site performance, and user/developer experience**.
+React-Static is a minimalistic framework for building static-progressive React applications, carefully designed to meet standards of **SEO, site performance, and user/developer experience**.
 
 ## Features
 
-- :100:% React.
-- :rocket: Blazing fast runtime and build performance.
-- Data Agnostic. Feed your site data from anywhere, **however you want**.
+- :100:% React (or Preact!)
+- :rocket: Blazing fast builds and performance.
+- Data Agnostic. Supply your site with data from anywhere, **however you want**.
+- Near-instant page views via  [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
 - Built for **SEO**.
 - ⚛️ React-first developer experience.
 - Painless project setup & migration.
