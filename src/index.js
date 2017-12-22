@@ -267,7 +267,6 @@ export function getRouteProps (Comp) {
         })
       }
       render () {
-        console.log(this.props)
         const { pathname, search } = this.props.location
         const path = pathJoin(`${pathname}${search}`)
 
