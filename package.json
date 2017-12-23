@@ -16,7 +16,8 @@
     "publishnext": "yarn publish --tag next",
     "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
-    "test": "eslint src examples",
+    "test": "eslint src examples test && yarn run test-sample-build",
+    "test-sample-build": "yarn build && (cd test/minimal-website && ../../bin/react-static build)",
     "test-webpack": "jest"
   },
   "repository": "nozzle/react-static",
