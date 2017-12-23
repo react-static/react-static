@@ -37,7 +37,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       }
 
       // Loop through the props
-      Object.values(route.initialProps).forEach(prop => {
+      Object.keys(route.initialProps).map(k => route.initialProps[k]).forEach(prop => {
         // Have we seen this prop before?
         if (seenProps.get(prop)) {
           // Only cache each shared prop once
