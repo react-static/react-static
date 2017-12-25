@@ -5,15 +5,14 @@
 
 /// <reference types="react" />
 
-declare module "react-static" {
-
-  import * as React from "react";
+declare module 'react-static' {
+  import * as React from 'react';
 
   // Passing on all react-router typings
-  export * from "react-router-dom";
+  export * from 'react-router-dom';
 
   // Passing on helmet typings as "Head"
-  import * as Helmet from "react-helmet";
+  import * as Helmet from 'react-helmet';
 
   export const Head: Helmet;
 
@@ -29,4 +28,5 @@ declare module "react-static" {
   export const HashRouter: undefined;
   export const MemoryRouter: undefined;
   export const StaticRouter: undefined;
+  export class Router extends React.Component<{ history?: any }> {}
 }
