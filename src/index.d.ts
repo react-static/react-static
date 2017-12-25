@@ -30,3 +30,8 @@ declare module 'react-static' {
   export const StaticRouter: undefined;
   export class Router extends React.Component<{ history?: any }> {}
 }
+
+declare module 'react-static-routes' {
+  class Routes extends React.Component {}
+  export default Routes;
+}
