@@ -1,6 +1,6 @@
 import React from 'react'
 import { getRouteProps, Link } from 'react-static'
-import { Post } from 'src/types'
+import { Post } from '../types'
 
 interface Props {
   post: Post
