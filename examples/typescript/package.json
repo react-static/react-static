@@ -22,10 +22,16 @@
     "@types/react-dom": "^16.0.2",
     "@types/react-hot-loader": "^3.0.5",
     "@types/react-router": "^4.0.16",
+    "@types/webpack-env": "^1.13.3",
     "convert-tsconfig-paths-to-webpack-aliases": "^0.9.2",
     "eslint-config-react-tools": "1.x.x",
     "serve": "^6.4.1",
     "ts-loader": "^3.1.1",
     "typescript": "^2.6.1"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }
