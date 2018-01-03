@@ -414,7 +414,6 @@ export default {
 
 ```javascript
 // static.config.js
-import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
 
 export default {
   webpack: (config, { defaultLoaders }) => {
@@ -451,7 +450,6 @@ export default {
 
 ```javascript
 // static.config.js
-import { jsLoader, cssLoader, fileLoader } from 'react-static/lib/webpack/rules'
 
 export default {
   webpack: [
