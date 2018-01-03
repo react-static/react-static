@@ -57,7 +57,7 @@ export default {
                     },
                     {
                       loader: 'sass-loader',
-                      options: { includePaths: 'src/' },
+                      options: { includePaths: ['src/'] },
                     },
                   ],
                 }),
