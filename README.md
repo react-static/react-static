@@ -22,6 +22,8 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - Built for **SEO**.
 - ⚛️ React-first developer experience.
 - Painless project setup & migration.
+- Hot code reloading. Edit React components & CSS in development and changes happen in real-time without a refresh needed in the browser.
+- Access development environment over LAN for testing on other devices like phones and tablets.
 - Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux.
 
 ## Videos & Tutorials
