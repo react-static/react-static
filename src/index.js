@@ -48,6 +48,7 @@ const getRouteInfo = async () => {
 if (process.env.REACT_STATIC_ENV === 'development') {
   InitialLoading = () => (
     <div
+      className="react-static-loading"
       style={{
         display: 'block',
         width: '100%',
