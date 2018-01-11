@@ -15,14 +15,16 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 ## Features
 
-- :100:% React (or Preact!)
-- :rocket: Blazing fast builds and performance.
-- Data Agnostic. Supply your site with data from anywhere, **however you want**.
-- Near-instant page views via  [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
-- Built for **SEO**.
-- ⚛️ React-first developer experience.
-- Painless project setup & migration.
-- Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux.
+- ⚛️ 100% React (or Preact!)
+- 🚀 Blazing fast builds and performance.
+- 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
+- 💥 Near-instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
+- 🎯 Built for **SEO**.
+- 🥇 React-first developer experience.
+- 😌 Painless project setup & migration.
+- 💯 Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux.
+- 🔥 Hot Reloadable out-of-the-box. Edit React components & styles in real-time.
+- 📲 LAN accessible dev environmentfor testing on other devices like phones and tablets.
 
 ## Videos & Tutorials
 
