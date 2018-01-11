@@ -62,8 +62,8 @@ export default function ({ config, isNode }) {
         defaultAttribute: 'async',
       }),
       new CaseSensitivePathsPlugin(),
-      !isNode ? new webpack.optimize.UglifyJsPlugin() : null,
-      config.bundleAnalyzer ? new BundleAnalyzerPlugin() : null,
+      !isNode && new webpack.optimize.UglifyJsPlugin(),
+      config.bundleAnalyzer && !isNode && new BundleAnalyzerPlugin(),
     ].filter(d => d),
 
     devtool: 'source-map',
