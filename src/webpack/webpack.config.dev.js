@@ -8,15 +8,18 @@ import rules from './rules'
 
 export default function ({ config }) {
   const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
-  const hotPatches = [
-    require.resolve('react-hot-loader/patch'),
-    require.resolve('react-dev-utils/webpackHotDevClient').
-    require.resolve('webpack/hot/only-dev-server')
-  ]
+  const hotPatches = config.noHot
+    ? []
+    : [
+      require.resolve('react-hot-loader/patch'),
+      require
+        .resolve('react-dev-utils/webpackHotDevClient')
+        .require.resolve('webpack/hot/only-dev-server'),
+    ]
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: [
-      !config.noHot && ...hotPatches,
+      ...hotPatches,
       // `${require.resolve('webpack-dev-server/client')}?/`,
       path.resolve(ROOT, config.entry),
     ].filter(v => v),
