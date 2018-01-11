@@ -8,20 +8,17 @@ import rules from './rules'
 
 export default function ({ config }) {
   const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
-  const hotPatches = config.noHot
-    ? []
-    : [
-      require.resolve('react-hot-loader/patch'),
-      require.resolve('react-dev-utils/webpackHotDevClient'),
-      require.resolve('webpack/hot/only-dev-server'),
-    ]
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: [
-      ...hotPatches,
+      require.resolve('react-hot-loader/patch'),
+
+      require.resolve('react-dev-utils/webpackHotDevClient'),
       // `${require.resolve('webpack-dev-server/client')}?/`,
+
+      require.resolve('webpack/hot/only-dev-server'),
       path.resolve(ROOT, config.entry),
-    ].filter(v => v),
+    ],
     output: {
       filename: 'app.[hash:8].js',
       path: DIST,
@@ -49,11 +46,11 @@ export default function ({ config }) {
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'async',
       }),
-      !config.noHot && new webpack.HotModuleReplacementPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
       new CaseSensitivePathsPlugin(),
-    ].filter(v => v),
+    ],
     devtool: 'eval-source-map',
   }
 }

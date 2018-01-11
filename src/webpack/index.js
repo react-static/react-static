@@ -75,7 +75,7 @@ export async function startDevServer ({ config }) {
   const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
 
   const devServerConfig = {
-    hot: typeof config.noHot === 'undefined' ? true : config.noHot,
+    hot: true,
     disableHostCheck: true,
     contentBase: config.paths.DIST,
     publicPath: '/',
