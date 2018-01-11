@@ -1,9 +1,12 @@
-
 import React from 'react'
 import { getRouteProps, Link } from 'react-static'
-//
+import { Post } from '../types'
 
-export default getRouteProps(({ posts }) => (
+interface Props {
+  posts: Post[]
+}
+
+export default getRouteProps(({ posts }: Props) => (
   <div>
     <h1>It's blog time.</h1>
     <br />

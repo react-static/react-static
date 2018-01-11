@@ -29,5 +29,8 @@
       "es2016"
     ]
   },
-  "exclude": ["dist/**/*", "public/**/*"]
+  "exclude": [
+    "dist/**/*",
+    "public/**/*"
+  ]
 }
