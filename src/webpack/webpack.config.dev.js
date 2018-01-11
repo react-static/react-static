@@ -12,9 +12,8 @@ export default function ({ config }) {
     ? []
     : [
       require.resolve('react-hot-loader/patch'),
-      require
-        .resolve('react-dev-utils/webpackHotDevClient')
-        .require.resolve('webpack/hot/only-dev-server'),
+      require.resolve('react-dev-utils/webpackHotDevClient'),
+      require.resolve('webpack/hot/only-dev-server'),
     ]
   return {
     context: path.resolve(__dirname, '../node_modules'),
