@@ -1,6 +1,6 @@
 {
-  "name": "react-static-example-basic",
-  "version": "1.0.1",
+  "name": "react-static-material-ui",
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {

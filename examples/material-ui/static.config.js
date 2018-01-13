@@ -56,7 +56,7 @@ export default {
         <MuiThemeProvider theme={muiTheme} sheetsManager={new Map()}>
           <Comp />
         </MuiThemeProvider>
-      </JssProvider>
+      </JssProvider>,
     )
 
     meta.jssStyles = sheetsRegistry.toString()
