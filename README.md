@@ -25,7 +25,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - 😌 Painless project setup & migration.
 - 💯 Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux.
 - 🔥 Hot Reloadable out-of-the-box. Edit React components & styles in real-time.
-- 📲 LAN accessible dev environmentfor testing on other devices like phones and tablets.
+- 📲 LAN accessible dev environment for testing on other devices like phones and tablets.
 
 ## Videos & Tutorials
 
@@ -63,6 +63,9 @@ All of the following examples can be used as a template at project creation.
 - [TypeScript](https://github.com/nozzle/react-static/tree/master/examples/typescript)
 - [Cordova (Hybrid App)](https://github.com/nozzle/react-static/tree/master/examples/cordova)
 - [Basic Prismic (Headless CMS)](https://github.com/nozzle/react-static/tree/master/examples/basic-prismic)
+- [GraphCMS](https://github.com/nozzle/react-static/tree/master/examples/graphql-request)
+- [Sass](https://github.com/nozzle/react-static/tree/master/examples/sass)
+- [Tailwind CSS](https://github.com/nozzle/react-static/tree/master/examples/tailwindcss)
 
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 
@@ -94,7 +97,7 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [`<Prefetch path=''/>`](#prefetch-path)
   - [`<PrefetchWhenSeen path=''/>`](#prefetchwhenseen-path)
   - [`prefetch(path)`](#prefetchpath)
-- [Code, Data, and Prop](#automatic-data-and-prop-splitting) Splitting
+- [Code, Data, and Prop Splitting](#automatic-data-and-prop-splitting) 
 - [Webpack Config and Plugins](#webpack-config-and-plugins)
 - [Using Preact in Production](#using-preact-in-production)
 
@@ -163,12 +166,12 @@ export default {
   // resolve an array of route objects. It is also passed a `dev`
   // boolean indicating whether this is a production build or not.
   getRoutes: async ({dev}) => [{
-    path: '/' // A route object requires a `path` string
+    path: '/', // A route object requires a `path` string
     component: 'src/containers/Home', // specify the path of a react component that will render this route
   }, {
     path: '/blog',
     component: 'src/containers/Blog',
-    children: [{ // It can also contained nested routes
+    children: [{ // It can also contain nested routes
       path: '/post-1',
       component: 'src/containers/Post',
       // getProps is an asynchronous function that is passed the
@@ -178,18 +181,18 @@ export default {
       // posts, API data, etc.
       getProps: async ({route, dev}) => ({
         post: {...},
-        otherProp: {...}
-      })
+        otherProp: {...},
+      }),
       noindex: false, // Optional. Defaults to `false`. If `true`, will exclude this route from the sitemap XML
       permalink: '', // Optional. If not set, will default to (siteRoot + path)
       lastModified: '', // Optional. String('YYYY-MM-DD')
-      priority: 0.5 // Optional.
+      priority: 0.5, // Optional.
     }, {
       // If using automatic routing, you can specify a component to render the
       // 404 page by creating a route with `is404` set to `true` and defining a
       // `component` to use.
       is404: true,
-      component: 'src/containers/NotFound'
+      component: 'src/containers/NotFound',
     }],
   }],
 
@@ -197,7 +200,7 @@ export default {
   // to the entire site via the `getSiteProps` HOC
   // IMPORTANT: Any data you return here, although loaded once per session, will
   // be embedded in every page that is exported on your site. So tread lightly ;)
-  getSiteProps: async ({dev}) => ({...})
+  getSiteProps: async ({dev}) => ({...}),
 
   siteRoot: 'https://mysite.com', // Optional, but necessary for the sitemap.xml
 
@@ -247,7 +250,7 @@ export default {
     src: 'src', // The source directory. Must include an index.js entry file.
     dist: 'dist', // The production output directory.
     devDist: 'dist', // The development scratch directory.
-    public: 'public' // The public directory (files copied to dist during build)
+    public: 'public', // The public directory (files copied to dist during build)
   },
 
   // onStart and onBuild are utility hooks that run when the dev server starts up successfully
@@ -563,8 +566,8 @@ export default getRouteProps(TopHundredSongsPage);
 module.exports = {
   getSiteProps: () => ({
     title: 'React Static',
-    metaDescription: 'A progressive static-site framework for React'
-  })
+    metaDescription: 'A progressive static-site framework for React',
+  }),
 }
 ```
 
