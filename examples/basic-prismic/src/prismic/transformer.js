@@ -11,7 +11,8 @@ export default function transform (prismicData) {
       case 'title':
       case 'body':
         // The data we want is always on the first child and in the text property
-        // Note that in reality the response could be multiple paragraphs, with embedded links, images etc
+        // Note that in reality the response could be multiple paragraphs,
+        // with embedded links, images etc
         // you would need to handle that here
         result[name] = value[0].text
         break
@@ -29,7 +30,7 @@ export default function transform (prismicData) {
         id: "WmAZTCkAACarLekM"
         uid: "1"
         type: "post"
-        href: https://react-static-blog.prismic.io/api/v1/documents/search?ref=WmAaDSkAACarLexz&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22WmAZTCkAACarLekM%22%29+%5D%5D
+        href: https://react-static-blog.prismic.io/
         tags: [ ]
         first_publication_date: "2018-01-18T03:52:45+0000"
         last_publication_date: "2018-01-18T03:52:45+0000"
@@ -62,7 +63,7 @@ export default function transform (prismicData) {
         --value: [
         --{
           type: "paragraph"
-          text: "Twenty years from now you will be more disappointed by the things you didn’t do than by the ones you did do. So throw off the bowlines. Sail away from the safe harbor. Catch the trade winds in your sails. Explore. Dream. Discover."
+          text: "Twenty years from now you will be more disappointed..."
           + … -spans: []
       }
     ]
