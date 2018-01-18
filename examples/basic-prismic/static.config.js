@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import fetchData from './src/prismic/fetch'
 
 export default {

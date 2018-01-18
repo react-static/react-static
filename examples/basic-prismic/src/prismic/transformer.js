@@ -1,5 +1,4 @@
-export default function transform(prismicData) {
-
+export default function transform (prismicData) {
   const data = prismicData.data
   const result = {}
   const entries = Object.entries(data)
@@ -11,9 +10,9 @@ export default function transform(prismicData) {
     switch (name) {
       case 'title':
       case 'body':
-        //the data we want is always on the first child and in the text property
-        //note that in reality the response could be multiple paragraphs, with embedded links, images etc
-        //you would need to handle that here
+        // The data we want is always on the first child and in the text property
+        // Note that in reality the response could be multiple paragraphs, with embedded links, images etc
+        // you would need to handle that here
         result[name] = value[0].text
         break
 
@@ -24,7 +23,7 @@ export default function transform(prismicData) {
   return result
 }
 
-  /* SAMPLE RESPONSE FOR A 'POST'
+/* SAMPLE RESPONSE FOR A 'POST'
   {
      {
         id: "WmAZTCkAACarLekM"
