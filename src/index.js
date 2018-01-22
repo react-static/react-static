@@ -248,7 +248,10 @@ export function getRouteProps (Comp) {
       }
       componentWillReceiveProps (nextProps) {
         if (process.env.REACT_STATIC_ENV === 'development') {
-          if (this.props.match.url !== nextProps.match.url) {
+          if (
+            this.props.location.pathname + this.props.location.search !==
+            nextProps.location.pathname + this.props.location.search
+          ) {
             this.setState({ loaded: false }, this.loadRouteProps)
           }
         }
