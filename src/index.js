@@ -7,7 +7,7 @@ import createHashHistory from 'history/createHashHistory'
 import { Helmet } from 'react-helmet'
 import { Router as ReactRouter, StaticRouter, withRouter } from 'react-router-dom'
 //
-import { pathJoin } from './shared'
+import { pathJoin, unwrapArray } from './shared'
 
 // Proxy React Router
 export { Prompt, Redirect, Route, Switch, matchPath, withRouter } from 'react-router-dom'
@@ -27,6 +27,16 @@ let sitePropsPromise
 let InitialLoading
 
 let routesPromise
+
+if (typeof document !== 'undefined' && process.env.REACT_STATIC_ENV === 'production') {
+  if ('serviceWorker' in window.navigator) {
+    window.navigator.serviceWorker.register('/service-worker.js').catch(err => {
+      console.error('An error occurred registering service-worker.js', err)
+    })
+  } else {
+    console.log('Service workers are not supported in this browser.')
+  }
+}
 
 const getRouteInfo = async () => {
   if (typeof document !== 'undefined') {
@@ -109,31 +119,9 @@ function cleanPath (path) {
   return pathJoin(path.substring(hasOrigin ? window.location.origin.length : 0, end))
 }
 
-function isPrefetched (path) {
-  path = cleanPath(path)
-  if (!path) {
-    return
-  }
-
-  if (pathProps[path]) {
-    return pathProps[path]
-  }
-}
-
-async function shouldPrefetch (path) {
-  path = cleanPath(path)
+async function prefetchData (path) {
   // Get route info so we can check if path has any data
   const routes = await getRouteInfo()
-  // Returns true if data exists for path
-  return routes[path] !== undefined
-}
-
-export async function prefetch (path) {
-  path = cleanPath(path)
-
-  if (!path) {
-    return
-  }
 
   // Defer to the cache first
   if (pathProps[path]) {
@@ -141,11 +129,10 @@ export async function prefetch (path) {
   }
 
   // Now, try and find the current route info (or lack of route)
-  const routes = await getRouteInfo()
 
   // In development request all props in one go.
   if (process.env.REACT_STATIC_ENV === 'development') {
-    const isStaticRoute = routes.indexOf(path) > -1
+    const isStaticRoute = routes.includes(path)
 
     // Not a static route? Bail out.
     if (!isStaticRoute) {
@@ -187,9 +174,10 @@ export async function prefetch (path) {
   // Request and build the props one by one
   let initialProps = {}
 
-  // Loop over the propsMap, and request each prop
-  await Promise.all(
-    Object.keys(propsMap).map(async key => {
+  // Request the template and loop over the propsMap, requesting each prop
+  await Promise.all([
+    window.reactStaticGetComponentForPath(path),
+    ...Object.keys(propsMap).map(async key => {
       const hash = propsMap[key]
 
       // Check the propsByHash first
@@ -221,7 +209,7 @@ export async function prefetch (path) {
         initialProps[key] = propsByHash[hash]
       }
     }),
-  )
+  ])
 
   // Cache the entire props for the route
   pathProps[path] = {
@@ -230,6 +218,28 @@ export async function prefetch (path) {
 
   // Return the props
   return pathProps[path]
+}
+
+async function prefetchTemplate (path) {
+  // Preload the template if available
+  const pathTemplate =
+    window.reactStaticGetComponentForPath && window.reactStaticGetComponentForPath(path)
+  if (pathTemplate && pathTemplate.preload) {
+    await pathTemplate.preload()
+    return pathTemplate
+  }
+}
+
+export async function prefetch (path) {
+  // Clean the path
+  path = cleanPath(path)
+
+  if (!path) {
+    return
+  }
+
+  const [data] = await Promise.all([prefetchData(path), prefetchTemplate(path)])
+  return data
 }
 
 export function getRouteProps (Comp) {
@@ -250,7 +260,7 @@ export function getRouteProps (Comp) {
         if (process.env.REACT_STATIC_ENV === 'development') {
           if (
             this.props.location.pathname + this.props.location.search !==
-            nextProps.location.pathname + this.props.location.search
+            nextProps.location.pathname + nextProps.location.search
           ) {
             this.setState({ loaded: false }, this.loadRouteProps)
           }
@@ -259,17 +269,18 @@ export function getRouteProps (Comp) {
       componentWillUnmount () {
         this.unmounting = true
       }
-      loadRouteProps = async () => {
-        const { pathname, search } = this.props.location
-        const path = pathJoin(`${pathname}${search}`)
-        await prefetch(path)
-        if (this.unmounting) {
-          return
-        }
-        this.setState({
-          loaded: true,
-        })
-      }
+      loadRouteProps = () =>
+        (async () => {
+          const { pathname, search } = this.props.location
+          const path = pathJoin(`${pathname}${search}`)
+          await prefetch(path)
+          if (this.unmounting) {
+            return
+          }
+          this.setState({
+            loaded: true,
+          })
+        })()
       render () {
         const { pathname, search } = this.props.location
         const path = pathJoin(`${pathname}${search}`)
@@ -371,12 +382,11 @@ export class Prefetch extends Component {
   }
   async componentDidMount () {
     const { path, onLoad } = this.props
-
     const data = await prefetch(path)
     onLoad(data, path)
   }
   render () {
-    return this.props.children
+    return unwrapArray(this.props.children)
   }
 }
 
@@ -410,12 +420,12 @@ export class PrefetchWhenSeen extends Component {
     }
   }
 
-  runPrefetch = () => {
-    const { path, onLoad } = this.props
-    prefetch(path).then(data => {
+  runPrefetch = () =>
+    (async () => {
+      const { path, onLoad } = this.props
+      const data = await prefetch(path)
       onLoad(data, path)
-    })
-  }
+    })()
 
   handleRef = ref => {
     if (ioIsSupported && ref) {
@@ -532,11 +542,9 @@ export class Router extends Component {
         const originalMethod = resolvedHistory[method]
         resolvedHistory[method] = async (...args) => {
           const path = typeof args[0] === 'string' ? args[0] : args[0].path + args[0].search
-          if ((await shouldPrefetch(path)) && !isPrefetched(path)) {
-            setLoading(true)
-            await prefetch(path)
-            setLoading(false)
-          }
+          setLoading(true)
+          await prefetch(path)
+          setLoading(false)
           originalMethod.apply(resolvedHistory, args)
         }
       })

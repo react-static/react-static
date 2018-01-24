@@ -11,8 +11,8 @@
     "stage-3",
     "react"
   ],
-  "ignore": "app.static.js",
   "plugins": [
+    "universal-import",
     "react-hot-loader/babel",
     "transform-class-properties",
     [
@@ -27,12 +27,7 @@
   ],
   "env": {
     "test": {
-      "presets": [
-        ["latest", {"modules": true}], 
-        "stage-0",
-        "stage-3",
-        "react"
-      ]
+      "presets": [["latest", { "modules": true }], "stage-0", "stage-3", "react"]
     }
   }
 }

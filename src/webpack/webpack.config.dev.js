@@ -1,6 +1,5 @@
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import path from 'path'
 
@@ -42,9 +41,6 @@ export default function ({ config }) {
       new HtmlWebpackPlugin({
         inject: true,
         template: `!!raw-loader!${HTML_TEMPLATE}`,
-      }),
-      new ScriptExtHtmlWebpackPlugin({
-        defaultAttribute: 'async',
       }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),

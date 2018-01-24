@@ -5,3 +5,11 @@ export function pathJoin (...paths) {
   }
   return newPath
 }
+
+export function unwrapArray (arg, defaultValue) {
+  arg = Array.isArray(arg) ? arg[0] : arg
+  if (!arg && defaultValue) {
+    return defaultValue
+  }
+  return arg
+}

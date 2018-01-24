@@ -18,6 +18,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - ⚛️ 100% React (or Preact!)
 - 🚀 Blazing fast builds and performance.
 - 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
+- ✂️ Automatic code and data splitting!
 - 💥 Near-instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
 - 🎯 Built for **SEO**.
 - 🥇 React-first developer experience.
@@ -80,13 +81,9 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [`react-static build`](#react-static-build)
 - [Project Setup](#project-setup)
 - [Configuration (`static.config.js`)](#configuration-staticconfigjs)
-  - [Automatic Data and Prop Splitting](#automatic-data-and-prop-splitting)
-  - [Webpack Config and Plugins](#webpack-config-and-plugins)
-  - [Use Preact in Production](#use-preact-in-production)
 - [Components & Tools](#components--tools)
   - [`<Router>`](#router)
-  - [Automatic Routing with `<Routes>`](#automatic-routing-with--routes)
-  - [Custom Routing](#custom-routing)
+  - [`<Routes>`](#routes)
   - [404 Handling](#404-handling)
   - [Automatic Routing with Custom Render Props](#automatic-routing-with-custom-render-props)
   - [`<Link>` and `<NavLink>`](#link-and-navlink)
@@ -97,6 +94,9 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [`<Prefetch path=''/>`](#prefetch-path)
   - [`<PrefetchWhenSeen path=''/>`](#prefetchwhenseen-path)
   - [`prefetch(path)`](#prefetchpath)
+- [Code, Data, and Prop](#automatic-data-and-prop-splitting) Splitting
+- [Webpack Config and Plugins](#webpack-config-and-plugins)
+- [Using Preact in Production](#using-preact-in-production)
 
 ## Installation
 
@@ -262,258 +262,6 @@ export default {
 }
 ```
 
-## Automatic Data and Prop Splitting
-React Static has a very unique and clever way of requesting the least amount of data to display any given page at just the right moment.
-
-#### How does it work?
-When you return an object of props in a route's `getProps` function, each prop is compared to all other props for `===` equality. When a prop is found to be used in more than one location, it is promoted to a **shared prop** and stored in it's very own JSON file.
-
-#### Why is that cool?
-By storing common props in separate files, your site avoids wastefully serving duplicate data for pages that share some or all of their data with others. This decreases the overall bandwidth your site uses and also considerably speeds up your sites ability to serve data as fast as possible!
-
-#### Example
-Consider a dynamic menu structure that is present only on some of your pages, but not all of them. In this case, the menu data would only be loaded on those pages, and only once per session, instead of on every page.
-
-```javascript
-import axios from 'axios'
-
-export default {
-  getRoutes: async () => {
-    const supportMenu = getMyDynamicMenuFromMyCMS()
-    return [
-      {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      {
-        path: '/docs',
-        component: 'src/containers/Docs',
-        getProps: async () => ({
-          supportMenu // Use it once here
-        })
-      },
-      {
-        path: '/help',
-        component: 'src/containers/Help',
-        getProps: async () => ({
-          supportMenu, // since this `supportMenu` is equal `===` to the
-          // `supportMenu` used in the docs route, both instances will be promoted to a shared prop
-          // and only loaded once per session!
-          helpStuff: {...} // All other props that are unique to the route are
-          // still stored in their own JSON file.
-        })
-      },
-    ]
-  },
-}
-```
-
-#### Important Notes
-Automatic data and prop splitting is based on identity comparison `===`. If you break this referential integrity, React Static cannot detect that two props are the same.
-
-**An example of what not do**
-<br/>
-```javascript
-import axios from 'axios'
-
-export default {
-  getRoutes: async () => {
-    const supportMenu = getMyDynamicMenuFromMyCMS()
-    return [
-      {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      {
-        path: '/docs',
-        component: 'src/containers/Docs',
-        getProps: async () => ({
-          supportMenu
-        })
-      },
-      {
-        path: '/help',
-        component: 'src/containers/Help',
-        getProps: async () => ({
-          supportMenu { ...supportMenu } // Even though this supportMenu obejct
-          // is exactly the same as the original, it is not the actual original.
-          // This would not work!
-        })
-      },
-    ]
-  },
-}
-```
-
-
-## Webpack Config and Plugins
-
-To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
-
-```javascript
-webpack: []Function(
-  previousConfig,
-  args: {
-    stage,
-    defaultLoaders: {
-      jsLoader,
-      cssLoader,
-      fileLoader
-    }
-  }
-) => {
-  return newConfig // or a falsey value to cancel transformation
-}
-```
-
-- The value can be an array of functions or a single function.
-- Each function will receive the previous webpack config, and can return a modified or new config.
-- Return any falsey value to cancel the transformation
-- `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
-- `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
-
-  - `jsLoader` - The default loader for all `.js` files (uses babel)
-  - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
-  - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
-
-When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
-
-By default, React Static's webpack toolchain compiles `.js` and `.css` files. Any other file that is not a `.js` `.json` or `.html` file is also processed with the `fileLoader` (images, fonts, etc.) and will move to `./dist` directory on build. The source for all default loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules).
-
-Our default loaders are organized like so:
-
-```javascript
-const webpackConfig = {
-  ...
-  module: {
-    rules: [{
-      oneOf: [
-        jsLoader, // Compiles all .js files with babel
-        cssLoader, // Supports basic css imports and css modules
-        fileLoader // Catch-all url-loader/file-loader for anything else
-    }]
-  }
-  ...
-}
-```
-
-**Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
-
-**Replacing all rules**
-
-```javascript
-// static.config.js
-
-export default {
-  webpack: (config) => {
-    config.module.rules = [
-      // Your own rules here...
-    ]
-    return config
-  }
-}
-```
-
-**Replacing a default loader for a different one**
-
-```javascript
-// static.config.js
-
-export default {
-  webpack: (config, { defaultLoaders }) => {
-    config.module.rules = [{
-      oneOf: [
-        defaultLoaders.jsLoader,
-        {
-          // Use this special loader
-          // instead of the cssLoader
-        }
-        defaultLoaders.fileLoader,
-      ]
-    }]
-    return config
-  }
-}
-```
-
-**Adding a plugin**
-
-```javascript
-// static.config.js
-import AwesomeWebpackPlugin from 'awesome-webpack-plugin'
-
-export default {
-  webpack: (config) => {
-    config.plugins.push(new AwesomeWebpackPlugin())
-    return config
-  }
-}
-```
-
-**Using multiple transformers**
-
-```javascript
-// static.config.js
-
-export default {
-  webpack: [
-    (config, { defaultLoaders }) => {
-      config.module.rules = [{
-        oneOf: [
-          defaultLoaders.jsLoader,
-          defaultLoaders.cssLoader,
-          {
-            loader: 'file-loader',
-            test: /\.(fancyFileExtension)$/,
-            query: {
-              limit: 10000,
-              name: 'static/[name].[hash:8].[ext]',
-            },
-          },
-          defaultLoaders.fileLoader,
-        ]
-      }]
-      return config
-    },
-    config => {
-      console.log(config.module.rules) // Log out the final set of rules
-    }
-  ]
-}
-```
-
-**Using Custom devServer properties**
-
-This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
-
-```javascript
-// static.config.js
-
-export default {
-  devServer: {
-    port: 8080,
-    host: '127.0.0.1'
-  }
-}
-```
-
-## Use Preact in Production
-Want to make your bundle even smaller? Simply set `preact: true` in your `static.config.js` and React-Static will ship preact with your site instead of React. This can significantly reduce the size of your app and load times!
-
-**Example**
-```javascript
-// static.config.js
-export default {
-  preact: true,
-  ...
-}
-```
-
-**Note**: If updating a project not originally based on the `preact` template, you will need to update the render method of your app to always use `ReactDOM.render` and not `ReactDOM.hydrate`. [See the preact template for an example of this](https://github.com/nozzle/react-static/blob/master/examples/preact/src/index.js#L14)
-
-**Important**
-Due to the complexity of maintaining a fully tooled development experience, React is still used in development mode if `preact` is set to `true`. This ensures that stable hot-reloading tooling, dev tools, ect. are used. This is by no means permanent though! If you know what it takes to emulate React Static's development environment using Preact tooling, please submit a PR!
-
 ## Components & Tools
 
 ### `<Router>`
@@ -575,9 +323,9 @@ Router.subscribe(loading => {
 ```
 
 ---
-### Automatic Routing with `<Routes>`
+### `<Routes>`
 
-React Static comes built in with a component router that automatically handles all of your routing for you. This is done by first, specifying a `component` **path** (relative to the root of your project) that should be used to render a route in your `static.config.js`.
+React Static comes built in with a component router that automatically builds your routing components for you. This is done by specifying a `component` **path** (relative to the root of your project) that should be used to render a route in your `static.config.js`.
 
 `static.config.js` example:
 
@@ -590,7 +338,7 @@ export default {
 }
 ```
 
-When your site is built (both in dev and production mode), the special `<Routes>` component will automatically handle all of your routing based on the paths you define in your `static.config.js`
+When your site is built (both in dev and production mode), the special `<Routes>` component located at `react-static-routes` will automatically handle all of your routing based on the paths you define in your `static.config.js`
 
 `App.js` example:
 
@@ -608,42 +356,35 @@ export default () => (
 To see an example of using , refer to our [`basic` example template](https://github.com/nozzle/react-static/blob/master/examples/basic)
 
 ---
-### Custom Routing
+##### Non-static Routing
 
-If you end up needing more control than `<Routes />` offers, have no fear. React Static provides you with all of the custom routing components you are normally used to with `react-router`:
+Sometimes you may want to handle routes that should not be statically rendered. In that case, you can place any of the routing components you normally use with `react-router`.
 
-**NOTE: These components are available via the `react-static` import. There is no need to import them via `react-router`**
+**Important Notes**
+- React-Router components are available via the `react-static` import. There is no need to import them via `react-router`!
+- Any custom React-Router components must be placed before `<Routes>` if you want them to match. The `<Routes>` component is a catch all `<Route path='*' />` handler, so anything below it will result in a 404!
+- The `<Route>` component is in fact a react-router `<Route>` component, so it can be placed and used like normal within components like `<Switch>`!
 
-- `<Route>`
-- `<Switch>`
-- `<Redirect>`
-- `<Prompt>`
+**Example Handling a non-static admin route:**
+```javascript
+import { Router, Route, Switch } from 'react-static'
+import Routes from 'react-static-routes'
 
-To build your own custom routing, simply remove (or don't use) the `<Routes>` component in your app, and use the above components instead.
-**Be careful**, by using your own custom routing, you will be responsible for maintaining route synchronization between automatic and custom routing: _automatic_ routing in `static.config.js` will generate pages **along with their respective `routeData.json` files !** no matter how _custom_ client routes are defined.
+import Admin from 'containers/Admin'
 
-To see a working example, refer to our [`custom-routing` example template](https://github.com/nozzle/react-static/blob/master/examples/custom-routing)
+export default () => (
+  <Router>
+    <Switch>
+      <Route path='/admin' component={Admin} /> // If /admin path is matched
+      <Routes /> // Otherwise, fall back to static route handlers
+    </Switch>
+  </Router>
+)
+```
 
 To learn more about how `react-router` components work, visit [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
----
-### 404 Handling
-
-Making a 404 page in React Static is extremely simple for both automatic and custom routing configurations.
-
-##### With Automatic Routing
-
-To define a 404 page using automatic routing, define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build time and run time, the rendered result of this `component` will be used for any routes that are not found.
-
-##### With Custom Routing
-
-When using custom routing, there are 2 types of 404 pages:
-
-- **Static 404 page** - At build time, React Static will automatically attempt to render a `/404` path in your app. Whatever renders as a result of this path will be exported to `404.html` and be used for pages not found on **first load**.
-- **Dynamic 404 pages** - For `<Link>`s and in-app navigations that don't match your custom routing structure, you must handle those situations yourself. The best (and most thorough) way to handle this scenario is to make sure you use a catch all `<Route component={SomeComponent} />` at the end of **all** `<Switch>` statements in your app. Not all of them must point to the same 404 component, since you may want to show a custom 404 page for a post that isn't found, versus a page that isn't found.
-
----
-### Automatic Routing with Custom Render Props
+##### Custom `<Routes>` Rendering
 Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize one of these three render prop formats:
 
 **Render Prop Formats**
@@ -651,66 +392,56 @@ Occasionally, you may need to render the automatic `<Routes>` component in a cus
 import { Router } from 'react-static'
 import Routes from 'react-static-routes'
 
+// This is the default renderer for `<Routes>`
+const RenderRoutes = ({ getTemplateForPath }) => (
+  // The default renderer uses a catch all route to recieve the pathname
+  <Route path='*' render={props => {
+    // The pathname is used to retrieve the component for that path
+    let Comp = getComponentForPath(props.location.pathname)
+    // The 404 component is used as a fallback
+    if (!Comp) {
+      Comp = getComponentForPath('404')
+    }
+    // The component is rendered!
+    return Comp && <Comp {...props} />
+  }} />
+)
+
 export default () => (
   <Router>
-    // pass a component
+    // pass a component (class or SFC)
     <Routes
       component={RenderRoutes}
     />
 
     // or, pass a render function
     <Routes
-      render={({ getTemplateForPath }) => (
-        ...
-      )}
+      render={RenderRoutes}
     />
 
     // or, pass a function as a child
     <Routes>
-      {({ getTemplateForPath }) => (
-        ...
-      )}
+      {RenderRoutes}
     </Routes>
   </Router>
 )
 ```
 
-**Render Props** - These special props are sent to your rendered component or function
+**Render Props** - These special props are sent to your rendered component or render function
 - `getTemplateForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no template is found.
 <!-- - `templateMap{}` - An object mapping template ids to Components
 - `templateTree{}` - A nested object structure mapping paths and their children to a template ID.
   - `c` - the children of the path
   - `t` - the template ID of the path -->
 
-**Default Route Renderer**
-Below is the default renderer for the `<Routes>` component. It will serve as a good starting point.
+___
 
-```javascript
-import { Router } from 'react-static'
-import Routes from 'react-static-routes'
+##### 404 Handling
 
-export default () => (
-  <Router>
-    <Routes
-      render={( getTemplateForPath ) => (
-        // The default renderer uses a catch all route to recieve the pathname
-        <Route path='*' render={props => {
-          // The pathname is used to retrieve the component for that path
-          let Comp = getComponentForPath(props.location.pathname)
-          // The 404 component is used as a fallback
-          if (!Comp) {
-            Comp = getComponentForPath('404')
-          }
-          // The component is rendered!
-          return Comp && <Comp {...props} />
-        }} />
-      )}
-    />
-  </Router>
-)
-```
+Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found.
 
 ---
+
 ### `<Link>` and `<NavLink>`
 
 React Static also gives you access to `react-router`'s `<Link>` and `<NavLink>` components. Use these component to allow your users to navigate around your site!
@@ -937,6 +668,269 @@ const myFunc = async () => {
   console.log('The preloaded data:', data)
 }
 ```
+
+---
+
+## Code, Data, and Prop Splitting
+React Static has a very unique and amazing way of requesting the least amount of data to display any given page at just the right moment. React splits code and data based on these factors:
+
+- **Routes** - Under the hood, React Static is automatically handling route splitting for you. Other than listing your routes in your `static.config.js`, you don't have to do anything!
+
+- **Route Data** - Reach route's `getProps` function results in a separate data file for each route being stored.
+
+- **Shared Route Data** - Not only is each route's props stored in a separate file, but each individual prop is compared to every other route's props for `===` equality. When a prop is found to be used in more than one route, it is promoted to a **shared prop** and stored in it's very own JSON file.
+
+
+#### Why is all of this cool?
+By bundling page templates and data into separate optimized files, your site avoids wastefully loading duplicate assets for pages that share some or all of their assets with others. This decreases the overall bandwidth your site uses and also considerably speeds up your sites ability to serve data as fast as possible!
+
+#### Shared Route Data Example
+Shared Route Data is best understood with an example. Consider a dynamic menu structure that is present only on some of your pages, but not all of them. In this case, the menu data would only be loaded on those pages, and only once per session, instead of on every page.
+
+```javascript
+import axios from 'axios'
+
+export default {
+  getRoutes: async () => {
+    const supportMenu = getMyDynamicMenuFromMyCMS()
+    return [
+      {
+        path: '/',
+        component: 'src/containers/Home',
+      },
+      {
+        path: '/docs',
+        component: 'src/containers/Docs',
+        getProps: async () => ({
+          supportMenu // Used once here
+        })
+      },
+      {
+        path: '/help',
+        component: 'src/containers/Help',
+        getProps: async () => ({
+          supportMenu, // Used again here! Since this `supportMenu` is equal `===` to the
+          // `supportMenu` used in the docs route, both instances will be promoted to
+          // a shared prop and only loaded once per session!
+          helpStuff: {...} // All other props that are unique to the route are
+          // still stored in their own JSON file.
+        })
+      },
+    ]
+  },
+}
+```
+
+#### Important Notes
+Automatic data and prop splitting is based on identity comparison `===`. If you break this referential integrity, React Static cannot detect that two props are the same.
+
+**An example of what not do**
+<br/>
+```javascript
+import axios from 'axios'
+
+export default {
+  getRoutes: async () => {
+    const supportMenu = getMyDynamicMenuFromMyCMS()
+    return [
+      {
+        path: '/',
+        component: 'src/containers/Home',
+      },
+      {
+        path: '/docs',
+        component: 'src/containers/Docs',
+        getProps: async () => ({
+          supportMenu
+        })
+      },
+      {
+        path: '/help',
+        component: 'src/containers/Help',
+        getProps: async () => ({
+          supportMenu { ...supportMenu } // Even though this supportMenu obejct
+          // is exactly the same as the original, it is not the actual original.
+          // This would not work!
+        })
+      },
+    ]
+  },
+}
+```
+
+---
+
+## Webpack Config and Plugins
+
+To modify the webpack configuration, use the `webpack` option in your `static.config.js` file.
+
+```javascript
+webpack: []Function(
+  previousConfig,
+  args: {
+    stage,
+    defaultLoaders: {
+      jsLoader,
+      cssLoader,
+      fileLoader
+    }
+  }
+) => {
+  return newConfig // or a falsey value to cancel transformation
+}
+```
+
+- The value can be an array of functions or a single function.
+- Each function will receive the previous webpack config, and can return a modified or new config.
+- Return any falsey value to cancel the transformation
+- `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
+- `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
+
+  - `jsLoader` - The default loader for all `.js` files (uses babel)
+  - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
+  - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
+
+When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
+
+By default, React Static's webpack toolchain compiles `.js` and `.css` files. Any other file that is not a `.js` `.json` or `.html` file is also processed with the `fileLoader` (images, fonts, etc.) and will move to `./dist` directory on build. The source for all default loaders can be found in [react-static/lib/webpack/rules/](./src/webpack/rules).
+
+Our default loaders are organized like so:
+
+```javascript
+const webpackConfig = {
+  ...
+  module: {
+    rules: [{
+      oneOf: [
+        jsLoader, // Compiles all .js files with babel
+        cssLoader, // Supports basic css imports and css modules
+        fileLoader // Catch-all url-loader/file-loader for anything else
+    }]
+  }
+  ...
+}
+```
+
+**Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
+
+**Replacing all rules**
+
+```javascript
+// static.config.js
+
+export default {
+  webpack: (config) => {
+    config.module.rules = [
+      // Your own rules here...
+    ]
+    return config
+  }
+}
+```
+
+**Replacing a default loader for a different one**
+
+```javascript
+// static.config.js
+
+export default {
+  webpack: (config, { defaultLoaders }) => {
+    config.module.rules = [{
+      oneOf: [
+        defaultLoaders.jsLoader,
+        {
+          // Use this special loader
+          // instead of the cssLoader
+        }
+        defaultLoaders.fileLoader,
+      ]
+    }]
+    return config
+  }
+}
+```
+
+**Adding a plugin**
+
+```javascript
+// static.config.js
+import AwesomeWebpackPlugin from 'awesome-webpack-plugin'
+
+export default {
+  webpack: (config) => {
+    config.plugins.push(new AwesomeWebpackPlugin())
+    return config
+  }
+}
+```
+
+**Using multiple transformers**
+
+```javascript
+// static.config.js
+
+export default {
+  webpack: [
+    (config, { defaultLoaders }) => {
+      config.module.rules = [{
+        oneOf: [
+          defaultLoaders.jsLoader,
+          defaultLoaders.cssLoader,
+          {
+            loader: 'file-loader',
+            test: /\.(fancyFileExtension)$/,
+            query: {
+              limit: 10000,
+              name: 'static/[name].[hash:8].[ext]',
+            },
+          },
+          defaultLoaders.fileLoader,
+        ]
+      }]
+      return config
+    },
+    config => {
+      console.log(config.module.rules) // Log out the final set of rules
+    }
+  ]
+}
+```
+
+**Using Custom devServer properties**
+
+This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
+
+```javascript
+// static.config.js
+
+export default {
+  devServer: {
+    port: 8080,
+    host: '127.0.0.1'
+  }
+}
+```
+
+---
+
+## Using Preact in Production
+Want to make your bundle even smaller? Simply set `preact: true` in your `static.config.js` and React-Static will ship preact with your site instead of React. This can significantly reduce the size of your app and load times!
+
+**Example**
+```javascript
+// static.config.js
+export default {
+  preact: true,
+  ...
+}
+```
+
+**Note**: If updating a project not originally based on the `preact` template, you will need to update the render method of your app to always use `ReactDOM.render` and not `ReactDOM.hydrate`. [See the preact template for an example of this](https://github.com/nozzle/react-static/blob/master/examples/preact/src/index.js#L14)
+
+**Important**
+Due to the complexity of maintaining a fully tooled development experience, React is still used in development mode if `preact` is set to `true`. This ensures that stable hot-reloading tooling, dev tools, ect. are used. This is by no means permanent though! If you know what it takes to emulate React Static's development environment using Preact tooling, please submit a PR!
+
+---
 
 ## Contributing
 

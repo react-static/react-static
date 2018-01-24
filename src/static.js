@@ -8,17 +8,19 @@ import glob from 'glob'
 import path from 'path'
 import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
-
+import { ReportChunks } from 'react-universal-component'
+import flushChunks from 'webpack-flush-chunks'
 //
 import { DefaultDocument } from './RootComponents'
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Use the node version of the app created with webpack
-  const appJsPath = glob.sync(path.resolve(config.paths.DIST, 'app!(.static).*.js'))[0]
-  const appJs = appJsPath.split('/').pop()
-  const appStaticJsPath = glob.sync(path.resolve(config.paths.DIST, 'app.static.*.js'))[0]
-  const Comp = require(appStaticJsPath).default
+  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
+  const manifestScript = glob
+    .sync(path.resolve(config.paths.DIST, 'manifest.*.json'))[0]
+    .split('/')
+    .pop()
 
   const DocumentTemplate = config.Document || DefaultDocument
 
@@ -37,24 +39,26 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       }
 
       // Loop through the props
-      Object.keys(route.initialProps).map(k => route.initialProps[k]).forEach(prop => {
-        // Have we seen this prop before?
-        if (seenProps.get(prop)) {
-          // Only cache each shared prop once
-          if (sharedProps.get(prop)) {
-            return
+      Object.keys(route.initialProps)
+        .map(k => route.initialProps[k])
+        .forEach(prop => {
+          // Have we seen this prop before?
+          if (seenProps.get(prop)) {
+            // Only cache each shared prop once
+            if (sharedProps.get(prop)) {
+              return
+            }
+            // Cache the prop
+            const jsonString = JSON.stringify(prop)
+            sharedProps.set(prop, {
+              jsonString,
+              hash: shorthash.unique(jsonString),
+            })
+          } else {
+            // Mark the prop as seen
+            seenProps.set(prop, true)
           }
-          // Cache the prop
-          const jsonString = JSON.stringify(prop)
-          sharedProps.set(prop, {
-            jsonString,
-            hash: shorthash.unique(jsonString),
-          })
-        } else {
-          // Mark the prop as seen
-          seenProps.set(prop, true)
-        }
-      })
+        })
     }),
   )
 
@@ -128,17 +132,29 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         }
       }
 
-      const ContextualComp = props => (
-        <InitialPropsContext>
-          <Comp {...props} />
-        </InitialPropsContext>
+      // Make a place to collect chunks, meta info and head tags
+      const renderMeta = {}
+      const chunkNames = []
+      let head = {}
+      let clientScripts = []
+
+      const CompWithContext = props => (
+        <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
+          <InitialPropsContext>
+            <Comp {...props} />
+          </InitialPropsContext>
+        </ReportChunks>
       )
 
-      const renderMeta = {}
-      let head
+      const renderToStringAndExtract = comp => {
+        // Rend the app to string!
+        const appHtml = renderToString(comp)
+        const { scripts } = flushChunks(clientStats, {
+          chunkNames,
+        })
 
-      const renderStringAndHead = Comp => {
-        const appHtml = renderToString(Comp)
+        clientScripts = scripts
+
         // Extract head calls using Helmet synchronously right after renderToString
         // to not introduce any race conditions in the meta data rendering
         const helmet = Helmet.renderStatic()
@@ -159,8 +175,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
 
       // Allow extractions of meta via config.renderToString
       const appHtml = await config.renderToHtml(
-        renderStringAndHead,
-        ContextualComp,
+        renderToStringAndExtract,
+        CompWithContext,
         renderMeta,
         clientStats,
       )
@@ -193,8 +209,11 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {showHelmetTitle && head.title}
             {head.meta}
             {head.link}
+            {manifestScript && (
+              <link rel="manifest" href={`${config.publicPath}${manifestScript}`} />
+            )}
             {process.env.extractedCSSpath && (
-              <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
+              <link rel="stylesheet" href={`${config.publicPath}${process.env.extractedCSSpath}`} />
             )}
             {head.noscript}
             {head.script}
@@ -221,7 +240,9 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
             }}
           />
-          <script async src={`${config.publicPath}${appJs}`} />
+          {clientScripts.map(script => (
+            <script defer type="text/javascript" src={`${config.publicPath}${script}`} />
+          ))}
         </body>
       )
 
@@ -324,24 +345,28 @@ export const prepareRoutes = async config => {
   const file = `
     import React, { Component } from 'react'
     import { Route } from 'react-router-dom'
+    import universal, { setHasBabelPlugin } from 'react-universal-component'
 
-    // Template Imports
+    setHasBabelPlugin()
+
+    const universalOptions = {
+      loading: () => null,
+      error: () => null,
+    }
+
     ${templates
     .map(
-      template =>
-        `import ${template.replace(/[^a-zA-Z0-9]/g, '_')} from '${path.relative(
+      (template, index) =>
+        `const t_${index} = universal(import('${path.relative(
           config.paths.DIST,
           path.resolve(config.paths.ROOT, template),
-        )}'`,
+        )}'), universalOptions)`,
     )
-    .join('\n')
-    .replace(/\\/g, '/')}
+    .join('\n')}
 
     // Template Map
     const templateMap = {
-      ${templates
-    .map((template, index) => `t_${index}: ${template.replace(/[^a-zA-Z0-9]/g, '_')}`)
-    .join(',\n')}
+      ${templates.map((template, index) => `t_${index}`).join(',\n')}
     }
 
     // Template Tree
@@ -361,6 +386,10 @@ export const prepareRoutes = async config => {
       } catch (e) {
         return false
       }
+    }
+
+    if (typeof document !== 'undefined') {
+      window.reactStaticGetComponentForPath = getComponentForPath
     }
 
     export default class Routes extends Component {
