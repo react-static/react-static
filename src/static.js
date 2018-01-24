@@ -10,6 +10,7 @@ import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
+import Promise from 'bluebird'
 //
 import { DefaultDocument } from './RootComponents'
 
@@ -55,7 +56,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             seenProps.set(prop, true)
           }
         })
-    }),
+    })
   )
 
   await Promise.all(
@@ -79,10 +80,10 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         route.propsMap.__local = route.localPropsHash
         return fs.outputFile(
           path.join(config.paths.STATIC_DATA, `${route.localPropsHash}.json`),
-          route.localPropsDataString || '{}',
+          route.localPropsDataString || '{}'
         )
       }
-    }),
+    })
   )
 
   // Write all shared props to file
@@ -90,9 +91,9 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
     Array.from(sharedProps).map(cachedProp =>
       fs.outputFile(
         path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
-        cachedProp[1].jsonString || '{}',
-      ),
-    ),
+        cachedProp[1].jsonString || '{}'
+      )
+    )
   )
 
   const routeInfo = {}
@@ -103,8 +104,9 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Write routeInfo to file
   await fs.outputFile(path.join(config.paths.DIST, 'routeInfo.json'), JSON.stringify(routeInfo))
 
-  return Promise.all(
-    config.routes.map(async route => {
+  return Promise.map(
+    config.routes,
+    async route => {
       const staticURL = route.path
 
       // Inject initialProps into static build
@@ -114,7 +116,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           initialProps: PropTypes.object,
           siteProps: PropTypes.object,
           staticURL: PropTypes.string,
-        }
+        };
         getChildContext () {
           return {
             propsMap: route.propsMap,
@@ -174,7 +176,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         renderToStringAndExtract,
         CompWithContext,
         renderMeta,
-        clientStats,
+        clientStats
       )
 
       // Instead of using the default components, we need to hard code meta
@@ -249,7 +251,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           renderMeta={renderMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
-        </DocumentTemplate>,
+        </DocumentTemplate>
       )}`
 
       // If the siteRoot is set, prefix all absolute URL's
@@ -264,7 +266,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         : path.join(config.paths.DIST, route.path, 'index.html')
 
       await fs.outputFile(htmlFilename, html)
-    }),
+    },
+    { concurrency: 5 }
   )
 }
 
@@ -352,8 +355,8 @@ export const prepareRoutes = async config => {
       (template, index) =>
         `const t_${index} = universal(import('${path.relative(
           config.paths.DIST,
-          path.resolve(config.paths.ROOT, template),
-        )}'), universalOptions)`,
+          path.resolve(config.paths.ROOT, template)
+        )}'), universalOptions)`
     )
     .join('\n')}
 
