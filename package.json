@@ -1,6 +1,6 @@
 {
   "name": "react-static",
-  "version": "4.9.0-beta",
+  "version": "4.9.0-beta.1",
   "main": "lib/index.js",
   "types": "src/index.d.ts",
   "license": "MIT",
@@ -22,13 +22,10 @@
   },
   "repository": "nozzle/react-static",
   "devDependencies": {
-    "babel-plugin-universal-import": "^1.4.0",
     "eslint": "^4.3.0",
     "eslint-config-react-tools": "^1.0.6",
-    "extract-css-chunks-webpack-plugin": "^2.0.18",
     "jest": "^21.2.1",
-    "rimraf": "^2.6.2",
-    "webpack-flush-chunks": "^1.2.3"
+    "rimraf": "^2.6.2"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
@@ -40,6 +37,7 @@
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-plugin-universal-import": "^1.4.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-latest": "^6.24.1",
@@ -54,6 +52,7 @@
     "cors": "^2.8.4",
     "cross-spawn": "^5.1.0",
     "css-loader": "^0.28.7",
+    "extract-css-chunks-webpack-plugin": "^2.0.18",
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^1.1.4",
     "fs-extra": "^4.0.2",
@@ -82,6 +81,7 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.8.2",
+    "webpack-flush-chunks": "^1.2.3",
     "webpack-node-externals": "^1.6.0"
   }
 }
