@@ -1,21 +1,20 @@
 module.exports.default = {
   getRoutes: function() {
-    const routes = [];
+    var routes = [];
 
-    for (let index = 0; index < 10000; index++) {
+    for (var index = 0; index < 10000; index++) {
       routes.push({
-        path: `/${index}`,
+        path: '/' + index,
         component: 'src/Home',
       });
     }
 
-    return routes.map(route => {
-      return {
-        ...route,
-        getProps: () => ({
-          routes,
-        }),
-      };
+    return routes.map(function(route) {
+      return Object.assign(route, {
+        getProps: function() {
+          return routes;
+        },
+      });
     });
   },
 };
