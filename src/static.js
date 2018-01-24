@@ -17,10 +17,6 @@ import { DefaultDocument } from './RootComponents'
 export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Use the node version of the app created with webpack
   const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
-  const manifestScript = glob
-    .sync(path.resolve(config.paths.DIST, 'manifest.*.json'))[0]
-    .split('/')
-    .pop()
 
   const DocumentTemplate = config.Document || DefaultDocument
 
@@ -209,9 +205,6 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {showHelmetTitle && head.title}
             {head.meta}
             {head.link}
-            {manifestScript && (
-              <link rel="manifest" href={`${config.publicPath}${manifestScript}`} />
-            )}
             {process.env.extractedCSSpath && (
               <link rel="stylesheet" href={`${config.publicPath}${process.env.extractedCSSpath}`} />
             )}
