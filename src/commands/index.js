@@ -1,81 +1,12 @@
-import 'babel-register'
-import chalk from 'chalk'
-import fs from 'fs'
-
-const ignoredExtensions = [
-  'css',
-  'scss',
-  'styl',
-  'less',
-  'png',
-  'gif',
-  'jpg',
-  'jpeg',
-  'svg',
-  'woff',
-  'ttf',
-  'eot',
-  'otf',
-  'mp4',
-  'webm',
-  'ogg',
-  'mp3',
-  'wav',
-  'md',
-  'yaml',
-]
-ignoredExtensions.forEach(ext => {
-  require.extensions[`.${ext}`] = () => {}
+/* eslint-disable */
+require = require('@std/esm')(module, {
+  esm: 'js',
+  cjs: true
+})
+require('@babel/register')({
+  babelrc: false,
+  presets: [require('../../babel-preset')],
+  cache: false
 })
 
-// Be sure to log useful information about unhandled exceptions. This should seriously
-// be a default: https://github.com/nodejs/node/issues/9523#issuecomment-259303079
-process.on('unhandledRejection', r => {
-  console.log('')
-  console.log('UnhandledPromiseRejectionWarning: Unhandled Promise Rejection')
-  console.log(r)
-})
-
-export default function () {
-  const cmd = process.argv[2]
-  const cliArguments = process.argv.slice(3)
-
-  if (['-v', '--version'].indexOf(cmd) !== -1) {
-    const packageJson = JSON.parse(fs.readFileSync(`${__dirname}/../../package.json`, 'utf8'))
-    return console.log(packageJson.version)
-  }
-
-  if (cmd === 'start') {
-    if (typeof process.env.NODE_ENV === 'undefined') {
-      process.env.NODE_ENV = 'development'
-    }
-    process.env.REACT_STATIC_ENV = 'development'
-    return require('./start').default(cliArguments)
-  }
-
-  if (cmd === 'build') {
-    if (typeof process.env.NODE_ENV === 'undefined') {
-      process.env.NODE_ENV = 'production'
-    }
-    process.env.REACT_STATIC_ENV = 'production'
-    return require('./build').default(cliArguments)
-  }
-
-  if (cmd === 'create') {
-    return require('./create').default(process.argv[3])
-  }
-
-  console.log(
-    `
-Usage: react-static <command>
-
-- ${chalk.green('create')}  -  create a new project
-- ${chalk.green('start')}  -  start the development server
-- ${chalk.green('build')}  -  build site for production
-
-Options:
-
-    -v, --version output the version number
-`,
-  )
-}
+module.exports.default = require('./main').default
