@@ -19,7 +19,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - 🚀 Blazing fast builds and performance.
 - 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
 - ✂️ Automatic code and data splitting!
-- 💥 Near-instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
+- 💥 Instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
 - 🎯 Built for **SEO**.
 - 🥇 React-first developer experience.
 - 😌 Painless project setup & migration.
