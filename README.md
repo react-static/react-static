@@ -607,12 +607,19 @@ export () => (
 ```
 
 ---
-### `<Prefetch path=''/>`
+### `<Prefetch path='' only=''/>`
 
-Prefetch is a react component that accepts a `path` prop and an optional single child to render. When this component is rendered, any data resolved by the `path`'s corresponding `getProps` function will be prefetched. This ensures that if the user then navigates to that route in your site, they do not have to wait for the required data to load.
+Prefetch is a react component that accepts a `path` prop, and optional `only` prop and an optional single child to render. When this component is rendered, any data or template required to render the `path` will be prefetched. This ensures that if the user then navigates to that route , they will not have to wait for the required data to load.
 
+Props:
+- `path` - `required().string()`
+  - The path you want to prefetch.
+- `only` - `optional().oneOf(['data', 'template'])`
+  - An optional string denoted whether to only load the `data` or `template` for the path.
+
+Notes:
 - If the path doesn't match a route, no data will be loaded.
-- If the route has already been loaded in the session, the cache will be used instead.
+- If the route has already been loaded in the session, the synchronous cache will be used instead.
 - If multiple instances of the same `path` are prefetched at the same time, only a single request will be made for all instances.
 - If used more often than needed, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
 

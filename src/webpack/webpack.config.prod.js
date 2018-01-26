@@ -20,24 +20,24 @@ export default function ({ config, isNode }) {
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
       publicPath: config.siteRoot || '/',
-      libraryTarget: isNode ? 'umd' : undefined,
+      libraryTarget: isNode ? 'umd' : undefined
     },
     target: isNode ? 'node' : undefined,
     externals: isNode
       ? [
         nodeExternals({
-          whitelist: ['react-universal-component', 'webpack-flush-chunks'],
-        }),
+          whitelist: ['react-universal-component', 'webpack-flush-chunks']
+        })
       ]
       : [],
     module: {
-      rules: rules({ config, stage: 'prod' }),
+      rules: rules({ config, stage: 'prod' })
     },
     resolve: {
       alias: config.preact
         ? {
           react: 'preact-compat',
-          'react-dom': 'preact-compat',
+          'react-dom': 'preact-compat'
         }
         : {},
       modules: [
@@ -45,10 +45,10 @@ export default function ({ config, isNode }) {
         'node_modules',
         NODE_MODULES,
         SRC,
-        DIST,
+        DIST
       ],
       extensions: ['.js', '.json', '.jsx'],
-      mainFields: isNode ? ['main'] : undefined,
+      mainFields: isNode ? ['main'] : undefined
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
@@ -57,11 +57,11 @@ export default function ({ config, isNode }) {
           process.env.extractedCSSpath = getPath('styles.[hash:8].css')
           return process.env.extractedCSSpath
         },
-        allChunks: true,
+        allChunks: true
       }),
       new HtmlWebpackPlugin({
         inject: true,
-        filename: HTML_TEMPLATE,
+        filename: HTML_TEMPLATE
         // We dont use a template here because we are only concerned with the
         // output files, given that the index.html will also be overwritten by
         // the static export in the end.
@@ -70,11 +70,11 @@ export default function ({ config, isNode }) {
       !isNode &&
         new webpack.optimize.CommonsChunkPlugin({
           name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
-          minChunks: Infinity,
+          minChunks: Infinity
         }),
       isNode &&
         new webpack.optimize.LimitChunkCountPlugin({
-          maxChunks: 1,
+          maxChunks: 1
         }),
       !isNode && new webpack.optimize.UglifyJsPlugin(),
       // !isNode &&
@@ -104,9 +104,9 @@ export default function ({ config, isNode }) {
       //       },
       //     ],
       //   }),
-      config.bundleAnalyzer && !isNode && new BundleAnalyzerPlugin(),
+      config.bundleAnalyzer && !isNode && new BundleAnalyzerPlugin()
     ].filter(d => d),
 
-    devtool: 'source-map',
+    devtool: 'source-map'
   }
 }

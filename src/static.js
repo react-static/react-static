@@ -48,14 +48,14 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             const jsonString = JSON.stringify(prop)
             sharedProps.set(prop, {
               jsonString,
-              hash: shorthash.unique(jsonString),
+              hash: shorthash.unique(jsonString)
             })
           } else {
             // Mark the prop as seen
             seenProps.set(prop, true)
           }
         })
-    }),
+    })
   )
 
   await Promise.all(
@@ -79,10 +79,10 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         route.propsMap.__local = route.localPropsHash
         return fs.outputFile(
           path.join(config.paths.STATIC_DATA, `${route.localPropsHash}.json`),
-          route.localPropsDataString || '{}',
+          route.localPropsDataString || '{}'
         )
       }
-    }),
+    })
   )
 
   // Write all shared props to file
@@ -90,9 +90,9 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
     Array.from(sharedProps).map(cachedProp =>
       fs.outputFile(
         path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
-        cachedProp[1].jsonString || '{}',
-      ),
-    ),
+        cachedProp[1].jsonString || '{}'
+      )
+    )
   )
 
   const routeInfo = {}
@@ -101,7 +101,12 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   })
 
   // Write routeInfo to file
-  await fs.outputFile(path.join(config.paths.DIST, 'routeInfo.json'), JSON.stringify(routeInfo))
+  await fs.outputFile(
+    path.join(config.paths.DIST, 'routeInfo.js'),
+    `
+    window.__routeInfo = ${JSON.stringify(routeInfo)}
+  `
+  )
 
   return Promise.all(
     config.routes.map(async route => {
@@ -113,14 +118,14 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           propsMap: PropTypes.object,
           initialProps: PropTypes.object,
           siteProps: PropTypes.object,
-          staticURL: PropTypes.string,
+          staticURL: PropTypes.string
         }
         getChildContext () {
           return {
             propsMap: route.propsMap,
             initialProps: route.initialProps,
             siteProps,
-            staticURL,
+            staticURL
           }
         }
         render () {
@@ -133,6 +138,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       const chunkNames = []
       let head = {}
       let clientScripts = []
+      let clientStyleSheets = []
 
       const CompWithContext = props => (
         <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
@@ -145,11 +151,12 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       const renderToStringAndExtract = comp => {
         // Rend the app to string!
         const appHtml = renderToString(comp)
-        const { scripts } = flushChunks(clientStats, {
-          chunkNames,
+        const { scripts, stylesheets } = flushChunks(clientStats, {
+          chunkNames
         })
 
         clientScripts = scripts
+        clientStyleSheets = stylesheets
 
         // Extract head calls using Helmet synchronously right after renderToString
         // to not introduce any race conditions in the meta data rendering
@@ -163,7 +170,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           noscript: helmet.noscript.toComponent(),
           script: helmet.script.toComponent(),
           style: helmet.style.toComponent(),
-          title: helmet.title.toComponent(),
+          title: helmet.title.toComponent()
         }
 
         return appHtml
@@ -174,7 +181,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         renderToStringAndExtract,
         CompWithContext,
         renderMeta,
-        clientStats,
+        clientStats
       )
 
       // Instead of using the default components, we need to hard code meta
@@ -204,10 +211,14 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
+            <link rel="preload" as="script" href={`${config.publicPath}routeInfo.js`} />
+            {clientScripts.map(script => (
+              <link rel="preload" as="script" href={`${config.publicPath}${script}`} />
+            ))}
+            {clientStyleSheets.map(styleSheet => (
+              <link rel="stylesheet" href={`${config.publicPath}${styleSheet}`} />
+            ))}
             {head.link}
-            {process.env.extractedCSSpath && (
-              <link rel="stylesheet" href={`${config.publicPath}${process.env.extractedCSSpath}`} />
-            )}
             {head.noscript}
             {head.script}
             {head.style}
@@ -229,8 +240,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           path: route.path,
           propsMap: route.propsMap,
           initialProps: route.initialProps,
-          siteProps,
-        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
+          siteProps
+        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`
             }}
           />
           {clientScripts.map(script => (
@@ -249,7 +260,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           renderMeta={renderMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
-        </DocumentTemplate>,
+        </DocumentTemplate>
       )}`
 
       // If the siteRoot is set, prefix all absolute URL's
@@ -264,7 +275,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         : path.join(config.paths.DIST, route.path, 'index.html')
 
       await fs.outputFile(htmlFilename, html)
-    }),
+    })
   )
 }
 
@@ -281,8 +292,8 @@ export async function buildXMLandRSS ({ config }) {
       permalink: config.siteRoot + route.path,
       lastModified: '',
       priority: 0.5,
-      ...route,
-    })),
+      ...route
+    }))
   })
 
   await fs.writeFile(path.join(config.paths.DIST, 'sitemap.xml'), xml)
@@ -352,8 +363,8 @@ export const prepareRoutes = async config => {
       (template, index) =>
         `const t_${index} = universal(import('${path.relative(
           config.paths.DIST,
-          path.resolve(config.paths.ROOT, template),
-        )}'), universalOptions)`,
+          path.resolve(config.paths.ROOT, template)
+        )}'), universalOptions)`
     )
     .join('\n')}
 

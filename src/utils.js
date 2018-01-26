@@ -14,7 +14,7 @@ const defaultEntry = 'index.js'
 
 export const ChalkColor = {
   yarn: '#2c8ebb',
-  npm: '#cb3837',
+  npm: '#cb3837'
 }
 
 export const findAvailablePort = start =>
@@ -22,15 +22,15 @@ export const findAvailablePort = start =>
     OpenPort.find(
       {
         startingPort: start,
-        endingPort: start + 1000,
+        endingPort: start + 1000
       },
       (err, port) => {
         if (err) {
           return reject(err)
         }
         resolve(port)
-      },
-    ),
+      }
+    )
   )
 
 // Retrieves the static.config.js from the current project directory
@@ -42,7 +42,7 @@ export const getConfig = () => {
     src: 'src',
     dist: 'dist',
     public: 'public',
-    ...(config.paths || {}),
+    ...(config.paths || {})
   }
 
   // Resolve the root of the project
@@ -65,7 +65,7 @@ export const getConfig = () => {
     NODE_MODULES: resolvePath('node_modules'),
     PACKAGE: resolvePath('package.json'),
     HTML_TEMPLATE: path.join(distPath, 'index.html'),
-    STATIC_DATA: path.join(distPath, 'staticData'),
+    STATIC_DATA: path.join(distPath, 'staticData')
   }
 
   const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null
@@ -79,22 +79,28 @@ export const getConfig = () => {
     // At least ensure the index page is defined for export
       normalizeRoutes([
         {
-          path: '/',
-        },
+          path: '/'
+        }
       ])
 
-  return {
+  const finalConfig = {
     // Defaults
     entry: path.join(paths.SRC, defaultEntry),
     getSiteProps: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
+    prefetchRate: 10,
     // Config Overrides
     ...config,
     // Materialized Overrides
     paths,
     siteRoot,
-    getRoutes,
+    getRoutes
   }
+
+  // Set env variables to be used client side
+  process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
+
+  return finalConfig
 }
 
 const path404 = '/404'
@@ -115,7 +121,7 @@ export function normalizeRoutes (routes) {
       ...route,
       path: routePath,
       noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
-      hasGetProps: !!route.getProps,
+      hasGetProps: !!route.getProps
     }
 
     if (!normalizedRoute.path) {
@@ -142,7 +148,7 @@ export function normalizeRoutes (routes) {
   if (!flatRoutes.find(d => d.is404)) {
     flatRoutes.push({
       is404: true,
-      path: path404,
+      path: path404
     })
   }
 
@@ -154,7 +160,7 @@ export function copyPublicFolder (config) {
 
   fs.copySync(config.paths.PUBLIC, config.paths.DIST, {
     dereference: true,
-    filter: file => file !== config.paths.INDEX,
+    filter: file => file !== config.paths.INDEX
   })
 }
 
@@ -163,7 +169,7 @@ export async function createIndexFilePlaceholder ({ config, Component, siteProps
   const html = `<!DOCTYPE html>${renderToString(
     <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
       <div id="root" />
-    </Component>,
+    </Component>
   )}`
 
   // Write the Document to index.html
