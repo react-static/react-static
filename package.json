@@ -17,7 +17,8 @@
     "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
     "test": "eslint src examples test && yarn run test-sample-build",
-    "test-sample-build": "yarn build && (cd test/minimal-website && ../../bin/react-static build)",
+    "test-sample-build":
+      "yarn build && (cd test/minimal-website && ../../bin/react-static build)",
     "test-webpack": "jest"
   },
   "repository": "nozzle/react-static",
@@ -77,6 +78,7 @@
     "react-router-dom": "^4.2.2",
     "react-universal-component": "^2.8.1",
     "shorthash": "^0.0.2",
+    "slash": "^1.0.0",
     "style-loader": "^0.19.0",
     "swimmer": "^1.1.1",
     "url-loader": "^0.6.1",
@@ -85,5 +87,9 @@
     "webpack-dev-server": "^2.8.2",
     "webpack-flush-chunks": "^1.2.3",
     "webpack-node-externals": "^1.6.0"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   }
 }
