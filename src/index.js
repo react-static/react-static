@@ -595,18 +595,17 @@ const reactRouterProps = [
   'replace'
 ]
 
-function domLinkProps (props) {
-  const result = { ...props }
+function DomLink ({ children, ...rest }) {
+  const aProps = { ...rest }
+  aProps.href = aProps.to
+  aProps.to = undefined
 
-  result.href = result.to
-  result.to = undefined
-
-  reactRouterProps.filter(prop => result[prop]).forEach(prop => {
-    console.warn(`Warning: ${prop} makes no sense on a <Link to="${props.to}">.`)
+  reactRouterProps.filter(prop => aProps[prop]).forEach(prop => {
+    console.warn(`Warning: ${prop} makes no sense on a <Link to="${aProps.to}">.`)
   })
-  reactRouterProps.forEach(prop => delete result[prop])
+  reactRouterProps.forEach(prop => delete aProps[prop])
 
-  return result
+  return <a {...aProps}>{children}</a>
 }
 
 function getRouteToPath (to) {
@@ -616,26 +615,24 @@ function getRouteToPath (to) {
   return to
 }
 
+function LinkWithComp ({ Comp, only, ...rest }) {
+  return (
+    <Prefetch path={getRouteToPath(rest.to)} only={only}>
+      <Comp {...rest} />
+    </Prefetch>
+  )
+}
+
 export function Link (props) {
   if (isRoutingUrl(props.to)) {
-    const { only, ...rest } = props
-    return (
-      <Prefetch path={getRouteToPath(rest.to)} only={only}>
-        <ReactRouterLink {...rest} />
-      </Prefetch>
-    )
+    return <LinkWithComp Comp={ReactRouterLink} {...props} />
   }
-  return <a {...domLinkProps(props)}>{props.children}</a>
+  return <DomLink {...props} />
 }
 
 export function NavLink (props) {
   if (isRoutingUrl(props.to)) {
-    const { only, ...rest } = props
-    return (
-      <Prefetch path={getRouteToPath(rest.to)} only={only}>
-        <ReactRouterNavLink {...rest} />
-      </Prefetch>
-    )
+    return <LinkWithComp Comp={ReactRouterNavLink} {...props} />
   }
-  return <a {...domLinkProps(props)}>{props.children}</a>
+  return <DomLink {...props} />
 }
