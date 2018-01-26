@@ -12,7 +12,12 @@
     "react"
   ],
   "plugins": [
-    "universal-import",
+    [
+      "universal-import",
+      {
+        "disableWarnings": true
+      }
+    ],
     "react-hot-loader/babel",
     "transform-class-properties",
     [
