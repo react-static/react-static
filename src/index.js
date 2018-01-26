@@ -617,9 +617,9 @@ function getRouteToPath (to) {
 
 function LinkWithComp ({ Comp, only, ...rest }) {
   return (
-    <Prefetch path={getRouteToPath(rest.to)} only={only}>
+    <PrefetchWhenSeen path={getRouteToPath(rest.to)} only={only}>
       <Comp {...rest} />
-    </Prefetch>
+    </PrefetchWhenSeen>
   )
 }
 
