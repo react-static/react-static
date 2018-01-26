@@ -1,6 +1,6 @@
 # React-Static - Dynamic Imports with SSR Example
 
-This example of React Static includes:
+This example of React Static includes a demonstration on how to import your own dynamic components that will be statically rendered (SSR) in addition to being code-split.
 
 * Babel
 * CSS imports
