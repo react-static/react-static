@@ -18,7 +18,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - ⚛️ 100% React (or Preact!)
 - 🚀 Blazing fast builds and performance.
 - 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
-- ✂️ Automatic code and data splitting!
+- ✂️ Automatic code and data splitting for routes!
 - 💥 Instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
 - 🎯 Built for **SEO**.
 - 🥇 React-first developer experience.
@@ -686,6 +686,8 @@ React Static has a very unique and amazing way of requesting the least amount of
 - **Route Data** - Reach route's `getProps` function results in a separate data file for each route being stored.
 
 - **Shared Route Data** - Not only is each route's props stored in a separate file, but each individual prop is compared to every other route's props for `===` equality. When a prop is found to be used in more than one route, it is promoted to a **shared prop** and stored in it's very own JSON file.
+
+- **Manual Code Splitting with Universal** - React Static comes built in with support for `react-universal-component`. This means aside from the automatic code splitting that React Static offers, you can also manually code split very large components if you choose to do so. See the ["About" page in the dynamic-imports example](https://github.com/nozzle/react-static/blob/master/examples/dynamic-imports/src/containers/about.js) to see how it works and how easy it is!
 
 
 #### Why is all of this cool?
