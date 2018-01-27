@@ -14,6 +14,7 @@ import {
 } from 'react-router-dom'
 //
 import { pathJoin, unwrapArray, isObject, createPool } from './shared'
+import ScrollTo from './utils/ScrollTo'
 
 // Proxy React Router
 export { Prompt, Redirect, Route, Switch, matchPath, withRouter } from 'react-router-dom'
@@ -441,7 +442,7 @@ export class PrefetchWhenSeen extends Component {
   runPrefetch = () =>
     (async () => {
       const { path, onLoad, only } = this.props
-      const data = await prefetch(path, only)
+      const data = await prefetch(path, { only })
       onLoad(data, path)
     })()
 
@@ -452,9 +453,17 @@ export class PrefetchWhenSeen extends Component {
   }
 
   render () {
-    const { children, className } = this.props
+    const { component, render, children, ...rest } = this.props
+    if (component) {
+      return React.createElement(component, {
+        handleRef: this.handleRef
+      })
+    }
+    if (render) {
+      return render({ handleRef: this.handleRef })
+    }
     return (
-      <div className={className} ref={this.handleRef}>
+      <div ref={this.handleRef} {...rest}>
         {children}
       </div>
     )
@@ -467,6 +476,46 @@ const setLoading = d => {
   loading = d
   subscribers.forEach(s => s())
 }
+
+const RouterScroller = withRouter(
+  class RouterScroller extends Component {
+    static defaultProps = {
+      scrollToTopDuration: 0,
+      scrollToHashDuration: 800
+    }
+    componentDidMount () {
+      this.scrollToHash()
+    }
+    componentDidUpdate (prev) {
+      if (prev.location.hash !== this.props.location.hash && this.props.location.hash) {
+        return this.scrollToHash()
+      }
+      if (prev.location.pathname !== this.props.location.pathname) {
+        ScrollTo(0, {
+          duration: this.props.scrollToTopDuration
+        })
+      }
+    }
+    scrollToHash = () => {
+      const { hash, scrollToHashDuration } = this.props.location
+      if (hash) {
+        const resolvedHash = hash.substring(1)
+        console.log(resolvedHash)
+        if (resolvedHash) {
+          const element = document.getElementById(resolvedHash)
+          if (element !== null) {
+            ScrollTo(element, {
+              duration: scrollToHashDuration
+            })
+          }
+        }
+      }
+    }
+    render () {
+      return unwrapArray(this.props.children)
+    }
+  }
+)
 
 export class Router extends Component {
   static defaultProps = {
@@ -507,7 +556,14 @@ export class Router extends Component {
     })
   }
   render () {
-    const { history, type, ...rest } = this.props
+    const {
+      history,
+      type,
+      children,
+      scrollToTopDuration,
+      scrollToHashDuration,
+      ...rest
+    } = this.props
     const { staticURL } = this.context
     const context = staticURL ? {} : undefined
 
@@ -569,13 +625,17 @@ export class Router extends Component {
     }
 
     return (
-      <ResolvedRouter history={resolvedHistory} location={staticURL} context={context} {...rest} />
+      <ResolvedRouter history={resolvedHistory} location={staticURL} context={context} {...rest}>
+        <RouterScroller {...{ scrollToTopDuration, scrollToHashDuration }}>
+          {children}
+        </RouterScroller>
+      </ResolvedRouter>
     )
   }
 }
 
 function isRoutingUrl (to) {
-  if (typeof to !== 'string') return true
+  if (typeof to === 'undefined') return false
   return (
     !to.match(/^#/) &&
     !to.match(/^[a-z]{1,10}:\/\//) &&
@@ -595,44 +655,31 @@ const reactRouterProps = [
   'replace'
 ]
 
-function DomLink ({ children, ...rest }) {
-  const aProps = { ...rest }
-  aProps.href = aProps.to
-  aProps.to = undefined
+export function NavLink ({ Comp, only, ...rest }) {
+  const { to } = rest
+  const resolvedTo = isObject(to) ? to.path : to
+  // Router Link
+  if (isRoutingUrl(resolvedTo)) {
+    return (
+      <PrefetchWhenSeen
+        path={resolvedTo}
+        only={only}
+        render={({ handleRef }) => <ReactRouterNavLink {...rest} innerRef={handleRef} />}
+      />
+    )
+  }
 
-  reactRouterProps.filter(prop => aProps[prop]).forEach(prop => {
-    console.warn(`Warning: ${prop} makes no sense on a <Link to="${aProps.to}">.`)
+  // Browser Link
+  const { children, ...aRest } = rest
+  aRest.href = aRest.to
+  delete aRest.to
+
+  reactRouterProps.filter(prop => aRest[prop]).forEach(prop => {
+    console.warn(`Warning: ${prop} makes no sense on a <Link to="${aRest.href}">.`)
   })
-  reactRouterProps.forEach(prop => delete aProps[prop])
+  reactRouterProps.forEach(prop => delete aRest[prop])
 
-  return <a {...aProps}>{children}</a>
+  return <a {...aRest}>{children}</a>
 }
 
-function getRouteToPath (to) {
-  if (isObject(to)) {
-    return to.path
-  }
-  return to
-}
-
-function LinkWithComp ({ Comp, only, ...rest }) {
-  return (
-    <PrefetchWhenSeen path={getRouteToPath(rest.to)} only={only}>
-      <Comp {...rest} />
-    </PrefetchWhenSeen>
-  )
-}
-
-export function Link (props) {
-  if (isRoutingUrl(props.to)) {
-    return <LinkWithComp Comp={ReactRouterLink} {...props} />
-  }
-  return <DomLink {...props} />
-}
-
-export function NavLink (props) {
-  if (isRoutingUrl(props.to)) {
-    return <LinkWithComp Comp={ReactRouterNavLink} {...props} />
-  }
-  return <DomLink {...props} />
-}
+export const Link = NavLink

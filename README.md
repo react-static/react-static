@@ -266,16 +266,16 @@ export default {
 
 ### `<Router>`
 
-The `Router` component is required, and provides the underlying React-Router context to its children. It is recommended to always be the root component of a react-static app.
+The `Router` component is required, and provides the underlying React-Router context to its children. It is recommended to always be the root component of a react-static app. It will **automatically** handle both static and browser environments.
 
-- `Router` automatically handles rendering both static and browser environments.
-- Supports an optional `type` prop that can be one of:
-
+**Props**
+- `type: one of:`
   - `browser` - Uses `history.createBrowserHistory`
   - `hash` - Uses `history.createHashHistory`
   - `memory` - Uses `history.createMemoryHistory`
-
-- It optionally accepts a `history` object (most-often used for things like react-router-redux), and also provides a helper method to subscribe to loading events. Note that this will override the `type` prop above.
+- `scrollToHashDuration: int` - The duration of the automatic scroll-to-hash animation that happens on hash changes. Defaults to `800`
+- `scrollToTopDuration: int` - The duration of the automatic scroll-to-top animation that happens on path changes. Defaults to `0`
+- `history: History` - An optional history object (most-often used for things like react-router-redux). Provides a helper method to subscribe to loading events. Note that this will override the `type` prop above.
 
 Example:
 

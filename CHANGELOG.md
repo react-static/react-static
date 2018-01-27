@@ -2,6 +2,8 @@
 #### Features
 - Automatic Route Splitting. From here on out as long a project is using the automatic component-based static routing, all route templates will be automatically deduped and split into separate modules. These modules are statically-rendered into every page that uses them, are preloaded asynchronously with React-Static built-in prefetching utiliies, and are also loaded on demand if needed as the client navigates through your site. Carry on!
 - Automatic prefetching of templates and assets. Any eligible `Link` component to a code/data-split destination will automatically queue a prefetch for the appropriate assets.
+- Route changes now automatically scroll to the top of the page. Duration defaults to `0`ms, but can be modifed via the `scrollToTopDuration` prop on the `Router` component.
+- Hash routing changes now automatically scroll to the element. Duration defaults to `800`ms, but can be modifed via the `scrollToHashDuration` prop on the `Router` component.
 
 # 4.8.2
 #### Fixes & Optimizations
