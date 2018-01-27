@@ -1,6 +1,6 @@
 {
   "name": "react-static",
-  "version": "4.9.0-beta.8",
+  "version": "4.9.0-beta.9",
   "main": "lib/index.js",
   "types": "src/index.d.ts",
   "license": "MIT",
@@ -17,8 +17,7 @@
     "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
     "test": "eslint src examples test && yarn run test-sample-build",
-    "test-sample-build":
-      "yarn build && (cd test/minimal-website && ../../bin/react-static build)",
+    "test-sample-build": "yarn build && (cd test/minimal-website && ../../bin/react-static build)",
     "test-webpack": "jest"
   },
   "repository": "nozzle/react-static",
