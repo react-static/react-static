@@ -83,7 +83,7 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [`react-static start`](#react-static-start)
   - [`react-static build`](#react-static-build)
 - [Project Setup](#project-setup)
-- [Configuration (`static.config.js`)](#configuration--staticconfigjs-)
+- [Configuration (`static.config.js`)](#configuration-staticconfigjs)
 - [Components & Tools](#components--tools)
   - [`<Router>`](#router)
   - [`<Routes>`](#routes)
