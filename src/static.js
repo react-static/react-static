@@ -88,7 +88,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         )
       }
     }),
-    Number(process.env.REACT_STATIC_OUTPUT_FILE_RATE) || 10
+    Number(config.outputFileRate) || 10
   )
 
   // Write all shared props to file
@@ -99,7 +99,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         cachedProp[1].jsonString || '{}'
       )
     ),
-    Number(process.env.REACT_STATIC_OUTPUT_FILE_RATE) || 10
+    Number(config.outputFileRate) || 10
   )
 
   const routeInfo = {}
@@ -298,7 +298,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
 
       return fs.outputFile(htmlFilename, html)
     }),
-    Number(process.env.REACT_STATIC_OUTPUT_FILE_RATE) || 10
+    Number(config.outputFileRate) || 10
   )
 }
 

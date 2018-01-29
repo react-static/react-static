@@ -89,6 +89,7 @@ export const getConfig = () => {
     getSiteProps: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
     prefetchRate: 10,
+    outputFileRate: 10,
     // Config Overrides
     ...config,
     // Materialized Overrides
