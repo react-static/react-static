@@ -262,6 +262,12 @@ export default {
 
   // Optional. Set to true to serve the bundle analyzer on a production build.
   bundleAnalyzer: false,
+
+  // Optional. The maximum number of files that can be concurrently written to disk during the build process.
+  outputFileRate: 10,
+
+  // Optional. The maximum number of inflight requests for preloading route data on the client.
+  prefetchRate: 10,
 }
 ```
 

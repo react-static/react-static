@@ -13,6 +13,7 @@ import flushChunks from 'webpack-flush-chunks'
 import slash from 'slash'
 //
 import { DefaultDocument } from './RootComponents'
+import { poolAll } from './shared'
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
@@ -62,8 +63,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
     })
   )
 
-  await Promise.all(
-    config.routes.map(async route => {
+  await poolAll(
+    config.routes.map(route => async () => {
       // Loop through the props and build the prop maps
       route.localProps = {}
       route.propsMap = {}
@@ -86,17 +87,19 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           route.localPropsDataString || '{}'
         )
       }
-    })
+    }),
+    Number(config.outputFileRate) || 10
   )
 
   // Write all shared props to file
-  await Promise.all(
-    Array.from(sharedProps).map(cachedProp =>
+  await poolAll(
+    Array.from(sharedProps).map(cachedProp => () =>
       fs.outputFile(
         path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
         cachedProp[1].jsonString || '{}'
       )
-    )
+    ),
+    Number(config.outputFileRate) || 10
   )
 
   const routeInfo = {}
@@ -112,8 +115,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   `
   )
 
-  return Promise.all(
-    config.routes.map(async route => {
+  return poolAll(
+    config.routes.map(route => async () => {
       const staticURL = route.path
 
       // Inject initialProps into static build
@@ -124,7 +127,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           siteProps: PropTypes.object,
           staticURL: PropTypes.string
         }
-        getChildContext() {
+        getChildContext () {
           return {
             propsMap: route.propsMap,
             initialProps: route.initialProps,
@@ -132,7 +135,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             staticURL
           }
         }
-        render() {
+        render () {
           return this.props.children
         }
       }
@@ -252,11 +255,11 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             dangerouslySetInnerHTML={{
               __html: `
                 window.__routeData = ${JSON.stringify({
-                  path: route.path,
-                  propsMap: route.propsMap,
-                  initialProps: route.initialProps,
-                  siteProps
-                }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`
+          path: route.path,
+          propsMap: route.propsMap,
+          initialProps: route.initialProps,
+          siteProps
+        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`
             }}
           />
           {clientScripts.map(script => (
@@ -293,12 +296,13 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         ? path.join(config.paths.DIST, '404.html')
         : path.join(config.paths.DIST, route.path, 'index.html')
 
-      await fs.outputFile(htmlFilename, html)
-    })
+      return fs.outputFile(htmlFilename, html)
+    }),
+    Number(config.outputFileRate) || 10
   )
 }
 
-export async function buildXMLandRSS({ config }) {
+export async function buildXMLandRSS ({ config }) {
   if (!config.siteRoot) {
     console.log(`
       => Warning: No 'siteRoot' defined in 'static.config.js'!
@@ -317,7 +321,7 @@ export async function buildXMLandRSS({ config }) {
 
   await fs.writeFile(path.join(config.paths.DIST, 'sitemap.xml'), xml)
 
-  function generateXML({ routes }) {
+  function generateXML ({ routes }) {
     let xml =
       '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
     routes.forEach(route => {
@@ -381,16 +385,16 @@ export const prepareRoutes = async config => {
     }
 
     ${templates
-      .map((template, index) => {
-        const templatePath = path.relative(
-          config.paths.DIST,
-          path.resolve(config.paths.ROOT, template)
-        )
-        return `const t_${index} = universal(import('${slash(
-          templatePath
-        )}'), universalOptions)`
-      })
-      .join('\n')}
+    .map((template, index) => {
+      const templatePath = path.relative(
+        config.paths.DIST,
+        path.resolve(config.paths.ROOT, template)
+      )
+      return `const t_${index} = universal(import('${slash(
+        templatePath
+      )}'), universalOptions)`
+    })
+    .join('\n')}
 
     // Template Map
     const templateMap = {
@@ -399,8 +403,8 @@ export const prepareRoutes = async config => {
 
     // Template Tree
     const templateTree = ${JSON.stringify(tree)
-      .replace(/"(\w)":/gm, '$1:')
-      .replace(/template: '(.+)'/gm, 'template: $1')}
+    .replace(/"(\w)":/gm, '$1:')
+    .replace(/template: '(.+)'/gm, 'template: $1')}
 
     // Get template for given path
     const getComponentForPath = path => {
@@ -451,7 +455,7 @@ export const prepareRoutes = async config => {
         )
       }
     }
-  `
+    `
 
   const dynamicRoutesPath = path.resolve(
     config.paths.DIST,
