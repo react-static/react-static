@@ -9,18 +9,11 @@ import {
   Router as ReactRouter,
   StaticRouter,
   withRouter,
-  Link as ReactRouterLink,
   NavLink as ReactRouterNavLink
 } from 'react-router-dom'
 //
-import { pathJoin, unwrapArray, isObject, createPool } from './shared'
-import ScrollTo from './utils/ScrollTo'
-
-// Proxy React Router
-export { Prompt, Redirect, Route, Switch, matchPath, withRouter } from 'react-router-dom'
-
-// Proxy Helmet as Head
-export { Helmet as Head }
+import { pathJoin, unwrapArray, isObject, createPool, deprecate } from './shared'
+import scrollTo from './utils/ScrollTo'
 
 //
 
@@ -131,15 +124,15 @@ async function prefetchData (path, { priority } = {}) {
     return pathProps[path]
   }
 
+  const isStaticRoute = routes.includes(path)
+
+  // Not a static route? Bail out.
+  if (!isStaticRoute) {
+    return
+  }
+
   // In development request all props in one go.
   if (process.env.REACT_STATIC_ENV === 'development') {
-    const isStaticRoute = routes.includes(path)
-
-    // Not a static route? Bail out.
-    if (!isStaticRoute) {
-      return
-    }
-
     // Then try for the embedded data first and return it
     if (window.__routeData && window.__routeData.path === path) {
       pathProps[path] = window.__routeData
@@ -238,7 +231,31 @@ async function prefetchTemplate (path, { priority } = {}) {
   }
 }
 
-export async function prefetch (path, options = {}) {
+async function needsPrefetch (path) {
+  // Clean the path
+  path = cleanPath(path)
+
+  if (!path) {
+    return false
+  }
+
+  // Get route info so we can check if path has any data
+  const routes = await getRouteInfo()
+
+  const isStaticRoute = routes.includes(path)
+
+  // Not a static route? Bail out.
+  if (isStaticRoute) {
+    return true
+  }
+
+  // Defer to the cache first
+  if (!pathProps[path]) {
+    return true
+  }
+}
+
+async function prefetch (path, options = {}) {
   // Clean the path
   path = cleanPath(path)
 
@@ -259,139 +276,156 @@ export async function prefetch (path, options = {}) {
   return data
 }
 
-export function getRouteProps (Comp) {
-  return withRouter(
-    class GetRouteProps extends Component {
-      static contextTypes = {
-        initialProps: PropTypes.object
-      }
-      state = {
-        loaded: false
-      }
-      componentWillMount () {
-        if (process.env.REACT_STATIC_ENV === 'development') {
-          this.loadRouteProps()
-        }
-      }
-      componentWillReceiveProps (nextProps) {
-        if (process.env.REACT_STATIC_ENV === 'development') {
-          if (
-            this.props.location.pathname + this.props.location.search !==
-            nextProps.location.pathname + nextProps.location.search
-          ) {
-            this.setState({ loaded: false }, this.loadRouteProps)
-          }
-        }
-      }
-      componentWillUnmount () {
-        this.unmounting = true
-      }
-      loadRouteProps = () =>
-        (async () => {
-          const { pathname, search } = this.props.location
-          const path = pathJoin(`${pathname}${search}`)
-          await prefetch(path)
-          if (this.unmounting) {
-            return
-          }
-          this.setState({
-            loaded: true
-          })
-        })()
-      render () {
-        const { pathname, search } = this.props.location
-        const path = pathJoin(`${pathname}${search}`)
-
-        let initialProps
-
-        if (typeof window !== 'undefined') {
-          if (window.__routeData && window.__routeData.path === path) {
-            initialProps = window.__routeData.initialProps
-          }
-        }
-
-        if (!initialProps && this.context.initialProps) {
-          initialProps = this.context.initialProps
-        } else {
-          initialProps = pathProps[path] ? pathProps[path].initialProps : initialProps
-        }
-
-        if (!initialProps && this.state.loaded) {
-          console.error(
-            `Warning: getRouteProps could not find any props for route: ${path}. Either you are missing a getProps function for this route in your static.config.js or you are using the getRouteProps HOC when you don't need to.`
-          )
-        }
-
-        if (!initialProps) {
-          if (process.env.REACT_STATIC_ENV === 'development') {
-            return <InitialLoading />
-          }
-          return null
-        }
-
-        return <Comp {...this.props} {...initialProps} />
-      }
-    }
-  )
-}
-
-export function getSiteProps (Comp) {
-  return class GetSiteProps extends Component {
+const RouteProps = withRouter(
+  class RouteProps extends React.Component {
     static contextTypes = {
-      siteProps: PropTypes.object
+      initialProps: PropTypes.object
     }
     state = {
-      siteProps: false
+      loaded: false
     }
-    async componentWillMount () {
+    componentWillMount () {
       if (process.env.REACT_STATIC_ENV === 'development') {
-        const { data: siteProps } = await (() => {
-          if (sitePropsPromise) {
-            return sitePropsPromise
-          }
-          sitePropsPromise = axios.get('/__react-static__/siteProps')
-          return sitePropsPromise
-        })()
-        if (this.unmounting) {
-          return
+        this.loadRouteProps()
+      }
+    }
+    componentWillReceiveProps (nextProps) {
+      if (process.env.REACT_STATIC_ENV === 'development') {
+        if (
+          this.props.location.pathname + this.props.location.search !==
+          nextProps.location.pathname + nextProps.location.search
+        ) {
+          this.setState({ loaded: false }, this.loadRouteProps)
         }
-        this.setState({
-          siteProps
-        })
       }
     }
     componentWillUnmount () {
       this.unmounting = true
     }
+    loadRouteProps = () =>
+      (async () => {
+        const { pathname, search } = this.props.location
+        const path = pathJoin(`${pathname}${search}`)
+        await prefetch(path)
+        if (this.unmounting) {
+          return
+        }
+        this.setState({
+          loaded: true
+        })
+      })()
     render () {
-      let siteProps
+      const { component, render, children, location: { pathname, search }, ...rest } = this.props
+      const path = pathJoin(`${pathname}${search}`)
+
+      let routeProps
+
       if (typeof window !== 'undefined') {
-        if (window.__routeData) {
-          siteProps = window.__routeData.siteProps
+        if (window.__routeData && window.__routeData.path === path) {
+          routeProps = window.__routeData.initialProps
         }
       }
 
-      if (!siteProps && this.context.siteProps) {
-        siteProps = this.context.siteProps
+      if (!routeProps && this.context.initialProps) {
+        routeProps = this.context.initialProps
+      } else {
+        routeProps = pathProps[path] ? pathProps[path].initialProps : routeProps
       }
 
-      if (!siteProps && this.state.siteProps) {
-        siteProps = this.state.siteProps
+      if (!routeProps && this.state.loaded) {
+        console.error(
+          `Warning: withRouteProps could not find any props for route: ${path}. Either you are missing a getProps function for this route in your static.config.js or you are using the withRouteProps HOC when you don't need to.`
+        )
       }
 
-      if (!siteProps) {
+      if (!routeProps) {
         if (process.env.REACT_STATIC_ENV === 'development') {
           return <InitialLoading />
         }
         return null
       }
 
-      return <Comp {...this.props} {...siteProps} />
+      const finalProps = {
+        ...rest,
+        ...routeProps
+      }
+      if (component) {
+        return React.createElement(component, finalProps)
+      }
+      if (render) {
+        return render(finalProps)
+      }
+      return children(finalProps)
     }
+  }
+)
+
+class SiteProps extends Component {
+  static contextTypes = {
+    siteProps: PropTypes.object
+  }
+  state = {
+    siteProps: false
+  }
+  async componentWillMount () {
+    if (process.env.REACT_STATIC_ENV === 'development') {
+      const { data: siteProps } = await (() => {
+        if (sitePropsPromise) {
+          return sitePropsPromise
+        }
+        sitePropsPromise = axios.get('/__react-static__/siteProps')
+        return sitePropsPromise
+      })()
+      if (this.unmounting) {
+        return
+      }
+      this.setState({
+        siteProps
+      })
+    }
+  }
+  componentWillUnmount () {
+    this.unmounting = true
+  }
+  render () {
+    const { component, render, children, ...rest } = this.props
+    let siteProps
+    if (typeof window !== 'undefined') {
+      if (window.__routeData) {
+        siteProps = window.__routeData.siteProps
+      }
+    }
+
+    if (!siteProps && this.context.siteProps) {
+      siteProps = this.context.siteProps
+    }
+
+    if (!siteProps && this.state.siteProps) {
+      siteProps = this.state.siteProps
+    }
+
+    if (!siteProps) {
+      if (process.env.REACT_STATIC_ENV === 'development') {
+        return <InitialLoading />
+      }
+      return null
+    }
+
+    const finalProps = {
+      ...rest,
+      ...siteProps
+    }
+    if (component) {
+      return React.createElement(component, finalProps)
+    }
+    if (render) {
+      return render(finalProps)
+    }
+    return children(finalProps)
   }
 }
 
-export class Prefetch extends Component {
+class Prefetch extends Component {
   static defaultProps = {
     children: null,
     path: null,
@@ -424,7 +458,7 @@ const handleIntersection = (element, callback) => {
   io.observe(element)
 }
 
-export class PrefetchWhenSeen extends Component {
+class PrefetchWhenSeen extends Component {
   static defaultProps = {
     children: null,
     path: null,
@@ -473,42 +507,78 @@ export class PrefetchWhenSeen extends Component {
 let loading = false
 let subscribers = []
 const setLoading = d => {
-  loading = d
-  subscribers.forEach(s => s())
+  if (loading !== d) {
+    loading = d
+    subscribers.forEach(s => s())
+  }
+}
+const onLoading = cb => {
+  const ccb = () => cb(loading)
+  subscribers.push(ccb)
+  return () => {
+    subscribers = subscribers.filter(d => d !== ccb)
+  }
+}
+
+class Loading extends React.Component {
+  state = {
+    loading
+  }
+  componentWillMount () {
+    this.unsubscribe = onLoading(loading =>
+      this.setState({
+        loading
+      })
+    )
+  }
+  render () {
+    const { component, render, children, ...rest } = this.props
+    const finalProps = {
+      ...rest,
+      loading: this.state.loading
+    }
+    if (component) {
+      return React.createElement(component, finalProps)
+    }
+    if (render) {
+      return render(finalProps)
+    }
+    return children(finalProps)
+  }
 }
 
 const RouterScroller = withRouter(
   class RouterScroller extends Component {
-    static defaultProps = {
-      scrollToTopDuration: 0,
-      scrollToHashDuration: 800
-    }
     componentDidMount () {
       this.scrollToHash()
     }
     componentDidUpdate (prev) {
-      if (prev.location.hash !== this.props.location.hash && this.props.location.hash) {
-        return this.scrollToHash()
-      }
-      if (prev.location.pathname !== this.props.location.pathname) {
-        ScrollTo(0, {
+      if (prev.location.pathname !== this.props.location.pathname && !this.props.location.hash) {
+        scrollTo(0, {
           duration: this.props.scrollToTopDuration
         })
+        return
+      }
+      if (prev.location.hash !== this.props.location.hash) {
+        return this.scrollToHash()
       }
     }
     scrollToHash = () => {
-      const { hash, scrollToHashDuration } = this.props.location
+      const { scrollToHashDuration, location: { hash } } = this.props
       if (hash) {
         const resolvedHash = hash.substring(1)
-        console.log(resolvedHash)
         if (resolvedHash) {
           const element = document.getElementById(resolvedHash)
           if (element !== null) {
-            ScrollTo(element, {
+            scrollTo(element, {
               duration: scrollToHashDuration
             })
           }
         }
+      } else {
+        scrollTo(0, {
+          duration: scrollToHashDuration
+        })
       }
     }
     render () {
@@ -517,16 +587,11 @@ const RouterScroller = withRouter(
   }
 )
 
-export class Router extends Component {
+class Router extends Component {
   static defaultProps = {
-    type: 'browser'
-  }
-  static subscribe = cb => {
-    const ccb = () => cb(loading)
-    subscribers.push(ccb)
-    return () => {
-      subscribers = subscribers.filter(d => d !== ccb)
-    }
+    type: 'browser',
+    scrollToTopDuration: 0,
+    scrollToHashDuration: 800
   }
   static contextTypes = {
     staticURL: PropTypes.string
@@ -554,6 +619,27 @@ export class Router extends Component {
       error,
       errorInfo
     })
+  }
+  patchHistoryNavigation = resolvedHistory => {
+    if (this.patchedNavigation) {
+      return
+    }
+    ['push', 'replace'].forEach(method => {
+      const originalMethod = resolvedHistory[method]
+      resolvedHistory[method] = async (...args) => {
+        const path = typeof args[0] === 'string' ? args[0] : args[0].path + args[0].search
+        const shouldPrefetch = await needsPrefetch(path)
+        if (shouldPrefetch) {
+          setLoading(true)
+          await prefetch(path, {
+            priority: true
+          })
+          setLoading(false)
+        }
+        originalMethod.apply(resolvedHistory, args)
+      }
+    })
+    this.patchedNavigation = true
   }
   render () {
     const {
@@ -610,18 +696,7 @@ export class Router extends Component {
         }
       }
       global.__reactStaticRouterHistory = resolvedHistory
-      ;['push', 'replace'].forEach(method => {
-        const originalMethod = resolvedHistory[method]
-        resolvedHistory[method] = async (...args) => {
-          const path = typeof args[0] === 'string' ? args[0] : args[0].path + args[0].search
-          setLoading(true)
-          await prefetch(path, {
-            priority: true
-          })
-          setLoading(false)
-          originalMethod.apply(resolvedHistory, args)
-        }
-      })
+      this.patchHistoryNavigation(resolvedHistory)
     }
 
     return (
@@ -655,7 +730,7 @@ const reactRouterProps = [
   'replace'
 ]
 
-export function NavLink ({ Comp, only, ...rest }) {
+function NavLink ({ Comp, only, ...rest }) {
   const { to } = rest
   const resolvedTo = isObject(to) ? to.path : to
   // Router Link
@@ -682,4 +757,61 @@ export function NavLink ({ Comp, only, ...rest }) {
   return <a {...aRest}>{children}</a>
 }
 
-export const Link = NavLink
+const Link = NavLink
+
+function withRouteProps (Comp) {
+  return function ConnectedRouteProps (props) {
+    return <RouteProps component={Comp} {...props} />
+  }
+}
+
+function withSiteProps (Comp) {
+  return function ConnectedSiteProps (props) {
+    return <SiteProps component={Comp} {...props} />
+  }
+}
+
+function withLoading (Comp) {
+  return function ConnectedLoading (props) {
+    return <Loading component={Comp} {...props} />
+  }
+}
+
+// Deprecations
+const getRouteProps = (...args) => {
+  deprecate('getRouteProps', 'withRouteProps')
+  return withRouteProps(...args)
+}
+const getSiteProps = (...args) => {
+  deprecate('getSiteProps', 'withSiteProps')
+  return withSiteProps(...args)
+}
+
+// Exports
+
+// Proxy React Router
+export { Prompt, Redirect, Route, Switch, matchPath, withRouter } from 'react-router-dom'
+// Proxy Helmet as Head
+export { Helmet as Head }
+// Export react-static utils
+export {
+  // components
+  RouteProps,
+  SiteProps,
+  Loading,
+  Prefetch,
+  PrefetchWhenSeen,
+  Router,
+  NavLink,
+  Link,
+  // methods
+  prefetch,
+  scrollTo,
+  withRouteProps,
+  withSiteProps,
+  withLoading,
+  onLoading,
+  // deprecated
+  getRouteProps,
+  getSiteProps
+}

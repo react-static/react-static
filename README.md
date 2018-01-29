@@ -40,6 +40,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [Manta.life](https://manta.life)
 - [Manticore Games](http://manticoregames.com)
 - [BlackSandSolutions.co](https://www.blacksandsolutions.co)
+- [David York - Pesonal Blog][http://davideyork.com]
 
 ## Examples and Templates
 
@@ -91,13 +92,13 @@ If you read these docs on `npmjs.com`, they correspond to the [published version
   - [Automatic Routing with Custom Render Props](#automatic-routing-with-custom-render-props)
   - [`<Link>` and `<NavLink>`](#link-and-navlink)
   - [Other Routing Utilities](#other-routing-utilities)
-  - [`getRouteProps(Component)`](#getroutepropscomponent)
-  - [`getSiteProps(Component)`](#getsitepropscomponent)
+  - [`withRouteProps(Component)`](#getroutepropscomponent)
+  - [`withSiteProps(Component)`](#getsitepropscomponent)
   - [`<Head>`](#head)
   - [`<Prefetch path=''/>`](#prefetch-path)
   - [`<PrefetchWhenSeen path=''/>`](#prefetchwhenseen-path)
   - [`prefetch(path)`](#prefetchpath)
-- [Code, Data, and Prop Splitting](#automatic-data-and-prop-splitting) 
+- [Code, Data, and Prop Splitting](#automatic-data-and-prop-splitting)
 - [Webpack Config and Plugins](#webpack-config-and-plugins)
 - [Using Preact in Production](#using-preact-in-production)
 
@@ -165,36 +166,49 @@ export default {
   // It is an asynchronous function that should
   // resolve an array of route objects. It is also passed a `dev`
   // boolean indicating whether this is a production build or not.
-  getRoutes: async ({dev}) => [{
-    path: '/', // A route object requires a `path` string
-    component: 'src/containers/Home', // specify the path of a react component that will render this route
-  }, {
-    path: '/blog',
-    component: 'src/containers/Blog',
-    children: [{ // It can also contain nested routes
-      path: '/post-1',
-      component: 'src/containers/Post',
-      // getProps is an asynchronous function that is passed the
-      // resolved `route` object and a `dev` boolean indicating
-      // whether this is a production build or not. This function
-      // should resolve any data the route needs to render e.g. blog
-      // posts, API data, etc.
+  getRoutes: async ({dev}) => [
+    {
+      // Required
+      path: '/', // A route object requires a `path` string. A leading/trailing slash is only required for the root
+      component: 'src/containers/Home', // specify the path of a react component that will render this route
+    },
+    {
+      // Required
+      path: 'blog', // A leading/trailing slash is not required
+      component: 'src/containers/Blog',
+
+      // Optional
       getProps: async ({route, dev}) => ({
-        post: {...},
+        // getProps is an asynchronous function that is passed the
+        // resolved `route` object and a `dev` boolean indicating
+        // whether this is a production build or not. This function
+        // should resolve any and all data this route needs to render e.g. blog
+        // posts, API data, etc.
+        posts: {...},
         otherProp: {...},
       }),
       noindex: false, // Optional. Defaults to `false`. If `true`, will exclude this route from the sitemap XML
       permalink: '', // Optional. If not set, will default to (siteRoot + path)
       lastModified: '', // Optional. String('YYYY-MM-DD')
       priority: 0.5, // Optional.
-    }, {
-      // If using automatic routing, you can specify a component to render the
-      // 404 page by creating a route with `is404` set to `true` and defining a
-      // `component` to use.
+
+      // A route can optionally contain nested routes
+      children: [{
+        path: 'post-1',
+        component: 'src/containers/Post',
+        getProps: async ({route, dev}) => ({
+          post: {...},
+          otherProp: {...},
+        }),
+      }],
+    },
+    {
+      // Specify a component to render the 404 page by creating a route with
+      // `is404` set to `true` and defining a `component` to use.
       is404: true,
       component: 'src/containers/NotFound',
-    }],
-  }],
+    }
+  ],
 
   // getSiteProps is very similar to a route's getProps, but is made available
   // to the entire site via the `getSiteProps` HOC
@@ -491,9 +505,9 @@ For your convenience, React Static also exports the following utilities normally
 - `withRouter`
 
 ---
-### `getRouteProps(Component)`
+### `withRouteProps(Component)`
 
-`getRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:
+`withRouteProps` is an HOC that provides a component with the results of the current route's `getProps` function as defined in your `static.config.js`. Here is a simple example:
 
 **static.config.js**
 
@@ -512,7 +526,7 @@ module.exports = {
 
 ```javascript
 
-const TopHundredSongsPage = getRouteProps(({songs}) =>
+const TopHundredSongsPage = withRouteProps(({songs}) =>
   <ul>
     {songs.map(song => <li key={song}>{song}</li>)}
   </ul>
@@ -548,7 +562,7 @@ TopHundredSongsPage.propTypes = {
     songs: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
-export default getRouteProps(TopHundredSongsPage);
+export default withRouteProps(TopHundredSongsPage);
 
 ...
 <Route exact path="/top-100-songs" component={TopHundredSongsPage} />
@@ -556,9 +570,9 @@ export default getRouteProps(TopHundredSongsPage);
 ```
 
 ---
-### `getSiteProps(Component)`
+### `withSiteProps(Component)`
 
-`getSiteProps` is an HOC that provides a component with the results of the `getSiteProps` function as defined in your `static.config.js`. Here is a simple example:
+`withSiteProps` is an HOC that provides a component with the results of the `getSiteProps` function as defined in your `static.config.js`. Here is a simple example:
 
 **static.config.js**
 
@@ -575,7 +589,7 @@ module.exports = {
 
 ```javascript
 
-const AnyComponent = getSiteProps(({ title, metaDescription }) =>
+const AnyComponent = withSiteProps(({ title, metaDescription }) =>
   <div>
     Welcome to {title}! I am a {metaDescription} :)
   </div>
@@ -664,6 +678,7 @@ import { PrefetchWhenSeen, Link } from 'react-static'
 ```
 
 ---
+
 ### `prefetch(path)`
 
 `prefetch` is an imperative version of the `Prefetch` component that you can use anywhere in your code.
@@ -676,6 +691,31 @@ import { prefetch } from 'react-static'
 const myFunc = async () => {  
   const data = await prefetch('/blog')
   console.log('The preloaded data:', data)
+}
+```
+
+---
+
+### `scrollTo(height || DOMElement [, options])`
+
+This method can be used to scroll to any given height or DOMElement you pass it.
+
+- Arguments
+  - `height: int || DOMElement` - The height from the top of the page or dom element you would like to scroll to.
+  - `options{}` - An optional settings object
+    - `duration: Int` - The duration of the animation in milliseconds
+    - `offset: Int` - The negative or positive offset in pixels
+    - `callback: Function` - A callback function that is called when the animation is complete
+    - `context: DOMElement` - The container element that will be scrolled.  Defaults to `body` via `window.scrollTo`
+
+Example:
+
+```javascript
+import { scrollTo } from 'react-static'
+
+const scrollToElement = () => {  
+  const element = document.getElementById('my-element')
+  scrollTo(element)
 }
 ```
 

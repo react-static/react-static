@@ -19,3 +19,9 @@ export function unwrapArray (arg, defaultValue) {
 export function isObject (a) {
   return !Array.isArray(a) && typeof a === 'object' && a !== null
 }
+
+export function deprecate (from, to) {
+  console.warn(
+    `React-Static deprecation notice: ${from} will be deprecated in favor of ${to} in the next major release.`
+  )
+}

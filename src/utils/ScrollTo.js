@@ -8,8 +8,11 @@ const defaultOptions = {
   context: typeof window !== 'undefined' && window
 }
 
-const getTop = (element, offset) =>
-  element.getBoundingClientRect().top + window.pageYOffset + offset
+const getTop = (element, offset, contextScrollHeight, contextVisibleHeight) =>
+  Math.min(
+    element.getBoundingClientRect().top + window.pageYOffset + offset,
+    contextScrollHeight - contextVisibleHeight
+  )
 
 const getPosition = (start, end, elapsed, duration, easeFn) => {
   if (elapsed > duration) return end
@@ -19,7 +22,19 @@ const getPosition = (start, end, elapsed, duration, easeFn) => {
 export default function scrollTo (element, options) {
   const { duration, offset, callback, context } = { ...defaultOptions, ...options }
   const start = window.pageYOffset
-  const end = typeof element === 'number' ? parseInt(element) : getTop(element, offset)
+  let innerHeight
+  let scrollHeight
+  if (context !== window) {
+    innerHeight = context.offsetHeight
+    scrollHeight = context.scrollHeight
+  } else {
+    innerHeight = window.innerHeight
+    scrollHeight = document.body.scrollHeight
+  }
+  const end =
+    typeof element === 'number'
+      ? parseInt(element)
+      : getTop(element, offset, scrollHeight, innerHeight)
   const clock = Date.now() - 1
   const step = () => {
     const elapsed = Date.now() - clock
@@ -29,13 +44,13 @@ export default function scrollTo (element, options) {
       window.scroll(0, getPosition(start, end, elapsed, duration, ease))
     }
 
-    if (elapsed > duration) {
+    if (typeof duration === 'undefined' || elapsed > duration) {
       if (typeof callback === 'function') {
         callback(element)
       }
-    } else {
-      raf(step)
+      return
     }
+    raf(step)
   }
   raf(step)
 }
