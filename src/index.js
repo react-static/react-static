@@ -12,8 +12,26 @@ import {
   NavLink as ReactRouterNavLink
 } from 'react-router-dom'
 //
+<<<<<<< HEAD
 import { pathJoin, unwrapArray, isObject, createPool, deprecate } from './shared'
 import scrollTo from './utils/ScrollTo'
+=======
+import { pathJoin, unwrapArray, isObject, createPool } from './shared'
+import ScrollTo from './utils/ScrollTo'
+
+// Proxy React Router
+export {
+  Prompt,
+  Redirect,
+  Route,
+  Switch,
+  matchPath,
+  withRouter
+} from 'react-router-dom'
+
+// Proxy Helmet as Head
+export { Helmet as Head }
+>>>>>>> e890883dd10c95a8d0a0d793f8d804a74f2e945e
 
 //
 
@@ -112,7 +130,9 @@ function cleanPath (path) {
   }
   let end = path.indexOf('#')
   end = end === -1 ? undefined : end
-  return pathJoin(path.substring(hasOrigin ? window.location.origin.length : 0, end))
+  return pathJoin(
+    path.substring(hasOrigin ? window.location.origin.length : 0, end)
+  )
 }
 
 async function prefetchData (path, { priority } = {}) {
@@ -150,7 +170,10 @@ async function prefetchData (path, { priority } = {}) {
         initialProps
       }
     } catch (err) {
-      console.error('Error: There was an error retrieving props for this route! path:', path)
+      console.error(
+        'Error: There was an error retrieving props for this route! path:',
+        path
+      )
       throw err
     }
     delete inflight[path]
@@ -181,7 +204,9 @@ async function prefetchData (path, { priority } = {}) {
             if (priority) {
               inflight[hash] = axios.get(`/staticData/${hash}.json`)
             } else {
-              inflight[hash] = prefetchPool.add(() => axios.get(`/staticData/${hash}.json`))
+              inflight[hash] = prefetchPool.add(() =>
+                axios.get(`/staticData/${hash}.json`)
+              )
             }
           }
           const { data: prop } = await inflight[hash]
@@ -189,7 +214,10 @@ async function prefetchData (path, { priority } = {}) {
           // Place it in the cache
           propsByHash[hash] = prop
         } catch (err) {
-          console.error('Error: There was an error retrieving a prop for this route! hashID:', hash)
+          console.error(
+            'Error: There was an error retrieving a prop for this route! hashID:',
+            hash
+          )
           console.error(err)
         }
         delete inflight[hash]
@@ -220,7 +248,8 @@ async function prefetchData (path, { priority } = {}) {
 async function prefetchTemplate (path, { priority } = {}) {
   // Preload the template if available
   const pathTemplate =
-    window.reactStaticGetComponentForPath && window.reactStaticGetComponentForPath(path)
+    window.reactStaticGetComponentForPath &&
+    window.reactStaticGetComponentForPath(path)
   if (pathTemplate && pathTemplate.preload) {
     if (priority) {
       await pathTemplate.preload()
@@ -442,12 +471,16 @@ class Prefetch extends Component {
   }
 }
 
-const ioIsSupported = typeof window !== 'undefined' && 'IntersectionObserver' in window
+const ioIsSupported =
+  typeof window !== 'undefined' && 'IntersectionObserver' in window
 const handleIntersection = (element, callback) => {
   const io = new window.IntersectionObserver(entries => {
     entries.forEach(entry => {
       // Edge doesn't support isIntersecting. intersectionRatio > 0 works as a fallback
-      if (element === entry.target && (entry.isIntersecting || entry.intersectionRatio > 0)) {
+      if (
+        element === entry.target &&
+        (entry.isIntersecting || entry.intersectionRatio > 0)
+      ) {
         io.unobserve(element)
         io.disconnect()
         callback()
@@ -700,7 +733,12 @@ class Router extends Component {
     }
 
     return (
-      <ResolvedRouter history={resolvedHistory} location={staticURL} context={context} {...rest}>
+      <ResolvedRouter
+        history={resolvedHistory}
+        location={staticURL}
+        context={context}
+        {...rest}
+      >
         <RouterScroller {...{ scrollToTopDuration, scrollToHashDuration }}>
           {children}
         </RouterScroller>
@@ -739,7 +777,9 @@ function NavLink ({ Comp, only, ...rest }) {
       <PrefetchWhenSeen
         path={resolvedTo}
         only={only}
-        render={({ handleRef }) => <ReactRouterNavLink {...rest} innerRef={handleRef} />}
+        render={({ handleRef }) => (
+          <ReactRouterNavLink {...rest} innerRef={handleRef} />
+        )}
       />
     )
   }
@@ -750,7 +790,9 @@ function NavLink ({ Comp, only, ...rest }) {
   delete aRest.to
 
   reactRouterProps.filter(prop => aRest[prop]).forEach(prop => {
-    console.warn(`Warning: ${prop} makes no sense on a <Link to="${aRest.href}">.`)
+    console.warn(
+      `Warning: ${prop} makes no sense on a <Link to="${aRest.href}">.`
+    )
   })
   reactRouterProps.forEach(prop => delete aRest[prop])
 
