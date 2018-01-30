@@ -24,8 +24,8 @@
   - [Routes](#routes)
   - [RouteData](#routedata)
   - [SiteData](#sitedata)
-  - [Loading](#loading)
   - [Link](#link)
+  - [Loading](#loading)
   - [Head](#head)
   - [Prefetch](#prefetch)
   - [PrefetchWhenSeen](#prefetchwhenseen)
@@ -806,14 +806,19 @@ import { PrefetchWhenSeen, Link } from 'react-static'
 
 ### `Prompt (react-router)`
 A direct proxy of the `Prompt` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+
 ### `Redirect (react-router)`
 A direct proxy of the `Redirect` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+
 ### `Route (react-router)`
 A direct proxy of the `Route` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+
 ### `Switch (react-router)`
 A direct proxy of the `Switch` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+
 ### `matchPath (react-router)`
 A direct proxy of the `matchPath` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+
 ### `withRouter (react-router)`
 A direct proxy of the `withRouter` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
