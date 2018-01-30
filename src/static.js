@@ -434,7 +434,7 @@ export const prepareRoutes = async config => {
     }
     `
 
-  const dynamicRoutesPath = path.resolve(config.paths.DIST, 'react-static-routes.js')
+  const dynamicRoutesPath = path.join(config.paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
   await fs.writeFile(dynamicRoutesPath, file)
 
