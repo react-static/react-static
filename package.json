@@ -18,7 +18,8 @@
     "postpublish": "git push --tags",
     "test": "eslint src examples test && yarn run test-sample-build",
     "test-sample-build": "yarn build && (cd test/minimal-website && ../../bin/react-static build)",
-    "test-large-build": "yarn build && (cd test/stress-test-routes && ../../bin/react-static build)",
+    "test-large-build":
+      "yarn build && (cd test/stress-test-routes && ../../bin/react-static build)",
     "test-webpack": "jest"
   },
   "repository": "nozzle/react-static",
@@ -54,6 +55,7 @@
     "cors": "^2.8.4",
     "cross-spawn": "^5.1.0",
     "css-loader": "^0.28.7",
+    "download-git-repo": "^1.0.2",
     "extract-css-chunks-webpack-plugin": "^2.0.18",
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^1.1.4",
