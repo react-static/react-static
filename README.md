@@ -69,8 +69,8 @@ React-Static is a fast, lightweight, and powerful framework for building static-
   ```
 
 Once you've installed and test driven sufficiently, you may want to:
-- [Read about the core concepts of React Static](/concepts)
-- [Familiarize yourself with the API and all that is possible!](/api)
+- [Read about the core concepts of React Static](/docs/concepts.md)
+- [Familiarize yourself with the API and all that is possible!](/docs/api.md)
 - [Join the slack organization!](https://react-chat-signup.herokuapp.com)
 
 ## Examples and Templates
@@ -102,8 +102,8 @@ All of the following examples can be used as a template at project creation.
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 
 ## Documentation
-#### [Core Concepts](/concepts)
-#### [API Reference](/api)
+#### [Core Concepts](/docs/concepts.md)
+#### [API Reference](/docs/api.md)
 
 ## Chat with us on Slack!
 Need some help? Have a quick question? [Click here to sign up for the React-Tools slack org](https://react-chat-signup.herokuapp.com), and join us in the **#react-static** channel! We are constantly answering questions, discussing features and helping each other out!
