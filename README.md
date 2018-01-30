@@ -36,7 +36,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [Manta.life](https://manta.life)
 - [Manticore Games](http://manticoregames.com)
 - [BlackSandSolutions.co](https://www.blacksandsolutions.co)
-- [David York - Pesonal Blog][http://davideyork.com]
+- [David York - Pesonal Blog](http://davideyork.com)
 
 ## Quick Start
 
