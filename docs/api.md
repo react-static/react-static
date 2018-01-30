@@ -16,9 +16,9 @@
   - [outputFileRate](#outputfilerate)
   - [prefetchRate](#prefetchrate)
 - [CLI](#cli)
-  - [create](#create)
-  - [start](#start)
-  - [build](#build)
+  - [react-static create](#react-static-create)
+  - [react-static start](#react-static-start)
+  - [react-static build](#react-static-build)
 - [Components](#components)
   - [Router](#router)
   - [Routes](#routes)
@@ -37,7 +37,7 @@
   - [withRouter (react-router)](#withRouter-react-router)
 - [Methods](#methods)
   - [onLoading](#onloading)
-  - [prefetch](#prefetch)
+  - [prefetch](#prefetch-1)
 
 # `static.config.js`
 A `static.config.js` file is optional, but recommended at your project root to use react-static. If present, it must export a **default** object containing any of the following properties:
