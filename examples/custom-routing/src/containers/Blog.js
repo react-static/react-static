@@ -1,10 +1,10 @@
 
 import React from 'react'
-import { getRouteProps, Switch, Route, Link } from 'react-static'
+import { getRouteData, Switch, Route, Link } from 'react-static'
 //
 import Post from './Post'
 
-export default getRouteProps(({ match, posts }) => (
+export default getRouteData(({ match, posts }) => (
   <div>
     <Switch>
       <Route

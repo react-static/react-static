@@ -86,7 +86,7 @@ export const getConfig = () => {
   const finalConfig = {
     // Defaults
     entry: path.join(paths.SRC, defaultEntry),
-    getSiteProps: () => ({}),
+    getSiteData: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
     prefetchRate: 10,
     outputFileRate: 10,
@@ -165,10 +165,10 @@ export function copyPublicFolder (config) {
   })
 }
 
-export async function createIndexFilePlaceholder ({ config, Component, siteProps }) {
+export async function createIndexFilePlaceholder ({ config, Component, siteData }) {
   // Render the base document component to string with siteprops
   const html = `<!DOCTYPE html>${renderToString(
-    <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
+    <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteData={siteData}>
       <div id="root" />
     </Component>
   )}`

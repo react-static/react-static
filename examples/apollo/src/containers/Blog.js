@@ -1,9 +1,9 @@
 
 import React from 'react'
-import { getRouteProps, Link } from 'react-static'
+import { getRouteData, Link } from 'react-static'
 //
 
-export default getRouteProps(({ posts }) => (
+export default getRouteData(({ posts }) => (
   <div>
     <h1>It's blog time.</h1>
     <br />

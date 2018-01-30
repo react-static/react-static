@@ -16,12 +16,12 @@ export function webpackConfig ({ config, stage }) {
     webpackConfig = require('./webpack.config.dev').default({ config })
   } else if (stage === 'prod') {
     webpackConfig = require('./webpack.config.prod').default({
-      config,
+      config
     })
   } else if (stage === 'node') {
     webpackConfig = require('./webpack.config.prod').default({
       config,
-      isNode: true,
+      isNode: true
     })
   } else {
     throw new Error('A stage is required when building a compiler.')
@@ -38,7 +38,7 @@ export function webpackConfig ({ config, stage }) {
     transformers.forEach(transformer => {
       const modifiedConfig = transformer(webpackConfig, {
         stage,
-        defaultLoaders,
+        defaultLoaders
       })
       if (modifiedConfig) {
         webpackConfig = modifiedConfig
@@ -67,9 +67,9 @@ export async function startDevServer ({ config }) {
     console.time(
       chalk.red(
         `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
-          intendedPort,
-        )} instead!`,
-      ),
+          intendedPort
+        )} instead!`
+      )
     )
   }
   const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
@@ -83,14 +83,14 @@ export async function startDevServer ({ config }) {
     compress: false,
     quiet: true,
     watchOptions: {
-      ignored: /node_modules/,
+      ignored: /node_modules/
     },
     ...config.devServer,
     before: app => {
-      app.get('/__react-static__/siteProps', async (req, res, next) => {
+      app.get('/__react-static__/siteData', async (req, res, next) => {
         try {
-          const siteProps = await config.getSiteProps({ dev: true })
-          res.json(siteProps)
+          const siteData = await config.getSiteData({ dev: true })
+          res.json(siteData)
         } catch (err) {
           res.status(500)
           res.json(err)
@@ -128,7 +128,7 @@ export async function startDevServer ({ config }) {
       }
     },
     port,
-    host,
+    host
   }
 
   /**
@@ -214,7 +214,7 @@ export async function buildProductionBundles ({ config }) {
   return new Promise((resolve, reject) => {
     webpack([
       webpackConfig({ config, stage: 'prod' }),
-      webpackConfig({ config, stage: 'node' }),
+      webpackConfig({ config, stage: 'node' })
     ]).run((err, stats) => {
       if (err) {
         console.log(chalk.red(err.stack || err))
@@ -245,21 +245,21 @@ export async function buildProductionBundles ({ config }) {
               entrypoints: false,
               chunkOrigins: false,
               chunkModules: false,
-              colors: true,
-            }),
+              colors: true
+            })
           )
           if (buildErrors) {
             console.log(
               chalk.red.bold(`
                 => There were ERRORS during the ${stage} build stage! :(
                 => Fix them and try again!
-              `),
+              `)
             )
           } else if (buildWarnings) {
             console.log(
               chalk.yellow.bold(`
                 => There were WARNINGS during the ${stage} build stage!
-              `),
+              `)
             )
           }
         }

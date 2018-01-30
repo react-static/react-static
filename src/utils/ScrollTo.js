@@ -20,7 +20,7 @@ const getPosition = (start, end, elapsed, duration, easeFn) => {
 }
 
 export default function scrollTo (element, options) {
-  const { duration, offset, callback, context } = { ...defaultOptions, ...options }
+  const { duration, offset, context } = { ...defaultOptions, ...options }
   const start = window.pageYOffset
   let innerHeight
   let scrollHeight
@@ -36,21 +36,21 @@ export default function scrollTo (element, options) {
       ? parseInt(element)
       : getTop(element, offset, scrollHeight, innerHeight)
   const clock = Date.now() - 1
-  const step = () => {
-    const elapsed = Date.now() - clock
-    if (context !== window) {
-      context.scrollTop = getPosition(start, end, elapsed, duration, ease)
-    } else {
-      window.scroll(0, getPosition(start, end, elapsed, duration, ease))
-    }
-
-    if (typeof duration === 'undefined' || elapsed > duration) {
-      if (typeof callback === 'function') {
-        callback(element)
+  return new Promise(resolve => {
+    const step = () => {
+      const elapsed = Date.now() - clock
+      if (context !== window) {
+        context.scrollTop = getPosition(start, end, elapsed, duration, ease)
+      } else {
+        window.scroll(0, getPosition(start, end, elapsed, duration, ease))
       }
-      return
+
+      if (typeof duration === 'undefined' || elapsed > duration) {
+        resolve()
+        return
+      }
+      raf(step)
     }
     raf(step)
-  }
-  raf(step)
+  })
 }

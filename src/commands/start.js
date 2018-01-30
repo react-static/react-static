@@ -16,7 +16,7 @@ export default async cliArguments => {
     await fs.remove(config.paths.DIST)
 
     // Get the site props
-    const siteProps = await config.getSiteProps({ dev: true, cliArguments })
+    const siteData = await config.getSiteData({ dev: true, cliArguments })
 
     // Resolve the base HTML template
     const Component = config.Document || DefaultDocument
@@ -25,7 +25,7 @@ export default async cliArguments => {
     await createIndexFilePlaceholder({
       config,
       Component,
-      siteProps,
+      siteData
     })
 
     // Copy the public directory over

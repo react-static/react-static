@@ -1,7 +1,7 @@
 import React from 'react'
-import { getRouteProps, Link } from 'react-static'
+import { getRouteData, Link } from 'react-static'
 
-export default getRouteProps(({ allPosts }) => (
+export default getRouteData(({ allPosts }) => (
   <section>
     <ul className="home-ul">
       {allPosts.map(post => (

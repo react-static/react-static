@@ -18,13 +18,11 @@ import { poolAll } from './shared'
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Use the node version of the app created with webpack
-  const Comp = require(glob.sync(
-    path.resolve(config.paths.DIST, 'static.*.js')
-  )[0]).default
+  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
 
   const DocumentTemplate = config.Document || DefaultDocument
 
-  const siteProps = await config.getSiteProps({ dev: false, cliArguments })
+  const siteData = await config.getSiteData({ dev: false, cliArguments })
 
   const seenProps = new Map()
   const sharedProps = new Map()
@@ -32,8 +30,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   await Promise.all(
     config.routes.map(async route => {
       // Fetch initialProps from each route
-      route.initialProps =
-        !!route.getProps && (await route.getProps({ route, dev: false }))
+      route.initialProps = !!route.getProps && (await route.getProps({ route, dev: false }))
 
       if (!route.initialProps) {
         route.initialProps = {}
@@ -124,14 +121,14 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         static childContextTypes = {
           propsMap: PropTypes.object,
           initialProps: PropTypes.object,
-          siteProps: PropTypes.object,
+          siteData: PropTypes.object,
           staticURL: PropTypes.string
         }
         getChildContext () {
           return {
             propsMap: route.propsMap,
             initialProps: route.initialProps,
-            siteProps,
+            siteData,
             staticURL
           }
         }
@@ -218,23 +215,12 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
-            <link
-              rel="preload"
-              as="script"
-              href={`${config.publicPath}routeInfo.js`}
-            />
+            <link rel="preload" as="script" href={`${config.publicPath}routeInfo.js`} />
             {clientScripts.map(script => (
-              <link
-                rel="preload"
-                as="script"
-                href={`${config.publicPath}${script}`}
-              />
+              <link rel="preload" as="script" href={`${config.publicPath}${script}`} />
             ))}
             {clientStyleSheets.map(styleSheet => (
-              <link
-                rel="stylesheet"
-                href={`${config.publicPath}${styleSheet}`}
-              />
+              <link rel="stylesheet" href={`${config.publicPath}${styleSheet}`} />
             ))}
             {head.link}
             {head.noscript}
@@ -258,16 +244,12 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           path: route.path,
           propsMap: route.propsMap,
           initialProps: route.initialProps,
-          siteProps
+          siteData
         }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`
             }}
           />
           {clientScripts.map(script => (
-            <script
-              defer
-              type="text/javascript"
-              src={`${config.publicPath}${script}`}
-            />
+            <script defer type="text/javascript" src={`${config.publicPath}${script}`} />
           ))}
         </body>
       )
@@ -278,7 +260,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           Html={HtmlWithMeta}
           Head={HeadWithMeta}
           Body={BodyWithMeta}
-          siteProps={siteProps}
+          siteData={siteData}
           renderMeta={renderMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
@@ -330,9 +312,7 @@ export async function buildXMLandRSS ({ config }) {
       }
       xml += '<url>'
       xml += `<loc>${`${route.permalink}/`.replace(/\/{1,}$/gm, '/')}</loc>`
-      xml += route.lastModified
-        ? `<lastmod>${route.lastModified}</lastmod>`
-        : ''
+      xml += route.lastModified ? `<lastmod>${route.lastModified}</lastmod>` : ''
       xml += route.priority ? `<priority>${route.priority}</priority>` : ''
       xml += '</url>'
     })
@@ -353,8 +333,7 @@ export const prepareRoutes = async config => {
 
   const tree = {}
   routes.forEach(route => {
-    const parts =
-      route.path === '/' ? ['/'] : route.path.split('/').filter(d => d)
+    const parts = route.path === '/' ? ['/'] : route.path.split('/').filter(d => d)
     let cursor = tree
     parts.forEach((part, partIndex) => {
       const isLeaf = parts.length === partIndex + 1
@@ -390,9 +369,7 @@ export const prepareRoutes = async config => {
         config.paths.DIST,
         path.resolve(config.paths.ROOT, template)
       )
-      return `const t_${index} = universal(import('${slash(
-        templatePath
-      )}'), universalOptions)`
+      return `const t_${index} = universal(import('${slash(templatePath)}'), universalOptions)`
     })
     .join('\n')}
 
@@ -457,10 +434,7 @@ export const prepareRoutes = async config => {
     }
     `
 
-  const dynamicRoutesPath = path.resolve(
-    config.paths.DIST,
-    'react-static-routes.js'
-  )
+  const dynamicRoutesPath = path.resolve(config.paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
   await fs.writeFile(dynamicRoutesPath, file)
 

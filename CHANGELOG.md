@@ -2,13 +2,14 @@
 #### Features & Breaking
 - Automatic Route Splitting. From here on out as long a project is using the automatic component-based static routing, all route templates will be automatically deduped and split into separate modules. These modules are statically-rendered into every page that uses them, are preloaded asynchronously with React-Static built-in prefetching utiliies, and are also loaded on demand if needed as the client navigates through your site. Carry on!
 - Automatic prefetching of templates and assets. Any eligible `Link` component to a code/data-split destination will automatically queue a prefetch for the appropriate assets.
-- Render prop versions of `withRouteProps` and `withSiteProps` are now available as `RouteProps` and `SiteProps`. These support inline access to their respective props, instead of having to set up an HOC. They also support all three major render prop syntaxes, so render those props however you want!. See the README for more information.
+- Render prop versions of `withRouteData` and `withSiteData` are now available as `RouteData` and `SiteData`. These support inline access to their respective props, instead of having to set up an HOC. They also support all three major render prop syntaxes, so render those props however you want!. See the README for more information.
 - Added a new `Loading` render prop component and a companion `withLoading` HOC component to easily display React-Static's loading state (that probably won't happen much, but still... ;).
 - Added a new `Loading`/`withLoading` render prop / HOC component pair. You can render this component to gain access to the `loading` prop, which was previously only accessible via the `Router.subscribe` callback.
 - Path changes now automatically scroll to the top of the page. Duration defaults to `0`ms, but can be modifed via the `scrollToTopDuration` prop on the `Router` component.
 - Hash routing changes now automatically scroll to the element (or top of the page if the hash is removed but the path stays the same). Duration defaults to `800`ms, but can be modifed via the `scrollToHashDuration` prop on the `Router` component.
 #### Breaking Changes
-- The `getRouteProps` and `getSiteProps` HOC's have both been renamed to `withRouteProps` and `withSiteProps`. Using the old methods will result in a deprecation notice and a broken app. Luckily this is an easy find and replace :)
+- `Routes` are now conveniently importable from the `react-static` package and no longer requires the `react-static-routes` package.
+- The `getRouteProps` and `getSiteData` HOC's have both been renamed to `withRouteData` and `withSiteData`. Using the old methods will result in a deprecation notice and a broken app. Luckily this is an easy find and replace :)
 - `Router.subscribe` has been deprecated. Though, if you still need programmatic access to a loading event, you can use the new `onLoading` subscriber that functions the same way.
 
 # 4.8.2
@@ -39,7 +40,7 @@
 - Handle Routes with spaces (Thanks [@etimberg](https://github/etimberg)!)
 - Add shouldPrefetch() method to avoid setting loading state  (Thanks [@chrisbrown-io](https://github/chrisbrown-io)!)
 - Pass DOM props through in links (Thanks [@denis-sokolov](https://github/denis-sokolov)!)
-- Pass additional CLI arguments through to getSiteProps() (Thanks [@etimberg](https://github/etimberg)!)
+- Pass additional CLI arguments through to getSiteData() (Thanks [@etimberg](https://github/etimberg)!)
 
 # 4.7.0
 #### Features
