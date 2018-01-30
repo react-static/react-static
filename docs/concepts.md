@@ -3,10 +3,9 @@
 - [Overview](#overview)
 - [Code, Data, and Prop Splitting](#code-data-and-prop-splitting)
 - [404 Handling](#404-handling)
-- [Project Migration](#project-setup)
-- [Webpack Customization and Plugins](#webpack-config-and-plugins)
+- [Non-Static Routing](#non-static-routing)
+- [Webpack Customization and Plugins](#webpack-customization-and-plugins)
 - [Using Preact in Production](#using-preact-in-production)
-- [Custom Routing & Render Props](#automatic-routing-with-custom-render-props)
 
 # Overview
 React-Static is different from most React-based static-site generators. It follows a very natural flow from data all the way to static files, then finally a progressively enhanced react-app. Not only does this provide a safe separation of concern, but by keeping the data pipelining and react templating as separate as possible, your site can be visualized and built in a single pass as a "function of state" from the data you pass it.
@@ -116,7 +115,7 @@ export default {
 # 404 Handling
 Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found.
 
-# Non-static Routing
+# Non-Static Routing
 Sometimes you may want to handle routes that should not be statically rendered. In that case, you can treat `Routes` like any other `react-router` route and use any of the routing components you normally use with `react-router`.
 
 **Important Notes**
@@ -142,7 +141,7 @@ export default () => (
 
 To learn more about how `react-router` components work, visit [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
-# Webpack Config and Plugins
+# Webpack Customization and Plugins
 React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, use the handy [`webpack` property in your `static.config.js` file](#/api/#webpack).
 
 # Using Preact in Production
