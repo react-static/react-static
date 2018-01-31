@@ -24,15 +24,15 @@ export default async () => {
       type: 'input',
       name: 'name',
       message: 'What should we name this project?',
-      default: 'my-static-site'
+      default: 'my-static-site',
     },
     {
       type: 'autocomplete',
       name: 'template',
       message: 'Select a template below...',
       source: async (answersSoFar, input) =>
-        !input ? exampleList : matchSorter(exampleList, input)
-    }
+        !input ? exampleList : matchSorter(exampleList, input),
+    },
   ])
 
   console.time(chalk.green(`=> [\u2713] Project "${answers.name}" created`))
@@ -46,8 +46,8 @@ export default async () => {
         name: 'githubRepoName',
         message:
           'Specify a public repo from GitHub, BitBucket, or GitLab that has your custom template. Use the form "ownerName/repoName".',
-        default: 'mjsisley/react-static-template-basic'
-      }
+        default: 'mjsisley/react-static-template-basic',
+      },
     ])
     const getGitRepo = promisify(downloadGitRepo)
     try {
@@ -78,15 +78,15 @@ export default async () => {
   const isYarn = shouldUseYarn()
 
   console.log(
-    `=> Installing dependencies with: ${
-      isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
-    }...`
+    `=> Installing dependencies with: ${isYarn
+      ? chalk.hex(ChalkColor.yarn)('Yarn')
+      : chalk.hex(ChalkColor.npm)('NPM')}...`
   )
   // We install react-static separately to ensure we always have the latest stable release
   execSync(
-    `cd ${answers.name} && ${isYarn ? 'yarn' : 'npm install'} && ${
-      isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
-    }`
+    `cd ${answers.name} && ${isYarn ? 'yarn' : 'npm install'} && ${isYarn
+      ? 'yarn add react-static@latest'
+      : 'npm install react-static@latest --save'}`
   )
   console.log('')
   console.timeEnd(chalk.green(`=> [\u2713] Project "${answers.name}" created`))
@@ -96,15 +96,17 @@ ${chalk.green('=> To get started:')}
 
     cd ${answers.name}
 
-    ${
-  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
-} start ${chalk.green('- Start the development server')}
-    ${
-  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
-} build ${chalk.green('- Build for production')}
-    ${
-  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
-} serve ${chalk.green('- Test a production build locally')}
+    ${isYarn
+    ? chalk.hex(ChalkColor.yarn)('yarn')
+    : chalk.hex(ChalkColor.npm)('npm run')} start ${chalk.green('- Start the development server')}
+    ${isYarn
+    ? chalk.hex(ChalkColor.yarn)('yarn')
+    : chalk.hex(ChalkColor.npm)('npm run')} build ${chalk.green('- Build for production')}
+    ${isYarn
+    ? chalk.hex(ChalkColor.yarn)('yarn')
+    : chalk.hex(ChalkColor.npm)('npm run')} serve ${chalk.green(
+  '- Test a production build locally'
+)}
   `)
 }
 

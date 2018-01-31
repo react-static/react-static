@@ -293,10 +293,7 @@ const RouteData = withRouter(
     }
     componentWillReceiveProps (nextProps) {
       if (process.env.REACT_STATIC_ENV === 'development') {
-        if (
-          this.props.location.pathname + this.props.location.search !==
-          nextProps.location.pathname + nextProps.location.search
-        ) {
+        if (this.props.location.pathname !== nextProps.location.pathname) {
           this.setState({ loaded: false }, this.loadRouteData)
         }
       }
@@ -306,8 +303,8 @@ const RouteData = withRouter(
     }
     loadRouteData = () =>
       (async () => {
-        const { pathname, search } = this.props.location
-        const path = pathJoin(`${pathname}${search}`)
+        const { pathname } = this.props.location
+        const path = pathJoin(pathname)
         await prefetch(path)
         if (this.unmounting) {
           return
@@ -317,8 +314,8 @@ const RouteData = withRouter(
         })
       })()
     render () {
-      const { component, render, children, location: { pathname, search }, ...rest } = this.props
-      const path = pathJoin(`${pathname}${search}`)
+      const { component, render, children, location: { pathname }, ...rest } = this.props
+      const path = pathJoin(pathname)
 
       let routeData
 
@@ -644,7 +641,7 @@ class Router extends Component {
     ['push', 'replace'].forEach(method => {
       const originalMethod = resolvedHistory[method]
       resolvedHistory[method] = async (...args) => {
-        const path = typeof args[0] === 'string' ? args[0] : args[0].path + args[0].search
+        const path = typeof args[0] === 'string' ? args[0] : args[0].path
         const shouldPrefetch = await needsPrefetch(path)
         if (shouldPrefetch) {
           setLoading(true)

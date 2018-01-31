@@ -56,7 +56,7 @@ export default {
 A route is an `object` that represents a unique location in your site and is the backbone of every React-Static site.
 
 It supports the following properties:
-- `path: String` - The URL to match for this route, excluding search parameters and hash fragments (relative to your `siteRoot` or this route's parent path)
+- `path: String` - The **path** of the URL to match for this route, **excluding search parameters and hash fragments** (relative to your `siteRoot` or this route's parent path)
 - `component: String` - The path of the component to be used to render this route. (Relative to the root of your project)
 - `getData: async Function(resolvedRoute, { dev }) => Object` - An async function that returns or resolves an object of any necessary data for this route to render.
   - Arguments
@@ -439,7 +439,7 @@ export default {
 Creates a new react-static project.
 
 - Prompts for a project name/location
-- Prompts to select one of the templates located in this repository's `examples/` directory.
+- Prompts to select one of the templates located in this repository's `examples/` directory, or you may select `custom` and enter in a git reposity to use in the form of `owner/repo`.
 
 ### `react-static start`
 Starts the development server.
