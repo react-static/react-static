@@ -1,5 +1,5 @@
 # 5.0.0
-#### Features & Breaking
+#### Features
 - Automatic Route Splitting. From here on out as long a project is using the automatic component-based static routing, all route templates will be automatically deduped and split into separate modules. These modules are statically-rendered into every page that uses them, are preloaded asynchronously with React-Static built-in prefetching utiliies, and are also loaded on demand if needed as the client navigates through your site. Carry on!
 - Automatic prefetching of templates and assets. Any eligible `Link` component to a code/data-split destination will automatically queue a prefetch for the appropriate assets.
 - Render prop versions of `withRouteData` and `withSiteData` are now available as `RouteData` and `SiteData`. These support inline access to their respective props, instead of having to set up an HOC. They also support all three major render prop syntaxes, so render those props however you want!. See the README for more information.
@@ -11,6 +11,15 @@
 - In some previous scenarios the window's `location.search` would be taken into account when matching a path. That is now not the case. You could never previously rely on URL parameters for static paths, but now we're letting you know :)
 - The `getRouteProps` and `getSiteData` HOC's have both been renamed to `withRouteData` and `withSiteData`. Using the old methods will result in a deprecation notice and a broken app. Luckily this is an easy find and replace :)
 - `Router.subscribe` has been deprecated. Though, if you still need programmatic access to a loading event, you can use the new `onLoading` subscriber that functions the same way.
+#### How to Upgrade
+- In your components:
+  - Replace all instances of `getRouteProps` with `withRouteData`
+  - Replace all instances of `getSiteProps` with `withSiteData`
+  - Replace all instances of `Router.subscribe` with `onLoading`, and import `onLoading`.
+- In your `static.config.js`:
+  - Replace all instances of `getProps` with `getData`
+  - Replace `getSiteProps` with `getSiteData`
+- Note: To take advantage of auto-code-splitting, you cannot use custom routing for your static routes. I suggest migrating to the automatic routing strategy asap.
 
 # 4.8.2
 #### Fixes & Optimizations

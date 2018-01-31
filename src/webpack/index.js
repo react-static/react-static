@@ -158,6 +158,7 @@ export async function startDevServer ({ config }) {
     if (isSuccessful) {
       console.timeEnd(chalk.green('=> [\u2713] Build Complete'))
       if (first) {
+        first = false
         console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
         stats.startTime -= timefix
         if (config.onStart) {
@@ -167,15 +168,12 @@ export async function startDevServer ({ config }) {
     }
 
     if (messages.errors.length) {
-      console.log(chalk.red(first ? 'Failed to build!' : 'Failed to rebuild.'))
+      console.log(chalk.red('Failed to build! Fix any errors and try again!'))
       messages.errors.forEach(message => {
         console.log(message)
         console.log()
       })
-      process.exit(1)
     }
-
-    first = false
 
     if (messages.warnings.length) {
       console.log(chalk.yellow('Built complete with warnings.'))
