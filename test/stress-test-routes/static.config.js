@@ -1,25 +1,41 @@
-module.exports.default = {
-  getRoutes: function() {
-    var routes = [
+const arraySize = 10000
+const routeSize = 10000
+const propCollision = 20
+
+console.log()
+console.log(
+  `Testing ${routeSize} routes with a prop-array-size of ${arraySize} and a prop collision rate of ${propCollision}`
+)
+
+export default {
+  getRoutes: async () => {
+    const fakeData = []
+
+    console.log()
+    for (let index = 0; index < arraySize; index++) {
+      fakeData.push(`string_${Math.random()}`)
+    }
+
+    const routes = [
       {
         path: '/',
-        component: 'src/Home'
-      }
+        component: 'src/Home',
+      },
     ]
 
-    for (var index = 0; index < 1000; index++) {
+    for (let index = 0; index < routeSize; index++) {
       routes.push({
-        path: '/' + index,
-        component: 'src/Home'
+        path: `/${index}`,
+        component: index % 2 === 0 ? 'src/Home' : 'src/About',
       })
     }
 
-    return routes.map(function(route) {
-      return Object.assign(route, {
-        getProps: function() {
-          return routes
-        }
+    return routes.map(route =>
+      Object.assign(route, {
+        getProps: () => ({
+          [`prop_${Math.floor(Math.random() * propCollision)}`]: fakeData,
+        }),
       })
-    })
-  }
+    )
+  },
 }

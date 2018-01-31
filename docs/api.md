@@ -418,7 +418,7 @@ An optional `Int`. The maximum number of files that can be concurrently written 
 ```javascript
 // static.config.js
 export default {
-  outputFileRate: 10,
+  outputFileRate: 100,
 }
 ```
 

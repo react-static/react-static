@@ -15,6 +15,8 @@ import slash from 'slash'
 import { DefaultDocument } from './RootComponents'
 import { poolAll } from './shared'
 
+const defaultOutputFileRate = 100
+
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Use the node version of the app created with webpack
@@ -27,8 +29,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   const seenProps = new Map()
   const sharedProps = new Map()
 
-  await Promise.all(
-    config.routes.map(async route => {
+  await poolAll(
+    config.routes.map(route => async () => {
       // Fetch initialProps from each route
       route.initialProps = !!route.getProps && (await route.getProps({ route, dev: false }))
 
@@ -57,7 +59,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             seenProps.set(prop, true)
           }
         })
-    })
+    }),
+    Number(config.outputFileRate) || defaultOutputFileRate
   )
 
   await poolAll(
@@ -85,7 +88,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         )
       }
     }),
-    Number(config.outputFileRate) || 10
+    Number(config.outputFileRate) || defaultOutputFileRate
   )
 
   // Write all shared props to file
@@ -96,7 +99,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         cachedProp[1].jsonString || '{}'
       )
     ),
-    Number(config.outputFileRate) || 10
+    Number(config.outputFileRate) || defaultOutputFileRate
   )
 
   const routeInfo = {}
@@ -280,7 +283,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
 
       return fs.outputFile(htmlFilename, html)
     }),
-    Number(config.outputFileRate) || 10
+    Number(config.outputFileRate) || defaultOutputFileRate
   )
 }
 
