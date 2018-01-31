@@ -25,7 +25,7 @@ export default function ({ config, isNode }) {
     externals: isNode
       ? [
         nodeExternals({
-          whitelist: ['react-universal-component', 'webpack-flush-chunks'],
+          whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
         }),
       ]
       : [],

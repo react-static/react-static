@@ -17,8 +17,6 @@ import {
 import { pathJoin, unwrapArray, isObject, createPool, deprecate } from './shared'
 import scrollTo from './utils/ScrollTo'
 
-const Routes = require(`${process.env.REACT_STATIC_ROUTES_PATH}`).default // eslint-disable-line import/no-dynamic-require
-
 //
 
 const prefetchPool = createPool({
@@ -128,7 +126,7 @@ async function prefetchData (path, { priority } = {}) {
     return pathProps[path]
   }
 
-  const isStaticRoute = routes.includes(path)
+  const isStaticRoute = routes[path]
 
   // Not a static route? Bail out.
   if (!isStaticRoute) {
@@ -246,7 +244,7 @@ async function needsPrefetch (path) {
   // Get route info so we can check if path has any data
   const routes = await getRouteInfo()
 
-  const isStaticRoute = routes.includes(path)
+  const isStaticRoute = routes[path]
 
   // Not a static route? Bail out.
   if (isStaticRoute) {
@@ -796,7 +794,6 @@ const getSiteData = (...args) => {
 
 // Exports
 
-export { Routes }
 // Proxy React Router
 export { Prompt, Redirect, Route, Switch, matchPath, withRouter } from 'react-router-dom'
 // Proxy Helmet as Head
