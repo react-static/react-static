@@ -617,7 +617,7 @@ import { SiteData, withSiteData } from 'react-static'
 
 // "render" prop syntax - Recommended
 export default () => (
-  <SiteData render={({ siteTitle, metaDescription }) =>
+  <SiteData render={({ siteTitle, metaDescription }) => (
     <div>Welcome to {siteTitle}! {metaDescription}</div>
   )} />
 )
