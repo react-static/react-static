@@ -15,12 +15,12 @@ export default {
       },
       {
         path: '/blog',
-        getProps: () => ({
+        getData: () => ({
           posts,
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
-          getProps: () => ({
+          getData: () => ({
             post,
           }),
         })),
