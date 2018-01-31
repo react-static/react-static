@@ -17,12 +17,7 @@ import {
 import { pathJoin, unwrapArray, isObject, createPool, deprecate } from './shared'
 import scrollTo from './utils/ScrollTo'
 
-let Routes // eslint-disable-line import/no-mutable-exports
-if (typeof document !== 'undefined') {
-  Routes = require('react-static-routes')
-} else {
-  Routes = require(`${process.env.REACT_STATIC_ROUTES_PATH}`).default // eslint-disable-line import/no-dynamic-require
-}
+const Routes = require(`${process.env.REACT_STATIC_ROUTES_PATH}`).default // eslint-disable-line import/no-dynamic-require
 
 //
 

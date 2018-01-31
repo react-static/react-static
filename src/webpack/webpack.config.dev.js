@@ -11,20 +11,17 @@ export default function ({ config }) {
     context: path.resolve(__dirname, '../node_modules'),
     entry: [
       require.resolve('react-hot-loader/patch'),
-
       require.resolve('react-dev-utils/webpackHotDevClient'),
-      // `${require.resolve('webpack-dev-server/client')}?/`,
-
       require.resolve('webpack/hot/only-dev-server'),
-      path.resolve(ROOT, config.entry)
+      path.resolve(ROOT, config.entry),
     ],
     output: {
       filename: 'app.[hash:8].js',
       path: DIST,
-      publicPath: '/'
+      publicPath: '/',
     },
     module: {
-      rules: rules({ config, stage: 'dev' })
+      rules: rules({ config, stage: 'dev' }),
     },
     resolve: {
       modules: [
@@ -32,22 +29,22 @@ export default function ({ config }) {
         'node_modules',
         NODE_MODULES,
         SRC,
-        DIST
+        DIST,
       ],
       extensions: ['.js', '.json', '.jsx'],
-      mainFields: ['main']
+      // mainFields: ['main'],
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
       new HtmlWebpackPlugin({
         inject: true,
-        template: `!!raw-loader!${HTML_TEMPLATE}`
+        template: `!!raw-loader!${HTML_TEMPLATE}`,
       }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
-      new CaseSensitivePathsPlugin()
+      new CaseSensitivePathsPlugin(),
     ],
-    devtool: 'eval-source-map'
+    devtool: 'eval-source-map',
   }
 }

@@ -27,8 +27,6 @@ export function webpackConfig ({ config, stage }) {
     throw new Error('A stage is required when building a compiler.')
   }
 
-  console.log(webpackConfig)
-
   const defaultLoaders = getStagedRules({ config, stage })
 
   if (config.webpack) {

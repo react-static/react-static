@@ -50,7 +50,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             const jsonString = JSON.stringify(prop)
             sharedProps.set(prop, {
               jsonString,
-              hash: shorthash.unique(jsonString)
+              hash: shorthash.unique(jsonString),
             })
           } else {
             // Mark the prop as seen
@@ -122,14 +122,14 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           propsMap: PropTypes.object,
           initialProps: PropTypes.object,
           siteData: PropTypes.object,
-          staticURL: PropTypes.string
+          staticURL: PropTypes.string,
         }
         getChildContext () {
           return {
             propsMap: route.propsMap,
             initialProps: route.initialProps,
             siteData,
-            staticURL
+            staticURL,
           }
         }
         render () {
@@ -156,7 +156,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         // Rend the app to string!
         const appHtml = renderToString(comp)
         const { scripts, stylesheets } = flushChunks(clientStats, {
-          chunkNames
+          chunkNames,
         })
 
         clientScripts = scripts
@@ -174,7 +174,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           noscript: helmet.noscript.toComponent(),
           script: helmet.script.toComponent(),
           style: helmet.style.toComponent(),
-          title: helmet.title.toComponent()
+          title: helmet.title.toComponent(),
         }
 
         return appHtml
@@ -244,8 +244,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           path: route.path,
           propsMap: route.propsMap,
           initialProps: route.initialProps,
-          siteData
-        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`
+          siteData,
+        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
             }}
           />
           {clientScripts.map(script => (
@@ -297,8 +297,8 @@ export async function buildXMLandRSS ({ config }) {
       permalink: config.siteRoot + route.path,
       lastModified: '',
       priority: 0.5,
-      ...route
-    }))
+      ...route,
+    })),
   })
 
   await fs.writeFile(path.join(config.paths.DIST, 'sitemap.xml'), xml)
@@ -322,7 +322,7 @@ export async function buildXMLandRSS ({ config }) {
 }
 
 export const prepareRoutes = async config => {
-  // process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
+  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
   // Dynamically create the auto-routing component
   const templates = []
   const routes = config.routes.filter(d => d.component)
