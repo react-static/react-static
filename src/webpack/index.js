@@ -116,7 +116,16 @@ export async function startDevServer ({ config }) {
             })
           })
 
-          res.json(routes.filter(d => d.hasGetProps).map(d => d.path))
+          const routeInfo = {}
+
+          routes
+            .filter(d => d.hasGetProps)
+            .map(d => d.path)
+            .forEach(d => {
+              routeInfo[d] = true
+            })
+
+          res.json(routeInfo)
         } catch (err) {
           res.status(500)
           next(err)
