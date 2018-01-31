@@ -25,7 +25,7 @@ export default async cliArguments => {
     await createIndexFilePlaceholder({
       config,
       Component,
-      siteData
+      siteData,
     })
 
     // Copy the public directory over

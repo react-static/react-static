@@ -16,16 +16,18 @@ export function webpackConfig ({ config, stage }) {
     webpackConfig = require('./webpack.config.dev').default({ config })
   } else if (stage === 'prod') {
     webpackConfig = require('./webpack.config.prod').default({
-      config
+      config,
     })
   } else if (stage === 'node') {
     webpackConfig = require('./webpack.config.prod').default({
       config,
-      isNode: true
+      isNode: true,
     })
   } else {
     throw new Error('A stage is required when building a compiler.')
   }
+
+  console.log(webpackConfig)
 
   const defaultLoaders = getStagedRules({ config, stage })
 
@@ -38,7 +40,7 @@ export function webpackConfig ({ config, stage }) {
     transformers.forEach(transformer => {
       const modifiedConfig = transformer(webpackConfig, {
         stage,
-        defaultLoaders
+        defaultLoaders,
       })
       if (modifiedConfig) {
         webpackConfig = modifiedConfig
@@ -83,7 +85,7 @@ export async function startDevServer ({ config }) {
     compress: false,
     quiet: true,
     watchOptions: {
-      ignored: /node_modules/
+      ignored: /node_modules/,
     },
     ...config.devServer,
     before: app => {
@@ -128,26 +130,9 @@ export async function startDevServer ({ config }) {
       }
     },
     port,
-    host
+    host,
   }
 
-  /**
-   * Corbin Matschull (cgmx) - basedjux@gmail.com
-   * Nov 6, 2017
-   *
-   * HOTFIX FOR ISSUE #124
-   * This fix is from: https://github.com/nozzle/react-static/issues/124#issuecomment-342008635
-   *
-   * This implements a watcher when webpack runs to assign the timefix to {startTime}-
-   * -and run the callback.
-   *
-   * After the devCompiler finishes it removes the timefix by-
-   * subtracting {timefix} from {startTime}
-   *
-   * TODO: Wait for webpack-dev-server to implement a true fix for this.
-   */
-
-  // Move startTime from Modulo 10s
   const timefix = 11000
   devCompiler.plugin('watch-run', (watching, callback) => {
     watching.startTime += timefix
@@ -165,25 +150,25 @@ export async function startDevServer ({ config }) {
 
     if (isSuccessful) {
       console.timeEnd(chalk.green('=> [\u2713] Build Complete'))
-    }
-
-    if (first) {
-      first = false
-      console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
-      stats.startTime -= timefix
-      if (config.onStart) {
-        config.onStart({ devServerConfig })
+      if (first) {
+        console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
+        stats.startTime -= timefix
+        if (config.onStart) {
+          config.onStart({ devServerConfig })
+        }
       }
     }
 
     if (messages.errors.length) {
-      console.log(chalk.red('Failed to rebuild.'))
+      console.log(chalk.red(first ? 'Failed to build!' : 'Failed to rebuild.'))
       messages.errors.forEach(message => {
         console.log(message)
         console.log()
       })
-      return
+      process.exit(1)
     }
+
+    first = false
 
     if (messages.warnings.length) {
       console.log(chalk.yellow('Built complete with warnings.'))
@@ -214,7 +199,7 @@ export async function buildProductionBundles ({ config }) {
   return new Promise((resolve, reject) => {
     webpack([
       webpackConfig({ config, stage: 'prod' }),
-      webpackConfig({ config, stage: 'node' })
+      webpackConfig({ config, stage: 'node' }),
     ]).run((err, stats) => {
       if (err) {
         console.log(chalk.red(err.stack || err))
@@ -245,7 +230,7 @@ export async function buildProductionBundles ({ config }) {
               entrypoints: false,
               chunkOrigins: false,
               chunkModules: false,
-              colors: true
+              colors: true,
             })
           )
           if (buildErrors) {

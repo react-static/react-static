@@ -9,22 +9,25 @@ import {
   Router as ReactRouter,
   StaticRouter,
   withRouter,
-  NavLink as ReactRouterNavLink
+  NavLink as ReactRouterNavLink,
 } from 'react-router-dom'
-
-//
-
-import Routes from 'react-static-routes'
 
 //
 
 import { pathJoin, unwrapArray, isObject, createPool, deprecate } from './shared'
 import scrollTo from './utils/ScrollTo'
 
+let Routes // eslint-disable-line import/no-mutable-exports
+if (typeof document !== 'undefined') {
+  Routes = require('react-static-routes')
+} else {
+  Routes = require(`${process.env.REACT_STATIC_ROUTES_PATH}`).default // eslint-disable-line import/no-dynamic-require
+}
+
 //
 
 const prefetchPool = createPool({
-  concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE) || 10
+  concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE) || 10,
 })
 const propsByHash = {}
 const pathProps = {}
@@ -65,7 +68,7 @@ if (process.env.REACT_STATIC_ENV === 'development') {
         display: 'block',
         width: '100%',
         textAlign: 'center',
-        padding: '10px'
+        padding: '10px',
       }}
     >
       <style>
@@ -83,7 +86,7 @@ if (process.env.REACT_STATIC_ENV === 'development') {
       <svg
         style={{
           width: '50px',
-          height: '50px'
+          height: '50px',
         }}
       >
         <circle
@@ -97,7 +100,7 @@ if (process.env.REACT_STATIC_ENV === 'development') {
             cy: 25,
             strokeDasharray: 10.4,
             strokeLinecap: 'round',
-            fill: 'transparent'
+            fill: 'transparent',
           }}
         />
       </svg>
@@ -153,7 +156,7 @@ async function prefetchData (path, { priority } = {}) {
 
       // Place it in the cache
       pathProps[path] = {
-        initialProps
+        initialProps,
       }
     } catch (err) {
       console.error('Error: There was an error retrieving props for this route! path:', path)
@@ -205,7 +208,7 @@ async function prefetchData (path, { priority } = {}) {
       if (key === '__local') {
         initialProps = {
           ...initialProps,
-          ...propsByHash[hash]
+          ...propsByHash[hash],
         }
       } else {
         // Otherwise, just set it as the key
@@ -216,7 +219,7 @@ async function prefetchData (path, { priority } = {}) {
 
   // Cache the entire props for the route
   pathProps[path] = {
-    initialProps
+    initialProps,
   }
 
   // Return the props
@@ -285,10 +288,10 @@ async function prefetch (path, options = {}) {
 const RouteData = withRouter(
   class RouteData extends React.Component {
     static contextTypes = {
-      initialProps: PropTypes.object
+      initialProps: PropTypes.object,
     }
     state = {
-      loaded: false
+      loaded: false,
     }
     componentWillMount () {
       if (process.env.REACT_STATIC_ENV === 'development') {
@@ -317,7 +320,7 @@ const RouteData = withRouter(
           return
         }
         this.setState({
-          loaded: true
+          loaded: true,
         })
       })()
     render () {
@@ -353,7 +356,7 @@ const RouteData = withRouter(
 
       const finalProps = {
         ...rest,
-        ...routeData
+        ...routeData,
       }
       if (component) {
         return React.createElement(component, finalProps)
@@ -368,10 +371,10 @@ const RouteData = withRouter(
 
 class SiteData extends Component {
   static contextTypes = {
-    siteData: PropTypes.object
+    siteData: PropTypes.object,
   }
   state = {
-    siteData: false
+    siteData: false,
   }
   async componentWillMount () {
     if (process.env.REACT_STATIC_ENV === 'development') {
@@ -386,7 +389,7 @@ class SiteData extends Component {
         return
       }
       this.setState({
-        siteData
+        siteData,
       })
     }
   }
@@ -419,7 +422,7 @@ class SiteData extends Component {
 
     const finalProps = {
       ...rest,
-      ...siteData
+      ...siteData,
     }
     if (component) {
       return React.createElement(component, finalProps)
@@ -436,7 +439,7 @@ class Prefetch extends Component {
     children: null,
     path: null,
     type: null,
-    onLoad: () => {}
+    onLoad: () => {},
   }
   async componentDidMount () {
     const { path, onLoad, type } = this.props
@@ -470,7 +473,7 @@ class PrefetchWhenSeen extends Component {
     path: null,
     className: null,
     type: null,
-    onLoad: () => {}
+    onLoad: () => {},
   }
 
   componentDidMount () {
@@ -496,7 +499,7 @@ class PrefetchWhenSeen extends Component {
     const { component, render, children, ...rest } = this.props
     if (component) {
       return React.createElement(component, {
-        handleRef: this.handleRef
+        handleRef: this.handleRef,
       })
     }
     if (render) {
@@ -528,12 +531,12 @@ const onLoading = cb => {
 
 class Loading extends React.Component {
   state = {
-    loading
+    loading,
   }
   componentWillMount () {
     this.unsubscribe = onLoading(loading =>
       this.setState({
-        loading
+        loading,
       })
     )
   }
@@ -541,7 +544,7 @@ class Loading extends React.Component {
     const { component, render, children, ...rest } = this.props
     const finalProps = {
       ...rest,
-      loading: this.state.loading
+      loading: this.state.loading,
     }
     if (component) {
       return React.createElement(component, finalProps)
@@ -561,7 +564,7 @@ const RouterScroller = withRouter(
     componentDidUpdate (prev) {
       if (prev.location.pathname !== this.props.location.pathname && !this.props.location.hash) {
         scrollTo(0, {
-          duration: this.props.scrollToTopDuration
+          duration: this.props.scrollToTopDuration,
         })
         return
       }
@@ -577,13 +580,13 @@ const RouterScroller = withRouter(
           const element = document.getElementById(resolvedHash)
           if (element !== null) {
             scrollTo(element, {
-              duration: scrollToHashDuration
+              duration: scrollToHashDuration,
             })
           }
         }
       } else {
         scrollTo(0, {
-          duration: scrollToHashDuration
+          duration: scrollToHashDuration,
         })
       }
     }
@@ -597,14 +600,14 @@ class Router extends Component {
   static defaultProps = {
     type: 'browser',
     scrollToTopDuration: 0,
-    scrollToHashDuration: 800
+    scrollToHashDuration: 800,
   }
   static contextTypes = {
-    staticURL: PropTypes.string
+    staticURL: PropTypes.string,
   }
   state = {
     error: null,
-    errorInfo: null
+    errorInfo: null,
   }
   componentDidMount () {
     getRouteInfo()
@@ -623,7 +626,7 @@ class Router extends Component {
     // Catch errors in any child components and re-renders with an error message
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     })
   }
   patchHistoryNavigation = resolvedHistory => {
@@ -638,7 +641,7 @@ class Router extends Component {
         if (shouldPrefetch) {
           setLoading(true)
           await prefetch(path, {
-            priority: true
+            priority: true,
           })
           setLoading(false)
         }
@@ -669,7 +672,7 @@ class Router extends Component {
           style={{
             margin: '1rem',
             padding: '1rem',
-            background: 'rgba(0,0,0,0.05)'
+            background: 'rgba(0,0,0,0.05)',
           }}
         >
           <h2>Oh-no! Something's gone wrong!</h2>
@@ -733,7 +736,7 @@ const reactRouterProps = [
   'location',
   'strict',
   'to',
-  'replace'
+  'replace',
 ]
 
 function NavLink ({ prefetch = true, ...rest }) {
@@ -823,5 +826,5 @@ export {
   onLoading,
   // deprecated
   getRouteProps,
-  getSiteData
+  getSiteData,
 }
