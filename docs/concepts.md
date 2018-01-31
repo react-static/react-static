@@ -125,7 +125,8 @@ Sometimes you may want to handle routes that should not be statically rendered. 
 
 Example - Handling a non-static admin route:
 ```javascript
-import { Router, Routes, Route, Switch } from 'react-static'
+import { Router, Route, Switch } from 'react-static'
+import Routes from 'react-static-routes'
 
 import Admin from 'containers/Admin'
 

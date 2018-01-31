@@ -467,22 +467,23 @@ Example:
 
 ```javascript
 // App.js
-import { Router, Routes } from 'react-static'
+import { Router } from 'react-static'
 
 // For standard component routing:
 export default () => (
   <Router>
-    <Routes />
+    ...
   </Router>
 )
 ```
 
-### `Routes`
+### `Routes` (`react-static-routes`)
 
-React Static handles all of your routing for you using `react-router` under the hood. All you need to do is specify where you want to render those routes:
+React Static handles all of your routing for you using `react-router` under the hood. All you need to do is import `react-static-routes` and specify where you want to render them:
 ```javascript
 // App.js
-import { Router, Routes } from 'react-static'
+import { Router } from 'react-static'
+import Routes from 'react-static-routes'
 
 export default () => (
   <Router>
@@ -492,6 +493,8 @@ export default () => (
 ```
 
 The routes that will be rendered will be the **routes** returned by the `getRoutes` function of this config.
+
+**Important!** - `react-static-routes` is not a module you need to install. It is a dynamically generated file that is built with the rest of your site at dev and prod stages. If you install the `react-static-routes` node modules, you will be greeted with a notice to uninstall it and remove it from your dependencies :)
 
 ##### Custom `Routes` Rendering
 Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize one of these three render prop formats:

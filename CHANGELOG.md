@@ -8,7 +8,6 @@
 - Path changes now automatically scroll to the top of the page. Duration defaults to `0`ms, but can be modifed via the `scrollToTopDuration` prop on the `Router` component.
 - Hash routing changes now automatically scroll to the element (or top of the page if the hash is removed but the path stays the same). Duration defaults to `800`ms, but can be modifed via the `scrollToHashDuration` prop on the `Router` component.
 #### Breaking Changes
-- `Routes` are now conveniently importable from the `react-static` package and no longer requires the `react-static-routes` package.
 - The `getRouteProps` and `getSiteData` HOC's have both been renamed to `withRouteData` and `withSiteData`. Using the old methods will result in a deprecation notice and a broken app. Luckily this is an easy find and replace :)
 - `Router.subscribe` has been deprecated. Though, if you still need programmatic access to a loading event, you can use the new `onLoading` subscriber that functions the same way.
 
