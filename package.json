@@ -1,6 +1,6 @@
 {
   "name": "react-static",
-  "version": "5.0.0-beta.2",
+  "version": "5.0.0-beta.3",
   "main": "lib/index.js",
   "types": "src/index.d.ts",
   "license": "MIT",
@@ -18,8 +18,7 @@
     "postpublish": "git push --tags",
     "test": "eslint src examples test && yarn run test-sample-build",
     "test-sample-build": "yarn build && (cd test/minimal-website && ../../bin/react-static build)",
-    "test-large-build":
-      "yarn build && (cd test/stress-test-routes && yarn && ../../bin/react-static build)",
+    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && ../../bin/react-static build)",
     "test-webpack": "jest"
   },
   "repository": "nozzle/react-static",
