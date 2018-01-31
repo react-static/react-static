@@ -122,7 +122,7 @@ export function normalizeRoutes (routes) {
       ...route,
       path: routePath,
       noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
-      hasGetProps: !!route.getProps,
+      hasGetProps: !!route.getData,
     }
 
     if (!normalizedRoute.path) {

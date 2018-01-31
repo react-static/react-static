@@ -32,7 +32,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   await poolAll(
     config.routes.map(route => async () => {
       // Fetch initialProps from each route
-      route.initialProps = !!route.getProps && (await route.getProps({ route, dev: false }))
+      route.initialProps = !!route.getData && (await route.getData({ route, dev: false }))
 
       if (!route.initialProps) {
         route.initialProps = {}

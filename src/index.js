@@ -336,7 +336,7 @@ const RouteData = withRouter(
 
       if (!routeData && this.state.loaded) {
         console.error(
-          `Warning: withRouteData could not find any props for route: ${path}. Either you are missing a getProps function for this route in your static.config.js or you are using the withRouteData HOC when you don't need to.`
+          `Warning: withRouteData could not find any props for route: ${path}. Either you are missing a getData function for this route in your static.config.js or you are using the withRouteData HOC when you don't need to.`
         )
       }
 

@@ -107,7 +107,7 @@ export async function startDevServer ({ config }) {
           routes.forEach(route => {
             app.get(`/__react-static__/route${encodeURI(route.path)}`, async (req, res, next) => {
               try {
-                const initialProps = await route.getProps({ dev: true })
+                const initialProps = await route.getData({ dev: true })
                 res.json(initialProps)
               } catch (err) {
                 res.status(500)
