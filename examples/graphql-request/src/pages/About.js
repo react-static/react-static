@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
-import { getRouteData } from 'react-static'
+import { withRouteData } from 'react-static'
 
-export default getRouteData(({ allAuthors }) => (
+export default withRouteData(({ allAuthors }) => (
   <Fragment>
     {allAuthors.map(author => (
       <div className="about-author" key={author.id}>

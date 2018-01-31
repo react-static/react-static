@@ -1,8 +1,8 @@
 import React from 'react'
-import { getRouteData } from 'react-static'
+import { withRouteData } from 'react-static'
 import Markdown from 'react-markdown'
 
-export default getRouteData(({ post }) => (
+export default withRouteData(({ post }) => (
   <article>
     <h1>{post.title}</h1>
     <div className="placeholder">

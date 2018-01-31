@@ -2,7 +2,7 @@ import axios from 'axios'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 export default {
-  getSiteData: () => ({
+  withSiteData: () => ({
     title: 'React Static',
   }),
   getRoutes: async () => {

@@ -1,7 +1,7 @@
 import fetchData from './src/prismic/fetch'
 
 export default {
-  getSiteData: () => ({
+  withSiteData: () => ({
     title: 'React Static Prismic',
   }),
   getRoutes: async () => {

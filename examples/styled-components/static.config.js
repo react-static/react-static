@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
 
 export default {
-  getSiteData: () => ({
+  withSiteData: () => ({
     title: 'React Static',
   }),
   getRoutes: async () => {

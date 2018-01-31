@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
   preact: true,
-  getSiteData: () => ({
+  withSiteData: () => ({
     title: 'React Static',
   }),
   getRoutes: async () => {

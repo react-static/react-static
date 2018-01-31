@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  getSiteData: () => ({
+  withSiteData: () => ({
     title: 'React Static',
   }),
   getRoutes: async () => {
