@@ -459,8 +459,10 @@ Props:
   - `browser` - Uses `history.createBrowserHistory`
   - `hash` - Uses `history.createHashHistory`
   - `memory` - Uses `history.createMemoryHistory`
-- `scrollToHashDuration: int` - The duration of the automatic scroll-to-hash animation that happens on hash changes. Defaults to `800`
-- `scrollToTopDuration: int` - The duration of the automatic scroll-to-top animation that happens on path changes. Defaults to `0`
+- `autoScrollToTop: Boolean` - Set this to `false` to disable the automatic scroll-to-top when the site path changes. Defualts to `true`.
+- `autoScrollToHash: Boolean` - Set this to `false` to disable the automatic scroll-to-hash when the location hash changes. Defaults to `true`.
+- `scrollToHashDuration: Int` - The duration of the automatic scroll-to-hash animation that happens on hash changes. Defaults to `800`
+- `scrollToTopDuration: Int` - The duration of the automatic scroll-to-top animation that happens on path changes. Defaults to `0`
 - `history: History` - An optional history object (most-often used for things like react-router-redux). Provides a helper method to subscribe to loading events. Note that this will override the `type` prop above.
 
 Example:
@@ -656,6 +658,7 @@ To create links and navigate around your site, React Static provides you with a 
   - `activeClassName: String` - The class to add to the link when it is active.
   - `activeStyle: String` - The style to add to the link when it is active.
   - `prefetch: Boolean || String` - Whether or not to automatically prefetch this link's page. Defaults to `true`. Can also be set to `data` or `template` to only preload that specific resource
+  - `scrollToTop: Boolean` - Set this to `false` if you do not want the page to scroll-to-top automatically after navigation. Defaults to `true`
   - Any other prop set to the link will be forwarded to `<a />` or react-router's `<Link>` component, depending on their destination
 
 Please familiarize yourself with [React-Router's Link and Navlink](https://reacttraining.com/react-router/web/api/) component to take full advantage of this component!

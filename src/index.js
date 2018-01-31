@@ -556,17 +556,30 @@ const RouterScroller = withRouter(
     }
     componentDidUpdate (prev) {
       if (prev.location.pathname !== this.props.location.pathname && !this.props.location.hash) {
-        scrollTo(0, {
-          duration: this.props.scrollToTopDuration,
-        })
+        if (window.__noScrollTo) {
+          window.__noScrollTo = false
+          return
+        }
+        this.scrollToTop()
         return
       }
       if (prev.location.hash !== this.props.location.hash) {
         return this.scrollToHash()
       }
     }
+    scrollToTop = () => {
+      const { autoScrollToTop, scrollToTopDuration } = this.props
+      if (autoScrollToTop) {
+        scrollTo(0, {
+          duration: scrollToTopDuration,
+        })
+      }
+    }
     scrollToHash = () => {
-      const { scrollToHashDuration, location: { hash } } = this.props
+      const { scrollToHashDuration, autoScrollToHash, location: { hash } } = this.props
+      if (!autoScrollToHash) {
+        return
+      }
       if (hash) {
         const resolvedHash = hash.substring(1)
         if (resolvedHash) {
@@ -592,6 +605,8 @@ const RouterScroller = withRouter(
 class Router extends Component {
   static defaultProps = {
     type: 'browser',
+    autoScrollToTop: true,
+    autoScrollToHash: true,
     scrollToTopDuration: 0,
     scrollToHashDuration: 800,
   }
@@ -648,6 +663,8 @@ class Router extends Component {
       history,
       type,
       children,
+      autoScrollToTop,
+      autoScrollToHash,
       scrollToTopDuration,
       scrollToHashDuration,
       ...rest
@@ -703,7 +720,9 @@ class Router extends Component {
 
     return (
       <ResolvedRouter history={resolvedHistory} location={staticURL} context={context} {...rest}>
-        <RouterScroller {...{ scrollToTopDuration, scrollToHashDuration }}>
+        <RouterScroller
+          {...{ autoScrollToTop, autoScrollToHash, scrollToTopDuration, scrollToHashDuration }}
+        >
           {children}
         </RouterScroller>
       </ResolvedRouter>
@@ -732,21 +751,33 @@ const reactRouterProps = [
   'replace',
 ]
 
-function NavLink ({ prefetch = true, ...rest }) {
+function SmartLink ({ prefetch = true, scrollToTop = true, onClick, ...rest }) {
   const { to } = rest
   const resolvedTo = isObject(to) ? to.path : to
   // Router Link
   if (isRoutingUrl(resolvedTo)) {
+    const finalRest = {
+      ...rest,
+      onClick: e => {
+        if (typeof document !== 'undefined' && !scrollToTop) {
+          window.__noScrollTo = true
+        }
+        if (onClick) {
+          onClick(e)
+        }
+      },
+    }
+
     if (prefetch) {
       return (
         <PrefetchWhenSeen
           path={resolvedTo}
           type={prefetch}
-          render={({ handleRef }) => <ReactRouterNavLink {...rest} innerRef={handleRef} />}
+          render={({ handleRef }) => <ReactRouterNavLink {...finalRest} innerRef={handleRef} />}
         />
       )
     }
-    return <ReactRouterNavLink {...rest} />
+    return <ReactRouterNavLink {...finalRest} />
   }
 
   // Browser Link
@@ -762,7 +793,8 @@ function NavLink ({ prefetch = true, ...rest }) {
   return <a {...aRest}>{children}</a>
 }
 
-const Link = NavLink
+const Link = SmartLink
+const NavLink = SmartLink
 
 function withRouteData (Comp) {
   return function ConnectedRouteData (props) {
