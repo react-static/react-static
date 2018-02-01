@@ -1,5 +1,3 @@
-const React = require('react')
+import React from 'react'
 
-module.exports = function () {
-  return React.createElement('div', {}, 'Hello, about!')
-}
+export default () => <div>Hello world!</div>

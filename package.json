@@ -17,9 +17,10 @@
     "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
     "test": "eslint src examples test && yarn run test-sample-build",
-    "test-sample-build": "yarn build && (cd test/minimal-website && ../../bin/react-static build)",
-    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && ../../bin/react-static build)",
-    "test-webpack": "jest"
+    "test-sample-build":
+      "yarn build && (cd test/minimal-website && yarn && ../../bin/react-static build)",
+    "test-large-build":
+      "yarn build && (cd test/stress-test-routes && yarn && ../../bin/react-static build)"
   },
   "repository": "nozzle/react-static",
   "devDependencies": {

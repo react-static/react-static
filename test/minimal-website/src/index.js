@@ -1,2 +1,3 @@
-var App = require('./App');
-module.exports.default = App;
+import App from './App'
+
+export default App

@@ -1,9 +1,11 @@
-var React = require('react');
-var Router = require('../../..').Router;
-var Routes = require('react-static-routes').default;
+import React from 'react'
+import { Router } from 'react-static'
+import Routes from 'react-static-routes'
 
-require('./app.css');
+import './app.css'
 
-module.exports = function(){
-  return React.createElement(Router, {}, React.createElement(Routes));
-};
+export default () => (
+  <Router>
+    <Routes />
+  </Router>
+)

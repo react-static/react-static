@@ -1,5 +1,3 @@
-var React = require('react');
+import React from 'react'
 
-module.exports = function(){
-  return React.createElement('div', {}, 'Hello, world!');
-};
+export default () => <div>Hello World!</div>

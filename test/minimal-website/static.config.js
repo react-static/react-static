@@ -1,10 +1,8 @@
-module.exports.default = {
-  getRoutes: function() {
-    return [
-      {
-        path: '/',
-        component: 'src/Home',
-      },
-    ]
-  },
+export default {
+  getRoutes: () => [
+    {
+      path: '/',
+      component: 'src/Home',
+    },
+  ],
 }
