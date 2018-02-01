@@ -21,7 +21,7 @@
   - [react-static build](#react-static-build)
 - [Components](#components)
   - [Router](#router)
-  - [Routes](#routes)
+  - [Routes](#routes-react-static-routes)
   - [RouteData](#routedata)
   - [SiteData](#sitedata)
   - [Link](#link)
