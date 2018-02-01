@@ -21,7 +21,7 @@
   - [react-static build](#react-static-build)
 - [Components](#components)
   - [Router](#router)
-  - [Routes](#routes)
+  - [Routes](#routes-react-static-routes)
   - [RouteData](#routedata)
   - [SiteData](#sitedata)
   - [Link](#link)
@@ -309,21 +309,6 @@ export default {
 }
 ```
 
-**Using Custom devServer properties**
-
-This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
-
-```javascript
-// static.config.js
-
-export default {
-  devServer: {
-    port: 8080,
-    host: '127.0.0.1'
-  }
-}
-```
-
 ### `devServer`
 An `Object` of options to be passed to the underlying `webpack-dev-server` instance used for developement.
 
@@ -333,7 +318,7 @@ Example:
 export default {
   // An optional object for customizing the options for the
   devServer: {
-    port: 8080,
+    port: 3000,
     host: '127.0.0.1'
   },
 }
@@ -575,8 +560,8 @@ module.exports = {
 import { RouteData, withRouteData } from 'react-static'
 // "render" prop syntax - Recommended
 export default () => (
-  <RouteData render={({ songs }) =>
-    <div>Welcome to {siteTitle}! {metaDescription}</
+  <RouteData render={({ songs }) => (
+    <div>Welcome to {siteTitle}! {metaDescription}</div>
   )} />
 )
 
@@ -584,7 +569,7 @@ export default () => (
 export default () => (
   <RouteData>
     {({ songs }) => (
-      <div>Welcome to {siteTitle}! {metaDescription}</
+      <div>Welcome to {siteTitle}! {metaDescription}</div>
     )}
   </RouteData>
 )
