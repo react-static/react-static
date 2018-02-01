@@ -309,21 +309,6 @@ export default {
 }
 ```
 
-**Using Custom devServer properties**
-
-This project uses webpack-dev-server. The `devServer` config object can be used to customize your development server.
-
-```javascript
-// static.config.js
-
-export default {
-  devServer: {
-    port: 8080,
-    host: '127.0.0.1'
-  }
-}
-```
-
 ### `devServer`
 An `Object` of options to be passed to the underlying `webpack-dev-server` instance used for developement.
 
@@ -333,7 +318,7 @@ Example:
 export default {
   // An optional object for customizing the options for the
   devServer: {
-    port: 8080,
+    port: 3000,
     host: '127.0.0.1'
   },
 }
