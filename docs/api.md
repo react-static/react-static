@@ -575,8 +575,8 @@ module.exports = {
 import { RouteData, withRouteData } from 'react-static'
 // "render" prop syntax - Recommended
 export default () => (
-  <RouteData render={({ songs }) =>
-    <div>Welcome to {siteTitle}! {metaDescription}</
+  <RouteData render={({ songs }) => (
+    <div>Welcome to {siteTitle}! {metaDescription}</div>
   )} />
 )
 
@@ -584,7 +584,7 @@ export default () => (
 export default () => (
   <RouteData>
     {({ songs }) => (
-      <div>Welcome to {siteTitle}! {metaDescription}</
+      <div>Welcome to {siteTitle}! {metaDescription}</div>
     )}
   </RouteData>
 )
