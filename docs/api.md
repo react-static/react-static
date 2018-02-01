@@ -659,10 +659,10 @@ import { Link } from 'react-static'
 </Link>
 
 <Link to={{
-  path: '/blog/post/1',
-  query: {
-    myQuery: true
-  }
+  pathname: '/blog/post/1', // or path: '/blog/post/1'
+  search: '?sort=name',
+  hash: '#the-hash',
+  state: { fromDashboard: true }
 }}>
   Go to Blog Post 1
 </Link>

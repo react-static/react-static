@@ -750,7 +750,7 @@ const reactRouterProps = [
 
 function SmartLink ({ prefetch = true, scrollToTop = true, onClick, ...rest }) {
   const { to } = rest
-  const resolvedTo = isObject(to) ? to.path : to
+  const resolvedTo = isObject(to) ? to.pathname || to.path : to
   // Router Link
   if (isRoutingUrl(resolvedTo)) {
     const finalRest = {
