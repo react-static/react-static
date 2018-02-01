@@ -22,7 +22,7 @@ const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, 'src/theme-
 
 //
 export default {
-  withSiteData: () => ({
+  getSiteData: () => ({
     title: 'React Static',
   }),
   getRoutes: async () => {
