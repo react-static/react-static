@@ -7,6 +7,10 @@ import { getConfig, copyPublicFolder } from '../utils'
 
 export default async cliArguments => {
   try {
+    if (cliArguments.includes('--staging')) {
+      process.env.REACT_STATIC_STAGING = true
+    }
+
     const config = getConfig()
     await fs.remove(config.paths.DIST)
 

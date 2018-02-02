@@ -271,7 +271,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       )}`
 
       // If the siteRoot is set, prefix all absolute URL's
-      if (config.siteRoot) {
+      if (!process.env.REACT_STATIC_STAGING && config.siteRoot) {
         html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteRoot}$2`)
       }
 
@@ -297,7 +297,7 @@ export async function buildXMLandRSS ({ config }) {
   }
   const xml = generateXML({
     routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: config.siteRoot + route.path,
+      permalink: config.siteRoot + route.path, // siteRoot + /routePath
       lastModified: '',
       priority: 0.5,
       ...route,

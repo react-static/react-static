@@ -18,7 +18,7 @@ export default function ({ config, isNode }) {
       filename: isNode ? 'static.[chunkHash:8].js' : '[name].[chunkHash:8].js',
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
-      publicPath: config.siteRoot || '/',
+      publicPath: process.env.REACT_STATIC_STAGING ? '/' : `${config.siteRoot}/` || '/',
       libraryTarget: isNode ? 'umd' : undefined,
     },
     target: isNode ? 'node' : undefined,

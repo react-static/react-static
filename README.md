@@ -57,15 +57,17 @@ React-Static is a fast, lightweight, and powerful framework for building static-
   ```
 5. Start the dev server and edit some code!
   ```bash
-  $ yarn start
+  $ yarn start # or react-static start
+  ```
+6. Test a production build
+  ```bash
+  $ yarn stage # or react-static build --staging
+  $ yarn serve
+
   ```
 6. Build for production!
   ```bash
-  $ yarn build
-  ```
-7. Test your build locally
-  ```bash
-  $ yarn serve
+  $ yarn build # or react-static build
   ```
 
 Once you've installed and test driven sufficiently, you may want to:

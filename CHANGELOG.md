@@ -1,3 +1,7 @@
+# 5.1.0
+#### Features
+- Added `--staging` CLI argument to `react-static build` that does not perform build-time optimizations like siteRoot replacement on links assets, etc. If you are testing your site locally, you will likely want to use this option to allow your production site to be navigable on localhost.
+
 # 5.0.0
 #### Features
 - Automatic Route Splitting. From here on out as long a project is using the automatic component-based static routing, all route templates will be automatically deduped and split into separate modules. These modules are statically-rendered into every page that uses them, are preloaded asynchronously with React-Static built-in prefetching utiliies, and are also loaded on demand if needed as the client navigates through your site. Carry on!

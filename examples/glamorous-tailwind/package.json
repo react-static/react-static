@@ -5,9 +5,10 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run generate:tailwindcss && react-static start",
+    "stage": "npm run generate:tailwindcss && react-static build --staging",
     "build": "npm run generate:tailwindcss && react-static build",
     "serve": "serve dist -p 3000",
-    "generate:tailwindcss": "postcss ./tailwind.css -o ./tailwind.custom.css"    
+    "generate:tailwindcss": "postcss ./tailwind.css -o ./tailwind.custom.css"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -26,7 +27,5 @@
     "serve": "^6.1.0",
     "tailwindcss": "^0.3.0"
   },
-  "eslintIgnore": [
-    "tailwind.js"
-  ]
+  "eslintIgnore": ["tailwind.js"]
 }
