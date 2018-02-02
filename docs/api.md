@@ -628,7 +628,7 @@ const Welcome = ({ siteTitle, metaDescription }) => (
   <div>Welcome to {siteTitle}! {metaDescription}</div>
 )
 export default () => (
-  <SiteData component={Welcome}
+  <SiteData component={Welcome} />
 )
 
 // HOC syntax

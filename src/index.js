@@ -759,6 +759,8 @@ function SmartLink ({ prefetch = true, scrollToTop = true, onClick, ...rest }) {
       to.pathname = to.path
       delete to.path
       resolvedTo = to.pathname
+    } else if (to.pathname) {
+      resolvedTo= to.pathname
     }
   }
   // Router Link
