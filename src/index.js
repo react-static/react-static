@@ -727,13 +727,13 @@ class Router extends Component {
   }
 }
 
+// Detects internal link url schemas
 function isRoutingUrl (to) {
   if (typeof to === 'undefined') return false
   return (
-    !to.match(/^#/) &&
-    !to.match(/^[a-z]{1,10}:\/\//) &&
-    !to.match(/^(data|mailto):/) &&
-    !to.match(/^\/\//)
+    !to.match(/^([A-z]?)+:/) && // starts with external protocol
+    !to.match(/^#/) && // starts with hash fragment
+    !to.match(/^[a-z]{1,10}:\/\//) // starts with double slash protocol
   )
 }
 
