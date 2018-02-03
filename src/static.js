@@ -218,12 +218,12 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
-            <link rel="preload" as="script" href={`${config.publicPath}routeInfo.js`} />
+            <link rel="preload" as="script" href={path.join(config.publicPath, 'routeInfo.js')} />
             {clientScripts.map(script => (
-              <link rel="preload" as="script" href={`${config.publicPath}${script}`} />
+              <link rel="preload" as="script" href={path.join(config.publicPath, script)} />
             ))}
             {clientStyleSheets.map(styleSheet => (
-              <link rel="stylesheet" href={`${config.publicPath}${styleSheet}`} />
+              <link rel="stylesheet" href={path.join(config.publicPath, styleSheet)} />
             ))}
             {head.link}
             {head.noscript}
@@ -252,7 +252,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             }}
           />
           {clientScripts.map(script => (
-            <script defer type="text/javascript" src={`${config.publicPath}${script}`} />
+            <script defer type="text/javascript" src={path.join(config.publicPath, script)} />
           ))}
         </body>
       )
@@ -270,9 +270,9 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         </DocumentTemplate>
       )}`
 
-      // If the siteRoot is set, prefix all absolute URL's
+      // If the siteRoot is set, prefix all absolute URL's with the public path (which is derived from the siteRoot)
       if (!process.env.REACT_STATIC_STAGING && config.siteRoot) {
-        html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteRoot}$2`)
+        html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.publicPath}$2`)
       }
 
       // If the route is a 404 page, write it directly to 404.html, instead of
@@ -297,7 +297,7 @@ export async function buildXMLandRSS ({ config }) {
   }
   const xml = generateXML({
     routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: config.siteRoot + route.path, // siteRoot + /routePath
+      permalink: config.publicPath + route.path, // publicPath + /routePath
       lastModified: '',
       priority: 0.5,
       ...route,

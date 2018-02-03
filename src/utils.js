@@ -68,7 +68,7 @@ export const getConfig = () => {
     STATIC_DATA: path.join(distPath, 'staticData'),
   }
 
-  const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null
+  const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : ''
 
   const getRoutes = config.getRoutes
     ? async (...args) => {
