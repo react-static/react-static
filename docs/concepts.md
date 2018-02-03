@@ -2,6 +2,7 @@
 
 - [Overview](#overview)
 - [Code, Data, and Prop Splitting](#code-data-and-prop-splitting)
+- [Writing universal/"node-safe" code](#writing-universal-node-safe-code)
 - [404 Handling](#404-handling)
 - [Non-Static Routing](#non-static-routing)
 - [Webpack Customization and Plugins](#webpack-customization-and-plugins)
@@ -110,6 +111,23 @@ export default {
     ]
   },
 }
+```
+
+# Writing universal/"node-safe" code
+Because React-Static code is both used in the browser and node (during build), it's very, very important that your code be "universal" or in other words "node safe". Most of us are used to writing javascript from the browser's perspective, so there are some things to watch out for:
+
+- Check before using `window`, `document` or browser only APIs. Since these objects do not technically exist in the node environment, make sure you check that they exist before attempting to use them. The easiest way to do this is to keep code that relies on them in `componentDidMount` or inside a condition, eg.
+```javascript
+  if (typeof document !== 'undefined') {
+    // use document
+  }
+```
+- Ensure any external libraries that rely on `window`, `document` or browser specific APIs are not imported in the node environment. Not all libraries that use these objects require them immediately, but some of them do. If you encounter one of these libraries, you'll see it error when you attempt to `build` your site for production. To fix these errors, you can stub and require the library conditionally:
+```javascript
+  let CoolLibrary = {} // you can stub it to whatever you need to to make it run in node.
+  if (typeof document !== 'undefined') {
+    CoolLibrary = require('cool-library').default
+  }
 ```
 
 # 404 Handling
