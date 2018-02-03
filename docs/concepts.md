@@ -2,7 +2,7 @@
 
 - [Overview](#overview)
 - [Code, Data, and Prop Splitting](#code-data-and-prop-splitting)
-- [Writing universal/"node-safe" code](#writing-universal-node-safe-code)
+- [Writing universal, "node-safe" code](#writing-universal-node-safe-code)
 - [404 Handling](#404-handling)
 - [Non-Static Routing](#non-static-routing)
 - [Webpack Customization and Plugins](#webpack-customization-and-plugins)
