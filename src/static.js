@@ -270,7 +270,8 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         </DocumentTemplate>
       )}`
 
-      // If the siteRoot is set, prefix all absolute URL's with the public path (which is derived from the siteRoot)
+      // If the siteRoot is set, prefix all absolute URL's with the public path
+      // (which is derived from the siteRoot)
       if (!process.env.REACT_STATIC_STAGING && config.siteRoot) {
         html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.publicPath}$2`)
       }
