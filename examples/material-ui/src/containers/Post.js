@@ -1,10 +1,10 @@
 import React from 'react'
-import { getRouteProps, Link } from 'react-static'
+import { withRouteData, Link } from 'react-static'
 //
 import Typography from 'material-ui/Typography'
 
 
-export default getRouteProps(({ post }) => (
+export default withRouteData(({ post }) => (
   <div>
     <Typography type="body1" component={Link} to="/blog" gutterBottom>
       {'<'} Back
