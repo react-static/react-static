@@ -23,6 +23,7 @@
 - In your `static.config.js`:
   - Replace all instances of `getProps` with `getData`
   - Replace `getSiteProps` with `getSiteData`
+  - If you are using a custom `Document` be sure to replace the `siteProps` prop with `siteData`.
 - Note: To take advantage of auto-code-splitting, you cannot use custom routing for your static routes. I suggest migrating to the automatic routing strategy asap.
 
 # 4.8.2
