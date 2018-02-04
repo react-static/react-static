@@ -33,13 +33,13 @@ export default {
       {
         path: '/',
         component: 'src/pages/Home',
-        getProps: () => ({
+        getData: () => ({
           allPosts,
         }),
         children: allPosts.map(post => ({
           path: `/post/${post.slug}`,
           component: 'src/pages/Post',
-          getProps: () => ({
+          getData: () => ({
             post,
           }),
         })),
@@ -47,7 +47,7 @@ export default {
       {
         path: '/about',
         component: 'src/pages/About',
-        getProps: () => ({
+        getData: () => ({
           allAuthors,
         }),
       },

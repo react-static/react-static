@@ -1,4 +1,7 @@
+node_modules
+
 # testing
+/test
 /coverage
 
 # production

@@ -1,3 +1,31 @@
+# 5.1.0
+#### Features
+- Added `--staging` CLI argument to `react-static build` that does not perform build-time optimizations like siteRoot replacement on links assets, etc. If you are testing your site locally, you will likely want to use this option to allow your production site to be navigable on localhost.
+
+# 5.0.0
+#### Features
+- Automatic Route Splitting. From here on out as long a project is using the automatic component-based static routing, all route templates will be automatically deduped and split into separate modules. These modules are statically-rendered into every page that uses them, are preloaded asynchronously with React-Static built-in prefetching utiliies, and are also loaded on demand if needed as the client navigates through your site. Carry on!
+- Automatic prefetching of templates and assets. Any eligible `Link` component to a code/data-split destination will automatically queue a prefetch for the appropriate assets.
+- Render prop versions of `withRouteData` and `withSiteData` are now available as `RouteData` and `SiteData`. These support inline access to their respective props, instead of having to set up an HOC. They also support all three major render prop syntaxes, so render those props however you want!. See the README for more information.
+- Added a new `Loading` render prop component and a companion `withLoading` HOC component to easily display React-Static's loading state (that probably won't happen much, but still... ;).
+- Added a new `Loading`/`withLoading` render prop / HOC component pair. You can render this component to gain access to the `loading` prop, which was previously only accessible via the `Router.subscribe` callback.
+- Path changes now automatically scroll to the top of the page. Duration defaults to `0`ms, but can be modifed via the `scrollToTopDuration` prop on the `Router` component.
+- Hash routing changes now automatically scroll to the element (or top of the page if the hash is removed but the path stays the same). Duration defaults to `800`ms, but can be modifed via the `scrollToHashDuration` prop on the `Router` component.
+#### Breaking Changes
+- In some previous scenarios the window's `location.search` would be taken into account when matching a path. That is now not the case. You could never previously rely on URL parameters for static paths, but now we're letting you know :)
+- The `getRouteProps` and `getSiteData` HOC's have both been renamed to `withRouteData` and `withSiteData`. Using the old methods will result in a deprecation notice and a broken app. Luckily this is an easy find and replace :)
+- `Router.subscribe` has been deprecated. Though, if you still need programmatic access to a loading event, you can use the new `onLoading` subscriber that functions the same way.
+#### How to Upgrade
+- In your components:
+  - Replace all instances of `getRouteProps` with `withRouteData`
+  - Replace all instances of `getSiteProps` with `withSiteData`
+  - Replace all instances of `Router.subscribe` with `onLoading`, and import `onLoading`.
+- In your `static.config.js`:
+  - Replace all instances of `getProps` with `getData`
+  - Replace `getSiteProps` with `getSiteData`
+  - If you are using a custom `Document` be sure to replace the `siteProps` prop with `siteData`.
+- Note: To take advantage of auto-code-splitting, you cannot use custom routing for your static routes. I suggest migrating to the automatic routing strategy asap.
+
 # 4.8.2
 #### Fixes & Optimizations
 - `getRouteProps` was fixed to always have access to the router props, thus supporting `getRouteProps` as nested components instead of top-level page components.
@@ -26,7 +54,7 @@
 - Handle Routes with spaces (Thanks [@etimberg](https://github/etimberg)!)
 - Add shouldPrefetch() method to avoid setting loading state  (Thanks [@chrisbrown-io](https://github/chrisbrown-io)!)
 - Pass DOM props through in links (Thanks [@denis-sokolov](https://github/denis-sokolov)!)
-- Pass additional CLI arguments through to getSiteProps() (Thanks [@etimberg](https://github/etimberg)!)
+- Pass additional CLI arguments through to getSiteData() (Thanks [@etimberg](https://github/etimberg)!)
 
 # 4.7.0
 #### Features

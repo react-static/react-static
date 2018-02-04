@@ -8,58 +8,63 @@ import glob from 'glob'
 import path from 'path'
 import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
-
+import { ReportChunks } from 'react-universal-component'
+import flushChunks from 'webpack-flush-chunks'
+import slash from 'slash'
 //
 import { DefaultDocument } from './RootComponents'
+import { poolAll } from './shared'
+
+const defaultOutputFileRate = 100
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Use the node version of the app created with webpack
-  const appJsPath = glob.sync(path.resolve(config.paths.DIST, 'app!(.static).*.js'))[0]
-  const appJs = appJsPath.split('/').pop()
-  const appStaticJsPath = glob.sync(path.resolve(config.paths.DIST, 'app.static.*.js'))[0]
-  const Comp = require(appStaticJsPath).default
+  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
 
   const DocumentTemplate = config.Document || DefaultDocument
 
-  const siteProps = await config.getSiteProps({ dev: false, cliArguments })
+  const siteData = await config.getSiteData({ dev: false, cliArguments })
 
   const seenProps = new Map()
   const sharedProps = new Map()
 
-  await Promise.all(
-    config.routes.map(async route => {
+  await poolAll(
+    config.routes.map(route => async () => {
       // Fetch initialProps from each route
-      route.initialProps = !!route.getProps && (await route.getProps({ route, dev: false }))
+      route.initialProps = !!route.getData && (await route.getData({ route, dev: false }))
 
       if (!route.initialProps) {
         route.initialProps = {}
       }
 
       // Loop through the props
-      Object.keys(route.initialProps).map(k => route.initialProps[k]).forEach(prop => {
-        // Have we seen this prop before?
-        if (seenProps.get(prop)) {
-          // Only cache each shared prop once
-          if (sharedProps.get(prop)) {
-            return
+      Object.keys(route.initialProps)
+        .map(k => route.initialProps[k])
+        .forEach(prop => {
+          // Have we seen this prop before?
+          if (seenProps.get(prop)) {
+            // Only cache each shared prop once
+            if (sharedProps.get(prop)) {
+              return
+            }
+            // Cache the prop
+            const jsonString = JSON.stringify(prop)
+            sharedProps.set(prop, {
+              jsonString,
+              hash: shorthash.unique(jsonString),
+            })
+          } else {
+            // Mark the prop as seen
+            seenProps.set(prop, true)
           }
-          // Cache the prop
-          const jsonString = JSON.stringify(prop)
-          sharedProps.set(prop, {
-            jsonString,
-            hash: shorthash.unique(jsonString),
-          })
-        } else {
-          // Mark the prop as seen
-          seenProps.set(prop, true)
-        }
-      })
+        })
     }),
+    Number(config.outputFileRate) || defaultOutputFileRate
   )
 
-  await Promise.all(
-    config.routes.map(async route => {
+  await poolAll(
+    config.routes.map(route => async () => {
       // Loop through the props and build the prop maps
       route.localProps = {}
       route.propsMap = {}
@@ -79,20 +84,22 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         route.propsMap.__local = route.localPropsHash
         return fs.outputFile(
           path.join(config.paths.STATIC_DATA, `${route.localPropsHash}.json`),
-          route.localPropsDataString || '{}',
+          route.localPropsDataString || '{}'
         )
       }
     }),
+    Number(config.outputFileRate) || defaultOutputFileRate
   )
 
   // Write all shared props to file
-  await Promise.all(
-    Array.from(sharedProps).map(cachedProp =>
+  await poolAll(
+    Array.from(sharedProps).map(cachedProp => () =>
       fs.outputFile(
         path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
-        cachedProp[1].jsonString || '{}',
-      ),
+        cachedProp[1].jsonString || '{}'
+      )
     ),
+    Number(config.outputFileRate) || defaultOutputFileRate
   )
 
   const routeInfo = {}
@@ -101,10 +108,15 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   })
 
   // Write routeInfo to file
-  await fs.outputFile(path.join(config.paths.DIST, 'routeInfo.json'), JSON.stringify(routeInfo))
+  await fs.outputFile(
+    path.join(config.paths.DIST, 'routeInfo.js'),
+    `
+    window.__routeInfo = ${JSON.stringify(routeInfo)}
+  `
+  )
 
-  return Promise.all(
-    config.routes.map(async route => {
+  return poolAll(
+    config.routes.map(route => async () => {
       const staticURL = route.path
 
       // Inject initialProps into static build
@@ -112,14 +124,14 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         static childContextTypes = {
           propsMap: PropTypes.object,
           initialProps: PropTypes.object,
-          siteProps: PropTypes.object,
+          siteData: PropTypes.object,
           staticURL: PropTypes.string,
         }
         getChildContext () {
           return {
             propsMap: route.propsMap,
             initialProps: route.initialProps,
-            siteProps,
+            siteData,
             staticURL,
           }
         }
@@ -128,17 +140,31 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         }
       }
 
-      const ContextualComp = props => (
-        <InitialPropsContext>
-          <Comp {...props} />
-        </InitialPropsContext>
+      // Make a place to collect chunks, meta info and head tags
+      const renderMeta = {}
+      const chunkNames = []
+      let head = {}
+      let clientScripts = []
+      let clientStyleSheets = []
+
+      const CompWithContext = props => (
+        <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
+          <InitialPropsContext>
+            <Comp {...props} />
+          </InitialPropsContext>
+        </ReportChunks>
       )
 
-      const renderMeta = {}
-      let head
+      const renderToStringAndExtract = comp => {
+        // Rend the app to string!
+        const appHtml = renderToString(comp)
+        const { scripts, stylesheets } = flushChunks(clientStats, {
+          chunkNames,
+        })
 
-      const renderStringAndHead = Comp => {
-        const appHtml = renderToString(Comp)
+        clientScripts = scripts
+        clientStyleSheets = stylesheets
+
         // Extract head calls using Helmet synchronously right after renderToString
         // to not introduce any race conditions in the meta data rendering
         const helmet = Helmet.renderStatic()
@@ -159,10 +185,10 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
 
       // Allow extractions of meta via config.renderToString
       const appHtml = await config.renderToHtml(
-        renderStringAndHead,
-        ContextualComp,
+        renderToStringAndExtract,
+        CompWithContext,
         renderMeta,
-        clientStats,
+        clientStats
       )
 
       // Instead of using the default components, we need to hard code meta
@@ -192,10 +218,14 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
+            <link rel="preload" as="script" href={path.join(config.publicPath, 'routeInfo.js')} />
+            {clientScripts.map(script => (
+              <link rel="preload" as="script" href={path.join(config.publicPath, script)} />
+            ))}
+            {clientStyleSheets.map(styleSheet => (
+              <link rel="stylesheet" href={path.join(config.publicPath, styleSheet)} />
+            ))}
             {head.link}
-            {process.env.extractedCSSpath && (
-              <link rel="stylesheet" href={`/${process.env.extractedCSSpath}`} />
-            )}
             {head.noscript}
             {head.script}
             {head.style}
@@ -217,11 +247,13 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           path: route.path,
           propsMap: route.propsMap,
           initialProps: route.initialProps,
-          siteProps,
+          siteData,
         }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
             }}
           />
-          <script async src={`${config.publicPath}${appJs}`} />
+          {clientScripts.map(script => (
+            <script defer type="text/javascript" src={path.join(config.publicPath, script)} />
+          ))}
         </body>
       )
 
@@ -231,16 +263,16 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
           Html={HtmlWithMeta}
           Head={HeadWithMeta}
           Body={BodyWithMeta}
-          siteProps={siteProps}
+          siteData={siteData}
           renderMeta={renderMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
-        </DocumentTemplate>,
+        </DocumentTemplate>
       )}`
 
-      // If the siteRoot is set, prefix all absolute URL's
-      if (config.siteRoot) {
-        html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.siteRoot}$2`)
+      // If the siteRoot is set, prefix all absolute URL's with the public path (which is derived from the siteRoot)
+      if (!process.env.REACT_STATIC_STAGING && config.siteRoot) {
+        html = html.replace(/(href=["'])(\/[^/])/gm, `$1${config.publicPath}$2`)
       }
 
       // If the route is a 404 page, write it directly to 404.html, instead of
@@ -249,8 +281,9 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         ? path.join(config.paths.DIST, '404.html')
         : path.join(config.paths.DIST, route.path, 'index.html')
 
-      await fs.outputFile(htmlFilename, html)
+      return fs.outputFile(htmlFilename, html)
     }),
+    Number(config.outputFileRate) || defaultOutputFileRate
   )
 }
 
@@ -264,7 +297,7 @@ export async function buildXMLandRSS ({ config }) {
   }
   const xml = generateXML({
     routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: config.siteRoot + route.path,
+      permalink: config.publicPath + route.path, // publicPath + /routePath
       lastModified: '',
       priority: 0.5,
       ...route,
@@ -292,6 +325,7 @@ export async function buildXMLandRSS ({ config }) {
 }
 
 export const prepareRoutes = async config => {
+  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
   // Dynamically create the auto-routing component
   const templates = []
   const routes = config.routes.filter(d => d.component)
@@ -324,24 +358,28 @@ export const prepareRoutes = async config => {
   const file = `
     import React, { Component } from 'react'
     import { Route } from 'react-router-dom'
+    import universal, { setHasBabelPlugin } from 'react-universal-component'
 
-    // Template Imports
+    setHasBabelPlugin()
+
+    const universalOptions = {
+      loading: () => null,
+      error: () => null,
+    }
+
     ${templates
-    .map(
-      template =>
-        `import ${template.replace(/[^a-zA-Z0-9]/g, '_')} from '${path.relative(
-          config.paths.DIST,
-          path.resolve(config.paths.ROOT, template),
-        )}'`,
-    )
-    .join('\n')
-    .replace(/\\/g, '/')}
+    .map((template, index) => {
+      const templatePath = path.relative(
+        config.paths.DIST,
+        path.resolve(config.paths.ROOT, template)
+      )
+      return `const t_${index} = universal(import('${slash(templatePath)}'), universalOptions)`
+    })
+    .join('\n')}
 
     // Template Map
     const templateMap = {
-      ${templates
-    .map((template, index) => `t_${index}: ${template.replace(/[^a-zA-Z0-9]/g, '_')}`)
-    .join(',\n')}
+      ${templates.map((template, index) => `t_${index}`).join(',\n')}
     }
 
     // Template Tree
@@ -361,6 +399,10 @@ export const prepareRoutes = async config => {
       } catch (e) {
         return false
       }
+    }
+
+    if (typeof document !== 'undefined') {
+      window.reactStaticGetComponentForPath = getComponentForPath
     }
 
     export default class Routes extends Component {
@@ -394,23 +436,9 @@ export const prepareRoutes = async config => {
         )
       }
     }
-  `
+    `
 
-  const dynamicRoutesPath = path.resolve(config.paths.DIST, 'react-static-routes.js')
+  const dynamicRoutesPath = path.join(config.paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
   await fs.writeFile(dynamicRoutesPath, file)
-
-  /**
-   * Corbin Matschull [cgmx] - basedjux@gmail.com
-   *
-   * HOTFIX FOR ISSUE #124
-   * Commenting this out per #124 so I can test the hotfix.
-   * Hotfix is implemented in /master/src/webpack.js:#L47
-   *
-   * This hotfix was implemented due to FS_ACCURACY causing isssues with webpack-dev-server -
-   * builds.
-   * This "hack" was removed due to it causing builds to increase in time over n-milliseconds
-   *    (See: https://github.com/nozzle/react-static/issues/124#issuecomment-341959542)
-   */
-  // fs.utimesSync(dynamicRoutesPath, Date.now() / 1000 - 5000, Date.now() / 1000 - 5000)
 }

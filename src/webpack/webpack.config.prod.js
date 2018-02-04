@@ -1,27 +1,34 @@
 import webpack from 'webpack'
 import path from 'path'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
-import ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
+// import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
+// import WebpackPwaManifest from 'webpack-pwa-manifest'
 //
 import rules from './rules'
 
 export default function ({ config, isNode }) {
-  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
+  const { ROOT, DIST, NODE_MODULES, SRC } = config.paths
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: path.resolve(ROOT, config.entry),
     output: {
-      filename: isNode ? 'app.static.[hash:8].js' : 'app.[hash:8].js',
+      filename: isNode ? 'static.[chunkHash:8].js' : '[name].[chunkHash:8].js',
+      chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
-      publicPath: '/',
+      publicPath: process.env.REACT_STATIC_STAGING ? '/' : `${config.siteRoot}/` || '/',
       libraryTarget: isNode ? 'umd' : undefined,
     },
     target: isNode ? 'node' : undefined,
-    externals: isNode ? [nodeExternals()] : [],
+    externals: isNode
+      ? [
+        nodeExternals({
+          whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
+        }),
+      ]
+      : [],
     module: {
       rules: rules({ config, stage: 'prod' }),
     },
@@ -40,7 +47,7 @@ export default function ({ config, isNode }) {
         DIST,
       ],
       extensions: ['.js', '.json', '.jsx'],
-      mainFields: isNode ? ['main'] : undefined,
+      // mainFields: isNode ? ['main'] : undefined,
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
@@ -51,18 +58,44 @@ export default function ({ config, isNode }) {
         },
         allChunks: true,
       }),
-      new HtmlWebpackPlugin({
-        inject: true,
-        filename: HTML_TEMPLATE,
-        // We dont use a template here because we are only concerned with the
-        // output files, given that the index.html will also be overwritten by
-        // the static export in the end.
-      }),
-      new ScriptExtHtmlWebpackPlugin({
-        defaultAttribute: 'async',
-      }),
       new CaseSensitivePathsPlugin(),
+      !isNode &&
+        new webpack.optimize.CommonsChunkPlugin({
+          name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
+          minChunks: Infinity,
+        }),
+      isNode &&
+        new webpack.optimize.LimitChunkCountPlugin({
+          maxChunks: 1,
+        }),
       !isNode && new webpack.optimize.UglifyJsPlugin(),
+      // !isNode &&
+      //   new SWPrecacheWebpackPlugin({
+      //     cacheId: config.siteName || 'my-site-name',
+      //     dontCacheBustUrlsMatching: /\.\w{8}\./,
+      //     filename: 'service-worker.js',
+      //     minify: true,
+      //     navigateFallback: '/index.html',
+      //     staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      //   }),
+      // !isNode &&
+      //   new WebpackPwaManifest({
+      //     name: config.pwa.name || 'My React Static App',
+      //     short_name: config.pwa.shortName || 'My React Static App',
+      //     description: config.pwa.description || 'An app I built with React Static!',
+      //     background_color: config.pwa.backgroundColor || '#01579b',
+      //     theme_color: config.pwa.themeColor || '#01579b',
+      //     'theme-color': config.pwa.themeColor || '#01579b',
+      //     start_url: config.pwa.startUrl || '/',
+      //     icons: [],
+      //     icons: [
+      //       {
+      //         src: path.resolve('src/images/icon.png'),
+      //         sizes: [96, 128, 192, 256, 384, 512],
+      //         destination: path.join('assets', 'icons'),
+      //       },
+      //     ],
+      //   }),
       config.bundleAnalyzer && !isNode && new BundleAnalyzerPlugin(),
     ].filter(d => d),
 

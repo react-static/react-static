@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  getSiteProps: () => ({
+  getSiteData: () => ({
     title: 'React Static',
   }),
   getRoutes: async () => {
@@ -15,12 +15,12 @@ export default {
       },
       {
         path: '/blog',
-        getProps: () => ({
+        getData: () => ({
           posts,
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
-          getProps: () => ({
+          getData: () => ({
             post,
           }),
         })),

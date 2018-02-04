@@ -1,6 +1,5 @@
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import path from 'path'
 
@@ -12,10 +11,7 @@ export default function ({ config }) {
     context: path.resolve(__dirname, '../node_modules'),
     entry: [
       require.resolve('react-hot-loader/patch'),
-
       require.resolve('react-dev-utils/webpackHotDevClient'),
-      // `${require.resolve('webpack-dev-server/client')}?/`,
-
       require.resolve('webpack/hot/only-dev-server'),
       path.resolve(ROOT, config.entry),
     ],
@@ -36,15 +32,13 @@ export default function ({ config }) {
         DIST,
       ],
       extensions: ['.js', '.json', '.jsx'],
+      // mainFields: ['main'],
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
       new HtmlWebpackPlugin({
         inject: true,
         template: `!!raw-loader!${HTML_TEMPLATE}`,
-      }),
-      new ScriptExtHtmlWebpackPlugin({
-        defaultAttribute: 'async',
       }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),

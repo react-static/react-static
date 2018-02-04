@@ -6,32 +6,32 @@
 /// <reference types="react" />
 
 declare module 'react-static' {
-  import * as React from 'react';
+  import * as React from 'react'
 
   // Passing on all react-router typings
-  export * from 'react-router-dom';
+  export * from 'react-router-dom'
 
   // Passing on helmet typings as "Head"
-  import * as Helmet from 'react-helmet';
+  import * as Helmet from 'react-helmet'
 
-  export const Head: Helmet;
+  export const Head: Helmet
 
-  export function getRouteProps(comp: any): any;
-  export function getSiteProps(comp: any): any;
-  export async function prefetch(path: any): any;
+  export function getRouteData(comp: any): any
+  export function getSiteData(comp: any): any
+  export async function prefetch(path: any): any
 
-  export const Prefetch: React.Component;
-  export const PrefetchWhenSeen: React.Component;
+  export const Prefetch: React.Component
+  export const PrefetchWhenSeen: React.Component
 
   // Overwriting react-router export as react-static does (no-op)
-  export const BrowserRouter: undefined;
-  export const HashRouter: undefined;
-  export const MemoryRouter: undefined;
-  export const StaticRouter: undefined;
+  export const BrowserRouter: undefined
+  export const HashRouter: undefined
+  export const MemoryRouter: undefined
+  export const StaticRouter: undefined
   export class Router extends React.Component<{ history?: any }> {}
 }
 
 declare module 'react-static-routes' {
   class Routes extends React.Component {}
-  export default Routes;
+  export default Routes
 }

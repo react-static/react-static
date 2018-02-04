@@ -1,12 +1,12 @@
 import React from 'react'
-import { getRouteProps, Link } from 'react-static'
+import { withRouteData, Link } from 'react-static'
 import { Post } from '../types'
 
 interface Props {
   posts: Post[]
 }
 
-export default getRouteProps(({ posts }: Props) => (
+export default withRouteData(({ posts }: Props) => (
   <div>
     <h1>It's blog time.</h1>
     <br />

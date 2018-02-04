@@ -29,8 +29,8 @@ export const findAvailablePort = start =>
           return reject(err)
         }
         resolve(port)
-      },
-    ),
+      }
+    )
   )
 
 // Retrieves the static.config.js from the current project directory
@@ -68,7 +68,7 @@ export const getConfig = () => {
     STATIC_DATA: path.join(distPath, 'staticData'),
   }
 
-  const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null
+  const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : ''
 
   const getRoutes = config.getRoutes
     ? async (...args) => {
@@ -83,11 +83,13 @@ export const getConfig = () => {
         },
       ])
 
-  return {
+  const finalConfig = {
     // Defaults
     entry: path.join(paths.SRC, defaultEntry),
-    getSiteProps: () => ({}),
+    getSiteData: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
+    prefetchRate: 10,
+    outputFileRate: 10,
     // Config Overrides
     ...config,
     // Materialized Overrides
@@ -95,6 +97,11 @@ export const getConfig = () => {
     siteRoot,
     getRoutes,
   }
+
+  // Set env variables to be used client side
+  process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
+
+  return finalConfig
 }
 
 const path404 = '/404'
@@ -115,7 +122,7 @@ export function normalizeRoutes (routes) {
       ...route,
       path: routePath,
       noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
-      hasGetProps: !!route.getProps,
+      hasGetProps: !!route.getData,
     }
 
     if (!normalizedRoute.path) {
@@ -158,12 +165,12 @@ export function copyPublicFolder (config) {
   })
 }
 
-export async function createIndexFilePlaceholder ({ config, Component, siteProps }) {
+export async function createIndexFilePlaceholder ({ config, Component, siteData }) {
   // Render the base document component to string with siteprops
   const html = `<!DOCTYPE html>${renderToString(
-    <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteProps={siteProps}>
+    <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteData={siteData}>
       <div id="root" />
-    </Component>,
+    </Component>
   )}`
 
   // Write the Document to index.html

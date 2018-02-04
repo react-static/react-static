@@ -33,8 +33,6 @@
         "GEOLOCATION_USAGE_DESCRIPTION": " "
       }
     },
-    "platforms": [
-      "ios"
-    ]
+    "platforms": ["ios"]
   }
 }

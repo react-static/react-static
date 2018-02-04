@@ -1,6 +1,5 @@
-
 import React from 'react'
-//
+import universal from 'react-universal-component'
 
 const Failed = () => (
   <div style={{ color: 'red' }}>
@@ -14,56 +13,10 @@ const Loading = () => (
   </div>
 )
 
-export default class About extends React.Component {
-  constructor (...args) {
-    super(...args)
-    this.state = { MyComponent: null }
-  }
-  // /////////////////////////////////////////////////////////////////////////
-  // // Option 1
-  // // Behaviour:
-  // //   - Loaded component on static build
-  // //   - UnLoaded component when react rehydrates
-  // //   - Loaded component when dynamic import resolves
-  // componentDidMount() {
-  //   if (typeof document === 'undefined') {
-  //     const { MyComponent } = require('../components/MyComponent')
-  //     this.setState({ MyComponent })
-  //   } else {
-  //     import('../components/MyComponent')
-  //       .then(({ MyComponent }) => this.setState({ MyComponent }))
-  //       .catch(error => this.setState({ MyComponent: Failed }))
-  //   }
-  // }
-  // /////////////////////////////////////////////////////////////////////////
-  // Option 2
-  // Behaviour:
-  //   - UnLoaded component on static build
-  //   - UnLoaded component when react rehydrates
-  //   - Loaded component when dynamic import resolves
-  componentDidMount () {
-    import('../components/MyComponent')
-      .then(({ MyComponent }) => this.setState({ MyComponent }))
-      .catch(() => this.setState({ MyComponent: Failed }))
-  }
-  // /////////////////////////////////////////////////////////////////////////
-  render () {
-    const { MyComponent } = this.state
-    if (MyComponent !== null) {
-      return (
-        <div>
-          <h1>This is what we're all about.</h1>
-          <MyComponent />
-          <p>React, static sites, performance, speed. It's the stuff that makes us tick.</p>
-        </div>
-      )
-    }
-    return (
-      <div>
-        <h1>This is what we're all about.</h1>
-        <Loading />
-        <p>React, static sites, performance, speed. It's the stuff that makes us tick.</p>
-      </div>
-    )
-  }
-}
+const MyComponent = universal(import('../components/MyComponent'), {
+  loading: Loading,
+  error: Failed,
+})
+
+export const preloadMyComponent = () => MyComponent.preload()
+export default props => <MyComponent {...props} />

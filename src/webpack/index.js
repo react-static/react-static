@@ -45,7 +45,7 @@ export function webpackConfig ({ config, stage }) {
       }
     })
   }
-  config.publicPath = webpackConfig.output.publicPath
+  config.publicPath = webpackConfig.output.publicPath || '/'
   return webpackConfig
 }
 
@@ -67,9 +67,9 @@ export async function startDevServer ({ config }) {
     console.time(
       chalk.red(
         `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
-          intendedPort,
-        )} instead!`,
-      ),
+          intendedPort
+        )} instead!`
+      )
     )
   }
   const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
@@ -87,10 +87,10 @@ export async function startDevServer ({ config }) {
     },
     ...config.devServer,
     before: app => {
-      app.get('/__react-static__/siteProps', async (req, res, next) => {
+      app.get('/__react-static__/siteData', async (req, res, next) => {
         try {
-          const siteProps = await config.getSiteProps({ dev: true })
-          res.json(siteProps)
+          const siteData = await config.getSiteData({ dev: true })
+          res.json(siteData)
         } catch (err) {
           res.status(500)
           res.json(err)
@@ -107,7 +107,7 @@ export async function startDevServer ({ config }) {
           routes.forEach(route => {
             app.get(`/__react-static__/route${encodeURI(route.path)}`, async (req, res, next) => {
               try {
-                const initialProps = await route.getProps({ dev: true })
+                const initialProps = await route.getData({ dev: true })
                 res.json(initialProps)
               } catch (err) {
                 res.status(500)
@@ -116,7 +116,16 @@ export async function startDevServer ({ config }) {
             })
           })
 
-          res.json(routes.filter(d => d.hasGetProps).map(d => d.path))
+          const routeInfo = {}
+
+          routes
+            .filter(d => d.hasGetProps)
+            .map(d => d.path)
+            .forEach(d => {
+              routeInfo[d] = true
+            })
+
+          res.json(routeInfo)
         } catch (err) {
           res.status(500)
           next(err)
@@ -131,23 +140,6 @@ export async function startDevServer ({ config }) {
     host,
   }
 
-  /**
-   * Corbin Matschull (cgmx) - basedjux@gmail.com
-   * Nov 6, 2017
-   *
-   * HOTFIX FOR ISSUE #124
-   * This fix is from: https://github.com/nozzle/react-static/issues/124#issuecomment-342008635
-   *
-   * This implements a watcher when webpack runs to assign the timefix to {startTime}-
-   * -and run the callback.
-   *
-   * After the devCompiler finishes it removes the timefix by-
-   * subtracting {timefix} from {startTime}
-   *
-   * TODO: Wait for webpack-dev-server to implement a true fix for this.
-   */
-
-  // Move startTime from Modulo 10s
   const timefix = 11000
   devCompiler.plugin('watch-run', (watching, callback) => {
     watching.startTime += timefix
@@ -165,24 +157,22 @@ export async function startDevServer ({ config }) {
 
     if (isSuccessful) {
       console.timeEnd(chalk.green('=> [\u2713] Build Complete'))
-    }
-
-    if (first) {
-      first = false
-      console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
-      stats.startTime -= timefix
-      if (config.onStart) {
-        config.onStart({ devServerConfig })
+      if (first) {
+        first = false
+        console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
+        stats.startTime -= timefix
+        if (config.onStart) {
+          config.onStart({ devServerConfig })
+        }
       }
     }
 
     if (messages.errors.length) {
-      console.log(chalk.red('Failed to rebuild.'))
+      console.log(chalk.red('Failed to build! Fix any errors and try again!'))
       messages.errors.forEach(message => {
         console.log(message)
         console.log()
       })
-      return
     }
 
     if (messages.warnings.length) {
@@ -246,20 +236,20 @@ export async function buildProductionBundles ({ config }) {
               chunkOrigins: false,
               chunkModules: false,
               colors: true,
-            }),
+            })
           )
           if (buildErrors) {
             console.log(
               chalk.red.bold(`
                 => There were ERRORS during the ${stage} build stage! :(
                 => Fix them and try again!
-              `),
+              `)
             )
           } else if (buildWarnings) {
             console.log(
               chalk.yellow.bold(`
                 => There were WARNINGS during the ${stage} build stage!
-              `),
+              `)
             )
           }
         }
