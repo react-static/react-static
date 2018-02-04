@@ -1,6 +1,6 @@
 # React-Static - Material UI with JSS
 
-> [Material UI](https://github.com/ant-design/ant-design) is a set of React components that implement Google's Material Design.
+> [Material UI](https://github.com/mui-org/material-ui) is a set of React components that implement Google's Material Design.
 
 This example is enabled with JSS server side rendering capabilities.
 
