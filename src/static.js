@@ -223,6 +223,9 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
               <link rel="preload" as="script" href={path.join(config.publicPath, script)} />
             ))}
             {clientStyleSheets.map(styleSheet => (
+              <link rel="preload" as="style" href={path.join(config.publicPath, styleSheet)} />
+            ))}
+            {clientStyleSheets.map(styleSheet => (
               <link rel="stylesheet" href={path.join(config.publicPath, styleSheet)} />
             ))}
             {head.link}
