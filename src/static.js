@@ -218,15 +218,15 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
-            <link rel="preload" as="script" href={path.join(config.publicPath, 'routeInfo.js')} />
+            <link rel="preload" as="script" href={`${config.publicPath}routeInfo.js`} />
             {clientScripts.map(script => (
-              <link rel="preload" as="script" href={path.join(config.publicPath, script)} />
+              <link rel="preload" as="script" href={`${config.publicPath}${script}`} />
             ))}
             {clientStyleSheets.map(styleSheet => (
-              <link rel="preload" as="style" href={path.join(config.publicPath, styleSheet)} />
+              <link rel="preload" as="style" href={`${config.publicPath}${styleSheet}`} />
             ))}
             {clientStyleSheets.map(styleSheet => (
-              <link rel="stylesheet" href={path.join(config.publicPath, styleSheet)} />
+              <link rel="stylesheet" href={`${config.publicPath}${styleSheet}`} />
             ))}
             {head.link}
             {head.noscript}
@@ -255,7 +255,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             }}
           />
           {clientScripts.map(script => (
-            <script defer type="text/javascript" src={path.join(config.publicPath, script)} />
+            <script defer type="text/javascript" src={`${config.publicPath}${script}`} />
           ))}
         </body>
       )
