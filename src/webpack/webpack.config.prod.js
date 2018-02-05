@@ -68,7 +68,7 @@ export default function ({ config, isNode }) {
         new webpack.optimize.LimitChunkCountPlugin({
           maxChunks: 1,
         }),
-      !isNode && new webpack.optimize.UglifyJsPlugin(),
+      !isNode && !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
       // !isNode &&
       //   new SWPrecacheWebpackPlugin({
       //     cacheId: config.siteName || 'my-site-name',

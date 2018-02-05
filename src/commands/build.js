@@ -10,6 +10,9 @@ export default async cliArguments => {
     if (cliArguments.includes('--staging')) {
       process.env.REACT_STATIC_STAGING = true
     }
+    if (cliArguments.includes('--debug')) {
+      process.env.REACT_STATIC_DEBUG = true
+    }
 
     const config = getConfig()
     await fs.remove(config.paths.DIST)
