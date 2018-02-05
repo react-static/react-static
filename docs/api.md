@@ -432,7 +432,8 @@ Starts the development server.
 ### `react-static build`
 Builds your site for production. Outputs to a `dist` directory in your project.
 - Arguments
-  - `--staging` - Use this argument to test a production build locally. By setting this flag, no siteRoot replacement or path optimizations are performed, allowing a production build of your site to function on localhost more easily.
+  - `--staging` - By setting this flag, no siteRoot replacement or path optimizations are performed, allowing a production build of your site to function on localhost more easily. Use this argument to test a production build locally.
+  - `--debug` - By setting this flag, your build will **not** be `uglified` allowing you to debug production errors (as long as they are unrelated to minification or uglification)
 
 ---
 
