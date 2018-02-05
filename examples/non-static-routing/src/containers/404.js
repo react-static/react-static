@@ -14,6 +14,9 @@ export default class extends React.Component {
     ready: false,
   }
   componentDidMount () {
+    this.makeReady()
+  }
+  makeReady = () => {
     if (!this.state.ready) {
       this.setState({
         ready: true,
