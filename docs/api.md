@@ -563,7 +563,12 @@ import { RouteData, withRouteData } from 'react-static'
 // "render" prop syntax - Recommended
 export default () => (
   <RouteData render={({ songs }) => (
-    <div>Welcome to {siteTitle}! {metaDescription}</div>
+    <div>
+      <h1>Top 100 Spotify Songs</h1>
+      <ul>
+        {songs.map(song => <li key={song.id}>{song.title}</li>)}
+      </ul>
+    </div>
   )} />
 )
 
@@ -571,7 +576,12 @@ export default () => (
 export default () => (
   <RouteData>
     {({ songs }) => (
-      <div>Welcome to {siteTitle}! {metaDescription}</div>
+      <div>
+        <h1>Top 100 Spotify Songs</h1>
+        <ul>
+          {songs.map(song => <li key={song.id}>{song.title}</li>)}
+        </ul>
+      </div>
     )}
   </RouteData>
 )
@@ -580,7 +590,12 @@ export default () => (
 
 // "component" syntax
 const TopSongs = ({ songs }) => (
-  <div>Welcome to {siteTitle}! {metaDescription}</div>
+  <div>
+    <h1>Top 100 Spotify Songs</h1>
+    <ul>
+      {songs.map(song => <li key={song.id}>{song.title}</li>)}
+    </ul>
+  </div>
 )
 export default () => (
   <RouteData component={TopSongs}
