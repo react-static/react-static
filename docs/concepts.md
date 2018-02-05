@@ -7,6 +7,7 @@
 - [Non-Static Routing](#non-static-routing)
 - [Webpack Customization and Plugins](#webpack-customization-and-plugins)
 - [Using Preact in Production](#using-preact-in-production)
+- [Pagination](#pagination)
 
 # Overview
 React-Static is different from most React-based static-site generators. It follows a very natural flow from data all the way to static files, then finally a progressively enhanced react-app. Not only does this provide a safe separation of concern, but by keeping the data pipelining and react templating as separate as possible, your site can be visualized and built in a single pass as a "function of state" from the data you pass it.
@@ -180,3 +181,64 @@ export default {
 
 **Important**
 Due to the complexity of maintaining a fully tooled development experience, React is still used in development mode if `preact` is set to `true`. This ensures that stable hot-reloading tooling, dev tools, ect. are used. This is by no means permanent though! If you know what it takes to emulate React Static's development environment using Preact tooling, please submit a PR!
+
+# Pagination
+Pagination in react-static is no different than any other route, it's just a matter of how you get there.  When exporting your routes, you are expected to create a separate route for each page if needed, and only pass data to that route for the items on it.
+
+Here is a very simple proof of concept function that demonstrates how to do this:
+```javascript
+
+export default {
+  getRoutes: async () => {
+    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    return [
+      {
+        path: '/',
+        component: 'src/containers/Home',
+      },
+      ...makePageRoutes(posts, 10, {
+        path: '/blog',
+        component: 'src/containers/Blog'
+      })
+    ]
+  }
+}
+
+function makePageRoutes (items, pageSize, route) {
+  const itemsCopy = [...items] // Make a copy of the items
+  const pages = [] // Make an array for all of the different pages
+
+  while (itemsCopy.length) {
+    // Splice out all of the items into separate pages using a set pageSize
+    pages.push(itemsCopy.splice(0, pageSize))
+  }
+
+  // Move the first page out of pagination. This is so page one doesn't require a page number.
+  const firstPage = pages.shift()
+
+   const routes = [
+    {
+      ...route, // route defaults
+      path: route.path, // the route path is used on its own for page 1
+      getProps: async () => ({
+        posts: firstPage // and only pass the first page as data
+      })
+    },
+
+    ...pages.map((page, i) => ({ // map over each page to create an array of page routes, and spread it!
+      ...route, // route defaults
+      path: `${route.path}/page/${i + 2}`,
+      getProps: async () => ({
+        posts: page // only pass the data for that page
+      })
+    }))
+  ]
+
+
+  return routes
+}
+```
+
+To explain what is happening above, we are making an array of `10` posts for every page, including the first page of the blog. Each of these array's will be fed to the same `src/containers/Blog` component, but will be given a `.../page/2` or whatever number corresponds to that page of data. Since only the posts needed for that page are passed, we avoid duplicated data per page!
+
+Of course, you're free to build your pagination routes however you'd like! This is just one possible solution.
