@@ -3063,6 +3063,14 @@ extract-css-chunks-webpack-plugin@^2.0.18:
     style-loader "^0.18.2"
     webpack-sources "^1.0.1"
 
+extract-hoc-compose@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/extract-hoc-compose/-/extract-hoc-compose-0.0.1.tgz#8b44d577160513d12d13fb97ed4d7e3eb3395e3b"
+
+extract-hoc@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/extract-hoc/-/extract-hoc-0.0.5.tgz#c068e490d492ce61bf0f6b12186bad715987139c"
+
 extract-text-webpack-plugin@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extract-text-webpack-plugin/-/extract-text-webpack-plugin-3.0.2.tgz#5f043eaa02f9750a9258b78c0a6e0dc1408fb2f7"
