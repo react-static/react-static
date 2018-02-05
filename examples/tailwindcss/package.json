@@ -14,7 +14,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-router": "^4.2.0",
-    "react-static": "^4.5.0",
+    "react-static": "^5",
     "tailwindcss": "^0.3.0"
   },
   "devDependencies": {
