@@ -131,18 +131,20 @@ Because React-Static code is both used in the browser and node (during build), i
 ```
 
 # 404 Handling
-Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found.
+Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found. Most static-site servers also default to use the `/404.html` page when a static route cannot be found. This works perfect with react-static, since we export that file for you automatically!
 
 # Non-Static Routing
-Sometimes you may want to handle routes that should not be statically rendered. In that case, you can treat `Routes` like any other `react-router` route and use any of the routing components you normally use with `react-router`.
+Sometimes you may want to handle routes (including sub-routes) that should not be statically rendered. In that case, you can treat `Routes` like any other `react-router` route and use any of the routing components you normally use with `react-router`. You can see this concept in action in the [`non-static-routing` example](https://github.com/nozzle/react-static/blob/master/examples/non-static-routing)
 
 **Important Notes**
 - React-Router components are available via the `react-static` import. There is no need to import them via `react-router`!
 - Any custom React-Router components must be placed before `<Routes>` if you want them to match. The `<Routes>` component is a catch all `<Route path='*' />` handler, so anything below it will result in a 404!
 - The `Routes` component is in fact a `react-router` `Route` component, so it can be placed and used normally within components like `<Switch>`!
+- No `html` file is exported for non-static routes, which means the server won't have a file to serve and will most-likely default to serving the `404.html` file of your site. If this is the case (and it normally is), you should make your 404 route only render after mount. An example of this is shown in the [`non-static-routing` example](https://github.com/nozzle/react-static/blob/master/examples/non-static-routing/src/containers/404.js)
 
 Example - Handling a non-static admin route:
 ```javascript
+// App.js
 import { Router, Route, Switch } from 'react-static'
 import Routes from 'react-static-routes'
 
