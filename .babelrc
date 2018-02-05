@@ -18,6 +18,8 @@
         "disableWarnings": true
       }
     ],
+    "extract-hoc/babel",
+    "extract-hoc-compose/babel",
     "react-hot-loader/babel",
     "transform-class-properties",
     [

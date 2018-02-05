@@ -16,7 +16,7 @@
     "react-dom": "^16.0.0",
     "react-move": "^2.6.0",
     "react-router": "^4.2.0",
-    "react-static": "latest",
+    "react-static": "^5",
     "recompose": "^0.26.0"
   },
   "devDependencies": {

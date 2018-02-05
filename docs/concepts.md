@@ -7,6 +7,7 @@
 - [Non-Static Routing](#non-static-routing)
 - [Webpack Customization and Plugins](#webpack-customization-and-plugins)
 - [Using Preact in Production](#using-preact-in-production)
+- [Pagination](#pagination)
 
 # Overview
 React-Static is different from most React-based static-site generators. It follows a very natural flow from data all the way to static files, then finally a progressively enhanced react-app. Not only does this provide a safe separation of concern, but by keeping the data pipelining and react templating as separate as possible, your site can be visualized and built in a single pass as a "function of state" from the data you pass it.
@@ -131,18 +132,20 @@ Because React-Static code is both used in the browser and node (during build), i
 ```
 
 # 404 Handling
-Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found.
+Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found. Most static-site servers also default to use the `/404.html` page when a static route cannot be found. This works perfect with react-static, since we export that file for you automatically!
 
 # Non-Static Routing
-Sometimes you may want to handle routes that should not be statically rendered. In that case, you can treat `Routes` like any other `react-router` route and use any of the routing components you normally use with `react-router`.
+Sometimes you may want to handle routes (including sub-routes) that should not be statically rendered. In that case, you can treat `Routes` like any other `react-router` route and use any of the routing components you normally use with `react-router`. You can see this concept in action in the [`non-static-routing` example](https://github.com/nozzle/react-static/blob/master/examples/non-static-routing)
 
 **Important Notes**
 - React-Router components are available via the `react-static` import. There is no need to import them via `react-router`!
 - Any custom React-Router components must be placed before `<Routes>` if you want them to match. The `<Routes>` component is a catch all `<Route path='*' />` handler, so anything below it will result in a 404!
 - The `Routes` component is in fact a `react-router` `Route` component, so it can be placed and used normally within components like `<Switch>`!
+- No `html` file is exported for non-static routes, which means the server won't have a file to serve and will most-likely default to serving the `404.html` file of your site. If this is the case (and it normally is), you should make your 404 route only render after mount. An example of this is shown in the [`non-static-routing` example](https://github.com/nozzle/react-static/blob/master/examples/non-static-routing/src/containers/404.js)
 
 Example - Handling a non-static admin route:
 ```javascript
+// App.js
 import { Router, Route, Switch } from 'react-static'
 import Routes from 'react-static-routes'
 
@@ -178,3 +181,64 @@ export default {
 
 **Important**
 Due to the complexity of maintaining a fully tooled development experience, React is still used in development mode if `preact` is set to `true`. This ensures that stable hot-reloading tooling, dev tools, ect. are used. This is by no means permanent though! If you know what it takes to emulate React Static's development environment using Preact tooling, please submit a PR!
+
+# Pagination
+Pagination in react-static is no different than any other route, it's just a matter of how you get there.  When exporting your routes, you are expected to create a separate route for each page if needed, and only pass data to that route for the items on it.
+
+Here is a very simple proof of concept function that demonstrates how to do this:
+```javascript
+
+export default {
+  getRoutes: async () => {
+    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    return [
+      {
+        path: '/',
+        component: 'src/containers/Home',
+      },
+      ...makePageRoutes(posts, 10, {
+        path: '/blog',
+        component: 'src/containers/Blog'
+      })
+    ]
+  }
+}
+
+function makePageRoutes (items, pageSize, route) {
+  const itemsCopy = [...items] // Make a copy of the items
+  const pages = [] // Make an array for all of the different pages
+
+  while (itemsCopy.length) {
+    // Splice out all of the items into separate pages using a set pageSize
+    pages.push(itemsCopy.splice(0, pageSize))
+  }
+
+  // Move the first page out of pagination. This is so page one doesn't require a page number.
+  const firstPage = pages.shift()
+
+   const routes = [
+    {
+      ...route, // route defaults
+      path: route.path, // the route path is used on its own for page 1
+      getProps: async () => ({
+        posts: firstPage // and only pass the first page as data
+      })
+    },
+
+    ...pages.map((page, i) => ({ // map over each page to create an array of page routes, and spread it!
+      ...route, // route defaults
+      path: `${route.path}/page/${i + 2}`,
+      getProps: async () => ({
+        posts: page // only pass the data for that page
+      })
+    }))
+  ]
+
+
+  return routes
+}
+```
+
+To explain what is happening above, we are making an array of `10` posts for every page, including the first page of the blog. Each of these array's will be fed to the same `src/containers/Blog` component, but will be given a `.../page/2` or whatever number corresponds to that page of data. Since only the posts needed for that page are passed, we avoid duplicated data per page!
+
+Of course, you're free to build your pagination routes however you'd like! This is just one possible solution.
