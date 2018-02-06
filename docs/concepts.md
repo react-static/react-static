@@ -3,6 +3,11 @@
 - [Overview](#overview)
 - [Code, Data, and Prop Splitting](#code-data-and-prop-splitting)
 - [Writing universal, "node-safe" code](#writing-universal-node-safe-code)
+- [Building your site for production](#building-your-site-for-production)
+- [Continuous Integration](#continuous-integration)
+- [Hosting](#hosting)
+- [Using a CMS](#using-a-cms)
+- [Rebuilding your site with Webhooks](#rebuilding-your-site-with-webhooks)
 - [404 Handling](#404-handling)
 - [Non-Static Routing](#non-static-routing)
 - [Webpack Customization and Plugins](#webpack-customization-and-plugins)
@@ -130,6 +135,38 @@ Because React-Static code is both used in the browser and node (during build), i
     CoolLibrary = require('cool-library').default
   }
 ```
+
+
+#### Building your site for production
+Before you deploy your site to production, we suggest doing a few things:
+- Enter a `siteRoot` in your `static.config.js`. A `siteRoot` allows React Static to optimize your assets and links for an absolute location. It also allows your site to function normally if you happen to host it in a non-root location like `https://mysite.com/my-static-site/`.
+- Testing your build locally. To do this, you can run `react-static build --staging`. This will build a production version of your site that is still able to run normally on `localhost`.
+- If you find any bugs in production, you can turn off code uglification by also adding the `--debug` flag to your build command. This may help you track down any bugs.
+
+Once you're ready to build, run the `react-static build` command to kick off a production build. The production files will be located in the `dist` directory (or the custom `dist` directory you've defined). Simply upload the contents of this directory to your host!
+
+# Continuous Integration
+If your static site has static content that is changing often, you may want to set up **continuous integration** through some sort of service. The most common pairing you'll see is [using Netlify with a linked Github repo](https://www.netlify.com/blog/2016/09/29/a-step-by-step-guide-deploying-on-netlify/). This allows your site to automatically rebuild whenever your code changes. How nice! If you have some type of custom hosting solution, you could also look into using [Travis CI](https://travis-ci.org/) to build and deploy your site to a custom location. The possibilities are endless!
+
+# Hosting
+Deploying a static site has never been easier on today's internet! There are so many solutions where you can host static files for very cheap, sometimes even for free. This is, in fact, one of the great benefits to hosting a static site: there is no server to maintain and scalability is less of a problem. Here is a list of static-site hosting solutions we recommend:
+
+- [Netlify](https://netlify.com) (Our favorite!)
+- [Github Pages](https://pages.github.com/)
+- [Heroku](http://blog.teamtreehouse.com/deploy-static-site-heroku))
+- [AWS (S3 + Cloudfront)](https://aws.amazon.com/getting-started/projects/host-static-website/)
+- [Google Cloud Platform (GCS)](https://cloud.google.com/storage/docs/hosting-static-website)
+
+# Using a CMS
+A content management system (CMS) can greatly increase your ability to organize and contribute. At React Static, we love using [Contentful](https://contentful.com) and [GraphCMS](https://graphcms.com), but you can always visit [https://headlesscms.org/](https://headlesscms.org/) for help on picking the best one for you!
+
+# Rebuilding your site with Webhooks
+If you choose to use a CMS, you're probably going to ask yourself, "How will my site rebuild when content in my CMS changes?" The answer is **webhooks**! Most if not all modern CMS's provide webhooks. These are simply URL's that get pinged when something changes in the CMS. These could be any URL, but are used most productively when they are hooked up to a continuous integration or hosting service to achieve automatic rebuilds when anything in your CMS changes.
+
+Examples:
+- [Using Contentful Webhooks](https://www.contentful.com/developers/docs/concepts/webhooks/)
+- [Using GraphCMS Webhooks](https://graphcms.com/docs/concepts/#webhooks)
+- [Rebuilding on Netlify via Webhooks](https://www.netlify.com/docs/webhooks/)
 
 # 404 Handling
 Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found. Most static-site servers also default to use the `/404.html` page when a static route cannot be found. This works perfect with react-static, since we export that file for you automatically!
