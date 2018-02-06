@@ -140,7 +140,7 @@ Because React-Static code is both used in the browser and node (during build), i
 # Building your site for production
 Before you deploy your site to production, we suggest doing a few things:
 - Enter a `siteRoot` in your `static.config.js`. A `siteRoot` allows React Static to optimize your assets and links for an absolute location. It also allows your site to function normally if you happen to host it in a non-root location like `https://mysite.com/my-static-site/`.
-- Testing your build locally. To do this, you can run `react-static build --staging`. This will build a production version of your site that is still able to run normally on `localhost`.
+- Test your build locally. To do this, you can run `react-static build --staging`. This will build a production version of your site that is still able to run normally on `localhost`.
 - If you find any bugs in production, you can turn off code uglification by also adding the `--debug` flag to your build command. This may help you track down any bugs.
 
 Once you're ready to build, run the `react-static build` command to kick off a production build. The production files will be located in the `dist` directory (or the custom `dist` directory you've defined). Simply upload the contents of this directory to your host!
