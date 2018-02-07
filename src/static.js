@@ -301,7 +301,7 @@ export async function buildXMLandRSS ({ config }) {
   }
   const xml = generateXML({
     routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: config.publicPath + route.path, // publicPath + /routePath
+      permalink: config.publicPath + route.path.substring(1), // publicPath/ + /routePath
       lastModified: '',
       priority: 0.5,
       ...route,
