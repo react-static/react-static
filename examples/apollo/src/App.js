@@ -1,5 +1,6 @@
 import React from 'react'
 import { Router, Link } from 'react-static'
+import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 //
@@ -8,7 +9,7 @@ import client from './connectors/apollo'
 
 import './app.css'
 
-export default () => (
+const App = () => (
   <ApolloProvider client={client}>
     <Router>
       <div>
@@ -24,3 +25,5 @@ export default () => (
     </Router>
   </ApolloProvider>
 )
+
+export default hot(module)(App)

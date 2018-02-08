@@ -1,5 +1,6 @@
 import React from 'react'
 import { Router, Link } from 'react-static'
+import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 import Navigation from './components/Navigation'
@@ -7,7 +8,7 @@ import withAuthentication from './session/withAuthentication'
 
 import './app.css'
 
-const App = () => (
+const App = withAuthentication(() => (
   <Router>
     <div>
       <nav>
@@ -21,6 +22,6 @@ const App = () => (
       </div>
     </div>
   </Router>
-)
+))
 
-export default withAuthentication(App)
+export default hot(module)(App)

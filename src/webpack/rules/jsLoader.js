@@ -10,7 +10,9 @@ export default function ({ config, stage }) {
             ? {
               compact: false,
             }
-            : {},
+            : {
+              cacheDirectory: true,
+            },
       },
     ],
   }

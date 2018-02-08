@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { AppContainer } from 'react-hot-loader'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
 // Your top level component
@@ -19,22 +18,13 @@ if (typeof document !== 'undefined') {
 
   const render = Comp => {
     renderMethod(
-      <AppContainer>
-        <MuiThemeProvider theme={muiTheme}>
-          <Comp />
-        </MuiThemeProvider>
-      </AppContainer>,
-      document.getElementById('root'),
+      <MuiThemeProvider theme={muiTheme}>
+        <Comp />
+      </MuiThemeProvider>,
+      document.getElementById('root')
     )
   }
 
   // Render!
   render(App)
-
-  // Hot Module Replacement
-  if (module.hot) {
-    module.hot.accept('./App', () => {
-      render(require('./App').default)
-    })
-  }
 }

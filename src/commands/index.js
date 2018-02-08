@@ -50,6 +50,7 @@ export default function () {
       process.env.NODE_ENV = 'development'
     }
     process.env.REACT_STATIC_ENV = 'development'
+    process.env.BABEL_ENV = 'development'
     return require('./start').default(cliArguments)
   }
 
@@ -58,6 +59,7 @@ export default function () {
       process.env.NODE_ENV = 'production'
     }
     process.env.REACT_STATIC_ENV = 'production'
+    process.env.BABEL_ENV = 'production'
     return require('./build').default(cliArguments)
   }
 
@@ -76,6 +78,6 @@ Usage: react-static <command>
 Options:
 
     -v, --version output the version number
-`,
+`
   )
 }

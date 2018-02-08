@@ -2,6 +2,7 @@ import React from 'react'
 import { Router, Link } from 'react-static'
 import { css } from 'glamor'
 import glamorous from 'glamorous'
+import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 
@@ -11,7 +12,7 @@ const NavStyled = glamorous.nav(tw('w-full bg-demo-color'))
 const LinkStyled = glamorous(Link)(tw('text-white p-4 inline-block'))
 const Content = glamorous.div(tw('p-4'))
 
-export default () => (
+const App = () => (
   <Router>
     <div>
       <NavStyled>
@@ -25,3 +26,5 @@ export default () => (
     </div>
   </Router>
 )
+
+export default hot(module)(App)

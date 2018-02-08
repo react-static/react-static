@@ -1,6 +1,7 @@
 import React from 'react'
 import { Router, Link } from 'react-static'
 import glamorous from 'glamorous'
+import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 
@@ -32,7 +33,7 @@ const AppStyles = glamorous.div({
   },
 })
 
-export default () => (
+const App = () => (
   <Router>
     <AppStyles>
       <nav>
@@ -46,3 +47,5 @@ export default () => (
     </AppStyles>
   </Router>
 )
+
+export default hot(module)(App)

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Router, Link, Route, Switch } from 'react-static'
 import universal from 'react-universal-component'
+import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 
@@ -9,7 +10,7 @@ import './app.css'
 // Use universal-react-component for code-splitting non-static routes :)
 const NonStatic = universal(import('./containers/NonStatic'))
 
-export default () => (
+const App = () => (
   <Router>
     <div>
       <nav>
@@ -26,3 +27,5 @@ export default () => (
     </div>
   </Router>
 )
+
+export default hot(module)(App)

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Router, Route, Switch, Link } from 'react-static'
+import { hot } from 'react-hot-loader'
 //
 import Home from 'containers/Home'
 import About from 'containers/About'
@@ -8,7 +9,7 @@ import NotFound from 'containers/404'
 
 import './app.css'
 
-export default () => (
+const App = () => (
   <Router>
     <div>
       <nav>
@@ -27,3 +28,5 @@ export default () => (
     </div>
   </Router>
 )
+
+export default hot(module)(App)

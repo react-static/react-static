@@ -18,9 +18,6 @@
         "disableWarnings": true
       }
     ],
-    "extract-hoc/babel",
-    "extract-hoc-compose/babel",
-    "react-hot-loader/babel",
     "transform-class-properties",
     [
       "transform-runtime",
@@ -33,6 +30,9 @@
     ]
   ],
   "env": {
+    "development": {
+      "plugins": ["react-hot-loader/babel"]
+    },
     "test": {
       "presets": [["latest", { "modules": true }], "stage-0", "stage-3", "react"]
     }

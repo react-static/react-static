@@ -1,6 +1,7 @@
 import React from 'react'
 import { Router, Link, Route, Switch } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
+import { hot } from 'react-hot-loader'
 //
 import Home from 'containers/Home'
 import Geolocation from 'containers/Geolocation'
@@ -45,7 +46,7 @@ const AppStyles = styled.div`
   }
 `
 
-export default () => (
+const App = () => (
   <Router type="hash">
     <AppStyles>
       <nav>
@@ -62,3 +63,5 @@ export default () => (
     </AppStyles>
   </Router>
 )
+
+export default hot(module)(App)
