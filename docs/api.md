@@ -616,7 +616,7 @@ export default withRouteData(TopSongs)
 ```javascript
 module.exports = {
   getSiteData: () => ({
-    sitTitle: 'React Static',
+    siteTitle: 'React Static',
     metaDescription: 'A progressive static-site framework for React',
   }),
 }
