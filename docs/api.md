@@ -560,7 +560,8 @@ module.exports = {
 
 **TopSongs.js**
 ```javascript
-import { RouteData, withRouteData } from 'react-static'
+import { RouteData} from 'react-static'
+
 // "render" prop syntax - Recommended
 export default () => (
   <RouteData render={({ songs }) => (
@@ -586,8 +587,10 @@ export default () => (
     )}
   </RouteData>
 )
+```
 
-//
+```javascript
+import { RouteData, withRouteData } from 'react-static'
 
 // "component" syntax
 const TopSongs = ({ songs }) => (
@@ -613,7 +616,7 @@ export default withRouteData(TopSongs)
 ```javascript
 module.exports = {
   getSiteData: () => ({
-    title: 'React Static',
+    siteTitle: 'React Static',
     metaDescription: 'A progressive static-site framework for React',
   }),
 }
@@ -621,7 +624,7 @@ module.exports = {
 
 **Home.js**
 ```javascript
-import { SiteData, withSiteData } from 'react-static'
+import { SiteData } from 'react-static'
 
 // "render" prop syntax - Recommended
 export default () => (
@@ -638,8 +641,10 @@ export default () => (
     )}
   </SiteData>
 )
+```
 
-//
+```javascript
+import { SiteData, withSiteData } from 'react-static'
 
 // "component" syntax
 const Welcome = ({ siteTitle, metaDescription }) => (
