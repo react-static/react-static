@@ -18,6 +18,7 @@ declare module 'react-static' {
 
   export function getRouteData(comp: any): any
   export function getSiteData(comp: any): any
+  export function withRouteData(comp: any): any
   export function withSiteData(comp: any): any
   export async function prefetch(path: any): any
 
