@@ -11,6 +11,8 @@ import rules from './rules'
 
 export default function ({ config, isNode }) {
   const { ROOT, DIST, NODE_MODULES, SRC } = config.paths
+  const publicPath = process.env.REACT_STATIC_STAGING ? '/' : `${config.siteRoot}/` || '/'
+  process.env.PUBLIC_PATH = publicPath
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: path.resolve(ROOT, config.entry),
@@ -18,7 +20,7 @@ export default function ({ config, isNode }) {
       filename: isNode ? 'static.[chunkHash:8].js' : '[name].[chunkHash:8].js',
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
-      publicPath: process.env.REACT_STATIC_STAGING ? '/' : `${config.siteRoot}/` || '/',
+      publicPath,
       libraryTarget: isNode ? 'umd' : undefined,
     },
     target: isNode ? 'node' : undefined,

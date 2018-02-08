@@ -42,7 +42,7 @@ const getRouteInfo = async () => {
         await new Promise(resolve => {
           const s = document.createElement('script')
           s.type = 'text/javascript'
-          s.src = '/routeInfo.js'
+          s.src = `${process.env.PUBLIC_PATH}routeInfo.js`
           s.onload = resolve
           document.body.append(s)
         })
