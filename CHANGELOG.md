@@ -1,3 +1,7 @@
+# 5.1.8
+#### Fixes & Optimizations
+- Removed the various `extract-hoc` related babel plugins in favor of the new `react-hot-loader` version 4.
+
 # 5.1.0
 #### Features
 - Added `--staging` CLI argument to `react-static build` that does not perform build-time optimizations like siteRoot replacement on links assets, etc. If you are testing your site locally, you will likely want to use this option to allow your production site to be navigable on localhost.
