@@ -37,6 +37,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [Manticore Games](http://manticoregames.com)
 - [BlackSandSolutions.co](https://www.blacksandsolutions.co)
 - [David York - Personal Blog](http://davideyork.com)
+- [Cryptagon - Crypto Portfolio Tracker](https://cryptagon.io "Crypto Portfolio Tracker")
 
 ## Quick Start
 
