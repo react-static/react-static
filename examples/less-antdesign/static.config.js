@@ -20,6 +20,11 @@ const lessToJs = require('less-vars-to-js')
 
 const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, 'src/theme-ant-overwrite.less'), 'utf8'))
 
+/*
+* For Hot Module Replacement Support
+* */
+const webpack = require('webpack')
+
 //
 export default {
   getSiteData: () => ({
@@ -95,6 +100,9 @@ export default {
     // Needed for momoent js resolution in React 16
     // See: https://github.com/moment/moment/issues/2979#issuecomment-332217206
     config.resolve.alias.moment$ = 'moment/moment.js'
+
+    // Enable Hot Module Replacement
+    config.plugins.push(new webpack.HotModuleReplacementPlugin())
 
     // We replace the existing JS rule with one, that allows us to use
     // both TypeScript and JavaScript interchangeably
