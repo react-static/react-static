@@ -43,7 +43,7 @@ const getRouteInfo = async () => {
           const s = document.createElement('script')
           s.type = 'text/javascript'
           s.src = process.env.ROUTE_INFO_URL
-          s.onload = resolve;
+          s.onload = resolve
           if (document.body.append) {
             document.body.append(s)
           } else {
