@@ -1,49 +1,47 @@
-import axios from "axios";
-import { addSearchObjects } from "./algolia";
+import axios from 'axios'
+import { addSearchObjects } from './algolia'
 
 export default {
   getSiteData: () => ({
-    title: "React Static"
+    title: 'React Static',
   }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get(
-      "https://jsonplaceholder.typicode.com/posts"
-    );
+    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
 
     // Add posts data to Algolia with an index key of "posts"
-    addSearchObjects("posts", posts);
+    addSearchObjects('posts', posts)
 
     return [
       {
-        path: "/",
-        component: "src/containers/Home"
+        path: '/',
+        component: 'src/containers/Home',
       },
       {
-        path: "/about",
-        component: "src/containers/About"
+        path: '/about',
+        component: 'src/containers/About',
       },
       {
-        path: "/blog",
-        component: "src/containers/Blog",
+        path: '/blog',
+        component: 'src/containers/Blog',
         getData: () => ({
-          posts
+          posts,
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
-          component: "src/containers/Post",
+          component: 'src/containers/Post',
           getData: () => ({
-            post
-          })
-        }))
+            post,
+          }),
+        })),
       },
       {
-        path: "/search",
-        component: "src/containers/Search"
+        path: '/search',
+        component: 'src/containers/Search',
       },
       {
         is404: true,
-        component: "src/containers/404"
-      }
-    ];
-  }
-};
+        component: 'src/containers/404',
+      },
+    ]
+  },
+}
