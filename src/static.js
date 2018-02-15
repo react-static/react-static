@@ -218,7 +218,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
-            <link rel="preload" as="script" href={`${config.publicPath}routeInfo.${process.env.ROUTE_INFO_HASH}.js`} />
+            <link rel="preload" as="script" href={process.env.ROUTE_INFO_URL} />
             {clientScripts.map(script => (
               <link rel="preload" as="script" href={`${config.publicPath}${script}`} />
             ))}
