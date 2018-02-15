@@ -64,7 +64,7 @@ export default function () {
   }
 
   if (cmd === 'create') {
-    return require('./create').default(process.argv[3])
+    return require('./create').default(cliArguments)
   }
 
   console.log(
