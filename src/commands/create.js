@@ -20,12 +20,12 @@ function handleCliArguments (args, examples) {
       nameInput = args[i].substring(7)
     } else if (args[i].indexOf('--template') === 0) {
       const templateInput = args[i].substring(11)
-      if (examples.indexOf(templateInput) !== -1) {
+      if (examples.includes(templateInput)) {
         template = templateInput
       }
     }
   }
-  if (typeof nameInput === 'undefined') {
+  if (nameInput) {
     prompts.push({
       type: 'input',
       name: 'name',
@@ -33,7 +33,7 @@ function handleCliArguments (args, examples) {
       default: 'my-static-site',
     })
   }
-  if (typeof template === 'undefined') {
+  if (template) {
     prompts.push({
       type: 'autocomplete',
       name: 'template',
@@ -59,14 +59,14 @@ export default async cliArguments => {
 
   const { prompts, nameInput, template } = handleCliArguments(cliArguments, exampleList)
 
-  const shouldPrompt = typeof nameInput === 'undefined' || typeof template === 'undefined'
+  const shouldPrompt = !nameInput || !template
 
   const answers = shouldPrompt ? await inquirer.prompt(prompts) : {}
 
-  if (typeof nameInput !== 'undefined') {
+  if (nameInput) {
     answers.name = nameInput
   }
-  if (typeof template !== 'undefined') {
+  if (template) {
     answers.template = template
   }
 
