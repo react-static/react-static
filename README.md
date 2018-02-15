@@ -37,6 +37,8 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [Manticore Games](http://manticoregames.com)
 - [BlackSandSolutions.co](https://www.blacksandsolutions.co)
 - [David York - Personal Blog](http://davideyork.com)
+- [Cryptagon - Crypto Portfolio Tracker](https://cryptagon.io "Crypto Portfolio Tracker")
+- [Typetalk - Chat App for Businesses and Teams](https://www.typetalk.com "Chat App for Businesses and Teams")
 
 ## Quick Start
 
@@ -84,7 +86,6 @@ All of the following examples can be used as a template at project creation.
 - [Animated Routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes)
 - [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
 - [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
-- [Dynamic Imports (code-splitting with SSR)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports-with-ssr)
 - [Firebase Auth](https://github.com/nozzle/react-static/tree/master/examples/firebase-auth)
 - [Glamorous & Tailwind CSS](https://github.com/nozzle/react-static/tree/master/examples/glamorous-tailwind)
 - [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
@@ -99,6 +100,7 @@ All of the following examples can be used as a template at project creation.
 - [GraphCMS](https://github.com/nozzle/react-static/tree/master/examples/graphql-request)
 - [Sass](https://github.com/nozzle/react-static/tree/master/examples/sass)
 - [Tailwind CSS](https://github.com/nozzle/react-static/tree/master/examples/tailwindcss)
+- [Algolia](https://github.com/nozzle/react-static/tree/master/examples/algolia)
 - [Styled-JSX](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
 
 
