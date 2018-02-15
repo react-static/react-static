@@ -44,7 +44,11 @@ const getRouteInfo = async () => {
           s.type = 'text/javascript'
           s.src = `${process.env.PUBLIC_PATH}routeInfo.${process.env.ROUTE_INFO_HASH}.js`
           s.onload = resolve;
-          (document.body.append || document.body.appendChild)(s)
+          if (document.body.append) {
+            document.body.append(s)
+          } else {
+            document.body.appendChild(s)
+          }
         })
         return window.__routeInfo
       })()

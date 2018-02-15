@@ -3,6 +3,7 @@
 - [Overview](#overview)
 - [Code, Data, and Prop Splitting](#code-data-and-prop-splitting)
 - [Writing universal, "node-safe" code](#writing-universal-node-safe-code)
+- [Environment Variables](#environment-variables)
 - [Building your site for production](#building-your-site-for-production)
 - [Continuous Integration](#continuous-integration)
 - [Hosting](#hosting)
@@ -136,6 +137,12 @@ Because React-Static code is both used in the browser and node (during build), i
   }
 ```
 
+# Environment Variables
+During your adventures, you may need to access specific environment variables. The following environment variables are available across all of react-static, including your app:
+- `process.env.REACT_STATIC_ENV` can equal one of:
+  - `production` - the environment is being built via webpack for **production**
+  - `development` - the environment is being built via webpack for **development**
+  - `node` - the environment is being built via **node** for **SSR**
 
 # Building your site for production
 Before you deploy your site to production, we suggest doing a few things:
