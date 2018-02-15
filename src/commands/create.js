@@ -15,16 +15,16 @@ function handleCliArguments (args, examples) {
   const prompts = []
   let nameInput
   let template
-  for (let i=0; i<args.length; i++) {
-    if (args[i].indexOf('--name') === 0) {
-      nameInput = args[i].substring(7)
-    } else if (args[i].indexOf('--template') === 0) {
-      const templateInput = args[i].substring(11)
+  args.forEach(arg => {
+    if (arg.indexOf('--name') === 0) {
+      nameInput = arg.substring(7)
+    } else if (arg.indexOf('--template') === 0) {
+      const templateInput = arg.substring(11)
       if (examples.includes(templateInput)) {
         template = templateInput
       }
     }
-  }
+  })
   if (nameInput) {
     prompts.push({
       type: 'input',
