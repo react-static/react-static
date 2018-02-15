@@ -4,6 +4,7 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
+import shorthash from 'shorthash'
 // import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
 // import WebpackPwaManifest from 'webpack-pwa-manifest'
 //
@@ -13,6 +14,9 @@ export default function ({ config, isNode }) {
   const { ROOT, DIST, NODE_MODULES, SRC } = config.paths
   const publicPath = process.env.REACT_STATIC_STAGING ? '/' : `${config.siteRoot}/` || '/'
   process.env.PUBLIC_PATH = publicPath
+  process.env.ROUTE_INFO_HASH = shorthash.unique(JSON.stringify(config.routes))
+  process.env.ROUTE_INFO_URL = `${publicPath}routeInfo.${process.env.ROUTE_INFO_HASH}.js`
+
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: path.resolve(ROOT, config.entry),
