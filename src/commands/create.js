@@ -25,7 +25,7 @@ function handleCliArguments (args, examples) {
       }
     }
   })
-  if (nameInput) {
+  if (!nameInput) {
     prompts.push({
       type: 'input',
       name: 'name',
@@ -33,7 +33,7 @@ function handleCliArguments (args, examples) {
       default: 'my-static-site',
     })
   }
-  if (template) {
+  if (!template) {
     prompts.push({
       type: 'autocomplete',
       name: 'template',
