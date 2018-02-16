@@ -11,7 +11,45 @@ import { ChalkColor } from '../utils'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
-export default async () => {
+function handleCliArguments (args, examples) {
+  const prompts = []
+  let nameInput
+  let template
+  args.forEach(arg => {
+    if (arg.indexOf('--name') === 0) {
+      nameInput = arg.substring(7)
+    } else if (arg.indexOf('--template') === 0) {
+      const templateInput = arg.substring(11)
+      if (examples.includes(templateInput)) {
+        template = templateInput
+      }
+    }
+  })
+  if (nameInput) {
+    prompts.push({
+      type: 'input',
+      name: 'name',
+      message: 'What should we name this project?',
+      default: 'my-static-site',
+    })
+  }
+  if (template) {
+    prompts.push({
+      type: 'autocomplete',
+      name: 'template',
+      message: 'Select a template below...',
+      source: async (answersSoFar, input) =>
+        !input ? examples : matchSorter(examples, input),
+    })
+  }
+  return {
+    prompts,
+    nameInput,
+    template,
+  }
+}
+
+export default async cliArguments => {
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
 
   console.log('')
@@ -19,21 +57,18 @@ export default async () => {
   let exampleList = files.filter(d => !d.startsWith('.'))
   exampleList = ['basic', ...exampleList.filter(d => d !== 'basic'), 'custom']
 
-  const answers = await inquirer.prompt([
-    {
-      type: 'input',
-      name: 'name',
-      message: 'What should we name this project?',
-      default: 'my-static-site',
-    },
-    {
-      type: 'autocomplete',
-      name: 'template',
-      message: 'Select a template below...',
-      source: async (answersSoFar, input) =>
-        !input ? exampleList : matchSorter(exampleList, input),
-    },
-  ])
+  const { prompts, nameInput, template } = handleCliArguments(cliArguments, exampleList)
+
+  const shouldPrompt = !nameInput || !template
+
+  const answers = shouldPrompt ? await inquirer.prompt(prompts) : {}
+
+  if (nameInput) {
+    answers.name = nameInput
+  }
+  if (template) {
+    answers.template = template
+  }
 
   console.time(chalk.green(`=> [\u2713] Project "${answers.name}" created`))
   console.log('=> Creating new react-static project...')
