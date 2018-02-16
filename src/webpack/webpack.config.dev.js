@@ -32,7 +32,6 @@ export default function ({ config }) {
         DIST,
       ],
       extensions: ['.js', '.json', '.jsx'],
-      // mainFields: ['main'],
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),

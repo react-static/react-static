@@ -42,6 +42,12 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       Object.keys(route.initialProps)
         .map(k => route.initialProps[k])
         .forEach(prop => {
+          if (typeof prop === 'string' && prop.length < 100) {
+            return
+          }
+          if (['boolean', 'number', 'undefined'].includes(typeof prop)) {
+            return
+          }
           // Have we seen this prop before?
           if (seenProps.get(prop)) {
             // Only cache each shared prop once

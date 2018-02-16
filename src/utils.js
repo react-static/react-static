@@ -176,3 +176,11 @@ export async function createIndexFilePlaceholder ({ config, Component, siteData 
   // Write the Document to index.html
   await fs.outputFile(config.paths.HTML_TEMPLATE, html)
 }
+
+export function isArray (a) {
+  return Array.isArray(a)
+}
+
+export function isObject (a) {
+  return !Array.isArray(a) && typeof a === 'object' && a !== null
+}
