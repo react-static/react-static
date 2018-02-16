@@ -425,13 +425,18 @@ Creates a new react-static project.
 
 - Prompts for a project name/location
 - Prompts to select one of the templates located in this repository's `examples/` directory, or you may select `custom` and enter in a git reposity to use in the form of `owner/repo`.
+- Optionally, you may pass in command line arguments to specify the project name and/or template up front.
+
+- Arguments:
+  - `--name=$PROJECT_NAME` where `$PROJECT_NAME` is the desired name for your project (no spaces).
+  - `--template=$TEMPLATE_NAME` where `$TEMPLATE_NAME` is an existing template from the examples directory. If the template is not in the list, you will be prompted with the list of valid options
 
 ### `react-static start`
 Starts the development server.
 
 ### `react-static build`
 Builds your site for production. Outputs to a `dist` directory in your project.
-- Arguments
+- Arguments:
   - `--staging` - By setting this flag, no siteRoot replacement or path optimizations are performed, allowing a production build of your site to function on localhost more easily. Use this argument to test a production build locally.
   - `--debug` - By setting this flag, your build will **not** be `uglified` allowing you to debug production errors (as long as they are unrelated to minification or uglification)
 
