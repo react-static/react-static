@@ -27,12 +27,10 @@
         "regenerator": true,
         "moduleName": "babel-runtime"
       }
-    ]
+    ],
+    "react-hot-loader/babel"
   ],
   "env": {
-    "development": {
-      "plugins": ["react-hot-loader/babel"]
-    },
     "test": {
       "presets": [["latest", { "modules": true }], "stage-0", "stage-3", "react"]
     }
