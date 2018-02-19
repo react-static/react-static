@@ -40,7 +40,7 @@ function getPosts () {
       resolve(items)
     }
   })
-  getFiles()
+  return getFiles()
 }
 
 export default {
