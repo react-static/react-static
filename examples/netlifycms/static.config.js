@@ -7,6 +7,7 @@ const matter = require('gray-matter');
 const moment = require('moment');
 
 function getPosts() {
+  
   const items = []
 
   // Filter function to retrieve .md files //
@@ -15,7 +16,7 @@ function getPosts() {
     return path.extname(item) === ".md";
   }
 
-  // Walk ("klaw") through posts directory and push file paths into posts array //
+  // Walk ("klaw") through posts directory and push file paths into items array //
 
   return new Promise(resolve => {
     // Check if posts directory exists //
