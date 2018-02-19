@@ -105,13 +105,22 @@ export const getConfig = () => {
 }
 
 const path404 = '/404'
+const pathError = '/Error'
 
 // Normalize routes with parents, full paths, context, etc.
 export function normalizeRoutes (routes) {
   const flatRoutes = []
 
   const recurse = (route, parent = { path: '/' }) => {
-    const routePath = route.is404 ? path404 : pathJoin(parent.path, route.path)
+    let routePath
+
+    if (route.is404) {
+      routePath = path404
+    } else if (route.isError) {
+      routePath = pathError
+    } else {
+      routePath = pathJoin(parent.path, route.path)
+    }
 
     if (typeof route.noIndex !== 'undefined') {
       console.log(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
@@ -150,6 +159,13 @@ export function normalizeRoutes (routes) {
     flatRoutes.push({
       is404: true,
       path: path404,
+    })
+  }
+
+  if (!flatRoutes.find(d => d.isError)) {
+    flatRoutes.push({
+      isError: true,
+      path: pathError,
     })
   }
 

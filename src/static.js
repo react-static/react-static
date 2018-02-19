@@ -287,9 +287,14 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
 
       // If the route is a 404 page, write it directly to 404.html, instead of
       // inside a directory.
-      const htmlFilename = route.is404
-        ? path.join(config.paths.DIST, '404.html')
-        : path.join(config.paths.DIST, route.path, 'index.html')
+      let htmlFilename
+      if (route.is404) {
+        htmlFilename = path.join(config.paths.DIST, '404.html')
+      } else if (route.isError) {
+        htmlFilename = path.join(config.paths.DIST, 'error.html')
+      } else {
+        htmlFilename = path.join(config.paths.DIST, route.path, 'index.html')
+      }
 
       return fs.outputFile(htmlFilename, html)
     }),
@@ -306,7 +311,7 @@ export async function buildXMLandRSS ({ config }) {
     return
   }
   const xml = generateXML({
-    routes: config.routes.filter(d => !d.is404).map(route => ({
+    routes: config.routes.filter(d => (!d.is404 && !d.isError)).map(route => ({
       permalink: config.publicPath + route.path.substring(1), // publicPath/ + /routePath
       lastModified: '',
       priority: 0.5,

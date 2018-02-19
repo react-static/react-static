@@ -678,6 +678,9 @@ class Router extends Component {
 
     if (this.state.error) {
       // Fallback UI if an error occurs
+
+      // TODO If there is a custom error route defined, use that instead
+
       return (
         <div
           style={{
