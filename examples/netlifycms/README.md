@@ -4,7 +4,7 @@ React-Static Basic template with added configuration for use with Netlify CMS an
 
 To get started, run react-static create and use the netlifycms template.
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/nozzle/react-static/tree/master/examples/netlifycms.git)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/tsgriff/react-static-netlifycms.git)
 
 ## Resources
 
