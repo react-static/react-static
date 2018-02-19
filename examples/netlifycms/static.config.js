@@ -1,33 +1,23 @@
-import axios from 'axios'
-const fs = require('fs');
+const fs = require('fs')
 const klaw = require('klaw')
-const marked = require('marked');
+const marked = require('marked')
 const path = require('path')
-const matter = require('gray-matter');
-const moment = require('moment');
+const matter = require('gray-matter')
 
-function getPosts() {
-  
+function getPosts () {
   const items = []
-
-  // Filter function to retrieve .md files //
-
-  let filterFn = function (item) {
-    return path.extname(item) === ".md";
-  }
-
   // Walk ("klaw") through posts directory and push file paths into items array //
-
-  return new Promise(resolve => {
+  const getFiles = () => new Promise(resolve => {
     // Check if posts directory exists //
     if (fs.existsSync('./src/posts')) {
       klaw('./src/posts')
         .on('data', item => {
-          // If markdown file, read contents //
-          if (filterFn(item.path)) {
-            let data = fs.readFileSync(item.path, 'utf8')
+          // Filter function to retrieve .md files //
+          if (path.extname(item.path) === '.md') {
+            // If markdown file, read contents //
+            const data = fs.readFileSync(item.path, 'utf8')
             // Convert to frontmatter object and markdown content //
-            let dataObj = matter(data)
+            const dataObj = matter(data)
             dataObj.content = marked(dataObj.content)
             // Create slug for URL //
             dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
@@ -45,25 +35,21 @@ function getPosts() {
           // posts = items for below routes //
           resolve(items)
         })
-    }
-    // If src/posts directory doesn't exist, return items as empty array //
-    else {
+    } else {
+      // If src/posts directory doesn't exist, return items as empty array //
       resolve(items)
     }
   })
+  getFiles()
 }
-
 
 export default {
 
   getSiteData: () => ({
     title: 'React Static with Netlify CMS',
   }),
-
   getRoutes: async () => {
-
-    var posts = await getPosts()
-
+    const posts = await getPosts()
     return [
       {
         path: '/',
