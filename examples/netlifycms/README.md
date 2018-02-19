@@ -1,6 +1,6 @@
 # React-Static - Netlify CMS Example
 
-React-Static Basic template with added configuration for blog post deployment via Netlify CMS and GitHub.
+React-Static Basic template with added configuration for use with Netlify CMS and GitHub.
 
 To get started, run react-static create and use the netlifycms template.
 
