@@ -22,7 +22,7 @@ function getPosts () {
             // Create slug for URL //
             dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
             // Parse image file name from path //
-            dataObj.data.thumbnail = dataObj.data.thumbnail.replace('/src/images/uploads/', '')
+            dataObj.data.thumbnail = dataObj.data.thumbnail.replace('/public/uploads/', '')
             // Push object into items array //
             items.push(dataObj)
           }

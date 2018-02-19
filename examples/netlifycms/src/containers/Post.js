@@ -9,7 +9,7 @@ export default withRouteData(({ post }) => (
     <br />
     <h3>{post.data.title}</h3>
     <Moment format="MMMM Do, YYYY">{post.data.date}</Moment>
-    <img className="image" src={require(`../images/uploads/${post.data.thumbnail}`)} alt="" />
+    <img className="image" src={`/uploads/${post.data.thumbnail}`} alt="" />
     <p dangerouslySetInnerHTML={{ __html: post.content }} />
   </div>
 ))
