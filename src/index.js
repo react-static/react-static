@@ -353,7 +353,7 @@ const RouteData = withRouter(
         ...routeData,
       }
       if (component) {
-        return React.createElement(component, finalProps)
+        return React.createElement(component, finalProps, children)
       }
       if (render) {
         return render(finalProps)
@@ -419,7 +419,7 @@ class SiteData extends Component {
       ...siteData,
     }
     if (component) {
-      return React.createElement(component, finalProps)
+      return React.createElement(component, finalProps, children)
     }
     if (render) {
       return render(finalProps)
@@ -541,7 +541,7 @@ class Loading extends React.Component {
       loading: this.state.loading,
     }
     if (component) {
-      return React.createElement(component, finalProps)
+      return React.createElement(component, finalProps, children)
     }
     if (render) {
       return render(finalProps)

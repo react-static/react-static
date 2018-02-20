@@ -59,7 +59,21 @@
       },
       {
         "name": "Api Reference",
-        "src": "api.md"
+        "src": "api.md",
+        "children": [
+          {
+            "name": "static.config.js",
+            "src": "api.md#staticconfigjs"
+          },
+          {
+            "name": "CLI",
+            "src": "api.md#cli"
+          },
+          {
+            "name": "Components",
+            "src": "api.md#components"
+          }
+        ]
       }
     ]
   }

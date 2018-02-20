@@ -1,3 +1,7 @@
+# 5.1.14
+#### Fixes
+- Fixed `component` style render props from not passing children
+
 # 5.1.13
 #### Features
 - `Router.scrollToHashOffset` prop allows for setting an offset for hash scrolling now :)
