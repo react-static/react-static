@@ -1,4 +1,4 @@
-# React Static - Concepts
+# Core Concepts
 
 - [Overview](#overview)
 - [Code, Data, and Prop Splitting](#code-data-and-prop-splitting)
@@ -33,7 +33,7 @@ preview
 4. The rest of the website is optimistically pre-cached
 5. All further navigation is seemingly instantaneous!
 
-![Flow Chart](/media/flow.png)
+![Flow Chart](https://github.com/nozzle/react-static/raw/master/media/flow.png)
 
 # Code, Data, and Prop Splitting
 React Static also has a very unique and amazing way of requesting the least amount of data to display any given page at just the right moment. React splits code and data based on these factors:
@@ -208,7 +208,7 @@ export default () => (
 To learn more about how `react-router` components work, visit [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
 
 # Webpack Customization and Plugins
-React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, use the handy [`webpack` property in your `static.config.js` file](/docs/api.md/#webpack).
+React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, use the handy [`webpack` property in your `static.config.js` file](/api.md/#webpack).
 
 # Using Preact in Production
 Who wouldn't want to make their JS bundle as small as possible? Simply set `preact: true` in your `static.config.js` and React-Static will ship preact with your site instead of React. This can significantly reduce the size of your app and load times!

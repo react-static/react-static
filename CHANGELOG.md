@@ -1,3 +1,10 @@
+# 5.1.13
+#### Features
+- `Router.scrollToHashOffset` prop allows for setting an offset for hash scrolling now :)
+- Added `netlify-cms` example.
+#### Fixes & Optimizations
+- Squashed some bugs
+
 # 5.1.8
 #### Fixes & Optimizations
 - Removed the various `extract-hoc` related babel plugins in favor of the new `react-hot-loader` version 4.

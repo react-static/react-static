@@ -53,7 +53,6 @@ export default function ({ config, isNode }) {
         DIST,
       ],
       extensions: ['.js', '.json', '.jsx'],
-      // mainFields: isNode ? ['main'] : undefined,
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),

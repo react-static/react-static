@@ -1,4 +1,4 @@
-# React Static - API Reference
+# API Reference
 
 - [static.config.js](#staticconfigjs)
   - [getRoutes](#getroutes)
@@ -454,8 +454,9 @@ Props:
   - `memory` - Uses `history.createMemoryHistory`
 - `autoScrollToTop: Boolean` - Set this to `false` to disable the automatic scroll-to-top when the site path changes. Defualts to `true`.
 - `autoScrollToHash: Boolean` - Set this to `false` to disable the automatic scroll-to-hash when the location hash changes. Defaults to `true`.
-- `scrollToHashDuration: Int` - The duration of the automatic scroll-to-hash animation that happens on hash changes. Defaults to `800`
 - `scrollToTopDuration: Int` - The duration of the automatic scroll-to-top animation that happens on path changes. Defaults to `0`
+- `scrollToHashDuration: Int` - The duration of the automatic scroll-to-hash animation that happens on hash changes. Defaults to `800`
+- `scrollToHashOffset: Int` - The vertical offset of the automatic scroll-to-hash animation that happens on path changes. Defaults to `0`
 - `history: History` - An optional history object (most-often used for things like react-router-redux). Provides a helper method to subscribe to loading events. Note that this will override the `type` prop above.
 
 Example:

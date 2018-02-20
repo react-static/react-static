@@ -577,7 +577,12 @@ const RouterScroller = withRouter(
       }
     }
     scrollToHash = () => {
-      const { scrollToHashDuration, autoScrollToHash, location: { hash } } = this.props
+      const {
+        scrollToHashDuration,
+        autoScrollToHash,
+        scrollToHashOffset,
+        location: { hash },
+      } = this.props
       if (!autoScrollToHash) {
         return
       }
@@ -588,6 +593,7 @@ const RouterScroller = withRouter(
           if (element !== null) {
             scrollTo(element, {
               duration: scrollToHashDuration,
+              offset: scrollToHashOffset,
             })
           }
         }
@@ -610,6 +616,7 @@ class Router extends Component {
     autoScrollToHash: true,
     scrollToTopDuration: 0,
     scrollToHashDuration: 800,
+    scrollToHashOffset: 0,
   }
   static contextTypes = {
     staticURL: PropTypes.string,
@@ -668,6 +675,7 @@ class Router extends Component {
       autoScrollToHash,
       scrollToTopDuration,
       scrollToHashDuration,
+      scrollToHashOffset,
       ...rest
     } = this.props
     const { staticURL } = this.context
@@ -722,7 +730,13 @@ class Router extends Component {
     return (
       <ResolvedRouter history={resolvedHistory} location={staticURL} context={context} {...rest}>
         <RouterScroller
-          {...{ autoScrollToTop, autoScrollToHash, scrollToTopDuration, scrollToHashDuration }}
+          {...{
+            autoScrollToTop,
+            autoScrollToHash,
+            scrollToTopDuration,
+            scrollToHashDuration,
+            scrollToHashOffset,
+          }}
         >
           {children}
         </RouterScroller>

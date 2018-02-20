@@ -6,6 +6,7 @@ coverage
 
 # production
 dist
+docs-dist
 lib
 
 *.log

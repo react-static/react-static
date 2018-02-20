@@ -16,9 +16,14 @@
     "publishnext": "yarn publish --tag next",
     "prepublishOnly": "yarn build",
     "postpublish": "git push --tags",
+    "startdocs": "gitdocs serve",
+    "builddocs": "gitdocs build",
+    "servedocs": "serve docs-dist -p 3000",
     "test": "eslint src examples test && yarn run test-sample-build",
-    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && ../../bin/react-static build)",
-    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && ../../bin/react-static build)"
+    "test-sample-build":
+      "yarn build && (cd test/minimal-website && yarn && ../../bin/react-static build)",
+    "test-large-build":
+      "yarn build && (cd test/stress-test-routes && yarn && ../../bin/react-static build)"
   },
   "repository": "nozzle/react-static",
   "devDependencies": {
@@ -80,6 +85,7 @@
     "react-hot-loader": "^4.0.0-beta.21",
     "react-router-dom": "^4.2.2",
     "react-universal-component": "^2.8.1",
+    "serve": "^6.4.10",
     "shorthash": "^0.0.2",
     "slash": "^1.0.0",
     "style-loader": "^0.19.0",
