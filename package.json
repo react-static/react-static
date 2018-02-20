@@ -64,6 +64,7 @@
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^1.1.4",
     "fs-extra": "^4.0.2",
+    "gitdocs": "^1.5.0",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
     "inquirer": "^3.3.0",
