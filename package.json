@@ -29,6 +29,7 @@
   "devDependencies": {
     "eslint": "^4.3.0",
     "eslint-config-react-tools": "^1.0.6",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "jest": "^21.2.1",
     "rimraf": "^2.6.2"
   },
