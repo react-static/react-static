@@ -8,11 +8,14 @@
   "repository": "https://github.com/nozzle/react-static",
   "license": "MIT",
   "root": "./docs",
-  "expanded": true,
   "logo": "./logo.png",
-  "showLineNumbers": true,
-  "highlighter": "prism",
   "title": "react-static",
+  "syntax": {
+    "showLineNumbers": true,
+    "highlighter": "hljs",
+    "theme": "atom-one-light",
+    "languages": ["javascript"]
+  },
   "sidebar": {
     "items": [
       {

@@ -31,14 +31,14 @@ export default function scrollTo (element, options) {
     innerHeight = window.innerHeight
     scrollHeight = document.body.scrollHeight
   }
-  const end =
-    typeof element === 'number'
-      ? parseInt(element)
-      : getTop(element, offset, scrollHeight, innerHeight)
   const clock = Date.now() - 1
   return new Promise(resolve => {
     const step = () => {
       const elapsed = Date.now() - clock
+      const end =
+        typeof element === 'number'
+          ? parseInt(element)
+          : getTop(element, offset, scrollHeight, innerHeight)
       if (context !== window) {
         context.scrollTop = getPosition(start, end, elapsed, duration, ease)
       } else {
