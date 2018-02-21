@@ -20,8 +20,10 @@
     "builddocs": "gitdocs build",
     "servedocs": "serve docs-dist -p 3000",
     "test": "eslint src examples test && yarn run test-sample-build",
-    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && ../../bin/react-static build)",
-    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && ../../bin/react-static build)"
+    "test-sample-build":
+      "yarn build && (cd test/minimal-website && yarn && ../../bin/react-static build)",
+    "test-large-build":
+      "yarn build && (cd test/stress-test-routes && yarn && ../../bin/react-static build)"
   },
   "repository": "nozzle/react-static",
   "devDependencies": {
