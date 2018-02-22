@@ -2,7 +2,7 @@
 layout: blog
 title: 'Sample Post #1'
 date: 2018-02-19T00:45:43.212Z
-thumbnail: /src/images/uploads/image2.jpg
+thumbnail: /uploads/image2.jpg
 rating: '5'
 ---
 This is sample post #1.
