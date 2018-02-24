@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 
-import './app.css'
+import './app.scss'
 
 const App = () => (
   <Router>
