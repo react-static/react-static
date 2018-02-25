@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import chalk from 'chalk'
 import path from 'path'
+import git from 'git-promise'
 import { execSync } from 'child_process'
 import inquirer from 'inquirer'
 import autoCompletePrompt from 'inquirer-autocomplete-prompt'
@@ -8,13 +9,12 @@ import matchSorter from 'match-sorter'
 import downloadGitRepo from 'download-git-repo'
 import { promisify } from 'util'
 import { ChalkColor } from '../utils'
-import git from 'git-promise'
+
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
 export default async program => {
-  let prompts = []
-  const cliArguments = program.args
+  const prompts = []
 
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
 
@@ -28,13 +28,13 @@ export default async program => {
   //   unless it's assigned as an argument from the CLI, we can't simply just
   //   check for it's existence. if it's not been set by the CLI, we properly
   //   set it to null for later conditional checks.
-  if (typeof program.name != 'string') {
+  if (typeof program.name !== 'string') {
     program.name = null
     prompts.push({
       type: 'input',
       name: 'name',
       message: 'What should we name this project?',
-      default: 'my-static-site'
+      default: 'my-static-site',
     })
   }
 
@@ -45,7 +45,7 @@ export default async program => {
       name: 'template',
       message: 'Select a template below...',
       source: async (answersSoFar, input) =>
-        !input ? exampleList : matchSorter(exampleList, input)
+        !input ? exampleList : matchSorter(exampleList, input),
     })
   }
 
@@ -71,8 +71,8 @@ export default async program => {
         name: 'githubRepoName',
         message:
           'Specify a public repo from GitHub, BitBucket, or GitLab that has your custom template. Use the form "ownerName/repoName".',
-        default: 'mjsisley/react-static-template-basic'
-      }
+        default: 'mjsisley/react-static-template-basic',
+      },
     ])
   }
 
@@ -133,25 +133,22 @@ ${chalk.green('=> To get started:')}
 
     cd ${answers.name}
 
-    ${
-      isYarn
-        ? chalk.hex(ChalkColor.yarn)('yarn')
-        : chalk.hex(ChalkColor.npm)('npm run')
-    } start ${chalk.green('- Start the development server')}
-    ${
-      isYarn
-        ? chalk.hex(ChalkColor.yarn)('yarn')
-        : chalk.hex(ChalkColor.npm)('npm run')
-    } build ${chalk.green('- Build for production')}
-    ${
-      isYarn
-        ? chalk.hex(ChalkColor.yarn)('yarn')
-        : chalk.hex(ChalkColor.npm)('npm run')
-    } serve ${chalk.green('- Test a production build locally')}
-  `)
+    ${isYarn
+    ? chalk.hex(ChalkColor.yarn)('yarn')
+    : chalk.hex(ChalkColor.npm)('npm run')
+} start ${chalk.green('- Start the development server')}
+  ${isYarn
+    ? chalk.hex(ChalkColor.yarn)('yarn')
+    : chalk.hex(ChalkColor.npm)('npm run')
+} build ${chalk.green('- Build for production')}
+  ${isYarn
+    ? chalk.hex(ChalkColor.yarn)('yarn')
+    : chalk.hex(ChalkColor.npm)('npm run')
+} serve ${chalk.green('- Test a production build locally')}
+`)
 }
 
-function shouldUseYarn() {
+function shouldUseYarn () {
   try {
     execSync('yarnpkg --version', { stdio: 'ignore' })
     return true
@@ -160,7 +157,7 @@ function shouldUseYarn() {
   }
 }
 
-async function fetchRemoteTemplate(template, dest) {
+async function fetchRemoteTemplate (template, dest) {
   console.log('')
   if (template.startsWith('https://') || template.startsWith('git@')) {
     try {
@@ -170,7 +167,6 @@ async function fetchRemoteTemplate(template, dest) {
       console.error(chalk.red(`Download of ${template} failed`))
       console.error(e)
     }
-
   } else {
     // use download-git-repo to fetch remote repository
     const getGitHubRepo = promisify(downloadGitRepo)

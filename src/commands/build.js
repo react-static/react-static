@@ -47,7 +47,7 @@ export default async program => {
     await exportRoutes({
       config,
       clientStats,
-      cliArguments
+      cliArguments,
     })
     await buildXMLandRSS({ config })
     console.timeEnd(chalk.green('=> [\u2713] Routes Exported'))
