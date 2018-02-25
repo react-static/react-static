@@ -34,6 +34,14 @@ ignoredExtensions.forEach(ext => {
   require.extensions[`.${ext}`] = () => {}
 })
 
+// Be sure to log useful information about unhandled exceptions. This should seriously
+// be a default: https://github.com/nodejs/node/issues/9523#issuecomment-259303079
+process.on('unhandledRejection', r => {
+  console.log('')
+  console.log('UnhandledPromiseRejectionWarning: Unhandled Promise Rejection')
+  console.log(r)
+})
+
 commander
   .version(pkg.version)
   .description(pkg.description)
