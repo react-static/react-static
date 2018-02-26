@@ -1,6 +1,5 @@
 const fs = require('fs')
 const klaw = require('klaw')
-const marked = require('marked')
 const path = require('path')
 const matter = require('gray-matter')
 
@@ -18,11 +17,10 @@ function getPosts () {
             const data = fs.readFileSync(item.path, 'utf8')
             // Convert to frontmatter object and markdown content //
             const dataObj = matter(data)
-            dataObj.content = marked(dataObj.content)
             // Create slug for URL //
             dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
-            // Parse image file name from path //
-            dataObj.data.thumbnail = dataObj.data.thumbnail.replace('/public/uploads/', '')
+            // Remove unused key //
+            delete dataObj.orig
             // Push object into items array //
             items.push(dataObj)
           }

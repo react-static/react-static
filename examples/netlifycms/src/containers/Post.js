@@ -1,6 +1,7 @@
 import React from 'react'
 import { withRouteData, Link } from 'react-static'
 import Moment from 'react-moment'
+import Markdown from 'react-markdown'
 //
 
 export default withRouteData(({ post }) => (
@@ -9,7 +10,7 @@ export default withRouteData(({ post }) => (
     <br />
     <h3>{post.data.title}</h3>
     <Moment format="MMMM Do, YYYY">{post.data.date}</Moment>
-    <img className="image" src={`/uploads/${post.data.thumbnail}`} alt="" />
-    <p dangerouslySetInnerHTML={{ __html: post.content }} />
+    <img className="image" src={post.data.thumbnail} alt="" />
+    <Markdown source={post.content} escapeHtml={false} />
   </div>
 ))
