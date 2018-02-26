@@ -429,7 +429,7 @@ Creates a new react-static project.
 
 - Arguments:
   - `--name=$PROJECT_NAME` where `$PROJECT_NAME` is the desired name for your project (no spaces).
-  - `--template=$TEMPLATE_NAME` where `$TEMPLATE_NAME` is an existing template from the examples directory. If the template is not in the list, you will be prompted with the list of valid options
+  - `--template=$TEMPLATE_NAME` where `$TEMPLATE_NAME` is an existing template from the examples directory. If the template is not in the list, you will be prompted with the list of valid options. You can also pass an SSH or HTTPS repository URL.
 
 ### `react-static start`
 Starts the development server.

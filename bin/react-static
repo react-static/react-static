@@ -1,3 +1,29 @@
 #!/usr/bin/env node
 
-require('../lib/commands/index').default()
+require('babel-register')
+require('../lib/utils/binHelper')
+const chalk = require('chalk')
+const fs = require('fs')
+const commander = require('commander')
+const pkg = require('../package.json')
+
+
+commander
+  .version(pkg.version)
+  .description(pkg.description)
+  .command('create', 'create a new project')
+  .command('start', 'start the development server')
+  .command('build', 'build site for production')
+  .on('--help', function() {
+    console.log('')
+    console.log(`  ${chalk.green('Examples:')}`)
+    console.log('')
+    console.log('    $ react-static create')
+    console.log('    $ react-static start')
+    console.log('    $ react-static build')
+    console.log('')
+    console.log('    $ react-static create -n my-static-app --t user/repo')
+
+    console.log('')
+  })
+  .parse(process.argv)

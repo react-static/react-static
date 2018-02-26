@@ -5,12 +5,13 @@ import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import { buildProductionBundles } from '../webpack'
 import { getConfig, copyPublicFolder } from '../utils'
 
-export default async cliArguments => {
+export default async program => {
+  const cliArguments = program.args
   try {
-    if (cliArguments.includes('--staging')) {
+    if (program.staging) {
       process.env.REACT_STATIC_STAGING = true
     }
-    if (cliArguments.includes('--debug')) {
+    if (program.debug) {
       process.env.REACT_STATIC_DEBUG = true
     }
 

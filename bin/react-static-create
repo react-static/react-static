@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+
+require('babel-register')
+require('../lib/utils/binHelper')
+const program = require('commander')
+const chalk = require('chalk')
+const createCmd = require('../lib/commands/create')
+
+program
+  .option('-n, --name <name>', 'the name of your new project')
+  .option('-t, --template <tpl>', 'the template of your project')
+  .on('--help', function() {
+    console.log('')
+    console.log(`  ${chalk.green('Example:')}`)
+    console.log('')
+    console.log(
+      `    $ react-static create -t user/repo -n my-static-site`
+    )
+    console.log('')
+    console.log(`  ${chalk.green('Template Support:')}`)
+    console.log('')
+    console.log('    Github User/Repo:')
+    console.log(
+      `    $ react-static create -t ${chalk.yellow('githubUser/repoName')}`
+    )
+    console.log('')
+    console.log('    Git Repo URLs:')
+    console.log(
+      `    $ react-static create -t ${chalk.yellow(
+        'git@github.com:mjsisley/react-static-template-basic.git'
+      )}`
+    )
+    console.log(
+      `    $ react-static create -t ${chalk.yellow(
+        'https://github.com/mjsisley/react-static-template-basic.git'
+      )}`
+    )
+    console.log('')
+  })
+  .parse(process.argv)
+
+  return createCmd.default(program)

@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+require('babel-register')
+require('../lib/utils/binHelper')
+const program = require('commander')
+const buildCmd = require('../lib/commands/build')
+
+// use commander to parse CLI args
+program
+  .option('-s, --staging', 'set to staging mode')
+  .option('-d, --debug', 'set to debug mode')
+  .parse(process.argv)
+
+// ensure ENV variables are set
+if (typeof process.env.NODE_ENV === 'undefined') {
+  process.env.NODE_ENV = 'production'
+}
+process.env.REACT_STATIC_ENV = 'production'
+process.env.BABEL_ENV = 'production'
+
+return buildCmd.default(program)

@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+require('babel-register')
+require('../lib/utils/binHelper')
+const program = require('commander')
+const startCmd = require('../lib/commands/start')
+
+// use commander to parse CLI args
+program.parse(process.argv)
+
+// ensure ENV variables are set
+if (typeof process.env.NODE_ENV === 'undefined') {
+  process.env.NODE_ENV = 'development'
+}
+process.env.REACT_STATIC_ENV = 'development'
+process.env.BABEL_ENV = 'development'
+
+return startCmd.default(program)
