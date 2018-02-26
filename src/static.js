@@ -374,7 +374,10 @@ export const prepareRoutes = async config => {
 
     const universalOptions = {
       loading: () => null,
-      error: () => null,
+      error: () => {
+        console.error(props.error);
+        return <div>An unknown error has occured loading this page. Please reload your browser and try again.</div>;
+      },
     }
 
     ${templates

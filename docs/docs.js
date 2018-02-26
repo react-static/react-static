@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   name: 'react-static',
   version: '5.1.12',
   script: 'custom.js',
