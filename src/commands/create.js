@@ -131,9 +131,9 @@ export default async program => {
   console.log(`
 ${chalk.green('=> To get started:')}
 
-    cd ${answers.name}
+  cd ${answers.name}
 
-    ${isYarn
+  ${isYarn
     ? chalk.hex(ChalkColor.yarn)('yarn')
     : chalk.hex(ChalkColor.npm)('npm run')
 } start ${chalk.green('- Start the development server')}
