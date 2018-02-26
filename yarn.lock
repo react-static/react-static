@@ -3689,8 +3689,8 @@ git-clone@^0.1.0:
   resolved "https://registry.yarnpkg.com/git-clone/-/git-clone-0.1.0.tgz#0d76163778093aef7f1c30238f2a9ef3f07a2eb9"
 
 gitdocs@^1.5.9:
-  version "1.5.9"
-  resolved "https://registry.yarnpkg.com/gitdocs/-/gitdocs-1.5.9.tgz#8ab6400c94c9f4911773b770ab5724c550299c79"
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/gitdocs/-/gitdocs-1.5.10.tgz#562d61a93ae547bae23b730c4e5d9050949f1917"
   dependencies:
     chalk "^2.3.0"
     classnames "^2.2.5"
