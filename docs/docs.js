@@ -78,6 +78,10 @@ module.exports = {
           },
         ],
       },
+      {
+        name: 'Contributing',
+        src: '../CONTRIBUTING.md',
+      },
     ],
   },
 }

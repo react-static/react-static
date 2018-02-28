@@ -113,6 +113,7 @@ Can't find an example? We invite you to write one! Simply copy the `basic` or `b
 #### [Core Concepts](/docs/concepts.md)
 #### [API Reference](/docs/api.md)
 #### [Changelog](https://github.com/nozzle/react-static/blob/master/CHANGELOG.md)
+#### [Contributing Guide](https://github.com/nozzle/react-static/blob/master/CONTRIBUTING.md)
 
 ## Chat with us on Slack!
 Need some help? Have a quick question? [Click here to sign up for the React-Tools slack org](https://react-chat-signup.herokuapp.com), and join us in the **#react-static** channel! We are constantly answering questions, discussing features and helping each other out!
