@@ -16,7 +16,7 @@ If you have an idea for a new feature or optimization, discuss it in an issue or
 - Prettier
 - Latest LTS release of Node
 
-## Setup
+## Setup & Development
 
 **In `react-static`:**
 1. Install dependencies by running `yarn`
@@ -31,4 +31,4 @@ If you have an idea for a new feature or optimization, discuss it in an issue or
 4. Make your changes
 
 ## Testing
-Unfortunately, there are no official tests for React-Static yet. If you would like to write the, please do! Now is a great time as the library is very stable. Since we do not have any unit or integration tests in place, please take great care to test your changes on as many examples as possible, including your own in production if necessary. 
+Unfortunately, there are no official tests for React-Static yet. If you would like to write the, please do! Now is a great time as the library is very stable. Since we do not have any unit or integration tests in place, please take great care to test your changes on as many examples as possible, including your own in production if necessary.
