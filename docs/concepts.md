@@ -14,6 +14,7 @@
 - [Webpack Customization and Plugins](#webpack-customization-and-plugins)
 - [Using Preact in Production](#using-preact-in-production)
 - [Pagination](#pagination)
+- [Browser Support](#browser-support)
 
 # Overview
 React-Static is different from most React-based static-site generators. It follows a very natural flow from data all the way to static files, then finally a progressively enhanced react-app. Not only does this provide a safe separation of concern, but by keeping the data pipelining and react templating as separate as possible, your site can be visualized and built in a single pass as a "function of state" from the data you pass it.
@@ -286,3 +287,9 @@ function makePageRoutes (items, pageSize, route) {
 To explain what is happening above, we are making an array of `10` posts for every page, including the first page of the blog. Each of these array's will be fed to the same `src/containers/Blog` component, but will be given a `.../page/2` or whatever number corresponds to that page of data. Since only the posts needed for that page are passed, we avoid duplicated data per page!
 
 Of course, you're free to build your pagination routes however you'd like! This is just one possible solution.
+
+# Browser Support
+React-Static dually relies on lowest common browser support between React itself and your choice of Babel polyfills.
+
+- All latest versions of modern browsers (Chrome, Firefox, Safari) are supported out of the box.
+- Internet Explorer is supported, but requires using `babel-polyfill` to work (mainly relying on the `Promise` polyfill)

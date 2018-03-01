@@ -1,3 +1,18 @@
+# 5.2.0
+#### Fixes & Optimizations
+- Scrolling to a hash is now more accurate, especially if the page reflows during mid scroll.
+- Added documentation website that is built with `gitdocs`. Still a few kinks to work out.
+- Updated build-with site list
+- All `.gitignore` files are now uniform to not include the `.` until copied during creation
+- Fixed an import typo with the `sass` example
+- Added a basic error logging handler for universally-code-split components
+- Various upkeep items on the Netlify-CMS example
+- CLI now uses `commander`
+- Disabled code-splitting in dev mode. This fixes a majority of problems with react-hot-loader without requiring users to make a ton of changes to their exports.
+
+#### Features
+- CLI now supports using a `.git` address to clone for the template.
+
 # 5.1.14
 #### Fixes
 - Fixed `component` style render props from not passing children
