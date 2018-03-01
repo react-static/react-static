@@ -66,13 +66,13 @@ export default function ({ config, isNode }) {
       new CaseSensitivePathsPlugin(),
       !isNode &&
         new webpack.optimize.CommonsChunkPlugin({
-          name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
-          minChunks: Infinity,
-        }),
+        name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
+        minChunks: Infinity,
+      }),
       isNode &&
         new webpack.optimize.LimitChunkCountPlugin({
-          maxChunks: 1,
-        }),
+        maxChunks: 1,
+      }),
       !isNode && !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
       // !isNode &&
       //   new SWPrecacheWebpackPlugin({
