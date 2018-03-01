@@ -58,7 +58,7 @@
     "react-dev-utils": "^4.0.1",
     "react-dom": "^16",
     "react-helmet": "^5.2.0",
-    "react-hot-loader": "^4.0.0-beta.21",
+    "react-hot-loader": "^4",
     "react-router-dom": "^4.2.2",
     "react-universal-component": "^2.8.1",
     "serve": "^6.4.10",
