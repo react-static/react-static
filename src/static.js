@@ -370,6 +370,9 @@ export const prepareRoutes = async config => {
     import { Route } from 'react-router-dom'
     import universal, { setHasBabelPlugin } from 'react-universal-component'
 
+    ${process.env.NODE_ENV === 'production'
+    ? `
+
     setHasBabelPlugin()
 
     const universalOptions = {
@@ -380,7 +383,7 @@ export const prepareRoutes = async config => {
       },
     }
 
-    ${templates
+      ${templates
     .map((template, index) => {
       const templatePath = path.relative(
         config.paths.DIST,
@@ -389,6 +392,16 @@ export const prepareRoutes = async config => {
       return `const t_${index} = universal(import('${slash(templatePath)}'), universalOptions)`
     })
     .join('\n')}
+    `
+    : templates
+      .map((template, index) => {
+        const templatePath = path.relative(
+          config.paths.DIST,
+          path.resolve(config.paths.ROOT, template)
+        )
+        return `import t_${index} from '${slash(templatePath)}'`
+      })
+      .join('\n')}
 
     // Template Map
     const templateMap = {
