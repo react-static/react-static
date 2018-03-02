@@ -18,6 +18,12 @@ export default function ({ config, isNode }) {
   process.env.ROUTE_INFO_URL = `${publicPath}routeInfo.${process.env.ROUTE_INFO_HASH}.js`
 
   return {
+    mode: 'production',
+
+    optimization: {
+      minimize: !isNode && !process.env.REACT_STATIC_DEBUG,
+    },
+
     context: path.resolve(__dirname, '../node_modules'),
     entry: path.resolve(ROOT, config.entry),
     output: {
@@ -64,44 +70,11 @@ export default function ({ config, isNode }) {
         allChunks: true,
       }),
       new CaseSensitivePathsPlugin(),
-      !isNode &&
-        new webpack.optimize.CommonsChunkPlugin({
-          name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
-          minChunks: Infinity,
-        }),
-      isNode &&
-        new webpack.optimize.LimitChunkCountPlugin({
-          maxChunks: 1,
-        }),
-      !isNode && !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
-      // !isNode &&
-      //   new SWPrecacheWebpackPlugin({
-      //     cacheId: config.siteName || 'my-site-name',
-      //     dontCacheBustUrlsMatching: /\.\w{8}\./,
-      //     filename: 'service-worker.js',
-      //     minify: true,
-      //     navigateFallback: '/index.html',
-      //     staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      // isNode &&
+      //   new webpack.optimize.LimitChunkCountPlugin({
+      //     maxChunks: 1,
       //   }),
-      // !isNode &&
-      //   new WebpackPwaManifest({
-      //     name: config.pwa.name || 'My React Static App',
-      //     short_name: config.pwa.shortName || 'My React Static App',
-      //     description: config.pwa.description || 'An app I built with React Static!',
-      //     background_color: config.pwa.backgroundColor || '#01579b',
-      //     theme_color: config.pwa.themeColor || '#01579b',
-      //     'theme-color': config.pwa.themeColor || '#01579b',
-      //     start_url: config.pwa.startUrl || '/',
-      //     icons: [],
-      //     icons: [
-      //       {
-      //         src: path.resolve('src/images/icon.png'),
-      //         sizes: [96, 128, 192, 256, 384, 512],
-      //         destination: path.join('assets', 'icons'),
-      //       },
-      //     ],
-      //   }),
-      config.bundleAnalyzer && !isNode && new BundleAnalyzerPlugin(),
+      // config.bundleAnalyzer && !isNode && new BundleAnalyzerPlugin(),
     ].filter(d => d),
 
     devtool: 'source-map',

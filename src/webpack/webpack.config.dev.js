@@ -8,6 +8,13 @@ import rules from './rules'
 export default function ({ config }) {
   const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
   return {
+    mode: 'development',
+    optimization: {
+      noEmitOnErrors: true,
+      concatenateModules: true,
+    },
+
+
     context: path.resolve(__dirname, '../node_modules'),
     entry: [
       require.resolve('react-hot-loader/patch'),
@@ -40,8 +47,6 @@ export default function ({ config }) {
         template: `!!raw-loader!${HTML_TEMPLATE}`,
       }),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.NamedModulesPlugin(),
       new CaseSensitivePathsPlugin(),
     ],
     devtool: 'eval-source-map',

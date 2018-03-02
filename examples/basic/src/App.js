@@ -1,6 +1,7 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Router, Link } from 'react-static'
-import { hot } from 'react-hot-loader'
+import { AppContainer } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 
@@ -21,4 +22,28 @@ const App = () => (
   </Router>
 )
 
-export default hot(module)(App)
+export default App
+
+// Render your app
+if (typeof document !== 'undefined') {
+  const renderMethod = module.hot ? ReactDOM.render : ReactDOM.hydrate
+
+  const render = Comp => {
+    renderMethod(
+      <AppContainer>
+        <Comp />
+      </AppContainer>,
+      document.getElementById('root')
+    )
+  }
+
+  // Render!
+  render(App)
+
+  // Hot Module Replacement
+  if (module.hot) {
+    module.hot.accept('./App', () => {
+      render(require('./App').default) // eslint-disable-line
+    })
+  }
+}

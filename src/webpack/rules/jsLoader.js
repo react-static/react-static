@@ -12,6 +12,7 @@ export default function ({ config, stage }) {
             }
             : {
               cacheDirectory: true,
+              plugins: ['react-hot-loader/babel'],
             },
       },
     ],
