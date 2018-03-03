@@ -10,10 +10,10 @@ import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
-import slash from 'slash'
 //
+import ReactStaticRoutes from './ReactStaticRoutes'
 import { DefaultDocument } from './RootComponents'
-import { poolAll } from './shared'
+import { poolAll, pathJoin, cleanPath } from './shared'
 
 const defaultOutputFileRate = 100
 
@@ -22,10 +22,13 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Use the node version of the app created with webpack
   const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
 
+  // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
 
+  // Get the site data
   const siteData = await config.getSiteData({ dev: false, cliArguments })
 
+  // Set up some scaffolding for automatic data splitting
   const seenProps = new Map()
   const sharedProps = new Map()
 
@@ -34,6 +37,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       // Fetch initialProps from each route
       route.initialProps = !!route.getData && (await route.getData({ route, dev: false }))
 
+      // Default initialProps object
       if (!route.initialProps) {
         route.initialProps = {}
       }
@@ -42,12 +46,15 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       Object.keys(route.initialProps)
         .map(k => route.initialProps[k])
         .forEach(prop => {
+          // Don't split small strings
           if (typeof prop === 'string' && prop.length < 100) {
             return
           }
+          // Don't split booleans or undefineds
           if (['boolean', 'number', 'undefined'].includes(typeof prop)) {
             return
           }
+          // Should be an array or object at this point
           // Have we seen this prop before?
           if (seenProps.get(prop)) {
             // Only cache each shared prop once
@@ -88,6 +95,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         route.localPropsHash = shorthash.unique(route.localPropsDataString)
         // Make sure local props are tracked in a special key
         route.propsMap.__local = route.localPropsHash
+        // Write props to file
         return fs.outputFile(
           path.join(config.paths.STATIC_DATA, `${route.localPropsHash}.json`),
           route.localPropsDataString || '{}'
@@ -108,18 +116,10 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
     Number(config.outputFileRate) || defaultOutputFileRate
   )
 
-  const routeInfo = {}
+  const allRouteInfo = {}
   config.routes.filter(d => d.hasGetProps).forEach(({ path, propsMap }) => {
-    routeInfo[path] = propsMap
+    allRouteInfo[path] = propsMap
   })
-
-  // Write routeInfo to file
-  await fs.outputFile(
-    path.join(config.paths.DIST, `routeInfo.${process.env.ROUTE_INFO_HASH}.js`),
-    `
-    window.__routeInfo = ${JSON.stringify(routeInfo)}
-  `
-  )
 
   return poolAll(
     config.routes.map(route => async () => {
@@ -224,15 +224,29 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
-            <link rel="preload" as="script" href={process.env.ROUTE_INFO_URL} />
+            <link rel="preload" as="script" href="___REPLACE_WITH_ROUTE_INFO_URL___" />
             {clientScripts.map(script => (
-              <link rel="preload" as="script" href={`${config.publicPath}${script}`} />
+              <link
+                key={`clientScript_${script}`}
+                rel="preload"
+                as="script"
+                href={`${config.publicPath}${script}`}
+              />
             ))}
             {clientStyleSheets.map(styleSheet => (
-              <link rel="preload" as="style" href={`${config.publicPath}${styleSheet}`} />
+              <link
+                key={`clientStyleSheet_${styleSheet}`}
+                rel="preload"
+                as="style"
+                href={`${config.publicPath}${styleSheet}`}
+              />
             ))}
             {clientStyleSheets.map(styleSheet => (
-              <link rel="stylesheet" href={`${config.publicPath}${styleSheet}`} />
+              <link
+                key={`clientStyleSheet_${styleSheet}`}
+                rel="stylesheet"
+                href={`${config.publicPath}${styleSheet}`}
+              />
             ))}
             {head.link}
             {head.noscript}
@@ -261,7 +275,12 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             }}
           />
           {clientScripts.map(script => (
-            <script defer type="text/javascript" src={`${config.publicPath}${script}`} />
+            <script
+              key={script}
+              defer
+              type="text/javascript"
+              src={`${config.publicPath}${script}`}
+            />
           ))}
         </body>
       )
@@ -279,10 +298,22 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         </DocumentTemplate>
       )}`
 
-      // If the siteRoot is set, prefix all absolute URL's with the public path
-      // (which is derived from the siteRoot)
-      if (!process.env.REACT_STATIC_STAGING && config.publicPath !== '/') {
-        html = html.replace(/(href=["'])\/([^/])/gm, `$1${config.publicPath}$2`)
+      const reLinkedPages = /<a.+?href=["']([^"']*?)["']/gm
+      let currentMatch
+      const routeInfo = {}
+      while ((currentMatch = reLinkedPages.exec(html)) !== null) {
+        const path = cleanPath(currentMatch[1])
+        if (allRouteInfo[path]) {
+          routeInfo[path] = allRouteInfo[path]
+        }
+      }
+
+      const routeInfoContent = `window.__routeInfo = ${JSON.stringify(routeInfo)}`
+
+      // If the siteRoot is set and we're not in staging, prefix all absolute URL's
+      // with the siteRoot
+      if (!process.env.REACT_STATIC_STAGING && config.siteRoot) {
+        html = html.replace(/(href=["'])\/([^/])/gm, `$1${config.siteRoot}$2`)
       }
 
       // If the route is a 404 page, write it directly to 404.html, instead of
@@ -291,7 +322,17 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         ? path.join(config.paths.DIST, '404.html')
         : path.join(config.paths.DIST, route.path, 'index.html')
 
-      return fs.outputFile(htmlFilename, html)
+      const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.js')
+
+      html = html.replace(
+        '___REPLACE_WITH_ROUTE_INFO_URL___',
+        `${config.publicPath}${pathJoin(route.path, 'routeInfo.js')}`
+      )
+
+      return Promise.all([
+        fs.outputFile(htmlFilename, html),
+        fs.outputFile(routeInfoFilename, routeInfoContent),
+      ])
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
@@ -299,15 +340,11 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
 
 export async function buildXMLandRSS ({ config }) {
   if (!config.siteRoot) {
-    console.log(`
-      => Warning: No 'siteRoot' defined in 'static.config.js'!
-      => This is required for both absolute url's and a sitemap.xml to be exported.
-    `)
     return
   }
   const xml = generateXML({
     routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: config.publicPath + route.path.substring(1), // publicPath/ + /routePath
+      permalink: `${config.publicPath}${pathJoin(route.path)}`,
       lastModified: '',
       priority: 0.5,
       ...route,
@@ -336,6 +373,7 @@ export async function buildXMLandRSS ({ config }) {
 
 export const prepareRoutes = async config => {
   process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
+
   // Dynamically create the auto-routing component
   const templates = []
   const routes = config.routes.filter(d => d.component)
@@ -365,106 +403,9 @@ export const prepareRoutes = async config => {
     })
   })
 
-  const file = `
-    import React, { Component } from 'react'
-    import { Route } from 'react-router-dom'
-    import universal, { setHasBabelPlugin } from 'react-universal-component'
-
-    ${process.env.NODE_ENV === 'production'
-    ? `
-
-    setHasBabelPlugin()
-
-    const universalOptions = {
-      loading: () => null,
-      error: () => {
-        console.error(props.error);
-        return <div>An unknown error has occured loading this page. Please reload your browser and try again.</div>;
-      },
-    }
-
-      ${templates
-    .map((template, index) => {
-      const templatePath = path.relative(
-        config.paths.DIST,
-        path.resolve(config.paths.ROOT, template)
-      )
-      return `const t_${index} = universal(import('${slash(templatePath)}'), universalOptions)`
-    })
-    .join('\n')}
-    `
-    : templates
-      .map((template, index) => {
-        const templatePath = path.relative(
-          config.paths.DIST,
-          path.resolve(config.paths.ROOT, template)
-        )
-        return `import t_${index} from '${slash(templatePath)}'`
-      })
-      .join('\n')}
-
-    // Template Map
-    const templateMap = {
-      ${templates.map((template, index) => `t_${index}`).join(',\n')}
-    }
-
-    // Template Tree
-    const templateTree = ${JSON.stringify(tree)
-    .replace(/"(\w)":/gm, '$1:')
-    .replace(/template: '(.+)'/gm, 'template: $1')}
-
-    // Get template for given path
-    const getComponentForPath = path => {
-      const parts = path === '/' ? ['/'] : path.split('/').filter(d => d)
-      let cursor = templateTree
-      try {
-        parts.forEach(part => {
-          cursor = cursor.c[part]
-        })
-        return templateMap[cursor.t]
-      } catch (e) {
-        return false
-      }
-    }
-
-    if (typeof document !== 'undefined') {
-      window.reactStaticGetComponentForPath = getComponentForPath
-    }
-
-    export default class Routes extends Component {
-      render () {
-        const { component: Comp, render, children } = this.props
-        const renderProps = {
-          templateMap,
-          templateTree,
-          getComponentForPath
-        }
-        if (Comp) {
-          return (
-            <Comp
-              {...renderProps}
-            />
-          )
-        }
-        if (render || children) {
-          return (render || children)(renderProps)
-        }
-
-        // This is the default auto-routing renderer
-        return (
-          <Route path='*' render={props => {
-            let Comp = getComponentForPath(props.location.pathname)
-            if (!Comp) {
-              Comp = getComponentForPath('404')
-            }
-            return Comp && <Comp {...props} />
-          }} />
-        )
-      }
-    }
-    `
-
-  const dynamicRoutesPath = path.join(config.paths.DIST, 'react-static-routes.js')
-  await fs.remove(dynamicRoutesPath)
-  await fs.writeFile(dynamicRoutesPath, file)
+  return ReactStaticRoutes({
+    config,
+    templates,
+    tree,
+  })
 }

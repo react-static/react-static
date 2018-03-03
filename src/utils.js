@@ -68,7 +68,28 @@ export const getConfig = () => {
     STATIC_DATA: path.join(distPath, 'staticData'),
   }
 
-  const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : ''
+  // Cut siteRoot to the suffix, no trailing slashes
+  const siteRoot = config.siteRoot ? config.siteRoot.replace(/(\..+?)\/.*/g, '') : ''
+
+  // Cut siteRoot to the suffix, no trailing slashes
+  const stagingSiteRoot = config.stagingSiteRoot
+    ? config.stagingSiteRoot.replace(/(\..+?)\/.*/g, '')
+    : ''
+
+  // Trim basePath of leading and trailing slashes
+  const basePath = config.basePath
+    ? config.basePath.replace(/\/{0,}$/g, '').replace(/^\/{0,}/g, '')
+    : ''
+
+  // Trim stagingBasePath of leading and trailing slashes
+  const stagingBasePath = config.stagingBasePath
+    ? config.stagingBasePath.replace(/\/{0,}$/g, '').replace(/^\/{0,}/g, '')
+    : ''
+
+  // Trim basePath of leading and trailing slashes
+  const devBasePath = config.devBasePath
+    ? config.devBasePath.replace(/\/{0,}$/g, '').replace(/^\/{0,}/g, '')
+    : ''
 
   const getRoutes = config.getRoutes
     ? async (...args) => {
@@ -94,7 +115,11 @@ export const getConfig = () => {
     ...config,
     // Materialized Overrides
     paths,
-    siteRoot,
+    siteRoot: siteRoot || '',
+    stagingSiteRoot: stagingSiteRoot || '',
+    basePath: basePath || '',
+    stagingBasePath: stagingBasePath || '',
+    devBasePath: devBasePath || '',
     getRoutes,
   }
 

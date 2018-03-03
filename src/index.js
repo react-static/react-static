@@ -14,7 +14,7 @@ import {
 
 //
 
-import { pathJoin, unwrapArray, isObject, createPool, deprecate } from './shared'
+import { pathJoin, unwrapArray, isObject, createPool, deprecate, cleanPath } from './shared'
 import scrollTo from './utils/ScrollTo'
 
 //
@@ -25,15 +25,20 @@ const prefetchPool = createPool({
 const propsByHash = {}
 const pathProps = {}
 const inflight = {}
+const routeInfoByPath = {}
 
 let siteDataPromise
 let InitialLoading
 
 let routesPromise
 
-const getRouteInfo = async () => {
+const getRouteInfo = async path => {
+  path = cleanPath(path)
   if (typeof document !== 'undefined') {
-    if (!routesPromise) {
+    if (
+      !routesPromise ||
+      (process.env.REACT_STATIC_ENV === 'production' && !routeInfoByPath[path])
+    ) {
       routesPromise = (async () => {
         if (process.env.REACT_STATIC_ENV === 'development') {
           const { data } = await axios.get('/__react-static__/routeInfo')
@@ -42,7 +47,10 @@ const getRouteInfo = async () => {
         await new Promise(resolve => {
           const s = document.createElement('script')
           s.type = 'text/javascript'
-          s.src = process.env.ROUTE_INFO_URL
+          s.src = `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
+            path,
+            `routeInfo.js?${Date.now()}`
+          )}`
           s.onload = resolve
           if (document.body.append) {
             document.body.append(s)
@@ -53,8 +61,10 @@ const getRouteInfo = async () => {
         return window.__routeInfo
       })()
     }
-    return routesPromise
+    const routeInfo = await routesPromise
+    Object.assign(routeInfoByPath, routeInfo)
   }
+  return routeInfoByPath
 }
 
 if (process.env.REACT_STATIC_ENV === 'development') {
@@ -105,32 +115,16 @@ if (process.env.REACT_STATIC_ENV === 'development') {
   )
 }
 
-function cleanPath (path) {
-  // Resolve the local path
-  if (!path) {
-    return
-  }
-  // Only allow origin or absolute links
-  const hasOrigin = path.startsWith(window.location.origin)
-  const isAbsolute = path.startsWith('/')
-  if (!hasOrigin && !isAbsolute) {
-    return
-  }
-  let end = path.indexOf('#')
-  end = end === -1 ? undefined : end
-  return pathJoin(path.substring(hasOrigin ? window.location.origin.length : 0, end))
-}
-
 async function prefetchData (path, { priority } = {}) {
   // Get route info so we can check if path has any data
-  const routes = await getRouteInfo()
+  const routes = await getRouteInfo(path)
 
   // Defer to the cache first
   if (pathProps[path]) {
     return pathProps[path]
   }
 
-  const isStaticRoute = routes[path]
+  const isStaticRoute = !!routes[path]
 
   // Not a static route? Bail out.
   if (!isStaticRoute) {
@@ -139,11 +133,6 @@ async function prefetchData (path, { priority } = {}) {
 
   // In development request all props in one go.
   if (process.env.REACT_STATIC_ENV === 'development') {
-    // Then try for the embedded data first and return it
-    if (window.__routeData && window.__routeData.path === path) {
-      pathProps[path] = window.__routeData
-      return pathProps[path]
-    }
     // Reuse request for duplicate inflight requests
     try {
       if (!inflight[path]) {
@@ -185,9 +174,13 @@ async function prefetchData (path, { priority } = {}) {
         try {
           if (!inflight[hash]) {
             if (priority) {
-              inflight[hash] = axios.get(`/staticData/${hash}.json`)
+              inflight[hash] = axios.get(
+                `${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`
+              )
             } else {
-              inflight[hash] = prefetchPool.add(() => axios.get(`/staticData/${hash}.json`))
+              inflight[hash] = prefetchPool.add(() =>
+                axios.get(`${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`)
+              )
             }
           }
           const { data: prop } = await inflight[hash]
@@ -224,6 +217,8 @@ async function prefetchData (path, { priority } = {}) {
 }
 
 async function prefetchTemplate (path, { priority } = {}) {
+  path = cleanPath(path)
+
   // Preload the template if available
   const pathTemplate =
     window.reactStaticGetComponentForPath && window.reactStaticGetComponentForPath(path)
@@ -246,7 +241,7 @@ async function needsPrefetch (path) {
   }
 
   // Get route info so we can check if path has any data
-  const routes = await getRouteInfo()
+  const routes = await getRouteInfo(path)
 
   const isStaticRoute = routes[path]
 
@@ -308,7 +303,7 @@ const RouteData = withRouter(
     loadRouteData = () =>
       (async () => {
         const { pathname } = this.props.location
-        const path = pathJoin(pathname)
+        const path = cleanPath(pathname)
         await prefetch(path)
         if (this.unmounting) {
           return
@@ -319,7 +314,7 @@ const RouteData = withRouter(
       })()
     render () {
       const { component, render, children, location: { pathname }, ...rest } = this.props
-      const path = pathJoin(pathname)
+      const path = cleanPath(pathname)
 
       let routeData
 
@@ -626,10 +621,10 @@ class Router extends Component {
     errorInfo: null,
   }
   componentDidMount () {
-    getRouteInfo()
     if (typeof window !== 'undefined') {
-      const { href, origin } = window.location
-      const path = pathJoin(href.replace(origin, ''))
+      const { href } = window.location
+      const path = cleanPath(href)
+      getRouteInfo(path)
       if (window.__routeData && window.__routeData.path === path) {
         const initialProps = window.__routeData.initialProps
         Object.keys(initialProps).forEach(key => {
@@ -652,7 +647,7 @@ class Router extends Component {
     ['push', 'replace'].forEach(method => {
       const originalMethod = resolvedHistory[method]
       resolvedHistory[method] = async (...args) => {
-        const path = typeof args[0] === 'string' ? args[0] : args[0].path
+        const path = cleanPath(typeof args[0] === 'string' ? args[0] : args[0].path)
         const shouldPrefetch = await needsPrefetch(path)
         if (shouldPrefetch) {
           setLoading(true)
@@ -720,7 +715,9 @@ class Router extends Component {
         } else if (type === 'hash') {
           resolvedHistory = createHashHistory()
         } else {
-          resolvedHistory = createBrowserHistory()
+          resolvedHistory = createBrowserHistory({
+            basename: process.env.REACT_STATIC_BASEPATH,
+          })
         }
       }
       global.__reactStaticRouterHistory = resolvedHistory
@@ -728,7 +725,13 @@ class Router extends Component {
     }
 
     return (
-      <ResolvedRouter history={resolvedHistory} location={staticURL} context={context} {...rest}>
+      <ResolvedRouter
+        history={resolvedHistory}
+        location={staticURL}
+        context={context}
+        basename={`/${process.env.REACT_STATIC_BASEPATH}`}
+        {...rest}
+      >
         <RouterScroller
           {...{
             autoScrollToTop,
@@ -875,6 +878,8 @@ export {
   withSiteData,
   withLoading,
   onLoading,
+  // utils
+  cleanPath,
   // deprecated
   getRouteProps,
   getSiteData,

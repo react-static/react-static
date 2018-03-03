@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, Link } from 'react-static'
+import { Router, Route, Link, cleanPath } from 'react-static'
 import { easeQuadOut } from 'd3-ease'
 import { NodeGroup } from 'react-move'
 import { withContext, getContext } from 'recompose'
@@ -23,7 +23,7 @@ const AnimatedRoutes = getContext({
     path="*"
     render={props => {
       // Get the component for this path
-      let Comp = getComponentForPath(props.location.pathname)
+      let Comp = getComponentForPath(cleanPath(props.location.pathname))
       if (!Comp) {
         Comp = getComponentForPath('404')
       }

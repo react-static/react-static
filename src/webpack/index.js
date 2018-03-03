@@ -45,7 +45,6 @@ export function webpackConfig ({ config, stage }) {
       }
     })
   }
-  config.publicPath = webpackConfig.output.publicPath || '/'
   return webpackConfig
 }
 
@@ -87,6 +86,22 @@ export async function startDevServer ({ config }) {
     },
     ...config.devServer,
     before: app => {
+      // Serve route data for all routes at the same time. It's local,
+      // So even if it massive, it should be okay.
+      app.get('/__react-static__/routeInfo', async (req, res) => {
+        const routeInfo = {}
+
+        config.routes
+          .filter(d => d.hasGetProps)
+          .map(d => d.path)
+          .forEach(d => {
+            routeInfo[d] = true
+          })
+
+        res.json(routeInfo)
+      })
+
+      // Serve the site data
       app.get('/__react-static__/siteData', async (req, res, next) => {
         try {
           const siteData = await config.getSiteData({ dev: true })
@@ -98,38 +113,17 @@ export async function startDevServer ({ config }) {
         }
       })
 
-      app.get('/__react-static__/routeInfo', async (req, res, next) => {
-        try {
-          const routes = await config.getRoutes({ dev: true })
-
-          // Once all of the routes have been resolved, listen on individual
-          // route endpoints
-          routes.forEach(route => {
-            app.get(`/__react-static__/route${encodeURI(route.path)}`, async (req, res, next) => {
-              try {
-                const initialProps = await route.getData({ dev: true })
-                res.json(initialProps)
-              } catch (err) {
-                res.status(500)
-                next(err)
-              }
-            })
-          })
-
-          const routeInfo = {}
-
-          routes
-            .filter(d => d.hasGetProps)
-            .map(d => d.path)
-            .forEach(d => {
-              routeInfo[d] = true
-            })
-
-          res.json(routeInfo)
-        } catch (err) {
-          res.status(500)
-          next(err)
-        }
+      // Serve each routes data
+      config.routes.forEach(route => {
+        app.get(`/__react-static__/route${encodeURI(route.path)}`, async (req, res, next) => {
+          try {
+            const initialProps = await route.getData({ dev: true })
+            res.json(initialProps)
+          } catch (err) {
+            res.status(500)
+            next(err)
+          }
+        })
       })
 
       if (config.devServer && config.devServer.before) {

@@ -19,6 +19,14 @@ export default async program => {
     await fs.remove(config.paths.DIST)
 
     console.log('')
+
+    if (!config.siteRoot) {
+      console.log(
+        "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
+      )
+      console.log('')
+    }
+
     console.time('=> Site is ready for production!')
 
     console.log('=> Copying public directory...')

@@ -7,6 +7,11 @@ import rules from './rules'
 
 export default function ({ config }) {
   const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
+
+  config.publicPath = config.devBasePath ? `/${config.devBasePath}/` : '/'
+
+  process.env.REACT_STATIC_BASEPATH = config.devBasepath
+
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: [
@@ -18,7 +23,7 @@ export default function ({ config }) {
     output: {
       filename: 'app.[hash:8].js',
       path: DIST,
-      publicPath: '/',
+      publicPath: config.publicPath || '/',
     },
     module: {
       rules: rules({ config, stage: 'dev' }),

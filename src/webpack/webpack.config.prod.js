@@ -4,7 +4,6 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
-import shorthash from 'shorthash'
 // import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
 // import WebpackPwaManifest from 'webpack-pwa-manifest'
 //
@@ -12,10 +11,15 @@ import rules from './rules'
 
 export default function ({ config, isNode }) {
   const { ROOT, DIST, NODE_MODULES, SRC } = config.paths
-  const publicPath = process.env.REACT_STATIC_STAGING ? '/' : `${config.siteRoot}/` || '/'
-  process.env.PUBLIC_PATH = publicPath
-  process.env.ROUTE_INFO_HASH = shorthash.unique(JSON.stringify(config.routes))
-  process.env.ROUTE_INFO_URL = `${publicPath}routeInfo.${process.env.ROUTE_INFO_HASH}.js`
+
+  config.publicPath = process.env.REACT_STATIC_STAGING
+    ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
+    : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
+
+  process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
+  process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
+    ? config.stagingBasePath
+    : config.basePath
 
   return {
     context: path.resolve(__dirname, '../node_modules'),
@@ -24,7 +28,7 @@ export default function ({ config, isNode }) {
       filename: isNode ? 'static.[chunkHash:8].js' : '[name].[chunkHash:8].js',
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
-      publicPath,
+      publicPath: config.publicPath || '/',
       libraryTarget: isNode ? 'umd' : undefined,
     },
     target: isNode ? 'node' : undefined,
