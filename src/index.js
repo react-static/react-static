@@ -45,7 +45,7 @@ const getRouteInfo = async path => {
           return data
         }
         try {
-          await new Promise(resolve => {
+          await new Promise((resolve, reject) => {
             const s = document.createElement('script')
             s.type = 'text/javascript'
             s.src = `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
@@ -53,6 +53,7 @@ const getRouteInfo = async path => {
               `routeInfo.js?${Date.now()}`
             )}`
             s.onload = resolve
+            s.onerror = reject
             if (document.body.append) {
               document.body.append(s)
             } else {
