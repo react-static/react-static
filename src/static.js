@@ -186,6 +186,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       let head = {}
       let clientScripts = []
       let clientStyleSheets = []
+      let ClientCssHash
 
       const CompWithContext = props => (
         <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
@@ -198,12 +199,13 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
       const renderToStringAndExtract = comp => {
         // Rend the app to string!
         const appHtml = renderToString(comp)
-        const { scripts, stylesheets } = flushChunks(clientStats, {
+        const { scripts, stylesheets, CssHash } = flushChunks(clientStats, {
           chunkNames,
         })
 
         clientScripts = scripts
         clientStyleSheets = stylesheets
+        ClientCssHash = CssHash
 
         // Extract head calls using Helmet synchronously right after renderToString
         // to not introduce any race conditions in the meta data rendering
@@ -308,6 +310,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
             }}
           />
+          <ClientCssHash />
           {clientScripts.map(script => (
             <script
               key={script}
