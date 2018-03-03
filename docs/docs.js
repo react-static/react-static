@@ -76,6 +76,10 @@ module.exports = {
             name: 'Components',
             src: 'api.md#components',
           },
+          {
+            name: 'Methods',
+            src: 'api.md#methods',
+          },
         ],
       },
       {

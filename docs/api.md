@@ -5,6 +5,10 @@
   - [route](#route)
   - [getSiteData](#getsitedata)
   - [siteRoot](#siteroot)
+  - [stagingSiteRoot](#stagingsiteroot)
+  - [basePath](#basepath)
+  - [stagingBasePath](#stagingbasepath)
+  - [devBasePath](#devbasepath)
   - [Document](#document)
   - [webpack](#webpack)
   - [devServer](#devserver)
@@ -38,6 +42,7 @@
 - [Methods](#methods)
   - [onLoading](#onloading)
   - [prefetch](#prefetch-1)
+  - [scrollTo](#scrollto)
 
 # `static.config.js`
 A `static.config.js` file is optional, but recommended at your project root to use react-static. If present, it must export a **default** object containing any of the following properties:
@@ -56,7 +61,7 @@ export default {
 A route is an `object` that represents a unique location in your site and is the backbone of every React-Static site.
 
 It supports the following properties:
-- `path: String` - The **path** of the URL to match for this route, **excluding search parameters and hash fragments** (relative to your `siteRoot` or this route's parent path)
+- `path: String` - The **path** of the URL to match for this route, **excluding search parameters and hash fragments, relative to your `siteRoot + basePath` (if this is a child route, also relative to this route's parent path)**
 - `component: String` - The path of the component to be used to render this route. (Relative to the root of your project)
 - `getData: async Function(resolvedRoute, { dev }) => Object` - An async function that returns or resolves an object of any necessary data for this route to render.
   - Arguments
@@ -133,10 +138,10 @@ export default {
 ```
 
 ### `siteRoot`
-A `siteRoot` entry is highly recommended and is necessary for many things related to SEO to function properly in your site. This includes:
-- Generating a `sitemap.xml`
+Your `siteRoot` in the format of `protocol://domain.com` is highly recommended and is necessary for many things related to SEO to function for your site. So far, this includes:
+- Automatically generating a `sitemap.xml` on export
 - Forcing absolute URLs in statically rendered links.
-Make sure that you include `https` if you serve your site with it (which we highly recommend). Any trailing slashes will be removed automatically.
+Make sure that you include `https` if you serve your site with it (which we highly recommend). **Any trailing slashes including the pathname will be removed automatically**. If you need to set a base path for your site (eg. if you're using github pages), you'll want to use the `basePath` option.
 
 Example:
 ```javascript
@@ -145,6 +150,27 @@ export default {
   siteRoot: 'https://mysite.com'
 }
 ```
+
+### `stagingSiteRoot`
+Works exactly like `siteRoot`, but only when building with the `--staging` build flag.
+
+### `basePath`
+Your `basePath` in the format of `some/route` is necessary if you intend on hosting your app from a specific route on your domain (eg. When using Github Pages or for example: `https://mysite.com/blog` where `blog` would the `basePath`)
+**All leading and trailing slashes are removed automatically**.
+
+Example:
+```javascript
+// static.config.js
+export default {
+  basePath: 'blog'
+}
+```
+
+### `stagingBasePath`
+Works exactly like `basePath`, but only when building with the `--staging` build flag.
+
+### `devBasePath`
+Works exactly like `basePath`, but only when running the dev server.
 
 ### `Document`
 It's never been easier to customize the root document of your website! `Document` is an optional (and again, recommended) react component responsible for rendering the root of your website.
@@ -845,6 +871,23 @@ A direct proxy of the `withRouter` component from [`react-router-dom`](https://r
 ---
 
 # Methods
+
+### `onLoading`
+
+If you need to imperatively subscribe to React-Static's global loadin state, you can use `onLoading`. Via a callback, it gives you access to a `loading` value (a Boolean), which will be true when react-static is waiting on assets to load (this won't happen often, if at all). Use this to show a loading indicator if you'd like!
+
+Example:
+```javascript
+import { onLoading } from 'react-static'
+
+// Pass a callback that will fire whenever the loading state changes.
+const unsubscribe = onLoading(loading => {
+  console.log(`Currently loading: ${loading}`)
+})
+
+// Call the function it returns to unsubscribe!
+unsubscribe()
+```
 
 ### `prefetch`
 
