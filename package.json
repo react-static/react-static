@@ -100,9 +100,9 @@
     "startdocs": "gitdocs serve",
     "test": "eslint src examples test && yarn run test-sample-build",
     "test-large-build":
-      "yarn build && (cd test/stress-test-routes && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && yarn && ../../bin/react-static build)",
+      "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
     "test-sample-build":
-      "yarn build && (cd test/minimal-website && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && yarn && ../../bin/react-static build)",
+      "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
     "watch": "rimraf lib && babel -w src --out-dir lib"
   },
   "types": "src/index.d.ts"
