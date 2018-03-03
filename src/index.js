@@ -62,9 +62,7 @@ const getRouteInfo = async path => {
           })
           return window.__routeInfo
         } catch (err) {
-          console.warning(
-            `Attempted to load routeInfo for path: ${path}, but encountered an error:`
-          )
+          console.warn(`Attempted to load routeInfo for path: ${path}, but encountered an error:`)
           console.error(err)
         }
       })()
