@@ -689,7 +689,7 @@ class Router extends Component {
             background: 'rgba(0,0,0,0.05)',
           }}
         >
-          <h2>Oh-no! Something's gone wrong!</h2>
+          <h2>Oh-no! Something’s gone wrong!</h2>
           <pre style={{ whiteSpace: 'normal', color: 'red' }}>
             <code>{this.state.error && this.state.error.toString()}</code>
           </pre>
