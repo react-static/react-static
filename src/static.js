@@ -10,12 +10,19 @@ import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
+import Progress from 'progress'
+import chalk from 'chalk'
 //
 import ReactStaticRoutes from './ReactStaticRoutes'
 import { DefaultDocument } from './RootComponents'
 import { poolAll, pathJoin, cleanPath } from './shared'
 
 const defaultOutputFileRate = 100
+
+const Bar = (len, label) =>
+  new Progress(`=> ${label ? `${label} ` : ''}:current/:total [:bar] :rate/s :percent :etas `, {
+    total: len,
+  })
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
@@ -25,12 +32,19 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
 
+  console.log('=> Fetching Site Data...')
+  console.time(chalk.green('=> [\u2713] Site Data Downloaded'))
   // Get the site data
   const siteData = await config.getSiteData({ dev: false, cliArguments })
+  console.timeEnd(chalk.green('=> [\u2713] Site Data Downloaded'))
 
   // Set up some scaffolding for automatic data splitting
   const seenProps = new Map()
   const sharedProps = new Map()
+
+  console.log('=> Fetching Route Data...')
+  const dataProgress = Bar(config.routes.length)
+  console.time(chalk.green('=> [\u2713] Route Data Downloaded'))
 
   await poolAll(
     config.routes.map(route => async () => {
@@ -72,10 +86,15 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             seenProps.set(prop, true)
           }
         })
+      dataProgress.tick()
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
 
+  console.timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
+
+  console.log('=> Exporting Route Data...')
+  console.time(chalk.green('=> [\u2713] Route Data Exported'))
   await poolAll(
     config.routes.map(route => async () => {
       // Loop through the props and build the prop maps
@@ -104,24 +123,39 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
+  console.timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 
   // Write all shared props to file
-  await poolAll(
-    Array.from(sharedProps).map(cachedProp => () =>
-      fs.outputFile(
-        path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
-        cachedProp[1].jsonString || '{}'
-      )
-    ),
-    Number(config.outputFileRate) || defaultOutputFileRate
-  )
+  const sharedPropsArr = Array.from(sharedProps)
+
+  if (sharedPropsArr.length) {
+    console.log('=> Exporting Shared Route Data...')
+    const jsonProgress = Bar(sharedPropsArr.length)
+    console.time(chalk.green('=> [\u2713] Shared Route Data Exported'))
+
+    await poolAll(
+      sharedPropsArr.map(cachedProp => async () => {
+        await fs.outputFile(
+          path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
+          cachedProp[1].jsonString || '{}'
+        )
+        jsonProgress.tick()
+      }),
+      Number(config.outputFileRate) || defaultOutputFileRate
+    )
+    console.timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
+  }
 
   const allRouteInfo = {}
   config.routes.filter(d => d.hasGetProps).forEach(({ path, propsMap }) => {
     allRouteInfo[path] = propsMap
   })
 
-  return poolAll(
+  console.log('=> Exporting HTML...')
+  const htmlProgress = Bar(config.routes.length)
+  console.time(chalk.green('=> [\u2713] HTML Exported'))
+
+  await poolAll(
     config.routes.map(route => async () => {
       const staticURL = route.path
 
@@ -329,13 +363,16 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         `${config.publicPath}${pathJoin(route.path, 'routeInfo.js')}`
       )
 
-      return Promise.all([
+      const res = await Promise.all([
         fs.outputFile(htmlFilename, html),
         fs.outputFile(routeInfoFilename, routeInfoContent),
       ])
+      htmlProgress.tick()
+      return res
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
+  console.timeEnd(chalk.green('=> [\u2713] HTML Exported'))
 }
 
 export async function buildXMLandRSS ({ config }) {

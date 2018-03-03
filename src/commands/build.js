@@ -50,15 +50,12 @@ export default async program => {
       await new Promise(() => {})
     }
 
-    console.log('=> Exporting Routes...')
-    console.time(chalk.green('=> [\u2713] Routes Exported'))
     await exportRoutes({
       config,
       clientStats,
       cliArguments,
     })
     await buildXMLandRSS({ config })
-    console.timeEnd(chalk.green('=> [\u2713] Routes Exported'))
 
     console.timeEnd('=> Site is ready for production!')
     if (config.onBuild) {

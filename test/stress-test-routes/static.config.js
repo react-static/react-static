@@ -11,7 +11,6 @@ export default {
   getRoutes: async () => {
     const fakeData = []
 
-    console.log()
     for (let index = 0; index < arraySize; index++) {
       fakeData.push(`string_${Math.random()}`)
     }
