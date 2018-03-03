@@ -44,21 +44,28 @@ const getRouteInfo = async path => {
           const { data } = await axios.get('/__react-static__/routeInfo')
           return data
         }
-        await new Promise(resolve => {
-          const s = document.createElement('script')
-          s.type = 'text/javascript'
-          s.src = `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
-            path,
-            `routeInfo.js?${Date.now()}`
-          )}`
-          s.onload = resolve
-          if (document.body.append) {
-            document.body.append(s)
-          } else {
-            document.body.appendChild(s)
-          }
-        })
-        return window.__routeInfo
+        try {
+          await new Promise(resolve => {
+            const s = document.createElement('script')
+            s.type = 'text/javascript'
+            s.src = `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
+              path,
+              `routeInfo.js?${Date.now()}`
+            )}`
+            s.onload = resolve
+            if (document.body.append) {
+              document.body.append(s)
+            } else {
+              document.body.appendChild(s)
+            }
+          })
+          return window.__routeInfo
+        } catch (err) {
+          console.warning(
+            `Attempted to load routeInfo for path: ${path}, but encountered an error:`
+          )
+          console.error(err)
+        }
       })()
     }
     const routeInfo = await routesPromise
