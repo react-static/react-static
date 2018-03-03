@@ -8,7 +8,7 @@ export default async ({ config, templates, tree }) => {
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import universal, { setHasBabelPlugin } from 'react-universal-component'
-import { cleanPath } from 'react-static/lib/shared'
+import { cleanPath } from 'react-static'
 
 ${process.env.NODE_ENV === 'production'
     ? `
