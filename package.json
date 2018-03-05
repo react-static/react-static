@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "5.3.3",
+  "version": "5.4.0-beta.0",
   "license": "MIT",
   "repository": "nozzle/react-static",
   "main": "lib/index.js",
@@ -17,7 +17,7 @@
     "builddocs": "gitdocs build",
     "postpublish": "git push --tags",
     "prepublishOnly": "yarn build && yarn test",
-    "publishnext": "yarn publish --tag next",
+    "publishNext": "yarn publish --tag next",
     "servedocs": "serve docs-dist -p 3000",
     "startdocs": "gitdocs serve",
     "test": "eslint src examples test && yarn run test-sample-build",
