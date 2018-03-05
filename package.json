@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "5.4.0-beta.0",
+  "version": "5.4.0-beta.1",
   "license": "MIT",
   "repository": "nozzle/react-static",
   "main": "lib/index.js",
@@ -14,6 +14,7 @@
   },
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
+    "watch": "rimraf lib && babel -w src --out-dir lib",
     "builddocs": "gitdocs build",
     "postpublish": "git push --tags",
     "prepublishOnly": "yarn build && yarn test",
@@ -22,8 +23,7 @@
     "startdocs": "gitdocs serve",
     "test": "eslint src examples test && yarn run test-sample-build",
     "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
-    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
-    "watch": "rimraf lib && babel -w src --out-dir lib"
+    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
