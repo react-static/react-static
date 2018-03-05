@@ -6,7 +6,7 @@ import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import { findAvailablePort } from '../utils'
+import { findAvailablePort } from '../../utils'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
@@ -86,21 +86,6 @@ export async function startDevServer ({ config }) {
     },
     ...config.devServer,
     before: app => {
-      // Serve route data for all routes at the same time. It's local,
-      // So even if it massive, it should be okay.
-      app.get('/__react-static__/routeInfo', async (req, res) => {
-        const routeInfo = {}
-
-        config.routes
-          .filter(d => d.hasGetProps)
-          .map(d => d.path)
-          .forEach(d => {
-            routeInfo[d] = true
-          })
-
-        res.json(routeInfo)
-      })
-
       // Serve the site data
       app.get('/__react-static__/siteData', async (req, res, next) => {
         try {
@@ -115,15 +100,21 @@ export async function startDevServer ({ config }) {
 
       // Serve each routes data
       config.routes.forEach(route => {
-        app.get(`/__react-static__/route${encodeURI(route.path)}`, async (req, res, next) => {
-          try {
-            const initialProps = await route.getData({ dev: true })
-            res.json(initialProps)
-          } catch (err) {
-            res.status(500)
-            next(err)
+        app.get(
+          `/__react-static__/routeInfo/${encodeURI(route.path === '/' ? '' : route.path)}`,
+          async (req, res, next) => {
+            try {
+              const allProps = route.getData ? await route.getData({ dev: true }) : {}
+              res.json({
+                ...route,
+                allProps,
+              })
+            } catch (err) {
+              res.status(500)
+              next(err)
+            }
           }
-        })
+        )
       })
 
       if (config.devServer && config.devServer.before) {

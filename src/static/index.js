@@ -13,16 +13,48 @@ import flushChunks from 'webpack-flush-chunks'
 import Progress from 'progress'
 import chalk from 'chalk'
 //
-import ReactStaticRoutes from './ReactStaticRoutes'
+import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
-import { poolAll, pathJoin, cleanPath } from './shared'
+import { poolAll, pathJoin } from '../utils/shared'
 
 const defaultOutputFileRate = 100
 
 const Bar = (len, label) =>
-  new Progress(`=> ${label ? `${label} ` : ''}:current/:total [:bar] :rate/s :percent :etas `, {
+  new Progress(`=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `, {
     total: len,
   })
+
+export const prepareRoutes = async (config, opts) => {
+  config.routes = await config.getRoutes(opts)
+
+  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
+
+  // Dedupe all templates into an array
+  const templates = []
+
+  config.routes.forEach(route => {
+    if (!route.component) {
+      return
+    }
+    // Check if the template has already been added
+    const index = templates.indexOf(route.component)
+    if (index === -1) {
+      // If it's new, add it
+      templates.push(route.component)
+      // Assign the templateID
+      route.templateID = templates.length - 1
+    } else {
+      // Assign the existing templateID
+      route.templateID = index
+    }
+  })
+
+  config.templates = templates
+
+  return generateRoutes({
+    config,
+  })
+}
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
@@ -48,17 +80,21 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
 
   await poolAll(
     config.routes.map(route => async () => {
-      // Fetch initialProps from each route
-      route.initialProps = !!route.getData && (await route.getData({ route, dev: false }))
+      // Fetch allProps from each route
+      route.allProps = !!route.getData && (await route.getData({ route, dev: false }))
 
-      // Default initialProps object
-      if (!route.initialProps) {
-        route.initialProps = {}
+      // Default allProps (must be an object)
+      if (!route.allProps) {
+        route.allProps = {}
       }
 
-      // Loop through the props
-      Object.keys(route.initialProps)
-        .map(k => route.initialProps[k])
+      // TODO: check if route.allProps is indeed an object
+
+      // Loop through the props to find shared props between routes
+      // TODO: expose knobs to tweak these settings, perform them manually,
+      // or simply just turn them off.
+      Object.keys(route.allProps)
+        .map(k => route.allProps[k])
         .forEach(prop => {
           // Don't split small strings
           if (typeof prop === 'string' && prop.length < 100) {
@@ -99,27 +135,16 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
     config.routes.map(route => async () => {
       // Loop through the props and build the prop maps
       route.localProps = {}
-      route.propsMap = {}
-      Object.keys(route.initialProps).forEach(key => {
-        const value = route.initialProps[key]
+      route.sharedPropsHashes = {}
+      Object.keys(route.allProps).forEach(key => {
+        const value = route.allProps[key]
         const cached = sharedProps.get(value)
         if (cached) {
-          route.propsMap[key] = cached.hash
+          route.sharedPropsHashes[key] = cached.hash
         } else {
           route.localProps[key] = value
         }
       })
-      if (Object.keys(route.localProps).length) {
-        route.localPropsDataString = JSON.stringify(route.localProps)
-        route.localPropsHash = shorthash.unique(route.localPropsDataString)
-        // Make sure local props are tracked in a special key
-        route.propsMap.__local = route.localPropsHash
-        // Write props to file
-        return fs.outputFile(
-          path.join(config.paths.STATIC_DATA, `${route.localPropsHash}.json`),
-          route.localPropsDataString || '{}'
-        )
-      }
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
@@ -146,33 +171,38 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
     console.timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
   }
 
-  const allRouteInfo = {}
-  config.routes.filter(d => d.hasGetProps).forEach(({ path, propsMap }) => {
-    allRouteInfo[path] = propsMap
-  })
-
   console.log('=> Exporting HTML...')
   const htmlProgress = Bar(config.routes.length)
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
   await poolAll(
     config.routes.map(route => async () => {
-      const staticURL = route.path
+      const { sharedPropsHashes, templateID, localProps, allProps, path: routePath } = route
+      // This routeInfo will be saved to disk, and included in the html
+      // that is served for that route as well
+      const routeInfo = {
+        path: routePath,
+        sharedPropsHashes,
+        templateID,
+        localProps,
+      }
 
-      // Inject initialProps into static build
+      const embeddedRouteInfo = {
+        ...routeInfo,
+        allProps,
+        siteData,
+      }
+
+      // Inject allProps into static build
       class InitialPropsContext extends Component {
         static childContextTypes = {
-          propsMap: PropTypes.object,
-          initialProps: PropTypes.object,
-          siteData: PropTypes.object,
+          routeInfo: PropTypes.object,
           staticURL: PropTypes.string,
         }
         getChildContext () {
           return {
-            propsMap: route.propsMap,
-            initialProps: route.initialProps,
-            siteData,
-            staticURL,
+            routeInfo: embeddedRouteInfo,
+            staticURL: route.path,
           }
         }
         render () {
@@ -258,7 +288,6 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
-            <link rel="preload" as="script" href="___REPLACE_WITH_ROUTE_INFO_URL___" />
             {clientScripts.map(script => (
               <link
                 key={`clientScript_${script}`}
@@ -300,12 +329,10 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
             type="text/javascript"
             dangerouslySetInnerHTML={{
               __html: `
-                window.__routeData = ${JSON.stringify({
-          path: route.path,
-          propsMap: route.propsMap,
-          initialProps: route.initialProps,
-          siteData,
-        }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
+                window.__routeInfo = ${JSON.stringify(embeddedRouteInfo).replace(
+          /<(\/)?(script)/gi,
+          '<"+"$1$2'
+        )};`,
             }}
           />
           {clientScripts.map(script => (
@@ -332,17 +359,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         </DocumentTemplate>
       )}`
 
-      const reLinkedPages = /<a.+?href=["']([^"']*?)["']/gm
-      let currentMatch
-      const routeInfo = {}
-      while ((currentMatch = reLinkedPages.exec(html)) !== null) {
-        const path = cleanPath(currentMatch[1])
-        if (allRouteInfo[path]) {
-          routeInfo[path] = allRouteInfo[path]
-        }
-      }
-
-      const routeInfoContent = `window.__routeInfo = ${JSON.stringify(routeInfo)}`
+      const routeInfoFileContent = JSON.stringify(routeInfo)
 
       // If the siteRoot is set and we're not in staging, prefix all absolute URL's
       // with the siteRoot
@@ -356,16 +373,12 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
         ? path.join(config.paths.DIST, '404.html')
         : path.join(config.paths.DIST, route.path, 'index.html')
 
-      const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.js')
-
-      html = html.replace(
-        '___REPLACE_WITH_ROUTE_INFO_URL___',
-        `${config.publicPath}${pathJoin(route.path, 'routeInfo.js')}`
-      )
+      // Make the routeInfo sit right next to its companion html file
+      const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.json')
 
       const res = await Promise.all([
         fs.outputFile(htmlFilename, html),
-        fs.outputFile(routeInfoFilename, routeInfoContent),
+        fs.outputFile(routeInfoFilename, routeInfoFileContent),
       ])
       htmlProgress.tick()
       return res
@@ -406,43 +419,4 @@ export async function buildXMLandRSS ({ config }) {
     xml += '</urlset>'
     return xml
   }
-}
-
-export const prepareRoutes = async config => {
-  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
-
-  // Dynamically create the auto-routing component
-  const templates = []
-  const routes = config.routes.filter(d => d.component)
-  routes.forEach(route => {
-    if (!templates.includes(route.component)) {
-      templates.push(route.component)
-    }
-  })
-
-  const tree = {}
-  routes.forEach(route => {
-    const parts = route.path === '/' ? ['/'] : route.path.split('/').filter(d => d)
-    let cursor = tree
-    parts.forEach((part, partIndex) => {
-      const isLeaf = parts.length === partIndex + 1
-      if (!cursor.c) {
-        cursor.c = {}
-      }
-      cursor = cursor.c
-      if (!cursor[part]) {
-        cursor[part] = {}
-      }
-      cursor = cursor[part]
-      if (isLeaf) {
-        cursor.t = `t_${templates.indexOf(route.component)}`
-      }
-    })
-  })
-
-  return ReactStaticRoutes({
-    config,
-    templates,
-    tree,
-  })
 }

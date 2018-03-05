@@ -2,7 +2,11 @@ import path from 'path'
 import slash from 'slash'
 import fs from 'fs-extra'
 
-export default async ({ config, templates, tree }) => {
+export default async ({ config }) => {
+  const { templates, routes } = config
+
+  const id404 = routes.find(route => route.path === '404').templateID
+
   const file = `
 
 import React, { Component } from 'react'
@@ -44,41 +48,34 @@ const universalOptions = {
       .join('\n')}
 
 // Template Map
-const templateMap = {
+const componentsByTemplateID = [
   ${templates.map((template, index) => `t_${index}`).join(',\n')}
-}
+]
 
 // Template Tree
-const templateTree = ${JSON.stringify(tree)
-    .replace(/"(\w)":/gm, '$1:')
-    .replace(/template: '(.+)'/gm, 'template: $1')}
+const templateIDsByPath = {
+  '404': ${id404}
+}
 
 // Get template for given path
 const getComponentForPath = path => {
-  const parts = path === '/' ? ['/'] : path.split('/').filter(d => d)
-  let cursor = templateTree
-  try {
-    parts.forEach(part => {
-      cursor = cursor.c[part]
-    })
-    return templateMap[cursor.t]
-  } catch (e) {
-    return false
-  }
+  return componentsByTemplateID[templateIDsByPath[path]]
 }
 
-if (typeof document !== 'undefined') {
-  window.reactStaticGetComponentForPath = getComponentForPath
+global.reactStaticGetComponentForPath = getComponentForPath
+global.reactStaticRegisterTemplateIDForPath = (path, id) => {
+  templateIDsByPath[path] = id
 }
 
 export default class Routes extends Component {
   render () {
     const { component: Comp, render, children } = this.props
     const renderProps = {
-      templateMap,
-      templateTree,
+      componentsByTemplateID,
+      templateIDsByPath,
       getComponentForPath
     }
+
     if (Comp) {
       return (
         <Comp
@@ -86,6 +83,7 @@ export default class Routes extends Component {
         />
       )
     }
+
     if (render || children) {
       return (render || children)(renderProps)
     }
@@ -97,7 +95,7 @@ export default class Routes extends Component {
         if (!Comp) {
           Comp = getComponentForPath('404')
         }
-        return Comp && <Comp {...props} />
+        return Comp ? <Comp {...props} /> : null
       }} />
     )
   }

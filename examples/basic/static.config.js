@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  // basePath: 'dist',
+  basePath: 'dist',
   getSiteData: () => ({
     title: 'React Static',
   }),

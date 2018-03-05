@@ -2,9 +2,10 @@ import chalk from 'chalk'
 import fs from 'fs-extra'
 //
 import { prepareRoutes } from '../static'
-import { DefaultDocument } from '../RootComponents'
-import { startDevServer } from '../webpack'
-import { getConfig, copyPublicFolder, createIndexFilePlaceholder } from '../utils'
+import { DefaultDocument } from '../static/RootComponents'
+import { startDevServer } from '../static/webpack'
+import getConfig from '../static/getConfig'
+import { copyPublicFolder, createIndexFilePlaceholder } from '../utils'
 //
 
 export default async program => {
@@ -39,8 +40,7 @@ export default async program => {
     // Build the dynamic routes file (react-static-routes)
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
-    config.routes = await config.getRoutes({ dev: true })
-    await prepareRoutes(config)
+    await prepareRoutes(config, { dev: true })
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
     // Build the JS bundle

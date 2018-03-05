@@ -563,10 +563,8 @@ export default () => (
 
 **Render Props** - These special props are sent to your rendered component or render function
 - `getTemplateForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no template is found.
-- `templateMap{}` - An object mapping template ids to Components
-- `templateTree{}` - A nested object structure mapping paths and their children to a template ID.
-  - `c` - the children of the path
-  - `t` - the template ID of the path
+- `componentsByTemplateID{templateID: component}` - An object mapping templateIDs to Components
+- `templateIDsByPath{path: templateID}` - A object mapping paths to their corresponding template ID.
 
 ### `RouteData`
 `RouteData` and it's companion HOC `withRouteData` are what provide a component with the results of the currently matched route's `getData` function as defined in your `static.config.js`.

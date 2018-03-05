@@ -26,15 +26,12 @@ export default {
       routes.push({
         path: `/${index}`,
         component: index % 2 === 0 ? 'src/Home' : 'src/About',
-      })
-    }
-
-    return routes.map(route =>
-      Object.assign(route, {
         getProps: () => ({
           [`prop_${Math.floor(Math.random() * propCollision)}`]: fakeData,
         }),
       })
-    )
+    }
+
+    return routes
   },
 }

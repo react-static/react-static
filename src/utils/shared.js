@@ -11,6 +11,24 @@ export function pathJoin (...paths) {
   return '/'
 }
 
+export function cleanPath (path) {
+  // Resolve the local path
+  if (!path) {
+    return path
+  }
+  // Remove origin, hashes, and query params
+  if (typeof document !== 'undefined') {
+    path = path.replace(window.location.origin, '')
+    path = path.replace(/#.*/, '')
+    path = path.replace(/\?.*/, '')
+  }
+  if (process.env.REACT_STATIC_BASEPATH) {
+    path = path.replace(new RegExp(`^\\/?${process.env.REACT_STATIC_BASEPATH}\\/`), '')
+  }
+  path = path || '/'
+  return pathJoin(path)
+}
+
 export function unwrapArray (arg, defaultValue) {
   arg = Array.isArray(arg) ? arg[0] : arg
   if (!arg && defaultValue) {
@@ -31,23 +49,4 @@ export function deprecate (from, to) {
 
 export function trimSlashes (str) {
   return str.replace(/^\/{1,}/g, '').replace(/\/{1,}$/g, '')
-}
-
-export function cleanPath (path) {
-  // Resolve the local path
-  if (!path) {
-    return path
-  }
-  if (process.env.REACT_STATIC_BASEPATH) {
-    path = path.replace(new RegExp(`^\\/?${process.env.REACT_STATIC_BASEPATH}\\/`), '')
-    path = path || '/'
-  }
-  if (typeof document !== 'undefined') {
-    // Only allow origin or absolute links
-    path = path.replace(window.location.origin, '')
-    let end = path.indexOf('#')
-    end = end === -1 ? undefined : end
-    path = path.substring(0, end)
-  }
-  return pathJoin(path)
 }

@@ -10,7 +10,7 @@ export default function ({ config }) {
 
   config.publicPath = config.devBasePath ? `/${config.devBasePath}/` : '/'
 
-  process.env.REACT_STATIC_BASEPATH = config.devBasepath
+  process.env.REACT_STATIC_BASEPATH = config.devBasePath
 
   return {
     context: path.resolve(__dirname, '../node_modules'),
