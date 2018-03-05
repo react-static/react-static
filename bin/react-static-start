@@ -15,4 +15,7 @@ if (typeof process.env.NODE_ENV === 'undefined') {
 process.env.REACT_STATIC_ENV = 'development'
 process.env.BABEL_ENV = 'development'
 
-return startCmd.default(program)
+return startCmd.default({
+  config: program.config,
+  isCLI: true,
+})

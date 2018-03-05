@@ -8,17 +8,27 @@ import getConfig from '../static/getConfig'
 import { copyPublicFolder, createIndexFilePlaceholder } from '../utils'
 //
 
-export default async program => {
-  const cliArguments = program.args
+export default (...args) => {
   try {
-    // Get the config
-    const config = getConfig()
+    return start(...args)
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
+}
+
+async function start ({ config, isCLI, silent = !isCLI } = {}) {
+  try {
+    // Allow config location to be overriden
+    if (!config || typeof config === 'string') {
+      config = getConfig(config)
+    }
 
     // Clean the dist folder
     await fs.remove(config.paths.DIST)
 
     // Get the site props
-    const siteData = await config.getSiteData({ dev: true, cliArguments })
+    const siteData = await config.getSiteData({ dev: true })
 
     // Resolve the base HTML template
     const Component = config.Document || DefaultDocument
@@ -31,14 +41,14 @@ export default async program => {
     })
 
     // Copy the public directory over
-    console.log('')
-    console.log('=> Copying public directory...')
+    if (!silent) console.log('')
+    if (!silent) console.log('=> Copying public directory...')
     console.time(chalk.green('=> [\u2713] Public directory copied'))
     copyPublicFolder(config)
     console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
     // Build the dynamic routes file (react-static-routes)
-    console.log('=> Building Routes...')
+    if (!silent) console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
     await prepareRoutes(config, { dev: true })
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
@@ -46,7 +56,7 @@ export default async program => {
     // Build the JS bundle
     await startDevServer({ config })
   } catch (err) {
-    console.log(err)
+    if (!silent) console.log(err)
     process.exit(1)
   }
 }

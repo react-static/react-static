@@ -1,7 +1,11 @@
 # 5.4.0
 #### Features
+- Added Node API to React-Static via importing `react-static/node`
+- Added the ability to use a custom `static.config.js` via the CLI
 - Added `config.basePath` option for hosting and running react-static sites from a sub-route
 - Added `config.stagingSiteRoot`, `config.stagingBasePath`, `config.devBasePath`. Used for overriding the above options in specific environments
+- Added the ability to create projects using a local template location.
+
 #### Fixes & Optimizations
 - Entire repo has been reorganized and split for easier maintenance and project grokking ability.
 - Template information and route data hashes are now automatically generated and collocated in a `routeInfo.js` for each route, instead of in a single location (give them massive sites some support, baby!)

@@ -23,6 +23,10 @@
   - [react-static create](#react-static-create)
   - [react-static start](#react-static-start)
   - [react-static build](#react-static-build)
+- [Node API](#node-api)
+  - [create](#create)
+  - [start](#start)
+  - [build](#build)
 - [Components](#components)
   - [Router](#router)
   - [Routes](#routes-react-static-routes)
@@ -455,16 +459,61 @@ Creates a new react-static project.
 
 - Arguments:
   - `--name=$PROJECT_NAME` where `$PROJECT_NAME` is the desired name for your project (no spaces).
-  - `--template=$TEMPLATE_NAME` where `$TEMPLATE_NAME` is an existing template from the examples directory. If the template is not in the list, you will be prompted with the list of valid options. You can also pass an SSH or HTTPS repository URL.
+  - `--template=$TEMPLATE_NAME` where `$TEMPLATE_NAME` can be:
+    - The name of the template in the `examples` directory
+    - The full URL of a public git repository
+    - The full path to a local directory
 
 ### `react-static start`
 Starts the development server.
 
+- Arguments:
+  - `--config=$config` where `$config` is the path to the `static.config.js` file to be used.
+
 ### `react-static build`
 Builds your site for production. Outputs to a `dist` directory in your project.
 - Arguments:
+  - `--config=$config` where `$config` is the path to the `static.config.js` file to be used.
   - `--staging` - By setting this flag, no siteRoot replacement or path optimizations are performed, allowing a production build of your site to function on localhost more easily. Use this argument to test a production build locally.
   - `--debug` - By setting this flag, your build will **not** be `uglified` allowing you to debug production errors (as long as they are unrelated to minification or uglification)
+
+---
+
+# Node API
+React Static also provides a Node Api for full programmatic control!
+
+### Usage
+To use the node API, import it like so:
+```javascript
+import { create, start, build } from 'react-static/node'
+```
+
+### `create`
+Creates a new react-static project.
+- Arguments
+  - `name: string` - The name of your new project (relative to the current-working directory), or the full path to the new directory you wish to create
+  - `location: string`
+    - The name of the template in the `examples` directory
+    - The full URL of a public git repository
+    - The full path to a local directory
+  - `silent: boolean: true` - Set to true to show standard logging as you would normally see in the CLI
+- Returns a `Promise`
+
+### `start`
+Starts the development server.
+- Arguments
+  - `config: object || string` - The config object to use, or the path of the `static.config.js` file you wish to use.
+  - `silent: boolean: true` - Set to true to show standard logging as you would normally see in the CLI
+- Returns a `Promise` that will **never resolve**. The process must be exited by the user to stop the server.
+
+### `build`
+Builds your site for production. Outputs to a `dist` directory in your project.
+- Arguments
+  - `config: object || string` - The config object to use, or the path of the `static.config.js` file you wish to use.
+  - `staging` - When `true`, no siteRoot replacement or absolute URL optimizations are performed, allowing a production build of your site to function on localhost more easily. Use this argument to test a production build locally.
+  - `debug` - When `true`, your build will **not** be `uglified` allowing you to debug production errors (as long as they are unrelated to minification or uglification)
+  - `silent: boolean: true` - Set to true to show standard logging as you would normally see in the CLI
+- Returns a `Promise`
 
 ---
 

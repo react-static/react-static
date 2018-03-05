@@ -73,6 +73,10 @@ module.exports = {
             src: 'api.md#cli',
           },
           {
+            name: 'Node API',
+            src: 'api.md#node-api',
+          },
+          {
             name: 'Components',
             src: 'api.md#components',
           },

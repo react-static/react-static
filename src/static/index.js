@@ -57,7 +57,7 @@ export const prepareRoutes = async (config, opts) => {
 }
 
 // Exporting route HTML and JSON happens here. It's a big one.
-export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
+export const exportRoutes = async ({ config, clientStats }) => {
   // Use the node version of the app created with webpack
   const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
 
@@ -67,7 +67,7 @@ export const exportRoutes = async ({ config, clientStats, cliArguments }) => {
   console.log('=> Fetching Site Data...')
   console.time(chalk.green('=> [\u2713] Site Data Downloaded'))
   // Get the site data
-  const siteData = await config.getSiteData({ dev: false, cliArguments })
+  const siteData = await config.getSiteData({ dev: false })
   console.timeEnd(chalk.green('=> [\u2713] Site Data Downloaded'))
 
   // Set up some scaffolding for automatic data splitting

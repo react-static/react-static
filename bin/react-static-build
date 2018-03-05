@@ -18,4 +18,11 @@ if (typeof process.env.NODE_ENV === 'undefined') {
 process.env.REACT_STATIC_ENV = 'production'
 process.env.BABEL_ENV = 'production'
 
-return buildCmd.default(program)
+const { config, staging, debug } = program
+
+return buildCmd.default({
+  config,
+  staging,
+  debug,
+  isCLI: true,
+})

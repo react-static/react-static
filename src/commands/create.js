@@ -10,26 +10,35 @@ import downloadGitRepo from 'download-git-repo'
 import { promisify } from 'util'
 import { ChalkColor } from '../utils'
 
-
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
-export default async program => {
+export default (...args) => {
+  try {
+    return create(...args)
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
+}
+
+async function create ({ name, template, isCLI, silent = !isCLI } = {}) {
   const prompts = []
 
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
 
-  console.log('')
+  if (!silent) console.log('')
 
   let exampleList = files.filter(d => !d.startsWith('.'))
-  exampleList = ['basic', ...exampleList.filter(d => d !== 'basic'), 'custom']
+  exampleList = ['basic', ...exampleList.filter(d => d !== 'basic')]
+  const exampleChoices = [...exampleList, 'custom']
 
   // prompt if --name argument is not passed from CLI
-  // warning: since program.name will be set as a function by commander by default
+  // warning: since name will be set as a function by commander by default
   //   unless it's assigned as an argument from the CLI, we can't simply just
   //   check for it's existence. if it's not been set by the CLI, we properly
   //   set it to null for later conditional checks.
-  if (typeof program.name !== 'string') {
-    program.name = null
+  if (typeof name !== 'string') {
+    name = null
     prompts.push({
       type: 'input',
       name: 'name',
@@ -39,113 +48,157 @@ export default async program => {
   }
 
   // prompt if --template argument is not passed from CLI
-  if (!program.template) {
+  if (!template) {
     prompts.push({
       type: 'autocomplete',
       name: 'template',
       message: 'Select a template below...',
       source: async (answersSoFar, input) =>
-        !input ? exampleList : matchSorter(exampleList, input),
+        !input ? exampleChoices : matchSorter(exampleChoices, input),
     })
   }
 
-  const shouldPrompt = !program.name || !program.template
+  const shouldPrompt = isCLI && (!name || !template)
   const answers = shouldPrompt ? await inquirer.prompt(prompts) : {}
 
-  if (program.name) {
-    answers.name = program.name
+  if (answers.name) {
+    name = answers.name
   }
-  if (program.template) {
-    answers.template = program.template
+  if (answers.template) {
+    template = answers.template
   }
 
-  console.time(chalk.green(`=> [\u2713] Project "${answers.name}" created`))
-  console.log('=> Creating new react-static project...')
-  const dest = path.resolve(process.cwd(), answers.name)
+  if (!name) {
+    throw new Error('A project name is required. Please use options.name to define one.')
+  }
 
-  let customTemplate
-  if (answers.template === 'custom') {
-    customTemplate = await inquirer.prompt([
+  if (!template) {
+    throw new Error('A project template is required. Please use options.template to define one.')
+  }
+
+  if (!silent) console.time(chalk.green(`=> [\u2713] Project "${name}" created`))
+  if (!silent) console.log('=> Creating new react-static project...')
+  const dest = path.resolve(process.cwd(), name)
+
+  if (template === 'custom') {
+    const { githubRepoName } = await inquirer.prompt([
       {
         type: 'input',
         name: 'githubRepoName',
         message:
-          'Specify a public repo from GitHub, BitBucket, or GitLab that has your custom template. Use the form "ownerName/repoName".',
-        default: 'mjsisley/react-static-template-basic',
+          'Specify the full address of a public git repo from GitHub, BitBucket, GitLab, etc. (https://github.com/ownerName/repoName.git)',
+        default: 'basic',
       },
     ])
+    template = githubRepoName
   }
 
-  // remote templates
-  // if custom template selected or --template arg passed to CLI, fetch it
-  if (customTemplate || program.template) {
-    const remoteTemplate = program.template || customTemplate.githubRepoName
-    await fetchRemoteTemplate(remoteTemplate, dest)
-  } else {
-    await fs.copy(
-      path.resolve(__dirname, `../../examples/${answers.template}`),
-      dest
-    )
-  }
+  // Fetch template
+  await fetchTemplate(template, dest)
 
   // Rename gitignore after the fact to prevent npm from renaming it to .npmignore
   // See: https://github.com/npm/npm/issues/1862
-  fs.move(
-    path.join(dest, 'gitignore'),
-    path.join(dest, '.gitignore'),
-    [],
-    err => {
-      if (err) {
-        // Append if there's already a `.gitignore` file there
-        if (err.code === 'EEXIST') {
-          const data = fs.readFileSync(path.join(dest, 'gitignore'))
-          fs.appendFileSync(path.join(dest, '.gitignore'), data)
-          fs.unlinkSync(path.join(dest, 'gitignore'))
-        } else {
-          throw err
-        }
+  fs.move(path.join(dest, 'gitignore'), path.join(dest, '.gitignore'), [], err => {
+    if (err) {
+      // Append if there's already a `.gitignore` file there
+      if (err.code === 'EEXIST') {
+        const data = fs.readFileSync(path.join(dest, 'gitignore'))
+        fs.appendFileSync(path.join(dest, '.gitignore'), data)
+        fs.unlinkSync(path.join(dest, 'gitignore'))
+      } else {
+        throw err
       }
     }
-  )
+  })
 
   const isYarn = shouldUseYarn()
 
-  console.log(
-    `=> Installing dependencies with: ${
-      isYarn
-        ? chalk.hex(ChalkColor.yarn)('Yarn')
-        : chalk.hex(ChalkColor.npm)('NPM')
-    }...`
-  )
-  // We install react-static separately to ensure we always have the latest stable release
-  execSync(
-    `cd ${answers.name} && ${isYarn ? 'yarn' : 'npm install'} && ${
-      isYarn
+  if (isCLI) {
+    if (!silent) {
+      console.log(
+        `=> Installing dependencies with: ${isYarn
+          ? chalk.hex(ChalkColor.yarn)('Yarn')
+          : chalk.hex(ChalkColor.npm)('NPM')}...`
+      )
+    }
+    // We install react-static separately to ensure we always have the latest stable release
+    execSync(
+      `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${isYarn
         ? 'yarn add react-static@latest'
-        : 'npm install react-static@latest --save'
-    }`
-  )
-  console.log('')
-  console.timeEnd(chalk.green(`=> [\u2713] Project "${answers.name}" created`))
+        : 'npm install react-static@latest --save'}`
+    )
+    if (!silent) console.log('')
+  }
 
-  console.log(`
+  if (!silent) console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
+
+  if (!silent) {
+    console.log(`
 ${chalk.green('=> To get started:')}
 
-  cd ${answers.name}
+  cd ${name} ${!isCLI
+  ? `&& ${isYarn
+    ? chalk.hex(ChalkColor.yarn)('yarn')
+    : chalk.hex(ChalkColor.npm)('npm install')}`
+  : ''}
 
   ${isYarn
     ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')
-} start ${chalk.green('- Start the development server')}
+    : chalk.hex(ChalkColor.npm)('npm run')} start ${chalk.green('- Start the development server')}
   ${isYarn
     ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')
-} build ${chalk.green('- Build for production')}
+    : chalk.hex(ChalkColor.npm)('npm run')} build ${chalk.green('- Build for production')}
   ${isYarn
     ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')
-} serve ${chalk.green('- Test a production build locally')}
+    : chalk.hex(ChalkColor.npm)('npm run')} serve ${chalk.green(
+  '- Test a production build locally'
+)}
 `)
+  }
+
+  async function fetchTemplate (template, dest) {
+    if (!silent) console.log('')
+    if (template.startsWith('https://') || template.startsWith('git@')) {
+      try {
+        if (!silent) console.log(chalk.green(`Downloading template: ${template}`))
+        await git(`clone --recursive ${template} ${dest}`)
+      } catch (err) {
+        if (!silent) console.log(chalk.red(`Download of ${template} failed`))
+        throw err
+      }
+    } else if (template.startsWith('http://')) {
+      // use download-git-repo to fetch remote repository
+      const getGitHubRepo = promisify(downloadGitRepo)
+      try {
+        if (!silent) console.log(chalk.green(`Downloading template: ${template}`))
+        await getGitHubRepo(template, dest)
+      } catch (err) {
+        if (!silent) console.log(chalk.red(`Download of ${template} failed`))
+        throw err
+      }
+    } else {
+      // If it's an exapmle template, copy it from there
+      if (exampleList.includes(template)) {
+        try {
+          if (!silent) console.log(chalk.green(`Using template: ${template}`))
+          return fs.copy(path.resolve(__dirname, `../../examples/${template}`), dest)
+        } catch (err) {
+          if (!silent) console.log(chalk.red(`Copying the template: ${template} failed`))
+          throw err
+        }
+      }
+      // template must be local, copy directly
+      try {
+        if (!silent) console.log(chalk.green(`Using template from directory: ${template}`))
+        await fs.copy(path.resolve(__dirname, template), dest)
+      } catch (err) {
+        if (!silent) {
+          console.log(chalk.red(`Copying the template from directory: ${template} failed`))
+        }
+        throw err
+      }
+    }
+  }
 }
 
 function shouldUseYarn () {
@@ -154,28 +207,5 @@ function shouldUseYarn () {
     return true
   } catch (e) {
     return false
-  }
-}
-
-async function fetchRemoteTemplate (template, dest) {
-  console.log('')
-  if (template.startsWith('https://') || template.startsWith('git@')) {
-    try {
-      console.log(chalk.green(`Downloading template: ${template}`))
-      await git(`clone --recursive ${template} ${dest}`)
-    } catch (e) {
-      console.error(chalk.red(`Download of ${template} failed`))
-      console.error(e)
-    }
-  } else {
-    // use download-git-repo to fetch remote repository
-    const getGitHubRepo = promisify(downloadGitRepo)
-    try {
-      console.log(chalk.green(`Downloading template: ${template}`))
-      await getGitHubRepo(template, dest)
-    } catch (e) {
-      console.error(chalk.red(`Download of ${template} failed`))
-      console.error(e)
-    }
   }
 }

@@ -6,45 +6,59 @@ import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder } from '../utils'
 
-export default async program => {
-  const cliArguments = program.args
+export default (...args) => {
   try {
-    if (program.staging) {
+    return build(...args)
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
+}
+
+async function build ({ config, staging, debug, isCLI, silent = !isCLI } = {}) {
+  try {
+    if (staging) {
       process.env.REACT_STATIC_STAGING = true
     }
-    if (program.debug) {
+    if (debug) {
       process.env.REACT_STATIC_DEBUG = true
     }
 
-    const config = getConfig()
-    await fs.remove(config.paths.DIST)
-
-    console.log('')
-
-    if (!config.siteRoot) {
-      console.log(
-        "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
-      )
-      console.log('')
+    // Allow config location to be overriden
+    if (!config || typeof config === 'string') {
+      config = getConfig(config)
     }
 
-    console.time('=> Site is ready for production!')
+    await fs.remove(config.paths.DIST)
 
-    console.log('=> Copying public directory...')
-    console.time(chalk.green('=> [\u2713] Public directory copied'))
+    if (!silent) console.log('')
+
+    if (!config.siteRoot) {
+      if (!silent) {
+        console.log(
+          "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
+        )
+      }
+      if (!silent) console.log('')
+    }
+
+    if (!silent) console.time('=> Site is ready for production!')
+
+    if (!silent) console.log('=> Copying public directory...')
+    if (!silent) console.time(chalk.green('=> [\u2713] Public directory copied'))
     copyPublicFolder(config)
-    console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
+    if (!silent) console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
-    console.log('=> Building Routes...')
-    console.time(chalk.green('=> [\u2713] Routes Built'))
+    if (!silent) console.log('=> Building Routes...')
+    if (!silent) console.time(chalk.green('=> [\u2713] Routes Built'))
     await prepareRoutes(config, { dev: false })
-    console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
+    if (!silent) console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
     // Build static pages and JSON
-    console.log('=> Bundling App...')
-    console.time(chalk.green('=> [\u2713] App Bundled'))
+    if (!silent) console.log('=> Bundling App...')
+    if (!silent) console.time(chalk.green('=> [\u2713] App Bundled'))
     const clientStats = await buildProductionBundles({ config })
-    console.timeEnd(chalk.green('=> [\u2713] App Bundled'))
+    if (!silent) console.timeEnd(chalk.green('=> [\u2713] App Bundled'))
 
     if (config.bundleAnalyzer) {
       await new Promise(() => {})
@@ -53,17 +67,16 @@ export default async program => {
     await exportRoutes({
       config,
       clientStats,
-      cliArguments,
     })
     await buildXMLandRSS({ config })
 
-    console.timeEnd('=> Site is ready for production!')
+    if (!silent) console.timeEnd('=> Site is ready for production!')
     if (config.onBuild) {
       await config.onBuild({ config })
     }
     process.exit(0)
   } catch (err) {
-    console.log(err)
+    if (!silent) console.log(err)
     process.exit(1)
   }
 }
