@@ -1,14 +1,16 @@
-# 5.3.0
-#### Fixes & Optimizations
-- Fixed `config.siteRoot` to be more reliable, but must no longer contain a sub route (it will be stripped)
+# 5.4.0
+#### Features
 - Added `config.basePath` option for hosting and running react-static sites from a sub-route
 - Added `config.stagingSiteRoot`, `config.stagingBasePath`, `config.devBasePath`. Used for overriding the above options in specific environments
+#### Fixes & Optimizations
+- Entire repo has been reorganized and split for easier maintenance and project grokking ability.
+- Template information and route data hashes are now automatically generated and collocated in a `routeInfo.js` for each route, instead of in a single location (give them massive sites some support, baby!)
+- Fixed `config.siteRoot` to be more reliable, but must no longer contain a sub route (it will be stripped)
 - React Router now uses `config.basePath` for its `basename` prop
 - History instances now use `config.basePath` for the `basename` option
 - Moved the codegen for `react-static-routes` to its own file
 - Added `maximum-scale=1` to the default document component's viewport meta
 - More reliable handling of path slashes throughout the codebase
-- `routeInfo.js` is now automatically generated for each route, based on possible `<a href>`'s found on the page.
 - Added react `key` props to head scripts, links and preloads
 
 # 5.2.0
