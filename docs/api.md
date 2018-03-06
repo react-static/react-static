@@ -577,11 +577,15 @@ import { Router } from 'react-static'
 import Routes from 'react-static-routes'
 
 // This is the default renderer for `<Routes>`
-const RenderRoutes = ({ getTemplateForPath }) => (
+const RenderRoutes = ({ getComponentForPath }) => (
   // The default renderer uses a catch all route to recieve the pathname
   <Route path='*' render={props => {
     // The pathname is used to retrieve the component for that path
-    let Comp = getComponentForPath(props.location.pathname)
+    let Comp = getComponentForPath(
+      props.location.pathname === '/'
+        ? '/'
+        : props.location.pathname.replace('/', '')
+    );
     // The 404 component is used as a fallback
     if (!Comp) {
       Comp = getComponentForPath('404')
