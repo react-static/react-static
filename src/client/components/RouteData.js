@@ -31,8 +31,8 @@ const RouteData = withRouter(
     }
     loadRouteData = () =>
       (async () => {
-        const { pathname } = this.props.location
-        const path = cleanPath(pathname)
+        const { is404, location: { pathname } } = this.props
+        const path = cleanPath(is404 ? '404' : pathname)
         await prefetch(path)
         if (this.unmounting) {
           return
@@ -42,8 +42,8 @@ const RouteData = withRouter(
         })
       })()
     render () {
-      const { component, render, children, location: { pathname }, ...rest } = this.props
-      const path = cleanPath(pathname)
+      const { component, render, children, is404, location: { pathname }, ...rest } = this.props
+      const path = cleanPath(is404 ? '404' : pathname)
 
       let allProps
 

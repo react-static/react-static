@@ -92,10 +92,12 @@ export default class Routes extends Component {
     return (
       <Route path='*' render={props => {
         let Comp = getComponentForPath(cleanPath(props.location.pathname))
+        let is404 = props.location.pathname === '404'
         if (!Comp) {
+          is404 = true
           Comp = getComponentForPath('404')
         }
-        return Comp ? <Comp {...props} /> : null
+        return Comp ? <Comp {...props} {...(is404 ? {is404: true} : {})} /> : null
       }} />
     )
   }
