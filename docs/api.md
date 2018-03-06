@@ -624,6 +624,10 @@ Props
   - `render: Function`
   - `children: Function`
 
+Render Props
+  - Any props that you passed in it's corresponding route's `getData` method.
+  - `is404: boolean` - Will be set to `true` if the page requests results in a 404. This is useful for runtime 404's where the url of the page may remain what the user requested, but the route is not found.
+
 Here is a an example show all of the different syntaxes you can use:
 
 **static.config.js**

@@ -80,9 +80,12 @@ export default class Router extends React.Component {
 
         // In dev mode, request the templateID and ready the router
         if (process.env.REACT_STATIC_ENV === 'development') {
-          const routeInfo = await getRouteInfo(path)
-          if (routeInfo) {
-            registerTemplateIDForPath(path, routeInfo.templateID)
+          try {
+            const routeInfo = await getRouteInfo(path)
+            if (routeInfo) {
+              registerTemplateIDForPath(path, routeInfo.templateID)
+            }
+          } finally {
             this.setState({ ready: true })
           }
         }

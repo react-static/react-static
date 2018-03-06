@@ -6,6 +6,8 @@ import { prefetch, routeInfoByPath } from '../methods'
 import { cleanPath } from '../../utils/shared'
 import DevSpinner from './DevSpinner'
 
+const warnedPaths = {}
+
 const RouteData = withRouter(
   class RouteData extends React.Component {
     static contextTypes = {
@@ -33,40 +35,45 @@ const RouteData = withRouter(
       (async () => {
         const { is404, location: { pathname } } = this.props
         const path = cleanPath(is404 ? '404' : pathname)
-        await prefetch(path)
-        if (this.unmounting) {
-          return
+        try {
+          await prefetch(path)
+          console.log(isStaticRoute)
+          this.setState({ loaded: true })
+        } catch (err) {
+          this.setState({ loaded: true })
         }
-        this.setState({
-          loaded: true,
-        })
       })()
     render () {
-      const { component, render, children, is404, location: { pathname }, ...rest } = this.props
-      const path = cleanPath(is404 ? '404' : pathname)
+      const { component, render, children, location: { pathname }, ...rest } = this.props
+      let { loaded } = this.state
+
+      const path = cleanPath(rest.is404 ? '404' : pathname)
 
       let allProps
 
       // Attempt to get routeInfo from window (first-load on client)
       if (typeof window !== 'undefined' && window.__routeInfo && window.__routeInfo.path === path) {
+        loaded = true // Since these are synchronous, override loading to true
         allProps = window.__routeInfo.allProps
       }
 
       // Attempt to get routeInfo from context (SSR)
       if (!allProps && this.context.routeInfo && this.context.routeInfo.allProps) {
+        loaded = true // Since these are synchronous, override loading to true
         allProps = this.context.routeInfo && this.context.routeInfo.allProps
       } else {
         // Otherwise, get it from the routeInfoByPath (subsequent client side)
         allProps = routeInfoByPath[path] ? routeInfoByPath[path].allProps : allProps
       }
 
-      if (!allProps && this.state.loaded) {
-        console.error(
-          `Warning: withRouteData could not find any props for route: ${path}. Either you are missing a getData function for this route in your static.config.js or you are using the withRouteData HOC when you don't need to.`
+      if (!allProps && !rest.is404 && !warnedPaths[path]) {
+        warnedPaths[path] = true
+        console.warn(
+          `RouteData or withRouteData couldn't find any props for path: ${path}. You are either missing a route.getData function or you are relying on RouteData/withRouteData where you don't need to.`
         )
       }
 
-      if (!allProps) {
+      if (!loaded) {
         if (process.env.REACT_STATIC_ENV === 'development') {
           return <DevSpinner />
         }

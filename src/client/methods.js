@@ -3,6 +3,7 @@ import { createPool, cleanPath, pathJoin } from '../utils/shared'
 
 export const routeInfoByPath = {}
 const propsByHash = {}
+const erroredPaths = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
 let loading = false
@@ -19,17 +20,20 @@ export const getRouteInfo = async path => {
     if (routeInfoByPath[path]) {
       return routeInfoByPath[path]
     }
+    if (erroredPaths[path]) {
+      return
+    }
     // If there is no inflight request for the info, let it fly.
     if (!inflightRouteInfo[path]) {
       inflightRouteInfo[path] = (async () => {
-        if (process.env.REACT_STATIC_ENV === 'development') {
-          // In dev, request from the webpack dev server
-          const { data } = await axios.get(
-            `/__react-static__/routeInfo/${path === '/' ? '' : path}`
-          )
-          return data
-        }
         try {
+          if (process.env.REACT_STATIC_ENV === 'development') {
+            // In dev, request from the webpack dev server
+            const { data } = await axios.get(
+              `/__react-static__/routeInfo/${path === '/' ? '' : path}`
+            )
+            return data
+          }
           // In production, request from route's routeInfo.js
           const { data } = await axios.get(
             `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
@@ -39,10 +43,10 @@ export const getRouteInfo = async path => {
           )
           return data
         } catch (err) {
+          erroredPaths[path] = true
           console.warn(
-            `Encountered the error below while attempting to load routeInfo for path: ${path}`
+            `Could not load routeInfo for path: ${path}. If this is a static route, make sure this any link to this page is valid! If this is not a static route, you can desregard this warning.`
           )
-          console.error(err)
         }
       })()
     }
@@ -122,7 +126,9 @@ export async function prefetchTemplate (path, { priority } = {}) {
   // Get route info so we can check if path has any data
   const routeInfo = await getRouteInfo(path)
 
-  registerTemplateIDForPath(path, routeInfo.templateID)
+  if (routeInfo) {
+    registerTemplateIDForPath(path, routeInfo.templateID)
+  }
 
   // Preload the template if available
   const pathTemplate = getComponentForPath(path)
@@ -145,7 +151,7 @@ export async function needsPrefetch (path) {
   const routeInfo = await getRouteInfo(path)
 
   // Not a static route? Bail out.
-  if (routeInfo) {
+  if (!routeInfo) {
     return true
   }
 
