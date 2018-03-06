@@ -9,11 +9,16 @@ const defaultEntry = 'index.js'
 const path404 = '404'
 
 // Retrieves the static.config.js from the current project directory
-export default function getConfig (customConfigPath) {
+export default function getConfig (customConfig) {
   /* eslint-disable import/no-dynamic-require */
-  const config = require(path.resolve(
-    customConfigPath || path.join(process.cwd(), 'static.config.js')
-  )).default
+  let config
+  if (typeof customConfig === 'string') {
+    config = require(path.resolve(customConfig)).default
+  } else if (customConfig) {
+    config = customConfig
+  } else {
+    config = require(path.resolve(path.join(process.cwd(), 'static.config.js'))).default
+  }
 
   // path defaults
   config.paths = {
@@ -27,7 +32,7 @@ export default function getConfig (customConfigPath) {
   const ROOT = path.resolve(process.cwd())
 
   // Use the root to resolve all other relative paths
-  const resolvePath = relativePath => path.resolve(path.join(ROOT, relativePath))
+  const resolvePath = relativePath => path.resolve(ROOT, relativePath)
 
   // Resolve all paths
   const distPath =

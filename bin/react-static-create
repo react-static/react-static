@@ -10,35 +10,25 @@ program
   .option('-n, --name <name>', 'the name of your new project')
   .option('-t, --template <tpl>', 'the template of your project')
   .on('--help', () => {
-    console.log('')
-    console.log(`  ${chalk.green('Example:')}`)
-    console.log('')
-    console.log('    $ react-static create -t user/repo -n my-static-site')
-    console.log('')
-    console.log(`  ${chalk.green('Template Support:')}`)
-    console.log('')
-    console.log('    Github User/Repo:')
-    console.log(`    $ react-static create -t ${chalk.yellow('githubUser/repoName')}`)
-    console.log('')
-    console.log('    Git Repo URLs:')
-    console.log(
-      `    $ react-static create -t ${chalk.yellow(
-        'git@github.com:mjsisley/react-static-template-basic.git'
-      )}`
-    )
-    console.log(
-      `    $ react-static create -t ${chalk.yellow(
-        'https://github.com/mjsisley/react-static-template-basic.git'
-      )}`
-    )
-    console.log('')
+    console.log(`
+  ${chalk.green('Example:')}
+
+  $ react-static create -n my-static-site -t templateName/gitRepo/directory')
+  `)
   })
   .parse(process.argv)
 
 const { name, template } = program
-
-return createCmd.default({
-  name,
-  template,
-  isCLI: true,
-})
+;(async () => {
+  try {
+    await createCmd.default({
+      name,
+      template,
+      isCLI: true,
+    })
+    process.exit(0)
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
+})()

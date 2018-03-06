@@ -12,16 +12,7 @@ import { ChalkColor } from '../utils'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
-export default (...args) => {
-  try {
-    return create(...args)
-  } catch (err) {
-    console.log(err)
-    process.exit(1)
-  }
-}
-
-async function create ({ name, template, isCLI, silent = !isCLI } = {}) {
+export default async function create ({ name, template, isCLI, silent = !isCLI } = {}) {
   const prompts = []
 
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))

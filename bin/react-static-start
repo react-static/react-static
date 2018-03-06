@@ -6,16 +6,22 @@ const program = require('commander')
 const startCmd = require('../lib/commands/start')
 
 // use commander to parse CLI args
-program.parse(process.argv)
+program
+  .option('-c, --config', 'path to custom static.config.js')
+  .option('-d, --debug', 'set to debug mode')
+  .parse(process.argv)
 
-// ensure ENV variables are set
-if (typeof process.env.NODE_ENV === 'undefined') {
-  process.env.NODE_ENV = 'development'
-}
-process.env.REACT_STATIC_ENV = 'development'
-process.env.BABEL_ENV = 'development'
-
-return startCmd.default({
-  config: program.config,
-  isCLI: true,
-})
+const { config, debug } = program
+;(async () => {
+  try {
+    await startCmd.default({
+      config,
+      debug,
+      isCLI: true,
+    })
+    process.exit(0)
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
+})()

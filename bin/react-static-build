@@ -7,22 +7,23 @@ const buildCmd = require('../lib/commands/build')
 
 // use commander to parse CLI args
 program
+  .option('-c, --config', 'path to custom static.config.js')
   .option('-s, --staging', 'set to staging mode')
   .option('-d, --debug', 'set to debug mode')
   .parse(process.argv)
 
-// ensure ENV variables are set
-if (typeof process.env.NODE_ENV === 'undefined') {
-  process.env.NODE_ENV = 'production'
-}
-process.env.REACT_STATIC_ENV = 'production'
-process.env.BABEL_ENV = 'production'
-
 const { config, staging, debug } = program
-
-return buildCmd.default({
-  config,
-  staging,
-  debug,
-  isCLI: true,
-})
+;(async () => {
+  try {
+    await buildCmd.default({
+      config,
+      staging,
+      debug,
+      isCLI: true,
+    })
+    process.exit(0)
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
+})()

@@ -177,8 +177,11 @@ export const exportRoutes = async ({ config, clientStats }) => {
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
   const basePath = process.env.REACT_STATIC_STAGING ? config.stagingBasePath : config.basePath
-  const hrefReplace = new RegExp(`(href=["'])\\/(${basePath}\\/)?([^\\/])`, 'gm')
-  const srcReplace = new RegExp(`(src=["'])\\/(${basePath}\\/)?([^\\/])`, 'gm')
+  const hrefReplace = new RegExp(
+    `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
+    'gm'
+  )
+  const srcReplace = new RegExp(`(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`, 'gm')
 
   await poolAll(
     config.routes.map(route => async () => {
