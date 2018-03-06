@@ -481,7 +481,7 @@ Builds your site for production. Outputs to a `dist` directory in your project.
 ---
 
 # Node API
-React Static also provides a Node Api for full programmatic control!
+React Static also provides a Node API for full programmatic control!
 
 ### Usage
 To use the node API, import it like so:
