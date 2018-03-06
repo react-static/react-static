@@ -176,6 +176,10 @@ export const exportRoutes = async ({ config, clientStats }) => {
   const htmlProgress = Bar(config.routes.length)
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
+  const basePath = process.env.REACT_STATIC_STAGING ? config.stagingBasePath : config.basePath
+  const hrefReplace = new RegExp(`(href=["'])/(${basePath}/)?([^/])`, 'gm')
+  const srcReplace = new RegExp(`(href=["'])/(${basePath}/)?([^/])`, 'gm')
+
   await poolAll(
     config.routes.map(route => async () => {
       const { sharedPropsHashes, templateID, localProps, allProps, path: routePath } = route
@@ -376,10 +380,8 @@ export const exportRoutes = async ({ config, clientStats }) => {
 
       // If the siteRoot is set and we're not in staging, prefix all absolute URL's
       // with the siteRoot
-      if (!process.env.REACT_STATIC_STAGING && config.siteRoot) {
-        html = html.replace(/(href=["'])\/([^/])/gm, `$1${config.siteRoot}/$2`)
-        html = html.replace(/(src=["'])\/([^/])/gm, `$1${config.siteRoot}/$2`)
-      }
+      html = html.replace(hrefReplace, `$1${config.publicPath}$2`)
+      html = html.replace(srcReplace, `$1${config.publicPath}$2`)
 
       // If the route is a 404 page, write it directly to 404.html, instead of
       // inside a directory.
