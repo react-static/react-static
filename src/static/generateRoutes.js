@@ -48,31 +48,31 @@ const universalOptions = {
       .join('\n')}
 
 // Template Map
-const componentsByTemplateID = [
+global.componentsByTemplateID = global.componentsByTemplateID || [
   ${templates.map((template, index) => `t_${index}`).join(',\n')}
 ]
 
 // Template Tree
-const templateIDsByPath = {
+global.templateIDsByPath = global.templateIDsByPath || {
   '404': ${id404}
 }
 
 // Get template for given path
 const getComponentForPath = path => {
-  return componentsByTemplateID[templateIDsByPath[path]]
+  return global.componentsByTemplateID[global.templateIDsByPath[path]]
 }
 
 global.reactStaticGetComponentForPath = getComponentForPath
 global.reactStaticRegisterTemplateIDForPath = (path, id) => {
-  templateIDsByPath[path] = id
+  global.templateIDsByPath[path] = id
 }
 
 export default class Routes extends Component {
   render () {
     const { component: Comp, render, children } = this.props
     const renderProps = {
-      componentsByTemplateID,
-      templateIDsByPath,
+      componentsByTemplateID: global.componentsByTemplateID,
+      templateIDsByPath: global.templateIDsByPath,
       getComponentForPath
     }
 
