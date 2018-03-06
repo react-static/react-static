@@ -138,6 +138,7 @@ function normalizeRoutes (routes) {
 
     flatRoutes.push(normalizedRoute)
   }
+
   routes.forEach(d => recurse(d))
 
   flatRoutes.forEach(route => {

@@ -1,3 +1,7 @@
+# 5.5.0
+#### Features
+- Added a `Redirect` component and `route.redirect` option to routes.
+
 # 5.4.0
 #### Features
 - Added Node API to React-Static via importing `react-static/node`

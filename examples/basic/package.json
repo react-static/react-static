@@ -7,7 +7,7 @@
     "start": "react-static start",
     "stage": "react-static build --staging",
     "build": "react-static build",
-    "serve": "serve . -p 3000"
+    "serve": "serve dist -p 3000"
   },
   "dependencies": {
     "axios": "^0.16.2",

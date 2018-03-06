@@ -16,6 +16,7 @@ import chalk from 'chalk'
 import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
 import { poolAll, pathJoin } from '../utils/shared'
+import Redirect from '../client/components/Redirect'
 
 const defaultOutputFileRate = 100
 
@@ -217,13 +218,19 @@ export const exportRoutes = async ({ config, clientStats }) => {
       let clientScripts = []
       let clientStyleSheets = []
 
-      const CompWithContext = props => (
-        <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
-          <InitialPropsContext>
-            <Comp {...props} />
-          </InitialPropsContext>
-        </ReportChunks>
-      )
+      let FinalComp
+
+      if (route.redirect) {
+        FinalComp = () => <Redirect fromPath={route.path} to={route.redirect} />
+      } else {
+        FinalComp = props => (
+          <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
+            <InitialPropsContext>
+              <Comp {...props} />
+            </InitialPropsContext>
+          </ReportChunks>
+        )
+      }
 
       const renderToStringAndExtract = comp => {
         // Rend the app to string!
@@ -256,7 +263,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
       // Allow extractions of meta via config.renderToString
       const appHtml = await config.renderToHtml(
         renderToStringAndExtract,
-        CompWithContext,
+        FinalComp,
         renderMeta,
         clientStats
       )
@@ -288,29 +295,32 @@ export const exportRoutes = async ({ config, clientStats }) => {
             {head.base}
             {showHelmetTitle && head.title}
             {head.meta}
-            {clientScripts.map(script => (
-              <link
-                key={`clientScript_${script}`}
-                rel="preload"
-                as="script"
-                href={`${config.publicPath}${script}`}
-              />
-            ))}
-            {clientStyleSheets.map(styleSheet => (
-              <link
-                key={`clientStyleSheet_${styleSheet}`}
-                rel="preload"
-                as="style"
-                href={`${config.publicPath}${styleSheet}`}
-              />
-            ))}
-            {clientStyleSheets.map(styleSheet => (
-              <link
-                key={`clientStyleSheet_${styleSheet}`}
-                rel="stylesheet"
-                href={`${config.publicPath}${styleSheet}`}
-              />
-            ))}
+            {!route.redirect &&
+              clientScripts.map(script => (
+                <link
+                  key={`clientScript_${script}`}
+                  rel="preload"
+                  as="script"
+                  href={`${config.publicPath}${script}`}
+                />
+              ))}
+            {!route.redirect &&
+              clientStyleSheets.map(styleSheet => (
+                <link
+                  key={`clientStyleSheet_${styleSheet}`}
+                  rel="preload"
+                  as="style"
+                  href={`${config.publicPath}${styleSheet}`}
+                />
+              ))}
+            {!route.redirect &&
+              clientStyleSheets.map(styleSheet => (
+                <link
+                  key={`clientStyleSheet_${styleSheet}`}
+                  rel="stylesheet"
+                  href={`${config.publicPath}${styleSheet}`}
+                />
+              ))}
             {head.link}
             {head.noscript}
             {head.script}
@@ -325,24 +335,27 @@ export const exportRoutes = async ({ config, clientStats }) => {
       const BodyWithMeta = ({ children, ...rest }) => (
         <body {...head.bodyProps} {...rest}>
           {children}
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.__routeInfo = ${JSON.stringify(embeddedRouteInfo).replace(
-          /<(\/)?(script)/gi,
-          '<"+"$1$2'
-        )};`,
-            }}
-          />
-          {clientScripts.map(script => (
+          {!route.redirect && (
             <script
-              key={script}
-              defer
               type="text/javascript"
-              src={`${config.publicPath}${script}`}
+              dangerouslySetInnerHTML={{
+                __html: `
+                window.__routeInfo = ${JSON.stringify(embeddedRouteInfo).replace(
+              /<(\/)?(script)/gi,
+              '<"+"$1$2'
+            )};`,
+              }}
             />
-          ))}
+          )}
+          {!route.redirect &&
+            clientScripts.map(script => (
+              <script
+                key={script}
+                defer
+                type="text/javascript"
+                src={`${config.publicPath}${script}`}
+              />
+            ))}
         </body>
       )
 
@@ -365,6 +378,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
       // with the siteRoot
       if (!process.env.REACT_STATIC_STAGING && config.siteRoot) {
         html = html.replace(/(href=["'])\/([^/])/gm, `$1${config.siteRoot}/$2`)
+        html = html.replace(/(src=["'])\/([^/])/gm, `$1${config.siteRoot}/$2`)
       }
 
       // If the route is a 404 page, write it directly to 404.html, instead of
@@ -378,7 +392,9 @@ export const exportRoutes = async ({ config, clientStats }) => {
 
       const res = await Promise.all([
         fs.outputFile(htmlFilename, html),
-        fs.outputFile(routeInfoFilename, routeInfoFileContent),
+        !route.redirect
+          ? fs.outputFile(routeInfoFilename, routeInfoFileContent)
+          : Promise.resolve(),
       ])
       htmlProgress.tick()
       return res

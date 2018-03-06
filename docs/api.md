@@ -74,6 +74,7 @@ It supports the following properties:
       - `dev: Boolean` - Indicates whether you are running a development or production build.
 - `is404: Boolean` - Set to `true` to indicate a route as the 404 handler for your site. Only one 404 route should be present in your site!
 - `children: Array[Route]` - Routes can and should have nested routes when necessary. **Route paths are inherited as they are nested, so there is no need to repeat a path prefix in nested routes**.
+- `redirect: URL` - Setting this to a URL will perform the equivalent of a 301 redirect (as much as is possible within a static site) using `http-equiv` meta tags, canonicals, etc. **This will force the page to render only the bare minimum to perform the redirect and nothing else**.
 - `noIndex: Boolean` - Set this to `true` if you do not want this route indexed in your automatically generated sitemap.xml. Defaults to `false`.
 - `permalink: String` - You can optionally set this route to have a custom xml sitemap permalink by supplying it here.
 - `lastModified: String(YYYY-MM-DD)` - A string representing the date when this route was last modified in the format of `YYYY-MM-DD`.
@@ -897,23 +898,31 @@ import { PrefetchWhenSeen, Link } from 'react-static'
 </PrefetchWhenSeen>
 ```
 
-### `Prompt (react-router)`
-A direct proxy of the `Prompt` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+### `Redirect (based on react-router)`
+A proxy of the `Redirect` component that handles both development and runtime redirects.
+- During development, uses the standard `react-router` `Redirect` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+- During production, uses an `http-equiv` meta tag resulting in an immediate redirect equivalent to a 301 redirect.
 
-### `Redirect (react-router)`
-A direct proxy of the `Redirect` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+- Props
+  - `to: string | object` - The destination url or react-router `to` object.
+  - `delay: integer` - The delay in **seconds** for the `http-equiv` meta tag to activate.
+
+- Renders `null`
+
+### `Prompt (react-router)`
+A direct export of the `Prompt` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
 ### `Route (react-router)`
-A direct proxy of the `Route` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+A direct export of the `Route` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
 ### `Switch (react-router)`
-A direct proxy of the `Switch` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+A direct export of the `Switch` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
 ### `matchPath (react-router)`
-A direct proxy of the `matchPath` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+A direct export of the `matchPath` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
 ### `withRouter (react-router)`
-A direct proxy of the `withRouter` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
+A direct export of the `withRouter` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
 ---
 
