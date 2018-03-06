@@ -1,8 +1,5 @@
 module.exports = {
   name: 'react-static',
-  version: '5.1.12',
-  script: 'custom.js',
-  css: 'custom.css',
   favicon: 'favicon.ico',
   cover: 'cover.png',
   repository: 'https://github.com/nozzle/react-static',
