@@ -37,7 +37,6 @@ const RouteData = withRouter(
         const path = cleanPath(is404 ? '404' : pathname)
         try {
           await prefetch(path)
-          console.log(isStaticRoute)
           this.setState({ loaded: true })
         } catch (err) {
           this.setState({ loaded: true })
