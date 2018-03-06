@@ -47,11 +47,11 @@ export default function getConfig (customConfigPath) {
   }
 
   // Cut siteRoot to the suffix, no trailing slashes
-  const siteRoot = config.siteRoot ? config.siteRoot.replace(/(\..+?)\/.*/g, '') : ''
+  const siteRoot = config.siteRoot ? config.siteRoot.replace(/(\..+?)\/.*/g, '$1') : ''
 
   // Cut siteRoot to the suffix, no trailing slashes
   const stagingSiteRoot = config.stagingSiteRoot
-    ? config.stagingSiteRoot.replace(/(\..+?)\/.*/g, '')
+    ? config.stagingSiteRoot.replace(/(\..+?)\/.*/g, '$1')
     : ''
 
   // Trim basePath of leading and trailing slashes
