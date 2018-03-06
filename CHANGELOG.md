@@ -1,6 +1,8 @@
 # 5.5.0
 #### Features
 - Added a `Redirect` component and `route.redirect` option to routes.
+#### Fixes
+- `src='/'` paths are now also rewritten with siteRoot and basePath
 
 # 5.4.0
 #### Features
