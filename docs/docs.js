@@ -58,7 +58,7 @@ module.exports = {
         ],
       },
       {
-        name: 'Api Reference',
+        name: 'API Reference',
         src: 'api.md',
         children: [
           {
