@@ -12,16 +12,16 @@ program
   .parse(process.argv)
 
 const { config, debug } = program
-;(async () => {
-  try {
-    await startCmd.default({
-      config,
-      debug,
-      isCLI: true,
-    })
+
+startCmd.default({
+  config,
+  debug,
+  isCLI: true,
+})
+  .then(() => {
     process.exit(0)
-  } catch (err) {
+  })
+  .catch((err) => {
     console.log(err)
     process.exit(1)
-  }
-})()
+  })
