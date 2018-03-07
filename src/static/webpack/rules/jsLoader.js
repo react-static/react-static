@@ -5,14 +5,9 @@ export default function ({ config, stage }) {
     use: [
       {
         loader: 'babel-loader',
-        options:
-          stage === 'production'
-            ? {
-              compact: false,
-            }
-            : {
-              cacheDirectory: true,
-            },
+        options: {
+          cacheDirectory: stage !== 'production',
+        },
       },
     ],
   }

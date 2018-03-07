@@ -22,7 +22,7 @@ export default function ({ config, isNode }) {
     : config.basePath
 
   return {
-    context: path.resolve(__dirname, '../node_modules'),
+    context: path.resolve(__dirname, '../../../node_modules'),
     entry: path.resolve(ROOT, config.entry),
     output: {
       filename: isNode ? 'static.[chunkHash:8].js' : '[name].[chunkHash:8].js',
@@ -50,7 +50,7 @@ export default function ({ config, isNode }) {
         }
         : {},
       modules: [
-        path.resolve(__dirname, '../node_modules'),
+        path.resolve(__dirname, '../../../node_modules'),
         'node_modules',
         NODE_MODULES,
         SRC,

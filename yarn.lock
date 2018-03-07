@@ -3672,9 +3672,9 @@ git-promise@^0.3.1:
     q "~1.4.1"
     shelljs "~0.5.3"
 
-gitdocs@^1.5.16, gitdocs@^1.5.9:
-  version "1.5.16"
-  resolved "https://registry.yarnpkg.com/gitdocs/-/gitdocs-1.5.16.tgz#9dad673f9e02786c2f294b72a437ff8ea4f10b98"
+gitdocs@^1.5.17:
+  version "1.5.18"
+  resolved "https://registry.yarnpkg.com/gitdocs/-/gitdocs-1.5.18.tgz#206acc647e065b77db076cd751c696608df6032c"
   dependencies:
     chalk "^2.3.0"
     classnames "^2.2.5"
@@ -3689,7 +3689,7 @@ gitdocs@^1.5.16, gitdocs@^1.5.9:
     react-dom "^16.0.0"
     react-router "^4.2.0"
     react-smackdown "^0.8.7"
-    react-static "5.4.0-beta.2"
+    react-static "^5.5.10"
     react-syntax-highlighter "^6.0.4"
     serve "^6.1.0"
     styled-components "2.2.0"
@@ -6757,9 +6757,9 @@ react-smackdown@^0.8.7:
     react-syntax-highlighter "^7.0.0"
     showdown "^1.8.6"
 
-react-static@5.4.0-beta.2:
-  version "5.4.0-beta.2"
-  resolved "https://registry.yarnpkg.com/react-static/-/react-static-5.4.0-beta.2.tgz#09f50f5603f69a33d97a7cdf423573953d0cc83f"
+react-static@^5.5.10:
+  version "5.5.11"
+  resolved "https://registry.yarnpkg.com/react-static/-/react-static-5.5.11.tgz#8b4e9171791415f866681be7e0cee376e246b08b"
   dependencies:
     "@types/react" "^16.0.18"
     "@types/react-helmet" "^5.0.3"
@@ -6768,6 +6768,7 @@ react-static@5.4.0-beta.2:
     autoprefixer "^7.1.5"
     axios "^0.16.2"
     babel-cli "^6.26.0"
+    babel-core "^6.26.0"
     babel-loader "^7.1.2"
     babel-plugin-transform-class-properties "^6.24.1"
     babel-plugin-transform-runtime "^6.23.0"
@@ -6788,6 +6789,8 @@ react-static@5.4.0-beta.2:
     cross-spawn "^5.1.0"
     css-loader "^0.28.7"
     download-git-repo "^1.0.2"
+    eslint-plugin-class-property "^1.1.0"
+    eslint-plugin-import "^2.9.0"
     extract-css-chunks-webpack-plugin "^2.0.18"
     extract-hoc "^0.0.5"
     extract-hoc-compose "^0.0.1"
@@ -6795,7 +6798,7 @@ react-static@5.4.0-beta.2:
     file-loader "^1.1.4"
     fs-extra "^4.0.2"
     git-promise "^0.3.1"
-    gitdocs "^1.5.9"
+    gitdocs "^1.5.17"
     glob "^7.1.2"
     html-webpack-plugin "^2.30.1"
     inquirer "^3.3.0"
@@ -6916,9 +6919,21 @@ readable-stream@^2.0.0, readable-stream@^2.0.5:
     string_decoder "~1.0.3"
     util-deprecate "~1.0.1"
 
-readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.2.2, readable-stream@^2.2.9, readable-stream@^2.3.3:
+readable-stream@^2.0.1, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.2.2, readable-stream@^2.2.9, readable-stream@^2.3.3:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.4.tgz#c946c3f47fa7d8eabc0b6150f4a12f69a4574071"
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.3"
+    isarray "~1.0.0"
+    process-nextick-args "~2.0.0"
+    safe-buffer "~5.1.1"
+    string_decoder "~1.0.3"
+    util-deprecate "~1.0.1"
+
+readable-stream@^2.0.2:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.5.tgz#b4f85003a938cbb6ecbce2a124fb1012bd1a838d"
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.3"

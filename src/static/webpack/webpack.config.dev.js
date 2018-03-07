@@ -13,7 +13,7 @@ export default function ({ config }) {
   process.env.REACT_STATIC_BASEPATH = config.devBasePath
 
   return {
-    context: path.resolve(__dirname, '../node_modules'),
+    context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
       require.resolve('react-hot-loader/patch'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
@@ -30,7 +30,7 @@ export default function ({ config }) {
     },
     resolve: {
       modules: [
-        path.resolve(__dirname, '../node_modules'),
+        path.resolve(__dirname, '../../../node_modules'),
         'node_modules',
         NODE_MODULES,
         SRC,

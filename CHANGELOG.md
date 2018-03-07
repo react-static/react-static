@@ -1,3 +1,9 @@
+# 5.5.11
+#### Fixes
+- The `react-hot-loader/babel` is no longer used in production. Who's the dummy who did that?! (...me, haha)
+- `compact: false` is now the default in `.babelrc`. Only a select few care about those compaction messages anyway.
+- Various `__dirname` references are now fixed with the correct number of `../`'s
+
 # 5.5.10
 #### Fixes
 - Fixed a rare issue where hash links may not be scrolled to if navigation is fast enough (imagine that ;)

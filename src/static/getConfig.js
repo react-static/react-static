@@ -39,7 +39,7 @@ export default function getConfig (customConfig) {
       : resolvePath(config.paths.dist)
   const paths = {
     ROOT: config.paths.root,
-    LOCAL_NODE_MODULES: path.resolve(__dirname, '../node_modules'),
+    LOCAL_NODE_MODULES: path.resolve(__dirname, '../../node_modules'),
     SRC: resolvePath(config.paths.src),
     DIST: distPath,
     PUBLIC: resolvePath(config.paths.public),
