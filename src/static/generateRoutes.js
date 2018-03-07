@@ -59,6 +59,7 @@ global.templateIDsByPath = global.templateIDsByPath || {
 
 // Get template for given path
 const getComponentForPath = path => {
+  path = cleanPath(path)
   return global.componentsByTemplateID[global.templateIDsByPath[path]]
 }
 
@@ -70,10 +71,25 @@ global.reactStaticRegisterTemplateIDForPath = (path, id) => {
 export default class Routes extends Component {
   render () {
     const { component: Comp, render, children } = this.props
+
+    const getFullComponentForPath = path => {
+      let Comp = getComponentForPath(path)
+      let is404 = path === '404'
+      if (!Comp) {
+        is404 = true
+        Comp = getComponentForPath('404')
+      }
+      return newProps => (
+        Comp
+          ? <Comp key={path} {...newProps} {...(is404 ? {is404: true} : {})} />
+          : null
+      )
+    }
+
     const renderProps = {
       componentsByTemplateID: global.componentsByTemplateID,
       templateIDsByPath: global.templateIDsByPath,
-      getComponentForPath
+      getComponentForPath: getFullComponentForPath
     }
 
     if (Comp) {
@@ -91,13 +107,8 @@ export default class Routes extends Component {
     // This is the default auto-routing renderer
     return (
       <Route path='*' render={props => {
-        let Comp = getComponentForPath(cleanPath(props.location.pathname))
-        let is404 = props.location.pathname === '404'
-        if (!Comp) {
-          is404 = true
-          Comp = getComponentForPath('404')
-        }
-        return Comp ? <Comp key={props.location.pathname} {...props} {...(is404 ? {is404: true} : {})} /> : null
+        let Comp = getFullComponentForPath(props.location.pathname)
+        return Comp ? <Comp {...props} /> : null
       }} />
     )
   }

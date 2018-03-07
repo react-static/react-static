@@ -582,12 +582,8 @@ const RenderRoutes = ({ getTemplateForPath }) => (
   <Route path='*' render={props => {
     // The pathname is used to retrieve the component for that path
     let Comp = getComponentForPath(props.location.pathname)
-    // The 404 component is used as a fallback
-    if (!Comp) {
-      Comp = getComponentForPath('404')
-    }
     // The component is rendered!
-    return Comp && <Comp {...props} />
+    return Comp ? <Comp {...props} /> : null
   }} />
 )
 
