@@ -84,6 +84,10 @@ module.exports = {
         ],
       },
       {
+        name: 'Changelog',
+        src: '../CHANGELOG.md',
+      },
+      {
         name: 'Contributing',
         src: '../CONTRIBUTING.md',
       },

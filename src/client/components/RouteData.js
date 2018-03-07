@@ -58,11 +58,12 @@ const RouteData = withRouter(
 
       // Attempt to get routeInfo from context (SSR)
       if (!allProps && this.context.routeInfo && this.context.routeInfo.allProps) {
-        loaded = true // Since these are synchronous, override loading to true
+        loaded = true // Override loaded to true
         allProps = this.context.routeInfo && this.context.routeInfo.allProps
-      } else {
+      } else if (routeInfoByPath[path]) {
         // Otherwise, get it from the routeInfoByPath (subsequent client side)
-        allProps = routeInfoByPath[path] ? routeInfoByPath[path].allProps : allProps
+        loaded = true // Override loaded to true
+        allProps = routeInfoByPath[path].allProps
       }
 
       if (!allProps && !rest.is404 && !warnedPaths[path]) {

@@ -1,3 +1,7 @@
+# 5.5.9
+#### Fixes
+- Fixed a rare issue (in Gitdocs mostly) where a RouteData would not load even though routeInfo.allProps was synchronously accessible.
+
 # 5.5.1-8
 #### Fixes
 - `.com` or any other suffix is no longer clipped from `siteRoot`.
