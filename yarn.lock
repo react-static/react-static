@@ -3673,8 +3673,8 @@ git-promise@^0.3.1:
     shelljs "~0.5.3"
 
 gitdocs@^1.5.17:
-  version "1.5.18"
-  resolved "https://registry.yarnpkg.com/gitdocs/-/gitdocs-1.5.18.tgz#206acc647e065b77db076cd751c696608df6032c"
+  version "1.5.19"
+  resolved "https://registry.yarnpkg.com/gitdocs/-/gitdocs-1.5.19.tgz#b3eb831a4f630b9e1386a7607a76892d85d7b771"
   dependencies:
     chalk "^2.3.0"
     classnames "^2.2.5"
