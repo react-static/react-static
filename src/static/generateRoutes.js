@@ -97,7 +97,7 @@ export default class Routes extends Component {
           is404 = true
           Comp = getComponentForPath('404')
         }
-        return Comp ? <Comp {...props} {...(is404 ? {is404: true} : {})} /> : null
+        return Comp ? <Comp key={props.location.pathname} {...props} {...(is404 ? {is404: true} : {})} /> : null
       }} />
     )
   }
