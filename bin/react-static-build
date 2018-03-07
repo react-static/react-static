@@ -13,17 +13,17 @@ program
   .parse(process.argv)
 
 const { config, staging, debug } = program
-;(async () => {
-  try {
-    await buildCmd.default({
-      config,
-      staging,
-      debug,
-      isCLI: true,
-    })
+
+buildCmd.default({
+  config,
+  staging,
+  debug,
+  isCLI: true,
+})
+  .then(() => {
     process.exit(0)
-  } catch (err) {
+  })
+  .catch((err) => {
     console.log(err)
     process.exit(1)
-  }
-})()
+  })

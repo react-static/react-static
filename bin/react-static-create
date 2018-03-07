@@ -19,16 +19,16 @@ program
   .parse(process.argv)
 
 const { name, template } = program
-;(async () => {
-  try {
-    await createCmd.default({
-      name,
-      template,
-      isCLI: true,
-    })
+
+createCmd.default({
+  name,
+  template,
+  isCLI: true,
+})
+  .then(() => {
     process.exit(0)
-  } catch (err) {
+  })
+  .catch((err) => {
     console.log(err)
     process.exit(1)
-  }
-})()
+  })
