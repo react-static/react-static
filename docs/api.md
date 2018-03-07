@@ -386,6 +386,7 @@ An `object` of internal directories used by react-static that can be customized.
 // static.config.js
 export default {
   paths: {
+    root: process.cwd(), // The root of your project. Don't change this unless you know what you're doing.
     src: 'src', // The source directory. Must include an index.js entry file.
     dist: 'dist', // The production output directory.
     devDist: 'dist', // The development scratch directory.

@@ -1,6 +1,12 @@
+# 5.5.10
+#### Fixes
+- Fixed a rare issue where hash links may not be scrolled to if navigation is fast enough (imagine that ;)
+- Added a `config.paths.root` option that is also rare.
+
 # 5.5.9
 #### Fixes
-- Fixed a rare issue (in Gitdocs mostly) where a RouteData would not load even though routeInfo.allProps was synchronously accessible.
+- Fixed a rare issue (in Gitdocs mostly) where a RouteData would not load even though routeInfo.allProps was synchronously
+accessible.
 
 # 5.5.1-8
 #### Fixes

@@ -22,17 +22,15 @@ export default function getConfig (customConfig) {
 
   // path defaults
   config.paths = {
+    root: path.resolve(process.cwd()),
     src: 'src',
     dist: 'dist',
     public: 'public',
     ...(config.paths || {}),
   }
 
-  // Resolve the root of the project
-  const ROOT = path.resolve(process.cwd())
-
   // Use the root to resolve all other relative paths
-  const resolvePath = relativePath => path.resolve(ROOT, relativePath)
+  const resolvePath = relativePath => path.resolve(config.paths.root, relativePath)
 
   // Resolve all paths
   const distPath =
@@ -40,7 +38,7 @@ export default function getConfig (customConfig) {
       ? resolvePath(config.paths.devDist || config.paths.dist)
       : resolvePath(config.paths.dist)
   const paths = {
-    ROOT,
+    ROOT: config.paths.root,
     LOCAL_NODE_MODULES: path.resolve(__dirname, '../node_modules'),
     SRC: resolvePath(config.paths.src),
     DIST: distPath,

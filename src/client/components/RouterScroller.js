@@ -1,5 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import RAF from 'raf'
 //
 import { unwrapArray } from '../../utils/shared'
 import scrollTo from '../../utils/scrollTo'
@@ -19,7 +20,7 @@ const RouterScroller = withRouter(
         return
       }
       if (prev.location.hash !== this.props.location.hash) {
-        return this.scrollToHash()
+        this.scrollToHash()
       }
     }
     scrollToTop = () => {
@@ -40,22 +41,24 @@ const RouterScroller = withRouter(
       if (!autoScrollToHash) {
         return
       }
-      if (hash) {
-        const resolvedHash = hash.substring(1)
-        if (resolvedHash) {
-          const element = document.getElementById(resolvedHash)
-          if (element !== null) {
-            scrollTo(element, {
-              duration: scrollToHashDuration,
-              offset: scrollToHashOffset,
-            })
+      RAF(() => {
+        if (hash) {
+          const resolvedHash = hash.substring(1)
+          if (resolvedHash) {
+            const element = document.getElementById(resolvedHash)
+            if (element !== null) {
+              scrollTo(element, {
+                duration: scrollToHashDuration,
+                offset: scrollToHashOffset,
+              })
+            }
           }
+        } else {
+          scrollTo(0, {
+            duration: scrollToHashDuration,
+          })
         }
-      } else {
-        scrollTo(0, {
-          duration: scrollToHashDuration,
-        })
-      }
+      })
     }
     render () {
       return unwrapArray(this.props.children)
