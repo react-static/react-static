@@ -101,6 +101,8 @@ export default function getConfig (customConfig) {
     basePath: basePath || '',
     stagingBasePath: stagingBasePath || '',
     devBasePath: devBasePath || '',
+    extractCssChunks: config.extractCssChunks || false,
+    inlineCss: config.inlineCss || false,
     getRoutes,
   }
 
