@@ -108,7 +108,7 @@ export default class Routes extends Component {
     return (
       <Route path='*' render={props => {
         let Comp = getFullComponentForPath(props.location.pathname)
-        return Comp ? <Comp key={props.location.pathname} {...props} /> : null
+        return <Comp key={props.location.pathname} {...props} />
       }} />
     )
   }

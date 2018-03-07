@@ -583,7 +583,7 @@ const RenderRoutes = ({ getTemplateForPath }) => (
     // The pathname is used to retrieve the component for that path
     let Comp = getComponentForPath(props.location.pathname)
     // The component is rendered!
-    return Comp ? <Comp key={props.location.pathname} {...props} /> : null
+    return <Comp key={props.location.pathname} {...props} />
   }} />
 )
 

@@ -1,3 +1,15 @@
+# 5.5.1-8
+#### Fixes
+- `.com` or any other suffix is no longer clipped from `siteRoot`.
+- Absolute URL rewriting now takes into account `basePath` and also `src=''` attributes
+- 404 component more reliably supports `RouteData` and is generally more stable.
+- An `is404` prop is now available via `RouteData/withRouteData` if and when rendered on a 404 page, **regardless if it is the /404 route itself or any other route that results in a 404.**
+- Fixed some hot-reloading side effects that were introduced with the new project architecture.
+- Lost some weight on the node packaging. The docs and many other large files are now excluded from distribution.
+- Improved the node API support with much more stability.
+- Added a `key` prop to the rendered route in `react-static-routes.js` to avoid stale or mixed state for routes that happen to share the same top-level component.
+- Removed complexity from the user by making the `<Routes>` component's `getComponentForPath` render prop more robust. (Check documentation if you use custom rendering for your `react-static-routes`)
+
 # 5.5.0
 #### Features
 - Added a `Redirect` component and `route.redirect` option to routes.

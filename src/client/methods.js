@@ -195,10 +195,13 @@ export const onLoading = cb => {
 
 export function getComponentForPath (path) {
   path = cleanPath(path)
-  return global.reactStaticGetComponentForPath(path)
+  return global.reactStaticGetComponentForPath && global.reactStaticGetComponentForPath(path)
 }
 
 export function registerTemplateIDForPath (path, templateID) {
   path = cleanPath(path)
-  return global.reactStaticRegisterTemplateIDForPath(path, templateID)
+  return (
+    global.reactStaticGetComponentForPath &&
+    global.reactStaticRegisterTemplateIDForPath(path, templateID)
+  )
 }
