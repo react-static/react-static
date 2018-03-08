@@ -21,9 +21,9 @@ setHasBabelPlugin()
 
 const universalOptions = {
   loading: () => null,
-  error: () => {
+  error: props => {
     console.error(props.error);
-    return <div>An unknown error has occured loading this page. Please reload your browser and try again.</div>;
+    return <div>An error occurred loading this page's template. More information is available in the console.</div>;
   },
 }
 
