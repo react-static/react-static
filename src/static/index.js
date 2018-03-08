@@ -373,6 +373,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
           Head={HeadWithMeta}
           Body={BodyWithMeta}
           siteData={siteData}
+          routeInfo={embeddedRouteInfo}
           renderMeta={renderMeta}
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />

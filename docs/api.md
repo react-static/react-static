@@ -190,6 +190,7 @@ Props
   - `Head: ReactComponent` - **Required** - An enhanced version of the default `head` tag.
   - `Body: ReactComponent` - **Required** - An enhanced version of the default `body` tag.
   - `children: ReactComponent` - **Required** - The main content of your site, including layout, routes, etc.
+  - `routeInfo: Object` - All of the current route's information, including any `routeData`.
   - `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
   - `renderMeta: Object` - Any data optionally provided via the `renderToHtml` function in this config file.
 
