@@ -1,3 +1,9 @@
+# 5.5.12
+#### Fixes & Optimizations
+- Production code-split components that error will now log the correct error to the console.
+- Added `routeInfo` to the `config.Document` component.
+
+
 # 5.5.11
 #### Fixes
 - The `react-hot-loader/babel` is no longer used in production. Who's the dummy who did that?! (...me, haha)
