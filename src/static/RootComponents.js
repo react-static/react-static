@@ -7,7 +7,7 @@ export class DefaultDocument extends Component {
       <Html lang="en-US">
         <Head>
           <meta charSet="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
         </Head>
         <Body>{children}</Body>
       </Html>
