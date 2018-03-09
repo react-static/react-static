@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader'
 
 import './app.css'
 
-const All = (props) => <h1>{props.data}</h1>
+const All = props => <h1>{props.data}</h1>
 
 const NoMatch = () => <h1>No Match found, but no blank</h1>
 
@@ -39,7 +39,7 @@ class App extends React.Component {
             <Switch>
               {this.state.dynamicRoutes.map((route, i) => (
                 <Route exact path={route.path} key={i}
-                  render={(props) => <All {...props} data={route.data} />}
+                  render={props => <All {...props} data={route.data} />}
                 />
               ))}
               <Route component={NoMatch} />
