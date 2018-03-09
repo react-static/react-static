@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 export default {
   getSiteData: () => ({
     title: 'React Static',
@@ -7,12 +5,12 @@ export default {
   getRoutes: async () => {
     return [
       {
-        path: '/'
+        path: '/',
       },
       {
         is404: true,
         component: 'src/containers/404',
       },
     ]
-  },
+  }
 }
