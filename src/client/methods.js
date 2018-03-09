@@ -2,7 +2,7 @@ import axios from 'axios'
 import { createPool, cleanPath, pathJoin } from '../utils/shared'
 
 export const routeInfoByPath = {}
-const propsByHash = {}
+export const propsByHash = {}
 const erroredPaths = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
