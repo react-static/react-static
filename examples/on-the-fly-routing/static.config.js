@@ -2,8 +2,8 @@ export default {
   getSiteData: () => ({
     title: 'React Static',
   }),
-  getRoutes: async () => {
-    return [
+  getRoutes: async () => (
+    [
       {
         path: '/',
       },
@@ -12,5 +12,5 @@ export default {
         component: 'src/containers/404',
       },
     ]
-  }
+  ),
 }
