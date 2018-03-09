@@ -1,3 +1,8 @@
+# 5.5.13
+#### Fixes & Optimizations
+- Moved `gitdocs` to dev dependencies
+- Added `shrink-to-fit` to default `Document` meta.
+
 # 5.5.12
 #### Fixes & Optimizations
 - Production code-split components that error will now log the correct error to the console.
