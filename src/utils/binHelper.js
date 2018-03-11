@@ -11,6 +11,7 @@ const ignoredExtensions = [
   'jpeg',
   'svg',
   'woff',
+  'woff2',
   'ttf',
   'eot',
   'otf',
