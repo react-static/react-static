@@ -9,6 +9,8 @@
   - [basePath](#basepath)
   - [stagingBasePath](#stagingbasepath)
   - [devBasePath](#devbasepath)
+  - [extractCssChunks](#extractcsschunks)
+  - [inlineCss](#inlinecss)
   - [Document](#document)
   - [webpack](#webpack)
   - [devServer](#devserver)
@@ -176,6 +178,12 @@ Works exactly like `basePath`, but only when building with the `--staging` build
 
 ### `devBasePath`
 Works exactly like `basePath`, but only when running the dev server.
+
+### `extractCssChunks`
+`extractCssChunks` replaces default `ExtractTextPlugin` with `ExtractCssChunks`. It enables automatic CSS splitting into separate files by routes as well as dynamic components (usign `react-universal-component`). More information about the [plugin](https://github.com/faceyspacey/extract-css-chunks-webpack-plugin) and [why it is useful as a part of CSS delivery optimisation](https://github.com/faceyspacey/extract-css-chunks-webpack-plugin#what-about-glamorous-styled-components-styled-jsx-aphrodite-etc). Defaults to `false`.
+
+### `inlineCss`
+By using `extractCssChunks` option and putting code splitting at appropriate places, your page related CSS file can be minimal. This option allows you to inline your page related CSS in order to speed up your application by reducing the number of requests required for a first paint. Default to `false`.
 
 ### `Document`
 It's never been easier to customize the root document of your website! `Document` is an optional (and again, recommended) react component responsible for rendering the root of your website.

@@ -3,6 +3,7 @@ import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
 // import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
 // import WebpackPwaManifest from 'webpack-pwa-manifest'
@@ -60,13 +61,15 @@ export default function ({ config, isNode }) {
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
-      new ExtractTextPlugin({
-        filename: getPath => {
-          process.env.extractedCSSpath = getPath('styles.[hash:8].css')
-          return process.env.extractedCSSpath
-        },
-        allChunks: true,
-      }),
+      config.extractCssChunks ?
+        new ExtractCssChunks() :
+        new ExtractTextPlugin({
+          filename: getPath => {
+            process.env.extractedCSSpath = getPath('styles.[hash:8].css')
+            return process.env.extractedCSSpath
+          },
+          allChunks: true,
+        }),
       new CaseSensitivePathsPlugin(),
       !isNode &&
         new webpack.optimize.CommonsChunkPlugin({
