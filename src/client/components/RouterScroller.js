@@ -41,24 +41,33 @@ const RouterScroller = withRouter(
       if (!autoScrollToHash) {
         return
       }
-      RAF(() => {
-        if (hash) {
-          const resolvedHash = hash.substring(1)
-          if (resolvedHash) {
-            const element = document.getElementById(resolvedHash)
-            if (element !== null) {
-              scrollTo(element, {
-                duration: scrollToHashDuration,
-                offset: scrollToHashOffset,
-              })
-            }
+      if (hash) {
+        const resolvedHash = hash.substring(1)
+        if (resolvedHash) {
+          // We must attempt to scroll synchronously or we risk the browser scrolling for us
+          const element = document.getElementById(resolvedHash)
+          if (element !== null) {
+            scrollTo(element, {
+              duration: scrollToHashDuration,
+              offset: scrollToHashOffset,
+            })
+          } else {
+            RAF(() => {
+              const element = document.getElementById(resolvedHash)
+              if (element !== null) {
+                scrollTo(element, {
+                  duration: scrollToHashDuration,
+                  offset: scrollToHashOffset,
+                })
+              }
+            })
           }
-        } else {
-          scrollTo(0, {
-            duration: scrollToHashDuration,
-          })
         }
-      })
+      } else {
+        scrollTo(0, {
+          duration: scrollToHashDuration,
+        })
+      }
     }
     render () {
       return unwrapArray(this.props.children)
