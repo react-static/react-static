@@ -49,6 +49,13 @@ export default function scrollTo (element, options) {
         resolve()
         return
       }
+
+      // Sanity check to prevent taking over the scroll once we prematurely got to the element
+      if (start === end) {
+        resolve()
+        return
+      }
+
       raf(step)
     }
     raf(step)
