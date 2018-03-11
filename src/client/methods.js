@@ -149,6 +149,10 @@ export async function needsPrefetch (path) {
   // Clean the path
   path = cleanPath(path)
 
+  if (!path) {
+    return false
+  }
+
   // Get route info so we can check if path has any data
   const routeInfo = await getRouteInfo(path)
 
