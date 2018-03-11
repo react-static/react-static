@@ -14,47 +14,49 @@ const prefetchPool = createPool({
 })
 
 export const getRouteInfo = async path => {
-  if (typeof document !== 'undefined') {
-    path = cleanPath(path)
-    // Check the cache first
-    if (routeInfoByPath[path]) {
-      return routeInfoByPath[path]
-    }
-    if (erroredPaths[path]) {
-      return
-    }
-    // If there is no inflight request for the info, let it fly.
-    if (!inflightRouteInfo[path]) {
-      inflightRouteInfo[path] = (async () => {
-        try {
-          if (process.env.REACT_STATIC_ENV === 'development') {
-            // In dev, request from the webpack dev server
-            const { data } = await axios.get(
-              `/__react-static__/routeInfo/${path === '/' ? '' : path}`
-            )
-            return data
-          }
-          // In production, request from route's routeInfo.js
-          const { data } = await axios.get(
-            `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
-              path,
-              `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`
-            )}`
-          )
-          return data
-        } catch (err) {
-          erroredPaths[path] = true
-          console.warn(
-            `Could not load routeInfo for path: ${path}. If this is a static route, make sure this any link to this page is valid! If this is not a static route, you can desregard this warning.`
-          )
-        }
-      })()
-    }
-    const routeInfo = await inflightRouteInfo[path]
-    delete inflightRouteInfo[path]
-    routeInfoByPath[path] = routeInfo
+  if (typeof document === 'undefined') {
+    return
+  }
+  const originalPath = path
+  path = cleanPath(path)
+  // Check the cache first
+  if (routeInfoByPath[path]) {
     return routeInfoByPath[path]
   }
+  if (erroredPaths[path]) {
+    return
+  }
+  // If there is no inflight request for the info, let it fly.
+  if (!inflightRouteInfo[path]) {
+    inflightRouteInfo[path] = (async () => {
+      try {
+        if (process.env.REACT_STATIC_ENV === 'development') {
+          // In dev, request from the webpack dev server
+          const { data } = await axios.get(
+            `/__react-static__/routeInfo/${path === '/' ? '' : path}`
+          )
+          return data
+        }
+        // In production, request from route's routeInfo.js
+        const { data } = await axios.get(
+          `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
+            path,
+            `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`
+          )}`
+        )
+        return data
+      } catch (err) {
+        erroredPaths[path] = true
+        console.warn(
+          `Could not load routeInfo for path: ${originalPath}. If this is a static route, make sure any link to this page is valid! If this is not a static route, you can desregard this warning.`
+        )
+      }
+    })()
+  }
+  const routeInfo = await inflightRouteInfo[path]
+  delete inflightRouteInfo[path]
+  routeInfoByPath[path] = routeInfo
+  return routeInfoByPath[path]
 }
 
 export async function prefetchData (path, { priority } = {}) {
