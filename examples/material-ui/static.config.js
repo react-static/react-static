@@ -4,7 +4,7 @@ import { SheetsRegistry } from 'react-jss/lib/jss'
 import JssProvider from 'react-jss/lib/JssProvider'
 import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from 'material-ui/styles'
 
-// Your Materil UI Custom theme
+// Your Material UI Custom theme
 import theme from './src/theme'
 
 export default {
