@@ -173,6 +173,7 @@ export default {
               options: {
                 sourceMap: true,
                 modifyVars: themeVariables,
+                javascriptEnabled: true,
               },
             },
           ],
@@ -224,6 +225,7 @@ export default {
                 options: {
                   sourceMap: false,
                   modifyVars: themeVariables,
+                  javascriptEnabled: true,
                 },
               },
             ],
