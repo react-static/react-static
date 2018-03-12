@@ -12,6 +12,7 @@ import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
 import Progress from 'progress'
 import chalk from 'chalk'
+import jsesc from 'jsesc'
 //
 import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
@@ -362,7 +363,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
               type="text/javascript"
               dangerouslySetInnerHTML={{
                 __html: `
-                window.__routeInfo = ${JSON.stringify(embeddedRouteInfo).replace(
+                window.__routeInfo = ${jsesc(embeddedRouteInfo, { es6: false, isScriptContext: true }).replace(
               /<(\/)?(script)/gi,
               '<"+"$1$2'
             )};`,
