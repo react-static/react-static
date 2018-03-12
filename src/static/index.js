@@ -12,6 +12,7 @@ import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
 import Progress from 'progress'
 import chalk from 'chalk'
+import jsesc from 'jsesc'
 //
 import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
@@ -186,17 +187,21 @@ export const exportRoutes = async ({ config, clientStats }) => {
   await poolAll(
     config.routes.map(route => async () => {
       const { sharedPropsHashes, templateID, localProps, allProps, path: routePath } = route
-      // This routeInfo will be saved to disk, and included in the html
-      // that is served for that route as well
+
+      // This routeInfo will be saved to disk. It should only include the
+      // localProps and hashes to construct all of the props later.
       const routeInfo = {
         path: routePath,
-        sharedPropsHashes,
         templateID,
+        sharedPropsHashes,
         localProps,
       }
 
+      // This embeddedRouteInfo will be inlined into the HTML for this route.
+      // It should only include the full props, not the partials.
       const embeddedRouteInfo = {
         ...routeInfo,
+        localProps: null,
         allProps,
         siteData,
       }
@@ -316,7 +321,8 @@ export const exportRoutes = async ({ config, clientStats }) => {
                   href={`${config.publicPath}${script}`}
                 />
               ))}
-            {!route.redirect && !config.inlineCss &&
+            {!route.redirect &&
+              !config.inlineCss &&
               clientStyleSheets.map(styleSheet => (
                 <link
                   key={`clientStyleSheet_${styleSheet}`}
@@ -325,7 +331,8 @@ export const exportRoutes = async ({ config, clientStats }) => {
                   href={`${config.publicPath}${styleSheet}`}
                 />
               ))}
-            {!route.redirect && !config.inlineCss &&
+            {!route.redirect &&
+              !config.inlineCss &&
               clientStyleSheets.map(styleSheet => (
                 <link
                   key={`clientStyleSheet_${styleSheet}`}
@@ -336,7 +343,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
             {head.link}
             {head.noscript}
             {head.script}
-            {config.inlineCss &&
+            {config.inlineCss && (
               <style
                 key="clientCss"
                 type="text/css"
@@ -344,7 +351,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
                   __html: clientCss.toString().replace(/<style>|<\/style>/gi, ''),
                 }}
               />
-            }
+            )}
             {head.style}
             {childrenArray}
           </head>
@@ -362,10 +369,10 @@ export const exportRoutes = async ({ config, clientStats }) => {
               type="text/javascript"
               dangerouslySetInnerHTML={{
                 __html: `
-                window.__routeInfo = ${JSON.stringify(embeddedRouteInfo).replace(
-              /<(\/)?(script)/gi,
-              '<"+"$1$2'
-            )};`,
+                window.__routeInfo = ${jsesc(embeddedRouteInfo, {
+              es6: false,
+              isScriptContext: true,
+            }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
               }}
             />
           )}

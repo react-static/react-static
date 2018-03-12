@@ -1,3 +1,14 @@
+# 5.6.0
+#### Features
+- Added `config.extractCssChunks` option. Set to `true` for automatic style-splitting and importing using `ExtractCssChunks` instead of `ExtractTextPlugin`.
+- Added `config.inlinCss` option. Set to `true` to inline all styles into the resulting HTML document instead of using `link` tags.
+#### Fixes & Optimizations
+- Server-side rendering of UTF-8 characters no longer behaves erratically.
+- Resulting HTML for a route no longer includes double instances of route data.
+- Auto hash scrolling is no more responsive and handles more edge cases.
+- Fetching route info for non-existent routes now has better logging.
+- Fixed a bug where an imported `woff2` file extension would crash babel.
+
 # 5.5.14
 #### Fixes & Optimizations
 - Fixed a missing export of `propsByHash`.

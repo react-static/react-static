@@ -15,15 +15,17 @@
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
     "watch": "rimraf lib && babel -w src --out-dir lib",
-    "postpublish": "git push --tags",
+    "postpublish": "sleep 1 && git push --tags",
     "prepublishOnly": "yarn build && yarn test",
     "publishNext": "yarn publish --tag next",
     "startDocs": "gitdocs serve",
     "buildDocs": "gitdocs build",
     "serveDocs": "serve docs-dist -p 3000",
     "test": "eslint src examples test && yarn run test-sample-build",
-    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
-    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
+    "test-large-build":
+      "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
+    "test-sample-build":
+      "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
@@ -67,6 +69,7 @@
     "html-webpack-plugin": "^2.30.1",
     "inquirer": "^3.3.0",
     "inquirer-autocomplete-prompt": "^0.11.1",
+    "jsesc": "^2.5.1",
     "match-sorter": "^2.0.2",
     "openport": "^0.0.4",
     "postcss-flexbugs-fixes": "^3.2.0",
