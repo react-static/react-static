@@ -1,3 +1,8 @@
+# 5.5.14
+#### Fixes & Optimizations
+- Fixed a missing export of `propsByHash`.
+- Added `update-notifier` so people can keep up with all these updates!
+
 # 5.5.13
 #### Fixes & Optimizations
 - Moved `gitdocs` to dev dependencies
