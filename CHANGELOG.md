@@ -1,7 +1,7 @@
 # 5.6.0
 #### Features
 - Added `config.extractCssChunks` option. Set to `true` for automatic style-splitting and importing using `ExtractCssChunks` instead of `ExtractTextPlugin`.
-- Added `config.inlinCss` option. Set to `true` to inline all styles into the resulting HTML document instead of using `link` tags.
+- Added `config.inlineCss` option. Set to `true` to inline all styles into the resulting HTML document instead of using `link` tags.
 #### Fixes & Optimizations
 - Server-side rendering of UTF-8 characters no longer behaves erratically.
 - Resulting HTML for a route no longer includes double instances of route data.
