@@ -20,6 +20,8 @@ const lessToJs = require('less-vars-to-js')
 
 const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, 'src/theme-ant-overwrite.less'), 'utf8'))
 
+const webpack = require('webpack')
+
 //
 export default {
   getSiteData: () => ({
@@ -127,6 +129,10 @@ export default {
     let lessLoader = {}
 
     if (stage === 'dev') {
+
+      // Enable Hot Module Replacement
+      config.plugins.push(new webpack.HotModuleReplacementPlugin())
+
       // In-Line with style-loader
       lessLoader =
         {
