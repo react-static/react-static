@@ -67,6 +67,7 @@
     "html-webpack-plugin": "^2.30.1",
     "inquirer": "^3.3.0",
     "inquirer-autocomplete-prompt": "^0.11.1",
+    "jsesc": "^2.5.1",
     "match-sorter": "^2.0.2",
     "openport": "^0.0.4",
     "postcss-flexbugs-fixes": "^3.2.0",
