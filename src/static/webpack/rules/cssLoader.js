@@ -1,8 +1,9 @@
 import autoprefixer from 'autoprefixer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 
-export default function ({ stage }) {
+export default function ({ config, stage }) {
   if (stage === 'dev') {
     return {
       test: /\.css$/,
@@ -41,7 +42,7 @@ export default function ({ stage }) {
   }
   return {
     test: /\.css$/,
-    loader: ExtractTextPlugin.extract({
+    loader: (config.extractCssChunks ? ExtractCssChunks : ExtractTextPlugin).extract({
       fallback: {
         loader: 'style-loader',
         options: {
