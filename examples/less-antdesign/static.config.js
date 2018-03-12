@@ -129,7 +129,6 @@ export default {
     let lessLoader = {}
 
     if (stage === 'dev') {
-
       // Enable Hot Module Replacement
       config.plugins.push(new webpack.HotModuleReplacementPlugin())
 
