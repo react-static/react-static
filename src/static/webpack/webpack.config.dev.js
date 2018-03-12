@@ -13,6 +13,12 @@ export default function ({ config }) {
   process.env.REACT_STATIC_BASEPATH = config.devBasePath
 
   return {
+    mode: 'development',
+    optimization: {
+      noEmitOnErrors: true,
+      concatenateModules: true,
+    },
+
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
       require.resolve('react-hot-loader/patch'),
@@ -45,8 +51,6 @@ export default function ({ config }) {
         template: `!!raw-loader!${HTML_TEMPLATE}`,
       }),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.NamedModulesPlugin(),
       new CaseSensitivePathsPlugin(),
     ],
     devtool: 'eval-source-map',
