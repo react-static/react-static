@@ -23,6 +23,12 @@ export default function ({ config, isNode }) {
     : config.basePath
 
   return {
+    mode: 'production',
+
+    optimization: {
+      minimize: !isNode && !process.env.REACT_STATIC_DEBUG,
+    },
+
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: path.resolve(ROOT, config.entry),
     output: {
@@ -61,9 +67,9 @@ export default function ({ config, isNode }) {
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
-      config.extractCssChunks ?
-        new ExtractCssChunks() :
-        new ExtractTextPlugin({
+      config.extractCssChunks
+        ? new ExtractCssChunks()
+        : new ExtractTextPlugin({
           filename: getPath => {
             process.env.extractedCSSpath = getPath('styles.[hash:8].css')
             return process.env.extractedCSSpath
@@ -71,16 +77,6 @@ export default function ({ config, isNode }) {
           allChunks: true,
         }),
       new CaseSensitivePathsPlugin(),
-      !isNode &&
-        new webpack.optimize.CommonsChunkPlugin({
-        name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
-        minChunks: Infinity,
-      }),
-      isNode &&
-        new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 1,
-      }),
-      !isNode && !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
       // !isNode &&
       //   new SWPrecacheWebpackPlugin({
       //     cacheId: config.siteName || 'my-site-name',
