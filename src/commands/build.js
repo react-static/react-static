@@ -73,6 +73,7 @@ export default async function build ({ config, staging, debug, isCLI, silent = !
     const PrettyError = require('pretty-error')
     console.log() // new line
     console.log(new PrettyError().render(e))
+    process.exit(1)
   }
   await buildXMLandRSS({ config })
 
