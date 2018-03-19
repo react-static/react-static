@@ -22,10 +22,8 @@
     "buildDocs": "gitdocs build",
     "serveDocs": "serve docs-dist -p 3000",
     "test": "eslint src examples test && yarn run test-sample-build",
-    "test-large-build":
-      "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
-    "test-sample-build":
-      "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
+    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
+    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
@@ -76,6 +74,7 @@
     "postcss-loader": "^2.0.6",
     "preact": "^8.2.7",
     "preact-compat": "^3.17.0",
+    "pretty-error": "^2.1.1",
     "progress": "^2.0.0",
     "prop-types": "^15.5.10",
     "raf": "^3.4.0",
