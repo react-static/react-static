@@ -11,10 +11,15 @@ export default function ({ config, stage }) {
         'style-loader',
         {
           loader: 'css-loader',
-          options: {
-            sourceMap: true,
-            importLoaders: 1,
-          },
+          options: config.cssModules
+            ? {
+              importLoaders: 1,
+              modules: true,
+              localIdentName: '[name]__[local]___[hash:base64:5]',
+            } : {
+              sourceMap: true,
+              importLoaders: 1,
+            },
         },
         {
           loader: 'postcss-loader',
@@ -53,11 +58,18 @@ export default function ({ config, stage }) {
       use: [
         {
           loader: 'css-loader',
-          options: {
-            importLoaders: 1,
-            minimize: true,
-            sourceMap: false,
-          },
+          options: config.cssModules
+            ? {
+              importLoaders: 1,
+              modules: true,
+              minimize: true,
+              sourceMap: false,
+              localIdentName: '[hash:base64:5]',
+            } : {
+              importLoaders: 1,
+              minimize: true,
+              sourceMap: false,
+            },
         },
         {
           loader: 'postcss-loader',

@@ -1,0 +1,140 @@
+.full {
+	width: 100%;
+}
+.bold {
+	font-weight: 700;
+}
+.ttu {
+	text-transform: uppercase;
+}
+.db {
+	display: block;
+}
+.dn {
+	display: none;
+}
+.dib {
+	display: inline-block;
+}
+.df {
+	display: flex;
+}
+.fdc {
+	flex-direction: column;
+}
+.f1 {
+	flex: 1;
+}
+.fww {
+	flex-wrap: wrap;
+}
+.aic {
+	align-items: center;
+}
+.aifs {
+	align-items: flex-start;
+}
+.aife {
+	align-items: flex-end;
+}
+.jcc {
+	justify-content: center;
+}
+.jcsb {
+	justify-content: space-between;
+}
+.hidden {
+	height: 0;
+	width: 0;
+	overflow: hidden;
+	visibility: hidden;
+}
+.oh {
+	overflow: hidden;
+}
+.centered{
+	left: 50%;
+	transform: translate(-50%);
+}
+.fr{
+	float: right;
+}
+.fl{
+	float: left;
+}
+.group {
+	display: flow-root;
+}
+.group:after{
+	display: table;
+	clear: both;
+	content: '';
+}
+.vab {
+	vertical-align: baseline;
+}
+.vam {
+	vertical-align: middle;
+}
+.vat {
+	vertical-align: top;
+}
+.taj{
+	text-align: justify;
+}
+.tti{
+	text-transform: initial;
+}
+.cp{
+	cursor: pointer;
+}
+.round{
+	border-radius: 50%;
+	overflow: hidden;
+}
+.pen{
+	pointer-events: none;
+}
+.pea{
+	pointer-events: auto;
+}
+.ust {
+  user-select: text;
+}
+.pf{
+	position: fixed;
+	-webkit-backface-visibility: hidden;
+}
+.pr{
+	position: relative;
+}
+.pa{
+	position: absolute;
+}
+.ma{
+	margin: 0 auto;
+}
+.zi1{
+	z-index: 1;
+}
+.zi2{
+	z-index: 2;
+}
+.zi3{
+	z-index: 3;
+}
+.zi4{
+	z-index: 4;
+}
+.tac{
+	text-align: center;
+}
+.tal{
+	text-align: left;
+}
+.tar{
+	text-align: right;
+}
+.lsn {
+	list-style: none;
+}
