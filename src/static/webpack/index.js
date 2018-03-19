@@ -83,6 +83,7 @@ export async function startDevServer ({ config }) {
     quiet: true,
     watchOptions: {
       ignored: /node_modules/,
+      ...(config.devServer.watchOptions || {})
     },
     ...config.devServer,
     before: app => {
