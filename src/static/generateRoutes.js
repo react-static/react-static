@@ -108,7 +108,10 @@ export default class Routes extends Component {
     return (
       <Route path='*' render={props => {
         let Comp = getFullComponentForPath(props.location.pathname)
-        return <Comp key={props.location.pathname} {...props} />
+        // If Comp is used as a component here, it triggers React to re-mount the entire
+        // component tree underneath during reconciliation, losing all internal state.
+        // By unwrapping it here we keep the real, static component exposed directly to React.
+        return Comp && Comp({ ...props, key: props.location.pathname })
       }} />
     )
   }
