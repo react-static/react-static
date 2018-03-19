@@ -42,7 +42,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [Typetalk - Chat App for Businesses and Teams](https://www.typetalk.com "Chat App for Businesses and Teams")
 - [This Is Our Home - eCommerce](https://www.tioh.co "This Is Our Home - eCommerce")
 - [Lam Hieu - Personal Website](https://lamhieu.info)
-- [Elsa Salonen - Artist Portfolio](https://elsasalonen.com/) 
+- [Elsa Salonen - Artist Portfolio](https://elsasalonen.com/)
 - [PSD Wizard: On-demand Front-End Coding Service](https://psdwizard.com)
 
 ## Quick Start
@@ -95,6 +95,7 @@ All of the following examples can be used as a template at project creation.
 - [Glamorous & Tailwind CSS](https://github.com/nozzle/react-static/tree/master/examples/glamorous-tailwind)
 - [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
 - [LESS & Antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
+- [CSS Modules](https://github.com/nozzle/react-static/tree/master/examples/css-modules)
 - [Styled-Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
 - [Redux](https://github.com/nozzle/react-static/tree/master/examples/redux)
 - [Apollo GraphQL](https://github.com/nozzle/react-static/tree/master/examples/apollo)
