@@ -84,7 +84,7 @@ export async function startDevServer ({ config }) {
     ...config.devServer,
     watchOptions: {
       ignored: /node_modules/,
-      ...((config.devServer) ? config.devServer.watchOptions : {}),
+      ...((config.devServer) ? (config.devServer.watchOptions) || {} : {}),
     },
     before: app => {
       // Serve the site data
