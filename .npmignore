@@ -6,6 +6,7 @@ node_modules
 
 # production
 /examples/*/dist
+/examples/*/tmp
 /examples/*/yarn.lock
 /src
 !/src/index.d.ts
