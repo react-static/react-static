@@ -8,7 +8,7 @@ import { copyPublicFolder } from '../utils'
 
 export default async function build ({ config, staging, debug, isCLI, silent = !isCLI } = {}) {
   // ensure ENV variables are set
-  if (typeof process.env.NODE_ENV === 'undefined') {
+  if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
   }
   process.env.REACT_STATIC_ENV = 'production'
