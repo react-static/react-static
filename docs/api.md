@@ -375,7 +375,7 @@ An optional function that can be used to customize the static rendering logic.
 
 This also happens to be the perfect place for css-in-js integration (see [styled-components] and [glamorous] examples for more information)
 
-Exmaple:
+Example:
 ```javascript
 // static.config.js
 export default {
@@ -538,7 +538,7 @@ Props:
   - `browser` - Uses `history.createBrowserHistory`
   - `hash` - Uses `history.createHashHistory`
   - `memory` - Uses `history.createMemoryHistory`
-- `autoScrollToTop: Boolean` - Set this to `false` to disable the automatic scroll-to-top when the site path changes. Defualts to `true`.
+- `autoScrollToTop: Boolean` - Set this to `false` to disable the automatic scroll-to-top when the site path changes. Defaults to `true`.
 - `autoScrollToHash: Boolean` - Set this to `false` to disable the automatic scroll-to-hash when the location hash changes. Defaults to `true`.
 - `scrollToTopDuration: Int` - The duration of the automatic scroll-to-top animation that happens on path changes. Defaults to `0`
 - `scrollToHashDuration: Int` - The duration of the automatic scroll-to-hash animation that happens on hash changes. Defaults to `800`
@@ -940,7 +940,7 @@ A direct export of the `withRouter` component from [`react-router-dom`](https://
 
 ### `onLoading`
 
-If you need to imperatively subscribe to React-Static's global loadin state, you can use `onLoading`. Via a callback, it gives you access to a `loading` value (a Boolean), which will be true when react-static is waiting on assets to load (this won't happen often, if at all). Use this to show a loading indicator if you'd like!
+If you need to imperatively subscribe to React-Static's global loading state, you can use `onLoading`. Via a callback, it gives you access to a `loading` value (a Boolean), which will be true when react-static is waiting on assets to load (this won't happen often, if at all). Use this to show a loading indicator if you'd like!
 
 Example:
 ```javascript
