@@ -74,6 +74,7 @@
     "postcss-loader": "^2.0.6",
     "preact": "^8.2.7",
     "preact-compat": "^3.17.0",
+    "pretty-error": "^2.1.1",
     "progress": "^2.0.0",
     "prop-types": "^15.5.10",
     "raf": "^3.4.0",

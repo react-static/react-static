@@ -7,7 +7,7 @@ const startCmd = require('../lib/commands/start')
 
 // use commander to parse CLI args
 program
-  .option('-c, --config', 'path to custom static.config.js')
+  .option('-c, --config <path>', 'path to custom static.config.js')
   .option('-d, --debug', 'set to debug mode')
   .parse(process.argv)
 

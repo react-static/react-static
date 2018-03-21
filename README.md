@@ -14,7 +14,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 ## Features
 - ⚛️ 100% React (or Preact!)
-- 🚀 Blazing fast builds and performance.
+- 🚀 [Blazing](https://twitter.com/acdlite/status/974390255393505280) fast builds and performance.
 - 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
 - ✂️ Automatic code and data splitting for routes!
 - 💥 Instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.

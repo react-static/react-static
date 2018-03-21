@@ -64,10 +64,17 @@ export default async function build ({ config, staging, debug, isCLI, silent = !
     await new Promise(() => {})
   }
 
-  await exportRoutes({
-    config,
-    clientStats,
-  })
+  try {
+    await exportRoutes({
+      config,
+      clientStats,
+    })
+  } catch (e) {
+    const PrettyError = require('pretty-error')
+    console.log() // new line
+    console.log(new PrettyError().render(e))
+    process.exit(1)
+  }
   await buildXMLandRSS({ config })
 
   if (!silent) console.timeEnd('=> Site is ready for production!')

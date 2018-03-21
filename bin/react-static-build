@@ -7,7 +7,7 @@ const buildCmd = require('../lib/commands/build')
 
 // use commander to parse CLI args
 program
-  .option('-c, --config', 'path to custom static.config.js')
+  .option('-c, --config <path>', 'path to custom static.config.js')
   .option('-s, --staging', 'set to staging mode')
   .option('-d, --debug', 'set to debug mode')
   .parse(process.argv)
