@@ -1,3 +1,8 @@
+# 5.6.1
+#### Fixes & Optimizations
+- In the `typescript` example, `ts-loader` is fixed for webpack 3
+- `less-antdesign` has been updated to run and work properly.
+
 # 5.6.0
 #### Features
 - Added `config.extractCssChunks` option. Set to `true` for automatic style-splitting and importing using `ExtractCssChunks` instead of `ExtractTextPlugin`.
