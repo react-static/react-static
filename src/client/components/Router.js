@@ -67,7 +67,7 @@ export default class Router extends React.Component {
     (async () => {
       if (typeof window !== 'undefined') {
         // Get the entry path from location
-        const { href } = window.location
+        const { href } = decodeURIComponent(window.location)
         const path = cleanPath(href)
 
         // Injest and cache the embedded routeInfo in the page if possible
