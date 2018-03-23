@@ -55,6 +55,7 @@ module.exports = {
             src: 'concepts.md#using-preact-in-production',
           },
           { name: 'Pagination', src: 'concepts.md#pagination' },
+          { name: 'Browser Support', src: 'concepts.md#browser-support' },
         ],
       },
       {
