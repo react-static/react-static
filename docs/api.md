@@ -73,11 +73,11 @@ It supports the following properties:
   - Arguments
     - `resolvedRoute: Object` - This is the resolved route this function is handling.
     - `flags: Object{}` - An object of flags and meta information about the build
-      - `dev: Boolean` - Indicates whether you are running a development or production build.
+    - `dev: Boolean` - Indicates whether you are running a development or production build.
 - `is404: Boolean` - Set to `true` to indicate a route as the 404 handler for your site. Only one 404 route should be present in your site!
 - `children: Array[Route]` - Routes can and should have nested routes when necessary. **Route paths are inherited as they are nested, so there is no need to repeat a path prefix in nested routes**.
 - `redirect: URL` - Setting this to a URL will perform the equivalent of a 301 redirect (as much as is possible within a static site) using `http-equiv` meta tags, canonicals, etc. **This will force the page to render only the bare minimum to perform the redirect and nothing else**.
-- `noIndex: Boolean` - Set this to `true` if you do not want this route indexed in your automatically generated sitemap.xml. Defaults to `false`.
+- `noindex: Boolean` - Set this to `true` if you do not want this route or its children indexed in your automatically generated sitemap.xml. Defaults to `false`.
 - `permalink: String` - You can optionally set this route to have a custom xml sitemap permalink by supplying it here.
 - `lastModified: String(YYYY-MM-DD)` - A string representing the date when this route was last modified in the format of `YYYY-MM-DD`.
 - `priority: Float` - An optional priority for the sitemap.xml. Defaults to `0.5`
