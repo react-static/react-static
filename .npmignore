@@ -8,6 +8,7 @@ node_modules
 /examples/*/dist
 /examples/*/tmp
 /examples/*/yarn.lock
+/examples/*/package-lock.json
 /src
 !/src/index.d.ts
 
@@ -25,7 +26,7 @@ docs-dist/
 .esm-cache
 
 # Media
-.sketch
+*.sketch
 
 *.log
 npm-debug.log*
