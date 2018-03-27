@@ -91,7 +91,12 @@ export default async function create ({ name, template, isCLI, silent = !isCLI }
   // We need to rename the gitignore file to .gitignore
   // See: https://github.com/npm/npm/issues/1862
 
-  await fs.move(path.join(dest, 'gitignore'), path.join(dest, '.gitignore'))
+  if (!fs.pathExistsSync(path.join(dest, '.gitignore'))) {
+    await fs.move(path.join(dest, 'gitignore'), path.join(dest, '.gitignore'))
+  }
+  if (fs.pathExistsSync(path.join(dest, 'gitignore'))) {
+    fs.removeSync(path.join(dest, 'gitignore'))
+  }
 
   const isYarn = shouldUseYarn()
 

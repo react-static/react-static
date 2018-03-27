@@ -1,3 +1,9 @@
+# 5.6.4
+
+#### Fixes & Optimizations
+
+* Fix `gitignore` issues
+
 # 5.6.3
 
 #### Fixes & Optimizations
