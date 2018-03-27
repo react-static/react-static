@@ -398,7 +398,7 @@ export default {
     root: process.cwd(), // The root of your project. Don't change this unless you know what you're doing.
     src: 'src', // The source directory. Must include an index.js entry file.
     dist: 'dist', // The production output directory.
-    devDist: 'dist', // The development scratch directory.
+    devDist: 'tmp/dev-server', // The development scratch directory.
     public: 'public', // The public directory (files copied to dist during build)
   }
 }

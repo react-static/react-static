@@ -6,6 +6,7 @@
 
 # production
 /dist
+/tmp
 
 # cordova
 /platforms

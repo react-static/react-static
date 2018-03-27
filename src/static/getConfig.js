@@ -25,6 +25,7 @@ export default function getConfig (customConfig) {
     root: path.resolve(process.cwd()),
     src: 'src',
     dist: 'dist',
+    devDist: 'tmp/dev-server',
     public: 'public',
     ...(config.paths || {}),
   }
