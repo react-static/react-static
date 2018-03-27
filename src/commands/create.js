@@ -87,65 +87,70 @@ export default async function create ({ name, template, isCLI, silent = !isCLI }
   // Fetch template
   await fetchTemplate(template, dest)
 
-  // Rename gitignore after the fact to prevent npm from renaming it to .npmignore
+  // Since npm packaging will rename .gitignore files to .npmignore,
+  // Check if .gitignore wasn't transferred. If it wasn't, then it was
+  // renamed to .npmignore, we need to change it back.
   // See: https://github.com/npm/npm/issues/1862
-  fs.move(path.join(dest, 'gitignore'), path.join(dest, '.gitignore'), [], err => {
-    if (err) {
+
+  if (!fs.pathExistsSync(path.join(dest, '.gitignore'))) {
+    try {
+      await fs.move(path.join(dest, '.npmignore'), path.join(dest, '.gitignore'))
+    } catch (err) {
       // Append if there's already a `.gitignore` file there
       if (err.code === 'EEXIST') {
-        const data = fs.readFileSync(path.join(dest, 'gitignore'))
+        const data = fs.readFileSync(path.join(dest, '.npmignore'))
         fs.appendFileSync(path.join(dest, '.gitignore'), data)
-        fs.unlinkSync(path.join(dest, 'gitignore'))
+        fs.unlinkSync(path.join(dest, '.npmignore'))
       } else {
         throw err
       }
     }
-  })
-
-  const isYarn = shouldUseYarn()
-
-  if (isCLI) {
-    if (!silent) {
-      console.log(
-        `=> Installing dependencies with: ${isYarn
-          ? chalk.hex(ChalkColor.yarn)('Yarn')
-          : chalk.hex(ChalkColor.npm)('NPM')}...`
-      )
-    }
-    // We install react-static separately to ensure we always have the latest stable release
-    execSync(
-      `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${isYarn
-        ? 'yarn add react-static@latest'
-        : 'npm install react-static@latest --save'}`
-    )
-    if (!silent) console.log('')
   }
 
-  if (!silent) console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
+  //   const isYarn = shouldUseYarn()
 
-  if (!silent) {
-    console.log(`
-${chalk.green('=> To get started:')}
+  //   if (isCLI) {
+  //     if (!silent) {
+  //       console.log(
+  //         `=> Installing dependencies with: ${
+  //           isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
+  //         }...`
+  //       )
+  //     }
+  //     // We install react-static separately to ensure we always have the latest stable release
+  //     execSync(
+  //       `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
+  //         isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
+  //       }`
+  //     )
+  //     if (!silent) console.log('')
+  //   }
 
-  cd ${name} ${!isCLI
-  ? `&& ${isYarn
-    ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm install')}`
-  : ''}
+  //   if (!silent) console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
 
-  ${isYarn
-    ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')} start ${chalk.green('- Start the development server')}
-  ${isYarn
-    ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')} build ${chalk.green('- Build for production')}
-  ${isYarn
-    ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')} serve ${chalk.green(
-  '- Test a production build locally'
-)}
-`)
-  }
+  //   if (!silent) {
+  //     console.log(`
+  // ${chalk.green('=> To get started:')}
+
+  //   cd ${name} ${
+  //   !isCLI
+  //     ? `&& ${
+  //       isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm install')
+  //     }`
+  //     : ''
+  // }
+
+  //   ${
+  //   isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+  // } start ${chalk.green('- Start the development server')}
+  //   ${
+  //   isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+  // } build ${chalk.green('- Build for production')}
+  //   ${
+  //   isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+  // } serve ${chalk.green('- Test a production build locally')}
+  // `)
+  // }
 
   async function fetchTemplate (template, dest) {
     if (!silent) console.log('')
