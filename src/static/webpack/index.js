@@ -76,7 +76,7 @@ export async function startDevServer ({ config }) {
   const devServerConfig = {
     hot: true,
     disableHostCheck: true,
-    contentBase: config.paths.DIST,
+    contentBase: [config.paths.PUBLIC, config.paths.DIST],
     publicPath: '/',
     historyApiFallback: true,
     compress: false,
