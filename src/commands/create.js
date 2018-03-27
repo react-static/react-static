@@ -107,50 +107,50 @@ export default async function create ({ name, template, isCLI, silent = !isCLI }
     }
   }
 
-  //   const isYarn = shouldUseYarn()
+  const isYarn = shouldUseYarn()
 
-  //   if (isCLI) {
-  //     if (!silent) {
-  //       console.log(
-  //         `=> Installing dependencies with: ${
-  //           isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
-  //         }...`
-  //       )
-  //     }
-  //     // We install react-static separately to ensure we always have the latest stable release
-  //     execSync(
-  //       `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
-  //         isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
-  //       }`
-  //     )
-  //     if (!silent) console.log('')
-  //   }
+  if (isCLI) {
+    if (!silent) {
+      console.log(
+        `=> Installing dependencies with: ${
+          isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
+        }...`
+      )
+    }
+    // We install react-static separately to ensure we always have the latest stable release
+    execSync(
+      `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
+        isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
+      }`
+    )
+    if (!silent) console.log('')
+  }
 
-  //   if (!silent) console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
+  if (!silent) console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
 
-  //   if (!silent) {
-  //     console.log(`
-  // ${chalk.green('=> To get started:')}
+  if (!silent) {
+    console.log(`
+  ${chalk.green('=> To get started:')}
 
-  //   cd ${name} ${
-  //   !isCLI
-  //     ? `&& ${
-  //       isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm install')
-  //     }`
-  //     : ''
-  // }
+    cd ${name} ${
+  !isCLI
+    ? `&& ${
+      isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm install')
+    }`
+    : ''
+}
 
-  //   ${
-  //   isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
-  // } start ${chalk.green('- Start the development server')}
-  //   ${
-  //   isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
-  // } build ${chalk.green('- Build for production')}
-  //   ${
-  //   isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
-  // } serve ${chalk.green('- Test a production build locally')}
-  // `)
-  // }
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} start ${chalk.green('- Start the development server')}
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} build ${chalk.green('- Build for production')}
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} serve ${chalk.green('- Test a production build locally')}
+  `)
+  }
 
   async function fetchTemplate (template, dest) {
     if (!silent) console.log('')

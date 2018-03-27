@@ -1,3 +1,9 @@
+# 5.6.3
+
+#### Fixes & Optimizations
+
+* `.gitignore` files can now have the `dot` prefix in examples. Automatic changes resulting in a `.npmignore` name swap are handled by `react-static create`
+
 # 5.6.2
 
 #### Fixes & Optimizations
