@@ -277,13 +277,20 @@ export const exportRoutes = async ({ config, clientStats }) => {
         return appHtml
       }
 
-      // Allow extractions of meta via config.renderToString
-      const appHtml = await config.renderToHtml(
-        renderToStringAndExtract,
-        FinalComp,
-        renderMeta,
-        clientStats
-      )
+      let appHtml
+
+      try {
+        // Allow extractions of meta via config.renderToString
+        appHtml = await config.renderToHtml(
+          renderToStringAndExtract,
+          FinalComp,
+          renderMeta,
+          clientStats
+        )
+      } catch (error) {
+        error.message = `Failed exporting HTML for URL /${route.path}/ (${route.component}): ${error.message}`
+        throw error
+      }
 
       // Instead of using the default components, we need to hard code meta
       // from react-helmet into the components

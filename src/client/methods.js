@@ -37,7 +37,7 @@ export const getRouteInfo = async path => {
           )
           return data
         }
-        // In production, request from route's routeInfo.js
+        // In production, request from route's routeInfo.json
         const { data } = await axios.get(
           `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
             path,

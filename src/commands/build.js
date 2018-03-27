@@ -8,7 +8,7 @@ import { copyPublicFolder } from '../utils'
 
 export default async function build ({ config, staging, debug, isCLI, silent = !isCLI } = {}) {
   // ensure ENV variables are set
-  if (typeof process.env.NODE_ENV === 'undefined') {
+  if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
   }
   process.env.REACT_STATIC_ENV = 'production'
@@ -64,10 +64,17 @@ export default async function build ({ config, staging, debug, isCLI, silent = !
     await new Promise(() => {})
   }
 
-  await exportRoutes({
-    config,
-    clientStats,
-  })
+  try {
+    await exportRoutes({
+      config,
+      clientStats,
+    })
+  } catch (e) {
+    const PrettyError = require('pretty-error')
+    console.log() // new line
+    console.log(new PrettyError().render(e))
+    process.exit(1)
+  }
   await buildXMLandRSS({ config })
 
   if (!silent) console.timeEnd('=> Site is ready for production!')
