@@ -81,10 +81,11 @@ export async function startDevServer ({ config }) {
     historyApiFallback: true,
     compress: false,
     quiet: true,
+    ...config.devServer,
     watchOptions: {
       ignored: /node_modules/,
+      ...((config.devServer) ? (config.devServer.watchOptions) || {} : {}),
     },
-    ...config.devServer,
     before: app => {
       // Serve the site data
       app.get('/__react-static__/siteData', async (req, res, next) => {
