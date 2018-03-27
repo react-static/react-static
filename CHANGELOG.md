@@ -3,6 +3,10 @@
 #### Fixes & Optimizations
 
 * `.gitignore` files can now have the `dot` prefix in examples. Automatic changes resulting in a `.npmignore` name swap are handled by `react-static create`
+* `react-static build --debug` flag now uses the `development` flag so as to not hide react warnings, errors and disable react minification
+* Changed default `dist` folder during development to `tmp/dev-server`
+* No more losing internal state in components during hash navigation
+* Dev server now serves `public` directly through webpack, allowing immediate feedback to changes in its files.
 
 # 5.6.2
 
