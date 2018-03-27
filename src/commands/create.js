@@ -87,25 +87,11 @@ export default async function create ({ name, template, isCLI, silent = !isCLI }
   // Fetch template
   await fetchTemplate(template, dest)
 
-  // Since npm packaging will rename .gitignore files to .npmignore,
-  // Check if .gitignore wasn't transferred. If it wasn't, then it was
-  // renamed to .npmignore, we need to change it back.
+  // Since npm packaging will clobber .gitignore files
+  // We need to rename the gitignore file to .gitignore
   // See: https://github.com/npm/npm/issues/1862
 
-  if (!fs.pathExistsSync(path.join(dest, '.gitignore'))) {
-    try {
-      await fs.move(path.join(dest, '.npmignore'), path.join(dest, '.gitignore'))
-    } catch (err) {
-      // Append if there's already a `.gitignore` file there
-      if (err.code === 'EEXIST') {
-        const data = fs.readFileSync(path.join(dest, '.npmignore'))
-        fs.appendFileSync(path.join(dest, '.gitignore'), data)
-        fs.unlinkSync(path.join(dest, '.npmignore'))
-      } else {
-        throw err
-      }
-    }
-  }
+  await fs.move(path.join(dest, 'gitignore'), path.join(dest, '.gitignore'))
 
   const isYarn = shouldUseYarn()
 
