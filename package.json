@@ -13,11 +13,12 @@
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "build": "rimraf lib && babel src --out-dir lib",
+    "build": "rimraf lib && babel src --out-dir lib && yarn prepGitignore",
     "watch": "rimraf lib && babel -w src --out-dir lib",
     "postpublish": "git push --tags",
     "prepublishOnly": "yarn build && yarn test",
     "publishNext": "yarn publish --tag next",
+    "prepGitignore": "node tools/prepublishOnly.js",
     "startDocs": "gitdocs serve",
     "buildDocs": "gitdocs build",
     "serveDocs": "serve docs-dist -p 3000",
