@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "5.6.6",
+  "version": "5.6.7",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -23,10 +23,8 @@
     "buildDocs": "gitdocs build",
     "serveDocs": "serve docs-dist -p 3000",
     "test": "eslint src examples test && yarn run test-sample-build",
-    "test-large-build":
-      "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
-    "test-sample-build":
-      "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
+    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
+    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
   "dependencies": {
     "@types/react": "^16.0.18",

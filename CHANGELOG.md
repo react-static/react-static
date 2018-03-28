@@ -1,3 +1,9 @@
+# 5.6.6 - 5.6.7
+
+#### Fixes & Optimizations
+
+* Fixed gitignore files from not being generated
+
 # 5.6.5
 
 #### Fixes & Optimizations
