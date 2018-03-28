@@ -3,11 +3,8 @@ import React, { Component } from 'react'
 import withAuthorization from '../session/withAuthorization'
 import { db } from '../firebase'
 
-const fromObjectToList = object => (
-  object
-    ? Object.keys(object).map(key => ({ ...object[key], index: key }))
-    : []
-)
+const fromObjectToList = object =>
+  object ? Object.keys(object).map(key => ({ ...object[key], index: key })) : []
 
 class HomePage extends Component {
   constructor (props) {
@@ -19,9 +16,9 @@ class HomePage extends Component {
   }
 
   componentDidMount () {
-    db.onceGetUsers().then(snapshot =>
-      this.setState(() => ({ users: fromObjectToList(snapshot.val()) })),
-    )
+    db
+      .onceGetUsers()
+      .then(snapshot => this.setState(() => ({ users: fromObjectToList(snapshot.val()) })))
   }
 
   render () {
@@ -32,7 +29,7 @@ class HomePage extends Component {
         <h1>Dashboard</h1>
         <p>Dashboard is accessible by every signed in user.</p>
 
-        { !!users.length && <UserList users={users} /> }
+        {!!users.length && <UserList users={users} />}
       </div>
     )
   }
@@ -41,9 +38,7 @@ class HomePage extends Component {
 const UserList = ({ users }) => (
   <div>
     <h2>List of App User IDs</h2>
-    {users.map(user =>
-      <div key={user.index}>{user.index}</div>,
-    )}
+    {users.map(user => <div key={user.index}>{user.index}</div>)}
   </div>
 )
 

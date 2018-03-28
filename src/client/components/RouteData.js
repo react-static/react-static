@@ -8,8 +8,7 @@ import DevSpinner from './DevSpinner'
 
 const warnedPaths = {}
 
-const RouteData = withRouter(
-  class RouteData extends React.Component {
+const RouteData = withRouter(class RouteData extends React.Component {
     static contextTypes = {
       routeInfo: PropTypes.object,
     }
@@ -43,7 +42,9 @@ const RouteData = withRouter(
         }
       })()
     render () {
-      const { component, render, children, location: { pathname }, ...rest } = this.props
+      const {
+        component, render, children, location: { pathname }, ...rest
+      } = this.props
       let { loaded } = this.state
 
       const path = cleanPath(rest.is404 ? '404' : pathname)
@@ -68,9 +69,7 @@ const RouteData = withRouter(
 
       if (!allProps && !rest.is404 && !warnedPaths[path]) {
         warnedPaths[path] = true
-        console.warn(
-          `RouteData or withRouteData couldn't find any props for path: ${path}. You are either missing a route.getData function or you are relying on RouteData/withRouteData where you don't need to.`
-        )
+        console.warn(`RouteData or withRouteData couldn't find any props for path: ${path}. You are either missing a route.getData function or you are relying on RouteData/withRouteData where you don't need to.`)
       }
 
       if (!loaded) {
@@ -92,8 +91,7 @@ const RouteData = withRouter(
       }
       return children(finalProps)
     }
-  }
-)
+})
 
 export default RouteData
 

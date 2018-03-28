@@ -8,7 +8,9 @@ import getConfig from '../static/getConfig'
 import { createIndexFilePlaceholder } from '../utils'
 //
 
-export default async function start ({ config, isCLI, debug, silent = !isCLI } = {}) {
+export default async function start ({
+  config, isCLI, debug, silent = !isCLI,
+} = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined') {
     process.env.NODE_ENV = 'development'

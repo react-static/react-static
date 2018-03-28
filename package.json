@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "5.6.4",
+  "version": "5.6.5",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -54,8 +54,7 @@
     "cross-spawn": "^5.1.0",
     "css-loader": "^0.28.7",
     "download-git-repo": "^1.0.2",
-    "eslint-plugin-class-property": "^1.1.0",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-config-react-tools": "^1.2.3",
     "extract-css-chunks-webpack-plugin": "^2.0.18",
     "extract-hoc": "^0.0.5",
     "extract-hoc-compose": "^0.0.1",
@@ -100,8 +99,6 @@
   },
   "devDependencies": {
     "eslint": "^4.3.0",
-    "eslint-config-react-tools": "^1.0.6",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
     "gitdocs": "^1.5.17",
     "jest": "^21.2.1",
     "rimraf": "^2.6.2"

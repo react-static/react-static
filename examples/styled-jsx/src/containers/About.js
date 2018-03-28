@@ -9,6 +9,7 @@ export default () => (
       h1 {
         color: darkred;
       }
-    `}</style>
+    `}
+    </style>
   </div>
 )

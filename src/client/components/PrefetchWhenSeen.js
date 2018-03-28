@@ -49,7 +49,9 @@ export default class PrefetchWhenSeen extends React.Component {
   }
 
   render () {
-    const { component, render, children, ...rest } = this.props
+    const {
+      component, render, children, ...rest
+    } = this.props
     if (component) {
       return React.createElement(component, {
         handleRef: this.handleRef,

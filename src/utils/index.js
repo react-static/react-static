@@ -40,11 +40,12 @@ export function copyPublicFolder (config) {
 
 export async function createIndexFilePlaceholder ({ config, Component, siteData }) {
   // Render the base document component to string with siteprops
-  const html = `<!DOCTYPE html>${renderToString(
+  const DocumentHtml = renderToString(
     <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteData={siteData}>
       <div id="root" />
     </Component>
-  )}`
+  )
+  const html = `<!DOCTYPE html>${DocumentHtml}`
 
   // Write the Document to index.html
   await fs.outputFile(config.paths.HTML_TEMPLATE, html)

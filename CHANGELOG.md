@@ -1,3 +1,10 @@
+# 5.6.5
+
+#### Fixes & Optimizations
+
+* Fixed an issue in the dev server that would result in a 404 on first load.
+* Upgrade eslint rules to latest versions
+
 # 5.6.4
 
 #### Fixes & Optimizations

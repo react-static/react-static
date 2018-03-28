@@ -11,7 +11,9 @@ import nodeExternals from 'webpack-node-externals'
 import rules from './rules'
 
 export default function ({ config, isNode }) {
-  const { ROOT, DIST, NODE_MODULES, SRC } = config.paths
+  const {
+    ROOT, DIST, NODE_MODULES, SRC,
+  } = config.paths
 
   config.publicPath = process.env.REACT_STATIC_STAGING
     ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
@@ -73,13 +75,13 @@ export default function ({ config, isNode }) {
       new CaseSensitivePathsPlugin(),
       !isNode &&
         new webpack.optimize.CommonsChunkPlugin({
-        name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
-        minChunks: Infinity,
-      }),
+          name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
+          minChunks: Infinity,
+        }),
       isNode &&
         new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 1,
-      }),
+          maxChunks: 1,
+        }),
       !isNode && !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
       // !isNode &&
       //   new SWPrecacheWebpackPlugin({

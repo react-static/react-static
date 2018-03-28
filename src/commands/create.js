@@ -12,7 +12,9 @@ import { ChalkColor } from '../utils'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
-export default async function create ({ name, template, isCLI, silent = !isCLI } = {}) {
+export default async function create ({
+  name, template, isCLI, silent = !isCLI,
+} = {}) {
   const prompts = []
 
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
@@ -102,18 +104,14 @@ export default async function create ({ name, template, isCLI, silent = !isCLI }
 
   if (isCLI) {
     if (!silent) {
-      console.log(
-        `=> Installing dependencies with: ${
-          isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
-        }...`
-      )
+      console.log(`=> Installing dependencies with: ${
+        isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
+      }...`)
     }
     // We install react-static separately to ensure we always have the latest stable release
-    execSync(
-      `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
-        isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
-      }`
-    )
+    execSync(`cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
+      isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
+    }`)
     if (!silent) console.log('')
   }
 

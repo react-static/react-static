@@ -36,7 +36,9 @@ export default class SiteData extends React.Component {
     this.unmounting = true
   }
   render () {
-    const { component, render, children, ...rest } = this.props
+    const {
+      component, render, children, ...rest
+    } = this.props
     let siteData
 
     // Get siteInfo from window

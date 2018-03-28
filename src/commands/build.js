@@ -6,7 +6,9 @@ import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder } from '../utils'
 
-export default async function build ({ config, staging, debug, isCLI, silent = !isCLI } = {}) {
+export default async function build ({
+  config, staging, debug, isCLI, silent = !isCLI,
+} = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
@@ -35,9 +37,7 @@ export default async function build ({ config, staging, debug, isCLI, silent = !
 
   if (!config.siteRoot) {
     if (!silent) {
-      console.log(
-        "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
-      )
+      console.log("=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated.")
     }
     if (!silent) console.log('')
   }

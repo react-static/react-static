@@ -186,7 +186,9 @@ export const exportRoutes = async ({ config, clientStats }) => {
 
   await poolAll(
     config.routes.map(route => async () => {
-      const { sharedPropsHashes, templateID, localProps, allProps, path: routePath } = route
+      const {
+        sharedPropsHashes, templateID, localProps, allProps, path: routePath,
+      } = route
 
       // This routeInfo will be saved to disk. It should only include the
       // localProps and hashes to construct all of the props later.
@@ -249,7 +251,9 @@ export const exportRoutes = async ({ config, clientStats }) => {
       const renderToStringAndExtract = comp => {
         // Rend the app to string!
         const appHtml = renderToString(comp)
-        const { scripts, stylesheets, css, CssHash } = flushChunks(clientStats, {
+        const {
+          scripts, stylesheets, css, CssHash,
+        } = flushChunks(clientStats, {
           chunkNames,
           outputPath: config.paths.DIST,
         })
@@ -288,7 +292,9 @@ export const exportRoutes = async ({ config, clientStats }) => {
           clientStats
         )
       } catch (error) {
-        error.message = `Failed exporting HTML for URL /${route.path}/ (${route.component}): ${error.message}`
+        error.message = `Failed exporting HTML for URL /${route.path}/ (${route.component}): ${
+          error.message
+        }`
         throw error
       }
 
@@ -377,9 +383,9 @@ export const exportRoutes = async ({ config, clientStats }) => {
               dangerouslySetInnerHTML={{
                 __html: `
                 window.__routeInfo = ${jsesc(embeddedRouteInfo, {
-              es6: false,
-              isScriptContext: true,
-            }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
+                  es6: false,
+                  isScriptContext: true,
+                }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
               }}
             />
           )}
@@ -395,8 +401,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
         </body>
       )
 
-      // Render the html for the page inside of the base document.
-      let html = `<!DOCTYPE html>${renderToString(
+      const DocumentHtml = renderToString(
         <DocumentTemplate
           Html={HtmlWithMeta}
           Head={HeadWithMeta}
@@ -407,7 +412,10 @@ export const exportRoutes = async ({ config, clientStats }) => {
         >
           <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
         </DocumentTemplate>
-      )}`
+      )
+
+      // Render the html for the page inside of the base document.
+      let html = `<!DOCTYPE html>${DocumentHtml}`
 
       const routeInfoFileContent = JSON.stringify(routeInfo)
 
