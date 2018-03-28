@@ -1,3 +1,9 @@
+# 5.6.8
+
+#### Fixes & Optimizations
+
+* Fixed yet another issue in the dev server that could result in a 404 on first load.
+
 # 5.6.6 - 5.6.7
 
 #### Fixes & Optimizations
