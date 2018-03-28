@@ -40,7 +40,7 @@ export default class Router extends React.Component {
 
     // In SRR and production, synchronously register the templateID for the
     // initial path
-    let routeInfo = context.routeInfo
+    let { routeInfo } = context
     let path = cleanPath(context.staticURL)
 
     if (typeof document !== 'undefined') {
@@ -67,12 +67,12 @@ export default class Router extends React.Component {
     (async () => {
       if (typeof window !== 'undefined') {
         // Get the entry path from location
-        const { href } = decodeURIComponent(window.location)
+        const href = decodeURIComponent(window.location)
         const path = cleanPath(href)
 
         // Injest and cache the embedded routeInfo in the page if possible
         if (window.__routeInfo && window.__routeInfo.path === path) {
-          const allProps = window.__routeInfo.allProps
+          const { allProps } = window.__routeInfo
           Object.keys(window.__routeInfo.sharedPropsHashes).forEach(propKey => {
             propsByHash[window.__routeInfo.sharedPropsHashes[propKey]] = allProps[propKey]
           })
