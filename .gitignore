@@ -20,6 +20,7 @@ examples/*/yarn.lock
 lib
 node_modules
 npm-debug.log*
+package-lock.json
 tmp
 yarn-debug.log*
 yarn-error.log*
