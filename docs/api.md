@@ -180,7 +180,7 @@ Works exactly like `basePath`, but only when building with the `--staging` build
 Works exactly like `basePath`, but only when running the dev server.
 
 ### `extractCssChunks`
-`extractCssChunks` replaces default `ExtractTextPlugin` with `ExtractCssChunks`. It enables automatic CSS splitting into separate files by routes as well as dynamic components (usign `react-universal-component`). More information about the [plugin](https://github.com/faceyspacey/extract-css-chunks-webpack-plugin) and [why it is useful as a part of CSS delivery optimisation](https://github.com/faceyspacey/extract-css-chunks-webpack-plugin#what-about-glamorous-styled-components-styled-jsx-aphrodite-etc). Defaults to `false`.
+`extractCssChunks` replaces default `ExtractTextPlugin` with `ExtractCssChunks`. It enables automatic CSS splitting into separate files by routes as well as dynamic components (using `react-universal-component`). More information about the [plugin](https://github.com/faceyspacey/extract-css-chunks-webpack-plugin) and [why it is useful as a part of CSS delivery optimisation](https://github.com/faceyspacey/extract-css-chunks-webpack-plugin#what-about-glamorous-styled-components-styled-jsx-aphrodite-etc). Defaults to `false`.
 
 ### `inlineCss`
 By using `extractCssChunks` option and putting code splitting at appropriate places, your page related CSS file can be minimal. This option allows you to inline your page related CSS in order to speed up your application by reducing the number of requests required for a first paint. Default to `false`.
@@ -350,7 +350,7 @@ export default {
 ```
 
 ### `devServer`
-An `Object` of options to be passed to the underlying `webpack-dev-server` instance used for developement.
+An `Object` of options to be passed to the underlying `webpack-dev-server` instance used for development.
 
 Example:
 ```javascript
@@ -465,7 +465,7 @@ export default {
 Creates a new react-static project.
 
 - Prompts for a project name/location
-- Prompts to select one of the templates located in this repository's `examples/` directory, or you may select `custom` and enter in a git reposity to use in the form of `owner/repo`.
+- Prompts to select one of the templates located in this repository's `examples/` directory, or you may select `custom` and enter in a git repository to use in the form of `owner/repo`.
 - Optionally, you may pass in command line arguments to specify the project name and/or template up front.
 
 - Arguments:
@@ -837,7 +837,7 @@ export default withLoading(MyLoading)
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
 - It can be used anywhere in your app.
-- It can be used in muliple places at the same time.
+- It can be used in multiple places at the same time.
 - For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that React Static uses to accomplish this.
 
 Example:
