@@ -64,7 +64,6 @@ module.exports = {
       },
       {
         name: 'API Reference',
-        src: 'api.md',
         children: [
           {
             name: 'static.config.js',
