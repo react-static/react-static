@@ -26,12 +26,12 @@ module.exports = {
         children: [
           { name: 'Overview', src: 'concepts.md' },
           {
-            name: 'Code, Data, and Prop Splitting',
-            src: 'concepts.md#code-data-and-prop-splitting',
-          },
-          {
             name: 'CSS and CSS-in-JS',
             src: 'concepts.md#css-and-css-in-js',
+          },
+          {
+            name: 'Code, Data, and Prop Splitting',
+            src: 'concepts.md#code-data-and-prop-splitting',
           },
           {
             name: 'Writing universal, "node-safe" code',
