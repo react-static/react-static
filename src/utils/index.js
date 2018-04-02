@@ -13,12 +13,13 @@ export const ChalkColor = {
   npm: '#cb3837',
 }
 
-export const findAvailablePort = start =>
+export const findAvailablePort = (start, avoid = []) =>
   new Promise((resolve, reject) =>
     OpenPort.find(
       {
         startingPort: start,
         endingPort: start + 1000,
+        avoid,
       },
       (err, port) => {
         if (err) {
