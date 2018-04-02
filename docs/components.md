@@ -2,7 +2,7 @@
 
 React-Static is packed with awesome components to help you be productive. Some are required for React-Static to work properly, others are available merely for your convenience:
 
-React-Static components:
+React-Static Components:
 
 * [Router](#router)
 * [Routes](#routes-react-static-routes)
@@ -13,15 +13,17 @@ React-Static components:
 * [Head](#head)
 * [Prefetch](#prefetch)
 * [PrefetchWhenSeen](#prefetchwhenseen)
+* [Redirect](#redirect)
 
-React-Router components:
+React-Router Components:
 
-* [Prompt](#prompt-react-router)
-* [Redirect](#redirect-react-router)
-* [Route](#route-react-router)
-* [Switch](#switch-react-router)
-* [matchPath](#matchpath-react-router)
-* [withRouter](#withRouter-react-router)
+* [Prompt](#prompt)
+* [Route](#route)
+* [Switch](#switch)
+* [matchPath](#matchpath)
+* [withRouter](#withRouter)
+
+# React-Static Components
 
 ### `Router`
 
@@ -412,7 +414,7 @@ import { PrefetchWhenSeen, Link } from 'react-static'
 </PrefetchWhenSeen>
 ```
 
-### `Redirect (based on react-router)`
+### `Redirect`
 
 A proxy of the `Redirect` component that handles both development and runtime redirects.
 
@@ -426,22 +428,24 @@ A proxy of the `Redirect` component that handles both development and runtime re
 
 * Renders `null`
 
-### `Prompt (react-router)`
+# React Router Components
+
+### `Prompt`
 
 A direct export of the `Prompt` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
-### `Route (react-router)`
+### `Route`
 
 A direct export of the `Route` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
-### `Switch (react-router)`
+### `Switch`
 
 A direct export of the `Switch` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
-### `matchPath (react-router)`
+### `matchPath`
 
 A direct export of the `matchPath` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
 
-### `withRouter (react-router)`
+### `withRouter`
 
 A direct export of the `withRouter` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)

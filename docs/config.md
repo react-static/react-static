@@ -1,4 +1,4 @@
-# `static.config.js`
+# Configuration (`static.config.js`)
 
 A `static.config.js` file is optional, but recommended at your project root to use react-static to its fullest potential. If present, it must `default export` an object optionally containing any of the following properties:
 

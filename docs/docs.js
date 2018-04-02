@@ -7,6 +7,7 @@ module.exports = {
   root: './docs',
   logo: './logo.png',
   title: 'react-static',
+  defaultDepth: 3,
   syntax: {
     showLineNumbers: true,
     highlighter: 'hljs',
@@ -21,9 +22,9 @@ module.exports = {
       },
       {
         name: 'Core Concepts',
-        src: 'concepts.md',
+        expanded: true,
         children: [
-          { name: 'Overview', src: 'concepts.md#overview' },
+          { name: 'Overview', src: 'concepts.md' },
           {
             name: 'Code, Data, and Prop Splitting',
             src: 'concepts.md#code-data-and-prop-splitting',
@@ -64,9 +65,10 @@ module.exports = {
       },
       {
         name: 'API Reference',
+        expanded: true,
         children: [
           {
-            name: 'static.config.js',
+            name: 'Config (static.config.js)',
             src: 'config.md',
           },
           {
