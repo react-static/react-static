@@ -29,6 +29,10 @@ module.exports = {
             src: 'concepts.md#code-data-and-prop-splitting',
           },
           {
+            name: 'CSS and CSS-in-JS',
+            src: 'concepts.md#css-and-css-in-js',
+          },
+          {
             name: 'Writing universal, "node-safe" code',
             src: 'concepts.md#writing-universal-node-safe-code',
           },
@@ -64,23 +68,23 @@ module.exports = {
         children: [
           {
             name: 'static.config.js',
-            src: 'api.md#staticconfigjs',
+            src: 'config.md',
           },
           {
             name: 'CLI',
-            src: 'api.md#cli',
+            src: 'cli.md',
           },
           {
             name: 'Node API',
-            src: 'api.md#node-api',
+            src: 'node-api.md',
           },
           {
             name: 'Components',
-            src: 'api.md#components',
+            src: 'components.md',
           },
           {
             name: 'Methods',
-            src: 'api.md#methods',
+            src: 'methods.md',
           },
         ],
       },
