@@ -29,7 +29,7 @@ preview
 
 ### Client Stage
 1. On first page load, only the bare minimum of assets are downloaded to show the content as quickly as possible. This includes the page specific HTML and CSS that were exported at build time.
-2. Simultaneously, only the necessary boostrap code, template code and data needed to mount react for that particular route are **pushed** to the browser.
+2. Simultaneously, only the necessary bootstrap code, template code and data needed to mount react for that particular route are **pushed** to the browser.
 3. React invisibly mounts over the rendered HTML
 4. The rest of the website is optimistically pre-cached
 5. All further navigation is seemingly instantaneous!
@@ -111,7 +111,7 @@ export default {
         path: '/help',
         component: 'src/containers/Help',
         getData: async () => ({
-          supportMenu { ...supportMenu } // Even though this supportMenu obejct
+          supportMenu { ...supportMenu } // Even though this supportMenu object
           // is exactly the same as the original, it is not the actual original.
           // This would not work!
         })
@@ -225,7 +225,7 @@ export default {
 **Note**: If updating a project not originally based on the `preact` template, you will need to update the render method of your app to always use `ReactDOM.render` and not `ReactDOM.hydrate`. [See the preact template for an example of this](https://github.com/nozzle/react-static/blob/master/examples/preact/src/index.js#L14)
 
 **Important**
-Due to the complexity of maintaining a fully tooled development experience, React is still used in development mode if `preact` is set to `true`. This ensures that stable hot-reloading tooling, dev tools, ect. are used. This is by no means permanent though! If you know what it takes to emulate React Static's development environment using Preact tooling, please submit a PR!
+Due to the complexity of maintaining a fully tooled development experience, React is still used in development mode if `preact` is set to `true`. This ensures that stable hot-reloading tooling, dev tools, etc. are used. This is by no means permanent though! If you know what it takes to emulate React Static's development environment using Preact tooling, please submit a PR!
 
 # Pagination
 Pagination in react-static is no different than any other route, it's just a matter of how you get there.  When exporting your routes, you are expected to create a separate route for each page if needed, and only pass data to that route for the items on it.
