@@ -18,8 +18,8 @@ export default async function start ({
   process.env.REACT_STATIC_ENV = 'development'
   process.env.BABEL_ENV = 'development'
 
+  config = getConfig(config, { watch: true })
   // Allow config location to be overriden
-  config = getConfig(config)
 
   if (debug) {
     console.log('DEBUG - Resolved static.config.js:')

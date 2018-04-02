@@ -16,7 +16,8 @@ let reloadWebpackRoutes
 
 const reloadRoutes = (...args) => {
   if (!resolvedReloadRoutes) {
-    throw new Error('The client is not ready to receive data updates yet.')
+    // Not ready yet, so just wait
+    return
   }
   resolvedReloadRoutes(...args)
 }
@@ -207,9 +208,13 @@ export async function startDevServer ({ config }) {
   console.log('=> Building App Bundle...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
 
+  // Start the webpack dev server
   const devServer = new WebpackDevServer(devCompiler, devServerConfig)
 
+  // Start the messages socket
   const socket = io()
+  socket.listen(messagePort)
+
   resolvedReloadRoutes = async paths => {
     await prepareRoutes(config, { dev: true })
     if (!paths) {
@@ -219,8 +224,6 @@ export async function startDevServer ({ config }) {
     reloadWebpackRoutes()
     socket.emit('message', { type: 'reloadRoutes', paths })
   }
-
-  socket.listen(messagePort)
 
   return new Promise((resolve, reject) => {
     devServer.listen(port, err => {

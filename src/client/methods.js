@@ -136,7 +136,7 @@ export async function prefetchData (path, { priority } = {}) {
           // Place it in the cache
           propsByHash[hash] = prop
         } catch (err) {
-          console.error('Error: There was an error retrieving a prop for this route! hashID:', hash)
+          console.log('Error: There was an error retrieving a prop for this route! hashID:', hash)
           console.error(err)
         }
         delete inflightPropHashes[hash]
