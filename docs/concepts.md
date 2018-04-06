@@ -288,7 +288,7 @@ To learn more about how `react-router` components work, visit [React-Router's Do
 
 # Webpack Customization and Plugins
 
-React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, use the handy [`webpack` property in your `static.config.js` file](/docs/api.md/#webpack).
+React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, use the handy [`webpack` property in your `static.config.js` file](/docs/config.md/#webpack).
 
 # Using Preact in Production
 
@@ -325,15 +325,31 @@ export default {
         path: '/',
         component: 'src/containers/Home'
       },
-      ...makePageRoutes(posts, 10, {
-        path: '/blog',
-        component: 'src/containers/Blog'
+      ...makePageRoutes({
+        items: posts,
+        pageSize: 10,
+        pageToken: 'page',
+        route: {
+          path: '/blog',
+          component: 'src/containers/Blog'
+        },
+        decorate: items => ({
+          getData: () => ({
+            posts: items
+          })
+        })
       })
     ]
   }
 }
 
-function makePageRoutes(items, pageSize, route) {
+function makePageRoutes({
+  items,
+  pageSize,
+  pageToken = 'page',
+  route,
+  decorate
+}) {
   const itemsCopy = [...items] // Make a copy of the items
   const pages = [] // Make an array for all of the different pages
 
@@ -347,20 +363,14 @@ function makePageRoutes(items, pageSize, route) {
 
   const routes = [
     {
-      ...route, // route defaults
-      path: route.path, // the route path is used on its own for page 1
-      getProps: async () => ({
-        posts: firstPage // and only pass the first page as data
-      })
+      ...route,
+      ...decorate(firstPage) // and only pass the first page as data
     },
-
+    // map over each page to create an array of page routes, and spread it!
     ...pages.map((page, i) => ({
-      // map over each page to create an array of page routes, and spread it!
       ...route, // route defaults
-      path: `${route.path}/page/${i + 2}`,
-      getProps: async () => ({
-        posts: page // only pass the data for that page
-      })
+      path: `${route.path}/${pageToken}/${i + 2}`,
+      ...decorate(page)
     }))
   ]
 

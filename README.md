@@ -79,8 +79,8 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 Once you've installed and test driven sufficiently, you may want to:
 - [Read about the core concepts of React Static](/docs/concepts.md)
-- [Familiarize yourself with the API and all that is possible!](/docs/api.md)
 - [Join the slack organization!](https://react-chat-signup.herokuapp.com)
+* [Familiarize yourself with the API and all that is possible!](/docs/config.md)
 
 ## Examples and Templates
 All of the following examples can be used as a template at project creation.
