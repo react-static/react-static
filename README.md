@@ -139,7 +139,7 @@ Can't find an example? We invite you to write one! Simply copy the `basic` or `b
 
 #### [Core Concepts](/docs/concepts.md)
 
-#### [API Reference](/docs/api.md)
+#### [API Reference](/docs/config.md)
 
 #### [Changelog](https://github.com/nozzle/react-static/blob/master/CHANGELOG.md)
 
