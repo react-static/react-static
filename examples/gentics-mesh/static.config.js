@@ -16,12 +16,29 @@ export default {
     const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     const meshApiClient = new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
     const meshApiClientAsWebClientUser = await meshApiClient.login(MESH_USERNAME, MESH_PASSWORD)
-    const projects = await meshApiClientAsWebClientUser.getProjects()
-    //const meshProject = meshApiClientAsWebClientUser.getProject(MESH_PROJECT_NAME)
+    const automobilesCategoryNode =
+      await meshApiClientAsWebClientUser.getNodeByWebRootPath(`/${MESH_PROJECT_NAME}/webroot/automobiles`)
+    const { data: allAutomobileNodes } =
+      await meshApiClientAsWebClientUser.getChildrenForNode(MESH_PROJECT_NAME, automobilesCategoryNode.uuid)
+    console.log('allAutomobileNodes: ', allAutomobileNodes)
     return [
       {
         path: '/',
         component: 'src/containers/Home',
+      },
+      {
+        path: '/automobiles',
+        component: 'src/containers/ProductList',
+        getData: async () => ({
+          allAutomobileNodes,
+        }),
+        children: allAutomobileNodes.map(product => ({
+          path: product.path,
+          component: 'src/containers/ProductDetail',
+          getData: async () => ({
+            product,
+          }),
+        })),
       },
       {
         path: '/about',
@@ -30,13 +47,13 @@ export default {
       {
         path: '/blog',
         component: 'src/containers/Blog',
-        getData: () => ({
+        getData: async () => ({
           posts,
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
           component: 'src/containers/Post',
-          getData: () => ({
+          getData: async () => ({
             post,
           }),
         })),
