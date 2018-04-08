@@ -17,7 +17,7 @@ export default {
     const meshApiClient = new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
     const meshApiClientAsWebClientUser = await meshApiClient.login(MESH_USERNAME, MESH_PASSWORD)
     const projects = await meshApiClientAsWebClientUser.getProjects()
-    // const meshProject = meshApiClientAsWebClientUser.getProject(MESH_PROJECT_NAME)
+    //const meshProject = meshApiClientAsWebClientUser.getProject(MESH_PROJECT_NAME)
     return [
       {
         path: '/',
