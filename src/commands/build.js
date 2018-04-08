@@ -37,7 +37,9 @@ export default async function build ({
 
   if (!config.siteRoot) {
     if (!silent) {
-      console.log("=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated.")
+      console.log(
+        "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
+      )
     }
     if (!silent) console.log('')
   }
@@ -70,9 +72,8 @@ export default async function build ({
       clientStats,
     })
   } catch (e) {
-    const PrettyError = require('pretty-error')
     console.log() // new line
-    console.log(new PrettyError().render(e))
+    console.error(e)
     process.exit(1)
   }
   await buildXMLandRSS({ config })

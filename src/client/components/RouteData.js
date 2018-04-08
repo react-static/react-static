@@ -7,8 +7,14 @@ import { cleanPath } from '../../utils/shared'
 import DevSpinner from './DevSpinner'
 
 const warnedPaths = {}
+let instances = []
 
-const RouteData = withRouter(class RouteData extends React.Component {
+global.reloadAll = () => {
+  instances.forEach(instance => instance.reloadRouteData())
+}
+
+const RouteData = withRouter(
+  class RouteData extends React.Component {
     static contextTypes = {
       routeInfo: PropTypes.object,
     }
@@ -20,6 +26,9 @@ const RouteData = withRouter(class RouteData extends React.Component {
         this.loadRouteData()
       }
     }
+    componentDidMount () {
+      instances.push(this)
+    }
     componentWillReceiveProps (nextProps) {
       if (process.env.REACT_STATIC_ENV === 'development') {
         if (this.props.location.pathname !== nextProps.location.pathname) {
@@ -28,17 +37,27 @@ const RouteData = withRouter(class RouteData extends React.Component {
       }
     }
     componentWillUnmount () {
+      instances = instances.filter(d => d !== this)
       this.unmounting = true
     }
+    reloadRouteData = () =>
+      (async () => {
+        await this.loadRouteData()
+        this.forceUpdate()
+      })()
     loadRouteData = () =>
       (async () => {
         const { is404, location: { pathname } } = this.props
         const path = cleanPath(is404 ? '404' : pathname)
         try {
           await prefetch(path)
-          this.setState({ loaded: true })
+          return new Promise(resolve => {
+            this.setState({ loaded: true }, resolve)
+          })
         } catch (err) {
-          this.setState({ loaded: true })
+          return new Promise(resolve => {
+            this.setState({ loaded: true }, resolve)
+          })
         }
       })()
     render () {
@@ -69,7 +88,9 @@ const RouteData = withRouter(class RouteData extends React.Component {
 
       if (!allProps && !rest.is404 && !warnedPaths[path]) {
         warnedPaths[path] = true
-        console.warn(`RouteData or withRouteData couldn't find any props for path: ${path}. You are either missing a route.getData function or you are relying on RouteData/withRouteData where you don't need to.`)
+        console.warn(
+          `RouteData or withRouteData couldn't find any props for path: ${path}. You are either missing a route.getData function or you are relying on RouteData/withRouteData where you don't need to.`
+        )
       }
 
       if (!loaded) {
@@ -91,7 +112,8 @@ const RouteData = withRouter(class RouteData extends React.Component {
       }
       return children(finalProps)
     }
-})
+  }
+)
 
 export default RouteData
 

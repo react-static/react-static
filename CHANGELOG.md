@@ -1,3 +1,11 @@
+# 5.7.1
+
+* Added hidden feature to rebuild routes and routeData automatically when the config is edited during development.
+
+# 5.7.0
+
+* Added hidden feature to rebuild routes and routeData during development.
+
 # 5.6.8
 
 #### Fixes & Optimizations
