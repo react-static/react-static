@@ -10,16 +10,15 @@ const MESH_API_CLIENT_LOGGING = true
 
 export default {
   getSiteData: () => ({
-    title: 'React Static',
+    title: 'GENTICS Mesh React Static Eyxample',
   }),
   getRoutes: async () => {
     const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     const meshApiClient = new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
     const meshApiClientAsWebClientUser = await meshApiClient.login(MESH_USERNAME, MESH_PASSWORD)
-    const automobilesCategoryNode =
-      await meshApiClientAsWebClientUser.getNodeByWebRootPath(`/${MESH_PROJECT_NAME}/webroot/automobiles`)
+    const automobilesCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/automobiles')
     const { data: allAutomobileNodes } =
-      await meshApiClientAsWebClientUser.getChildrenForNode(MESH_PROJECT_NAME, automobilesCategoryNode.uuid)
+      await meshApiClientAsWebClientUser.getChildrenForNode(automobilesCategoryNode.uuid)
     console.log('allAutomobileNodes: ', allAutomobileNodes)
     return [
       {
@@ -29,14 +28,14 @@ export default {
       {
         path: '/automobiles',
         component: 'src/containers/ProductList',
-        getData: async () => ({
-          allAutomobileNodes,
+        getData: () => ({
+          items: allAutomobileNodes,
         }),
-        children: allAutomobileNodes.map(product => ({
-          path: product.path,
+        children: allAutomobileNodes.map(item => ({
+          path: `/${item.fields.slug}`,
           component: 'src/containers/ProductDetail',
-          getData: async () => ({
-            product,
+          getData: () => ({
+            item,
           }),
         })),
       },

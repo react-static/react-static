@@ -2,10 +2,10 @@ import React from 'react'
 import { withRouteData, Link } from 'react-static'
 //
 
-export default withRouteData(({ product }) => (
+export default withRouteData(({ item }) => (
   <div>
-    <Link to="/blog/">{'<'} Back</Link>
+    <Link to={item.parentNode.path}>{'<'} Back to {item.parentNode.displayName}</Link>
     <br />
-    <h3>{product.title}</h3>
+    <h3>{item.displayName}</h3>
   </div>
 ))

@@ -47,7 +47,7 @@ export default class MeshApiClient {
   }
 
   getNodeByWebRootPath (path) {
-    return this.client.get(`${path}?resolveLinks=short`)
+    return this.client.get(`${this.project}/webroot${path}?resolveLinks=short`)
       .then(response => {
         this.logMeshApiResponse('getNodesByWebRootPath: response', response)
 
@@ -58,8 +58,8 @@ export default class MeshApiClient {
       })
   }
 
-  getChildrenForNode (project, nodeUuid) {
-    return this.client.get(`/${project}/nodes/${nodeUuid}/children?resolveLinks=short`)
+  getChildrenForNode (nodeUuid) {
+    return this.client.get(`/${this.project}/nodes/${nodeUuid}/children?resolveLinks=short`)
       .then(response => {
         this.logMeshApiResponse('getChildrenForNode: response', response)
 
