@@ -39,10 +39,7 @@ export default class MeshApiClient {
       return Promise.resolve(this)
     }).catch(error => {
       this.logMeshApiError('login response', error)
-      console.error('******')
-      console.error(error)
-      console.error('******')
-      return Promise.reject(new Error(error.data.message))
+      return Promise.reject(new Error(error))
     })
   }
 
