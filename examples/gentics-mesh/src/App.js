@@ -10,7 +10,7 @@ import './app.css'
 const App = () => (
   <Router>
     <div className="container">
-      <h2>Gentics Mesh Demo <small><a href="https://getmesh.io">getmesh.io</a></small></h2>
+      <h2>Gentics Mesh Demo <small><Link to="https://getmesh.io">getmesh.io</Link></small></h2>
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>

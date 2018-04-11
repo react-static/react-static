@@ -1,5 +1,5 @@
 import React from 'react'
-import { withSiteData } from 'react-static'
+import { withSiteData, Link } from 'react-static'
 import { Jumbotron, Row, Button } from 'react-bootstrap'
 
 import logoSvg from '../gentics-mesh-logo.svg'
@@ -13,8 +13,7 @@ export default withSiteData(() => (
 
       <div className="col-sm-9">
         <h1>Gentics Mesh Demo Application</h1>
-        <p>This is a basic demonstration of how to build a React application using <a href="https://getmesh.io">Gentics
-          Mesh</a> and <a href="https://react-static.js.org/">React Static</a>.</p>
+        <p>This is a basic demonstration of how to build a React application using <Link to="https://getmesh.io">Gentics Mesh</Link> and <Link to="https://react-static.js.org/">React Static</Link>.</p>
 
         <p>These are some of Gentics Mesh features that this example demonstrates:</p>
         <p>
@@ -25,8 +24,8 @@ export default withSiteData(() => (
             <li><a href="https://getmesh.io/docs/beta/features.html#_breadcrumbs">Breadcrumbs</a>: Each node in Gentics Mesh provides information on where it is located within the node tree in terms of its <code>breadcrumb</code> property. The property provides an array of node references representing the path from the current node up to the project root.</li>
           </ol>
         </p>
-        <p>The source code for this example can be found on <a
-          href="https://github.com/nozzle/react-static/tree/master/examples/gentics-mesh">GitHub</a>.</p>
+        <p>The source code for this example can be found on <Link to="https://github.com/nozzle/react-static/tree/master/examples/gentics-mesh">GitHub</Link>.
+        </p>
         <p><Button bsStyle="warning" bsSize="large" href="http://getmesh.io/docs/beta/getting-started.html">Would You Like to Know More?</Button></p>
       </div>
     </Row>

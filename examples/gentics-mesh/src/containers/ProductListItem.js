@@ -3,11 +3,10 @@ import * as PropTypes from 'prop-types'
 import { Link } from 'react-static'
 //
 
-const propTypes = {
-  product: PropTypes.object.isRequired,
-}
-
 class ProductListItem extends React.Component {
+  static propTypes = {
+    product: PropTypes.object.isRequired,
+  }
   render () {
     const product = this.props.product
     return (
@@ -20,7 +19,7 @@ class ProductListItem extends React.Component {
           </h3>
 
           <Link to={product.path}>
-            <img className="img-thumbnail" src={`https://demo.getmesh.io/api/v1/demo/webroot/${product.fields.vehicleImage.path}`} />
+            <img alt={product.fields.name} className="img-thumbnail" src={`https://demo.getmesh.io/api/v1/demo/webroot/${product.fields.vehicleImage.path}`} />
           </Link>
 
           <p className="description">{product.fields.description}</p>

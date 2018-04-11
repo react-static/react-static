@@ -13,16 +13,15 @@ export default {
     title: 'GENTICS Mesh React Static Eyxample',
   }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     const meshApiClient = new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
     const meshApiClientAsWebClientUser = await meshApiClient.login(MESH_USERNAME, MESH_PASSWORD)
     const automobilesCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/automobiles')
-    const yatchsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/yachts')
+    const yachtsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/yachts')
     const aircraftsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/aircrafts')
-    const { data: allAutomobileNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(automobilesCategoryNode.uuid)
-    const { data: allYatchsNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(yatchsCategoryNode.uuid)
+    const { data: allAutomobileNodes } =
+      await meshApiClientAsWebClientUser.getChildrenForNode(automobilesCategoryNode.uuid)
+    const { data: allYachtsNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(yachtsCategoryNode.uuid)
     const { data: allAircraftNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(aircraftsCategoryNode.uuid)
-    //console.log('allAutomobileNodes: ', allAutomobileNodes)
 
     return [
       {
@@ -48,10 +47,10 @@ export default {
         path: '/yachts',
         component: 'src/containers/ProductList',
         getData: () => ({
-          category: yatchsCategoryNode,
-          items: allYatchsNodes,
+          category: yachtsCategoryNode,
+          items: allYachtsNodes,
         }),
-        children: allYatchsNodes.map(item => ({
+        children: allYachtsNodes.map(item => ({
           path: `/${item.fields.slug}`,
           component: 'src/containers/ProductDetail',
           getData: () => ({
