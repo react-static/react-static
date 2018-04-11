@@ -20,8 +20,7 @@ const App = () => (
         <Nav>
           <NavItem eventKey={1} href="/automobiles">Automobiles</NavItem>
           <NavItem eventKey={2} href="/yachts">Yachts</NavItem>
-          <NavItem eventKey={3} href="/aircraft">Aircraft</NavItem>
-          <NavItem eventKey={4} href="/blog">Blog</NavItem>
+          <NavItem eventKey={3} href="/aircrafts">Aircraft</NavItem>
         </Nav>
       </Navbar>
       <Routes />

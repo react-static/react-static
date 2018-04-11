@@ -17,9 +17,13 @@ export default {
     const meshApiClient = new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
     const meshApiClientAsWebClientUser = await meshApiClient.login(MESH_USERNAME, MESH_PASSWORD)
     const automobilesCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/automobiles')
-    const { data: allAutomobileNodes } =
-      await meshApiClientAsWebClientUser.getChildrenForNode(automobilesCategoryNode.uuid)
-    console.log('allAutomobileNodes: ', allAutomobileNodes)
+    const yatchsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/yachts')
+    const aircraftsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/aircrafts')
+    const { data: allAutomobileNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(automobilesCategoryNode.uuid)
+    const { data: allYatchsNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(yatchsCategoryNode.uuid)
+    const { data: allAircraftNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(aircraftsCategoryNode.uuid)
+    //console.log('allAutomobileNodes: ', allAutomobileNodes)
+
     return [
       {
         path: '/',
@@ -41,20 +45,32 @@ export default {
         })),
       },
       {
-        path: '/about',
-        component: 'src/containers/About',
+        path: '/yachts',
+        component: 'src/containers/ProductList',
+        getData: () => ({
+          category: yatchsCategoryNode,
+          items: allYatchsNodes,
+        }),
+        children: allYatchsNodes.map(item => ({
+          path: `/${item.fields.slug}`,
+          component: 'src/containers/ProductDetail',
+          getData: () => ({
+            item,
+          }),
+        })),
       },
       {
-        path: '/blog',
-        component: 'src/containers/Blog',
-        getData: async () => ({
-          posts,
+        path: '/aircrafts',
+        component: 'src/containers/ProductList',
+        getData: () => ({
+          category: aircraftsCategoryNode,
+          items: allAircraftNodes,
         }),
-        children: posts.map(post => ({
-          path: `/post/${post.id}`,
-          component: 'src/containers/Post',
-          getData: async () => ({
-            post,
+        children: allAircraftNodes.map(item => ({
+          path: `/${item.fields.slug}`,
+          component: 'src/containers/ProductDetail',
+          getData: () => ({
+            item,
           }),
         })),
       },
