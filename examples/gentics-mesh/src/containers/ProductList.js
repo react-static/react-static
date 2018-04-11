@@ -1,16 +1,19 @@
 import React from 'react'
 import { withRouteData, Link } from 'react-static'
+import ProductListItem from './ProductListItem'
 //
 
-export default withRouteData(({ items }) => (
+export default withRouteData(({ category, items }) => (
   <div>
-    All items:
-    <ul>
+    <h1>{category.fields.name}</h1>
+    <p>{category.fields.description}</p>
+
+    <div className="row">
       {items.map(item => (
-        <li key={item.uuid}>
-          <Link to={item.path}>{item.displayName}</Link>
-        </li>
+        <div className="product-row col-xs-12 col-sm-6 col-md-4" key={item.uuid} >
+          <ProductListItem product={item} />
+        </div>
       ))}
-    </ul>
+    </div>
   </div>
 ))

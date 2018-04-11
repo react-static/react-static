@@ -1,34 +1,46 @@
 import React from 'react'
-import { withRouteData, Link } from 'react-static'
+import * as PropTypes from 'prop-types'
+import { Link } from 'react-static'
 //
 
-export default withRouteData(({product}) => (
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <h3>
-        <a href={`/product/${product.uuid}`}>{{product.fields.name}}</a>
-        <small>{{product.fields.SKU}}</small>
-      </h3>
+const propTypes = {
+  product: PropTypes.object.isRequired,
+}
 
-      <a href={`/product/${product.uuid}`}>
-        <img className="img-thumbnail" src="/imageUrl(product)" />
-      </a>
+class ProductListItem extends React.Component {
+  render () {
+    const product = this.props.product
+    return (
 
-      <p class="description">{{product.fields.description}}</p>
+      <div className="panel panel-default">
+        <div className="panel-body">
+          <h3>
+            <Link to={product.path}>{product.fields.name}</Link>
+            <small>{product.fields.SKU}</small>
+          </h3>
 
-      <hr/>
+          <Link to={product.path}>
+            <img className="img-thumbnail" src={`https://demo.getmesh.io/api/v1/demo/webroot/${product.fields.vehicleImage.path}`} />
+          </Link>
 
-        <div class="row">
-          <div class="col-xs-6 price">
-              <span class="label label-primary">
-                {{product.fields.price | currency:'EUR':'symbol'}}
-              </span>
+          <p className="description">{product.fields.description}</p>
+
+          <hr />
+
+          <div className="row">
+            <div className="col-xs-6 price">
+              <span className="label label-primary">{`${product.fields.price} EUR`}</span>
+            </div>
+            <div className="col-xs-6 text-right">
+              <span className="label label-default">Weight: {product.fields.weight}</span><br />
+              <span className="label label-default">Stock: {product.fields.stocklevel}</span>
+            </div>
           </div>
-          <div class="col-xs-6 text-right">
-            <span class="label label-default">Weight: {{product.fields.weight}}</span><br/>
-            <span class="label label-default">Stock: {{product.fields.stocklevel}}</span>
-          </div>
+
         </div>
-    </div>
-  </div>
-))
+      </div>
+    )
+  }
+}
+
+export default ProductListItem

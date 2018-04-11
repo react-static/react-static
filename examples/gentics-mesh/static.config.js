@@ -29,6 +29,7 @@ export default {
         path: '/automobiles',
         component: 'src/containers/ProductList',
         getData: () => ({
+          category: automobilesCategoryNode,
           items: allAutomobileNodes,
         }),
         children: allAutomobileNodes.map(item => ({
