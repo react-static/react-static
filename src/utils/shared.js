@@ -2,13 +2,10 @@ export { poolAll, createPool } from 'swimmer'
 
 export function pathJoin (...paths) {
   let newPath = trimSlashes(paths.map(trimSlashes).join('/'))
-  if (newPath) {
-    if (newPath.includes('?')) {
-      newPath = newPath.substring(0, newPath.indexOf('?'))
-    }
-    return newPath
+  if (newPath.includes('?')) {
+    newPath = newPath.substring(0, newPath.indexOf('?'))
   }
-  return '/'
+  return newPath === '404' ? newPath : `/${newPath}`
 }
 
 export function cleanPath (path) {
