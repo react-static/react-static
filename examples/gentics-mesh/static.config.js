@@ -1,4 +1,3 @@
-import axios from 'axios'
 import MeshApiClient from './src/mesh/mesh-api-client'
 
 const MESH_HOST = 'http://localhost:8080'
@@ -13,15 +12,18 @@ export default {
     title: 'GENTICS Mesh React Static Eyxample',
   }),
   getRoutes: async () => {
-    const meshApiClient = new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
+    const meshApiClient =
+      new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
     const meshApiClientAsWebClientUser = await meshApiClient.login(MESH_USERNAME, MESH_PASSWORD)
     const automobilesCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/automobiles')
     const yachtsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/yachts')
     const aircraftsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/aircrafts')
     const { data: allAutomobileNodes } =
       await meshApiClientAsWebClientUser.getChildrenForNode(automobilesCategoryNode.uuid)
-    const { data: allYachtsNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(yachtsCategoryNode.uuid)
-    const { data: allAircraftNodes } = await meshApiClientAsWebClientUser.getChildrenForNode(aircraftsCategoryNode.uuid)
+    const { data: allYachtsNodes } =
+      await meshApiClientAsWebClientUser.getChildrenForNode(yachtsCategoryNode.uuid)
+    const { data: allAircraftNodes } =
+      await meshApiClientAsWebClientUser.getChildrenForNode(aircraftsCategoryNode.uuid)
 
     return [
       {
