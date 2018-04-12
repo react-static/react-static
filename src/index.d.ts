@@ -48,6 +48,7 @@ declare module 'react-static' {
     autoScrollToHash?: boolean;
     scrollToHashDuration?: number;
     scrollToTopDuration?: number;
+    showErrorsInProduction?: boolean;
   }> {}
 
   export const NavLink: undefined;
