@@ -41,6 +41,7 @@ Props:
 * `scrollToHashDuration: Int` - The duration of the automatic scroll-to-hash animation that happens on hash changes. Defaults to `800`
 * `scrollToHashOffset: Int` - The vertical offset of the automatic scroll-to-hash animation that happens on path changes. Defaults to `0`
 * `history: History` - An optional history object (most-often used for things like react-router-redux). Provides a helper method to subscribe to loading events. Note that this will override the `type` prop above.
+* `showErrorsInProduction: Boolean` - Set this to `true` to enable the debug/error page in production. Defaults to `false`.
 
 Example:
 
