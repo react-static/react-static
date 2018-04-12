@@ -123,7 +123,7 @@ export default function getConfig (customConfig, { watch } = {}) {
       entry: path.join(paths.SRC, defaultEntry),
       getSiteData: () => ({}),
       renderToHtml: (render, Comp) => render(<Comp />),
-      prefetchRate: 10,
+      prefetchRate: 3,
       outputFileRate: 10,
       // Config Overrides
       ...config,
