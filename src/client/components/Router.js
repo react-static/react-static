@@ -16,6 +16,7 @@ import {
 } from '../methods'
 import RouterScroller from './RouterScroller'
 import DevSpinner from './DevSpinner'
+import ErrorWrapper from './ErrorWrapper'
 
 export default class Router extends React.Component {
   static defaultProps = {
@@ -25,6 +26,7 @@ export default class Router extends React.Component {
     scrollToTopDuration: 0,
     scrollToHashDuration: 800,
     scrollToHashOffset: 0,
+    showErrorsInProduction: false,
   }
   static contextTypes = {
     staticURL: PropTypes.string,
@@ -32,8 +34,6 @@ export default class Router extends React.Component {
   }
   state = {
     ready: false,
-    error: null,
-    errorInfo: null,
   }
   constructor (props, context) {
     super()
@@ -55,13 +55,6 @@ export default class Router extends React.Component {
   }
   componentDidMount () {
     this.bootstrapRouteInfo()
-  }
-  componentDidCatch (error, errorInfo) {
-    // Catch errors in any child components and re-renders with an error message
-    this.setState({
-      error,
-      errorInfo,
-    })
   }
   bootstrapRouteInfo = () =>
     (async () => {
@@ -138,38 +131,16 @@ export default class Router extends React.Component {
       scrollToTopDuration,
       scrollToHashDuration,
       scrollToHashOffset,
+      showErrorsInProduction,
       ...rest
     } = this.props
     const { staticURL } = this.context
     const context = staticURL ? {} : undefined
 
-    const { ready, error, errorInfo } = this.state
+    const { ready } = this.state
 
     let ResolvedRouter
     let resolvedHistory
-
-    if (error) {
-      // Fallback UI if an error occurs
-      return (
-        <div
-          style={{
-            margin: '1rem',
-            padding: '1rem',
-            background: 'rgba(0,0,0,0.05)',
-          }}
-        >
-          <h2>Oh-no! Something’s gone wrong!</h2>
-          <pre style={{ whiteSpace: 'normal', color: 'red' }}>
-            <code>{error && error.toString()}</code>
-          </pre>
-          <h3>This error occurred here:</h3>
-          <pre style={{ color: 'red', overflow: 'auto' }}>
-            <code>{errorInfo.componentStack}</code>
-          </pre>
-          <p>For more information, please see the console.</p>
-        </div>
-      )
-    }
 
     // If statically rendering, use the static router
     if (staticURL) {
@@ -198,15 +169,16 @@ export default class Router extends React.Component {
     }
 
     return (
-      <ResolvedRouter
-        history={resolvedHistory}
-        location={staticURL}
-        context={context}
-        basename={process.env.REACT_STATIC_BASEPATH}
-        {...rest}
+      <ErrorWrapper showErrorsInProduction={showErrorsInProduction}>
+        <ResolvedRouter
+          history={resolvedHistory}
+          location={staticURL}
+          context={context}
+          basename={process.env.REACT_STATIC_BASEPATH}
+          {...rest}
       >
-        <RouterScroller
-          {...{
+          <RouterScroller
+            {...{
             autoScrollToTop,
             autoScrollToHash,
             scrollToTopDuration,
@@ -214,9 +186,10 @@ export default class Router extends React.Component {
             scrollToHashOffset,
           }}
         >
-          {children}
-        </RouterScroller>
-      </ResolvedRouter>
+            {children}
+          </RouterScroller>
+        </ResolvedRouter>
+      </ErrorWrapper>
     )
   }
 }
