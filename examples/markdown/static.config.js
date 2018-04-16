@@ -9,7 +9,7 @@ export default {
     title: 'React Static',
   }),
   getRoutes: async () => {
-    const {posts, home, about} = await jdown('content')
+    const { posts, home, about } = await jdown('content')
     return [
       {
         path: '/',
