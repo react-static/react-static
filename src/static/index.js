@@ -217,7 +217,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
         getChildContext () {
           return {
             routeInfo: embeddedRouteInfo,
-            staticURL: route.path,
+            staticURL: route.path === '/' ? route.path : `/${route.path}`,
           }
         }
         render () {
@@ -292,7 +292,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
           clientStats
         )
       } catch (error) {
-        error.message = `Failed exporting HTML for URL /${route.path}/ (${route.component}): ${
+        error.message = `Failed exporting HTML for URL ${route.path} (${route.component}): ${
           error.message
         }`
         throw error
