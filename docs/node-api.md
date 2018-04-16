@@ -63,7 +63,7 @@ reloadRoutes()
 
 // Reload when files change
 import chokidar from 'chokidar'
-chokidar.watch('./docs').on('all', reloadRoutes)
+chokidar.watch('./docs').on('all', () => reloadRoutes())
 
 // Reload from API or CMS event
 YourFavoriteCMS.subscribe(reloadRoutes)
