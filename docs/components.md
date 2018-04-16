@@ -84,7 +84,7 @@ import { Router } from 'react-static'
 import Routes from 'react-static-routes'
 
 // This is the default renderer for `<Routes>`
-const RenderRoutes = ({ getTemplateForPath }) => (
+const RenderRoutes = ({ getComponentForPath }) => (
   // The default renderer uses a catch all route to recieve the pathname
   <Route
     path="*"
@@ -111,7 +111,7 @@ export default () => (
 
 **Render Props** - These special props are sent to your rendered component or render function
 
-* `getTemplateForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no template is found.
+* `getComponentForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no component is found.
 * `componentsByTemplateID{templateID: component}` - An object mapping templateIDs to Components
 * `templateIDsByPath{path: templateID}` - A object mapping paths to their corresponding template ID.
 
