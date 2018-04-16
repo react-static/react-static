@@ -50,6 +50,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [PSD Wizard: On-demand Front-End Coding Service](https://psdwizard.com)
 * [NYC Vintage Map](https://nycvintagemap.com)
 * [Eldar Labs - Utilities and Productivity Tools](https://eldarlabs.com)
+* [Dan Webb - Personal Website](https://danwebb.co)
 
 ## Quick Start
 
