@@ -50,6 +50,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [PSD Wizard: On-demand Front-End Coding Service](https://psdwizard.com)
 * [NYC Vintage Map](https://nycvintagemap.com)
 * [Eldar Labs - Utilities and Productivity Tools](https://eldarlabs.com)
+* [Dan Webb - Personal Website](https://danwebb.co)
 
 ## Quick Start
 
@@ -134,6 +135,7 @@ All of the following examples can be used as a template at project creation.
 * [Styled-JSX](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
 * [Netlify CMS](https://github.com/nozzle/react-static/tree/master/examples/netlifycms)
 * [Gentics Mesh CMS](https://getmesh.io/)
+* [Markdown](https://github.com/nozzle/react-static/tree/master/examples/markdown)
 
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 

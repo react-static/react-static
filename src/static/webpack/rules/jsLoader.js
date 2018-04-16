@@ -6,7 +6,7 @@ export default function ({ config, stage }) {
       {
         loader: 'babel-loader',
         options: {
-          cacheDirectory: stage !== 'production',
+          cacheDirectory: stage !== 'prod',
         },
       },
     ],
