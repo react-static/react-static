@@ -2,7 +2,7 @@ import { reloadRoutes } from 'react-static/node'
 import jdown from 'jdown'
 import chokidar from 'chokidar'
 
-chokidar.watch('content').on('change', () => reloadRoutes())
+chokidar.watch('content').on('all', () => reloadRoutes())
 
 export default {
   getSiteData: () => ({
