@@ -1,8 +1,24 @@
+# 5.7.5
+
+#### Fixes & Optimizations
+
+* New Error handler component and accompanying tests. Thanks @jasonlafferty!
+
+# 5.7.2-4
+
+#### Fixes & Optimizations
+
+* Improved prefetch lifecycles and page responsiveness for slow networks.
+
 # 5.7.1
+
+#### Features
 
 * Added hidden feature to rebuild routes and routeData automatically when the config is edited during development.
 
 # 5.7.0
+
+#### Features
 
 * Added hidden feature to rebuild routes and routeData during development.
 
