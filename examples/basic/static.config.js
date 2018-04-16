@@ -2,37 +2,37 @@ import axios from 'axios'
 
 export default {
   getSiteData: () => ({
-    title: 'React Static'
+    title: 'React Static',
   }),
   getRoutes: async () => {
     const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     return [
       {
         path: '/',
-        component: 'src/containers/Home'
+        component: 'src/containers/Home',
       },
       {
         path: '/about',
-        component: 'src/containers/About'
+        component: 'src/containers/About',
       },
       {
         path: '/blog',
         component: 'src/containers/Blog',
         getData: () => ({
-          posts
+          posts,
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
           component: 'src/containers/Post',
           getData: () => ({
-            post
-          })
-        }))
+            post,
+          }),
+        })),
       },
       {
         is404: true,
-        component: 'src/containers/404'
-      }
+        component: 'src/containers/404',
+      },
     ]
-  }
+  },
 }

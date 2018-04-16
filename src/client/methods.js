@@ -10,6 +10,7 @@ const inflightRouteInfo = {}
 const inflightPropHashes = {}
 let loading = false
 let loadingSubscribers = []
+const disableRouteInfoWarning = process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING === 'true'
 
 const requestPool = createPool({
   concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE) || 3,
@@ -101,6 +102,9 @@ export const getRouteInfo = async (path, { priority } = {}) => {
     }
   } catch (err) {
     erroredPaths[path] = true
+    if (process.env.REACT_STATIC_ENV === 'production' || disableRouteInfoWarning) {
+      return
+    }
     console.warn(
       `Could not load routeInfo for path: ${originalPath}. If this is a static route, make sure any link to this page is valid! If this is not a static route, you can desregard this warning.`
     )

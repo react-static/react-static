@@ -1,3 +1,14 @@
+# 5.7.6
+
+#### Features
+
+* Added a `config.disableRouteInfoWarning` configuration option to silence missing route information in development
+
+#### Fixes & Optimizations
+
+* Missing routeInfo.json requests do not throw in production now.
+* Fixed an error where router `path`s would not match as expected during static export. It now uses the same format (leading slash at root patsh) as react-router does by default during development.
+
 # 5.7.5
 
 #### Fixes & Optimizations
