@@ -50,7 +50,7 @@ Builds your site for production. Outputs to a `dist` directory in your project.
 
 ### `rebuildRoutes`
 
-Inteded for use in your `static.config.js` during development. When called it will rebuild all of your your routes and routeData by calling `config.getRoutes()` again. Any new routes or data returned will be hot-reloaded into your running development application. Its main use cases are very applicable if your routes or routeData are changing constantly during development and you do not want to restart the dev server. You can use this method to reload when local files are changed, update at a set timing interval, or even subscribe to an event stream from an API or CMS.
+Intended for use in your `static.config.js` during development. When called it will rebuild all of your your routes and routeData by calling `config.getRoutes()` again. Any new routes or data returned will be hot-reloaded into your running development application. Its main use cases are very applicable if your routes or routeData are changing constantly during development and you do not want to restart the dev server. You can use this method to reload when local files are changed, update at a set timing interval, or even subscribe to an event stream from an API or CMS.
 
 Example:
 
@@ -76,6 +76,68 @@ setInterval(reloadRoutes, 10 * 1000)
 export default {
   getRoutes: () => {
     // This will run each time `reloadRoutes` is called
+  }
+}
+```
+
+### `makePageRoutes`
+
+A utility function to aid in splitting an array of items into separate pages for use in your `static.config.js`
+
+* Arguments
+  * `options{}` - **Required**
+    * `items: Array` - **Required** - The array of items to split into pages
+    * `pageSize: Int` - **Required** - The number of items on each page
+    * `route{}: Object` - **Required**
+      * `path: String` - **Required** - The base path that all pages will share
+      * `component: String` - The base component that all pages will share
+    * `decorate: Function` - **Required**
+      * Arguments:
+        * `items: Array` - The items for the given page
+        * `pageIndex: Int` - The page index for the given page
+        * `totalPages: Int` - The total number of pages that were generated
+      * Returns an `Object` that will decorate the base route. In most cases, this will probably include the `getData` and `children` keys, but can contain any route supported keys
+    * `pageToken: String` - The string that will be used to prefix each page.
+* Returns an array of routes objects
+
+Example:
+
+```javascript
+// static.config.js
+import { makePageRoutes } from 'react-static/node'
+
+export default {
+  getRoutes: () => {
+    const posts = [...]
+
+    return [
+      ...makePageRoutes({
+        items: posts, // Use the posts array as items
+        pageSize: 5, // Use 5 items per page
+        pageToken: 'page', // use page for the prefix, eg. blog/page/3
+        route: {
+          // Use this route as the base route
+          path: 'blog',
+          component: 'src/containers/Blog',
+        },
+        decorate: (items, pageIndex, totalPages) => ({
+          // For each page, supply the posts, page and totalPages
+          getData: () => ({
+            posts: items,
+            currentPage: pageIndex,
+            totalPages,
+          }),
+          // Make the routes for each blog post
+          children: items.map(post => ({
+            path: `/blog/post/${post.id}`,
+            component: 'src/containers/Post',
+            getData: () => ({
+              post,
+            }),
+          })),
+        }),
+      }),
+    ]
   }
 }
 ```

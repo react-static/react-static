@@ -1,3 +1,10 @@
+# 5.8.0
+
+#### Features
+
+* Added the `pagination` example.
+* Added a `makePageRoutes` utility function on the `react-static/node` import to help with generating page routes from an array of items.
+
 # 5.7.6
 
 #### Features
