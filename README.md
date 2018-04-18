@@ -13,6 +13,8 @@ A **progressive static-site generator** for React.
 
 React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of **SEO, site performance, and user/developer experience**.
 
+[![Sponsored By GraphCMS](https://github.com/nozzle/react-static/raw/master/media/graphcms.svg)](http://graphcms.com/?ref=tlinsley)
+
 ## Features
 
 * ⚛️ 100% React (or Preact!)
@@ -56,7 +58,6 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 1.  Install the CLI:
 
-
 ```bash
 $ yarn global add react-static
 # or
@@ -65,7 +66,6 @@ $ npm install -g react-static
 
 2.  Create a new project:
 
-
 ```bash
 $ react-static create
 ```
@@ -73,13 +73,11 @@ $ react-static create
 3.  Pick a template! [See the full list of templates](#examples-and-templates)
 4.  Navigate to your new project:
 
-
 ```bash
 $ cd my-static-site
 ```
 
 5.  Start the dev server and edit some code!
-
 
 ```bash
 $ yarn start # or react-static start
@@ -87,14 +85,12 @@ $ yarn start # or react-static start
 
 6.  Test a production build
 
-
 ```bash
 $ yarn stage # or react-static build --staging
 $ yarn serve
 ```
 
 6.  Build for production!
-
 
 ```bash
 $ yarn build # or react-static build
