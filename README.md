@@ -13,7 +13,7 @@ A **progressive static-site generator** for React.
 
 React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of **SEO, site performance, and user/developer experience**.
 
-[![Sponsored By GraphCMS](https://github.com/nozzle/react-static/raw/master/media/graphcms.svg)](http://graphcms.com/?ref=tlinsley)
+[![Sponsored By GraphCMS](https://github.com/nozzle/react-static/raw/master/media/graphcms.svg?sanitize=true)](http://graphcms.com/?ref=tlinsley)
 
 ## Features
 
