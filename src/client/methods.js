@@ -90,9 +90,8 @@ export const getRouteInfo = async (path, { priority } = {}) => {
       if (!inflightRouteInfo[path]) {
         inflightRouteInfo[path] = requestPool.add(() =>
           axios.get(
-            `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
-              path,
-              `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`
+            `${process.env.REACT_STATIC_PUBLIC_PATH}${REACT_STATIC_DISABLE_ROUTE_PREFIXING ? '' : 
+                pathJoin(path, `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`
             )}`
           )
         )
