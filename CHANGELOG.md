@@ -1,5 +1,11 @@
 # 5.8.0
 
+#### Fixes & Optimizations
+
+* Improved `getPath` and `cleanPath` methods, and added some simple tests for them.
+
+# 5.8.0
+
 #### Features
 
 * Added the `pagination` example.
