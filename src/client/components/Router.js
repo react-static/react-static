@@ -155,9 +155,9 @@ export default class Router extends React.Component {
         } else if (type === 'hash') {
           resolvedHistory = createHashHistory()
         } else {
-          resolvedHistory = createBrowserHistory({
-            basename: process.env.REACT_STATIC_BASEPATH,
-          })
+          const options = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING ? {} :
+            { basename: process.env.REACT_STATIC_BASEPATH }
+          resolvedHistory = createBrowserHistory(options)
         }
       }
       global.__reactStaticRouterHistory = resolvedHistory
@@ -174,7 +174,7 @@ export default class Router extends React.Component {
           history={resolvedHistory}
           location={staticURL}
           context={context}
-          basename={process.env.REACT_STATIC_BASEPATH}
+          basename={process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING ? '' : process.env.REACT_STATIC_BASEPATH}
           {...rest}
       >
           <RouterScroller
