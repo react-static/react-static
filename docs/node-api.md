@@ -8,6 +8,7 @@ The following exports are available via the `react-static/node` module:
 * [start](#start)
 * [build](#build)
 * [rebuildRoutes](#rebuildroutes)
+* [makePageRoutes](#makePageRoutes)
 
 We recommended using the latest ES6 import syntax:
 
