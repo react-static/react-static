@@ -56,7 +56,7 @@ export default {
         <MuiThemeProvider theme={muiTheme} sheetsManager={new Map()}>
           <Comp />
         </MuiThemeProvider>
-      </JssProvider>,
+      </JssProvider>
     )
 
     meta.jssStyles = sheetsRegistry.toString()
@@ -65,14 +65,19 @@ export default {
   },
   Document: class CustomHtml extends Component {
     render () {
-      const { Html, Head, Body, children, renderMeta } = this.props
+      const {
+        Html, Head, Body, children, renderMeta,
+      } = this.props
 
       return (
         <Html>
           <Head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" />
+            <link
+              href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+              rel="stylesheet"
+            />
           </Head>
           <Body>
             {children}

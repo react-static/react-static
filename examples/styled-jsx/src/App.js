@@ -31,7 +31,8 @@ export default () => (
         .content {
           padding: 1rem;
         }
-      `}</style>
+      `}
+      </style>
     </div>
   </Router>
 )

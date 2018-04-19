@@ -11,10 +11,17 @@ export default async ({ config }) => {
 
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
+${
+  process.env.NODE_ENV === 'production'
+    ? `
 import universal, { setHasBabelPlugin } from 'react-universal-component'
+`
+    : ''
+}
 import { cleanPath } from 'react-static'
 
-${process.env.NODE_ENV === 'production'
+${
+  process.env.NODE_ENV === 'production'
     ? `
 
 setHasBabelPlugin()
@@ -36,7 +43,7 @@ const universalOptions = {
       return `const t_${index} = universal(import('${slash(templatePath)}'), universalOptions)`
     })
     .join('\n')}
-    `
+`
     : templates
       .map((template, index) => {
         const templatePath = path.relative(
@@ -45,7 +52,8 @@ const universalOptions = {
         )
         return `import t_${index} from '${slash(templatePath)}'`
       })
-      .join('\n')}
+      .join('\n')
+}
 
 // Template Map
 global.componentsByTemplateID = global.componentsByTemplateID || [
@@ -108,13 +116,16 @@ export default class Routes extends Component {
     return (
       <Route path='*' render={props => {
         let Comp = getFullComponentForPath(props.location.pathname)
-        return <Comp key={props.location.pathname} {...props} />
+        // If Comp is used as a component here, it triggers React to re-mount the entire
+        // component tree underneath during reconciliation, losing all internal state.
+        // By unwrapping it here we keep the real, static component exposed directly to React.
+        return Comp && Comp({ ...props, key: props.location.pathname })
       }} />
     )
   }
 }
 
-    `
+`
 
   const dynamicRoutesPath = path.join(config.paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)

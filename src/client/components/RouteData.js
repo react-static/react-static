@@ -7,6 +7,11 @@ import { cleanPath } from '../../utils/shared'
 import DevSpinner from './DevSpinner'
 
 const warnedPaths = {}
+let instances = []
+
+global.reloadAll = () => {
+  instances.forEach(instance => instance.reloadRouteData())
+}
 
 const RouteData = withRouter(
   class RouteData extends React.Component {
@@ -21,6 +26,9 @@ const RouteData = withRouter(
         this.loadRouteData()
       }
     }
+    componentDidMount () {
+      instances.push(this)
+    }
     componentWillReceiveProps (nextProps) {
       if (process.env.REACT_STATIC_ENV === 'development') {
         if (this.props.location.pathname !== nextProps.location.pathname) {
@@ -29,21 +37,33 @@ const RouteData = withRouter(
       }
     }
     componentWillUnmount () {
+      instances = instances.filter(d => d !== this)
       this.unmounting = true
     }
+    reloadRouteData = () =>
+      (async () => {
+        await this.loadRouteData()
+        this.forceUpdate()
+      })()
     loadRouteData = () =>
       (async () => {
         const { is404, location: { pathname } } = this.props
         const path = cleanPath(is404 ? '404' : pathname)
         try {
           await prefetch(path)
-          this.setState({ loaded: true })
+          return new Promise(resolve => {
+            this.setState({ loaded: true }, resolve)
+          })
         } catch (err) {
-          this.setState({ loaded: true })
+          return new Promise(resolve => {
+            this.setState({ loaded: true }, resolve)
+          })
         }
       })()
     render () {
-      const { component, render, children, location: { pathname }, ...rest } = this.props
+      const {
+        component, render, children, location: { pathname }, ...rest
+      } = this.props
       let { loaded } = this.state
 
       const path = cleanPath(rest.is404 ? '404' : pathname)

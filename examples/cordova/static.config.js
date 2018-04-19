@@ -18,7 +18,9 @@ export default {
   },
   Document: class CustomHtml extends Component {
     render () {
-      const { Html, Head, Body, children, renderMeta } = this.props
+      const {
+        Html, Head, Body, children, renderMeta,
+      } = this.props
 
       return (
         <Html>
@@ -27,14 +29,14 @@ export default {
             <meta name="msapplication-tap-highlight" content="no" />
             <meta
               name="viewport"
-              content={`
+              content="
                 user-scalable=no,
                 initial-scale=1,
                 maximum-scale=1,
                 minimum-scale=1,
                 width=device-width,
                 viewport-fit=cover
-              `}
+              "
             />
             <title>Hello World</title>
             {renderMeta.styleTags}

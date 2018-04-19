@@ -6,7 +6,9 @@ import path from 'path'
 import rules from './rules'
 
 export default function ({ config }) {
-  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
+  const {
+    ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
+  } = config.paths
 
   config.publicPath = config.devBasePath ? `/${config.devBasePath}/` : '/'
 

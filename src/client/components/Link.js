@@ -27,14 +27,14 @@ const reactRouterProps = [
   'replace',
 ]
 
-function SmartLink ({ prefetch = true, scrollToTop = true, onClick, ...rest }) {
+function SmartLink ({
+  prefetch = true, scrollToTop = true, onClick, ...rest
+}) {
   const { to } = rest
   let resolvedTo = to
   if (isObject(to)) {
     if (!to.pathname && to.path) {
-      console.warn(
-        'You are using the `path` key in a <Link to={...} /> when you should be using the `pathname` key. This will be deprecated in future versions!'
-      )
+      console.warn('You are using the `path` key in a <Link to={...} /> when you should be using the `pathname` key. This will be deprecated in future versions!')
       to.pathname = to.path
       delete to.path
       resolvedTo = to.pathname

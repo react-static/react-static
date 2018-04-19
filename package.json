@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "5.6.1",
+  "version": "5.8.1",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -13,15 +13,17 @@
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "build": "rimraf lib && babel src --out-dir lib",
-    "watch": "rimraf lib && babel -w src --out-dir lib",
+    "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib && yarn prepGitignore",
+    "watch": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib",
     "postpublish": "git push --tags",
     "prepublishOnly": "yarn build && yarn test",
     "publishNext": "yarn publish --tag next",
+    "prepGitignore": "node scripts/prepGitignore.js",
     "startDocs": "gitdocs serve",
     "buildDocs": "gitdocs build",
     "serveDocs": "serve docs-dist -p 3000",
-    "test": "eslint src examples test && yarn run test-sample-build",
+    "test": "yarn unitTest && eslint src examples test && yarn run test-sample-build",
+    "unitTest": "yarn jest src",
     "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
     "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
@@ -54,8 +56,7 @@
     "cross-spawn": "^5.1.0",
     "css-loader": "^0.28.7",
     "download-git-repo": "^1.0.2",
-    "eslint-plugin-class-property": "^1.1.0",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-config-react-tools": "^1.2.3",
     "extract-css-chunks-webpack-plugin": "^2.0.18",
     "extract-hoc": "^0.0.5",
     "extract-hoc-compose": "^0.0.1",
@@ -89,8 +90,11 @@
     "serve": "^6.4.10",
     "shorthash": "^0.0.2",
     "slash": "^1.0.0",
+    "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0",
     "style-loader": "^0.19.0",
     "swimmer": "^1.1.1",
+    "update-notifier": "^2.4.0",
     "url-loader": "^0.6.1",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
@@ -99,9 +103,10 @@
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.3",
     "eslint": "^4.3.0",
-    "eslint-config-react-tools": "^1.0.6",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
     "gitdocs": "^1.5.17",
     "jest": "^21.2.1",
     "rimraf": "^2.6.2"
@@ -109,5 +114,15 @@
   "prettier": {
     "semi": false,
     "singleQuote": true
+  },
+  "jest": {
+    "verbose": true,
+    "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
+    "setupFiles": [
+      "<rootDir>/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

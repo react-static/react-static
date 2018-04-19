@@ -14,16 +14,17 @@ program
 
 const { config, staging, debug } = program
 
-buildCmd.default({
-  config,
-  staging,
-  debug,
-  isCLI: true,
-})
+buildCmd
+  .default({
+    config,
+    staging,
+    debug,
+    isCLI: true,
+  })
   .then(() => {
     process.exit(0)
   })
-  .catch((err) => {
-    console.log(err)
+  .catch(err => {
+    console.error(err)
     process.exit(1)
   })

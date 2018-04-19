@@ -6,9 +6,11 @@ import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder } from '../utils'
 
-export default async function build ({ config, staging, debug, isCLI, silent = !isCLI } = {}) {
+export default async function build ({
+  config, staging, debug, isCLI, silent = !isCLI,
+} = {}) {
   // ensure ENV variables are set
-  if (typeof process.env.NODE_ENV === 'undefined') {
+  if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
   }
   process.env.REACT_STATIC_ENV = 'production'
@@ -70,9 +72,8 @@ export default async function build ({ config, staging, debug, isCLI, silent = !
       clientStats,
     })
   } catch (e) {
-    const PrettyError = require('pretty-error')
     console.log() // new line
-    console.log(new PrettyError().render(e))
+    console.error(e)
     process.exit(1)
   }
   await buildXMLandRSS({ config })

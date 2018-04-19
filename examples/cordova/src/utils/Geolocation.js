@@ -3,7 +3,7 @@ import * as Device from './Device'
 export const getCurrentPosition = async options => {
   await Device.ready()
   return new Promise((resolve, reject) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject, options),
+    navigator.geolocation.getCurrentPosition(resolve, reject, options)
   )
 }
 

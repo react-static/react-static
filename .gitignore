@@ -1,38 +1,26 @@
-# dependencies
-node_modules
-
-# testing
-coverage
-
-# production
-dist
-docs-dist
-lib
-
-*.log
 .DS_Store
-examples/*/yarn.lock
-
-# misc
-.env.local
+.editorconfig
 .env.development.local
-.env.test.local
+.env.local
 .env.production.local
+.env.test.local
 .esm-cache
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# editors
+.history
 .idea
 .vscode
-.history
-
-# Editorconfig (for now)
-.editorconfig
-
-# cordova
+*.log
 */cordova/platforms
 */cordova/plugins
 */cordova/www
+coverage
+dist
+docs-dist
+examples/*/gitignore
+examples/*/yarn.lock
+lib
+node_modules
+npm-debug.log*
+package-lock.json
+tmp
+yarn-debug.log*
+yarn-error.log*

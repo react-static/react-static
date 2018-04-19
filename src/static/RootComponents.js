@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 
 export class DefaultDocument extends Component {
   render () {
-    const { Html, Head, Body, children } = this.props
+    const {
+      Html, Head, Body, children,
+    } = this.props
     return (
       <Html lang="en-US">
         <Head>
