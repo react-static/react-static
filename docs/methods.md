@@ -2,9 +2,9 @@
 
 In addition to components, React-Static exports a some simple functions to help you in programmatic use cases:
 
-* [onLoading](/methods/#onloading)
-* [prefetch](/methods/#prefetch)
-* [scrollTo](/methods/#scrollto)
+* [onLoading](/docs/methods.md/#onloading)
+* [prefetch](/docs/methods.md/#prefetch)
+* [scrollTo](/docs/methods.md/#scrollto)
 
 ### `onLoading`
 
