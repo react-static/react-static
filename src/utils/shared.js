@@ -2,8 +2,8 @@ export { poolAll, createPool } from 'swimmer'
 
 export function pathJoin (...paths) {
   let newPath = paths.map(trimSlashes).join('/')
-  if (newPath === '/') {
-    return newPath
+  if (!newPath || newPath === '/') {
+    return '/'
   }
   newPath = trimSlashes(newPath)
   if (newPath.includes('?')) {
@@ -14,8 +14,8 @@ export function pathJoin (...paths) {
 
 export function cleanPath (path) {
   // Resolve the local path
-  if (!path) {
-    return path
+  if (!path || path === '/') {
+    return '/'
   }
   // Remove origin, hashes, and query params
   if (typeof document !== 'undefined') {

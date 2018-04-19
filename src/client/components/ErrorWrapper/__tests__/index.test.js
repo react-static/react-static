@@ -28,7 +28,7 @@ describe('ErrorWrapper', () => {
       process.env.REACT_STATIC_ENV = 'production'
 
       const errorWrapper = shallow(
-        <ErrorWrapper >
+        <ErrorWrapper>
           <span>hello</span>
         </ErrorWrapper>
       )
