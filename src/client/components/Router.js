@@ -156,7 +156,7 @@ export default class Router extends React.Component {
           resolvedHistory = createHashHistory()
         } else {
           const options = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING ? {} :
-              { basename: process.env.REACT_STATIC_BASEPATH }
+            { basename: process.env.REACT_STATIC_BASEPATH }
           resolvedHistory = createBrowserHistory(options)
         }
       }
