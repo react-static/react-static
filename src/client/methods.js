@@ -77,28 +77,23 @@ export const getRouteInfo = async (path, { priority } = {}) => {
       }
       const { data } = await inflightRouteInfo[path]
       routeInfo = data
-    } else if (priority) {
-      // In production, request from route's routeInfo.json
-      const { data } = await axios.get(
-        `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
-          path,
-          `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`
-        )}`
-      )
-      routeInfo = data
     } else {
-      if (!inflightRouteInfo[path]) {
-        inflightRouteInfo[path] = requestPool.add(() =>
-          axios.get(
-            `${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
-              path,
-              `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`
-            )}`
-          )
-        )
+      const routeInfoRoot = (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+        ? process.env.REACT_STATIC_SITE_ROOT
+        : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
+      const getPath = `${routeInfoRoot}${pathJoin(path, `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`)}`
+
+      if (priority) {
+        // In production, request from route's routeInfo.json
+        const { data } = await axios.get(getPath)
+        routeInfo = data
+      } else {
+        if (!inflightRouteInfo[path]) {
+          inflightRouteInfo[path] = requestPool.add(() => axios.get(getPath))
+        }
+        const { data } = await inflightRouteInfo[path]
+        routeInfo = data
       }
-      const { data } = await inflightRouteInfo[path]
-      routeInfo = data
     }
   } catch (err) {
     erroredPaths[path] = true

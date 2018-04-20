@@ -20,6 +20,9 @@ export default function ({ config, isNode }) {
     : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
 
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
+  process.env.REACT_STATIC_SITE_ROOT = process.env.REACT_STATIC_STAGING
+    ? config.stagingSiteRoot
+    : config.siteRoot
   process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
     ? config.stagingBasePath
     : config.basePath
