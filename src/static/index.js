@@ -455,7 +455,7 @@ export async function buildXMLandRSS ({ config }) {
   const prefixPath = config.disableRoutePrefixing ? siteRoot : config.publicPath
   const xml = generateXML({
     routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: `${prefixPath}${pathJoin(route.path)}`,
+      permalink: `${prefixPath}/${pathJoin(route.path)}`,
       lastModified: '',
       priority: 0.5,
       ...route,
