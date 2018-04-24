@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-static'
 import Smackdown from 'react-smackdown'
-import styled from 'styled-components'
 
 const syntax = JSON.parse(process.env.SMACKDOWN_SYNTAX)
 

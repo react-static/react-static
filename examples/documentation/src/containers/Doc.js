@@ -1,6 +1,5 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
-import { SiteData, RouteData, Link, Head } from 'react-static'
+import { SiteData, RouteData, Head } from 'react-static'
 
 //
 

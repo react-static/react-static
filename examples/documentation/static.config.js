@@ -62,6 +62,7 @@ chokidar.watch(docsPath).on('all', () => reloadRoutes())
 // Form the full repoURL
 const repoURL = `https://github.com/${repo}`
 // Set the version
+// eslint-disable-next-line
 process.env.REPO_VERSION = require(path.resolve(packagePath)).version
 
 export default {
