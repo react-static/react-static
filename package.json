@@ -22,6 +22,8 @@
     "prepGitignore": "node scripts/prepGitignore.js",
     "startDocs": "cd www && yarn start",
     "buildDocs": "cd www && yarn && yarn build",
+    "buildDocsProd":
+      "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "serveDocs": "serve www/dist -p 3000",
     "test": "yarn unitTest && eslint src examples test && yarn run test-sample-build",
     "unitTest": "yarn jest src",
