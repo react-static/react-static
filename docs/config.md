@@ -35,7 +35,7 @@ export default {
 }
 ```
 
-**Awesome Tip: Changes made to `static.config.js` while the development server is running will automatically run `getRoutes` again and any changes to routes or routeData will be hot-reloaded instantly! Don't want to edit/resave your config file? Try using [`reloadRoutes`](/node-api/#reloadRoutes)!**
+**Awesome Tip: Changes made to `static.config.js` while the development server is running will automatically run `getRoutes` again and any changes to routes or routeData will be hot-reloaded instantly! Don't want to edit/resave your config file? Try using [`reloadRoutes`](/docs/node-api/#reloadRoutes)!**
 
 ### `route`
 

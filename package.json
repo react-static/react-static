@@ -13,19 +13,22 @@
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib && yarn prepGitignore",
+    "build":
+      "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib && yarn prepGitignore",
     "watch": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib",
     "postpublish": "git push --tags",
     "prepublishOnly": "yarn build && yarn test",
     "publishNext": "yarn publish --tag next",
     "prepGitignore": "node scripts/prepGitignore.js",
-    "startDocs": "gitdocs serve",
-    "buildDocs": "gitdocs build",
-    "serveDocs": "serve docs-dist -p 3000",
+    "startDocs": "cd www && yarn start",
+    "buildDocs": "cd www && yarn build",
+    "serveDocs": "serve www/dist -p 3000",
     "test": "yarn unitTest && eslint src examples test && yarn run test-sample-build",
     "unitTest": "yarn jest src",
-    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
-    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
+    "test-large-build":
+      "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
+    "test-sample-build":
+      "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
@@ -107,7 +110,6 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.3",
     "eslint": "^4.3.0",
-    "gitdocs": "^1.5.17",
     "jest": "^21.2.1",
     "rimraf": "^2.6.2"
   },
@@ -118,11 +120,7 @@
   "jest": {
     "verbose": true,
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
-    "setupFiles": [
-      "<rootDir>/setupTests.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
+    "setupFiles": ["<rootDir>/setupTests.js"],
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   }
 }

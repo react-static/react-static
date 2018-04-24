@@ -63,7 +63,7 @@ The following templates contain the bare-minimum for each css approach to functi
 
 Most, if not all, CSS-in-JS libraries require that you to **extract** the styles used in your app during the usage of `ReactDOMServer.renderToString` or `ReactDOMServer.renderToStaticMarkup`, then inject them into the head of your `index.html`.
 
-React-Static allows you to decorate its HTML and Document rendering processes by using the static.config.js [`renderToHtml`](/config/#rendertohtml) and [`Document`](/config/#document)properties. Below are the relevant pieces used in the existing styled-components template:
+React-Static allows you to decorate its HTML and Document rendering processes by using the static.config.js [`renderToHtml`](/docs/config/#rendertohtml) and [`Document`](/docs/config/#document) properties. Below are the relevant pieces used in the existing styled-components template:
 
 ```javascript
 // exmaples/styled-components/static.config.js
