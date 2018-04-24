@@ -9,8 +9,9 @@ chokidar.watch('../docs').on('all', () => reloadRoutes())
 
 //
 
-const repoName = 'nozzle/react-static'
-const repo = `https://github.com/${repoName}`
+const repoName = 'React Static'
+const repo = 'nozzle/react-static'
+const repoURL = `https://github.com/${repoName}`
 
 try {
   // eslint-disable-next-line
@@ -159,7 +160,6 @@ const menu = [
 export default {
   getSiteData: () => ({
     menu,
-    repo,
     repoName,
   }),
   getRoutes: () => [
@@ -172,7 +172,8 @@ export default {
       component: 'src/containers/Doc',
       getData: () => ({
         markdown: fs.readFileSync(path.resolve(page.markdownSrc), 'utf8'),
-        editPath: repo + path.join('/blob/master/', __dirname.split('/').pop(), page.markdownSrc),
+        editPath:
+          repoURL + path.join('/blob/master/', __dirname.split('/').pop(), page.markdownSrc),
         title: page.title,
       }),
     })),
@@ -203,7 +204,7 @@ export default {
               rel="stylesheet"
             />
             {renderMeta.styleTags}
-            <title>React Static</title>
+            <title>{repoName}</title>
           </Head>
           <Body>{children}</Body>
         </Html>
