@@ -125,6 +125,7 @@ export default function getConfig (customConfig, { watch } = {}) {
       renderToHtml: (render, Comp) => render(<Comp />),
       prefetchRate: 3,
       disableRouteInfoWarning: false,
+      disableRoutePrefixing: false,
       outputFileRate: 10,
       // Config Overrides
       ...config,
@@ -143,6 +144,7 @@ export default function getConfig (customConfig, { watch } = {}) {
     // Set env variables to be used client side
     process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
     process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = finalConfig.disableRouteInfoWarning
+    process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = finalConfig.disableRoutePrefixing
 
     return finalConfig
   }
