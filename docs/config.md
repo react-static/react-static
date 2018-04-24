@@ -22,8 +22,8 @@ A `static.config.js` file is optional, but recommended at your project root to u
 * [bundleAnalyzer](#bundleanalyzer)
 * [outputFileRate](#outputfilerate)
 * [prefetchRate](#prefetchrate)
-* [disableRouteInfoWarning](#disableRouteInfoWarning)
-* [disableRoutePrefixing](#disableRoutePrefixing)
+* [disableRouteInfoWarning](#disablerouteinfowarning)
+* [disableRoutePrefixing](#disablerouteprefixing)
 
 ### `getRoutes`
 
@@ -481,7 +481,8 @@ export default {
 
 ### `disableRoutePrefixing`
 
-An optional `Boolean`. Set to `true` to disable prefixing link href values and the browser history with `config.siteData`.
+An optional `Boolean`. Set to `true` to disable prefixing link href values and the browser history with `config.basePath`.
+Useful if you are using a variable basePath such as /country/language/basePath.
 
 ```javascript
 // static.config.js

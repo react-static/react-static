@@ -81,7 +81,7 @@ export const getRouteInfo = async (path, { priority } = {}) => {
       const routeInfoRoot = (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
         ? process.env.REACT_STATIC_SITE_ROOT
         : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
-      const getPath = `${routeInfoRoot}${pathJoin(path, `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`)}`
+      const getPath = `${routeInfoRoot}/${pathJoin(path, `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`)}`
 
       if (priority) {
         // In production, request from route's routeInfo.json
