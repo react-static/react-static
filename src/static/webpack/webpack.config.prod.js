@@ -15,16 +15,18 @@ export default function ({ config, isNode }) {
     ROOT, DIST, NODE_MODULES, SRC,
   } = config.paths
 
+  // Trailing slash
   config.publicPath = process.env.REACT_STATIC_STAGING
-    ? `${config.stagingSiteRoot}/${
-      config.stagingBasePath ? `${config.stagingBasePath}/` : ''
-    }`
+    ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
     : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
-
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
-  process.env.REACT_STATIC_SITE_ROOT = process.env.REACT_STATIC_STAGING
-    ? config.stagingSiteRoot
-    : config.siteRoot
+
+  // Trailing slash mysiteroot.com/
+  process.env.REACT_STATIC_SITE_ROOT = `${
+    process.env.REACT_STATIC_STAGING ? config.stagingSiteRoot : config.siteRoot
+  }/`
+
+  // No slashes base/path
   process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
     ? config.stagingBasePath
     : config.basePath
@@ -43,11 +45,7 @@ export default function ({ config, isNode }) {
     externals: isNode
       ? [
         nodeExternals({
-          whitelist: [
-            'react-universal-component',
-            'webpack-flush-chunks',
-            'react-static-routes',
-          ],
+          whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
         }),
       ]
       : [],
@@ -92,9 +90,7 @@ export default function ({ config, isNode }) {
         new webpack.optimize.LimitChunkCountPlugin({
           maxChunks: 1,
         }),
-      !isNode &&
-        !process.env.REACT_STATIC_DEBUG &&
-        new webpack.optimize.UglifyJsPlugin(),
+      !isNode && !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
       // !isNode &&
       //   new SWPrecacheWebpackPlugin({
       //     cacheId: config.siteName || 'my-site-name',

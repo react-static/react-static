@@ -33,7 +33,9 @@ if (process.env.REACT_STATIC_ENV === 'development') {
   const io = require('socket.io-client')
   const run = async () => {
     try {
-      const { data: { port } } = await axios.get('/__react-static__/getMessagePort')
+      const {
+        data: { port },
+      } = await axios.get('/__react-static__/getMessagePort')
       const socket = io(`http://localhost:${port}`)
       socket.on('connect', () => {
         console.log(
@@ -78,10 +80,14 @@ export const getRouteInfo = async (path, { priority } = {}) => {
       const { data } = await inflightRouteInfo[path]
       routeInfo = data
     } else {
-      const routeInfoRoot = (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
-        ? process.env.REACT_STATIC_SITE_ROOT
-        : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
-      const getPath = `${routeInfoRoot}/${pathJoin(path, `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`)}`
+      const routeInfoRoot =
+        (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+          ? process.env.REACT_STATIC_SITE_ROOT
+          : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
+      const getPath = `${routeInfoRoot}${pathJoin(
+        path,
+        `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`
+      )}`
 
       if (priority) {
         // In production, request from route's routeInfo.json
