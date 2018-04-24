@@ -37,10 +37,10 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 ## Sites Built with React-Static
 
-* [React-Static.js.org](https://react-static.js.org)
+* [React-Static.js.org](https://react-static.js.org) ([source](https://github.com/nozzle/react-static/tree/master/www))
 * [Nozzle.io](https://nozzle.io)
 * [Timber.io](https://timber.io)
-* [HeadlessCMS.org](https://headlesscms.org)
+* [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
 * [Manta.life](https://manta.life)
 * [Manticore Games](http://manticoregames.com)
 * [BlackSandSolutions.co](https://www.blacksandsolutions.co)
@@ -53,7 +53,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [PSD Wizard: On-demand Front-End Coding Service](https://psdwizard.com)
 * [NYC Vintage Map](https://nycvintagemap.com)
 * [Eldar Labs - Utilities and Productivity Tools](https://eldarlabs.com)
-* [Dan Webb - Personal Website](https://danwebb.co)
+* [Dan Webb - Personal Website](https://danwebb.co) ([source](https://github.com/DanWebb/danwebb.co))
 * [Intuit Turbo](http://turbo.com)
 * [Messenger Corp. client asset ordering](http://chartwells.messengercorp.com/)
 
