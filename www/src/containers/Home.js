@@ -15,7 +15,7 @@ const Styles = styled.div`
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 5vw;
   text-align: center;
 
   .backgrounds {
@@ -51,16 +51,18 @@ const Styles = styled.div`
   }
 
   img {
-    width: 500px;
+    width: 600px;
   }
 
   h1 {
     position: absolute;
     opacity: 0;
+    pointer-events: none;
   }
 
   h2 {
     width: 400px;
+    max-width: 100%;
     color: rgba(0, 0, 0, 0.8);
   }
 
@@ -84,7 +86,7 @@ const Cards = styled.div`
   flex-align: stretch;
   justify-content: stretch;
   flex-wrap: wrap;
-  width: 1000px
+  width: 1000px;
   max-width: 95%;
 `
 
@@ -139,7 +141,7 @@ export default () => (
         Get Started!
       </Card>
       <Card to="https://react-chat-signup.herokuapp.com" background="#efbb3c">
-        Slack
+        Chat on Slack
       </Card>
       <Card to="/docs/concepts" background="#9ec754">
         Documentation

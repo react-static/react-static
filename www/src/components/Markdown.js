@@ -36,6 +36,14 @@ const renderers = {
   },
 }
 
+const Styles = styled.div`
+  code {
+    whitespace: pre;
+    display: block;
+    overflow: auto;
+  }
+`
+
 class Markdown extends PureComponent {
   render () {
     const { source } = this.props
@@ -47,7 +55,11 @@ class Markdown extends PureComponent {
       lineNumberStyle: { opacity: 0.5 },
     }
 
-    return <Smackdown source={source} syntax={resolvedSyntax} renderers={renderers} />
+    return (
+      <Styles>
+        <Smackdown source={source} syntax={resolvedSyntax} renderers={renderers} />
+      </Styles>
+    )
   }
 }
 
