@@ -134,11 +134,11 @@ export default () => (
       SEO, site performance, and user/developer experience.
     </p>
     <Cards>
-      <Card to={introURL} background="#ff6073">
-        Introduction
-      </Card>
-      <Card to="/docs/#quick-start" background="#5ca9c3">
+      <Card to="/docs/#quick-start" background="#ff6073">
         Get Started!
+      </Card>
+      <Card to={introURL} background="#5ca9c3">
+        Introduction
       </Card>
       <Card to="https://react-chat-signup.herokuapp.com" background="#efbb3c">
         Chat on Slack
