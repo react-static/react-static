@@ -42,7 +42,6 @@ export default async function build ({
     if (!silent) console.log('')
   }
 
-  if (!silent) console.time('=> Site is ready for production!')
 
   if (!silent) console.log('=> Copying public directory...')
   if (!silent) console.time(chalk.green('=> [\u2713] Public directory copied'))
@@ -62,23 +61,5 @@ export default async function build ({
 
   if (config.bundleAnalyzer) {
     await new Promise(() => {})
-  }
-
-  try {
-    await exportRoutes({
-      config,
-      clientStats,
-    })
-  } catch (e) {
-    const PrettyError = require('pretty-error')
-    console.log() // new line
-    console.log(new PrettyError().render(e))
-    process.exit(1)
-  }
-  await buildXMLandRSS({ config })
-
-  if (!silent) console.timeEnd('=> Site is ready for production!')
-  if (config.onBuild) {
-    await config.onBuild({ config })
   }
 }

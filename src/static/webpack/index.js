@@ -7,6 +7,7 @@ import WebpackDevServer from 'webpack-dev-server'
 //
 import { getStagedRules } from './rules'
 import { findAvailablePort } from '../../utils'
+import fs from 'fs-extra'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
@@ -228,6 +229,11 @@ export async function buildProductionBundles ({ config }) {
           }
         }
       }
+
+      fs.outputFileSync(
+        path.join(config.paths.dist, 'client-stats.json'),
+        JSON.stringify(prodStats.toJson(), null, 2)
+      );
 
       resolve(prodStats.toJson())
     })
