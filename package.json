@@ -21,7 +21,7 @@
     "publishNext": "yarn publish --tag next",
     "prepGitignore": "node scripts/prepGitignore.js",
     "startDocs": "cd www && yarn start",
-    "buildDocs": "cd www && yarn build",
+    "buildDocs": "cd www && yarn && yarn build",
     "serveDocs": "serve www/dist -p 3000",
     "test": "yarn unitTest && eslint src examples test && yarn run test-sample-build",
     "unitTest": "yarn jest src",
