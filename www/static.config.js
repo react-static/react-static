@@ -18,7 +18,7 @@ try {
   //
 }
 
-process.env.GITDOCS_SYNTAX = JSON.stringify({
+process.env.SMACKDOWN_SYNTAX = JSON.stringify({
   showLineNumbers: true,
   highlighter: 'hljs',
   theme: 'atom-one-light',
