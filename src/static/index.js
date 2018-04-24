@@ -448,12 +448,14 @@ export const exportRoutes = async ({ config, clientStats }) => {
 }
 
 export async function buildXMLandRSS ({ config }) {
-  if (!config.siteRoot) {
+  const siteRoot = process.env.REACT_STATIC_STAGING ? config.stagingSiteRoot : config.siteRoot
+  if (!siteRoot) {
     return
   }
+  const prefixPath = config.disableRoutePrefixing ? siteRoot : config.publicPath
   const xml = generateXML({
     routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: `${config.publicPath}${pathJoin(route.path)}`,
+      permalink: `${prefixPath}/${pathJoin(route.path)}`,
       lastModified: '',
       priority: 0.5,
       ...route,
