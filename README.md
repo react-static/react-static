@@ -135,6 +135,7 @@ All of the following examples can be used as a template at project creation.
 * [Netlify CMS](https://github.com/nozzle/react-static/tree/master/examples/netlifycms)
 * [Gentics Mesh CMS](https://getmesh.io/)
 * [Markdown](https://github.com/nozzle/react-static/tree/master/examples/markdown)
+* [Documentation](https://github.com/nozzle/react-static/tree/master/examples/documentation)
 
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 
