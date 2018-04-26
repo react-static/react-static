@@ -38,6 +38,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 ## Sites Built with React-Static
 
 * [React-Static.js.org](https://react-static.js.org) ([source](https://github.com/nozzle/react-static/tree/master/www))
+* [React-Charts.js.org](https://react-charts.js.org) ([source](https://github.com/nozzle/react-charts/tree/master/www))
 * [Nozzle.io](https://nozzle.io)
 * [Timber.io](https://timber.io)
 * [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
