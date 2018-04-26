@@ -31,9 +31,9 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 ## Videos & Tutorials
 
-* [Get started in 5 minutes! (create-react-app template)](https://youtu.be/1pBzh7IM1s8) (5 min)
+* [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
 * [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
-* [Walkthrough - Installing and creating a new project with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
+* [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
 
 ## Sites Built with React-Static
 
