@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "3.8.4",
+  "version": "3.8.5",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -24,7 +24,7 @@
     "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "serveDocs": "serve www/dist -p 3000",
     "test": "yarn unitTest && eslint src examples test && yarn run test-sample-build",
-    "unitTest": "yarn jest src",
+    "unitTest": "NODE_ENV=test yarn jest src",
     "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
     "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
@@ -104,6 +104,7 @@
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
+    "babel-jest": "^22.4.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.3",
@@ -117,6 +118,10 @@
   },
   "jest": {
     "verbose": true,
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
     "setupFiles": [
       "<rootDir>/setupTests.js"

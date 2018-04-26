@@ -157,10 +157,12 @@ export default function getConfig (customConfig, { watch } = {}) {
 }
 
 // Normalize routes with parents, full paths, context, etc.
-function normalizeRoutes (routes, { disableDuplicateRoutesWarning }) {
+export function normalizeRoutes (routes, config = {}) {
+  const { tree, disableDuplicateRoutesWarning, force404 } = { force404: true, ...config }
   const flatRoutes = []
 
   const recurse = (route, parent = { path: '/' }) => {
+    const originalPath = route.is404 ? path404 : pathJoin(route.path)
     const routePath = route.is404 ? path404 : pathJoin(parent.path, route.path)
 
     if (typeof route.noIndex !== 'undefined') {
@@ -170,6 +172,7 @@ function normalizeRoutes (routes, { disableDuplicateRoutesWarning }) {
 
     const normalizedRoute = {
       ...route,
+      originalPath,
       path: routePath,
       noindex: typeof route.noindex === 'undefined' ? parent.noindex : route.noindex,
       hasGetProps: !!route.getData,
@@ -179,32 +182,33 @@ function normalizeRoutes (routes, { disableDuplicateRoutesWarning }) {
       throw new Error('No path defined for route:', normalizedRoute)
     }
 
-    if (route.children) {
-      route.children.forEach(d => recurse(d, normalizedRoute))
+    if (normalizedRoute.children) {
+      normalizedRoute.children = route.children.map(d => recurse(d, normalizedRoute))
     }
 
-    delete normalizedRoute.children
+    if (!tree) {
+      delete normalizedRoute.children
+    }
 
-    flatRoutes.push(normalizedRoute)
+    const found = flatRoutes.find(d => d.path === normalizedRoute.path)
+
+    if (!found) {
+      flatRoutes.push(normalizedRoute)
+    } else if (!disableDuplicateRoutesWarning) {
+      console.warn('More than one route is defined for path:', route.path)
+    }
+
+    return normalizedRoute
   }
 
-  routes.forEach(d => recurse(d))
+  const normalizedRoutes = routes.map(d => recurse(d))
 
-  if (!disableDuplicateRoutesWarning) {
-    flatRoutes.forEach(route => {
-      const found = flatRoutes.filter(d => d.path === route.path)
-      if (found.length > 1) {
-        console.warn('More than one route is defined for path:', route.path)
-      }
-    })
-  }
-
-  if (!flatRoutes.find(d => d.is404)) {
+  if (force404 && !flatRoutes.find(d => d.is404)) {
     flatRoutes.push({
       is404: true,
       path: path404,
     })
   }
 
-  return flatRoutes
+  return tree ? normalizedRoutes : flatRoutes
 }

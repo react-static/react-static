@@ -370,6 +370,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
           </head>
         )
       }
+
       // Not only do we pass react-helmet attributes and the app.js here, but
       // we also need to  hard code site props and route props into the page to
       // prevent flashing when react mounts onto the HTML.
@@ -417,8 +418,6 @@ export const exportRoutes = async ({ config, clientStats }) => {
       // Render the html for the page inside of the base document.
       let html = `<!DOCTYPE html>${DocumentHtml}`
 
-      const routeInfoFileContent = JSON.stringify(routeInfo)
-
       // If the siteRoot is set and we're not in staging, prefix all absolute URL's
       // with the siteRoot
       html = html.replace(hrefReplace, `$1${config.publicPath}$3`)
@@ -435,9 +434,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
 
       const res = await Promise.all([
         fs.outputFile(htmlFilename, html),
-        !route.redirect
-          ? fs.outputFile(routeInfoFilename, routeInfoFileContent)
-          : Promise.resolve(),
+        !route.redirect ? fs.outputJson(routeInfoFilename, routeInfo) : Promise.resolve(),
       ])
       htmlProgress.tick()
       return res

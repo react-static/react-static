@@ -1,3 +1,15 @@
+# 5.8.5
+
+#### Fixes & Optimizations
+
+* Upgrade Documentation example and expose some undocumented utilities to the outside world.
+
+# 5.8.4
+
+#### Fixes & Optimizations
+
+* Remove console.log from `documentation` example
+
 # 5.8.3
 
 #### Features

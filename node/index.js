@@ -3,6 +3,7 @@ const { default: start } = require('../lib/commands/start')
 const { default: build } = require('../lib/commands/build')
 const { reloadRoutes } = require('../lib/static/webpack')
 const { default: makePageRoutes } = require('../lib/node/makePageRoutes')
+const { normalizeRoutes } = require('../lib/static/getConfig')
 
 module.exports = {
   create,
@@ -10,4 +11,5 @@ module.exports = {
   build,
   reloadRoutes,
   makePageRoutes,
+  normalizeRoutes,
 }

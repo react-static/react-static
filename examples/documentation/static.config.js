@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { reloadRoutes } from 'react-static/node'
+import { reloadRoutes, normalizeRoutes } from 'react-static/node'
 import fs from 'fs-extra'
 import nodePath from 'path'
 import { ServerStyleSheet } from 'styled-components'
@@ -24,8 +24,13 @@ process.env.SMACKDOWN_SYNTAX = JSON.stringify({
   theme: 'atom-one-light',
   languages: ['javascript'],
 })
-// TODO: Build the menu and pages for the site
-const pages = [
+// TODO: Build the sidebar menu
+const menu = [
+  {
+    path: '/',
+    title: 'Home',
+    component: 'src/containers/Home',
+  },
   {
     path: 'docs',
     title: 'Readme',
@@ -58,18 +63,14 @@ export default {
   disableDuplicateRoutesWarning: true,
   getSiteData: () => ({
     // This is the sidebar menu on docs pages
-    pages: pagesToRoutes(pages),
+    pages: JSON.parse(JSON.stringify(menuToRoutes(menu))),
     repo,
     repoURL,
     repoName,
   }),
   getRoutes: () => [
-    {
-      path: '/',
-      component: 'src/containers/Home',
-    },
-    // Make the docs routes
-    ...pagesToRoutes(pages),
+    // Make the routes for the menu pages
+    ...menuToRoutes(menu),
     {
       is404: true,
       component: 'src/containers/404',
@@ -106,30 +107,46 @@ export default {
   },
 }
 
-function pagesToRoutes (pages) {
-  return pages.map(({
-    path, component, markdownSrc, title, children = [],
-  }) => ({
-    title,
-    path,
-    component:
-      component || // Use the defined component if it exists
-      (markdownSrc && 'src/containers/Doc'), // Use the Doc template for markdown files
-    getData: () => ({
-      // Pass the page title
+function menuToRoutes (items) {
+  // Normalize the routes with react-static's normalizer. Make sure it still returns
+  // a tree, so we can use it as the sidebar structure. This will also
+  // give us routes with full paths at each nesting level we can use in the menu
+  const normalizedRoutes = normalizeRoutes(items, {
+    tree: true,
+    force404: false,
+    disableDuplicateRoutesWarning: true,
+  })
+
+  // Now we need to use the title, markdown and component info to set up the right
+  // components and routeData
+  const mapWithComponentsAndData = items =>
+    items.map(({
+      path, originalPath, component, markdownSrc, title, children = [], ...rest
+    }) => ({
+      ...rest,
+      fullPath: path,
       title,
-      // Parse the markdown
-      markdown: markdownSrc && readFileContents(markdownSrc),
-      // Construct the edit path
-      editPath: nodePath.join(
-        repoURL,
-        'blob/master',
-        __dirname.split('/').pop(),
-        component || markdownSrc || ''
-      ),
-    }),
-    children: pagesToRoutes(children),
-  }))
+      path: originalPath,
+      component:
+        component || // Use the defined component if it exists
+        (markdownSrc && 'src/containers/Doc'), // Use the Doc template for markdown files
+      getData: () => ({
+        // Pass the page title
+        title,
+        // Parse the markdown
+        markdown: markdownSrc && readFileContents(markdownSrc),
+        // Construct the edit path
+        editPath: nodePath.join(
+          repoURL,
+          'blob/master',
+          __dirname.split('/').pop(),
+          component || markdownSrc || ''
+        ),
+      }),
+      children: mapWithComponentsAndData(children),
+    }))
+
+  return mapWithComponentsAndData(normalizedRoutes)
 }
 
 function readFileContents (src) {
