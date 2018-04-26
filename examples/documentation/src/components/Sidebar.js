@@ -116,7 +116,7 @@ const SidebarStyles = styled.div`
     .item {
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
-      .name,
+      .title,
       a {
         display: block;
         padding: 0.5rem 0.7rem;
@@ -130,7 +130,7 @@ const SidebarStyles = styled.div`
         }
       }
 
-      .name {
+      .title {
         font-size: 0.8rem;
         text-transform: uppercase;
         font-weight: bold;
@@ -148,17 +148,19 @@ const SidebarStyles = styled.div`
 
 const Menu = ({ items }) => (
   <div className="list">
-    {items.map(({ name, link, children }) => (
-      <div key={name + link} className="item">
-        {link ? (
-          <Link to={link} exact activeClassName="active">
-            {name}
-          </Link>
+    {items.map(({
+ title, path, component, children,
+}) => (
+  <div key={title + path} className="item">
+    {component ? (
+      <Link to={`/${path.replace(/^\/{1,}/g, '')}`} exact activeClassName="active">
+        {title}
+      </Link>
         ) : (
-          <div className="name">{name}</div>
+          <div className="title">{title}</div>
         )}
-        {children ? <Menu items={children} /> : null}
-      </div>
+    {children ? <Menu items={children} /> : null}
+  </div>
     ))}
   </div>
 )
@@ -176,40 +178,42 @@ class Sidebar extends React.Component {
     const { isOpen } = this.state
     return (
       <SiteData
-        render={({ menu }) => (
-          <SidebarStyles className="sidebar" isOpen={isOpen}>
-            <ClickOutside
-              onClickOutside={() => {
-                if (isOpen) {
-                  this.setState({
-                    isOpen: false,
-                  })
-                }
-              }}
-            >
-              <div className="sidebar">
-                <button
-                  className="toggle"
-                  onClick={() => {
-                    this.toggle(!isOpen)
-                  }}
-                >
-                  ⇤
-                </button>
-                <div className="header">
-                  <Link to="/" className="back">
-                    ← Back to Site
-                  </Link>
-                  <div className="version">v{process.env.REPO_VERSION}</div>
+        render={({ pages }) =>
+          console.log(pages) || (
+            <SidebarStyles className="sidebar" isOpen={isOpen}>
+              <ClickOutside
+                onClickOutside={() => {
+                  if (isOpen) {
+                    this.setState({
+                      isOpen: false,
+                    })
+                  }
+                }}
+              >
+                <div className="sidebar">
+                  <button
+                    className="toggle"
+                    onClick={() => {
+                      this.toggle(!isOpen)
+                    }}
+                  >
+                    ⇤
+                  </button>
+                  <div className="header">
+                    <Link to="/" className="back">
+                      ← Back to Site
+                    </Link>
+                    <div className="version">v{process.env.REPO_VERSION}</div>
+                  </div>
+                  <div className="scroll">
+                    <Menu items={pages} />
+                  </div>
                 </div>
-                <div className="scroll">
-                  <Menu items={menu} />
-                </div>
-              </div>
-            </ClickOutside>
-            <div className="content">{children}</div>
-          </SidebarStyles>
-        )}
+              </ClickOutside>
+              <div className="content">{children}</div>
+            </SidebarStyles>
+          )
+        }
       />
     )
   }

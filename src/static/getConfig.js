@@ -52,6 +52,8 @@ export default function getConfig (customConfig, { watch } = {}) {
   }
 
   function build (config) {
+    const { disableDuplicateRoutesWarning } = config
+
     // path defaults
     config.paths = {
       root: path.resolve(process.cwd()),
@@ -108,15 +110,18 @@ export default function getConfig (customConfig, { watch } = {}) {
     const getRoutes = config.getRoutes
       ? async (...args) => {
         const routes = await config.getRoutes(...args)
-        return normalizeRoutes(routes)
+        return normalizeRoutes(routes, { disableDuplicateRoutesWarning })
       }
       : async () =>
       // At least ensure the index page is defined for export
-        normalizeRoutes([
-          {
-            path: '/',
-          },
-        ])
+        normalizeRoutes(
+          [
+            {
+              path: '/',
+            },
+          ],
+          { disableDuplicateRoutesWarning }
+        )
 
     const finalConfig = {
       // Defaults
@@ -124,6 +129,7 @@ export default function getConfig (customConfig, { watch } = {}) {
       getSiteData: () => ({}),
       renderToHtml: (render, Comp) => render(<Comp />),
       prefetchRate: 3,
+      disableDuplicateRoutesWarning: false,
       disableRouteInfoWarning: false,
       disableRoutePrefixing: false,
       outputFileRate: 10,
@@ -151,7 +157,7 @@ export default function getConfig (customConfig, { watch } = {}) {
 }
 
 // Normalize routes with parents, full paths, context, etc.
-function normalizeRoutes (routes) {
+function normalizeRoutes (routes, { disableDuplicateRoutesWarning }) {
   const flatRoutes = []
 
   const recurse = (route, parent = { path: '/' }) => {
@@ -184,12 +190,14 @@ function normalizeRoutes (routes) {
 
   routes.forEach(d => recurse(d))
 
-  flatRoutes.forEach(route => {
-    const found = flatRoutes.filter(d => d.path === route.path)
-    if (found.length > 1) {
-      console.warn('More than one route is defined for path:', route.path)
-    }
-  })
+  if (!disableDuplicateRoutesWarning) {
+    flatRoutes.forEach(route => {
+      const found = flatRoutes.filter(d => d.path === route.path)
+      if (found.length > 1) {
+        console.warn('More than one route is defined for path:', route.path)
+      }
+    })
+  }
 
   if (!flatRoutes.find(d => d.is404)) {
     flatRoutes.push({

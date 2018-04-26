@@ -23,6 +23,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 * [outputFileRate](#outputfilerate)
 * [prefetchRate](#prefetchrate)
 * [disableRouteInfoWarning](#disablerouteinfowarning)
+* [disableDuplicateRoutesWarning](#disableDuplicateRoutesWarning)
 * [disableRoutePrefixing](#disablerouteprefixing)
 
 ### `getRoutes`
@@ -476,6 +477,17 @@ An optional `Boolean`. Set to `true` to disable warnings during development when
 // static.config.js
 export default {
   disableRouteInfoWarning: true
+}
+```
+
+### `disableDuplicateRoutesWarning`
+
+An optional `Boolean`. Set to `true` to disable warnings of duplicate routes during builds.
+
+```javascript
+// static.config.js
+export default {
+  disableDuplicateRoutesWarning: true
 }
 ```
 

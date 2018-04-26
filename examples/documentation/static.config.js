@@ -1,7 +1,7 @@
+import React, { Component } from 'react'
 import { reloadRoutes } from 'react-static/node'
 import fs from 'fs-extra'
-import path from 'path'
-import React, { Component } from 'react'
+import nodePath from 'path'
 import { ServerStyleSheet } from 'styled-components'
 import chokidar from 'chokidar'
 
@@ -24,35 +24,24 @@ process.env.SMACKDOWN_SYNTAX = JSON.stringify({
   theme: 'atom-one-light',
   languages: ['javascript'],
 })
-// TODO: Build the sidebar menu for the docs section
-const menu = [
+// TODO: Build the menu and pages for the site
+const pages = [
   {
-    name: 'Readme',
-    link: '/docs/',
+    path: 'docs',
+    title: 'Readme',
+    markdownSrc: readmePath,
   },
   {
-    name: 'Documentation',
-    // Without a link, this is just a group in the sidebar
+    path: 'docs',
+    title: 'Documentation',
+    // Without a component or markdownSrc, this will just be a group in the sidebar
     children: [
       {
-        // This will be nested inside of the Documentation group
-        name: 'Overview',
-        link: '/docs/overview',
+        path: 'overview',
+        title: 'Overview',
+        markdownSrc: 'docs/overview.md',
       },
     ],
-  },
-]
-// TODO: Add the page sources for the docs
-const docPages = [
-  {
-    path: 'docs/',
-    title: 'Readme',
-    markdownSrc: './README.md',
-  },
-  {
-    path: 'docs/overview',
-    title: 'Documentation Overview',
-    markdownSrc: './docs/overview.md',
   },
 ]
 
@@ -63,12 +52,13 @@ chokidar.watch(docsPath).on('all', () => reloadRoutes())
 const repoURL = `https://github.com/${repo}`
 // Set the version
 // eslint-disable-next-line
-process.env.REPO_VERSION = require(path.resolve(packagePath)).version
+process.env.REPO_VERSION = require(nodePath.resolve(packagePath)).version
 
 export default {
+  disableDuplicateRoutesWarning: true,
   getSiteData: () => ({
     // This is the sidebar menu on docs pages
-    menu,
+    pages: pagesToRoutes(pages),
     repo,
     repoURL,
     repoName,
@@ -79,19 +69,7 @@ export default {
       component: 'src/containers/Home',
     },
     // Make the docs routes
-    ...docPages.map(page => ({
-      // Nest these routes under the docs path
-      path: page.path,
-      component: 'src/containers/Doc', // Use the Doc template
-      getData: () => ({
-        // Pass the page title
-        title: page.title,
-        // Parse the markdown
-        markdown: readFileContents(page.markdownSrc),
-        // Construct the edit path
-        editPath: path.join(repoURL, 'blob/master', __dirname.split('/').pop(), page.markdownSrc),
-      }),
-    })),
+    ...pagesToRoutes(pages),
     {
       is404: true,
       component: 'src/containers/404',
@@ -128,6 +106,32 @@ export default {
   },
 }
 
+function pagesToRoutes (pages) {
+  return pages.map(({
+    path, component, markdownSrc, title, children = [],
+  }) => ({
+    title,
+    path,
+    component:
+      component || // Use the defined component if it exists
+      (markdownSrc && 'src/containers/Doc'), // Use the Doc template for markdown files
+    getData: () => ({
+      // Pass the page title
+      title,
+      // Parse the markdown
+      markdown: markdownSrc && readFileContents(markdownSrc),
+      // Construct the edit path
+      editPath: nodePath.join(
+        repoURL,
+        'blob/master',
+        __dirname.split('/').pop(),
+        component || markdownSrc || ''
+      ),
+    }),
+    children: pagesToRoutes(children),
+  }))
+}
+
 function readFileContents (src) {
-  return fs.readFileSync(path.resolve(src), 'utf8')
+  return fs.readFileSync(nodePath.resolve(src), 'utf8')
 }

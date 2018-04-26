@@ -1,3 +1,9 @@
+# 5.8.2
+
+#### Features
+
+* Added a `config.disableDuplicateRoutesWarning` option.
+
 # 5.8.1
 
 #### Fixes & Optimizations
