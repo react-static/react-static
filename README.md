@@ -42,7 +42,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [Nozzle.io](https://nozzle.io)
 * [Timber.io](https://timber.io)
 * [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
-* [Manta.life](https://manta.life)
+* [Manta.life](https://manta.life) ([source](https://github.com/MantaApp/Website))
 * [Manticore Games](http://manticoregames.com)
 * [BlackSandSolutions.co](https://www.blacksandsolutions.co)
 * [David York - Personal Blog](http://davideyork.com)
