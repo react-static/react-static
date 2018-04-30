@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { renderToString } from 'react-dom/server'
+import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import fs from 'fs-extra'
 import glob from 'glob'
 import path from 'path'
@@ -402,7 +402,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
         </body>
       )
 
-      const DocumentHtml = renderToString(
+      const DocumentHtml = renderToStaticMarkup(
         <DocumentTemplate
           Html={HtmlWithMeta}
           Head={HeadWithMeta}
