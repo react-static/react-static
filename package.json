@@ -13,8 +13,7 @@
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "build":
-      "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib && yarn prepGitignore",
+    "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib && yarn prepGitignore",
     "watch": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib",
     "postpublish": "git push --tags",
     "prepublishOnly": "yarn build && yarn test",
@@ -22,15 +21,12 @@
     "prepGitignore": "node scripts/prepGitignore.js",
     "startDocs": "cd www && yarn start",
     "buildDocs": "cd www && yarn && yarn build",
-    "buildDocsProd":
-      "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
+    "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "serveDocs": "serve www/dist -p 3000",
     "test": "yarn unitTest && eslint src examples test && yarn run test-sample-build",
     "unitTest": "NODE_ENV=test yarn jest src",
-    "test-large-build":
-      "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
-    "test-sample-build":
-      "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
+    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
+    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
@@ -98,7 +94,7 @@
     "socket.io": "^2.1.0",
     "socket.io-client": "^2.1.0",
     "style-loader": "^0.19.0",
-    "swimmer": "^1.1.1",
+    "swimmer": "^1.3.1",
     "update-notifier": "^2.4.0",
     "url-loader": "^0.6.1",
     "webpack": "^3.6.0",
@@ -122,9 +118,16 @@
   },
   "jest": {
     "verbose": true,
-    "moduleDirectories": ["node_modules", "src"],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
-    "setupFiles": ["<rootDir>/setupTests.js"],
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "setupFiles": [
+      "<rootDir>/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }
