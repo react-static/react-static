@@ -23,7 +23,7 @@ module.exports = {
       plugins: ['react-hot-loader/babel'],
     },
     test: {
-      presets: [['latest', { modules: true }], 'stage-0', 'stage-3', 'react'],
+      presets: ['env', 'stage-0', 'react'],
     },
   },
   compact: false,
