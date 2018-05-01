@@ -1,3 +1,10 @@
+# 5.8.8
+
+#### Fixes & Optimizations
+
+* Switch from `babel-preset-latest` to `babel-preset-env`.
+* Remove unnecessary `babel-preset-stage-3` since it's included already with `babel-preset-stage-0`.
+
 # 5.8.7
 
 #### Fixes & Optimizations

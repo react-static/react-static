@@ -1,16 +1,5 @@
 module.exports = {
-  presets: [
-    [
-      'latest',
-      {
-        loose: true,
-        modules: false,
-      },
-    ],
-    'stage-0',
-    'stage-3',
-    'react',
-  ],
+  presets: ['env', 'stage-0', 'react'],
   plugins: [
     [
       'universal-import',
