@@ -66,7 +66,7 @@ Most, if not all, CSS-in-JS libraries require that you to **extract** the styles
 React-Static allows you to decorate its HTML and Document rendering processes by using the static.config.js [`renderToHtml`](/docs/config/#rendertohtml) and [`Document`](/docs/config/#document) properties. Below are the relevant pieces used in the existing styled-components template:
 
 ```javascript
-// exmaples/styled-components/static.config.js
+// examples/styled-components/static.config.js
 
 import { ServerStyleSheet } from 'styled-components'
 
