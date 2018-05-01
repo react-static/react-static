@@ -111,9 +111,10 @@ export default class Router extends React.Component {
           await prefetch(path, {
             priority: true,
           })
-          // Notify we're done loading
-          setLoading(0)
         }
+
+        // Notify we're done loading
+        setLoading(0)
 
         // Apply the original method and arguments as if nothing happened
         originalMethod.apply(resolvedHistory, args)
