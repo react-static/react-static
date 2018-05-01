@@ -34,6 +34,7 @@ const renderers = {
     const to = href.startsWith('/') ? href.replace('.md', '') : href
     return <Link to={to} {...rest} />
   },
+  code: ({ children }) => <code className="code-inline">{children}</code>,
 }
 
 class Markdown extends PureComponent {

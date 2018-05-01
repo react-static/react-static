@@ -30,6 +30,28 @@ injectGlobal`
   img {
     max-width: 100%;
   }
+
+  pre, code {
+    user-select: text;
+  }
+
+  pre {
+    font-size: 14px;
+    border-radius: 5px;
+  }
+
+  code.code-inline {
+    background: rgba(0,0,0,.05);
+    padding: 2px 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,.05);
+    font-size: .8rem;
+    line-height: 1.5;
+  }
+
+  .react-syntax-highlighter-line-number {
+    pointer-events: none;
+  }
 `
 
 const AppStyles = styled.div`
