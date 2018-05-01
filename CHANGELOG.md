@@ -1,3 +1,9 @@
+# 5.9.0
+
+#### Features
+
+* The `<Loading>` component and the `onLoading` method now return a more detailed loading state. `0` for not loading, `1` for "soft" loading (when navigation is happening) and `2` for "hard" loading (when asynchronous assets are being requested).
+
 # 5.8.8
 
 #### Fixes & Optimizations

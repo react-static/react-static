@@ -98,19 +98,21 @@ export default class Router extends React.Component {
       resolvedHistory[method] = async (...args) => {
         // Clean the path first
         const path = cleanPath(typeof args[0] === 'string' ? args[0] : args[0].path)
+        // Notify a soft loading state
+        setLoading(1)
         // Determine as quickly as possible if we need to fetch data for this route
         const shouldPrefetch = await needsPrefetch(path, { priority: true })
 
         // If we need to load...
         if (shouldPrefetch) {
-          // Notify with a loading state
-          setLoading(true)
+          // Notify with a hard loading state
+          setLoading(2)
           // Prefetch any data or templates needed with a high priority
           await prefetch(path, {
             priority: true,
           })
           // Notify we're done loading
-          setLoading(false)
+          setLoading(0)
         }
 
         // Apply the original method and arguments as if nothing happened
@@ -155,8 +157,9 @@ export default class Router extends React.Component {
         } else if (type === 'hash') {
           resolvedHistory = createHashHistory()
         } else {
-          const options = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING ? {} :
-            { basename: process.env.REACT_STATIC_BASEPATH }
+          const options = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+            ? {}
+            : { basename: process.env.REACT_STATIC_BASEPATH }
           resolvedHistory = createBrowserHistory(options)
         }
       }
@@ -174,18 +177,22 @@ export default class Router extends React.Component {
           history={resolvedHistory}
           location={staticURL}
           context={context}
-          basename={process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING ? '' : process.env.REACT_STATIC_BASEPATH}
+          basename={
+            process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+              ? ''
+              : process.env.REACT_STATIC_BASEPATH
+          }
           {...rest}
-      >
+        >
           <RouterScroller
             {...{
-            autoScrollToTop,
-            autoScrollToHash,
-            scrollToTopDuration,
-            scrollToHashDuration,
-            scrollToHashOffset,
-          }}
-        >
+              autoScrollToTop,
+              autoScrollToHash,
+              scrollToTopDuration,
+              scrollToHashDuration,
+              scrollToHashOffset,
+            }}
+          >
             {children}
           </RouterScroller>
         </ResolvedRouter>

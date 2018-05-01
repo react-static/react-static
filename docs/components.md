@@ -299,7 +299,13 @@ import { Link } from 'react-static'
 
 ### `Loading`
 
-The loading component and it's companion HOC `withLoading` give you access to a `loading` prop, which will be true when react-static is waiting on assets to load (this won't happen often, if at all). Use these components to show a loading indicator if you'd like!
+The loading component and it's companion HOC `withLoading` give you access to a `loading` prop, which will be set to `0`, `1`, or `2` depending on the loading state. This changes when react-static is waiting either navigating to a new page or waiting on assets to load (this won't happen often, hopefully not at all). Use these components to show a loading indicator if you'd like!
+
+Possible `loading` states:
+
+* `0` - Finished loading / not loading
+* `1` - A "soft" loading state for navigating to a new page.
+* `2` - A "hard" loading state for when assets are being requested.
 
 Example:
 

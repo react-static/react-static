@@ -8,7 +8,7 @@ export const propsByHash = {}
 const erroredPaths = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
-let loading = false
+let loading = 0
 let loadingSubscribers = []
 const disableRouteInfoWarning = process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING === 'true'
 

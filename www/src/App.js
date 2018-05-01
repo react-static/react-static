@@ -48,7 +48,7 @@ injectGlobal`
     padding: 2px 5px;
     border-radius: 5px;
     border: 1px solid rgba(0,0,0,.05);
-    font-size: .8rem;
+    font-size: .8em;
     line-height: 1.5;
   }
 
