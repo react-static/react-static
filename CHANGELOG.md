@@ -1,3 +1,9 @@
+# 5.9.1
+
+#### Fixes & Optimizations
+
+* Fix inifinite loading issue introduced with 5.9.0
+
 # 5.9.0
 
 #### Features
