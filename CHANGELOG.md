@@ -1,3 +1,16 @@
+# 5.8.7
+
+#### Fixes & Optimizations
+
+* Expose the react-static babel settings as a `babel-preset.js` file for more complex babel setups. `.babelrc` uses this preset for backwards compatibility.
+
+# 5.8.6
+
+#### Fixes & Optimizations
+
+* Upgraded `swimmer` to hide log messages.
+* Document-level rendering now uses `renderToStaticMarkup` instead of `renderToString`. This ensures there is no code comments or meta markup in the <head>
+
 # 5.8.5
 
 #### Fixes & Optimizations
