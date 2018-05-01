@@ -1,9 +1,12 @@
 import React from 'react'
-import { Router } from 'react-static'
+import { Router, onLoading } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 import { hot } from 'react-hot-loader'
+import nprogress from 'nprogress'
 //
 import Routes from 'react-static-routes'
+
+import 'nprogress/nprogress.css'
 
 injectGlobal`
   body {
@@ -58,12 +61,25 @@ const AppStyles = styled.div`
   min-height: 100vh;
 `
 
-const App = () => (
-  <Router>
-    <AppStyles>
-      <Routes />
-    </AppStyles>
-  </Router>
-)
+class App extends React.Component {
+  componentDidMount () {
+    onLoading(loading => {
+      if (loading) {
+        nprogress.start()
+      } else {
+        nprogress.done()
+      }
+    })
+  }
+  render () {
+    return (
+      <Router>
+        <AppStyles>
+          <Routes />
+        </AppStyles>
+      </Router>
+    )
+  }
+}
 
 export default hot(module)(App)
