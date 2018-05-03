@@ -420,7 +420,10 @@ export const exportRoutes = async ({ config, clientStats }) => {
 
       // If the siteRoot is set and we're not in staging, prefix all absolute URL's
       // with the siteRoot
-      html = html.replace(hrefReplace, `$1${config.publicPath}$3`)
+      if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
+        html = html.replace(hrefReplace, `$1${config.publicPath}$3`)
+      }
+
       html = html.replace(srcReplace, `$1${config.publicPath}$3`)
 
       // If the route is a 404 page, write it directly to 404.html, instead of
