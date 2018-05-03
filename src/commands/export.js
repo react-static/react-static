@@ -28,16 +28,22 @@ export default async ({
   // Allow config location to be overriden
   config = getConfig(config)
 
+  if (!silent) console.log('=> Building Routes...')
+  if (!silent) console.time(chalk.green('=> [\u2713] Routes Built'))
+  await prepareRoutes(config, { dev: false })
+  if (!silent) console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
+
   if (debug) {
     console.log('DEBUG - Resolved static.config.js:')
     console.log(config)
   }
 
-  const clientStats = await fs.readJson(`${config.paths.dist}/client-stats.json`)
+  const clientStats = await fs.readJson(`${config.paths.DIST}/client-stats.json`)
 
   if (!clientStats) {
     throw new Error("No Client Stats Found");
   }
+
 
   try {
     await exportRoutes({

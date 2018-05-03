@@ -178,6 +178,8 @@ export const exportRoutes = async ({ config, clientStats }) => {
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
   const basePath = process.env.REACT_STATIC_STAGING ? config.stagingBasePath : config.basePath
+
+  console.log('basePath', basePath)
   const hrefReplace = new RegExp(
     `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
     'gm'

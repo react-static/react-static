@@ -48,15 +48,10 @@ export default async function build ({
   copyPublicFolder(config)
   if (!silent) console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
-  if (!silent) console.log('=> Building Routes...')
-  if (!silent) console.time(chalk.green('=> [\u2713] Routes Built'))
-  await prepareRoutes(config, { dev: false })
-  if (!silent) console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
-
   // Build static pages and JSON
   if (!silent) console.log('=> Bundling App...')
   if (!silent) console.time(chalk.green('=> [\u2713] App Bundled'))
-  const clientStats = await buildProductionBundles({ config })
+  await buildProductionBundles({ config })
   if (!silent) console.timeEnd(chalk.green('=> [\u2713] App Bundled'))
 
   if (config.bundleAnalyzer) {

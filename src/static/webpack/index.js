@@ -1,5 +1,6 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger */
 import webpack from 'webpack'
+import path from 'path';
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
 import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
@@ -64,7 +65,13 @@ export async function startDevServer ({ config }) {
   const intendedPort = (config.devServer && config.devServer.port) || process.env.PORT || 3000
   const port = await findAvailablePort(Number(intendedPort))
   if (intendedPort !== port) {
-    console.time(chalk.red(`=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(intendedPort)} instead!`))
+    console.time(
+      chalk.red(
+        `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
+          intendedPort
+        )} instead!`
+      )
+    )
   }
   const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
 
@@ -79,7 +86,7 @@ export async function startDevServer ({ config }) {
     ...config.devServer,
     watchOptions: {
       ignored: /node_modules/,
-      ...((config.devServer) ? (config.devServer.watchOptions) || {} : {}),
+      ...(config.devServer ? config.devServer.watchOptions || {} : {}),
     },
     before: app => {
       // Serve the site data
@@ -207,35 +214,44 @@ export async function buildProductionBundles ({ config }) {
         const buildWarnings = stageStats.hasWarnings()
 
         if (buildErrors || buildWarnings) {
-          console.log(stageStats.toString({
-            context: config.context,
-            performance: false,
-            hash: false,
-            timings: true,
-            entrypoints: false,
-            chunkOrigins: false,
-            chunkModules: false,
-            colors: true,
-          }))
+          console.log(
+            stageStats.toString({
+              context: config.context,
+              performance: false,
+              hash: false,
+              timings: true,
+              entrypoints: false,
+              chunkOrigins: false,
+              chunkModules: false,
+              colors: true,
+            })
+          )
           if (buildErrors) {
-            console.log(chalk.red.bold(`
+            console.log(
+              chalk.red.bold(`
                 => There were ERRORS during the ${stage} build stage! :(
                 => Fix them and try again!
-              `))
+              `)
+            )
           } else if (buildWarnings) {
-            console.log(chalk.yellow.bold(`
+            console.log(
+              chalk.yellow.bold(`
                 => There were WARNINGS during the ${stage} build stage!
-              `))
+              `)
+            )
           }
         }
       }
 
-      fs.outputFileSync(
-        path.join(config.paths.dist, 'client-stats.json'),
-        JSON.stringify(prodStats.toJson(), null, 2)
-      );
+      const prodStatsJson = prodStats.toJson()
 
-      resolve(prodStats.toJson())
+
+      fs.outputFileSync(
+        path.join(config.paths.DIST, 'client-stats.json'),
+        JSON.stringify(prodStatsJson, null, 2)
+      )
+
+      resolve(prodStatsJson)
     })
   })
 }

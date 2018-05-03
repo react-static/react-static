@@ -19,10 +19,13 @@ export default function ({ config, isNode }) {
     ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
     : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
 
+  console.log(config.publicPath);
+
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
   process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
     ? config.stagingBasePath
     : config.basePath
+
 
   return {
     context: path.resolve(__dirname, '../../../node_modules'),
@@ -67,6 +70,7 @@ export default function ({ config, isNode }) {
         new ExtractCssChunks() :
         new ExtractTextPlugin({
           filename: getPath => {
+
             process.env.extractedCSSpath = getPath('styles.[hash:8].css')
             return process.env.extractedCSSpath
           },
