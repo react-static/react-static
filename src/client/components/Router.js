@@ -139,6 +139,7 @@ export default class Router extends React.Component {
     } = this.props
     const { staticURL } = this.context
     const context = staticURL ? {} : undefined
+    const disableRoutePrefixing = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
 
     const { ready } = this.state
 
@@ -158,7 +159,7 @@ export default class Router extends React.Component {
         } else if (type === 'hash') {
           resolvedHistory = createHashHistory()
         } else {
-          const options = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+          const options = disableRoutePrefixing
             ? {}
             : { basename: process.env.REACT_STATIC_BASEPATH }
           resolvedHistory = createBrowserHistory(options)
@@ -179,7 +180,7 @@ export default class Router extends React.Component {
           location={staticURL}
           context={context}
           basename={
-            process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+            disableRoutePrefixing
               ? ''
               : process.env.REACT_STATIC_BASEPATH
           }
