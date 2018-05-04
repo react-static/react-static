@@ -81,7 +81,7 @@ export const getRouteInfo = async (path, { priority } = {}) => {
       routeInfo = data
     } else {
       const routeInfoRoot =
-        (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+        (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
           ? process.env.REACT_STATIC_SITE_ROOT
           : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
       const getPath = `${routeInfoRoot}${pathJoin(

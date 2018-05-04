@@ -177,7 +177,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
   const htmlProgress = Bar(config.routes.length)
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
-  const basePath = process.env.REACT_STATIC_STAGING ? config.stagingBasePath : config.basePath
+  const basePath = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
   const hrefReplace = new RegExp(
     `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
     'gm'
@@ -445,7 +445,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
 }
 
 export async function buildXMLandRSS ({ config }) {
-  const siteRoot = process.env.REACT_STATIC_STAGING ? config.stagingSiteRoot : config.siteRoot
+  const siteRoot = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingSiteRoot : config.siteRoot
   if (!siteRoot) {
     return
   }
