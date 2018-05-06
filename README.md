@@ -134,7 +134,7 @@ All of the following examples can be used as a template at project creation.
 * [Algolia](https://github.com/nozzle/react-static/tree/master/examples/algolia)
 * [Styled-JSX](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
 * [Netlify CMS](https://github.com/nozzle/react-static/tree/master/examples/netlifycms)
-* [Gentics Mesh CMS](https://getmesh.io/)
+* [Gentics Mesh CMS](https://github.com/nozzle/react-static/tree/master/examples/gentics-mesh)
 * [Markdown](https://github.com/nozzle/react-static/tree/master/examples/markdown)
 * [Documentation](https://github.com/nozzle/react-static/tree/master/examples/documentation)
 
