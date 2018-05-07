@@ -10,9 +10,7 @@ export default function ({ config }) {
     ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
   } = config.paths
 
-  config.publicPath = config.devBasePath ? `/${config.devBasePath}/` : '/'
-
-  process.env.REACT_STATIC_BASEPATH = config.devBasePath
+  process.env.REACT_STATIC_BASEPATH = config.basePath
 
   return {
     context: path.resolve(__dirname, '../../../node_modules'),
@@ -25,7 +23,7 @@ export default function ({ config }) {
     output: {
       filename: 'app.[hash:8].js',
       path: DIST,
-      publicPath: config.publicPath || '/',
+      publicPath: config.publicPath,
     },
     module: {
       rules: rules({ config, stage: 'dev' }),

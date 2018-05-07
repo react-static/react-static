@@ -4,7 +4,7 @@ import React from 'react'
 import path from 'path'
 import chokidar from 'chokidar'
 //
-import { pathJoin } from '../utils/shared'
+import { pathJoin, trimSlashes, cleanSlashes } from '../utils/shared'
 import { reloadRoutes } from './webpack'
 
 //
@@ -61,6 +61,7 @@ export default function getConfig (customConfig, { watch } = {}) {
       dist: 'dist',
       devDist: 'tmp/dev-server',
       public: 'public',
+      assets: '',
       ...(config.paths || {}),
     }
 
@@ -72,40 +73,40 @@ export default function getConfig (customConfig, { watch } = {}) {
       process.env.REACT_STATIC_ENV === 'development'
         ? resolvePath(config.paths.devDist || config.paths.dist)
         : resolvePath(config.paths.dist)
+
+    const assetsPath = path.join(distPath, config.paths.assets)
+
     const paths = {
       ROOT: config.paths.root,
       LOCAL_NODE_MODULES: path.resolve(__dirname, '../../node_modules'),
       SRC: resolvePath(config.paths.src),
       DIST: distPath,
+      ASSETS: assetsPath,
       PUBLIC: resolvePath(config.paths.public),
       NODE_MODULES: resolvePath('node_modules'),
       PACKAGE: resolvePath('package.json'),
       HTML_TEMPLATE: path.join(distPath, 'index.html'),
-      STATIC_DATA: path.join(distPath, 'staticData'),
+      STATIC_DATA: path.join(assetsPath, 'staticData'),
     }
 
-    // Cut siteRoot to the suffix, no trailing slashes
-    const siteRoot = config.siteRoot ? config.siteRoot.replace(/(\..+?)\/.*/g, '$1') : ''
+    let siteRoot = (process.env.REACT_STATIC_STAGING === 'true' ? config.stagingSiteRoot : config.siteRoot) || ''
+    if (siteRoot) {
+      siteRoot = siteRoot.replace(/(\..+?)\/.*/g, '$1')
+    }
 
-    // Cut siteRoot to the suffix, no trailing slashes
-    const stagingSiteRoot = config.stagingSiteRoot
-      ? config.stagingSiteRoot.replace(/(\..+?)\/.*/g, '$1')
-      : ''
+    let basePath
+    if (process.env.REACT_STATIC_ENV === 'development') {
+      basePath = trimSlashes(config.devBasePath)
+    } else if (process.env.REACT_STATIC_STAGING === 'true') {
+      basePath = trimSlashes(config.stagingBasePath)
+    } else {
+      basePath = trimSlashes(config.basePath)
+    }
 
-    // Trim basePath of leading and trailing slashes
-    const basePath = config.basePath
-      ? config.basePath.replace(/\/{0,}$/g, '').replace(/^\/{0,}/g, '')
-      : ''
-
-    // Trim stagingBasePath of leading and trailing slashes
-    const stagingBasePath = config.stagingBasePath
-      ? config.stagingBasePath.replace(/\/{0,}$/g, '').replace(/^\/{0,}/g, '')
-      : ''
-
-    // Trim basePath of leading and trailing slashes
-    const devBasePath = config.devBasePath
-      ? config.devBasePath.replace(/\/{0,}$/g, '').replace(/^\/{0,}/g, '')
-      : ''
+    let publicPath = cleanSlashes(`/${basePath}/`)
+    if (process.env.REACT_STATIC_ENV !== 'development') {
+      publicPath = cleanSlashes(`${siteRoot}/${publicPath}`)
+    }
 
     const getRoutes = config.getRoutes
       ? async (...args) => {
@@ -137,11 +138,10 @@ export default function getConfig (customConfig, { watch } = {}) {
       ...config,
       // Materialized Overrides
       paths,
-      siteRoot: siteRoot || '',
-      stagingSiteRoot: stagingSiteRoot || '',
-      basePath: basePath || '',
-      stagingBasePath: stagingBasePath || '',
-      devBasePath: devBasePath || '',
+      siteRoot,
+      basePath,
+      publicPath,
+      assetsPath: cleanSlashes(`${publicPath}/${config.paths.assets || ''}/`),
       extractCssChunks: config.extractCssChunks || false,
       inlineCss: config.inlineCss || false,
       getRoutes,

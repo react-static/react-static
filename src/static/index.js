@@ -29,8 +29,6 @@ const Bar = (len, label) =>
 export const prepareRoutes = async (config, opts) => {
   config.routes = await config.getRoutes(opts)
 
-  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
-
   // Dedupe all templates into an array
   const templates = []
 
@@ -61,7 +59,7 @@ export const prepareRoutes = async (config, opts) => {
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config, clientStats }) => {
   // Use the node version of the app created with webpack
-  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
+  const Comp = require(glob.sync(path.resolve(config.paths.ASSETS, 'static.*.js'))[0]).default
 
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
@@ -177,12 +175,11 @@ export const exportRoutes = async ({ config, clientStats }) => {
   const htmlProgress = Bar(config.routes.length)
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
-  const basePath = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
   const hrefReplace = new RegExp(
-    `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
+    `(href=["'])\\/(${config.basePath ? `${config.basePath}\\/` : ''})?([^\\/])`,
     'gm'
   )
-  const srcReplace = new RegExp(`(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`, 'gm')
+  const srcReplace = new RegExp(`(src=["'])\\/(${config.basePath ? `${config.basePath}\\/` : ''})?([^\\/])`, 'gm')
 
   await poolAll(
     config.routes.map(route => async () => {
@@ -255,7 +252,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
           scripts, stylesheets, css, CssHash,
         } = flushChunks(clientStats, {
           chunkNames,
-          outputPath: config.paths.DIST,
+          outputPath: config.paths.ASSETS,
         })
 
         clientScripts = scripts
@@ -331,7 +328,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
                   key={`clientScript_${script}`}
                   rel="preload"
                   as="script"
-                  href={`${config.publicPath}${script}`}
+                  href={`${config.assetsPath}${script}`}
                 />
               ))}
             {!route.redirect &&
@@ -341,7 +338,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
                   key={`clientStyleSheet_${styleSheet}`}
                   rel="preload"
                   as="style"
-                  href={`${config.publicPath}${styleSheet}`}
+                  href={`${config.assetsPath}${styleSheet}`}
                 />
               ))}
             {!route.redirect &&
@@ -350,7 +347,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
                 <link
                   key={`clientStyleSheet_${styleSheet}`}
                   rel="stylesheet"
-                  href={`${config.publicPath}${styleSheet}`}
+                  href={`${config.assetsPath}${styleSheet}`}
                 />
               ))}
             {head.link}
@@ -396,7 +393,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
                 key={script}
                 defer
                 type="text/javascript"
-                src={`${config.publicPath}${script}`}
+                src={`${config.assetsPath}${script}`}
               />
             ))}
         </body>
@@ -462,7 +459,7 @@ export async function buildXMLandRSS ({ config }) {
     })),
   })
 
-  await fs.writeFile(path.join(config.paths.DIST, 'sitemap.xml'), xml)
+  await fs.writeFile(path.join(config.paths.ASSETS, 'sitemap.xml'), xml)
 
   function generateXML ({ routes }) {
     let xml =

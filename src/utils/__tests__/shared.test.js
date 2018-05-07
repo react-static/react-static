@@ -1,4 +1,4 @@
-import { pathJoin, cleanPath } from '../shared'
+import { pathJoin, cleanPath, trimSlashes, cleanSlashes } from '../shared'
 
 describe('utils/shared', () => {
   describe('pathJoin()', () => {
@@ -42,6 +42,46 @@ describe('utils/shared', () => {
 
     afterEach(() => {
       process.env.REACT_STATIC_BASEPATH = basePath
+    })
+  })
+  describe('trimSlashes()', () => {
+    it('should keep string with no slashes', () => {
+      expect(trimSlashes('foo')).toEqual('foo')
+    })
+    it('should trim edge slashes', () => {
+      expect(trimSlashes('/foo/')).toEqual('foo')
+    })
+    it('should only trim edge slashes', () => {
+      expect(trimSlashes('/foo/bar/')).toEqual('foo/bar')
+    })
+    it('should return empty string for no input', () => {
+      expect(trimSlashes()).toEqual('')
+    })
+    it('should return empty string for /', () => {
+      expect(trimSlashes('/')).toEqual('')
+    })
+  })
+  describe('cleanSlashes()', () => {
+    it('should keep string with no slashes', () => {
+      expect(cleanSlashes('foo')).toEqual('foo')
+    })
+    it('should replace // with /', () => {
+      expect(cleanSlashes('//')).toEqual('/')
+    })
+    it('should replace slashes at beginning', () => {
+      expect(cleanSlashes('//foo/bar/')).toEqual('/foo/bar/')
+    })
+    it('should replace slashes in middle', () => {
+      expect(cleanSlashes('/foo//bar/')).toEqual('/foo/bar/')
+    })
+    it('should replace slashes at end', () => {
+      expect(cleanSlashes('/foo/bar//')).toEqual('/foo/bar/')
+    })
+    it('should replace multiple slashes', () => {
+      expect(cleanSlashes('///foo///bar///')).toEqual('/foo/bar/')
+    })
+    it('should return empty string for no input', () => {
+      expect(cleanSlashes()).toEqual('')
     })
   })
 })

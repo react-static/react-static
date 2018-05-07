@@ -17,10 +17,11 @@ export default async function build ({
   process.env.BABEL_ENV = 'production'
 
   if (staging) {
-    process.env.REACT_STATIC_STAGING = true
+    process.env.REACT_STATIC_STAGING = 'true'
   }
+
   if (debug) {
-    process.env.REACT_STATIC_DEBUG = true
+    process.env.REACT_STATIC_DEBUG = 'true'
   }
 
   // Allow config location to be overriden
@@ -31,35 +32,46 @@ export default async function build ({
     console.log(config)
   }
 
-  await fs.remove(config.paths.DIST)
+  await fs.emptyDir(config.paths.DIST)
+
+  if (config.paths.ASSETS && config.paths.ASSETS !== config.paths.DIST) {
+    await fs.emptyDir(config.paths.ASSETS)
+  }
 
   if (!silent) console.log('')
 
-  if (!config.siteRoot) {
-    if (!silent) {
-      console.log(
-        "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
-      )
-    }
-    if (!silent) console.log('')
+  if (!config.siteRoot && !silent) {
+    console.log(
+      "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
+    )
+    console.log('')
   }
 
-  if (!silent) console.time('=> Site is ready for production!')
+  if (!silent) {
+    console.time('=> Site is ready for production!')
+    console.log('=> Copying public directory...')
+    console.time(chalk.green('=> [\u2713] Public directory copied'))
+  }
 
-  if (!silent) console.log('=> Copying public directory...')
-  if (!silent) console.time(chalk.green('=> [\u2713] Public directory copied'))
   copyPublicFolder(config)
-  if (!silent) console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
-  if (!silent) console.log('=> Building Routes...')
-  if (!silent) console.time(chalk.green('=> [\u2713] Routes Built'))
+  if (!silent) {
+    console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
+    console.log('=> Building Routes...')
+    console.time(chalk.green('=> [\u2713] Routes Built'))
+  }
+
   await prepareRoutes(config, { dev: false })
-  if (!silent) console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
+
+  if (!silent) {
+    console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
+    console.log('=> Bundling App...')
+    console.time(chalk.green('=> [\u2713] App Bundled'))
+  }
 
   // Build static pages and JSON
-  if (!silent) console.log('=> Bundling App...')
-  if (!silent) console.time(chalk.green('=> [\u2713] App Bundled'))
   const clientStats = await buildProductionBundles({ config })
+
   if (!silent) console.timeEnd(chalk.green('=> [\u2713] App Bundled'))
 
   if (config.bundleAnalyzer) {

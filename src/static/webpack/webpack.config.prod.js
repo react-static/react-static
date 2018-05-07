@@ -12,24 +12,13 @@ import rules from './rules'
 
 export default function ({ config, isNode }) {
   const {
-    ROOT, DIST, NODE_MODULES, SRC,
+    ROOT, DIST, NODE_MODULES, SRC, ASSETS,
   } = config.paths
 
-  // Trailing slash
-  config.publicPath = process.env.REACT_STATIC_STAGING
-    ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
-    : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
+  process.env.REACT_STATIC_SITE_ROOT = config.siteRoot
+  process.env.REACT_STATIC_BASEPATH = config.basePath
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
-
-  // Trailing slash mysiteroot.com/
-  process.env.REACT_STATIC_SITE_ROOT = `${
-    process.env.REACT_STATIC_STAGING ? config.stagingSiteRoot : config.siteRoot
-  }/`
-
-  // No slashes base/path
-  process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
-    ? config.stagingBasePath
-    : config.basePath
+  process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
   return {
     context: path.resolve(__dirname, '../../../node_modules'),
@@ -37,8 +26,8 @@ export default function ({ config, isNode }) {
     output: {
       filename: isNode ? 'static.[chunkHash:8].js' : '[name].[chunkHash:8].js',
       chunkFilename: 'templates/[name].[chunkHash:8].js',
-      path: DIST,
-      publicPath: config.publicPath || '/',
+      path: ASSETS,
+      publicPath: config.assetsPath,
       libraryTarget: isNode ? 'umd' : undefined,
     },
     target: isNode ? 'node' : undefined,

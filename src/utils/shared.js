@@ -49,5 +49,17 @@ export function deprecate (from, to) {
 }
 
 export function trimSlashes (str) {
+  if (!str) {
+    return ''
+  }
+
   return str.replace(/^\/{1,}/g, '').replace(/\/{1,}$/g, '')
+}
+
+export function cleanSlashes (str) {
+  if (!str) {
+    return ''
+  }
+
+  return str.replace(/\/{2,}/g, '/')
 }
