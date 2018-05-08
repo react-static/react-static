@@ -1,19 +1,21 @@
 import React from 'react'
-import { Navbar, Nav, NavItem } from 'react-bootstrap'
+import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap'
 import { RouteData } from 'react-static'
 
 export default () => (
   <RouteData render={() => (
     <Navbar>
-      <Navbar.Header>
-        <Navbar.Brand>
-          <a href="/">Gentics Mesh Demo</a>
-        </Navbar.Brand>
-      </Navbar.Header>
+      <NavbarBrand href="/">Gentics Mesh Demo</NavbarBrand>
       <Nav>
-        <NavItem eventKey={1} href="/automobiles">Automobiles</NavItem>
-        <NavItem eventKey={2} href="/yachts">Yachts</NavItem>
-        <NavItem eventKey={3} href="/aircrafts">Aircraft</NavItem>
+        <NavItem>
+          <NavLink href="/automobiles">Automobiles</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/yachts">Yachts</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/aircrafts">Aircraft</NavLink>
+        </NavItem>
       </Nav>
     </Navbar>
   )} />

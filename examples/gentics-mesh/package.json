@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.1.1",
     "react": "^16.0.0",
-    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.0.0",
     "react-hot-loader": "^4.0.0-beta.21",
     "react-router": "^4.2.0",
     "react-static": "^5",
-    "react-static-routes": "^1.0.0"
+    "react-static-routes": "^1.0.0",
+    "reactstrap": "^6.0.1"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",

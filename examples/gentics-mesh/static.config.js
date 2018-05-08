@@ -45,6 +45,7 @@ export default {
           path: `/${item.fields.slug}`,
           component: 'src/containers/ProductDetail',
           getData: () => ({
+            node: item,
             item,
           }),
         })),
@@ -61,6 +62,7 @@ export default {
           path: `/${item.fields.slug}`,
           component: 'src/containers/ProductDetail',
           getData: () => ({
+            node: item,
             item,
           }),
         })),
@@ -77,6 +79,7 @@ export default {
           path: `/${item.fields.slug}`,
           component: 'src/containers/ProductDetail',
           getData: () => ({
+            node: item,
             item,
           }),
         })),
