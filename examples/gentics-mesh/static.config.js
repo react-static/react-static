@@ -9,7 +9,7 @@ const MESH_API_CLIENT_LOGGING = true
 
 export default {
   getSiteData: () => ({
-    title: 'GENTICS Mesh React Static Eyxample',
+    title: 'GENTICS Mesh React Static Example',
   }),
   getRoutes: async () => {
     const meshApiClient =
@@ -24,16 +24,20 @@ export default {
       await meshApiClientAsWebClientUser.getChildrenForNode(yachtsCategoryNode.uuid)
     const { data: allAircraftNodes } =
       await meshApiClientAsWebClientUser.getChildrenForNode(aircraftsCategoryNode.uuid)
-
+    const projectNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/')
     return [
       {
         path: '/',
-        component: 'src/containers/Home',
+        component: 'src/containers/HomePage',
+        getData: () => ({
+          node: projectNode,
+        }),
       },
       {
         path: '/automobiles',
         component: 'src/containers/ProductList',
         getData: () => ({
+          node: automobilesCategoryNode,
           category: automobilesCategoryNode,
           items: allAutomobileNodes,
         }),
@@ -49,6 +53,7 @@ export default {
         path: '/yachts',
         component: 'src/containers/ProductList',
         getData: () => ({
+          node: yachtsCategoryNode,
           category: yachtsCategoryNode,
           items: allYachtsNodes,
         }),
@@ -64,6 +69,7 @@ export default {
         path: '/aircrafts',
         component: 'src/containers/ProductList',
         getData: () => ({
+          node: aircraftsCategoryNode,
           category: aircraftsCategoryNode,
           items: allAircraftNodes,
         }),
