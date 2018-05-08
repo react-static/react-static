@@ -12,7 +12,7 @@ const Header = () => (
         <meta name="mesh-node-id" content={node.uuid} />
       </Head>
       <div className="container">
-        <Navigation navigation={navigation} />
+        <Navigation />
       </div>
     </div>)
   } />
