@@ -2,12 +2,10 @@ import webpack from 'webpack'
 import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
-// import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
-// import WebpackPwaManifest from 'webpack-pwa-manifest'
-//
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import rules from './rules'
 
 
@@ -32,7 +30,30 @@ function common (config) {
     ? config.stagingBasePath
     : config.basePath
 
+
+  let splitChunks = {}
+  let miniCSSPlugin = new MiniCssExtractPlugin({
+    filename: '[name].css',
+    chunkFilename: '[id].css',
+  })
+
+  if (!config.extractCssChunks) {
+    splitChunks = {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    }
+    miniCSSPlugin = new MiniCssExtractPlugin({
+      filename: '[name].css',
+    })
+  }
   return {
+    mode: 'production',
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: path.resolve(ROOT, config.entry),
     output: {
@@ -40,6 +61,18 @@ function common (config) {
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
       publicPath: config.publicPath || '/',
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true, // set to true if you want JS source maps
+        }),
+        new OptimizeCSSAssetsPlugin({}),
+      ],
+      splitChunks,
     },
     module: {
       rules: rules({ config, stage: 'prod', isNode: false }),
@@ -64,21 +97,8 @@ function common (config) {
     target: undefined,
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
-      (config.extractCssChunks
-        ? new ExtractCssChunks()
-        : new ExtractTextPlugin({
-          filename: getPath => {
-            process.env.extractedCSSpath = getPath('styles.[hash:8].css')
-            return process.env.extractedCSSpath
-          },
-          allChunks: true,
-        })),
+      miniCSSPlugin,
       new CaseSensitivePathsPlugin(),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
-        minChunks: Infinity,
-      }),
-      !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
       config.bundleAnalyzer && new BundleAnalyzerPlugin(),
     ].filter(d => d),
     devtool: 'source-map',
@@ -90,6 +110,8 @@ export default function ({ config, isNode }) {
   if (!isNode) return result
   result.output.filename = 'static.[chunkHash:8].js'
   result.output.libraryTarget = 'umd'
+  result.optimization.minimize = false
+  result.optimization.minimizer = []
   result.target = 'node'
   result.externals = [
     nodeExternals({
