@@ -3,8 +3,9 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 
-export default function ({ config, stage, isNode }) {
-  let cssLoader = [
+
+function initCSSLoader (stage) {
+  const cssLoader = [
     {
       loader: 'css-loader',
       options: {
@@ -35,10 +36,20 @@ export default function ({ config, stage, isNode }) {
       },
     },
   ]
+  return cssLoader
+}
 
+export default function ({ config, stage, isNode }) {
+  let cssLoader = initCSSLoader(stage)
+  if (stage === 'node' || isNode) {
+    return {
+      test: /\.css$/,
+      loader: cssLoader,
+    }
+  }
   if (stage === 'dev') {
     cssLoader = ['style-loader'].concat(cssLoader)
-  } else if (!isNode) {
+  } else {
     cssLoader = (config.extractCssChunks
       ? ExtractCssChunks
       : ExtractTextPlugin

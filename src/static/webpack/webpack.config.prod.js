@@ -10,7 +10,8 @@ import nodeExternals from 'webpack-node-externals'
 //
 import rules from './rules'
 
-export default function ({ config, isNode }) {
+
+function common (config) {
   const {
     ROOT, DIST, NODE_MODULES, SRC,
   } = config.paths
@@ -35,22 +36,13 @@ export default function ({ config, isNode }) {
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: path.resolve(ROOT, config.entry),
     output: {
-      filename: isNode ? 'static.[chunkHash:8].js' : '[name].[chunkHash:8].js',
+      filename: '[name].[chunkHash:8].js',
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
       publicPath: config.publicPath || '/',
-      libraryTarget: isNode ? 'umd' : undefined,
     },
-    target: isNode ? 'node' : undefined,
-    externals: isNode
-      ? [
-        nodeExternals({
-          whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
-        }),
-      ]
-      : [],
     module: {
-      rules: rules({ config, stage: 'prod', isNode }),
+      rules: rules({ config, stage: 'prod', isNode: false }),
     },
     resolve: {
       alias: config.preact
@@ -68,59 +60,51 @@ export default function ({ config, isNode }) {
       ],
       extensions: ['.js', '.json', '.jsx'],
     },
+    externals: [],
+    target: undefined,
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
-      !isNode &&
-        (config.extractCssChunks
-          ? new ExtractCssChunks()
-          : new ExtractTextPlugin({
-            filename: getPath => {
-              process.env.extractedCSSpath = getPath('styles.[hash:8].css')
-              return process.env.extractedCSSpath
-            },
-            allChunks: true,
-          })),
+      (config.extractCssChunks
+        ? new ExtractCssChunks()
+        : new ExtractTextPlugin({
+          filename: getPath => {
+            process.env.extractedCSSpath = getPath('styles.[hash:8].css')
+            return process.env.extractedCSSpath
+          },
+          allChunks: true,
+        })),
       new CaseSensitivePathsPlugin(),
-      !isNode &&
-        new webpack.optimize.CommonsChunkPlugin({
-          name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
-          minChunks: Infinity,
-        }),
-      isNode &&
-        new webpack.optimize.LimitChunkCountPlugin({
-          maxChunks: 1,
-        }),
-      !isNode && !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
-      // !isNode &&
-      //   new SWPrecacheWebpackPlugin({
-      //     cacheId: config.siteName || 'my-site-name',
-      //     dontCacheBustUrlsMatching: /\.\w{8}\./,
-      //     filename: 'service-worker.js',
-      //     minify: true,
-      //     navigateFallback: '/index.html',
-      //     staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
-      //   }),
-      // !isNode &&
-      //   new WebpackPwaManifest({
-      //     name: config.pwa.name || 'My React Static App',
-      //     short_name: config.pwa.shortName || 'My React Static App',
-      //     description: config.pwa.description || 'An app I built with React Static!',
-      //     background_color: config.pwa.backgroundColor || '#01579b',
-      //     theme_color: config.pwa.themeColor || '#01579b',
-      //     'theme-color': config.pwa.themeColor || '#01579b',
-      //     start_url: config.pwa.startUrl || '/',
-      //     icons: [],
-      //     icons: [
-      //       {
-      //         src: path.resolve('src/images/icon.png'),
-      //         sizes: [96, 128, 192, 256, 384, 512],
-      //         destination: path.join('assets', 'icons'),
-      //       },
-      //     ],
-      //   }),
-      config.bundleAnalyzer && !isNode && new BundleAnalyzerPlugin(),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
+        minChunks: Infinity,
+      }),
+      !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
+      config.bundleAnalyzer && new BundleAnalyzerPlugin(),
     ].filter(d => d),
-
     devtool: 'source-map',
   }
+}
+
+export default function ({ config, isNode }) {
+  const result = common(config)
+  if (!isNode) return result
+  result.output.filename = 'static.[chunkHash:8].js'
+  result.output.libraryTarget = 'umd'
+  result.target = 'node'
+  result.externals = [
+    nodeExternals({
+      whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
+    }),
+  ]
+  //
+  // module.rules
+  result.module.rules = rules({ config, stage: 'prod', isNode: true })
+  result.plugins = [
+    new webpack.EnvironmentPlugin(process.env),
+    new CaseSensitivePathsPlugin(),
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
+    }),
+  ]
+  return result
 }
