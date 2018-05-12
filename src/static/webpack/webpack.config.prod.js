@@ -31,21 +31,19 @@ function common (config) {
     : config.basePath
 
 
-  let splitChunks = {}
+  const splitChunks = { chunks: 'all' }
   let miniCSSPlugin = new MiniCssExtractPlugin({
     filename: '[name].css',
     chunkFilename: '[id].css',
   })
 
   if (!config.extractCssChunks) {
-    splitChunks = {
-      cacheGroups: {
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-          enforce: true,
-        },
+    splitChunks.cacheGroups = {
+      styles: {
+        name: 'styles',
+        test: /\.css$/,
+        chunks: 'all',
+        enforce: true,
       },
     }
     miniCSSPlugin = new MiniCssExtractPlugin({
