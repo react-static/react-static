@@ -9,7 +9,6 @@ import path from 'path'
 import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
-import flushChunks from 'webpack-flush-chunks'
 import Progress from 'progress'
 import chalk from 'chalk'
 import jsesc from 'jsesc'
@@ -18,8 +17,10 @@ import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
 import { poolAll, pathJoin } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
+import { chunksToAssetFiles } from './chunksToAssestFiles'
 
 const defaultOutputFileRate = 100
+
 
 const Bar = (len, label) =>
   new Progress(`=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `, {
@@ -79,12 +80,10 @@ export const exportRoutes = async ({ config, clientStats }) => {
   console.log('=> Fetching Route Data...')
   const dataProgress = Bar(config.routes.length)
   console.time(chalk.green('=> [\u2713] Route Data Downloaded'))
-
   await poolAll(
     config.routes.map(route => async () => {
       // Fetch allProps from each route
       route.allProps = !!route.getData && (await route.getData({ route, dev: false }))
-
       // Default allProps (must be an object)
       if (!route.allProps) {
         route.allProps = {}
@@ -253,16 +252,16 @@ export const exportRoutes = async ({ config, clientStats }) => {
         const appHtml = renderToString(comp)
         const {
           scripts, stylesheets, css, CssHash,
-        } = flushChunks(clientStats, {
+        } = chunksToAssetFiles(clientStats.namedChunkGroups, {
           chunkNames,
           outputPath: config.paths.DIST,
+          publicPath: config.publicPath,
         })
 
         clientScripts = scripts
         clientStyleSheets = stylesheets
         clientCss = css
         ClientCssHash = CssHash
-
         // Extract head calls using Helmet synchronously right after renderToString
         // to not introduce any race conditions in the meta data rendering
         const helmet = Helmet.renderStatic()

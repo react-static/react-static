@@ -33,8 +33,8 @@ function common (config) {
 
   const splitChunks = { chunks: 'all' }
   let miniCSSPlugin = new MiniCssExtractPlugin({
-    filename: '[name].css',
-    chunkFilename: '[id].css',
+    filename: '[name].[chunkHash:8].css',
+    chunkFilename: '[id].[chunkHash:8].css',
   })
 
   if (!config.extractCssChunks) {
@@ -47,7 +47,7 @@ function common (config) {
       },
     }
     miniCSSPlugin = new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: '[name].[chunkHash:8].css',
     })
   }
   return {
