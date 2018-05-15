@@ -9,9 +9,9 @@ It uses the following features:
 1. [Breadcrumbs](https://getmesh.io/docs/beta/features.html#_breadcrumbs): Each node in Gentics Mesh provides information on where it is located within the node tree in terms of its <code>breadcrumb</code> property. The property provides an array of node references representing the path from the current node up to the project root.
 
 ## How to run the example
-The example is implemented with Angular 5.x and built with the [Angular CLI](https://github.com/angular/angular-cli).
+This example pull in data from the public [https://demo.getmesh.io/](https://demo.getmesh.io/) instance using [anonymous access](https://getmesh.io/docs/beta/references.html#_anonymous_access).
 
-You will need a locally running instance of the [Gentics Mesh](https://getmesh.io/) demo. You can use 
+In case you want to use your own locallly running Mesh instance, you can use 
 - docker
 ``` 
 docker run -p 8080:8080 gentics/mesh-demo
@@ -22,19 +22,22 @@ docker run -p 8080:8080 gentics/mesh-demo
 ```
 For more details check the [Mesh Administration Guide](https://getmesh.io/docs/beta/administration-guide.html).
 
-Once the Mesh local instance is up and running you can start the example with
+Once the Mesh local instance is up and running, edit [`static.config.js`](examples/gentics-mesh/src/mesh/static.config.js) and change 
+```javascript
+const MESH_HOST = 'https://demo.getmesh.io/'
+```
+to
+```javascript
+const MESH_HOST = 'http://localhost:8080/'
+```
+
+Then you can start the example with
 `npm start`  or `yarn start` which will start a dev server at [http://localhost:3000](http://localhost:3000).
 You can also use `npm build`  or `yarn build` to build the project to the `dist/` directory.
 
 ## Implementation notes and caveats
-All calls to the Mesh API endpoints are made from [`mesh-api-client.js`](examples/gentics-mesh/src/mesh/mesh-data.service.ts). You can find the configured username and password for the [Mesh API](https://getmesh.io/docs/beta/raml/) calls in [`static.config.js`](examples/gentics-mesh/src/mesh/static.config.js).
-Angular CLI proxy configuration can be found in [proxy.conf.js](proxy.conf.js).
-The rest of the application logic is contained in the [app component](src/app/app.component.ts) file.
+All calls to the Mesh API endpoints are made from [`mesh-api-client.js`](examples/gentics-mesh/src/mesh/mesh-data.service.ts) using [anonymous access](https://getmesh.io/docs/beta/references.html#_anonymous_access).
 
 ## Using the example with React Static
 To get started, run `react-static create` and use the `gentics-mesh` template.
 
-## Current limitations & TODOs
-1. Full URL resolution for images still needs to be implemented. Check [`ProductListItem.js`](examples/gentics-mesh/src/containers/ProductListItem.js) where the full URL of the images is hard-coded.
-1. Dynamically generate routes in [`static.config.js`](examples/gentics-mesh/src/mesh/static.config.js)
-1. Improve navigation bar logic and breadcrumbs

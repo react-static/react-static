@@ -1,8 +1,6 @@
 import MeshApiClient from './src/mesh/mesh-api-client'
 
-const MESH_HOST = 'http://localhost:8080'
-const MESH_USERNAME = 'webclient'
-const MESH_PASSWORD = 'webclient'
+const MESH_HOST = 'https://demo.getmesh.io/'
 const MESH_PROJECT_NAME = 'demo'
 const MESH_LANGUAGE = 'de'
 const MESH_API_CLIENT_LOGGING = true
@@ -12,19 +10,18 @@ export default {
     title: 'GENTICS Mesh React Static Example',
   }),
   getRoutes: async () => {
-    const meshApiClient =
+    const meshRestApiClient =
       new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
-    const meshApiClientAsWebClientUser = await meshApiClient.login(MESH_USERNAME, MESH_PASSWORD)
-    const automobilesCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/automobiles')
-    const yachtsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/yachts')
-    const aircraftsCategoryNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/aircrafts')
+    const automobilesCategoryNode = await meshRestApiClient.getNodeByWebRootPath('/automobiles')
+    const yachtsCategoryNode = await meshRestApiClient.getNodeByWebRootPath('/yachts')
+    const aircraftsCategoryNode = await meshRestApiClient.getNodeByWebRootPath('/aircrafts')
     const { data: allAutomobileNodes } =
-      await meshApiClientAsWebClientUser.getChildrenForNode(automobilesCategoryNode.uuid)
+      await meshRestApiClient.getChildrenForNode(automobilesCategoryNode.uuid)
     const { data: allYachtsNodes } =
-      await meshApiClientAsWebClientUser.getChildrenForNode(yachtsCategoryNode.uuid)
+      await meshRestApiClient.getChildrenForNode(yachtsCategoryNode.uuid)
     const { data: allAircraftNodes } =
-      await meshApiClientAsWebClientUser.getChildrenForNode(aircraftsCategoryNode.uuid)
-    const projectNode = await meshApiClientAsWebClientUser.getNodeByWebRootPath('/')
+      await meshRestApiClient.getChildrenForNode(aircraftsCategoryNode.uuid)
+    const projectNode = await meshRestApiClient.getNodeByWebRootPath('/')
     return [
       {
         path: '/',
@@ -87,6 +84,12 @@ export default {
       {
         is404: true,
         component: 'src/containers/404',
+        getData: () => ({
+          node: { 
+            uuid: '000000',
+            displayName: 'Error',
+          },
+        }),
       },
     ]
   },
