@@ -57,5 +57,5 @@ export function trimTrailingSlashes (str) {
 }
 
 export function trimSlashes (str) {
-return trimLeadingSlashes(trimTrailingSlashes(str))
+  return trimLeadingSlashes(trimTrailingSlashes(str))
 }
