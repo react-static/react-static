@@ -35,7 +35,7 @@ export default {
       },
       {
         path: '/automobiles',
-        component: 'src/containers/ProductList',
+        component: 'src/containers/CategoryPage',
         getData: () => ({
           node: automobilesCategoryNode,
           category: automobilesCategoryNode,
@@ -43,7 +43,7 @@ export default {
         }),
         children: allAutomobileNodes.map(item => ({
           path: `/${item.fields.slug}`,
-          component: 'src/containers/ProductDetail',
+          component: 'src/containers/VehiclePage',
           getData: () => ({
             node: item,
             item,
@@ -52,7 +52,7 @@ export default {
       },
       {
         path: '/yachts',
-        component: 'src/containers/ProductList',
+        component: 'src/containers/CategoryPage',
         getData: () => ({
           node: yachtsCategoryNode,
           category: yachtsCategoryNode,
@@ -60,7 +60,7 @@ export default {
         }),
         children: allYachtsNodes.map(item => ({
           path: `/${item.fields.slug}`,
-          component: 'src/containers/ProductDetail',
+          component: 'src/containers/VehiclePage',
           getData: () => ({
             node: item,
             item,
@@ -69,7 +69,7 @@ export default {
       },
       {
         path: '/aircrafts',
-        component: 'src/containers/ProductList',
+        component: 'src/containers/CategoryPage',
         getData: () => ({
           node: aircraftsCategoryNode,
           category: aircraftsCategoryNode,
@@ -77,7 +77,7 @@ export default {
         }),
         children: allAircraftNodes.map(item => ({
           path: `/${item.fields.slug}`,
-          component: 'src/containers/ProductDetail',
+          component: 'src/containers/VehiclePage',
           getData: () => ({
             node: item,
             item,
