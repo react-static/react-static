@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link, RouteData, Head } from 'react-static'
+import { RouteData, Head } from 'react-static'
 import Navigation from '../components/Navigation'
 
 const Header = () => (
-  <RouteData render={({ title, navigation, node }) => (
+  <RouteData render={({ title, node }) => (
     <div>
       <Head>
         <title>
