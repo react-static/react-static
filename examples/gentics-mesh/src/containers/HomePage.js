@@ -52,8 +52,6 @@ const ProjectPage = () => (
           <p><Button outline color="primary"><Link to="https://getmesh.io/docs/beta/features.html#_breadcrumbs">Learn more...</Link></Button></p>
         </Col>
       </Row>
-      <Row>
-      </Row>
     </Container>
   </Fragment>
 )
