@@ -3,7 +3,7 @@ import { Link, RouteData } from 'react-static'
 import { Container } from 'reactstrap'
 
 const Footer = () => (
-  <RouteData render={({ node }) => (
+  <RouteData render={() => (
     <Container>
       <footer className="small">
         <div className="container">
