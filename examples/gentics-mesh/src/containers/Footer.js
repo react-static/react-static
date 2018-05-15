@@ -3,14 +3,14 @@ import { Link, RouteData } from 'react-static'
 import { Container } from 'reactstrap'
 
 const Footer = () => (
-  <RouteData render={({node}) => (
+  <RouteData render={({ node }) => (
     <Container>
-        <footer className="small">
-          <div className="container">
-            <div id="bottom-space" />
-              <p className="float-right"><Link to="https://getmesh.io">getmesh.io</Link></p>
-          </div>
-        </footer>
+      <footer className="small">
+        <div className="container">
+          <div id="bottom-space" />
+          <p className="float-right"><Link to="https://getmesh.io">getmesh.io</Link></p>
+        </div>
+      </footer>
     </Container>
   )} />
 )
