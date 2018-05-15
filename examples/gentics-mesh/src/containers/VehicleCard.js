@@ -17,7 +17,7 @@ class VehicleCard extends React.Component {
         <CardImg top width="100%" src={`https://demo.getmesh.io/api/v1/demo/webroot/${vehicle.fields.vehicleImage.path}?w=350&h=225&crop=fp`} alt={vehicle.fields.name} />
         <CardBody>
           <CardTitle><Link to={vehicle.path}>{vehicle.fields.name}</Link></CardTitle>
-          <CardSubtitle><NumberFormat value={vehicle.fields.price} displayType="text" thousandSeparator={true} suffix="EUR" /></CardSubtitle>
+          <CardSubtitle><NumberFormat value={vehicle.fields.price} displayType="text" thousandSeparator suffix="EUR" /></CardSubtitle>
           <Dotdotdot clamp={4} tagName="p" className="card-text">
             {stripHtml(vehicle.fields.description)}
           </Dotdotdot>
