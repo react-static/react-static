@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { withRouteData } from 'react-static'
-import VehicleCard from './VehicleCard'
 import { Row } from 'reactstrap'
+import VehicleCard from './VehicleCard'
 
 export default withRouteData(({ category, items }) => (
   <Fragment>
