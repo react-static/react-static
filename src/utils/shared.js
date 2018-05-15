@@ -48,6 +48,14 @@ export function deprecate (from, to) {
   )
 }
 
+export function trimLeadingSlashes (str) {
+  return str.replace(/^\/{1,}/g, '')
+}
+
+export function trimTrailingSlashes (str) {
+  return str.replace(/\/{1,}$/g, '')
+}
+
 export function trimSlashes (str) {
-  return str.replace(/^\/{1,}/g, '').replace(/\/{1,}$/g, '')
+  return trimLeadingSlashes(trimTrailingSlashes(str))
 }
