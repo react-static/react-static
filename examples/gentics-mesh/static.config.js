@@ -85,10 +85,7 @@ export default {
         is404: true,
         component: 'src/containers/404',
         getData: () => ({
-          node: { 
-            uuid: '000000',
-            displayName: 'Error',
-          },
+          node: { uuid: '000000', displayName: 'Error' },
         }),
       },
     ]
