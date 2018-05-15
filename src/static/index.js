@@ -16,7 +16,7 @@ import jsesc from 'jsesc'
 //
 import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
-import { poolAll, pathJoin } from '../utils/shared'
+import { poolAll, pathJoin, trimLeadingSlashes } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
 
 const defaultOutputFileRate = 100
@@ -452,11 +452,10 @@ export async function buildXMLandRSS ({ config }) {
   if (!siteRoot) {
     return
   }
-  let prefixPath = config.disableRoutePrefixing ? siteRoot : config.publicPath
-  prefixPath = prefixPath.replace(/\/$/, '')
+  const prefixPath = config.disableRoutePrefixing ? siteRoot : config.publicPath
   const xml = generateXML({
     routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: `${prefixPath}/${pathJoin(route.path)}`,
+      permalink: `${prefixPath}/${trimLeadingSlashes(pathJoin(route.path))}`,
       lastModified: '',
       priority: 0.5,
       ...route,
