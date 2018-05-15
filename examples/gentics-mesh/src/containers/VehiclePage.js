@@ -8,9 +8,9 @@ export default withRouteData(({ item }) => (
     <h1>{item.displayName}</h1>
     <img width="100%" src={`https://demo.getmesh.io/api/v1/demo/webroot/${item.fields.vehicleImage.path}`} alt={item.fields.name} />
     <p>{item.fields.description}</p>
-    <p>Tags: 
+    <p>Tags:
       {
-        item.tags.map( tag => (
+        item.tags.map(tag => (
           <span className="badge badge-primary" key={tag.uuid}>{ tag.name }</span>
         ))
       }
