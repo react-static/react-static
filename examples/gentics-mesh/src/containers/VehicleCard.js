@@ -1,10 +1,9 @@
 import React from 'react'
 import * as PropTypes from 'prop-types'
 import { Link } from 'react-static'
-import { Card, CardImg, CardBody,
-  CardTitle, CardSubtitle, Button } from 'reactstrap'
+import { Card, CardImg, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap'
 import Dotdotdot from 'react-dotdotdot'
-import stripHtml from 'string-strip-html';
+import stripHtml from 'string-strip-html'
 import NumberFormat from 'react-number-format'
 
 class VehicleCard extends React.Component {
@@ -18,7 +17,7 @@ class VehicleCard extends React.Component {
         <CardImg top width="100%" src={`https://demo.getmesh.io/api/v1/demo/webroot/${vehicle.fields.vehicleImage.path}?w=350&h=225&crop=fp`} alt={vehicle.fields.name} />
         <CardBody>
           <CardTitle><Link to={vehicle.path}>{vehicle.fields.name}</Link></CardTitle>
-          <CardSubtitle><NumberFormat value={vehicle.fields.price} displayType={'text'} thousandSeparator={true} suffix={'EUR'} /></CardSubtitle>
+          <CardSubtitle><NumberFormat value={vehicle.fields.price} displayType="text" thousandSeparator={true} suffix="EUR" /></CardSubtitle>
           <Dotdotdot clamp={4} tagName="p" className="card-text">
             {stripHtml(vehicle.fields.description)}
           </Dotdotdot>

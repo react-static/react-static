@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react'
 import { withRouteData } from 'react-static'
 import VehicleCard from './VehicleCard'
-import { Jumbotron, Button, Container, Row, Col } from 'reactstrap'
-import { map, chunk } from 'lodash'
+import { Row } from 'reactstrap'
 
 export default withRouteData(({ category, items }) => (
   <Fragment>
