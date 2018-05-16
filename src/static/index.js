@@ -12,8 +12,11 @@ import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
 import Progress from 'progress'
 import chalk from 'chalk'
-import jsesc from 'jsesc'
-//
+
+import { makeHtmlWithMeta } from './components/HtmlWithMeta'
+import { makeHeadWithMeta } from './components/HeadWithMeta'
+import { makeBodyWithMeta } from './components/BodyWithMeta'
+
 import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
 import { poolAll } from '../utils/shared'
@@ -24,14 +27,22 @@ export buildXMLandRSS from './buildXML'
 const defaultOutputFileRate = 100
 
 const Bar = (len, label) =>
-  new Progress(`=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `, {
-    total: len,
-  })
+  new Progress(
+    `=> ${
+      label ? `${label} ` : ''
+    }[:bar] :current/:total :percent :rate/s :etas `,
+    {
+      total: len,
+    }
+  )
 
 export const prepareRoutes = async (config, opts) => {
   config.routes = await config.getRoutes(opts)
 
-  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
+  process.env.REACT_STATIC_ROUTES_PATH = path.join(
+    config.paths.DIST,
+    'react-static-routes.js'
+  )
 
   // Dedupe all templates into an array
   const templates = []
@@ -60,20 +71,39 @@ export const prepareRoutes = async (config, opts) => {
   })
 }
 
-// Exporting route HTML and JSON happens here. It's a big one.
-export const exportRoutes = async ({ config, clientStats }) => {
-  // Use the node version of the app created with webpack
-  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
-
-  // Retrieve the document template
-  const DocumentTemplate = config.Document || DefaultDocument
-
+export const fetchSiteData = async config => {
   console.log('=> Fetching Site Data...')
   console.time(chalk.green('=> [\u2713] Site Data Downloaded'))
   // Get the site data
   const siteData = await config.getSiteData({ dev: false })
   console.timeEnd(chalk.green('=> [\u2713] Site Data Downloaded'))
+  return siteData
+}
 
+export const exportSharedRouteData = async (config, sharedProps) => {
+  // Write all shared props to file
+  const sharedPropsArr = Array.from(sharedProps)
+
+  if (sharedPropsArr.length) {
+    console.log('=> Exporting Shared Route Data...')
+    const jsonProgress = Bar(sharedPropsArr.length)
+    console.time(chalk.green('=> [\u2713] Shared Route Data Exported'))
+
+    await poolAll(
+      sharedPropsArr.map(cachedProp => async () => {
+        await fs.outputFile(
+          path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
+          cachedProp[1].jsonString || '{}'
+        )
+        jsonProgress.tick()
+      }),
+      Number(config.outputFileRate) || defaultOutputFileRate
+    )
+    console.timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
+  }
+}
+
+export const fetchRoutes = async config => {
   // Set up some scaffolding for automatic data splitting
   const seenProps = new Map()
   const sharedProps = new Map()
@@ -85,7 +115,8 @@ export const exportRoutes = async ({ config, clientStats }) => {
   await poolAll(
     config.routes.map(route => async () => {
       // Fetch allProps from each route
-      route.allProps = !!route.getData && (await route.getData({ route, dev: false }))
+      route.allProps =
+        !!route.getData && (await route.getData({ route, dev: false }))
 
       // Default allProps (must be an object)
       if (!route.allProps) {
@@ -154,42 +185,45 @@ export const exportRoutes = async ({ config, clientStats }) => {
   )
   console.timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 
-  // Write all shared props to file
-  const sharedPropsArr = Array.from(sharedProps)
+  exportSharedRouteData(config, sharedProps)
+}
 
-  if (sharedPropsArr.length) {
-    console.log('=> Exporting Shared Route Data...')
-    const jsonProgress = Bar(sharedPropsArr.length)
-    console.time(chalk.green('=> [\u2713] Shared Route Data Exported'))
+const buildHTML = async ({ config, siteData, clientStats }) => {
+  // Use the node version of the app created with webpack
+  const Comp = require(glob.sync(
+    path.resolve(config.paths.DIST, 'static.*.js')
+  )[0]).default
 
-    await poolAll(
-      sharedPropsArr.map(cachedProp => async () => {
-        await fs.outputFile(
-          path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
-          cachedProp[1].jsonString || '{}'
-        )
-        jsonProgress.tick()
-      }),
-      Number(config.outputFileRate) || defaultOutputFileRate
-    )
-    console.timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
-  }
+  // Retrieve the document template
+  const DocumentTemplate = config.Document || DefaultDocument
 
   console.log('=> Exporting HTML...')
+
   const htmlProgress = Bar(config.routes.length)
+
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
-  const basePath = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
+  const basePath =
+    process.env.REACT_STATIC_STAGING === 'true'
+      ? config.stagingBasePath
+      : config.basePath
   const hrefReplace = new RegExp(
     `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
     'gm'
   )
-  const srcReplace = new RegExp(`(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`, 'gm')
+  const srcReplace = new RegExp(
+    `(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
+    'gm'
+  )
 
   await poolAll(
     config.routes.map(route => async () => {
       const {
-        sharedPropsHashes, templateID, localProps, allProps, path: routePath,
+        sharedPropsHashes,
+        templateID,
+        localProps,
+        allProps,
+        path: routePath,
       } = route
 
       // This routeInfo will be saved to disk. It should only include the
@@ -255,10 +289,13 @@ export const exportRoutes = async ({ config, clientStats }) => {
         const appHtml = renderToString(comp)
         const {
           scripts, stylesheets, css, CssHash,
-        } = flushChunks(clientStats, {
-          chunkNames,
-          outputPath: config.paths.DIST,
-        })
+        } = flushChunks(
+          clientStats,
+          {
+            chunkNames,
+            outputPath: config.paths.DIST,
+          }
+        )
 
         clientScripts = scripts
         clientStyleSheets = stylesheets
@@ -294,121 +331,31 @@ export const exportRoutes = async ({ config, clientStats }) => {
           clientStats
         )
       } catch (error) {
-        error.message = `Failed exporting HTML for URL ${route.path} (${route.component}): ${
-          error.message
-        }`
+        error.message = `Failed exporting HTML for URL ${route.path} (${
+          route.component
+        }): ${error.message}`
         throw error
       }
 
-      // Instead of using the default components, we need to hard code meta
-      // from react-helmet into the components
-      const HtmlWithMeta = ({ children, ...rest }) => (
-        <html lang="en" {...head.htmlProps} {...rest}>
-          {children}
-        </html>
-      )
-      const HeadWithMeta = ({ children, ...rest }) => {
-        let showHelmetTitle = true
-        const childrenArray = React.Children.toArray(children).filter(child => {
-          if (child.type === 'title') {
-            // Filter out the title of the Document in static.config.js
-            // if there is a helmet title on this route
-            const helmetTitleIsEmpty = head.title[0].props.children === ''
-            if (!helmetTitleIsEmpty) {
-              return false
-            }
-            showHelmetTitle = false
-          }
-          return true
-        })
-
-        return (
-          <head {...rest}>
-            {head.base}
-            {showHelmetTitle && head.title}
-            {head.meta}
-            {!route.redirect &&
-              clientScripts.map(script => (
-                <link
-                  key={`clientScript_${script}`}
-                  rel="preload"
-                  as="script"
-                  href={`${config.publicPath}${script}`}
-                />
-              ))}
-            {!route.redirect &&
-              !config.inlineCss &&
-              clientStyleSheets.map(styleSheet => (
-                <link
-                  key={`clientStyleSheet_${styleSheet}`}
-                  rel="preload"
-                  as="style"
-                  href={`${config.publicPath}${styleSheet}`}
-                />
-              ))}
-            {!route.redirect &&
-              !config.inlineCss &&
-              clientStyleSheets.map(styleSheet => (
-                <link
-                  key={`clientStyleSheet_${styleSheet}`}
-                  rel="stylesheet"
-                  href={`${config.publicPath}${styleSheet}`}
-                />
-              ))}
-            {head.link}
-            {head.noscript}
-            {head.script}
-            {config.inlineCss && (
-              <style
-                key="clientCss"
-                type="text/css"
-                dangerouslySetInnerHTML={{
-                  __html: clientCss.toString().replace(/<style>|<\/style>/gi, ''),
-                }}
-              />
-            )}
-            {head.style}
-            {childrenArray}
-          </head>
-        )
-      }
-
-      // Not only do we pass react-helmet attributes and the app.js here, but
-      // we also need to  hard code site props and route props into the page to
-      // prevent flashing when react mounts onto the HTML.
-      const BodyWithMeta = ({ children, ...rest }) => (
-        <body {...head.bodyProps} {...rest}>
-          {children}
-          <ClientCssHash />
-          {!route.redirect && (
-            <script
-              type="text/javascript"
-              dangerouslySetInnerHTML={{
-                __html: `
-                window.__routeInfo = ${jsesc(embeddedRouteInfo, {
-                  es6: false,
-                  isScriptContext: true,
-                }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
-              }}
-            />
-          )}
-          {!route.redirect &&
-            clientScripts.map(script => (
-              <script
-                key={script}
-                defer
-                type="text/javascript"
-                src={`${config.publicPath}${script}`}
-              />
-            ))}
-        </body>
-      )
-
       const DocumentHtml = renderToStaticMarkup(
         <DocumentTemplate
-          Html={HtmlWithMeta}
-          Head={HeadWithMeta}
-          Body={BodyWithMeta}
+          Html={makeHtmlWithMeta({ head })}
+          Head={makeHeadWithMeta({
+            head,
+            route,
+            clientScripts,
+            config,
+            clientStyleSheets,
+            clientCss,
+          })}
+          Body={makeBodyWithMeta({
+            head,
+            route,
+            embeddedRouteInfo,
+            clientScripts,
+            ClientCssHash,
+            config,
+          })}
           siteData={siteData}
           routeInfo={embeddedRouteInfo}
           renderMeta={renderMeta}
@@ -435,11 +382,17 @@ export const exportRoutes = async ({ config, clientStats }) => {
         : path.join(config.paths.DIST, route.path, 'index.html')
 
       // Make the routeInfo sit right next to its companion html file
-      const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.json')
+      const routeInfoFilename = path.join(
+        config.paths.DIST,
+        route.path,
+        'routeInfo.json'
+      )
 
       const res = await Promise.all([
         fs.outputFile(htmlFilename, html),
-        !route.redirect ? fs.outputJson(routeInfoFilename, routeInfo) : Promise.resolve(),
+        !route.redirect
+          ? fs.outputJson(routeInfoFilename, routeInfo)
+          : Promise.resolve(),
       ])
       htmlProgress.tick()
       return res
@@ -447,4 +400,18 @@ export const exportRoutes = async ({ config, clientStats }) => {
     Number(config.outputFileRate) || defaultOutputFileRate
   )
   console.timeEnd(chalk.green('=> [\u2713] HTML Exported'))
+}
+
+// Exporting route HTML and JSON happens here. It's a big one.
+export const exportRoutes = async ({ config, clientStats }) => {
+  // we modify config in fetchSiteData
+  const siteData = await fetchSiteData(config)
+  // we modify config in fetchRoutes
+  await fetchRoutes(config)
+
+  await buildHTML({
+    config,
+    siteData,
+    clientStats,
+  })
 }

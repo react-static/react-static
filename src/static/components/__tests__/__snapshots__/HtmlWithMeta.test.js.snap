@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HtmlWithMeta when route is a static route 1`] = `
+<Component
+  className="body"
+>
+  <html
+    className="body"
+    lang="en"
+  >
+    <head>
+      <title>
+        React Static
+      </title>
+    </head>
+  </html>
+</Component>
+`;

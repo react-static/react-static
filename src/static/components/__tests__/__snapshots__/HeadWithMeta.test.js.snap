@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeadWithMeta when route has inline CSS 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <title>
+      React Static
+    </title>
+    <link
+      as="script"
+      href="public/path[object Object]"
+      key="clientScript_[object Object]"
+      rel="preload"
+    />
+    <link
+      as="script"
+      href="public/path[object Object]"
+      key="clientScript_[object Object]"
+      rel="preload"
+    />
+    <InlineStyle
+      clientCss={
+        <style>
+          
+      body {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    
+        </style>
+      }
+    >
+      <style
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "[object Object]",
+          }
+        }
+        key="clientCss"
+        type="text/css"
+      />
+    </InlineStyle>
+    <meta
+      content="Helmet application"
+      key=".0"
+      name="description"
+    />
+  </head>
+</Component>
+`;
+
+exports[`HeadWithMeta when route has title as child 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <title>
+      React Static
+    </title>
+    <link
+      as="script"
+      href="public/path[object Object]"
+      key="clientScript_[object Object]"
+      rel="preload"
+    />
+    <link
+      as="script"
+      href="public/path[object Object]"
+      key="clientScript_[object Object]"
+      rel="preload"
+    />
+    <link
+      as="style"
+      href="public/path[object Object]"
+      key="clientStyleSheet_[object Object]"
+      rel="preload"
+    />
+    <link
+      href="public/path[object Object]"
+      key="clientStyleSheet_[object Object]"
+      rel="stylesheet"
+    />
+    <meta
+      content="Helmet application"
+      key=".1"
+      name="description"
+    />
+  </head>
+</Component>
+`;
+
+exports[`HeadWithMeta when route is a redirect route 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <title>
+      React Static
+    </title>
+    <meta
+      content="Helmet application"
+      key=".0"
+      name="description"
+    />
+  </head>
+</Component>
+`;
+
+exports[`HeadWithMeta when route is a static route 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <title>
+      React Static
+    </title>
+    <link
+      as="script"
+      href="public/path[object Object]"
+      key="clientScript_[object Object]"
+      rel="preload"
+    />
+    <link
+      as="script"
+      href="public/path[object Object]"
+      key="clientScript_[object Object]"
+      rel="preload"
+    />
+    <link
+      as="style"
+      href="public/path[object Object]"
+      key="clientStyleSheet_[object Object]"
+      rel="preload"
+    />
+    <link
+      href="public/path[object Object]"
+      key="clientStyleSheet_[object Object]"
+      rel="stylesheet"
+    />
+    <meta
+      content="Helmet application"
+      key=".0"
+      name="description"
+    />
+  </head>
+</Component>
+`;
