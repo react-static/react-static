@@ -58,7 +58,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [Intuit Turbo](http://turbo.com)
 * [Messenger Corp. client asset ordering](http://chartwells.messengercorp.com/)
 * [Digital Neighborhood watch service](https://neighborhoodwatch.io/)
-
+* [Carmen Marcos Art - Artist Portfolio](http://carmen-marcos.art/) ([source](https://github.com/rafacm/carmen-marcos-art-portfolio))
 ## Quick Start
 
 1.  Install the CLI:
@@ -135,7 +135,7 @@ All of the following examples can be used as a template at project creation.
 * [Algolia](https://github.com/nozzle/react-static/tree/master/examples/algolia)
 * [Styled-JSX](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
 * [Netlify CMS](https://github.com/nozzle/react-static/tree/master/examples/netlifycms)
-* [Gentics Mesh CMS](https://getmesh.io/)
+* [Gentics Mesh CMS](https://github.com/nozzle/react-static/tree/master/examples/gentics-mesh)
 * [Markdown](https://github.com/nozzle/react-static/tree/master/examples/markdown)
 * [Documentation](https://github.com/nozzle/react-static/tree/master/examples/documentation)
 
