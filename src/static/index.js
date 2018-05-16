@@ -16,8 +16,10 @@ import jsesc from 'jsesc'
 //
 import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
-import { poolAll, pathJoin } from '../utils/shared'
+import { poolAll } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
+
+export buildXMLandRSS from './buildXML'
 
 const defaultOutputFileRate = 100
 
@@ -445,39 +447,4 @@ export const exportRoutes = async ({ config, clientStats }) => {
     Number(config.outputFileRate) || defaultOutputFileRate
   )
   console.timeEnd(chalk.green('=> [\u2713] HTML Exported'))
-}
-
-export async function buildXMLandRSS ({ config }) {
-  const siteRoot = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingSiteRoot : config.siteRoot
-  if (!siteRoot) {
-    return
-  }
-  const prefixPath = config.disableRoutePrefixing ? siteRoot : config.publicPath
-  const xml = generateXML({
-    routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: `${prefixPath}/${pathJoin(route.path)}`,
-      lastModified: '',
-      priority: 0.5,
-      ...route,
-    })),
-  })
-
-  await fs.writeFile(path.join(config.paths.DIST, 'sitemap.xml'), xml)
-
-  function generateXML ({ routes }) {
-    let xml =
-      '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-    routes.forEach(route => {
-      if (route.noindex) {
-        return
-      }
-      xml += '<url>'
-      xml += `<loc>${`${route.permalink}/`.replace(/\/{1,}$/gm, '/')}</loc>`
-      xml += route.lastModified ? `<lastmod>${route.lastModified}</lastmod>` : ''
-      xml += route.priority ? `<priority>${route.priority}</priority>` : ''
-      xml += '</url>'
-    })
-    xml += '</urlset>'
-    return xml
-  }
 }

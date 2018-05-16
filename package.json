@@ -119,11 +119,13 @@
       "src"
     ],
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
-    "setupFiles": [
-      "<rootDir>/setupTests.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
+    "moduleNameMapper": {
+      "static.config.js":
+        "<rootDir>/src/static/__mocks__/static.config.mock.js",
+      "./path/to/static.config.js":
+        "<rootDir>/src/static/__mocks__/static.config.mock.js"
+    },
+    "setupFiles": ["<rootDir>/setupTests.js"],
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   }
 }
