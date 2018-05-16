@@ -11,14 +11,18 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.1.1",
+    "lodash": "^4.17.10",
     "react": "^16.0.0",
-    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.0.0",
+    "react-dotdotdot": "^1.2.3",
     "react-hot-loader": "^4.0.0-beta.21",
+    "react-number-format": "^3.3.4",
     "react-router": "^4.2.0",
     "react-static": "^5",
-    "react-static-routes": "^1.0.0"
+    "react-static-routes": "^1.0.0",
+    "reactstrap": "^6.0.1",
+    "string-strip-html": "^1.4.2"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
