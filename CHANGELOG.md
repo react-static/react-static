@@ -1,3 +1,24 @@
+# 5.9.3
+
+#### Fixes & Optimizations
+
+* Add tests for building a sitemap
+* Add tests for building the config
+* Improved Gentics Mesh example
+
+# 5.9.2
+
+#### Fixes & Optimizations
+
+* Fix an issue with routeInfo not loading on 404 pages
+* String comparisons are used for env variables now
+* Ignore tests when created a build
+* Fix examples that use the css loader to work correctly
+* Don't replace hrefs if route prefixing is disabled
+* New sites in the built-with list
+* An automated was added to test all examples build integrity
+* Upgraded some dependencies
+
 # 5.9.1
 
 #### Fixes & Optimizations

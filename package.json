@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "5.9.2",
+  "version": "5.9.3",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -120,12 +120,14 @@
     ],
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
     "moduleNameMapper": {
-      "static.config.js":
-        "<rootDir>/src/static/__mocks__/static.config.mock.js",
-      "./path/to/static.config.js":
-        "<rootDir>/src/static/__mocks__/static.config.mock.js"
+      "static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
+      "./path/to/static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js"
     },
-    "setupFiles": ["<rootDir>/setupTests.js"],
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "setupFiles": [
+      "<rootDir>/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }
