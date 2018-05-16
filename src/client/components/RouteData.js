@@ -71,7 +71,7 @@ const RouteData = withRouter(
       let allProps
 
       // Attempt to get routeInfo from window (first-load on client)
-      if (typeof window !== 'undefined' && window.__routeInfo && window.__routeInfo.path === path) {
+      if (typeof window !== 'undefined' && window.__routeInfo && (window.__routeInfo.path === path || window.__routeInfo.path === '404')) {
         loaded = true // Since these are synchronous, override loading to true
         allProps = window.__routeInfo.allProps
       }

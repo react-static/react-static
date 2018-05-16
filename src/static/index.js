@@ -177,7 +177,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
   const htmlProgress = Bar(config.routes.length)
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
-  const basePath = process.env.REACT_STATIC_STAGING ? config.stagingBasePath : config.basePath
+  const basePath = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
   const hrefReplace = new RegExp(
     `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
     'gm'
@@ -420,7 +420,10 @@ export const exportRoutes = async ({ config, clientStats }) => {
 
       // If the siteRoot is set and we're not in staging, prefix all absolute URL's
       // with the siteRoot
-      html = html.replace(hrefReplace, `$1${config.publicPath}$3`)
+      if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
+        html = html.replace(hrefReplace, `$1${config.publicPath}$3`)
+      }
+
       html = html.replace(srcReplace, `$1${config.publicPath}$3`)
 
       // If the route is a 404 page, write it directly to 404.html, instead of
@@ -445,7 +448,7 @@ export const exportRoutes = async ({ config, clientStats }) => {
 }
 
 export async function buildXMLandRSS ({ config }) {
-  const siteRoot = process.env.REACT_STATIC_STAGING ? config.stagingSiteRoot : config.siteRoot
+  const siteRoot = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingSiteRoot : config.siteRoot
   if (!siteRoot) {
     return
   }

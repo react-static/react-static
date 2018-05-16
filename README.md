@@ -57,6 +57,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [Dan Webb - Personal Website](https://danwebb.co) ([source](https://github.com/DanWebb/danwebb.co))
 * [Intuit Turbo](http://turbo.com)
 * [Messenger Corp. client asset ordering](http://chartwells.messengercorp.com/)
+* [Digital Neighborhood watch service](https://neighborhoodwatch.io/)
 
 ## Quick Start
 
