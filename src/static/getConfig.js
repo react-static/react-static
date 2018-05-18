@@ -21,13 +21,10 @@ const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index.js'
 const PATH_404 = '404'
 
-export const cutPathToRoot = (string = '') =>
-  string.replace(REGEX_TO_CUT_TO_ROOT, '$1')
+export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROOT, '$1')
 
 export const trimLeadingAndTrailingSlashes = (string = '') =>
-  string
-    .replace(REGEX_TO_REMOVE_TRAILING_SLASH, '')
-    .replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
+  string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '').replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
 
 export const throwErrorIfRouteIsMissingPath = route => {
   const { path, is404 = false } = route
@@ -39,11 +36,7 @@ export const throwErrorIfRouteIsMissingPath = route => {
 
 const consoleWarningForRouteWithoutNoIndex = route =>
   route.noIndex &&
-  console.warn(
-    `=> Warning: Route ${
-      route.path
-    } is using 'noIndex'. Did you mean 'noindex'?`
-  )
+  console.warn(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
 
 export const createNormalizedRoute = (route, parent = {}, config = {}) => {
   const { children, ...routeWithOutChildren } = route
@@ -53,6 +46,7 @@ export const createNormalizedRoute = (route, parent = {}, config = {}) => {
 
   throwErrorIfRouteIsMissingPath(route)
 
+  const originalRoutePath = is404 ? PATH_404 : pathJoin(route.path)
   const routePath = is404 ? PATH_404 : pathJoin(parentPath, route.path)
 
   consoleWarningForRouteWithoutNoIndex(route)
@@ -60,6 +54,7 @@ export const createNormalizedRoute = (route, parent = {}, config = {}) => {
   const normalizedRoute = {
     ...(keepRouteChildren ? route : routeWithOutChildren),
     path: routePath,
+    originalPath: originalRoutePath,
     noindex: route.noindex || parent.noindex || route.noIndex,
     hasGetProps: !!route.getData,
   }
@@ -76,8 +71,22 @@ export const consoleWarningForMutlipleRoutesWithTheSamePath = routes => {
   })
 }
 
-const recurseCreateNormalizedRoute = (routes = [], parent, config) =>
-  routes.reduce((memo = [], route) => {
+const recurseCreateNormalizedRoute = (routes = [], parent, config) => {
+  if (config.tree) {
+    return routes
+      .map(route => {
+        const normalizedRoute = createNormalizedRoute(route, parent, config)
+        normalizedRoute.children = recurseCreateNormalizedRoute(
+          normalizedRoute.children,
+          normalizedRoute,
+          config
+        )
+        return normalizedRoute
+      })
+      .filter(d => d !== null)
+  }
+
+  return routes.reduce((memo = [], route) => {
     const normalizedRoute = createNormalizedRoute(route, parent, config)
     const routeExists = memo.find(({ path }) => path === normalizedRoute.path)
 
@@ -87,24 +96,28 @@ const recurseCreateNormalizedRoute = (routes = [], parent, config) =>
       ...(routeExists ? [] : [normalizedRoute]),
     ]
   }, [])
+}
 
 // Normalize routes with parents, full paths, context, etc.
 export const normalizeRoutes = (routes, config = {}) => {
   const { disableDuplicateRoutesWarning, force404 = true } = config
-  const flatRoutes = recurseCreateNormalizedRoute(routes, {}, config)
+  const normalizedRoutes = recurseCreateNormalizedRoute(routes, {}, config)
 
   if (!disableDuplicateRoutesWarning) {
-    consoleWarningForMutlipleRoutesWithTheSamePath(flatRoutes)
+    consoleWarningForMutlipleRoutesWithTheSamePath(normalizedRoutes)
   }
 
-  if (force404 && !flatRoutes.find(r => r.is404)) {
-    flatRoutes.push({
-      is404: true,
-      path: PATH_404,
-    })
+  if (force404 && !normalizedRoutes.find(r => r.is404)) {
+    normalizedRoutes.push(
+      createNormalizedRoute({
+        is404: true,
+        path: PATH_404,
+      }),
+      config
+    )
   }
 
-  return flatRoutes
+  return normalizedRoutes
 }
 
 // At least ensure the index page is defined for export
@@ -126,8 +139,7 @@ export const buildConfigation = (config = {}) => {
   }
 
   // Use the root to resolve all other relative paths
-  const resolvePath = relativePath =>
-    path.resolve(config.paths.root, relativePath)
+  const resolvePath = relativePath => path.resolve(config.paths.root, relativePath)
 
   // Resolve all paths
   const distPath =
@@ -173,10 +185,8 @@ export const buildConfigation = (config = {}) => {
 
   // Set env variables to be used client side
   process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
-  process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING =
-    finalConfig.disableRouteInfoWarning
-  process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING =
-    finalConfig.disableRoutePrefixing
+  process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = finalConfig.disableRouteInfoWarning
+  process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = finalConfig.disableRoutePrefixing
 
   return finalConfig
 }
