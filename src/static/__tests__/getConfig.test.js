@@ -94,7 +94,9 @@ describe('createNormalizedRoute', () => {
 
       describe('when route is 404', () => {
         it('should not throw an error', () => {
-          expect(() => createNormalizedRoute({ component: '/no/path/', is404: true })).not.toThrow()
+          expect(() =>
+            createNormalizedRoute({ component: '/no/path/', is404: true })
+          ).not.toThrow()
         })
       })
     })
@@ -198,87 +200,20 @@ describe('makeGetRoutes', () => {
         const getRoutes = makeGetRoutes(config)
         const routes = await getRoutes()
 
-        expect(routes).toEqual([
-          {
-            hasGetProps: false,
-            noindex: undefined,
-            originalPath: 'blog',
-            path: 'path/to/blog',
-          },
-          {
-            hasGetProps: false,
-            noindex: undefined,
-            originalPath: 'slug',
-            path: 'path/to/slug',
-          },
-          {
-            hasGetProps: false,
-            noindex: undefined,
-            originalPath: 'to',
-            path: 'path/to',
-          },
-          {
-            hasGetProps: false,
-            noindex: undefined,
-            originalPath: 'path',
-            path: 'path',
-          },
-          {
-            hasGetProps: false,
-            is404: true,
-            noIndex: undefined,
-            originalPath: '404',
-            path: '404',
-          },
-        ])
+        expect(routes).toMatchSnapshot()
       })
 
       describe('when config.tree is defined', () => {
-        it('should return the same routes, but now normalized', async () => {
-          const config = { getRoutes: async () => routesWithChildren, tree: true }
+        it('should return a flat Array of routes', async () => {
+          const config = {
+            getRoutes: async () => routesWithChildren,
+            tree: true,
+          }
 
           const getRoutes = makeGetRoutes(config)
           const routes = await getRoutes()
 
-          expect(routes).toEqual([
-            {
-              hasGetProps: false,
-              noindex: undefined,
-              path: 'path',
-              originalPath: 'path',
-              children: [
-                {
-                  children: [
-                    {
-                      path: 'path/to/blog',
-                      children: [],
-                      hasGetProps: false,
-                      noindex: undefined,
-                      originalPath: 'blog',
-                    },
-                    {
-                      path: 'path/to/slug',
-                      children: [],
-                      hasGetProps: false,
-                      noindex: undefined,
-                      originalPath: 'slug',
-                    },
-                  ],
-                  hasGetProps: false,
-                  noindex: undefined,
-                  originalPath: 'to',
-                  path: 'path/to',
-                },
-              ],
-            },
-            {
-              hasGetProps: false,
-              is404: true,
-              noindex: undefined,
-              originalPath: '404',
-              path: '404',
-            },
-          ])
+          expect(routes).toMatchSnapshot()
         })
       })
     })
@@ -293,10 +228,17 @@ describe('makeGetRoutes', () => {
 
       expect(routes).toEqual([
         {
-          hasGetProps: false, noindex: undefined, originalPath: '/', path: '/',
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: '/',
+          path: '/',
         },
         {
-          hasGetProps: false, is404: true, noindex: undefined, originalPath: '404', path: '404',
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: '404',
+          is404: true,
+          path: '404',
         },
       ])
     })
@@ -313,8 +255,10 @@ describe('buildConfigation', () => {
   beforeEach(() => {
     reactStaticEnviroment = process.env.REACT_STATIC_ENV
     reactStaticPrefetchRate = process.env.REACT_STATIC_PREFETCH_RATE
-    reactStaticDisableRouteInfoWarning = process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
-    reactStaticDisableRoutePreFixing = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+    reactStaticDisableRouteInfoWarning =
+      process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
+    reactStaticDisableRoutePreFixing =
+      process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
     spyProcess = jest.spyOn(process, 'cwd').mockImplementation(() => './root/')
   })
 
@@ -428,7 +372,9 @@ describe('getConfig', () => {
 
   describe('when provided a configuration', () => {
     it('should return a merged configuration', () => {
-      const configuration = getConfig({ entry: 'another/path/to/entry/index.js' })
+      const configuration = getConfig({
+        entry: 'another/path/to/entry/index.js',
+      })
 
       testConfiguration(configuration, {
         ...defaultConfigProduction,
