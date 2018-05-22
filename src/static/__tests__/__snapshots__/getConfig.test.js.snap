@@ -5,14 +5,8 @@ Array [
   Object {
     "hasGetProps": false,
     "noindex": undefined,
-    "originalPath": "blog",
-    "path": "path/to/blog",
-  },
-  Object {
-    "hasGetProps": false,
-    "noindex": undefined,
-    "originalPath": "slug",
-    "path": "path/to/slug",
+    "originalPath": "path",
+    "path": "path",
   },
   Object {
     "hasGetProps": false,
@@ -23,8 +17,14 @@ Array [
   Object {
     "hasGetProps": false,
     "noindex": undefined,
-    "originalPath": "path",
-    "path": "path",
+    "originalPath": "blog",
+    "path": "path/to/blog",
+  },
+  Object {
+    "hasGetProps": false,
+    "noindex": undefined,
+    "originalPath": "slug",
+    "path": "path/to/slug",
   },
   Object {
     "hasGetProps": false,
