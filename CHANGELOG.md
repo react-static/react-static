@@ -1,3 +1,10 @@
+# 5.9.4
+
+#### Fixes & Optimizations
+
+* Removed deprecated react-hot-loader/patch from webpack dev entry, but kept the `react-hot-loader` entry to ensure it is required before React.
+* Updated tests to work with regressions
+
 # 5.9.3
 
 #### Fixes & Optimizations

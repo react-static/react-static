@@ -109,11 +109,13 @@ export const normalizeRoutes = (routes, config = {}) => {
 
   if (force404 && !normalizedRoutes.find(r => r.is404)) {
     normalizedRoutes.push(
-      createNormalizedRoute({
-        is404: true,
-        path: PATH_404,
-      }),
-      config
+      createNormalizedRoute(
+        {
+          is404: true,
+          path: PATH_404,
+        },
+        config
+      )
     )
   }
 

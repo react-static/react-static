@@ -43,6 +43,7 @@ describe('createNormalizedRoute', () => {
       expect(route).toEqual({
         hasGetProps: false,
         noindex: undefined,
+        originalPath: 'path',
         path: 'path',
       })
     })
@@ -86,7 +87,9 @@ describe('createNormalizedRoute', () => {
       it('should throw an error', () => {
         const route = { component: '/no/path/', noIndex: true }
 
-        expect(() => createNormalizedRoute(route)).toThrow(`No path defined for route: ${JSON.stringify(route)}`)
+        expect(() => createNormalizedRoute(route)).toThrow(
+          `No path defined for route: ${JSON.stringify(route)}`
+        )
       })
 
       describe('when route is 404', () => {
@@ -98,24 +101,19 @@ describe('createNormalizedRoute', () => {
 
     describe('when parent route is provided', () => {
       it('should return a normalized route', () => {
-        const route = createNormalizedRoute(
-          { path: '/to/' },
-          { path: '/path/' }
-        )
+        const route = createNormalizedRoute({ path: '/to/' }, { path: '/path/' })
 
         expect(route).toEqual({
           hasGetProps: false,
           noindex: undefined,
+          originalPath: 'to',
           path: 'path/to',
         })
       })
 
       describe('when parent noindex is true', () => {
         it('should return a normalized route with noindex as true', () => {
-          const route = createNormalizedRoute(
-            { path: '/to/' },
-            { path: '/path/', noindex: true }
-          )
+          const route = createNormalizedRoute({ path: '/to/' }, { path: '/path/', noindex: true })
 
           expect(route.noindex).toEqual(true)
         })
@@ -133,8 +131,19 @@ describe('makeGetRoutes', () => {
       const routes = await getRoutes()
 
       expect(routes).toEqual([
-        { hasGetProps: false, noindex: undefined, path: 'path' },
-        { is404: true, path: '404' },
+        {
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: 'path',
+          path: 'path',
+        },
+        {
+          hasGetProps: false,
+          is404: true,
+          noindex: undefined,
+          originalPath: '404',
+          path: '404',
+        },
       ])
     })
 
@@ -147,11 +156,17 @@ describe('makeGetRoutes', () => {
       const routes = await getRoutes()
 
       expect(routes).toEqual([
-        { hasGetProps: false, noindex: undefined, path: 'path' },
+        {
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: 'path',
+          path: 'path',
+        },
         {
           hasGetProps: false,
           is404: true,
           noindex: undefined,
+          originalPath: '404',
           path: '404',
         },
       ])
@@ -184,57 +199,85 @@ describe('makeGetRoutes', () => {
         const routes = await getRoutes()
 
         expect(routes).toEqual([
-          { hasGetProps: false, noindex: undefined, path: 'path/to/blog' },
-          { hasGetProps: false, noindex: undefined, path: 'path/to/slug' },
-          { hasGetProps: false, noindex: undefined, path: 'path/to' },
-          { hasGetProps: false, noindex: undefined, path: 'path' },
-          { is404: true, path: '404' },
+          {
+            hasGetProps: false,
+            noindex: undefined,
+            originalPath: 'blog',
+            path: 'path/to/blog',
+          },
+          {
+            hasGetProps: false,
+            noindex: undefined,
+            originalPath: 'slug',
+            path: 'path/to/slug',
+          },
+          {
+            hasGetProps: false,
+            noindex: undefined,
+            originalPath: 'to',
+            path: 'path/to',
+          },
+          {
+            hasGetProps: false,
+            noindex: undefined,
+            originalPath: 'path',
+            path: 'path',
+          },
+          {
+            hasGetProps: false,
+            is404: true,
+            noIndex: undefined,
+            originalPath: '404',
+            path: '404',
+          },
         ])
       })
 
       describe('when config.tree is defined', () => {
-        it('should return a flat Array of routes', async () => {
+        it('should return the same routes, but now normalized', async () => {
           const config = { getRoutes: async () => routesWithChildren, tree: true }
 
           const getRoutes = makeGetRoutes(config)
           const routes = await getRoutes()
 
           expect(routes).toEqual([
-            { hasGetProps: false, noindex: undefined, path: 'path/to/blog' },
-            { hasGetProps: false, noindex: undefined, path: 'path/to/slug' },
-            {
-              hasGetProps: false,
-              noindex: undefined,
-              path: 'path/to',
-              children: [
-                {
-                  path: 'blog',
-                },
-                {
-                  path: 'slug',
-                },
-              ],
-            },
             {
               hasGetProps: false,
               noindex: undefined,
               path: 'path',
+              originalPath: 'path',
               children: [
                 {
                   children: [
                     {
-                      path: 'blog',
+                      path: 'path/to/blog',
+                      children: [],
+                      hasGetProps: false,
+                      noindex: undefined,
+                      originalPath: 'blog',
                     },
                     {
-                      path: 'slug',
+                      path: 'path/to/slug',
+                      children: [],
+                      hasGetProps: false,
+                      noindex: undefined,
+                      originalPath: 'slug',
                     },
                   ],
-                  path: 'to',
+                  hasGetProps: false,
+                  noindex: undefined,
+                  originalPath: 'to',
+                  path: 'path/to',
                 },
               ],
-
             },
-            { is404: true, path: '404' },
+            {
+              hasGetProps: false,
+              is404: true,
+              noindex: undefined,
+              originalPath: '404',
+              path: '404',
+            },
           ])
         })
       })
@@ -249,8 +292,12 @@ describe('makeGetRoutes', () => {
       const routes = await getRoutes()
 
       expect(routes).toEqual([
-        { hasGetProps: false, noindex: undefined, path: '/' },
-        { is404: true, path: '404' },
+        {
+          hasGetProps: false, noindex: undefined, originalPath: '/', path: '/',
+        },
+        {
+          hasGetProps: false, is404: true, noindex: undefined, originalPath: '404', path: '404',
+        },
       ])
     })
   })
