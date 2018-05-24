@@ -1,8 +1,8 @@
 <!--
 ARE YOU LOOKING FOR HELP OR HAVE A QUESTION ABOUT IMPLEMENTATION?
-If so, then STOP right there! We have a dedicated [Slack Channel](https://react-chat-signup.herokuapp.com) where you can ask all the questions you want.
+If so, then STOP right there! We have a dedicated [Spectrum Community](https://spectrum.chat/react-static) where you can ask all the questions you want.
 
-IF YOU OPEN AN ISSUE AS A QUESTION ABOUT IMPLEMENTATION, IT WILL BE CLOSED IMMEDIATELY AND YOU WILL BE DIRECTED TO JOIN THE [SLACK COMMUNITY](https://react-chat-signup.herokuapp.com)
+IF YOU OPEN AN ISSUE AS A QUESTION ABOUT IMPLEMENTATION, IT WILL BE CLOSED IMMEDIATELY AND YOU WILL BE DIRECTED TO JOIN THE [SPECTRUM COMMUNITY](https://spectrum.chat/react-static)
 -->
 
 ### Are you reporting a bug?

@@ -140,8 +140,8 @@ export default () => (
       <Card to={introURL} background="#5ca9c3">
         Introduction
       </Card>
-      <Card to="https://react-chat-signup.herokuapp.com" background="#efbb3c">
-        Chat on Slack
+      <Card to="https://spectrum.chat/react-static" background="#efbb3c">
+        Chat, Help and Support
       </Card>
       <Card to="/docs/concepts" background="#9ec754">
         Documentation

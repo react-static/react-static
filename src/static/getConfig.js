@@ -200,6 +200,7 @@ const buildConfigFromPath = configPath => {
     const config = require(configPath).default
     return buildConfigation(config)
   } catch (err) {
+    console.error(err)
     return {}
   }
 }

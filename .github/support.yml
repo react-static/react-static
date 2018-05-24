@@ -6,8 +6,8 @@ supportLabel: support
 # to a support page, or set to `false` to disable
 supportComment: >
   We use Github's issue tracker exclusively for bug reports and feature requests.
-  This issue appears to be a support request. We recommend you join [our Slack Organization](https://react-chat-signup.herokuapp.com)
-  and join the #react-static channel to ask for help about anything and everything React-Static :)
+  This issue appears to be a support request. We recommend you join [the React Static Spectrum Community](https://spectrum.chat/react-static)
+  for help about anything and everything React-Static :)
 # Whether to close issues marked as support requests
 close: true
 # Whether to lock issues marked as support requests
