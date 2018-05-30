@@ -314,8 +314,6 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
         throw error
       }
 
-      console.log(clientStyleSheets)
-
       const DocumentHtml = renderToStaticMarkup(
         <DocumentTemplate
           Html={makeHtmlWithMeta({ head })}
