@@ -1,5 +1,4 @@
 import React from 'react'
-import jsesc from 'jsesc'
 
 const REGEX_FOR_SCRIPT = /<(\/)?(script)/gi
 

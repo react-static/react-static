@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "5.9.6",
+  "version": "5.9.7",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -13,27 +13,22 @@
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "build":
-      "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' && yarn prepGitignore",
-    "start":
-      "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*'",
+    "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' && yarn prepGitignore",
+    "start": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*'",
     "postpublish": "git push --tags",
     "prepublishOnly": "yarn build && yarn test",
     "publishNext": "yarn publish --tag next",
     "prepGitignore": "node scripts/prepGitignore.js",
     "startDocs": "cd www && yarn start",
     "buildDocs": "cd www && yarn && yarn build",
-    "buildDocsProd":
-      "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
+    "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "serveDocs": "serve www/dist -p 3000",
     "test": "yarn unitTest && yarn lint && yarn run test-sample-build",
     "lint": "eslint src examples test",
     "unitTest": "NODE_ENV=test yarn jest src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
-    "test-large-build":
-      "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
-    "test-sample-build":
-      "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
+    "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
+    "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
@@ -72,7 +67,6 @@
     "html-webpack-plugin": "^2.30.1",
     "inquirer": "^3.3.0",
     "inquirer-autocomplete-prompt": "^0.11.1",
-    "jsesc": "^2.5.1",
     "match-sorter": "^2.0.2",
     "openport": "^0.0.4",
     "postcss-flexbugs-fixes": "^3.2.0",
@@ -121,13 +115,20 @@
   },
   "jest": {
     "verbose": true,
-    "moduleDirectories": ["node_modules", "src"],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
     "moduleNameMapper": {
       "static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
       "./path/to/static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js"
     },
-    "setupFiles": ["<rootDir>/setupTests.js"],
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "setupFiles": [
+      "<rootDir>/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }
