@@ -1,3 +1,10 @@
+# 5.9.7
+
+#### Fixes & Optimizations
+
+* Removed `jsesc` until we can find a better way to handle utf-8 encoding for routeInfo
+* Removed a stray console.log
+
 # 5.9.6
 
 #### Fixes & Optimizations
