@@ -5,9 +5,10 @@ const REGEX_FOR_SCRIPT = /<(\/)?(script)/gi
 
 const generateRouteInformation = embeddedRouteInfo => ({
   __html: `
-    window.__routeInfo = ${jsesc(JSON.stringify(embeddedRouteInfo), {
-    isScriptContext: true,
-  }).replace(REGEX_FOR_SCRIPT, '<"+"$1$2')};`,
+    window.__routeInfo = ${JSON.stringify(embeddedRouteInfo).replace(
+    REGEX_FOR_SCRIPT,
+    '<"+"$1$2'
+  )};`,
 })
 
 // Not only do we pass react-helmet attributes and the app.js here, but
