@@ -27,22 +27,14 @@ export buildXMLandRSS from './buildXML'
 const defaultOutputFileRate = 100
 
 const Bar = (len, label) =>
-  new Progress(
-    `=> ${
-      label ? `${label} ` : ''
-    }[:bar] :current/:total :percent :rate/s :etas `,
-    {
-      total: len,
-    }
-  )
+  new Progress(`=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `, {
+    total: len,
+  })
 
 export const prepareRoutes = async (config, opts) => {
   config.routes = await config.getRoutes(opts)
 
-  process.env.REACT_STATIC_ROUTES_PATH = path.join(
-    config.paths.DIST,
-    'react-static-routes.js'
-  )
+  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
 
   // Dedupe all templates into an array
   const templates = []
@@ -115,8 +107,7 @@ export const fetchRoutes = async config => {
   await poolAll(
     config.routes.map(route => async () => {
       // Fetch allProps from each route
-      route.allProps =
-        !!route.getData && (await route.getData({ route, dev: false }))
+      route.allProps = !!route.getData && (await route.getData({ route, dev: false }))
 
       // Default allProps (must be an object)
       if (!route.allProps) {
@@ -190,9 +181,7 @@ export const fetchRoutes = async config => {
 
 const buildHTML = async ({ config, siteData, clientStats }) => {
   // Use the node version of the app created with webpack
-  const Comp = require(glob.sync(
-    path.resolve(config.paths.DIST, 'static.*.js')
-  )[0]).default
+  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
 
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
@@ -204,26 +193,17 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
   const basePath =
-    process.env.REACT_STATIC_STAGING === 'true'
-      ? config.stagingBasePath
-      : config.basePath
+    process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
   const hrefReplace = new RegExp(
     `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
     'gm'
   )
-  const srcReplace = new RegExp(
-    `(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
-    'gm'
-  )
+  const srcReplace = new RegExp(`(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`, 'gm')
 
   await poolAll(
     config.routes.map(route => async () => {
       const {
-        sharedPropsHashes,
-        templateID,
-        localProps,
-        allProps,
-        path: routePath,
+        sharedPropsHashes, templateID, localProps, allProps, path: routePath,
       } = route
 
       // This routeInfo will be saved to disk. It should only include the
@@ -289,13 +269,10 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
         const appHtml = renderToString(comp)
         const {
           scripts, stylesheets, css, CssHash,
-        } = flushChunks(
-          clientStats,
-          {
-            chunkNames,
-            outputPath: config.paths.DIST,
-          }
-        )
+        } = flushChunks(clientStats, {
+          chunkNames,
+          outputPath: config.paths.DIST,
+        })
 
         clientScripts = scripts
         clientStyleSheets = stylesheets
@@ -331,11 +308,13 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
           clientStats
         )
       } catch (error) {
-        error.message = `Failed exporting HTML for URL ${route.path} (${
-          route.component
-        }): ${error.message}`
+        error.message = `Failed exporting HTML for URL ${route.path} (${route.component}): ${
+          error.message
+        }`
         throw error
       }
+
+      console.log(clientStyleSheets)
 
       const DocumentHtml = renderToStaticMarkup(
         <DocumentTemplate
@@ -382,17 +361,11 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
         : path.join(config.paths.DIST, route.path, 'index.html')
 
       // Make the routeInfo sit right next to its companion html file
-      const routeInfoFilename = path.join(
-        config.paths.DIST,
-        route.path,
-        'routeInfo.json'
-      )
+      const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.json')
 
       const res = await Promise.all([
         fs.outputFile(htmlFilename, html),
-        !route.redirect
-          ? fs.outputJson(routeInfoFilename, routeInfo)
-          : Promise.resolve(),
+        !route.redirect ? fs.outputJson(routeInfoFilename, routeInfo) : Promise.resolve(),
       ])
       htmlProgress.tick()
       return res

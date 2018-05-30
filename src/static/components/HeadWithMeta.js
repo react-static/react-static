@@ -21,24 +21,24 @@ export const makeHeadWithMeta = ({
   clientCss,
 }) => ({ children, ...rest }) => {
   const renderLinkCSS = !route.redirect && !config.inlineCss
-  let showHelmetTitle = true
-  const childrenArray = React.Children.toArray(children).filter(child => {
-    if (child.type === 'title') {
-      // Filter out the title of the Document in static.config.js
-      // if there is a helmet title on this route
-      const helmetTitleIsEmpty = head.title[0].props.children === ''
-      if (!helmetTitleIsEmpty) {
+  const useHelmetTitle = head.title && head.title[0] && head.title[0].props.children !== ''
+  let childrenArray = children
+  if (useHelmetTitle) {
+    head.title[0] = React.cloneElement(head.title[0], { key: 'title' })
+    childrenArray = React.Children.toArray(children).filter(child => {
+      if (child.type === 'title') {
+        // Filter out the title of the Document in static.config.js
+        // if there is a helmet title on this route
         return false
       }
-      showHelmetTitle = false
-    }
-    return true
-  })
+      return true
+    })
+  }
 
   return (
     <head {...rest}>
       {head.base}
-      {showHelmetTitle && head.title}
+      {useHelmetTitle && head.title}
       {head.meta}
       {!route.redirect &&
         clientScripts.map(script => (
@@ -50,20 +50,23 @@ export const makeHeadWithMeta = ({
           />
         ))}
       {renderLinkCSS &&
-        clientStyleSheets.reduce((memo, styleSheet) => [
-          ...memo,
-          <link
-            key={`clientStyleSheet_${styleSheet}`}
-            rel="preload"
-            as="style"
-            href={`${config.publicPath}${styleSheet}`}
-          />,
-          <link
-            key={`clientStyleSheet_${styleSheet}`}
-            rel="stylesheet"
-            href={`${config.publicPath}${styleSheet}`}
-          />,
-        ])}
+        clientStyleSheets.reduce(
+          (memo, styleSheet) => [
+            ...memo,
+            <link
+              key={`clientStyleSheetPreload_${styleSheet}`}
+              rel="preload"
+              as="style"
+              href={`${config.publicPath}${styleSheet}`}
+            />,
+            <link
+              key={`clientStyleSheet_${styleSheet}`}
+              rel="stylesheet"
+              href={`${config.publicPath}${styleSheet}`}
+            />,
+          ],
+          []
+        )}
       {head.link}
       {head.noscript}
       {head.script}

@@ -15,7 +15,7 @@ describe('HeadWithMeta', () => {
     data = {
       head: {
         base: '',
-        title: [<title>React Static</title>],
+        title: [<title>Helmet Title</title>],
         meta: '',
         link: '',
         noscript: '',
@@ -26,14 +26,8 @@ describe('HeadWithMeta', () => {
       embeddedRouteInfo: {
         routeDate: 'here',
       },
-      clientScripts: [
-        <script text="text/javascript" src="main.js" />,
-        <script text="text/javascript" src="bootstrap.js" />,
-      ],
-      clientStyleSheets: [
-        <script text="text/javascript" src="main.js" />,
-        <script text="text/javascript" src="bootstrap.js" />,
-      ],
+      clientScripts: ['main.js', 'bootstrap.js'],
+      clientStyleSheets: ['main.css', 'bootstrap.css'],
       clientCss: <style>{inlineCSS}</style>,
       config: {
         publicPath: 'public/path',
@@ -85,7 +79,26 @@ describe('HeadWithMeta', () => {
 
     const headWithMeta = mount(
       <HeadWithMeta className="body">
-        <title>React Static New Title</title>
+        <title>Document Title</title>
+        <meta name="description" content="Helmet application" />
+      </HeadWithMeta>
+    )
+
+    expect(headWithMeta).toMatchSnapshot()
+  })
+
+  test('when route has no helmet title', () => {
+    const HeadWithMeta = makeHeadWithMeta({
+      ...data,
+      head: {
+        ...data.head,
+        title: [],
+      },
+    })
+
+    const headWithMeta = mount(
+      <HeadWithMeta className="body">
+        <title>Document Title</title>
         <meta name="description" content="Helmet application" />
       </HeadWithMeta>
     )

@@ -40,21 +40,21 @@ exports[`BodyWithMeta when route is a static route 1`] = `
       dangerouslySetInnerHTML={
         Object {
           "__html": "
-    window.__routeInfo = {'routeDate':'here'};",
+    window.__routeInfo = {\\"routeDate\\":\\"here\\"};",
         }
       }
       type="text/javascript"
     />
     <script
       defer={true}
-      key="[object Object]"
-      src="undefined[object Object]"
+      key="main.js"
+      src="public/pathmain.js"
       type="text/javascript"
     />
     <script
       defer={true}
-      key="[object Object]"
-      src="undefined[object Object]"
+      key="bootstrap.js"
+      src="public/pathbootstrap.js"
       type="text/javascript"
     />
   </body>

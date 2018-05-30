@@ -7,19 +7,21 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
   <head
     className="body"
   >
-    <title>
-      React Static
+    <title
+      key="title"
+    >
+      Helmet Title
     </title>
     <link
       as="script"
-      href="public/path[object Object]"
-      key="clientScript_[object Object]"
+      href="public/pathmain.js"
+      key="clientScript_main.js"
       rel="preload"
     />
     <link
       as="script"
-      href="public/path[object Object]"
-      key="clientScript_[object Object]"
+      href="public/pathbootstrap.js"
+      key="clientScript_bootstrap.js"
       rel="preload"
     />
     <InlineStyle
@@ -54,6 +56,58 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
 </Component>
 `;
 
+exports[`HeadWithMeta when route has no helmet title 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <link
+      as="script"
+      href="public/pathmain.js"
+      key="clientScript_main.js"
+      rel="preload"
+    />
+    <link
+      as="script"
+      href="public/pathbootstrap.js"
+      key="clientScript_bootstrap.js"
+      rel="preload"
+    />
+    <link
+      as="style"
+      href="public/pathmain.css"
+      key="clientStyleSheetPreload_main.css"
+      rel="preload"
+    />
+    <link
+      href="public/pathmain.css"
+      key="clientStyleSheet_main.css"
+      rel="stylesheet"
+    />
+    <link
+      as="style"
+      href="public/pathbootstrap.css"
+      key="clientStyleSheetPreload_bootstrap.css"
+      rel="preload"
+    />
+    <link
+      href="public/pathbootstrap.css"
+      key="clientStyleSheet_bootstrap.css"
+      rel="stylesheet"
+    />
+    <title>
+      Document Title
+    </title>
+    <meta
+      content="Helmet application"
+      name="description"
+    />
+  </head>
+</Component>
+`;
+
 exports[`HeadWithMeta when route has title as child 1`] = `
 <Component
   className="body"
@@ -61,30 +115,43 @@ exports[`HeadWithMeta when route has title as child 1`] = `
   <head
     className="body"
   >
-    <title>
-      React Static
+    <title
+      key="title"
+    >
+      Helmet Title
     </title>
     <link
       as="script"
-      href="public/path[object Object]"
-      key="clientScript_[object Object]"
+      href="public/pathmain.js"
+      key="clientScript_main.js"
       rel="preload"
     />
     <link
       as="script"
-      href="public/path[object Object]"
-      key="clientScript_[object Object]"
+      href="public/pathbootstrap.js"
+      key="clientScript_bootstrap.js"
       rel="preload"
     />
     <link
       as="style"
-      href="public/path[object Object]"
-      key="clientStyleSheet_[object Object]"
+      href="public/pathmain.css"
+      key="clientStyleSheetPreload_main.css"
       rel="preload"
     />
     <link
-      href="public/path[object Object]"
-      key="clientStyleSheet_[object Object]"
+      href="public/pathmain.css"
+      key="clientStyleSheet_main.css"
+      rel="stylesheet"
+    />
+    <link
+      as="style"
+      href="public/pathbootstrap.css"
+      key="clientStyleSheetPreload_bootstrap.css"
+      rel="preload"
+    />
+    <link
+      href="public/pathbootstrap.css"
+      key="clientStyleSheet_bootstrap.css"
       rel="stylesheet"
     />
     <meta
@@ -103,8 +170,10 @@ exports[`HeadWithMeta when route is a redirect route 1`] = `
   <head
     className="body"
   >
-    <title>
-      React Static
+    <title
+      key="title"
+    >
+      Helmet Title
     </title>
     <meta
       content="Helmet application"
@@ -122,30 +191,43 @@ exports[`HeadWithMeta when route is a static route 1`] = `
   <head
     className="body"
   >
-    <title>
-      React Static
+    <title
+      key="title"
+    >
+      Helmet Title
     </title>
     <link
       as="script"
-      href="public/path[object Object]"
-      key="clientScript_[object Object]"
+      href="public/pathmain.js"
+      key="clientScript_main.js"
       rel="preload"
     />
     <link
       as="script"
-      href="public/path[object Object]"
-      key="clientScript_[object Object]"
+      href="public/pathbootstrap.js"
+      key="clientScript_bootstrap.js"
       rel="preload"
     />
     <link
       as="style"
-      href="public/path[object Object]"
-      key="clientStyleSheet_[object Object]"
+      href="public/pathmain.css"
+      key="clientStyleSheetPreload_main.css"
       rel="preload"
     />
     <link
-      href="public/path[object Object]"
-      key="clientStyleSheet_[object Object]"
+      href="public/pathmain.css"
+      key="clientStyleSheet_main.css"
+      rel="stylesheet"
+    />
+    <link
+      as="style"
+      href="public/pathbootstrap.css"
+      key="clientStyleSheetPreload_bootstrap.css"
+      rel="preload"
+    />
+    <link
+      href="public/pathbootstrap.css"
+      key="clientStyleSheet_bootstrap.css"
       rel="stylesheet"
     />
     <meta

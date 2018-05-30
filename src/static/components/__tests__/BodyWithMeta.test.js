@@ -10,16 +10,17 @@ describe('BodyWithMeta', () => {
       embeddedRouteInfo: {
         routeDate: 'here',
       },
-      clientScripts: [
-        <script text="text/javascript" src="main.js" />,
-        <script text="text/javascript" src="bootstrap.js" />,
-      ],
+      clientScripts: ['main.js', 'bootstrap.js'],
       ClientCssHash: () => <style>{'body{ width:100%; height: 100%; }'}</style>,
-      config: {},
+      config: {
+        publicPath: 'public/path',
+      },
     })
 
     const bodyWithMeta = mount(
-      <BodyWithMeta className="body" ><div>static page</div></BodyWithMeta>
+      <BodyWithMeta className="body">
+        <div>static page</div>
+      </BodyWithMeta>
     )
 
     expect(bodyWithMeta).toMatchSnapshot()
@@ -41,7 +42,9 @@ describe('BodyWithMeta', () => {
     })
 
     const bodyWithMeta = mount(
-      <BodyWithMeta className="body" ><div>static page</div></BodyWithMeta>
+      <BodyWithMeta className="body">
+        <div>static page</div>
+      </BodyWithMeta>
     )
 
     expect(bodyWithMeta).toMatchSnapshot()

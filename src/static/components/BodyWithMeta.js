@@ -5,8 +5,7 @@ const REGEX_FOR_SCRIPT = /<(\/)?(script)/gi
 
 const generateRouteInformation = embeddedRouteInfo => ({
   __html: `
-    window.__routeInfo = ${jsesc(embeddedRouteInfo, {
-    es6: false,
+    window.__routeInfo = ${jsesc(JSON.stringify(embeddedRouteInfo), {
     isScriptContext: true,
   }).replace(REGEX_FOR_SCRIPT, '<"+"$1$2')};`,
 })
@@ -35,12 +34,7 @@ export const makeBodyWithMeta = ({
     )}
     {!route.redirect &&
       clientScripts.map(script => (
-        <script
-          key={script}
-          defer
-          type="text/javascript"
-          src={`${config.publicPath}${script}`}
-        />
+        <script key={script} defer type="text/javascript" src={`${config.publicPath}${script}`} />
       ))}
   </body>
 )
