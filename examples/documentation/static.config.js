@@ -36,7 +36,8 @@ const docPages = [
   },
 ]
 
-// This is the side menu for the documentation section. You can nest items in `children` to create groups.
+// This is the side menu for the documentation section.
+// You can nest items in `children` to create groups.
 // If a group name has a `link` prop, it will also act as a link in addition to a header.
 const menu = [
   {

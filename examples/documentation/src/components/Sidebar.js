@@ -1,8 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { SiteData, RouteData, Link, Head } from 'react-static'
+import { SiteData, Link } from 'react-static'
 //
-import Markdown from 'components/Markdown'
 import ClickOutside from 'components/ClickOutside'
 
 const breakpoint = 800
@@ -149,7 +148,7 @@ const SidebarStyles = styled.div`
 
 const Menu = ({ items }) => (
   <div className="list">
-    {items.map(({ name, link, children }, i) => (
+    {items.map(({ name, link, children }) => (
       <div key={name + link} className="item">
         {link ? (
           <Link to={link} exact activeClassName="active">

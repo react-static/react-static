@@ -1,4 +1,16 @@
-# 5.9.4
+# 5.9.6
+
+#### Fixes & Optimizations
+
+* Updates examples sites & various documentation typos
+* Log errors during build configuration step to aid in build debugging.
+* Moved away from Slack to Spectrum for support and community.
+* Fixed a regression that prevented cache busting on routeInfo.js files
+* static/index.js logic is now broken up into smaller pieces.
+* Added various tests for parts of static/index.js
+* Upgraded snapshots for testing
+
+# 5.9.4 - 5.9.5
 
 #### Fixes & Optimizations
 

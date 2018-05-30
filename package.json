@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "5.9.5",
+  "version": "5.9.6",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -26,7 +26,8 @@
     "buildDocsProd":
       "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "serveDocs": "serve www/dist -p 3000",
-    "test": "yarn unitTest && eslint src examples test && yarn run test-sample-build",
+    "test": "yarn unitTest && yarn lint && yarn run test-sample-build",
+    "lint": "eslint src examples test",
     "unitTest": "NODE_ENV=test yarn jest src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
     "test-large-build":
