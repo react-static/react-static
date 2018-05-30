@@ -1,6 +1,7 @@
 language: node_js
 node_js:
-  - "latest"
+  - "10"
+  - "9"
   - "8"
   - "7"
 script: npm test
