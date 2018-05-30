@@ -71,29 +71,58 @@ export const consoleWarningForMutlipleRoutesWithTheSamePath = routes => {
   })
 }
 
-const recurseCreateNormalizedRoute = (routes = [], parent, config) => {
-  if (config.tree) {
-    return routes
-      .map(route => {
-        const normalizedRoute = createNormalizedRoute(route, parent, config)
-        normalizedRoute.children = recurseCreateNormalizedRoute(
-          normalizedRoute.children,
-          normalizedRoute,
-          config
-        )
-        return normalizedRoute
-      })
-      .filter(d => d !== null)
-  }
+// We recursively loop through the routes and their children and
+// return an array of normalised routes.
+// Original routes array [{ path: 'path', children: { path: 'to' } }]
+// These can be returned as flat routes eg. [{ path: 'path' }, { path: 'path/to' }]
+// Or they can be returned nested routes eg. [{ path: 'path', children: { path: 'path/to' } }]
+const recurseCreateNormalizedRoute = (
+  routes = [],
+  parent,
+  config,
+  existingRoutes = []
+) => {
+  const { tree: createNestedTreeStructure = false } = config
 
   return routes.reduce((memo = [], route) => {
     const normalizedRoute = createNormalizedRoute(route, parent, config)
-    const routeExists = memo.find(({ path }) => path === normalizedRoute.path)
+    // if structure is nested (tree === true) normalizedRoute will
+    // have children otherwise we fall back to the original route children
+    const { children = route.children, path } = normalizedRoute
+
+    // we check an array of paths to see
+    // if route path already existings
+    const routeExists = existingRoutes.includes(path)
+
+    // we push paths into an array that
+    // we use to check if a route existings
+    existingRoutes.push(path)
+
+    const normalizedRouteChildren = recurseCreateNormalizedRoute(
+      children,
+      normalizedRoute,
+      config,
+      existingRoutes
+    )
 
     return [
       ...memo,
-      ...recurseCreateNormalizedRoute(route.children, normalizedRoute, config),
-      ...(routeExists ? [] : [normalizedRoute]),
+      // if route exists we don't include the route
+      ...(routeExists
+        ? []
+        : [
+          {
+            ...normalizedRoute,
+            // if the structure is nested (tree === true) we return an object with
+            // the children that is an array of normalized routes else an empty object
+            ...(createNestedTreeStructure
+              ? { children: normalizedRouteChildren }
+              : {}),
+          },
+        ]),
+      // if structure is not nested (tree === false) we return an empty object
+      // else we return an array of normalized children routes
+      ...(createNestedTreeStructure ? [] : normalizedRouteChildren),
     ]
   }, [])
 }
@@ -109,13 +138,10 @@ export const normalizeRoutes = (routes, config = {}) => {
 
   if (force404 && !normalizedRoutes.find(r => r.is404)) {
     normalizedRoutes.push(
-      createNormalizedRoute(
-        {
-          is404: true,
-          path: PATH_404,
-        },
-        config
-      )
+      createNormalizedRoute({
+        is404: true,
+        path: PATH_404,
+      })
     )
   }
 
