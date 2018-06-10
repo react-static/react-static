@@ -84,7 +84,7 @@ export default {
       },
     ]
     // FIXME: You might need to make the file name universal
-    config.plugins = [new ExtractTextPlugin('index.css')]
+    config.plugins = [new ExtractTextPlugin('app.css')]
     return config
   },
 }
