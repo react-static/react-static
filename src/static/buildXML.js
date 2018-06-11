@@ -14,7 +14,17 @@ export const makeGenerateRouteXML = ({ prefixPath }) => route => {
   const { path, lastModified, priority = 0.5 } = route
   return [
     '<url>',
-    `<loc>${getPermaLink({ path, prefixPath })}</loc>`,
+    `<loc>${getPermaLink({ path, prefixPath }).replace(/[<>&'"]/g, c => {
+      switch (c) {
+        case '<': return '&lt;'
+        case '>': return '&gt;'
+        case '&': return '&amp;'
+        case '\'': return '&apos;'
+        case '"': return '&quot;'
+        default:
+          throw new Error('XML encoding failed')
+      }
+    })}</loc>`,
     lastModified ? `<lastmod>${lastModified}</lastmod>` : '',
     `<priority>${priority}</priority>`,
     '</url>',
