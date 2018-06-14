@@ -28,13 +28,12 @@ export const makeBodyWithMeta = ({
     <ClientCssHash />
     {!route.redirect && (
       <script
-        type="text/javascript"
         dangerouslySetInnerHTML={generateRouteInformation(embeddedRouteInfo)}
       />
     )}
     {!route.redirect &&
       clientScripts.map(script => (
-        <script key={script} defer type="text/javascript" src={`${config.publicPath}${script}`} />
+        <script key={script} defer src={`${config.publicPath}${script}`} />
       ))}
   </body>
 )
