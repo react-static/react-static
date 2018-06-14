@@ -42,6 +42,15 @@ describe('makeGenerateRouteXML', () => {
       expect(routeXML).toMatchSnapshot()
     })
   })
+
+  it('should use encoding for XML-values', () => {
+    const generateRouteXML = makeGenerateRouteXML({ prefixPath: '/this-&-that/' })
+    const route = {
+      path: '/"官话"-is-chinese-\'ру́сский язы́к\'-is-russian',
+    }
+    const routeXML = generateRouteXML(route)
+    expect(routeXML).toMatchSnapshot()
+  })
 })
 
 describe('generateXML', () => {
