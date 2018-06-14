@@ -43,7 +43,7 @@ export default {
           </Head>
           <Body>
             {children}
-            <script type="text/javascript" src="cordova.js" />
+            <script src="cordova.js" />
           </Body>
         </Html>
       )
