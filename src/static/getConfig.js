@@ -163,6 +163,7 @@ export const buildConfigation = (config = {}) => {
     dist: 'dist',
     devDist: 'tmp/dev-server',
     public: 'public',
+    nodeModules: 'node_modules',
     ...(config.paths || {}),
   }
 
@@ -181,7 +182,8 @@ export const buildConfigation = (config = {}) => {
     SRC: resolvePath(config.paths.src),
     DIST: distPath,
     PUBLIC: resolvePath(config.paths.public),
-    NODE_MODULES: resolvePath('node_modules'),
+    NODE_MODULES: resolvePath(config.paths.nodeModules),
+    EXCLUDE_MODULES: config.paths.excludeResolvedModules || resolvePath(config.paths.nodeModules),
     PACKAGE: resolvePath('package.json'),
     HTML_TEMPLATE: path.join(distPath, 'index.html'),
     STATIC_DATA: path.join(distPath, 'staticData'),
