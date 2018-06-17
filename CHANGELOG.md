@@ -1,3 +1,148 @@
+# 5.9.7
+
+#### Fixes & Optimizations
+
+* Removed `jsesc` until we can find a better way to handle utf-8 encoding for routeInfo
+* Removed a stray console.log
+
+# 5.9.6
+
+#### Fixes & Optimizations
+
+* Updates examples sites & various documentation typos
+* Log errors during build configuration step to aid in build debugging.
+* Moved away from Slack to Spectrum for support and community.
+* Fixed a regression that prevented cache busting on routeInfo.js files
+* static/index.js logic is now broken up into smaller pieces.
+* Added various tests for parts of static/index.js
+* Upgraded snapshots for testing
+
+# 5.9.4 - 5.9.5
+
+#### Fixes & Optimizations
+
+* Removed deprecated react-hot-loader/patch from webpack dev entry, but kept the `react-hot-loader` entry to ensure it is required before React.
+* Updated tests to work with regressions
+
+# 5.9.3
+
+#### Fixes & Optimizations
+
+* Add tests for building a sitemap
+* Add tests for building the config
+* Improved Gentics Mesh example
+
+# 5.9.2
+
+#### Fixes & Optimizations
+
+* Fix an issue with routeInfo not loading on 404 pages
+* String comparisons are used for env variables now
+* Ignore tests when created a build
+* Fix examples that use the css loader to work correctly
+* Don't replace hrefs if route prefixing is disabled
+* New sites in the built-with list
+* An automated was added to test all examples build integrity
+* Upgraded some dependencies
+
+# 5.9.1
+
+#### Fixes & Optimizations
+
+* Fix inifinite loading issue introduced with 5.9.0
+
+# 5.9.0
+
+#### Features
+
+* The `<Loading>` component and the `onLoading` method now return a more detailed loading state. `0` for not loading, `1` for "soft" loading (when navigation is happening) and `2` for "hard" loading (when asynchronous assets are being requested).
+
+# 5.8.8
+
+#### Fixes & Optimizations
+
+* Switch from `babel-preset-latest` to `babel-preset-env`.
+* Remove unnecessary `babel-preset-stage-3` since it's included already with `babel-preset-stage-0`.
+
+# 5.8.7
+
+#### Fixes & Optimizations
+
+* Expose the react-static babel settings as a `babel-preset.js` file for more complex babel setups. `.babelrc` uses this preset for backwards compatibility.
+
+# 5.8.6
+
+#### Fixes & Optimizations
+
+* Upgraded `swimmer` to hide log messages.
+* Document-level rendering now uses `renderToStaticMarkup` instead of `renderToString`. This ensures there is no code comments or meta markup in the <head>
+
+# 5.8.5
+
+#### Fixes & Optimizations
+
+* Upgrade Documentation example and expose some undocumented utilities to the outside world.
+
+# 5.8.4
+
+#### Fixes & Optimizations
+
+* Remove console.log from `documentation` example
+
+# 5.8.3
+
+#### Features
+
+* Added a `config.disableDuplicateRoutesWarning` option.
+
+# 5.8.1
+
+#### Fixes & Optimizations
+
+* Improved `getPath` and `cleanPath` methods, and added some simple tests for them.
+
+# 5.8.0
+
+#### Features
+
+* Added the `pagination` example.
+* Added a `makePageRoutes` utility function on the `react-static/node` import to help with generating page routes from an array of items.
+
+# 5.7.6
+
+#### Features
+
+* Added a `config.disableRouteInfoWarning` configuration option to silence missing route information in development
+
+#### Fixes & Optimizations
+
+* Missing routeInfo.json requests do not throw in production now.
+* Fixed an error where router `path`s would not match as expected during static export. It now uses the same format (leading slash at root patsh) as react-router does by default during development.
+
+# 5.7.5
+
+#### Fixes & Optimizations
+
+* New Error handler component and accompanying tests. Thanks @jasonlafferty!
+
+# 5.7.2-4
+
+#### Fixes & Optimizations
+
+* Improved prefetch lifecycles and page responsiveness for slow networks.
+
+# 5.7.1
+
+#### Features
+
+* Added hidden feature to rebuild routes and routeData automatically when the config is edited during development.
+
+# 5.7.0
+
+#### Features
+
+* Added hidden feature to rebuild routes and routeData during development.
+
 # 5.6.8
 
 #### Fixes & Optimizations

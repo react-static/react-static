@@ -2,9 +2,7 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 //
 import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
-import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
-import { copyPublicFolder } from '../utils'
 
 export default async ({
   config, staging, debug, isCLI, silent = !isCLI,
@@ -41,9 +39,8 @@ export default async ({
   const clientStats = await fs.readJson(`${config.paths.DIST}/client-stats.json`)
 
   if (!clientStats) {
-    throw new Error("No Client Stats Found");
+    throw new Error('No Client Stats Found')
   }
-
 
   try {
     await exportRoutes({

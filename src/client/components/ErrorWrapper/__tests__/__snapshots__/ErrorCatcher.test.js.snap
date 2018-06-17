@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorCatcher by default should render children 1`] = `
+<span>
+  hello
+</span>
+`;
+
+exports[`ErrorCatcher when children throw an error should catch errors with componentDidCatch 1`] = `
+Object {
+  "componentStack": "
+    in ChildComponentWithError
+    in ErrorCatcher (created by WrapperComponent)
+    in WrapperComponent",
+}
+`;
+
+exports[`ErrorCatcher when children throw an error should catch errors with componentDidCatch 2`] = `
+<ErrorCatcher>
+  <ErrorUI
+    error={[Error: Error thrown from problem child]}
+    errorInfo={
+      Object {
+        "componentStack": "
+    in ChildComponentWithError
+    in ErrorCatcher (created by WrapperComponent)
+    in WrapperComponent",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "background": "rgba(0,0,0,0.05)",
+          "margin": "1rem",
+          "padding": "1rem",
+        }
+      }
+    >
+      <h2>
+        Oh-no! Something’s gone wrong!
+      </h2>
+      <pre
+        style={
+          Object {
+            "color": "red",
+            "whiteSpace": "normal",
+          }
+        }
+      >
+        <code>
+          Error: Error thrown from problem child
+        </code>
+      </pre>
+      <h3>
+        This error occurred here:
+      </h3>
+      <pre
+        style={
+          Object {
+            "color": "red",
+            "overflow": "auto",
+          }
+        }
+      >
+        <code>
+          
+    in ChildComponentWithError
+    in ErrorCatcher (created by WrapperComponent)
+    in WrapperComponent
+        </code>
+      </pre>
+      <p>
+        For more information, please see the console.
+      </p>
+    </div>
+  </ErrorUI>
+</ErrorCatcher>
+`;

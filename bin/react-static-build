@@ -13,6 +13,7 @@ program
   .parse(process.argv)
 
 const { config, staging, debug } = program
+
 const cmdArgs = {
   config,
   staging,

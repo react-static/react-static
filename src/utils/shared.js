@@ -1,20 +1,21 @@
 export { poolAll, createPool } from 'swimmer'
 
 export function pathJoin (...paths) {
-  let newPath = trimSlashes(paths.map(trimSlashes).join('/'))
-  if (newPath) {
-    if (newPath.includes('?')) {
-      newPath = newPath.substring(0, newPath.indexOf('?'))
-    }
-    return newPath
+  let newPath = paths.map(trimSlashes).join('/')
+  if (!newPath || newPath === '/') {
+    return '/'
   }
-  return '/'
+  newPath = trimSlashes(newPath)
+  if (newPath.includes('?')) {
+    newPath = newPath.substring(0, newPath.indexOf('?'))
+  }
+  return newPath
 }
 
 export function cleanPath (path) {
   // Resolve the local path
-  if (!path) {
-    return path
+  if (!path || path === '/') {
+    return '/'
   }
   // Remove origin, hashes, and query params
   if (typeof document !== 'undefined') {
@@ -42,7 +43,9 @@ export function isObject (a) {
 }
 
 export function deprecate (from, to) {
-  console.warn(`React-Static deprecation notice: ${from} will be deprecated in favor of ${to} in the next major release.`)
+  console.warn(
+    `React-Static deprecation notice: ${from} will be deprecated in favor of ${to} in the next major release.`
+  )
 }
 
 export function trimSlashes (str) {

@@ -20,6 +20,6 @@ Features :
 - visit https://firebase.google.com/ to create a Firebase App
 - activate Email/Password Sign-In Method in your Firebase App
 - Use your own Firebase credential
-- copy and paste your Firebase Credentials into `src/firebase/firebase.js.template`
-- rename `src/firebase/firebase.js.template` to `src/firebase/firebase.js`
+- copy and paste your Firebase Credentials into `src/firebase/config.js.template`
+- rename `src/firebase/config.js.template` to `src/firebase/config.js`
 

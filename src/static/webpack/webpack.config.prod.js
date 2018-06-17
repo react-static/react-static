@@ -15,17 +15,21 @@ export default function ({ config, isNode }) {
     ROOT, DIST, NODE_MODULES, SRC,
   } = config.paths
 
+  // Trailing slash
   config.publicPath = process.env.REACT_STATIC_STAGING
     ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
     : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
-
-  console.log(config.publicPath);
-
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
+
+  // Trailing slash mysiteroot.com/
+  process.env.REACT_STATIC_SITE_ROOT = `${
+    process.env.REACT_STATIC_STAGING ? config.stagingSiteRoot : config.siteRoot
+  }/`
+
+  // No slashes base/path
   process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
     ? config.stagingBasePath
     : config.basePath
-
 
   return {
     context: path.resolve(__dirname, '../../../node_modules'),
@@ -46,7 +50,7 @@ export default function ({ config, isNode }) {
       ]
       : [],
     module: {
-      rules: rules({ config, stage: 'prod' }),
+      rules: rules({ config, stage: 'prod', isNode }),
     },
     resolve: {
       alias: config.preact
@@ -66,16 +70,16 @@ export default function ({ config, isNode }) {
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
-      config.extractCssChunks ?
-        new ExtractCssChunks() :
-        new ExtractTextPlugin({
-          filename: getPath => {
-
-            process.env.extractedCSSpath = getPath('styles.[hash:8].css')
-            return process.env.extractedCSSpath
-          },
-          allChunks: true,
-        }),
+      !isNode &&
+        (config.extractCssChunks
+          ? new ExtractCssChunks()
+          : new ExtractTextPlugin({
+            filename: getPath => {
+              process.env.extractedCSSpath = getPath('styles.[hash:8].css')
+              return process.env.extractedCSSpath
+            },
+            allChunks: true,
+          })),
       new CaseSensitivePathsPlugin(),
       !isNode &&
         new webpack.optimize.CommonsChunkPlugin({

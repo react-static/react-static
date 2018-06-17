@@ -20,15 +20,16 @@ program
 
 const { name, template } = program
 
-createCmd.default({
-  name,
-  template,
-  isCLI: true,
-})
+createCmd
+  .default({
+    name,
+    template,
+    isCLI: true,
+  })
   .then(() => {
     process.exit(0)
   })
-  .catch((err) => {
-    console.log(err)
+  .catch(err => {
+    console.error(err)
     process.exit(1)
   })

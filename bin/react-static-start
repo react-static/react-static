@@ -13,15 +13,16 @@ program
 
 const { config, debug } = program
 
-startCmd.default({
-  config,
-  debug,
-  isCLI: true,
-})
+startCmd
+  .default({
+    config,
+    debug,
+    isCLI: true,
+  })
   .then(() => {
     process.exit(0)
   })
-  .catch((err) => {
-    console.log(err)
+  .catch(err => {
+    console.error(err)
     process.exit(1)
   })

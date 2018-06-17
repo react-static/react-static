@@ -1,3 +1,5 @@
+/* eslint-disable import/no-mutable-exports */
+
 import axios from 'axios'
 import { createPool, cleanPath, pathJoin } from '../utils/shared'
 
@@ -6,14 +8,54 @@ export const propsByHash = {}
 const erroredPaths = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
-let loading = false
+let loading = 0
 let loadingSubscribers = []
+const disableRouteInfoWarning = process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING === 'true'
 
-const prefetchPool = createPool({
-  concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE) || 10,
+const requestPool = createPool({
+  concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE) || 3,
 })
 
-export const getRouteInfo = async path => {
+export const reloadRouteData = () => {
+  // Delete all cached data
+  [routeInfoByPath, propsByHash, erroredPaths, inflightRouteInfo, inflightPropHashes].forEach(
+    part => {
+      Object.keys(part).forEach(key => {
+        delete part[key]
+      })
+    }
+  )
+  // Force each RouteData component to reload
+  global.reloadAll()
+}
+
+if (process.env.REACT_STATIC_ENV === 'development') {
+  const io = require('socket.io-client')
+  const run = async () => {
+    try {
+      const {
+        data: { port },
+      } = await axios.get('/__react-static__/getMessagePort')
+      const socket = io(`http://localhost:${port}`)
+      socket.on('connect', () => {
+        console.log(
+          'React-Static data hot-loader websocket connected. Listening for data changes...'
+        )
+      })
+      socket.on('message', ({ type }) => {
+        if (type === 'reloadRoutes') {
+          reloadRouteData()
+        }
+      })
+    } catch (err) {
+      console.log('React-Static data hot-loader websocket encountered the following error:')
+      console.error(err)
+    }
+  }
+  run()
+}
+
+export const getRouteInfo = async (path, { priority } = {}) => {
   if (typeof document === 'undefined') {
     return
   }
@@ -26,36 +68,62 @@ export const getRouteInfo = async path => {
   if (erroredPaths[path]) {
     return
   }
-  // If there is no inflight request for the info, let it fly.
-  if (!inflightRouteInfo[path]) {
-    inflightRouteInfo[path] = (async () => {
-      try {
-        if (process.env.REACT_STATIC_ENV === 'development') {
-          // In dev, request from the webpack dev server
-          const { data } = await axios.get(`/__react-static__/routeInfo/${path === '/' ? '' : path}`)
-          return data
-        }
-        // In production, request from route's routeInfo.json
-        const { data } = await axios.get(`${process.env.REACT_STATIC_PUBLIC_PATH}${pathJoin(
-          path,
-          `routeInfo.json?${process.env.REACT_STATIC_CACHE_BUST}`
-        )}`)
-        return data
-      } catch (err) {
-        erroredPaths[path] = true
-        console.warn(`Could not load routeInfo for path: ${originalPath}. If this is a static route, make sure any link to this page is valid! If this is not a static route, you can desregard this warning.`)
+  let routeInfo
+  try {
+    if (process.env.REACT_STATIC_ENV === 'development') {
+      // In dev, request from the webpack dev server
+      if (!inflightRouteInfo[path]) {
+        inflightRouteInfo[path] = axios.get(
+          `/__react-static__/routeInfo/${path === '/' ? '' : path}`
+        )
       }
-    })()
+      const { data } = await inflightRouteInfo[path]
+      routeInfo = data
+    } else {
+      const routeInfoRoot =
+        (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
+          ? process.env.REACT_STATIC_SITE_ROOT
+          : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
+      const cacheBuster =
+        process.env.REACT_STATIC_CACHE_BUST
+          ? `?${process.env.REACT_STATIC_CACHE_BUST}`
+          : ''
+      const getPath = `${routeInfoRoot}${pathJoin(
+        path,
+        'routeInfo.json'
+      )}${cacheBuster}`
+
+      if (priority) {
+        // In production, request from route's routeInfo.json
+        const { data } = await axios.get(getPath)
+        routeInfo = data
+      } else {
+        if (!inflightRouteInfo[path]) {
+          inflightRouteInfo[path] = requestPool.add(() => axios.get(getPath))
+        }
+        const { data } = await inflightRouteInfo[path]
+        routeInfo = data
+      }
+    }
+  } catch (err) {
+    erroredPaths[path] = true
+    if (process.env.REACT_STATIC_ENV === 'production' || disableRouteInfoWarning) {
+      return
+    }
+    console.warn(
+      `Could not load routeInfo for path: ${originalPath}. If this is a static route, make sure any link to this page is valid! If this is not a static route, you can desregard this warning.`
+    )
   }
-  const routeInfo = await inflightRouteInfo[path]
-  delete inflightRouteInfo[path]
+  if (!priority) {
+    delete inflightRouteInfo[path]
+  }
   routeInfoByPath[path] = routeInfo
   return routeInfoByPath[path]
 }
 
 export async function prefetchData (path, { priority } = {}) {
   // Get route info so we can check if path has any data
-  const routeInfo = await getRouteInfo(path)
+  const routeInfo = await getRouteInfo(path, { priority })
 
   // Not a static route? Bail out.
   if (!routeInfo) {
@@ -74,35 +142,44 @@ export async function prefetchData (path, { priority } = {}) {
   }
 
   // Request the template and loop over the routeInfo.sharedPropsHashes, requesting each prop
-  await Promise.all(Object.keys(routeInfo.sharedPropsHashes).map(async key => {
-    const hash = routeInfo.sharedPropsHashes[key]
+  await Promise.all(
+    Object.keys(routeInfo.sharedPropsHashes).map(async key => {
+      const hash = routeInfo.sharedPropsHashes[key]
 
-    // Check the propsByHash first
-    if (!propsByHash[hash]) {
-      // Reuse request for duplicate inflight requests
-      try {
-        if (!inflightPropHashes[hash]) {
+      // Check the propsByHash first
+      if (!propsByHash[hash]) {
+        // Reuse request for duplicate inflight requests
+        try {
+          // If priority, get it immediately
           if (priority) {
-            inflightPropHashes[hash] = axios.get(`${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`)
+            const { data: prop } = await axios.get(
+              `${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`
+            )
+            propsByHash[hash] = prop
           } else {
-            inflightPropHashes[hash] = prefetchPool.add(() =>
-              axios.get(`${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`))
+            // Non priority, share inflight requests and use pool
+            if (!inflightPropHashes[hash]) {
+              inflightPropHashes[hash] = requestPool.add(() =>
+                axios.get(`${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`)
+              )
+            }
+            const { data: prop } = await inflightPropHashes[hash]
+            // Place it in the cache
+            propsByHash[hash] = prop
           }
+        } catch (err) {
+          console.log('Error: There was an error retrieving a prop for this route! hashID:', hash)
+          console.error(err)
         }
-        const { data: prop } = await inflightPropHashes[hash]
-
-        // Place it in the cache
-        propsByHash[hash] = prop
-      } catch (err) {
-        console.error('Error: There was an error retrieving a prop for this route! hashID:', hash)
-        console.error(err)
+        if (!priority) {
+          delete inflightPropHashes[hash]
+        }
       }
-      delete inflightPropHashes[hash]
-    }
 
-    // Otherwise, just set it as the key
-    allProps[key] = propsByHash[hash]
-  }))
+      // Otherwise, just set it as the key
+      allProps[key] = propsByHash[hash]
+    })
+  )
 
   // Cache the entire props for the route
   routeInfo.allProps = allProps
@@ -127,14 +204,14 @@ export async function prefetchTemplate (path, { priority } = {}) {
     if (priority) {
       await pathTemplate.preload()
     } else {
-      await prefetchPool.add(() => pathTemplate.preload())
+      await requestPool.add(() => pathTemplate.preload())
     }
     routeInfo.templateLoaded = true
     return pathTemplate
   }
 }
 
-export async function needsPrefetch (path) {
+export async function needsPrefetch (path, options = {}) {
   // Clean the path
   path = cleanPath(path)
 
@@ -143,7 +220,7 @@ export async function needsPrefetch (path) {
   }
 
   // Get route info so we can check if path has any data
-  const routeInfo = await getRouteInfo(path)
+  const routeInfo = await getRouteInfo(path, options)
 
   // Not a static route? Bail out.
   if (!routeInfo) {
@@ -162,14 +239,23 @@ export async function prefetch (path, options = {}) {
 
   const { type } = options
 
-  if (type === 'data') {
-    return prefetchData(path, options)
-  } else if (type === 'template') {
-    await prefetchTemplate(path, options)
-    return
+  if (options.priority) {
+    requestPool.stop()
   }
 
-  const [data] = await Promise.all([prefetchData(path), prefetchTemplate(path)])
+  let data
+  if (type === 'data') {
+    data = await prefetchData(path, options)
+  } else if (type === 'template') {
+    await prefetchTemplate(path, options)
+  } else {
+    [data] = await Promise.all([prefetchData(path, options), prefetchTemplate(path, options)])
+  }
+
+  if (options.priority) {
+    requestPool.start()
+  }
+
   return data
 }
 

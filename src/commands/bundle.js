@@ -1,7 +1,6 @@
 import fs from 'fs-extra'
 import chalk from 'chalk'
 //
-import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder } from '../utils'
@@ -37,11 +36,12 @@ export default async function build ({
 
   if (!config.siteRoot) {
     if (!silent) {
-      console.log("=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated.")
+      console.log(
+        "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
+      )
     }
     if (!silent) console.log('')
   }
-
 
   if (!silent) console.log('=> Copying public directory...')
   if (!silent) console.time(chalk.green('=> [\u2713] Public directory copied'))
