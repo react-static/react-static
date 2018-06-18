@@ -11,6 +11,7 @@ import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
 import Progress from 'progress'
 import chalk from 'chalk'
+import flushChunks from 'webpack-flush-chunks'
 
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
 import { makeHeadWithMeta } from './components/HeadWithMeta'
@@ -21,12 +22,10 @@ import { DefaultDocument } from './RootComponents'
 import buildXMLandRSS from './buildXML'
 import { poolAll } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
-import { chunksToAssetFiles } from './chunksToAssestFiles'
 
 export { buildXMLandRSS }
 
 const defaultOutputFileRate = 100
-
 
 const Bar = (len, label) =>
   new Progress(`=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `, {
@@ -269,10 +268,8 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
         const appHtml = renderToString(comp)
         const {
           scripts, stylesheets, css, CssHash,
-        } = chunksToAssetFiles(clientStats.namedChunkGroups, {
+        } = flushChunks(clientStats, {
           chunkNames,
-          outputPath: config.paths.DIST,
-          publicPath: config.publicPath,
         })
 
         clientScripts = scripts

@@ -8734,9 +8734,9 @@ webpack-dev-server@^3.1.4:
     webpack-log "^1.1.2"
     yargs "11.0.0"
 
-webpack-flush-chunks@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/webpack-flush-chunks/-/webpack-flush-chunks-1.2.3.tgz#fcc6cbb39f8b7ff6544d535787b48530e2bbeafb"
+webpack-flush-chunks@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/webpack-flush-chunks/-/webpack-flush-chunks-2.0.0.tgz#3d9a7ce72b71aa659d3bd63f00e44b5d14931ca9"
 
 webpack-log@^1.0.1, webpack-log@^1.1.2:
   version "1.2.0"
