@@ -1,3 +1,50 @@
+# 5.9.7
+
+#### Fixes & Optimizations
+
+* Removed `jsesc` until we can find a better way to handle utf-8 encoding for routeInfo
+* Removed a stray console.log
+
+# 5.9.6
+
+#### Fixes & Optimizations
+
+* Updates examples sites & various documentation typos
+* Log errors during build configuration step to aid in build debugging.
+* Moved away from Slack to Spectrum for support and community.
+* Fixed a regression that prevented cache busting on routeInfo.js files
+* static/index.js logic is now broken up into smaller pieces.
+* Added various tests for parts of static/index.js
+* Upgraded snapshots for testing
+
+# 5.9.4 - 5.9.5
+
+#### Fixes & Optimizations
+
+* Removed deprecated react-hot-loader/patch from webpack dev entry, but kept the `react-hot-loader` entry to ensure it is required before React.
+* Updated tests to work with regressions
+
+# 5.9.3
+
+#### Fixes & Optimizations
+
+* Add tests for building a sitemap
+* Add tests for building the config
+* Improved Gentics Mesh example
+
+# 5.9.2
+
+#### Fixes & Optimizations
+
+* Fix an issue with routeInfo not loading on 404 pages
+* String comparisons are used for env variables now
+* Ignore tests when created a build
+* Fix examples that use the css loader to work correctly
+* Don't replace hrefs if route prefixing is disabled
+* New sites in the built-with list
+* An automated was added to test all examples build integrity
+* Upgraded some dependencies
+
 # 5.9.1
 
 #### Fixes & Optimizations

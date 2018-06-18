@@ -3,10 +3,17 @@ import { Router, onLoading } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 import { hot } from 'react-hot-loader'
 import nprogress from 'nprogress'
+import { loadLanguages } from 'reprism'
 //
 import Routes from 'react-static-routes'
 
 import 'nprogress/nprogress.css'
+import 'react-smackdown/themes/smackdown-light.css'
+
+import jsx from 'reprism/languages/jsx'
+import bash from 'reprism/languages/bash'
+
+loadLanguages(jsx, bash)
 
 injectGlobal`
   body {

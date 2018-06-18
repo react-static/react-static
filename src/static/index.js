@@ -11,13 +11,19 @@ import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
 import Progress from 'progress'
 import chalk from 'chalk'
-import jsesc from 'jsesc'
-//
+
+import { makeHtmlWithMeta } from './components/HtmlWithMeta'
+import { makeHeadWithMeta } from './components/HeadWithMeta'
+import { makeBodyWithMeta } from './components/BodyWithMeta'
+
 import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
-import { poolAll, pathJoin } from '../utils/shared'
+import buildXMLandRSS from './buildXML'
+import { poolAll } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
 import { chunksToAssetFiles } from './chunksToAssestFiles'
+
+export { buildXMLandRSS }
 
 const defaultOutputFileRate = 100
 
@@ -59,20 +65,39 @@ export const prepareRoutes = async (config, opts) => {
   })
 }
 
-// Exporting route HTML and JSON happens here. It's a big one.
-export const exportRoutes = async ({ config, clientStats }) => {
-  // Use the node version of the app created with webpack
-  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
-
-  // Retrieve the document template
-  const DocumentTemplate = config.Document || DefaultDocument
-
+export const fetchSiteData = async config => {
   console.log('=> Fetching Site Data...')
   console.time(chalk.green('=> [\u2713] Site Data Downloaded'))
   // Get the site data
   const siteData = await config.getSiteData({ dev: false })
   console.timeEnd(chalk.green('=> [\u2713] Site Data Downloaded'))
+  return siteData
+}
 
+export const exportSharedRouteData = async (config, sharedProps) => {
+  // Write all shared props to file
+  const sharedPropsArr = Array.from(sharedProps)
+
+  if (sharedPropsArr.length) {
+    console.log('=> Exporting Shared Route Data...')
+    const jsonProgress = Bar(sharedPropsArr.length)
+    console.time(chalk.green('=> [\u2713] Shared Route Data Exported'))
+
+    await poolAll(
+      sharedPropsArr.map(cachedProp => async () => {
+        await fs.outputFile(
+          path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
+          cachedProp[1].jsonString || '{}'
+        )
+        jsonProgress.tick()
+      }),
+      Number(config.outputFileRate) || defaultOutputFileRate
+    )
+    console.timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
+  }
+}
+
+export const fetchRoutes = async config => {
   // Set up some scaffolding for automatic data splitting
   const seenProps = new Map()
   const sharedProps = new Map()
@@ -151,32 +176,24 @@ export const exportRoutes = async ({ config, clientStats }) => {
   )
   console.timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 
-  // Write all shared props to file
-  const sharedPropsArr = Array.from(sharedProps)
+  exportSharedRouteData(config, sharedProps)
+}
 
-  if (sharedPropsArr.length) {
-    console.log('=> Exporting Shared Route Data...')
-    const jsonProgress = Bar(sharedPropsArr.length)
-    console.time(chalk.green('=> [\u2713] Shared Route Data Exported'))
+const buildHTML = async ({ config, siteData, clientStats }) => {
+  // Use the node version of the app created with webpack
+  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
 
-    await poolAll(
-      sharedPropsArr.map(cachedProp => async () => {
-        await fs.outputFile(
-          path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
-          cachedProp[1].jsonString || '{}'
-        )
-        jsonProgress.tick()
-      }),
-      Number(config.outputFileRate) || defaultOutputFileRate
-    )
-    console.timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
-  }
+  // Retrieve the document template
+  const DocumentTemplate = config.Document || DefaultDocument
 
   console.log('=> Exporting HTML...')
+
   const htmlProgress = Bar(config.routes.length)
+
   console.time(chalk.green('=> [\u2713] HTML Exported'))
 
-  const basePath = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
+  const basePath =
+    process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
   const hrefReplace = new RegExp(
     `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
     'gm'
@@ -297,115 +314,25 @@ export const exportRoutes = async ({ config, clientStats }) => {
         throw error
       }
 
-      // Instead of using the default components, we need to hard code meta
-      // from react-helmet into the components
-      const HtmlWithMeta = ({ children, ...rest }) => (
-        <html lang="en" {...head.htmlProps} {...rest}>
-          {children}
-        </html>
-      )
-      const HeadWithMeta = ({ children, ...rest }) => {
-        let showHelmetTitle = true
-        const childrenArray = React.Children.toArray(children).filter(child => {
-          if (child.type === 'title') {
-            // Filter out the title of the Document in static.config.js
-            // if there is a helmet title on this route
-            const helmetTitleIsEmpty = head.title[0].props.children === ''
-            if (!helmetTitleIsEmpty) {
-              return false
-            }
-            showHelmetTitle = false
-          }
-          return true
-        })
-
-        return (
-          <head {...rest}>
-            {head.base}
-            {showHelmetTitle && head.title}
-            {head.meta}
-            {!route.redirect &&
-              clientScripts.map(script => (
-                <link
-                  key={`clientScript_${script}`}
-                  rel="preload"
-                  as="script"
-                  href={`${config.publicPath}${script}`}
-                />
-              ))}
-            {!route.redirect &&
-              !config.inlineCss &&
-              clientStyleSheets.map(styleSheet => (
-                <link
-                  key={`clientStyleSheet_${styleSheet}`}
-                  rel="preload"
-                  as="style"
-                  href={`${config.publicPath}${styleSheet}`}
-                />
-              ))}
-            {!route.redirect &&
-              !config.inlineCss &&
-              clientStyleSheets.map(styleSheet => (
-                <link
-                  key={`clientStyleSheet_${styleSheet}`}
-                  rel="stylesheet"
-                  href={`${config.publicPath}${styleSheet}`}
-                />
-              ))}
-            {head.link}
-            {head.noscript}
-            {head.script}
-            {config.inlineCss && (
-              <style
-                key="clientCss"
-                type="text/css"
-                dangerouslySetInnerHTML={{
-                  __html: clientCss.toString().replace(/<style>|<\/style>/gi, ''),
-                }}
-              />
-            )}
-            {head.style}
-            {childrenArray}
-          </head>
-        )
-      }
-
-      // Not only do we pass react-helmet attributes and the app.js here, but
-      // we also need to  hard code site props and route props into the page to
-      // prevent flashing when react mounts onto the HTML.
-      const BodyWithMeta = ({ children, ...rest }) => (
-        <body {...head.bodyProps} {...rest}>
-          {children}
-          <ClientCssHash />
-          {!route.redirect && (
-            <script
-              type="text/javascript"
-              dangerouslySetInnerHTML={{
-                __html: `
-                window.__routeInfo = ${jsesc(embeddedRouteInfo, {
-                  es6: false,
-                  isScriptContext: true,
-                }).replace(/<(\/)?(script)/gi, '<"+"$1$2')};`,
-              }}
-            />
-          )}
-          {!route.redirect &&
-            clientScripts.map(script => (
-              <script
-                key={script}
-                defer
-                type="text/javascript"
-                src={`${config.publicPath}${script}`}
-              />
-            ))}
-        </body>
-      )
-
       const DocumentHtml = renderToStaticMarkup(
         <DocumentTemplate
-          Html={HtmlWithMeta}
-          Head={HeadWithMeta}
-          Body={BodyWithMeta}
+          Html={makeHtmlWithMeta({ head })}
+          Head={makeHeadWithMeta({
+            head,
+            route,
+            clientScripts,
+            config,
+            clientStyleSheets,
+            clientCss,
+          })}
+          Body={makeBodyWithMeta({
+            head,
+            route,
+            embeddedRouteInfo,
+            clientScripts,
+            ClientCssHash,
+            config,
+          })}
           siteData={siteData}
           routeInfo={embeddedRouteInfo}
           renderMeta={renderMeta}
@@ -446,37 +373,16 @@ export const exportRoutes = async ({ config, clientStats }) => {
   console.timeEnd(chalk.green('=> [\u2713] HTML Exported'))
 }
 
-export async function buildXMLandRSS ({ config }) {
-  const siteRoot = process.env.REACT_STATIC_STAGING === 'true' ? config.stagingSiteRoot : config.siteRoot
-  if (!siteRoot) {
-    return
-  }
-  const prefixPath = config.disableRoutePrefixing ? siteRoot : config.publicPath
-  const xml = generateXML({
-    routes: config.routes.filter(d => !d.is404).map(route => ({
-      permalink: `${prefixPath}/${pathJoin(route.path)}`,
-      lastModified: '',
-      priority: 0.5,
-      ...route,
-    })),
+// Exporting route HTML and JSON happens here. It's a big one.
+export const exportRoutes = async ({ config, clientStats }) => {
+  // we modify config in fetchSiteData
+  const siteData = await fetchSiteData(config)
+  // we modify config in fetchRoutes
+  await fetchRoutes(config)
+
+  await buildHTML({
+    config,
+    siteData,
+    clientStats,
   })
-
-  await fs.writeFile(path.join(config.paths.DIST, 'sitemap.xml'), xml)
-
-  function generateXML ({ routes }) {
-    let xml =
-      '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-    routes.forEach(route => {
-      if (route.noindex) {
-        return
-      }
-      xml += '<url>'
-      xml += `<loc>${`${route.permalink}/`.replace(/\/{1,}$/gm, '/')}</loc>`
-      xml += route.lastModified ? `<lastmod>${route.lastModified}</lastmod>` : ''
-      xml += route.priority ? `<priority>${route.priority}</priority>` : ''
-      xml += '</url>'
-    })
-    xml += '</urlset>'
-    return xml
-  }
 }

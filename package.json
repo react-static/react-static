@@ -23,8 +23,10 @@
     "buildDocs": "cd www && yarn && yarn build",
     "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "serveDocs": "serve www/dist -p 3000",
-    "test": "yarn unitTest && eslint src examples test && yarn run test-sample-build",
+    "test": "yarn unitTest && yarn lint && yarn run test-sample-build",
+    "lint": "eslint src examples test",
     "unitTest": "NODE_ENV=test yarn jest src",
+    "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
     "test-large-build": "yarn build && (cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)",
     "test-sample-build": "yarn build && (cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build)"
   },
@@ -61,7 +63,6 @@
     "html-webpack-plugin": "^3.2.0",
     "inquirer": "^3.3.0",
     "inquirer-autocomplete-prompt": "^0.11.1",
-    "jsesc": "^2.5.1",
     "match-sorter": "^2.0.2",
     "mini-css-extract-plugin": "^0.4.0",
     "openport": "^0.0.4",
@@ -117,6 +118,10 @@
       "src"
     ],
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
+    "moduleNameMapper": {
+      "static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
+      "./path/to/static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js"
+    },
     "setupFiles": [
       "<rootDir>/setupTests.js"
     ],

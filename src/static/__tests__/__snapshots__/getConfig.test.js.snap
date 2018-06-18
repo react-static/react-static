@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`makeGetRoutes when getRoutes is defined on config when routes has children should return a flat Array of routes 1`] = `
+Array [
+  Object {
+    "hasGetProps": false,
+    "noindex": undefined,
+    "originalPath": "path",
+    "path": "path",
+  },
+  Object {
+    "hasGetProps": false,
+    "noindex": undefined,
+    "originalPath": "to",
+    "path": "path/to",
+  },
+  Object {
+    "hasGetProps": false,
+    "noindex": undefined,
+    "originalPath": "blog",
+    "path": "path/to/blog",
+  },
+  Object {
+    "hasGetProps": false,
+    "noindex": undefined,
+    "originalPath": "slug",
+    "path": "path/to/slug",
+  },
+  Object {
+    "hasGetProps": false,
+    "is404": true,
+    "noindex": undefined,
+    "originalPath": "404",
+    "path": "404",
+  },
+]
+`;
+
+exports[`makeGetRoutes when getRoutes is defined on config when routes has children when config.tree is defined should return a flat Array of routes 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [],
+            "hasGetProps": false,
+            "noindex": undefined,
+            "originalPath": "blog",
+            "path": "path/to/blog",
+          },
+          Object {
+            "children": Array [],
+            "hasGetProps": false,
+            "noindex": undefined,
+            "originalPath": "slug",
+            "path": "path/to/slug",
+          },
+        ],
+        "hasGetProps": false,
+        "noindex": undefined,
+        "originalPath": "to",
+        "path": "path/to",
+      },
+    ],
+    "hasGetProps": false,
+    "noindex": undefined,
+    "originalPath": "path",
+    "path": "path",
+  },
+  Object {
+    "hasGetProps": false,
+    "is404": true,
+    "noindex": undefined,
+    "originalPath": "404",
+    "path": "404",
+  },
+]
+`;

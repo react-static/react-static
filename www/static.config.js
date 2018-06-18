@@ -11,7 +11,7 @@ chokidar.watch('../docs').on('all', () => reloadRoutes())
 
 const repoName = 'React Static'
 const repo = 'nozzle/react-static'
-const repoURL = `https://github.com/${repoName}`
+const repoURL = `https://github.com/${repo}`
 
 try {
   // eslint-disable-next-line
@@ -20,14 +20,7 @@ try {
   //
 }
 
-process.env.SMACKDOWN_SYNTAX = JSON.stringify({
-  showLineNumbers: true,
-  highlighter: 'hljs',
-  theme: 'atom-one-light',
-  languages: ['javascript'],
-})
-
-const pages = [
+const docPages = [
   {
     path: '/',
     title: 'Readme',
@@ -167,7 +160,7 @@ export default {
       path: '/',
       component: 'src/containers/Home',
     },
-    ...pages.map(page => ({
+    ...docPages.map(page => ({
       path: `docs/${page.path}`,
       component: 'src/containers/Doc',
       getData: () => ({
