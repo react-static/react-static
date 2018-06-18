@@ -116,7 +116,7 @@ export default () => (
           <div className="background1" />
           <div className="background2" />
         </div>
-        <img src={logoImg} alt="" />
+        <img src={logoImg} alt="" style={{ display: 'block', margin: '0 auto' }} />
         <h1>My Awesome Library</h1>
         <h2>The most bestest blazingliest fastest freaking way to do something awesome.</h2>
         <p>

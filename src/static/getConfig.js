@@ -76,12 +76,7 @@ export const consoleWarningForMutlipleRoutesWithTheSamePath = routes => {
 // Original routes array [{ path: 'path', children: { path: 'to' } }]
 // These can be returned as flat routes eg. [{ path: 'path' }, { path: 'path/to' }]
 // Or they can be returned nested routes eg. [{ path: 'path', children: { path: 'path/to' } }]
-const recurseCreateNormalizedRoute = (
-  routes = [],
-  parent,
-  config,
-  existingRoutes = []
-) => {
+const recurseCreateNormalizedRoute = (routes = [], parent, config, existingRoutes = []) => {
   const { tree: createNestedTreeStructure = false } = config
 
   return routes.reduce((memo = [], route) => {
@@ -115,9 +110,7 @@ const recurseCreateNormalizedRoute = (
             ...normalizedRoute,
             // if the structure is nested (tree === true) we return an object with
             // the children that is an array of normalized routes else an empty object
-            ...(createNestedTreeStructure
-              ? { children: normalizedRouteChildren }
-              : {}),
+            ...(createNestedTreeStructure ? { children: normalizedRouteChildren } : {}),
           },
         ]),
       // if structure is not nested (tree === false) we return an empty object
@@ -211,6 +204,7 @@ export const buildConfigation = (config = {}) => {
     extractCssChunks: config.extractCssChunks || false,
     inlineCss: config.inlineCss || false,
     getRoutes: makeGetRoutes(config),
+    generated: true,
   }
 
   // Set env variables to be used client side

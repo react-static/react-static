@@ -3,7 +3,7 @@
 require('babel-register')
 require('../lib/utils/binHelper')
 const program = require('commander')
-const buildCmd = require('../lib/commands/build')
+const exportCmd = require('../lib/commands/export')
 
 // use commander to parse CLI args
 program
@@ -14,17 +14,16 @@ program
 
 const { config, staging, debug } = program
 
-buildCmd
-  .default({
-    config,
-    staging,
-    debug,
-    isCLI: true,
-  })
+exportCmd.default({
+  config,
+  staging,
+  debug,
+  isCLI: true,
+})
   .then(() => {
     process.exit(0)
   })
   .catch(err => {
-    console.error(err)
+    console.log(err)
     process.exit(1)
   })

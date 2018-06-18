@@ -10,7 +10,9 @@ commander
   .description(pkg.description)
   .command('create', 'create a new project')
   .command('start', 'start the development server')
-  .command('build', 'build site for production')
+  .command('build', 'build (bundle/export) site for production')
+  .command('bundle', 'bundle webpack assets')
+  .command('export', 'export html from bundled assets')
   .on('--help', () => {
     console.log('')
     console.log(`  ${chalk.green('Examples:')}`)

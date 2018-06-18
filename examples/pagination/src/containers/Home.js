@@ -9,6 +9,6 @@ export default () => (
       <title>Welcome to React Static!</title>
     </Head>
     <h1 style={{ textAlign: 'center' }}>Welcome to</h1>
-    <img src={logoImg} alt="" />
+    <img src={logoImg} alt="" style={{ display: 'block', margin: '0 auto' }} />
   </div>
 )

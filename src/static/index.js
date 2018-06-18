@@ -19,10 +19,11 @@ import { makeBodyWithMeta } from './components/BodyWithMeta'
 
 import generateRoutes from './generateRoutes'
 import { DefaultDocument } from './RootComponents'
+import buildXMLandRSS from './buildXML'
 import { poolAll } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
 
-export buildXMLandRSS from './buildXML'
+export { buildXMLandRSS }
 
 const defaultOutputFileRate = 100
 

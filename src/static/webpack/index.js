@@ -1,9 +1,11 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger, import/no-mutable-exports */
 import webpack from 'webpack'
+import path from 'path'
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
 import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
 import io from 'socket.io'
+import fs from 'fs-extra'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
@@ -290,7 +292,14 @@ export async function buildProductionBundles ({ config }) {
         }
       }
 
-      resolve(prodStats.toJson())
+      const prodStatsJson = prodStats.toJson()
+
+      fs.outputFileSync(
+        path.join(config.paths.DIST, 'client-stats.json'),
+        JSON.stringify(prodStatsJson, null, 2)
+      )
+
+      resolve(prodStatsJson)
     })
   })
 }

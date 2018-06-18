@@ -14,10 +14,10 @@
 */cordova/www
 coverage
 dist
+lib
 docs-dist
 examples/*/gitignore
 examples/*/yarn.lock
-lib
 node_modules
 npm-debug.log*
 package-lock.json
