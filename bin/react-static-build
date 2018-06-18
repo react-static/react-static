@@ -1,9 +1,9 @@
 #!/usr/bin/env node
+
 require('babel-register')
 require('../lib/utils/binHelper')
 const program = require('commander')
-const bundleCmd = require('../lib/commands/bundle')
-const exportCmd = require('../lib/commands/export')
+const buildCmd = require('../lib/commands/build')
 
 // use commander to parse CLI args
 program
@@ -14,20 +14,17 @@ program
 
 const { config, staging, debug } = program
 
-const cmdArgs = {
-  config,
-  staging,
-  debug,
-  isCLI: true,
-}
-
-bundleCmd
-  .default(cmdArgs)
-  .then(() => exportCmd.default(cmdArgs))
+buildCmd
+  .default({
+    config,
+    staging,
+    debug,
+    isCLI: true,
+  })
   .then(() => {
     process.exit(0)
   })
   .catch(err => {
-    console.log(err)
+    console.error(err)
     process.exit(1)
   })

@@ -123,7 +123,7 @@ export default () => (
       <div className="background1" />
       <div className="background2" />
     </div>
-    <img src={logoImg} alt="" />
+    <img src={logoImg} alt="" style={{ display: 'block', margin: '0 auto' }} />
     <h1>React Static</h1>
     <h2>
       A progressive static-site generator for React by <Link to="https://nozzle.io">Nozzle.io</Link>

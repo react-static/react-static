@@ -9,6 +9,6 @@ export default withSiteData(() => (
     <Typography type="headline" align="center" gutterBottom>
       Welcome to
     </Typography>
-    <img src={logoImg} alt="" />
+    <img src={logoImg} alt="" style={{ display: 'block', margin: '0 auto' }} />
   </div>
 ))

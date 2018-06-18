@@ -129,5 +129,5 @@ export default class Routes extends Component {
 
   const dynamicRoutesPath = path.join(config.paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
-  await fs.writeFile(dynamicRoutesPath, file)
+  await fs.outputFile(dynamicRoutesPath, file)
 }

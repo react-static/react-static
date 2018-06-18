@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import chalk from 'chalk'
 //
+import { prepareRoutes } from '../static'
 import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder } from '../utils'
@@ -30,8 +31,6 @@ export default async function build ({
     console.log(config)
   }
 
-  await fs.remove(config.paths.DIST)
-
   if (!silent) console.log('')
 
   if (!config.siteRoot) {
@@ -42,6 +41,14 @@ export default async function build ({
     }
     if (!silent) console.log('')
   }
+
+  // Remove the DIST folder
+  await fs.remove(config.paths.DIST)
+
+  if (!silent) console.log('=> Building Routes...')
+  if (!silent) console.time(chalk.green('=> [\u2713] Routes Built'))
+  await prepareRoutes(config, { dev: false })
+  if (!silent) console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
   if (!silent) console.log('=> Copying public directory...')
   if (!silent) console.time(chalk.green('=> [\u2713] Public directory copied'))
@@ -57,4 +64,6 @@ export default async function build ({
   if (config.bundleAnalyzer) {
     await new Promise(() => {})
   }
+
+  return config
 }
