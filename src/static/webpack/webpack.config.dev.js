@@ -1,6 +1,7 @@
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import path from 'path'
 
 import rules from './rules'
@@ -28,7 +29,8 @@ export default function ({ config }) {
       path.resolve(ROOT, config.entry),
     ],
     output: {
-      filename: 'app.[hash:8].js',
+      filename: '[name].js', // never hash dev code
+      chunkFilename: 'templates/[name].js',
       path: DIST,
       publicPath: config.publicPath || '/',
     },
@@ -55,6 +57,7 @@ export default function ({ config }) {
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
       new CaseSensitivePathsPlugin(),
+      new ExtractCssChunks({ hot: true }),
     ],
     devtool: 'eval-source-map',
   }

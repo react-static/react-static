@@ -4,7 +4,7 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import rules from './rules'
 
@@ -31,8 +31,29 @@ function common (config) {
     : config.basePath
 
 
-  const splitChunks = { chunks: 'all' }
-  let miniCSSPlugin = new MiniCssExtractPlugin({
+  const splitChunks = {
+    chunks: 'all',
+    minSize: 10000,
+    minChunks: 1,
+    maxAsyncRequests: 5,
+    maxInitialRequests: 5,
+    automaticNameDelimiter: '~',
+    name: true,
+    cacheGroups: {
+      vendors: {
+        test: /[\\/]node_modules[\\/]/,
+        priority: -10,
+        chunks: 'all',
+      },
+      default: {
+        minChunks: 2,
+        priority: -20,
+        reuseExistingChunk: true,
+      },
+    },
+  }
+
+  let extrackCSSChunks = new ExtractCssChunks({
     filename: '[name].[chunkHash:8].css',
     chunkFilename: '[id].[chunkHash:8].css',
   })
@@ -46,7 +67,7 @@ function common (config) {
         enforce: true,
       },
     }
-    miniCSSPlugin = new MiniCssExtractPlugin({
+    extrackCSSChunks = new ExtractCssChunks({
       filename: '[name].[chunkHash:8].css',
     })
   }
@@ -55,7 +76,7 @@ function common (config) {
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: path.resolve(ROOT, config.entry),
     output: {
-      filename: '[name].[chunkHash:8].js',
+      filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
       publicPath: config.publicPath || '/',
@@ -95,7 +116,7 @@ function common (config) {
     target: undefined,
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
-      miniCSSPlugin,
+      extrackCSSChunks,
       new CaseSensitivePathsPlugin(),
       config.bundleAnalyzer && new BundleAnalyzerPlugin(),
     ].filter(d => d),

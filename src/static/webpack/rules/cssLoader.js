@@ -1,5 +1,5 @@
 import autoprefixer from 'autoprefixer'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 
 
@@ -29,7 +29,7 @@ function initCSSLoader (stage) {
               'Firefox ESR',
               'not ie < 9', // React doesn't support IE8 anyway
             ],
-            flexbox: 'no-2009',
+            flexbox: 'no-2009', // I'd opt in for this - safari 9 & IE 10.
           }),
         ],
       },
@@ -46,11 +46,8 @@ export default function ({ stage, isNode }) {
       loader: cssLoader,
     }
   }
-  if (stage === 'dev') {
-    cssLoader = ['style-loader'].concat(cssLoader)
-  } else {
-    cssLoader = [MiniCssExtractPlugin.loader].concat(cssLoader)
-  }
+
+  cssLoader = [ExtractCssChunks.loader].concat(cssLoader) // seeing as it's HMR, why not :)
 
   return {
     test: /\.css$/,

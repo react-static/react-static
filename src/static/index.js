@@ -247,7 +247,6 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
       let clientScripts = []
       let clientStyleSheets = []
       let clientCss = {}
-      let ClientCssHash
 
       let FinalComp
 
@@ -275,7 +274,6 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
         clientScripts = scripts
         clientStyleSheets = stylesheets
         clientCss = css
-        ClientCssHash = CssHash
         // Extract head calls using Helmet synchronously right after renderToString
         // to not introduce any race conditions in the meta data rendering
         const helmet = Helmet.renderStatic()
@@ -327,7 +325,6 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
             route,
             embeddedRouteInfo,
             clientScripts,
-            ClientCssHash,
             config,
           })}
           siteData={siteData}
