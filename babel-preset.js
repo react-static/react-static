@@ -1,5 +1,5 @@
 module.exports = {
-  presets: ['env', 'stage-0', 'react'],
+  presets: [['env', {modules: false}], 'stage-0', 'react'],
   plugins: [
     [
       'universal-import',
@@ -23,7 +23,7 @@ module.exports = {
       plugins: ['react-hot-loader/babel'],
     },
     test: {
-      presets: ['env', 'stage-0', 'react'],
+      presets: [['env', {modules: false}], 'stage-0', 'react'],
     },
   },
   compact: false,
