@@ -266,7 +266,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
         // Rend the app to string!
         const appHtml = renderToString(comp)
         const {
-          scripts, stylesheets, css, CssHash,
+          scripts, stylesheets, css,
         } = flushChunks(clientStats, {
           chunkNames,
         })
