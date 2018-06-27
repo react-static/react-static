@@ -33,10 +33,7 @@ const Bar = (len, label) =>
   })
 
 export const prepareRoutes = async (config, opts) => {
-  console.log('getRoutes')
   config.routes = await config.getRoutes(opts)
-  console.log('getRoutes finish')
-  const progress = Bar(config.routes.length)
 
   process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
 
@@ -58,7 +55,6 @@ export const prepareRoutes = async (config, opts) => {
       // Assign the existing templateID
       route.templateID = index
     }
-    progress.tick()
   })
 
   config.templates = templates
