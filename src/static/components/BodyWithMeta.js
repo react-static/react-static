@@ -20,12 +20,10 @@ export const makeBodyWithMeta = ({
   // It should only include the full props, not the partials.
   embeddedRouteInfo,
   clientScripts = [],
-  ClientCssHash,
   config,
 }) => ({ children, ...rest }) => (
   <body {...head.bodyProps} {...rest}>
     {children}
-    <ClientCssHash />
     {!route.redirect && (
       <script
         type="text/javascript"
