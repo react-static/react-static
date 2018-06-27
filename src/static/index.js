@@ -33,7 +33,10 @@ const Bar = (len, label) =>
   })
 
 export const prepareRoutes = async (config, opts) => {
+  console.log('getRoutes')
   config.routes = await config.getRoutes(opts)
+  console.log('getRoutes finish')
+  const progress = Bar(config.routes.length)
 
   process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
 
@@ -55,6 +58,7 @@ export const prepareRoutes = async (config, opts) => {
       // Assign the existing templateID
       route.templateID = index
     }
+    progress.tick()
   })
 
   config.templates = templates
@@ -265,9 +269,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
       const renderToStringAndExtract = comp => {
         // Rend the app to string!
         const appHtml = renderToString(comp)
-        const {
-          scripts, stylesheets, css,
-        } = flushChunks(clientStats, {
+        const { scripts, stylesheets, css } = flushChunks(clientStats, {
           chunkNames,
         })
 

@@ -62,21 +62,12 @@ export const createNormalizedRoute = (route, parent = {}, config = {}) => {
   return normalizedRoute
 }
 
-export const consoleWarningForMutlipleRoutesWithTheSamePath = routes => {
-  routes.forEach(route => {
-    const found = routes.filter(r => r.path === route.path)
-    if (found.length > 1) {
-      console.warn('More than one route is defined for path:', route.path)
-    }
-  })
-}
-
 // We recursively loop through the routes and their children and
 // return an array of normalised routes.
 // Original routes array [{ path: 'path', children: { path: 'to' } }]
 // These can be returned as flat routes eg. [{ path: 'path' }, { path: 'path/to' }]
 // Or they can be returned nested routes eg. [{ path: 'path', children: { path: 'path/to' } }]
-const recurseCreateNormalizedRoute = (routes = [], parent, config, existingRoutes = []) => {
+const recurseCreateNormalizedRoute = (routes = [], parent, config, existingRoutes = {}) => {
   const { tree: createNestedTreeStructure = false } = config
 
   return routes.reduce((memo = [], route) => {
@@ -87,11 +78,15 @@ const recurseCreateNormalizedRoute = (routes = [], parent, config, existingRoute
 
     // we check an array of paths to see
     // if route path already existings
-    const routeExists = existingRoutes.includes(path)
+    const routeExists = existingRoutes[path]
+
+    if (routeExists && !config.disableDuplicateRoutesWarning) {
+      console.warn('More than one route is defined for path:', route.path)
+    }
 
     // we push paths into an array that
     // we use to check if a route existings
-    existingRoutes.push(path)
+    existingRoutes[path] = true
 
     const normalizedRouteChildren = recurseCreateNormalizedRoute(
       children,
@@ -122,21 +117,7 @@ const recurseCreateNormalizedRoute = (routes = [], parent, config, existingRoute
 
 // Normalize routes with parents, full paths, context, etc.
 export const normalizeRoutes = (routes, config = {}) => {
-  const { disableDuplicateRoutesWarning, force404 = true } = config
   const normalizedRoutes = recurseCreateNormalizedRoute(routes, {}, config)
-
-  if (!disableDuplicateRoutesWarning) {
-    consoleWarningForMutlipleRoutesWithTheSamePath(normalizedRoutes)
-  }
-
-  if (force404 && !normalizedRoutes.find(r => r.is404)) {
-    normalizedRoutes.push(
-      createNormalizedRoute({
-        is404: true,
-        path: PATH_404,
-      })
-    )
-  }
 
   return normalizedRoutes
 }

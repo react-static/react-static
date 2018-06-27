@@ -26,13 +26,6 @@ Array [
     "originalPath": "slug",
     "path": "path/to/slug",
   },
-  Object {
-    "hasGetProps": false,
-    "is404": true,
-    "noindex": undefined,
-    "originalPath": "404",
-    "path": "404",
-  },
 ]
 `;
 
@@ -67,13 +60,6 @@ Array [
     "noindex": undefined,
     "originalPath": "path",
     "path": "path",
-  },
-  Object {
-    "hasGetProps": false,
-    "is404": true,
-    "noindex": undefined,
-    "originalPath": "404",
-    "path": "404",
   },
 ]
 `;
