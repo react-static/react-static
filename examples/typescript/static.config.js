@@ -4,6 +4,9 @@ import path from 'path'
 // Paths Aliases defined through tsconfig.json
 const typescriptWebpackPaths = require('./webpack.config.js')
 
+/** Load extract-text-webpack-plugin for proper implement as the example shows: {@link https://github.com/webpack-contrib/extract-text-webpack-plugin#usage} */
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
 export default {
   entry: path.join(__dirname, 'src', 'index.tsx'),
   getSiteData: () => ({
@@ -68,11 +71,20 @@ export default {
               },
             ],
           },
-          defaultLoaders.cssLoader,
+          {
+            test: /\.css$/,
+            use: ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: 'css-loader',
+            }),
+          },
+          // defaultLoaders.cssLoader,
           defaultLoaders.fileLoader,
         ],
       },
     ]
+    // FIXME: You might need to make the file name universal
+    config.plugins.push(new ExtractTextPlugin('app.css'))
     return config
   },
 }
