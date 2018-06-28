@@ -3,6 +3,7 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import OpenPort from 'openport'
 import fs from 'fs-extra'
+import nodeGlob from 'glob'
 //
 import { Html, Head, Body } from '../static/RootComponents'
 
@@ -58,4 +59,15 @@ export function isArray (a) {
 
 export function isObject (a) {
   return !Array.isArray(a) && typeof a === 'object' && a !== null
+}
+
+export function glob (path, options = {}) {
+  return new Promise((resolve, reject) =>
+    nodeGlob(path, options, (err, files) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve(files)
+    })
+  )
 }

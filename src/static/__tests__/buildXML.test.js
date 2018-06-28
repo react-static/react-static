@@ -69,7 +69,7 @@ describe('generateXML', () => {
         routes: [
           { path: '/path/to/article/' },
           { path: '/path/to/somewhere/', noindex: true },
-          { path: '404', is404: true },
+          { path: '404', path: '404' },
         ],
         prefixPath: '/blog/',
       })

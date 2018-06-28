@@ -16,11 +16,16 @@ export const makeGenerateRouteXML = ({ prefixPath }) => route => {
     '<url>',
     `<loc>${getPermaLink({ path, prefixPath }).replace(/[<>&'"]/g, c => {
       switch (c) {
-        case '<': return '&lt;'
-        case '>': return '&gt;'
-        case '&': return '&amp;'
-        case '\'': return '&apos;'
-        case '"': return '&quot;'
+        case '<':
+          return '&lt;'
+        case '>':
+          return '&gt;'
+        case '&':
+          return '&amp;'
+        case "'":
+          return '&apos;'
+        case '"':
+          return '&quot;'
         default:
           throw new Error('XML encoding failed')
       }
@@ -32,18 +37,14 @@ export const makeGenerateRouteXML = ({ prefixPath }) => route => {
 }
 
 export const generateXML = ({ routes, prefixPath }) =>
-  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${
-    routes
-      .filter(r => !r.is404)
-      .filter(r => !r.noindex)
-      .map(makeGenerateRouteXML({ prefixPath }))
-      .join('')
-  }</urlset>`
+  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes
+    .filter(r => r.path !== '404')
+    .filter(r => !r.noindex)
+    .map(makeGenerateRouteXML({ prefixPath }))
+    .join('')}</urlset>`
 
-export const getSiteRoot = ({
-  stagingSiteRoot,
-  siteRoot,
-}) => (process.env.REACT_STATIC_STAGING === 'true' ? stagingSiteRoot : siteRoot)
+export const getSiteRoot = ({ stagingSiteRoot, siteRoot }) =>
+  process.env.REACT_STATIC_STAGING === 'true' ? stagingSiteRoot : siteRoot
 
 export default async ({ config }) => {
   const {

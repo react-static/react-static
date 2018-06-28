@@ -1,9 +1,10 @@
 /* eslint-disable import/no-dynamic-require */
 
 import React from 'react'
-import path from 'path'
+import nodePath from 'path'
 import chokidar from 'chokidar'
 
+import { glob } from '../utils'
 import { pathJoin } from '../utils/shared'
 import { reloadRoutes } from './webpack'
 import getDirname from '../utils/getDirname'
@@ -14,40 +15,32 @@ const REGEX_TO_REMOVE_LEADING_SLASH = /\/{0,}$/g
 
 const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 // the default static.config.js location
-const DEFAULT_PATH_FOR_STATIC_CONFIG = path.resolve(
-  path.join(process.cwd(), DEFAULT_NAME_FOR_STATIC_CONFIG_FILE)
+const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
+  nodePath.join(process.cwd(), DEFAULT_NAME_FOR_STATIC_CONFIG_FILE)
 )
 const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index.js'
-const PATH_404 = '404'
 
 export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROOT, '$1')
 
 export const trimLeadingAndTrailingSlashes = (string = '') =>
   string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '').replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
 
-export const throwErrorIfRouteIsMissingPath = route => {
-  const { path, is404 = false } = route
-
-  if (!is404 && !path) {
-    throw new Error(`No path defined for route: ${JSON.stringify(route)}`)
-  }
-}
-
 const consoleWarningForRouteWithoutNoIndex = route =>
   route.noIndex &&
   console.warn(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
 
-export const createNormalizedRoute = (route, parent = {}, config = {}) => {
+export const normalizeRoute = (route, parent = {}, config = {}) => {
   const { children, ...routeWithOutChildren } = route
   const { path: parentPath = '/' } = parent
   const { tree: keepRouteChildren = false } = config
-  const { is404 = false } = route
 
-  throwErrorIfRouteIsMissingPath(route)
+  if (!route.path) {
+    throw new Error(`No path defined for route: ${JSON.stringify(route)}`)
+  }
 
-  const originalRoutePath = is404 ? PATH_404 : pathJoin(route.path)
-  const routePath = is404 ? PATH_404 : pathJoin(parentPath, route.path)
+  const originalRoutePath = pathJoin(route.path)
+  const routePath = pathJoin(parentPath, route.path)
 
   consoleWarningForRouteWithoutNoIndex(route)
 
@@ -67,82 +60,132 @@ export const createNormalizedRoute = (route, parent = {}, config = {}) => {
 // Original routes array [{ path: 'path', children: { path: 'to' } }]
 // These can be returned as flat routes eg. [{ path: 'path' }, { path: 'path/to' }]
 // Or they can be returned nested routes eg. [{ path: 'path', children: { path: 'path/to' } }]
-const recurseCreateNormalizedRoute = (routes = [], parent, config, existingRoutes = {}) => {
+export const recurseNormalizeRoute = (routes = [], config, parent, existingRoutes = {}) => {
   const { tree: createNestedTreeStructure = false } = config
 
-  return routes.reduce((memo = [], route) => {
-    const normalizedRoute = createNormalizedRoute(route, parent, config)
-    // if structure is nested (tree === true) normalizedRoute will
-    // have children otherwise we fall back to the original route children
-    const { children = route.children, path } = normalizedRoute
+  return routes.reduce(
+    ({ routes: prevRoutes = [], hasIndex, has404 }, route) => {
+      let normalizedRoute = normalizeRoute(route, parent, config)
+      // if structure is nested (tree === true) normalizedRoute will
+      // have children otherwise we fall back to the original route children
+      const { children = route.children, path } = normalizedRoute
 
-    // we check an array of paths to see
-    // if route path already existings
-    const routeExists = existingRoutes[path]
+      // we check an array of paths to see
+      // if route path already existings
+      const existingRoute = existingRoutes[path]
 
-    if (routeExists && !config.disableDuplicateRoutesWarning) {
-      console.warn('More than one route is defined for path:', route.path)
-    }
-
-    // we push paths into an array that
-    // we use to check if a route existings
-    existingRoutes[path] = true
-
-    const normalizedRouteChildren = recurseCreateNormalizedRoute(
-      children,
-      normalizedRoute,
-      config,
-      existingRoutes
-    )
-
-    return [
-      ...memo,
-      // if route exists we don't include the route
-      ...(routeExists
-        ? []
-        : [
-          {
+      if (existingRoute) {
+        if (existingRoute.isPage) {
+          Object.assign(existingRoute, {
             ...normalizedRoute,
-            // if the structure is nested (tree === true) we return an object with
-            // the children that is an array of normalized routes else an empty object
-            ...(createNestedTreeStructure ? { children: normalizedRouteChildren } : {}),
-          },
-        ]),
-      // if structure is not nested (tree === false) we return an empty object
-      // else we return an array of normalized children routes
-      ...(createNestedTreeStructure ? [] : normalizedRouteChildren),
-    ]
-  }, [])
+            component: existingRoute.component,
+          })
+        } else if (!config.disableDuplicateRoutesWarning) {
+          console.warn('More than one route in static.config.js is defined for path:', route.path)
+        }
+      }
+
+      const {
+        routes: normalizedRouteChildren,
+        hasIndex: childrenHasIndex,
+        has404: childrenHas404,
+      } = recurseNormalizeRoute(children, config, normalizedRoute, existingRoutes)
+
+      if (createNestedTreeStructure) {
+        normalizedRoute = { ...normalizedRoute, children: normalizedRouteChildren }
+      }
+
+      // we push paths into an array that
+      // we use to check if a route existings
+      existingRoutes[path] = normalizedRoute
+
+      return {
+        routes: [
+          ...prevRoutes,
+          // if route exists we don't include the route
+          ...(existingRoute ? [] : [normalizedRoute]),
+          // if structure is not nested (tree === false) we return an empty object
+          // else we return an array of normalized children routes
+          ...(createNestedTreeStructure ? [] : normalizedRouteChildren),
+        ],
+        hasIndex: hasIndex || normalizedRoute.path === '/' || childrenHasIndex,
+        has404: has404 || normalizedRoute.path === '404' || childrenHas404,
+      }
+    },
+    {
+      routes: [],
+      hasIndex: false,
+      has404: false,
+    }
+  )
 }
 
-// Normalize routes with parents, full paths, context, etc.
-export const normalizeRoutes = (routes, config = {}) => {
-  const normalizedRoutes = recurseCreateNormalizedRoute(routes, {}, config)
+export const getRoutesFromPages = async config => {
+  // Make a glob extension to get all pages with the set extensions from the pages directory
+  const globExtensions = config.extensions.map(ext => `${ext.slice(1)}`).join(',')
+  const pagesGlob = `${config.paths.PAGES}/**/*.{${globExtensions}}`
+  // Get the pages
+  const pages = await glob(pagesGlob)
 
-  return normalizedRoutes
+  // Turn each page into a route
+  const routes = pages.map(page => {
+    // Get the component path relative to ROOT
+    const component = nodePath.relative(config.paths.ROOT, page)
+    // Make sure the path is relative to the root of the site
+    let path = page.replace(`${config.paths.PAGES}`, '').replace(/\..*/, '')
+    // Turn `/index` paths into roots`
+    path = path.replace(/\/index$/, '/')
+    // Return the route
+    return {
+      path,
+      component,
+      isPage: true, // tag it with isPage, so we know its origin
+    }
+  })
+  return routes
 }
 
 // At least ensure the index page is defined for export
-export const makeGetRoutes = config => async (...args) => {
-  const { getRoutes = async () => DEFAULT_ROUTES } = config
-  const routes = await getRoutes(...args)
-  return normalizeRoutes(routes, config)
+export const getRoutesForConfig = (
+  config,
+  originalGetRoutes = async () => DEFAULT_ROUTES
+) => async opts => {
+  const pageRoutes = await getRoutesFromPages(config)
+  const routes = await originalGetRoutes(opts)
+  const { routes: allRoutes, hasIndex, has404 } = recurseNormalizeRoute(
+    [...pageRoutes, ...routes],
+    config
+  )
+  // If no Index page was found, throw an error. This is required
+  if (!hasIndex) {
+    throw new Error(
+      'Could not find a route for the "index" page of your site! This is required. Please create a page or specify a route and template for this page.'
+    )
+  }
+  // If no 404 page was found, throw an error. This is required
+  if (!has404) {
+    throw new Error(
+      'Could not find a route for the "404" page of your site! This is required. Please create a page or specify a route and template for this page.'
+    )
+  }
+  return allRoutes
 }
 
 export const buildConfigation = (config = {}) => {
   // path defaults
   config.paths = {
-    root: path.resolve(process.cwd()),
+    root: nodePath.resolve(process.cwd()),
     src: 'src',
     dist: 'dist',
     devDist: 'tmp/dev-server',
     public: 'public',
+    pages: 'src/pages', // TODO: document
     nodeModules: 'node_modules',
     ...(config.paths || {}),
   }
 
   // Use the root to resolve all other relative paths
-  const resolvePath = relativePath => path.resolve(config.paths.root, relativePath)
+  const resolvePath = relativePath => nodePath.resolve(config.paths.root, relativePath)
 
   // Resolve all paths
   const distPath =
@@ -152,27 +195,29 @@ export const buildConfigation = (config = {}) => {
 
   const paths = {
     ROOT: config.paths.root,
-    LOCAL_NODE_MODULES: path.resolve(getDirname(), '../../node_modules'),
+    LOCAL_NODE_MODULES: nodePath.resolve(getDirname(), '../../node_modules'),
     SRC: resolvePath(config.paths.src),
+    PAGES: resolvePath(config.paths.pages),
     DIST: distPath,
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath(config.paths.nodeModules),
     EXCLUDE_MODULES: config.paths.excludeResolvedModules || resolvePath(config.paths.nodeModules),
     PACKAGE: resolvePath('package.json'),
-    HTML_TEMPLATE: path.join(distPath, 'index.html'),
-    STATIC_DATA: path.join(distPath, 'staticData'),
+    HTML_TEMPLATE: nodePath.join(distPath, 'index.html'),
+    STATIC_DATA: nodePath.join(distPath, 'staticData'),
   }
 
   // Defaults
   const finalConfig = {
     // Defaults
-    entry: path.join(paths.SRC, DEFAULT_ENTRY),
+    entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
     getSiteData: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
     prefetchRate: 3,
     disableRouteInfoWarning: false,
     disableRoutePrefixing: false,
     outputFileRate: 10,
+    extensions: ['.js', '.jsx'], // TODO: document
     // Config Overrides
     ...config,
     // Materialized Overrides
@@ -184,9 +229,11 @@ export const buildConfigation = (config = {}) => {
     devBasePath: trimLeadingAndTrailingSlashes(config.devBasePath),
     extractCssChunks: config.extractCssChunks || false,
     inlineCss: config.inlineCss || false,
-    getRoutes: makeGetRoutes(config),
     generated: true,
   }
+
+  // Send through the original getRoutes
+  finalConfig.getRoutes = getRoutesForConfig(finalConfig, finalConfig.getRoutes)
 
   // Set env variables to be used client side
   process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
@@ -197,7 +244,7 @@ export const buildConfigation = (config = {}) => {
 }
 
 const buildConfigFromPath = configPath => {
-  const filename = path.resolve(configPath)
+  const filename = nodePath.resolve(configPath)
   delete require.cache[filename]
   try {
     const config = require(configPath).default

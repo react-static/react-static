@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`makeGetRoutes when getRoutes is defined on config when routes has children should return a flat Array of routes 1`] = `
+exports[`getRoutesForConfig when getRoutes is defined on config when routes has children should return a flat Array of routes 1`] = `
 Array [
   Object {
     "hasGetProps": false,
@@ -29,7 +29,7 @@ Array [
 ]
 `;
 
-exports[`makeGetRoutes when getRoutes is defined on config when routes has children when config.tree is defined should return a flat Array of routes 1`] = `
+exports[`getRoutesForConfig when getRoutes is defined on config when routes has children when config.tree is defined should return a flat Array of routes 1`] = `
 Array [
   Object {
     "children": Array [
