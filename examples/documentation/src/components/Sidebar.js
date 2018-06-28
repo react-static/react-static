@@ -87,7 +87,7 @@ const SidebarStyles = styled.div`
       padding: 0.5rem 0.7rem;
       border-bottom: 3px solid rgba(0, 0, 0, 0.1);
 
-      .link {
+      .back {
         font-weight: bold;
       }
 
@@ -116,7 +116,7 @@ const SidebarStyles = styled.div`
     .item {
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
-      .title,
+      .name,
       a {
         display: block;
         padding: 0.5rem 0.7rem;
@@ -130,7 +130,7 @@ const SidebarStyles = styled.div`
         }
       }
 
-      .title {
+      .name {
         font-size: 0.8rem;
         text-transform: uppercase;
         font-weight: bold;
@@ -148,19 +148,17 @@ const SidebarStyles = styled.div`
 
 const Menu = ({ items }) => (
   <div className="list">
-    {items.map(({
- title, fullPath, component, children,
-}) => (
-  <div key={title + fullPath} className="item">
-    {component ? (
-      <Link to={`/${fullPath.replace(/^\/{1,}/g, '')}`} exact activeClassName="active">
-        {title}
-      </Link>
+    {items.map(({ name, link, children }) => (
+      <div key={name + link} className="item">
+        {link ? (
+          <Link to={link} exact activeClassName="active">
+            {name}
+          </Link>
         ) : (
-          <div className="title">{title}</div>
+          <div className="name">{name}</div>
         )}
-    {children ? <Menu items={children} /> : null}
-  </div>
+        {children ? <Menu items={children} /> : null}
+      </div>
     ))}
   </div>
 )
@@ -178,7 +176,7 @@ class Sidebar extends React.Component {
     const { isOpen } = this.state
     return (
       <SiteData
-        render={({ pages, repoURL, repoName }) => (
+        render={({ menu }) => (
           <SidebarStyles className="sidebar" isOpen={isOpen}>
             <ClickOutside
               onClickOutside={() => {
@@ -199,13 +197,13 @@ class Sidebar extends React.Component {
                   ⇤
                 </button>
                 <div className="header">
-                  <span className="link">
-                    {repoURL ? <Link to={repoURL}>{repoName}</Link> : repoName}
-                  </span>
+                  <Link to="/" className="back">
+                    ← Back to Site
+                  </Link>
                   <div className="version">v{process.env.REPO_VERSION}</div>
                 </div>
                 <div className="scroll">
-                  <Menu items={pages} />
+                  <Menu items={menu} />
                 </div>
               </div>
             </ClickOutside>

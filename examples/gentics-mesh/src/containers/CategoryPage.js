@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { withRouteData } from 'react-static'
-import ProductListItem from './ProductListItem'
-//
+import { Row } from 'reactstrap'
+import VehicleCard from './VehicleCard'
 
 export default withRouteData(({ category, items }) => (
-  <div>
+  <Fragment>
     <h1>{category.fields.name}</h1>
-    <p>{category.fields.description}</p>
+    <p className="lead">{category.fields.description}</p>
 
-    <div className="row">
+    <Row>
       {items.map(item => (
         <div className="product-row col-xs-12 col-sm-6 col-md-4" key={item.uuid} >
-          <ProductListItem product={item} />
+          <VehicleCard product={item} />
         </div>
       ))}
-    </div>
-  </div>
+    </Row>
+  </Fragment>
 ))

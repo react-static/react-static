@@ -1,6 +1,7 @@
 ![React Static Logo](https://github.com/nozzle/react-static/raw/master/media/logo.png)
 
-[![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![David Dependancy Status](https://david-dm.org/nozzle/react-static.svg)](https://david-dm.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Slack](https://img.shields.io/badge/slack-react--chat-blue.svg)](https://react-chat-signup.herokuapp.com/) [![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
+[![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![David Dependancy Status](https://david-dm.org/nozzle/react-static.svg)](https://david-dm.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-static)
+[![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
 
 <br>
 <br>
@@ -48,7 +49,6 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [David York - Personal Blog](http://davideyork.com)
 * [Cryptagon - Crypto Portfolio Tracker](https://cryptagon.io 'Crypto Portfolio Tracker')
 * [Typetalk - Chat App for Businesses and Teams](https://www.typetalk.com 'Chat App for Businesses and Teams')
-* [This Is Our Home - eCommerce](https://www.tioh.co 'This Is Our Home - eCommerce')
 * [Lam Hieu - Personal Website](https://lamhieu.info)
 * [Elsa Salonen - Artist Portfolio](https://elsasalonen.com/)
 * [PSD Wizard: On-demand Front-End Coding Service](https://psdwizard.com)
@@ -57,6 +57,11 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [Dan Webb - Personal Website](https://danwebb.co) ([source](https://github.com/DanWebb/danwebb.co))
 * [Intuit Turbo](http://turbo.com)
 * [Messenger Corp. client asset ordering](http://chartwells.messengercorp.com/)
+* [Digital Neighborhood watch service](https://neighborhoodwatch.io/)
+* [Carmen Marcos Art - Artist Portfolio](http://carmen-marcos.art/) ([source](https://github.com/rafacm/carmen-marcos-art-portfolio))
+* [BlockAce - Blockchain Jobs Board](https://blockace.io 'The Best Blockchain Jobs Board')
+* [Luke Haas - Personal Website](https://lukehaas.me)
+* [KleineKoning.nl - Webshop](https://kleinekoning.nl)
 
 ## Quick Start
 
@@ -103,7 +108,7 @@ $ yarn build # or react-static build
 Once you've installed and test driven sufficiently, you may want to:
 
 * [Read about the core concepts of React Static](/docs/concepts.md)
-* [Join the slack organization!](https://react-chat-signup.herokuapp.com)
+* [Join the React Static Spectrum community!](https://spectrum.chat/react-static)
 
 - [Familiarize yourself with the API and all that is possible!](/docs/config.md)
 
@@ -134,7 +139,7 @@ All of the following examples can be used as a template at project creation.
 * [Algolia](https://github.com/nozzle/react-static/tree/master/examples/algolia)
 * [Styled-JSX](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
 * [Netlify CMS](https://github.com/nozzle/react-static/tree/master/examples/netlifycms)
-* [Gentics Mesh CMS](https://getmesh.io/)
+* [Gentics Mesh CMS](https://github.com/nozzle/react-static/tree/master/examples/gentics-mesh)
 * [Markdown](https://github.com/nozzle/react-static/tree/master/examples/markdown)
 * [Documentation](https://github.com/nozzle/react-static/tree/master/examples/documentation)
 
@@ -150,9 +155,9 @@ Can't find an example? We invite you to write one! Simply copy the `basic` or `b
 
 #### [Contributing Guide](https://github.com/nozzle/react-static/blob/master/CONTRIBUTING.md)
 
-## Chat with us on Slack!
+## Chat with us on the React Static Spectrum community!
 
-Need some help? Have a quick question? [Click here to sign up for the React-Tools slack org](https://react-chat-signup.herokuapp.com), and join us in the **#react-static** channel! We are constantly answering questions, discussing features and helping each other out!
+Need some help? Have a quick question? [Click here to sign up for the React-Tools spectrum community](https://spectrum.chat/react-static)! We are constantly answering questions, discussing features and helping each other out!
 
 ## Contributing
 

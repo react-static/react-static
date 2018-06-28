@@ -1,9 +1,11 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger, import/no-mutable-exports */
 import webpack from 'webpack'
+import path from 'path'
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
 import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
 import io from 'socket.io'
+import fs from 'fs-extra'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
@@ -161,49 +163,58 @@ export async function startDevServer ({ config }) {
   }
 
   const timefix = 11000
-  devCompiler.plugin('watch-run', (watching, callback) => {
+  devCompiler.hooks.watchRun.tapPromise('React-Static', async watching => {
     watching.startTime += timefix
-    callback()
   })
 
-  devCompiler.plugin('invalid', () => {
-    console.time(chalk.green('=> [\u2713] Build Complete'))
-    console.log('=> Rebuilding...')
-  })
+  devCompiler.hooks.invalid.tap(
+    {
+      name: 'React-Static',
+    },
+    () => {
+      console.time(chalk.green('=> [\u2713] Build Complete'))
+      console.log('=> Rebuilding...')
+    }
+  )
 
-  devCompiler.plugin('done', stats => {
-    const messages = formatWebpackMessages(stats.toJson({}, true))
-    const isSuccessful = !messages.errors.length && !messages.warnings.length
+  devCompiler.hooks.done.tap(
+    {
+      name: 'React-Static',
+    },
+    stats => {
+      const messages = formatWebpackMessages(stats.toJson({}, true))
+      const isSuccessful = !messages.errors.length && !messages.warnings.length
 
-    if (isSuccessful) {
-      console.timeEnd(chalk.green('=> [\u2713] Build Complete'))
-      if (first) {
-        first = false
-        console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
-        stats.startTime -= timefix
-        if (config.onStart) {
-          config.onStart({ devServerConfig })
+      if (isSuccessful) {
+        console.timeEnd(chalk.green('=> [\u2713] Build Complete'))
+        if (first) {
+          first = false
+          console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
+          stats.startTime -= timefix
+          if (config.onStart) {
+            config.onStart({ devServerConfig })
+          }
         }
       }
-    }
 
-    if (messages.errors.length) {
-      console.log(chalk.red('Failed to build! Fix any errors and try again!'))
-      messages.errors.forEach(message => {
-        console.log(message)
-        console.log()
-      })
-    }
+      if (messages.errors.length) {
+        console.log(chalk.red('Failed to build! Fix any errors and try again!'))
+        messages.errors.forEach(message => {
+          console.log(message)
+          console.log()
+        })
+      }
 
-    if (messages.warnings.length) {
-      console.log(chalk.yellow('Built complete with warnings.'))
-      console.log()
-      messages.warnings.forEach(message => {
-        console.log(message)
+      if (messages.warnings.length) {
+        console.log(chalk.yellow('Build complete with warnings.'))
         console.log()
-      })
+        messages.warnings.forEach(message => {
+          console.log(message)
+          console.log()
+        })
+      }
     }
-  })
+  )
 
   console.log('=> Building App Bundle...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
@@ -282,15 +293,22 @@ export async function buildProductionBundles ({ config }) {
             )
           } else if (buildWarnings) {
             console.log(
-              chalk.yellow.bold(`
-                => There were WARNINGS during the ${stage} build stage!
-              `)
+              chalk.yellow(`
+=> There were WARNINGS during the ${stage} build stage. Your site will still function, but you may achieve better performance by addressing the warnings above.
+`)
             )
           }
         }
       }
 
-      resolve(prodStats.toJson())
+      const prodStatsJson = prodStats.toJson()
+
+      fs.outputFileSync(
+        path.join(config.paths.DIST, 'client-stats.json'),
+        JSON.stringify(prodStatsJson, null, 2)
+      )
+
+      resolve(prodStatsJson)
     })
   })
 }

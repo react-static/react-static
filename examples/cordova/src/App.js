@@ -50,7 +50,7 @@ const App = () => (
   <Router type="hash">
     <AppStyles>
       <nav>
-        <Link to="/">Home</Link>
+        <Link exact to="/">Home</Link>
         <Link to="/geolocation">Geolocation</Link>
       </nav>
       <div className="content">
