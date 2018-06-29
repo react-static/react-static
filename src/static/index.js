@@ -346,9 +346,10 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
 
       // If the route is a 404 page, write it directly to 404.html, instead of
       // inside a directory.
-      const htmlFilename = route.is404
-        ? path.join(config.paths.DIST, '404.html')
-        : path.join(config.paths.DIST, route.path, 'index.html')
+      const htmlFilename =
+        route.path === '404'
+          ? path.join(config.paths.DIST, '404.html')
+          : path.join(config.paths.DIST, route.path, 'index.html')
 
       // Make the routeInfo sit right next to its companion html file
       const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.json')

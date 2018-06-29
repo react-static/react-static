@@ -37,7 +37,7 @@ export default {
         })),
       },
       {
-        is404: true,
+        path: '404',
         component: 'src/containers/404',
       },
     ]

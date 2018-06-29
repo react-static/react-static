@@ -1,8 +1,8 @@
 import getConfig, {
   cutPathToRoot,
   trimLeadingAndTrailingSlashes,
-  createNormalizedRoute,
-  makeGetRoutes,
+  normalizeRoute,
+  getRoutesForConfig,
   buildConfigation,
 } from '../getConfig'
 import defaultConfigDevelopment from '../__mocks__/defaultConfigDevelopment.mock'
@@ -35,10 +35,10 @@ describe('trimLeadingAndTrailingSlashes', () => {
   })
 })
 
-describe('createNormalizedRoute', () => {
+describe('normalizeRoute', () => {
   describe('when working route is provided', () => {
     it('should return a normalized route', async () => {
-      const route = createNormalizedRoute({ path: '/path/' })
+      const route = normalizeRoute({ path: '/path/' })
 
       expect(route).toEqual({
         hasGetProps: false,
@@ -50,7 +50,7 @@ describe('createNormalizedRoute', () => {
 
     describe('when noindex is true', () => {
       it('should return a normalized route with noindex as true', () => {
-        const route = createNormalizedRoute({ path: '/path/', noindex: true })
+        const route = normalizeRoute({ path: '/path/', noindex: true })
 
         expect(route.noindex).toEqual(true)
       })
@@ -64,13 +64,13 @@ describe('createNormalizedRoute', () => {
       })
 
       it('should return a normalized route with noindex as true', () => {
-        const route = createNormalizedRoute({ path: '/path/', noIndex: true })
+        const route = normalizeRoute({ path: '/path/', noIndex: true })
 
         expect(route.noindex).toEqual(true)
       })
 
       it('should warns the user to use noIndex', () => {
-        createNormalizedRoute({ path: '/path/', noIndex: true })
+        normalizeRoute({ path: '/path/', noIndex: true })
 
         expect(spy).toHaveBeenCalled()
         expect(spy).toBeCalledWith(
@@ -87,21 +87,21 @@ describe('createNormalizedRoute', () => {
       it('should throw an error', () => {
         const route = { component: '/no/path/', noIndex: true }
 
-        expect(() => createNormalizedRoute(route)).toThrow(
+        expect(() => normalizeRoute(route)).toThrow(
           `No path defined for route: ${JSON.stringify(route)}`
         )
       })
 
       describe('when route is 404', () => {
         it('should not throw an error', () => {
-          expect(() => createNormalizedRoute({ component: '/no/path/', is404: true })).not.toThrow()
+          expect(() => normalizeRoute({ component: '/no/path/', path: '404' })).not.toThrow()
         })
       })
     })
 
     describe('when parent route is provided', () => {
       it('should return a normalized route', () => {
-        const route = createNormalizedRoute({ path: '/to/' }, { path: '/path/' })
+        const route = normalizeRoute({ path: '/to/' }, { path: '/path/' })
 
         expect(route).toEqual({
           hasGetProps: false,
@@ -113,7 +113,7 @@ describe('createNormalizedRoute', () => {
 
       describe('when parent noindex is true', () => {
         it('should return a normalized route with noindex as true', () => {
-          const route = createNormalizedRoute({ path: '/to/' }, { path: '/path/', noindex: true })
+          const route = normalizeRoute({ path: '/to/' }, { path: '/path/', noindex: true })
 
           expect(route.noindex).toEqual(true)
         })
@@ -122,12 +122,12 @@ describe('createNormalizedRoute', () => {
   })
 })
 
-describe('makeGetRoutes', () => {
+describe('getRoutesForConfig', () => {
   describe('when getRoutes is defined on config', () => {
     it('should return routes', async () => {
       const config = { getRoutes: async () => [{ path: '/path' }] }
 
-      const getRoutes = makeGetRoutes(config)
+      const getRoutes = getRoutesForConfig(config)
       const routes = await getRoutes()
 
       expect(routes).toEqual([
@@ -142,10 +142,10 @@ describe('makeGetRoutes', () => {
 
     it('should return routes', async () => {
       const config = {
-        getRoutes: async () => [{ path: '/path' }, { is404: true, path: '404' }],
+        getRoutes: async () => [{ path: '/path' }, { path: '404', path: '404' }],
       }
 
-      const getRoutes = makeGetRoutes(config)
+      const getRoutes = getRoutesForConfig(config)
       const routes = await getRoutes()
 
       expect(routes).toEqual([
@@ -157,7 +157,7 @@ describe('makeGetRoutes', () => {
         },
         {
           hasGetProps: false,
-          is404: true,
+          path: '404',
           noindex: undefined,
           originalPath: '404',
           path: '404',
@@ -188,7 +188,7 @@ describe('makeGetRoutes', () => {
       it('should return a flat Array of routes', async () => {
         const config = { getRoutes: async () => routesWithChildren }
 
-        const getRoutes = makeGetRoutes(config)
+        const getRoutes = getRoutesForConfig(config)
         const routes = await getRoutes()
 
         expect(routes).toMatchSnapshot()
@@ -201,7 +201,7 @@ describe('makeGetRoutes', () => {
             tree: true,
           }
 
-          const getRoutes = makeGetRoutes(config)
+          const getRoutes = getRoutesForConfig(config)
           const routes = await getRoutes()
 
           expect(routes).toMatchSnapshot()
@@ -214,7 +214,7 @@ describe('makeGetRoutes', () => {
     it('should return default route', async () => {
       const config = {}
 
-      const getRoutes = makeGetRoutes(config)
+      const getRoutes = getRoutesForConfig(config)
       const routes = await getRoutes()
 
       expect(routes).toEqual([

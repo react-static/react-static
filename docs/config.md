@@ -2,29 +2,29 @@
 
 A `static.config.js` file is optional, but recommended at your project root to use react-static to its fullest potential. If present, it must `default export` an object optionally containing any of the following properties:
 
-* [getRoutes](#getroutes)
-* [route](#route)
-* [getSiteData](#getsitedata)
-* [siteRoot](#siteroot)
-* [stagingSiteRoot](#stagingsiteroot)
-* [basePath](#basepath)
-* [stagingBasePath](#stagingbasepath)
-* [devBasePath](#devbasepath)
-* [extractCssChunks](#extractcsschunks)
-* [inlineCss](#inlinecss)
-* [Document](#document)
-* [webpack](#webpack)
-* [devServer](#devserver)
-* [renderToHtml](#rendertohtml)
-* [paths](#paths)
-* [onStart](#onstart)
-* [onBuild](#onbuild)
-* [bundleAnalyzer](#bundleanalyzer)
-* [outputFileRate](#outputfilerate)
-* [prefetchRate](#prefetchrate)
-* [disableRouteInfoWarning](#disablerouteinfowarning)
-* [disableDuplicateRoutesWarning](#disableDuplicateRoutesWarning)
-* [disableRoutePrefixing](#disablerouteprefixing)
+- [getRoutes](#getroutes)
+- [route](#route)
+- [getSiteData](#getsitedata)
+- [siteRoot](#siteroot)
+- [stagingSiteRoot](#stagingsiteroot)
+- [basePath](#basepath)
+- [stagingBasePath](#stagingbasepath)
+- [devBasePath](#devbasepath)
+- [extractCssChunks](#extractcsschunks)
+- [inlineCss](#inlinecss)
+- [Document](#document)
+- [webpack](#webpack)
+- [devServer](#devserver)
+- [renderToHtml](#rendertohtml)
+- [paths](#paths)
+- [onStart](#onstart)
+- [onBuild](#onbuild)
+- [bundleAnalyzer](#bundleanalyzer)
+- [outputFileRate](#outputfilerate)
+- [prefetchRate](#prefetchrate)
+- [disableRouteInfoWarning](#disablerouteinfowarning)
+- [disableDuplicateRoutesWarning](#disableDuplicateRoutesWarning)
+- [disableRoutePrefixing](#disablerouteprefixing)
 
 ### `getRoutes`
 
@@ -45,20 +45,19 @@ A route is an `object` that represents a unique location in your site and is the
 
 It supports the following properties:
 
-* `path: String` - The **path** of the URL to match for this route, **excluding search parameters and hash fragments, relative to your `siteRoot + basePath` (if this is a child route, also relative to this route's parent path)**
-* `component: String` - The path of the component to be used to render this route. (Relative to the root of your project)
-* `getData: async Function(resolvedRoute, { dev }) => Object` - An async function that returns or resolves an object of any necessary data for this route to render.
-  * Arguments
-    * `resolvedRoute: Object` - This is the resolved route this function is handling.
-    * `flags: Object{}` - An object of flags and meta information about the build
-    * `dev: Boolean` - Indicates whether you are running a development or production build.
-* `is404: Boolean` - Set to `true` to indicate a route as the 404 handler for your site. Only one 404 route should be present in your site!
-* `children: Array[Route]` - Routes can and should have nested routes when necessary. **Route paths are inherited as they are nested, so there is no need to repeat a path prefix in nested routes**.
-* `redirect: URL` - Setting this to a URL will perform the equivalent of a 301 redirect (as much as is possible within a static site) using `http-equiv` meta tags, canonicals, etc. **This will force the page to render only the bare minimum to perform the redirect and nothing else**.
-* `noindex: Boolean` - Set this to `true` if you do not want this route or its children indexed in your automatically generated sitemap.xml. Defaults to `false`.
-* `permalink: String` - You can optionally set this route to have a custom xml sitemap permalink by supplying it here.
-* `lastModified: String(YYYY-MM-DD)` - A string representing the date when this route was last modified in the format of `YYYY-MM-DD`.
-* `priority: Float` - An optional priority for the sitemap.xml. Defaults to `0.5`
+- `path: String` - The **path** of the URL to match for this route, **excluding search parameters and hash fragments, relative to your `siteRoot + basePath` (if this is a child route, also relative to this route's parent path)**
+- `component: String` - The path of the component to be used to render this route. (Relative to the root of your project)
+- `getData: async Function(resolvedRoute, { dev }) => Object` - An async function that returns or resolves an object of any necessary data for this route to render.
+  - Arguments
+    - `resolvedRoute: Object` - This is the resolved route this function is handling.
+    - `flags: Object{}` - An object of flags and meta information about the build
+    - `dev: Boolean` - Indicates whether you are running a development or production build.
+- `children: Array[Route]` - Routes can and should have nested routes when necessary. **Route paths are inherited as they are nested, so there is no need to repeat a path prefix in nested routes**.
+- `redirect: URL` - Setting this to a URL will perform the equivalent of a 301 redirect (as much as is possible within a static site) using `http-equiv` meta tags, canonicals, etc. **This will force the page to render only the bare minimum to perform the redirect and nothing else**.
+- `noindex: Boolean` - Set this to `true` if you do not want this route or its children indexed in your automatically generated sitemap.xml. Defaults to `false`.
+- `permalink: String` - You can optionally set this route to have a custom xml sitemap permalink by supplying it here.
+- `lastModified: String(YYYY-MM-DD)` - A string representing the date when this route was last modified in the format of `YYYY-MM-DD`.
+- `priority: Float` - An optional priority for the sitemap.xml. Defaults to `0.5`
 
 Example:
 
@@ -99,7 +98,7 @@ export default {
 
     // A 404 component
     {
-      is404: true,
+      path: '404',
       component: 'src/containers/NotFound'
     }
   ]
@@ -126,8 +125,8 @@ export default {
 
 Your `siteRoot` in the format of `protocol://domain.com` is highly recommended and is necessary for many things related to SEO to function for your site. So far, this includes:
 
-* Automatically generating a `sitemap.xml` on export
-* Forcing absolute URLs in statically rendered links.
+- Automatically generating a `sitemap.xml` on export
+- Forcing absolute URLs in statically rendered links.
   Make sure that you include `https` if you serve your site with it (which we highly recommend). **Any trailing slashes including the pathname will be removed automatically**. If you need to set a base path for your site (eg. if you're using github pages), you'll want to use the `basePath` option.
 
 Example:
@@ -179,19 +178,19 @@ It's never been easier to customize the root document of your website! `Document
 
 Things you may want to place here:
 
-* Custom `head` and/or `meta` tags
-* Site-wide analytics scripts
-* Site-wide stylesheets
+- Custom `head` and/or `meta` tags
+- Site-wide analytics scripts
+- Site-wide stylesheets
 
 Props
 
-* `Html: ReactComponent` - **Required** - An enhanced version of the default `html` tag.
-* `Head: ReactComponent` - **Required** - An enhanced version of the default `head` tag.
-* `Body: ReactComponent` - **Required** - An enhanced version of the default `body` tag.
-* `children: ReactComponent` - **Required** - The main content of your site, including layout, routes, etc.
-* `routeInfo: Object` - All of the current route's information, including any `routeData`.
-* `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
-* `renderMeta: Object` - Any data optionally provided via the `renderToHtml` function in this config file.
+- `Html: ReactComponent` - **Required** - An enhanced version of the default `html` tag.
+- `Head: ReactComponent` - **Required** - An enhanced version of the default `head` tag.
+- `Body: ReactComponent` - **Required** - An enhanced version of the default `body` tag.
+- `children: ReactComponent` - **Required** - The main content of your site, including layout, routes, etc.
+- `routeInfo: Object` - All of the current route's information, including any `routeData`.
+- `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
+- `renderMeta: Object` - Any data optionally provided via the `renderToHtml` function in this config file.
 
 ```javascript
 // static.config.js
@@ -230,14 +229,14 @@ webpack: []Function(
 }
 ```
 
-* The `webpack` property's value can be an **array of functions** or a **single function**.
-* Each function will receive the previous webpack config, and can return a modified or new config.
-* Return any falsey value to cancel the transformation
-* `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
-* `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
-  * `jsLoader` - The default loader for all `.js` files (uses babel)
-  * `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
-  * `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
+- The `webpack` property's value can be an **array of functions** or a **single function**.
+- Each function will receive the previous webpack config, and can return a modified or new config.
+- Return any falsey value to cancel the transformation
+- `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
+- `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
+  - `jsLoader` - The default loader for all `.js` files (uses babel)
+  - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
+  - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
 
 When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
 
@@ -365,12 +364,12 @@ export default {
 
 An optional function that can be used to customize the static rendering logic.
 
-* Arguments
-  * `render: Function`: A function that renders a react component to an html string
-  * `Component`: the final react component for your site that needs to be rendered to an HTML
-  * `meta`, a **mutable** object that is exposed to the optional Document component as a prop
-  * `webpackStats`, the webpack stats generated from the "prod" stage
-* Returns an HTML string to be rendered into your `Document` component provided in your config (or the default one).
+- Arguments
+  - `render: Function`: A function that renders a react component to an html string
+  - `Component`: the final react component for your site that needs to be rendered to an HTML
+  - `meta`, a **mutable** object that is exposed to the optional Document component as a prop
+  - `webpackStats`, the webpack stats generated from the "prod" stage
+- Returns an HTML string to be rendered into your `Document` component provided in your config (or the default one).
 
 This also happens to be the perfect place for css-in-js integration (see [styled-components] and [glamorous] examples for more information)
 

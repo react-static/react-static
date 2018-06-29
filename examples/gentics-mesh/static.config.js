@@ -82,7 +82,7 @@ export default {
         })),
       },
       {
-        is404: true,
+        path: '404',
         component: 'src/containers/404',
         getData: () => ({
           node: { uuid: '000000', displayName: 'Error' },
