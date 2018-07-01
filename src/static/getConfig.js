@@ -82,7 +82,6 @@ export const buildConfigation = (config = {}) => {
     devBasePath: trimLeadingAndTrailingSlashes(config.devBasePath),
     extractCssChunks: config.extractCssChunks || false,
     inlineCss: config.inlineCss || false,
-    generated: true,
   }
 
   // Set env variables to be used client side

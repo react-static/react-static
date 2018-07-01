@@ -27,9 +27,6 @@ export default async ({
   // Allow config location to be overriden
   if (!isBuild) {
     config = await getConfig(config)
-  }
-
-  if (!isBuild) {
     // Restore the process environment variables that were present during the build
     const bundledEnv = await fs.readJson(`${config.paths.DIST}/bundle-environment.json`)
     Object.keys(bundledEnv).forEach(key => {
@@ -37,15 +34,11 @@ export default async ({
         process.env[key] = bundledEnv[key]
       }
     })
+    config = await prepareRoutes({ config, opts: { dev: false } })
   }
 
-  config = await prepareRoutes({ config, opts: { dev: false } })
-
   if (!config.routes) {
-    console.log('=> Building Routes...')
-    time(chalk.green('=> [\u2713] Routes Built'))
     await prepareRoutes(config, { dev: false })
-    timeEnd(chalk.green('=> [\u2713] Routes Built'))
   }
 
   if (debug) {

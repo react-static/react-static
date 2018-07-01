@@ -3,7 +3,7 @@
 import nodePath from 'path'
 import chokidar from 'chokidar'
 
-import { glob, debounce } from '../utils'
+import { glob, debounce, progress } from '../utils'
 import { pathJoin } from '../utils/shared'
 
 let watcher
@@ -20,7 +20,17 @@ const consoleWarningForRouteWithoutNoIndex = route =>
   route.noIndex &&
   console.warn(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
 
-export const normalizeRoute = (route, parent = {}, config = {}) => {
+const countRoutes = (routes, count = 0) => {
+  routes.forEach(route => {
+    count += 1
+    if (routes.children) {
+      countRoutes(route.children, count)
+    }
+  })
+  return count
+}
+
+export const normalizeRoute = (route, parent = {}, config = {}, bar) => {
   const { children, ...routeWithOutChildren } = route
   const { path: parentPath = '/' } = parent
   const { tree: keepRouteChildren = false } = config
@@ -50,64 +60,74 @@ export const normalizeRoute = (route, parent = {}, config = {}) => {
 // Original routes array [{ path: 'path', children: { path: 'to' } }]
 // These can be returned as flat routes eg. [{ path: 'path' }, { path: 'path/to' }]
 // Or they can be returned nested routes eg. [{ path: 'path', children: { path: 'path/to' } }]
-export const recurseNormalizeRoute = (routes = [], config, parent, existingRoutes = {}) => {
-  const { tree: createNestedTreeStructure = false } = config
+export const normalizeAllRoutes = (routes = [], config) => {
+  const existingRoutes = {}
+  let hasIndex
+  let has404
 
-  return routes.reduce(
-    ({ routes: prevRoutes = [], hasIndex, has404 }, route) => {
-      let normalizedRoute = normalizeRoute(route, parent, config)
-      // if structure is nested (tree === true) normalizedRoute will
-      // have children otherwise we fall back to the original route children
-      const { children = route.children, path } = normalizedRoute
+  const recurseRoute = (route, parent) => {
+    // if structure is nested (tree === true) normalizedRoute will
+    // have children otherwise we fall back to the original route children
+    // Normalize the route
+    const normalizedRoute = normalizeRoute(route, parent, config)
 
-      // we check an array of paths to see
-      // if route path already existings
-      const existingRoute = existingRoutes[path]
+    // we check an array of paths to see
+    // if route path already existings
+    const existingRoute = existingRoutes[normalizedRoute.path]
 
-      if (existingRoute) {
-        if (existingRoute.isPage) {
-          Object.assign(existingRoute, {
-            ...normalizedRoute,
-            component: existingRoute.component,
-          })
-        } else if (!config.disableDuplicateRoutesWarning) {
-          console.warn('More than one route in static.config.js is defined for path:', route.path)
-        }
+    // If the route exists and is a page route, we need to decorate the
+    // page route with this routes information
+    if (existingRoute) {
+      if (existingRoute.isPage) {
+        Object.assign(existingRoute, {
+          ...normalizedRoute,
+          component: existingRoute.component,
+        })
+      } else if (!config.disableDuplicateRoutesWarning) {
+        // Otherwise, we shouldn't have duplicate routes
+        console.warn(
+          'More than one route in static.config.js is defined for path:',
+          normalizedRoute.path
+        )
       }
-
-      const {
-        routes: normalizedRouteChildren,
-        hasIndex: childrenHasIndex,
-        has404: childrenHas404,
-      } = recurseNormalizeRoute(children, config, normalizedRoute, existingRoutes)
-
-      if (createNestedTreeStructure) {
-        normalizedRoute = { ...normalizedRoute, children: normalizedRouteChildren }
-      }
-
-      // we push paths into an array that
-      // we use to check if a route existings
-      existingRoutes[path] = normalizedRoute
-
-      return {
-        routes: [
-          ...prevRoutes,
-          // if route exists we don't include the route
-          ...(existingRoute ? [] : [normalizedRoute]),
-          // if structure is not nested (tree === false) we return an empty object
-          // else we return an array of normalized children routes
-          ...(createNestedTreeStructure ? [] : normalizedRouteChildren),
-        ],
-        hasIndex: hasIndex || normalizedRoute.path === '/' || childrenHasIndex,
-        has404: has404 || normalizedRoute.path === '404' || childrenHas404,
-      }
-    },
-    {
-      routes: [],
-      hasIndex: false,
-      has404: false,
     }
-  )
+
+    // Keep track of the route existence
+    existingRoutes[normalizedRoute.path] = normalizedRoute
+
+    // Keep track of index and 404 routes existence
+    if (normalizedRoute.path === '/') {
+      hasIndex = true
+    }
+    if (normalizedRoute.path === '404') {
+      has404 = true
+    }
+
+    normalizedRoute.children = normalizedRoute.children
+      ? normalizedRoute.children.map(childRoute => recurseRoute(childRoute, parent))
+      : normalizedRoute.children
+
+    return normalizedRoute
+  }
+
+  let normalizedRoutes = routes.map(route => recurseRoute(route))
+
+  if (config.tree) {
+    const flatRoutes = []
+    const recurseRoute = route => {
+      flatRoutes.push(route)
+      if (route.children) {
+        route.children.forEach(recurseRoute)
+      }
+    }
+    normalizedRoutes = flatRoutes
+  }
+
+  return {
+    routes: normalizedRoutes,
+    hasIndex,
+    has404,
+  }
 }
 
 export const getRoutesFromPages = async ({ config, opts = {} }, cb) => {
@@ -167,10 +187,8 @@ const getRoutes = async ({ config, opts }, cb = d => d) =>
   // We use the callback pattern here, because getRoutesFromPages is technically a subscription
   getRoutesFromPages({ config, opts }, async pageRoutes => {
     const routes = await config.getRoutes(opts)
-    const { routes: allRoutes, hasIndex, has404 } = recurseNormalizeRoute(
-      [...pageRoutes, ...routes],
-      config
-    )
+    const allRoutes = [...pageRoutes, ...routes]
+    const { routes: allNormalizedRoutes, hasIndex, has404 } = normalizeAllRoutes(allRoutes, config)
     // If no Index page was found, throw an error. This is required
     if (!hasIndex) {
       throw new Error(
@@ -183,7 +201,7 @@ const getRoutes = async ({ config, opts }, cb = d => d) =>
         'Could not find a route for the "404" page of your site! This is required. Please create a page or specify a route and template for this page.'
       )
     }
-    return cb(allRoutes)
+    return cb(allNormalizedRoutes)
   })
 
 export default getRoutes

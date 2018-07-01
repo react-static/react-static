@@ -38,7 +38,10 @@ export default async function build ({ config, staging, debug } = {}) {
   }
 
   // Remove the DIST folder
+  console.log('=> Cleaning dist...')
+  time(chalk.green('=> [\u2713] Dist cleaned'))
   await fs.remove(config.paths.DIST)
+  timeEnd(chalk.green('=> [\u2713] Dist cleaned'))
 
   config = await prepareRoutes({ config, opts: { dev: false } })
 

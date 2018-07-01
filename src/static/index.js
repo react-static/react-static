@@ -9,7 +9,6 @@ import path from 'path'
 import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
-import Progress from 'progress'
 import chalk from 'chalk'
 import flushChunks from 'webpack-flush-chunks'
 
@@ -21,7 +20,7 @@ import generateRoutes from './generateRoutes'
 import getRoutes from './getRoutes'
 import { DefaultDocument } from './RootComponents'
 import buildXMLandRSS from './buildXML'
-import { time, timeEnd } from '../utils'
+import { progress, time, timeEnd } from '../utils'
 import { poolAll } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
 
@@ -29,12 +28,9 @@ export { buildXMLandRSS }
 
 const defaultOutputFileRate = 100
 
-const Bar = (len, label) =>
-  new Progress(`=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `, {
-    total: len,
-  })
-
-export const extractTemplates = config => {
+export const extractTemplates = async config => {
+  console.log('=> Building Templates')
+  time(chalk.green('=> [\u2713] Templates Built'))
   // Dedupe all templates into an array
   const templates = []
 
@@ -54,6 +50,13 @@ export const extractTemplates = config => {
       route.templateID = index
     }
   })
+  timeEnd(chalk.green('=> [\u2713] Templates Built'))
+
+  config.templates = templates
+
+  await generateRoutes({
+    config,
+  })
 
   return templates
 }
@@ -70,12 +73,9 @@ export const prepareRoutes = async ({ config, opts }, cb = d => d) => {
       opts,
     },
     async routes => {
+      timeEnd(chalk.green('=> [\u2713] Routes Built'))
       config.routes = routes
       config.templates = extractTemplates(config)
-      await generateRoutes({
-        config,
-      })
-      timeEnd(chalk.green('=> [\u2713] Routes Built'))
       return cb(config)
     }
   )
@@ -96,7 +96,7 @@ export const exportSharedRouteData = async (config, sharedProps) => {
 
   if (sharedPropsArr.length) {
     console.log('=> Exporting Shared Route Data...')
-    const jsonProgress = Bar(sharedPropsArr.length)
+    const jsonProgress = progress(sharedPropsArr.length)
     time(chalk.green('=> [\u2713] Shared Route Data Exported'))
 
     await poolAll(
@@ -119,7 +119,7 @@ export const fetchRoutes = async config => {
   const sharedProps = new Map()
 
   console.log('=> Fetching Route Data...')
-  const dataProgress = Bar(config.routes.length)
+  const dataProgress = progress(config.routes.length)
   time(chalk.green('=> [\u2713] Route Data Downloaded'))
   await poolAll(
     config.routes.map(route => async () => {
@@ -204,7 +204,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
 
   console.log('=> Exporting HTML...')
 
-  const htmlProgress = Bar(config.routes.length)
+  const htmlProgress = progress(config.routes.length)
 
   time(chalk.green('=> [\u2713] HTML Exported'))
 

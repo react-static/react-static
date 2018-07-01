@@ -9,9 +9,9 @@ export default function ({ config, stage }) {
           cacheDirectory: stage !== 'prod',
         },
       },
-      {
+      stage === 'dev' && {
         loader: 'react-hot-loader-loader',
       },
-    ],
+    ].filter(Boolean),
   }
 }
