@@ -1,6 +1,6 @@
 import React from 'react'
 import { Router, Switch, Route, Link } from 'react-static'
-import { hot } from 'react-hot-loader'
+
 
 import './app.css'
 
@@ -55,4 +55,4 @@ class App extends React.Component {
   }
 }
 
-export default hot(module)(App)
+export default App

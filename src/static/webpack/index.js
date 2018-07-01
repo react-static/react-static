@@ -9,12 +9,14 @@ import fs from 'fs-extra'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import { findAvailablePort } from '../../utils'
+import { findAvailablePort, time, timeEnd } from '../../utils'
 import { cleanPath } from '../../utils/shared'
 import { prepareRoutes } from '../'
 
 let resolvedReloadRoutes
 let reloadWebpackRoutes
+
+let devServer
 
 const reloadRoutes = (...args) => {
   if (!resolvedReloadRoutes) {
@@ -72,9 +74,11 @@ export async function buildCompiler ({ config, stage }) {
 
 // Starts the development server
 export async function startDevServer ({ config }) {
-  const devCompiler = await buildCompiler({ config, stage: 'dev' })
+  if (devServer) {
+    return devServer
+  }
 
-  let first = true
+  const devCompiler = await buildCompiler({ config, stage: 'dev' })
 
   // Default to localhost:3000, or use a custom combo if defined in static.config.js
   // or environment variables
@@ -83,7 +87,7 @@ export async function startDevServer ({ config }) {
   // Find an available port for messages, as long as it's not the devServer port
   const messagePort = await findAvailablePort(4000, [port])
   if (intendedPort !== port) {
-    console.time(
+    time(
       chalk.red(
         `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
           intendedPort
@@ -103,7 +107,8 @@ export async function startDevServer ({ config }) {
     quiet: true,
     ...config.devServer,
     watchOptions: {
-      ignored: /node_modules/,
+      ignored: 'node_modules',
+      // ignored: new RegExp(`(node_modules|${config.paths.PAGES})`),
       ...(config.devServer ? config.devServer.watchOptions || {} : {}),
     },
     before: app => {
@@ -138,6 +143,9 @@ export async function startDevServer ({ config }) {
               // an out of dat object.
               const route = config.routes.find(d => d.path === routePath)
               try {
+                if (!route) {
+                  throw new Error('Route could not be found!')
+                }
                 const allProps = route.getData ? await route.getData({ dev: true }) : {}
                 res.json({
                   ...route,
@@ -162,18 +170,18 @@ export async function startDevServer ({ config }) {
     host,
   }
 
-  const timefix = 11000
-  devCompiler.hooks.watchRun.tapPromise('React-Static', async watching => {
-    watching.startTime += timefix
-  })
+  let first = true
+  console.log('=> Building App Bundle...')
+  time(chalk.green('=> [\u2713] Build Complete'))
 
   devCompiler.hooks.invalid.tap(
     {
       name: 'React-Static',
     },
-    () => {
-      console.time(chalk.green('=> [\u2713] Build Complete'))
-      console.log('=> Rebuilding...')
+    file => {
+      console.log('=> File changed:', file.replace(config.paths.ROOT, ''))
+      console.log('=> Updating build...')
+      time(chalk.green('=> [\u2713] Build Updated'))
     }
   )
 
@@ -186,16 +194,18 @@ export async function startDevServer ({ config }) {
       const isSuccessful = !messages.errors.length && !messages.warnings.length
 
       if (isSuccessful) {
-        console.timeEnd(chalk.green('=> [\u2713] Build Complete'))
         if (first) {
-          first = false
+          timeEnd(chalk.green('=> [\u2713] Build Complete'))
           console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
-          stats.startTime -= timefix
-          if (config.onStart) {
-            config.onStart({ devServerConfig })
-          }
+        } else {
+          timeEnd(chalk.green('=> [\u2713] Build Updated'))
+        }
+        if (first && config.onStart) {
+          config.onStart({ devServerConfig })
         }
       }
+
+      first = false
 
       if (messages.errors.length) {
         console.log(chalk.red('Failed to build! Fix any errors and try again!'))
@@ -216,34 +226,34 @@ export async function startDevServer ({ config }) {
     }
   )
 
-  console.log('=> Building App Bundle...')
-  console.time(chalk.green('=> [\u2713] Build Complete'))
-
   // Start the webpack dev server
-  const devServer = new WebpackDevServer(devCompiler, devServerConfig)
+  devServer = new WebpackDevServer(devCompiler, devServerConfig)
 
   // Start the messages socket
   const socket = io()
   socket.listen(messagePort)
 
   resolvedReloadRoutes = async paths => {
-    await prepareRoutes(config, { dev: true })
-    if (!paths) {
-      paths = config.routes.map(route => route.path)
-    }
-    paths = paths.map(cleanPath)
-    reloadWebpackRoutes()
-    socket.emit('message', { type: 'reloadRoutes', paths })
+    await prepareRoutes({ config, opts: { dev: true } }, async config => {
+      if (!paths) {
+        paths = config.routes.map(route => route.path)
+      }
+      paths = paths.map(cleanPath)
+      reloadWebpackRoutes()
+      socket.emit('message', { type: 'reloadRoutes', paths })
+    })
   }
 
-  return new Promise((resolve, reject) => {
-    devServer.listen(port, err => {
+  await new Promise((resolve, reject) => {
+    devServer.listen(port, null, err => {
       if (err) {
         return reject(err)
       }
       resolve()
     })
   })
+
+  return devServer
 }
 
 export async function buildProductionBundles ({ config }) {

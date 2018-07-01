@@ -10,22 +10,28 @@ export default {
     title: 'GENTICS Mesh React Static Example',
   }),
   getRoutes: async () => {
-    const meshRestApiClient =
-      new MeshApiClient(MESH_HOST, MESH_PROJECT_NAME, MESH_LANGUAGE, MESH_API_CLIENT_LOGGING)
+    const meshRestApiClient = new MeshApiClient(
+      MESH_HOST,
+      MESH_PROJECT_NAME,
+      MESH_LANGUAGE,
+      MESH_API_CLIENT_LOGGING
+    )
     const automobilesCategoryNode = await meshRestApiClient.getNodeByWebRootPath('/automobiles')
     const yachtsCategoryNode = await meshRestApiClient.getNodeByWebRootPath('/yachts')
     const aircraftsCategoryNode = await meshRestApiClient.getNodeByWebRootPath('/aircrafts')
-    const { data: allAutomobileNodes } =
-      await meshRestApiClient.getChildrenForNode(automobilesCategoryNode.uuid)
-    const { data: allYachtsNodes } =
-      await meshRestApiClient.getChildrenForNode(yachtsCategoryNode.uuid)
-    const { data: allAircraftNodes } =
-      await meshRestApiClient.getChildrenForNode(aircraftsCategoryNode.uuid)
+    const { data: allAutomobileNodes } = await meshRestApiClient.getChildrenForNode(
+      automobilesCategoryNode.uuid
+    )
+    const { data: allYachtsNodes } = await meshRestApiClient.getChildrenForNode(
+      yachtsCategoryNode.uuid
+    )
+    const { data: allAircraftNodes } = await meshRestApiClient.getChildrenForNode(
+      aircraftsCategoryNode.uuid
+    )
     const projectNode = await meshRestApiClient.getNodeByWebRootPath('/')
     return [
       {
         path: '/',
-        component: 'src/containers/HomePage',
         getData: () => ({
           node: projectNode,
         }),
@@ -83,7 +89,6 @@ export default {
       },
       {
         path: '404',
-        component: 'src/containers/404',
         getData: () => ({
           node: { uuid: '000000', displayName: 'Error' },
         }),

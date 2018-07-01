@@ -7013,9 +7013,13 @@ react-helmet@^5.2.0:
     prop-types "^15.5.4"
     react-side-effect "^1.1.0"
 
-react-hot-loader@^4:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.2.0.tgz#4a2ec79114f872e28ea786e04889d643ad3dfb7c"
+react-hot-loader-loader@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-hot-loader-loader/-/react-hot-loader-loader-0.0.6.tgz#f707c538910bebac920a5e550049399c6ff26b23"
+
+react-hot-loader@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.3.3.tgz#37409a3341c7787563d0972007ba02521f82f5d5"
   dependencies:
     fast-levenshtein "^2.0.6"
     global "^4.3.0"

@@ -13,16 +13,7 @@ export default {
 
     return [
       {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      {
-        path: '/about',
-        component: 'src/containers/About',
-      },
-      {
         path: '/blog',
-        component: 'src/containers/Blog',
         getData: () => ({
           posts,
         }),
@@ -33,14 +24,6 @@ export default {
             post,
           }),
         })),
-      },
-      {
-        path: '/search',
-        component: 'src/containers/Search',
-      },
-      {
-        path: '404',
-        component: 'src/containers/404',
       },
     ]
   },

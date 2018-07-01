@@ -4,7 +4,7 @@ import { easeQuadOut } from 'd3-ease'
 import { NodeGroup } from 'react-move'
 import { withContext, getContext } from 'recompose'
 import PropTypes from 'prop-types'
-import { hot } from 'react-hot-loader'
+
 //
 import Routes from 'react-static-routes'
 
@@ -125,4 +125,4 @@ const App = () => (
   </Router>
 )
 
-export default hot(module)(App)
+export default App

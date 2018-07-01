@@ -6,8 +6,6 @@ import path from 'path'
 
 import rules from './rules'
 
-process.traceDeprecation = true
-
 export default function ({ config }) {
   const {
     ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
@@ -25,7 +23,6 @@ export default function ({ config }) {
     },
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
-      require.resolve('react-hot-loader'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
       path.resolve(ROOT, config.entry),
@@ -56,11 +53,11 @@ export default function ({ config }) {
         template: `!!raw-loader!${HTML_TEMPLATE}`,
       }),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
       new CaseSensitivePathsPlugin(),
       new ExtractCssChunks({ hot: true }),
     ],
-    devtool: 'eval-source-map',
+    devtool: 'cheap-module-source-map',
   }
 }

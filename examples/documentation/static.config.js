@@ -58,12 +58,8 @@ export default {
     repoURL,
     repoName,
   }),
-  getRoutes: () => [
-    {
-      path: '/',
-      component: 'src/containers/Home',
-    },
-    ...docPages.map(page => ({
+  getRoutes: () =>
+    docPages.map(page => ({
       path: `docs/${page.path}`,
       component: 'src/containers/Doc',
       getData: () => ({
@@ -73,11 +69,6 @@ export default {
         title: page.title,
       }),
     })),
-    {
-      path: '404',
-      component: 'src/containers/404',
-    },
-  ],
   renderToHtml: (render, Comp, meta) => {
     const sheet = new ServerStyleSheet()
     const html = render(sheet.collectStyles(<Comp />))

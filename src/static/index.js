@@ -18,8 +18,10 @@ import { makeHeadWithMeta } from './components/HeadWithMeta'
 import { makeBodyWithMeta } from './components/BodyWithMeta'
 
 import generateRoutes from './generateRoutes'
+import getRoutes from './getRoutes'
 import { DefaultDocument } from './RootComponents'
 import buildXMLandRSS from './buildXML'
+import { time, timeEnd } from '../utils'
 import { poolAll } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
 
@@ -32,11 +34,7 @@ const Bar = (len, label) =>
     total: len,
   })
 
-export const prepareRoutes = async (config, opts) => {
-  config.routes = await config.getRoutes(opts)
-
-  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
-
+export const extractTemplates = config => {
   // Dedupe all templates into an array
   const templates = []
 
@@ -57,19 +55,38 @@ export const prepareRoutes = async (config, opts) => {
     }
   })
 
-  config.templates = templates
+  return templates
+}
 
-  return generateRoutes({
-    config,
-  })
+export const prepareRoutes = async ({ config, opts }, cb) => {
+  console.log('=> Building Routes...')
+  // set the static routes
+  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
+
+  time(chalk.green('=> [\u2713] Routes Built'))
+  await getRoutes(
+    {
+      config,
+      opts,
+    },
+    async routes => {
+      config.routes = routes
+      config.templates = extractTemplates(config)
+      await generateRoutes({
+        config,
+      })
+      timeEnd(chalk.green('=> [\u2713] Routes Built'))
+      return cb(config)
+    }
+  )
 }
 
 export const fetchSiteData = async config => {
   console.log('=> Fetching Site Data...')
-  console.time(chalk.green('=> [\u2713] Site Data Downloaded'))
+  time(chalk.green('=> [\u2713] Site Data Downloaded'))
   // Get the site data
   const siteData = await config.getSiteData({ dev: false })
-  console.timeEnd(chalk.green('=> [\u2713] Site Data Downloaded'))
+  timeEnd(chalk.green('=> [\u2713] Site Data Downloaded'))
   return siteData
 }
 
@@ -80,7 +97,7 @@ export const exportSharedRouteData = async (config, sharedProps) => {
   if (sharedPropsArr.length) {
     console.log('=> Exporting Shared Route Data...')
     const jsonProgress = Bar(sharedPropsArr.length)
-    console.time(chalk.green('=> [\u2713] Shared Route Data Exported'))
+    time(chalk.green('=> [\u2713] Shared Route Data Exported'))
 
     await poolAll(
       sharedPropsArr.map(cachedProp => async () => {
@@ -92,7 +109,7 @@ export const exportSharedRouteData = async (config, sharedProps) => {
       }),
       Number(config.outputFileRate) || defaultOutputFileRate
     )
-    console.timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
+    timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
   }
 }
 
@@ -103,7 +120,7 @@ export const fetchRoutes = async config => {
 
   console.log('=> Fetching Route Data...')
   const dataProgress = Bar(config.routes.length)
-  console.time(chalk.green('=> [\u2713] Route Data Downloaded'))
+  time(chalk.green('=> [\u2713] Route Data Downloaded'))
   await poolAll(
     config.routes.map(route => async () => {
       // Fetch allProps from each route
@@ -152,10 +169,10 @@ export const fetchRoutes = async config => {
     Number(config.outputFileRate) || defaultOutputFileRate
   )
 
-  console.timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
+  timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
 
   console.log('=> Exporting Route Data...')
-  console.time(chalk.green('=> [\u2713] Route Data Exported'))
+  time(chalk.green('=> [\u2713] Route Data Exported'))
   await poolAll(
     config.routes.map(route => async () => {
       // Loop through the props and build the prop maps
@@ -173,7 +190,7 @@ export const fetchRoutes = async config => {
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
-  console.timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
+  timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 
   exportSharedRouteData(config, sharedProps)
 }
@@ -189,7 +206,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
 
   const htmlProgress = Bar(config.routes.length)
 
-  console.time(chalk.green('=> [\u2713] HTML Exported'))
+  time(chalk.green('=> [\u2713] HTML Exported'))
 
   const basePath =
     process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
@@ -363,7 +380,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
-  console.timeEnd(chalk.green('=> [\u2713] HTML Exported'))
+  timeEnd(chalk.green('=> [\u2713] HTML Exported'))
 }
 
 // Exporting route HTML and JSON happens here. It's a big one.
