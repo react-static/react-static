@@ -6,9 +6,7 @@ import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder, time, timeEnd } from '../utils'
 
-export default async function build ({
-  config, staging, debug, isCLI,
-} = {}) {
+export default async function build ({ config, staging, debug } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
@@ -24,7 +22,7 @@ export default async function build ({
   }
 
   // Allow config location to be overriden
-  config = getConfig(config)
+  config = await getConfig(config)
 
   if (debug) {
     console.log('DEBUG - Resolved static.config.js:')
@@ -42,10 +40,7 @@ export default async function build ({
   // Remove the DIST folder
   await fs.remove(config.paths.DIST)
 
-  console.log('=> Building Routes...')
-  time(chalk.green('=> [\u2713] Routes Built'))
-  await prepareRoutes(config, { dev: false })
-  timeEnd(chalk.green('=> [\u2713] Routes Built'))
+  config = await prepareRoutes({ config, opts: { dev: false } })
 
   console.log('=> Copying public directory...')
   time(chalk.green('=> [\u2713] Public directory copied'))

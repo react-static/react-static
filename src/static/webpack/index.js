@@ -318,6 +318,11 @@ export async function buildProductionBundles ({ config }) {
         JSON.stringify(prodStatsJson, null, 2)
       )
 
+      fs.outputFileSync(
+        path.join(config.paths.DIST, 'bundle-environment.json'),
+        JSON.stringify(process.env, null, 2)
+      )
+
       resolve(prodStatsJson)
     })
   })

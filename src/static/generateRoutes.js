@@ -3,7 +3,6 @@ import slash from 'slash'
 import fs from 'fs-extra'
 
 export default async ({ config }) => {
-  console.log('build react-static-routes')
   const { templates, routes } = config
 
   const route404 = routes.find(route => route.path === '404')

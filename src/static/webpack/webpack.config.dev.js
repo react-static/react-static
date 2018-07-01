@@ -11,8 +11,7 @@ export default function ({ config }) {
     ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
   } = config.paths
 
-  config.publicPath = config.devBasePath ? `/${config.devBasePath}/` : '/'
-
+  process.env.REACT_STATIC_PUBLICPATH = config.devBasePath ? `/${config.devBasePath}/` : '/'
   process.env.REACT_STATIC_BASEPATH = config.devBasePath
 
   return {
@@ -31,7 +30,7 @@ export default function ({ config }) {
       filename: '[name].js', // never hash dev code
       chunkFilename: 'templates/[name].js',
       path: DIST,
-      publicPath: config.publicPath || '/',
+      publicPath: process.env.REACT_STATIC_PUBLICPATH || '/',
     },
     module: {
       rules: rules({ config, stage: 'dev' }),

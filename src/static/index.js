@@ -58,13 +58,13 @@ export const extractTemplates = config => {
   return templates
 }
 
-export const prepareRoutes = async ({ config, opts }, cb) => {
+export const prepareRoutes = async ({ config, opts }, cb = d => d) => {
   console.log('=> Building Routes...')
   // set the static routes
   process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
 
   time(chalk.green('=> [\u2713] Routes Built'))
-  await getRoutes(
+  return getRoutes(
     {
       config,
       opts,
@@ -356,10 +356,10 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
       // If the siteRoot is set and we're not in staging, prefix all absolute URL's
       // with the siteRoot
       if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
-        html = html.replace(hrefReplace, `$1${config.publicPath}$3`)
+        html = html.replace(hrefReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
       }
 
-      html = html.replace(srcReplace, `$1${config.publicPath}$3`)
+      html = html.replace(srcReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
 
       // If the route is a 404 page, write it directly to 404.html, instead of
       // inside a directory.

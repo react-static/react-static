@@ -8,17 +8,16 @@ import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import rules from './rules'
 
-
 function common (config) {
   const {
     ROOT, DIST, NODE_MODULES, SRC,
   } = config.paths
 
   // Trailing slash
-  config.publicPath = process.env.REACT_STATIC_STAGING
+  process.env.REACT_STATIC_PUBLICPATH = process.env.REACT_STATIC_STAGING
     ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
     : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
-  process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
+  process.env.REACT_STATIC_PUBLIC_PATH = process.env.REACT_STATIC_PUBLICPATH
 
   // Trailing slash mysiteroot.com/
   process.env.REACT_STATIC_SITE_ROOT = `${
@@ -29,7 +28,6 @@ function common (config) {
   process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
     ? config.stagingBasePath
     : config.basePath
-
 
   const splitChunks = {
     chunks: 'all',
@@ -79,7 +77,7 @@ function common (config) {
       filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
-      publicPath: config.publicPath || '/',
+      publicPath: process.env.REACT_STATIC_PUBLICPATH || '/',
     },
     optimization: {
       minimize: true,
