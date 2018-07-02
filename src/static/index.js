@@ -9,7 +9,6 @@ import path from 'path'
 import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
-import Progress from 'progress'
 import chalk from 'chalk'
 import flushChunks from 'webpack-flush-chunks'
 
@@ -18,8 +17,10 @@ import { makeHeadWithMeta } from './components/HeadWithMeta'
 import { makeBodyWithMeta } from './components/BodyWithMeta'
 
 import generateRoutes from './generateRoutes'
+import getRoutes from './getRoutes'
 import { DefaultDocument } from './RootComponents'
 import buildXMLandRSS from './buildXML'
+import { progress, time, timeEnd } from '../utils'
 import { poolAll } from '../utils/shared'
 import Redirect from '../client/components/Redirect'
 
@@ -27,13 +28,9 @@ export { buildXMLandRSS }
 
 const defaultOutputFileRate = 100
 
-const Bar = (len, label) =>
-  new Progress(`=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `, {
-    total: len,
-  })
-
-export const prepareRoutes = async (config, opts) => {
-  config.routes = await config.getRoutes(opts)
+export const extractTemplates = async config => {
+  console.log('=> Building Templates')
+  time(chalk.green('=> [\u2713] Templates Built'))
 
   // Dedupe all templates into an array
   const templates = []
@@ -54,20 +51,43 @@ export const prepareRoutes = async (config, opts) => {
       route.templateID = index
     }
   })
+  timeEnd(chalk.green('=> [\u2713] Templates Built'))
 
   config.templates = templates
 
-  return generateRoutes({
+  await generateRoutes({
     config,
   })
+
+  return templates
+}
+
+export const prepareRoutes = async ({ config, opts }, cb = d => d) => {
+  console.log('=> Building Routes...')
+  // set the static routes
+  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
+
+  time(chalk.green('=> [\u2713] Routes Built'))
+  return getRoutes(
+    {
+      config,
+      opts,
+    },
+    async routes => {
+      timeEnd(chalk.green('=> [\u2713] Routes Built'))
+      config.routes = routes
+      config.templates = extractTemplates(config)
+      return cb(config)
+    }
+  )
 }
 
 export const fetchSiteData = async config => {
   console.log('=> Fetching Site Data...')
-  console.time(chalk.green('=> [\u2713] Site Data Downloaded'))
+  time(chalk.green('=> [\u2713] Site Data Downloaded'))
   // Get the site data
   const siteData = await config.getSiteData({ dev: false })
-  console.timeEnd(chalk.green('=> [\u2713] Site Data Downloaded'))
+  timeEnd(chalk.green('=> [\u2713] Site Data Downloaded'))
   return siteData
 }
 
@@ -77,8 +97,8 @@ export const exportSharedRouteData = async (config, sharedProps) => {
 
   if (sharedPropsArr.length) {
     console.log('=> Exporting Shared Route Data...')
-    const jsonProgress = Bar(sharedPropsArr.length)
-    console.time(chalk.green('=> [\u2713] Shared Route Data Exported'))
+    const jsonProgress = progress(sharedPropsArr.length)
+    time(chalk.green('=> [\u2713] Shared Route Data Exported'))
 
     await poolAll(
       sharedPropsArr.map(cachedProp => async () => {
@@ -90,7 +110,7 @@ export const exportSharedRouteData = async (config, sharedProps) => {
       }),
       Number(config.outputFileRate) || defaultOutputFileRate
     )
-    console.timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
+    timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
   }
 }
 
@@ -100,8 +120,8 @@ export const fetchRoutes = async config => {
   const sharedProps = new Map()
 
   console.log('=> Fetching Route Data...')
-  const dataProgress = Bar(config.routes.length)
-  console.time(chalk.green('=> [\u2713] Route Data Downloaded'))
+  const dataProgress = progress(config.routes.length)
+  time(chalk.green('=> [\u2713] Route Data Downloaded'))
   await poolAll(
     config.routes.map(route => async () => {
       // Fetch allProps from each route
@@ -150,10 +170,10 @@ export const fetchRoutes = async config => {
     Number(config.outputFileRate) || defaultOutputFileRate
   )
 
-  console.timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
+  timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
 
   console.log('=> Exporting Route Data...')
-  console.time(chalk.green('=> [\u2713] Route Data Exported'))
+  time(chalk.green('=> [\u2713] Route Data Exported'))
   await poolAll(
     config.routes.map(route => async () => {
       // Loop through the props and build the prop maps
@@ -171,7 +191,7 @@ export const fetchRoutes = async config => {
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
-  console.timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
+  timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 
   exportSharedRouteData(config, sharedProps)
 }
@@ -185,9 +205,9 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
 
   console.log('=> Exporting HTML...')
 
-  const htmlProgress = Bar(config.routes.length)
+  const htmlProgress = progress(config.routes.length)
 
-  console.time(chalk.green('=> [\u2713] HTML Exported'))
+  time(chalk.green('=> [\u2713] HTML Exported'))
 
   const basePath =
     process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
@@ -339,10 +359,10 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
       // If the siteRoot is set and we're not in staging, prefix all absolute URL's
       // with the siteRoot
       if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
-        html = html.replace(hrefReplace, `$1${config.publicPath}$3`)
+        html = html.replace(hrefReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
       }
 
-      html = html.replace(srcReplace, `$1${config.publicPath}$3`)
+      html = html.replace(srcReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
 
       // If the route is a 404 page, write it directly to 404.html, instead of
       // inside a directory.
@@ -363,7 +383,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
-  console.timeEnd(chalk.green('=> [\u2713] HTML Exported'))
+  timeEnd(chalk.green('=> [\u2713] HTML Exported'))
 }
 
 // Exporting route HTML and JSON happens here. It's a big one.

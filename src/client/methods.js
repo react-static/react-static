@@ -26,6 +26,7 @@ export const reloadRouteData = () => {
     }
   )
   // Force each RouteData component to reload
+  // clearTemplateIDs()
   global.reloadAll()
 }
 
@@ -84,14 +85,10 @@ export const getRouteInfo = async (path, { priority } = {}) => {
         (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
           ? process.env.REACT_STATIC_SITE_ROOT
           : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
-      const cacheBuster =
-        process.env.REACT_STATIC_CACHE_BUST
-          ? `?${process.env.REACT_STATIC_CACHE_BUST}`
-          : ''
-      const getPath = `${routeInfoRoot}${pathJoin(
-        path,
-        'routeInfo.json'
-      )}${cacheBuster}`
+      const cacheBuster = process.env.REACT_STATIC_CACHE_BUST
+        ? `?${process.env.REACT_STATIC_CACHE_BUST}`
+        : ''
+      const getPath = `${routeInfoRoot}${pathJoin(path, 'routeInfo.json')}${cacheBuster}`
 
       if (priority) {
         // In production, request from route's routeInfo.json
@@ -285,4 +282,8 @@ export function registerTemplateIDForPath (path, templateID) {
     global.reactStaticGetComponentForPath &&
     global.reactStaticRegisterTemplateIDForPath(path, templateID)
   )
+}
+
+export function clearTemplateIDs () {
+  return global.clearTemplateIDs && global.clearTemplateIDs()
 }

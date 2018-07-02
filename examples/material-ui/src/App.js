@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Router, Link } from 'react-static'
-import { hot } from 'react-hot-loader'
+
 //
 import Routes from 'react-static-routes'
 
@@ -63,4 +63,4 @@ class App extends PureComponent {
 
 const AppWithStyles = withStyles(styles)(App)
 
-export default hot(module)(AppWithStyles)
+export default AppWithStyles

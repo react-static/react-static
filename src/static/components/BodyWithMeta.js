@@ -20,7 +20,6 @@ export const makeBodyWithMeta = ({
   // It should only include the full props, not the partials.
   embeddedRouteInfo,
   clientScripts = [],
-  config,
 }) => ({ children, ...rest }) => (
   <body {...head.bodyProps} {...rest}>
     {children}
@@ -32,7 +31,12 @@ export const makeBodyWithMeta = ({
     )}
     {!route.redirect &&
       clientScripts.map(script => (
-        <script key={script} defer type="text/javascript" src={`${config.publicPath}${script}`} />
+        <script
+          key={script}
+          defer
+          type="text/javascript"
+          src={`${process.env.REACT_STATIC_PUBLICPATH}${script}`}
+        />
       ))}
   </body>
 )

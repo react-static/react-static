@@ -1,9 +1,7 @@
 module.exports = {
   presets: ['env', 'stage-0', 'react'],
   plugins: [
-    [
-      'universal-import'
-    ],
+    ['universal-import'],
     [
       'transform-runtime',
       {

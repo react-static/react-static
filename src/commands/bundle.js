@@ -4,11 +4,9 @@ import chalk from 'chalk'
 import { prepareRoutes } from '../static'
 import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
-import { copyPublicFolder } from '../utils'
+import { copyPublicFolder, time, timeEnd } from '../utils'
 
-export default async function build ({
-  config, staging, debug, isCLI, silent = !isCLI,
-} = {}) {
+export default async function build ({ config, staging, debug } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
@@ -24,47 +22,47 @@ export default async function build ({
   }
 
   // Allow config location to be overriden
-  config = getConfig(config)
+  config = await getConfig(config)
 
   if (debug) {
     console.log('DEBUG - Resolved static.config.js:')
     console.log(config)
   }
-
-  if (!silent) console.log('')
+  console.log('')
 
   if (!config.siteRoot) {
-    if (!silent) {
-      console.log(
-        "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
-      )
-    }
-    if (!silent) console.log('')
+    console.log(
+      "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
+    )
+    console.log('')
   }
 
   // Remove the DIST folder
+  console.log('=> Cleaning dist...')
+  time(chalk.green('=> [\u2713] Dist cleaned'))
   await fs.remove(config.paths.DIST)
+  timeEnd(chalk.green('=> [\u2713] Dist cleaned'))
 
-  // Create assets folder
+  // Empty ASSETS folder
   if (config.paths.ASSETS && config.paths.ASSETS !== config.paths.DIST) {
+    console.log('=> Cleaning assets...')
+    time(chalk.green('=> [\u2713] Assets cleaned'))
     await fs.emptyDir(config.paths.ASSETS)
+    timeEnd(chalk.green('=> [\u2713] Assets cleaned'))
   }
 
-  if (!silent) console.log('=> Building Routes...')
-  if (!silent) console.time(chalk.green('=> [\u2713] Routes Built'))
-  await prepareRoutes(config, { dev: false })
-  if (!silent) console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
+  config = await prepareRoutes({ config, opts: { dev: false } })
 
-  if (!silent) console.log('=> Copying public directory...')
-  if (!silent) console.time(chalk.green('=> [\u2713] Public directory copied'))
+  console.log('=> Copying public directory...')
+  time(chalk.green('=> [\u2713] Public directory copied'))
   copyPublicFolder(config)
-  if (!silent) console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
+  timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
   // Build static pages and JSON
-  if (!silent) console.log('=> Bundling App...')
-  if (!silent) console.time(chalk.green('=> [\u2713] App Bundled'))
+  console.log('=> Bundling App...')
+  time(chalk.green('=> [\u2713] App Bundled'))
   await buildProductionBundles({ config })
-  if (!silent) console.timeEnd(chalk.green('=> [\u2713] App Bundled'))
+  timeEnd(chalk.green('=> [\u2713] App Bundled'))
 
   if (config.bundleAnalyzer) {
     await new Promise(() => {})

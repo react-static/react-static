@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { Router } from 'react-static'
-import { hot } from 'react-hot-loader'
+
 //
 import Routes from 'react-static-routes'
 import Header from './components/Header'
@@ -18,4 +18,4 @@ const App = () => (
   </Router>
 )
 
-export default hot(module)(App)
+export default App

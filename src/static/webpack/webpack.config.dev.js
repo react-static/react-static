@@ -6,14 +6,14 @@ import path from 'path'
 
 import rules from './rules'
 
-process.traceDeprecation = true
-
 export default function ({ config }) {
   const {
     ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
   } = config.paths
 
-  process.env.REACT_STATIC_BASEPATH = config.basePath
+  process.env.REACT_STATIC_BASEPATH = config.devBasePath
+  process.env.REACT_STATIC_PUBLIC_PATH = config.devBasePath ? `/${config.devBasePath}/` : '/'
+  process.env.REACT_STATIC_ASSETS_PATH = config.devBasePath ? `/${config.devBasePath}/` : '/'
 
   return {
     mode: 'development',
@@ -23,7 +23,6 @@ export default function ({ config }) {
     },
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
-      require.resolve('react-hot-loader'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
       path.resolve(ROOT, config.entry),
@@ -32,7 +31,7 @@ export default function ({ config }) {
       filename: '[name].js', // never hash dev code
       chunkFilename: 'templates/[name].js',
       path: DIST,
-      publicPath: config.publicPath,
+      publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
     },
     module: {
       rules: rules({ config, stage: 'dev' }),
@@ -54,11 +53,11 @@ export default function ({ config }) {
         template: `!!raw-loader!${HTML_TEMPLATE}`,
       }),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
       new CaseSensitivePathsPlugin(),
       new ExtractCssChunks({ hot: true }),
     ],
-    devtool: 'eval-source-map',
+    devtool: 'cheap-module-source-map',
   }
 }

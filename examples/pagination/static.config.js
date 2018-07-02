@@ -21,14 +21,6 @@ export default {
     })
 
     return [
-      {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      {
-        path: '/about',
-        component: 'src/containers/About',
-      },
       // Make an index route for every 5 blog posts
       ...makePageRoutes({
         items: posts,
@@ -59,7 +51,6 @@ export default {
       }),
       {
         path: '/users',
-        component: 'src/containers/Users',
         getData: () => ({
           users,
         }),
@@ -71,10 +62,6 @@ export default {
             posts: postsByUserID[user.id],
           }),
         })),
-      },
-      {
-        path: '404',
-        component: 'src/containers/404',
       },
     ]
   },

@@ -24,21 +24,17 @@ const query = `{
 
 export default {
   getRoutes: async () => {
-    const {
-      allPosts,
-      allAuthors,
-    } = await request(GRAPHCMS_API, query)
+    const { allPosts, allAuthors } = await request(GRAPHCMS_API, query)
 
     return [
       {
         path: '/',
-        component: 'src/pages/Home',
         getData: () => ({
           allPosts,
         }),
         children: allPosts.map(post => ({
           path: `/post/${post.slug}`,
-          component: 'src/pages/Post',
+          component: 'src/containers/Post',
           getData: () => ({
             post,
           }),
@@ -46,14 +42,9 @@ export default {
       },
       {
         path: '/about',
-        component: 'src/pages/About',
         getData: () => ({
           allAuthors,
         }),
-      },
-      {
-        path: '404',
-        component: 'src/pages/404',
       },
     ]
   },

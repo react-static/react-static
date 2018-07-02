@@ -1,6 +1,6 @@
 const arraySize = 10
 const routeSize = 100000
-const propCollision = 2
+const propCollision = 8
 
 console.log()
 console.log(

@@ -8,16 +8,7 @@ export default {
     const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     return [
       {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      {
-        path: '/about',
-        component: 'src/containers/About',
-      },
-      {
         path: '/blog',
-        component: 'src/containers/Blog',
         getData: () => ({
           posts,
         }),
@@ -28,10 +19,6 @@ export default {
             post,
           }),
         })),
-      },
-      {
-        path: '404',
-        component: 'src/containers/404',
       },
     ]
   },
@@ -54,9 +41,7 @@ export default {
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <style dangerouslySetInnerHTML={{ __html: renderMeta.glamStyles }} />
           </Head>
-          <Body>
-            {children}
-          </Body>
+          <Body>{children}</Body>
         </Html>
       )
     }

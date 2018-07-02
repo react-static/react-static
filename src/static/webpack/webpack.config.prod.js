@@ -8,7 +8,6 @@ import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import rules from './rules'
 
-
 function common (config) {
   const {
     ROOT, DIST, NODE_MODULES, SRC, ASSETS,
@@ -18,7 +17,6 @@ function common (config) {
   process.env.REACT_STATIC_BASEPATH = config.basePath
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
-
 
   const splitChunks = {
     chunks: 'all',
@@ -68,7 +66,7 @@ function common (config) {
       filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: ASSETS,
-      publicPath: config.assetsPath || '/',
+      publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
     },
     optimization: {
       minimize: true,

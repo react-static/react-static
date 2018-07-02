@@ -4,6 +4,8 @@ import { renderToString } from 'react-dom/server'
 import OpenPort from 'openport'
 import fs from 'fs-extra'
 import nodeGlob from 'glob'
+import { performance } from 'perf_hooks'
+import Progress from 'progress'
 //
 import { Html, Head, Body } from '../static/RootComponents'
 
@@ -69,5 +71,41 @@ export function glob (path, options = {}) {
       }
       resolve(files)
     })
+  )
+}
+
+const times = {}
+export function time (message) {
+  times[message] = performance.now() / 1000
+}
+export function timeEnd (message) {
+  if (times[message]) {
+    console.log(
+      `${message} (${Math.round((performance.now() / 1000 - times[message]) * 10) / 10}s)`
+    )
+    times[message] = null
+  }
+}
+
+export function debounce (func, wait, immediate) {
+  let timeout
+  return (...args) => {
+    const later = () => {
+      timeout = null
+      if (!immediate) func(...args)
+    }
+    const callNow = immediate && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+    if (callNow) func(...args)
+  }
+}
+
+export function progress (len, label) {
+  return new Progress(
+    `=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `,
+    {
+      total: len,
+    }
   )
 }

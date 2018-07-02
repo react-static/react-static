@@ -47,13 +47,11 @@ export const getSiteRoot = ({ stagingSiteRoot, siteRoot }) =>
   process.env.REACT_STATIC_STAGING === 'true' ? stagingSiteRoot : siteRoot
 
 export default async ({ config }) => {
-  const {
-    routes, publicPath, paths = {}, disableRoutePrefixing,
-  } = config
+  const { routes, paths = {}, disableRoutePrefixing } = config
 
   const { DIST } = paths
   const siteRoot = getSiteRoot(config)
-  const prefixPath = disableRoutePrefixing ? siteRoot : publicPath
+  const prefixPath = disableRoutePrefixing ? siteRoot : process.env.REACT_STATIC_PUBLICPATH
 
   if (!siteRoot) {
     return

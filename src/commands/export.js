@@ -3,9 +3,10 @@ import chalk from 'chalk'
 //
 import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import getConfig from '../static/getConfig'
+import { timeEnd, time } from '../utils'
 
 export default async ({
-  config, staging, debug, isCLI, silent = !isCLI,
+  config, staging, debug, isBuild,
 } = {}) => {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
@@ -24,15 +25,20 @@ export default async ({
   }
 
   // Allow config location to be overriden
-  if (config && typeof config === 'object' && !config.generated) {
-    config = getConfig(config)
+  if (!isBuild) {
+    config = await getConfig(config)
+    // Restore the process environment variables that were present during the build
+    const bundledEnv = await fs.readJson(`${config.paths.DIST}/bundle-environment.json`)
+    Object.keys(bundledEnv).forEach(key => {
+      if (typeof process.env[key] === 'undefined') {
+        process.env[key] = bundledEnv[key]
+      }
+    })
+    config = await prepareRoutes({ config, opts: { dev: false } })
   }
 
   if (!config.routes) {
-    if (!silent) console.log('=> Building Routes...')
-    if (!silent) console.time(chalk.green('=> [\u2713] Routes Built'))
     await prepareRoutes(config, { dev: false })
-    if (!silent) console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
   }
 
   if (debug) {

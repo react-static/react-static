@@ -1,16 +1,16 @@
-import chalk from 'chalk'
 import fs from 'fs-extra'
 //
 import { prepareRoutes } from '../static'
 import { DefaultDocument } from '../static/RootComponents'
-import { startDevServer } from '../static/webpack'
+import { startDevServer, reloadRoutes } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { createIndexFilePlaceholder } from '../utils'
 //
 
-export default async function start ({
-  config, isCLI, debug, silent = !isCLI,
-} = {}) {
+let cleaned
+let indexCreated
+
+export default async function start ({ config, debug } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined') {
     process.env.NODE_ENV = 'development'
@@ -18,36 +18,44 @@ export default async function start ({
   process.env.REACT_STATIC_ENV = 'development'
   process.env.BABEL_ENV = 'development'
 
-  config = getConfig(config, { watch: true })
-  // Allow config location to be overriden
+  // Use callback style to subscribe to changes
+  await getConfig(config, async config => {
+    if (debug) {
+      console.log('DEBUG - Resolved static.config.js:')
+      console.log(config)
+    }
 
-  if (debug) {
-    console.log('DEBUG - Resolved static.config.js:')
-    console.log(config)
-  }
+    if (!cleaned) {
+      cleaned = true
+      // Clean the dist folder
+      await fs.remove(config.paths.DIST)
+    }
 
-  // Clean the dist folder
-  await fs.remove(config.paths.DIST)
+    // Get the site props
+    const siteData = await config.getSiteData({ dev: true })
 
-  // Get the site props
-  const siteData = await config.getSiteData({ dev: true })
+    // Resolve the base HTML template
+    const Component = config.Document || DefaultDocument
 
-  // Resolve the base HTML template
-  const Component = config.Document || DefaultDocument
+    if (!indexCreated) {
+      indexCreated = true
+      // Render an index.html placeholder
+      await createIndexFilePlaceholder({
+        config,
+        Component,
+        siteData,
+      })
+    }
 
-  // Render an index.html placeholder
-  await createIndexFilePlaceholder({
-    config,
-    Component,
-    siteData,
+    await prepareRoutes({ config, opts: { dev: true } }, async config => {
+      reloadRoutes()
+
+      // Build the JS bundle
+      await startDevServer({ config })
+    })
   })
 
-  // Build the dynamic routes file (react-static-routes)
-  if (!silent) console.log('=> Building Routes...')
-  console.time(chalk.green('=> [\u2713] Routes Built'))
-  await prepareRoutes(config, { dev: true })
-  console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
-
-  // Build the JS bundle
-  await startDevServer({ config })
+  await new Promise(() => {
+    // Do nothing, the user must exit this command
+  })
 }
