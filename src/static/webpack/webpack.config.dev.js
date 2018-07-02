@@ -11,9 +11,9 @@ export default function ({ config }) {
     ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
   } = config.paths
 
-  process.env.REACT_STATIC_BASEPATH = config.devBasePath
-  process.env.REACT_STATIC_PUBLIC_PATH = config.devBasePath ? `/${config.devBasePath}/` : '/'
-  process.env.REACT_STATIC_ASSETS_PATH = config.devBasePath ? `/${config.devBasePath}/` : '/'
+  process.env.REACT_STATIC_BASE_PATH = config.basePath
+  process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
+  process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
   return {
     mode: 'development',

@@ -14,7 +14,7 @@ function common (config) {
   } = config.paths
 
   process.env.REACT_STATIC_SITE_ROOT = config.siteRoot
-  process.env.REACT_STATIC_BASEPATH = config.basePath
+  process.env.REACT_STATIC_BASE_PATH = config.basePath
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 

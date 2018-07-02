@@ -1,4 +1,5 @@
 import React from 'react'
+import { pathJoin } from '../../utils/shared'
 
 const REGEX_FOR_SCRIPT = /<(\/)?(script)/gi
 
@@ -35,7 +36,7 @@ export const makeBodyWithMeta = ({
           key={script}
           defer
           type="text/javascript"
-          src={`${process.env.REACT_STATIC_PUBLICPATH}${script}`}
+          src={`/${pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script)}`}
         />
       ))}
   </body>

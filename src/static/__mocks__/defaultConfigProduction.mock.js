@@ -1,12 +1,12 @@
 export default {
   basePath: '',
-  devBasePath: '',
   entry: './root/src/index.js',
   extractCssChunks: false,
   inlineCss: false,
   outputFileRate: 10,
   paths: {
     DIST: './root/dist',
+    ASSETS: './root/dist',
     HTML_TEMPLATE: './root/dist/index.html',
     LOCAL_NODE_MODULES: './dirname/../../node_modules',
     NODE_MODULES: './root/node_modules',
@@ -18,6 +18,4 @@ export default {
   },
   prefetchRate: 3,
   siteRoot: '',
-  stagingBasePath: '',
-  stagingSiteRoot: '',
 }

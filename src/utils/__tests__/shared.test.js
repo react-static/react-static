@@ -1,4 +1,12 @@
-import { pathJoin, cleanPath, trimSlashes, cleanSlashes } from '../shared'
+import {
+  pathJoin,
+  cleanPath,
+  cleanSlashes,
+  cutPathToRoot,
+  trimLeadingSlashes,
+  trimTrailingSlashes,
+  trimDoubleSlashes,
+} from '../shared'
 
 describe('utils/shared', () => {
   describe('pathJoin()', () => {
@@ -18,10 +26,11 @@ describe('utils/shared', () => {
       expect(pathJoin('')).toEqual('/')
     })
   })
+
   describe('cleanPath()', () => {
-    const basePath = process.env.REACT_STATIC_BASEPATH
+    const basePath = process.env.REACT_STATIC_BASE_PATH
     beforeEach(() => {
-      process.env.REACT_STATIC_BASEPATH = 'base/path'
+      process.env.REACT_STATIC_BASE_PATH = 'base/path'
     })
 
     it('should return / for falsey path', () => {
@@ -41,44 +50,46 @@ describe('utils/shared', () => {
     })
 
     afterEach(() => {
-      process.env.REACT_STATIC_BASEPATH = basePath
+      process.env.REACT_STATIC_BASE_PATH = basePath
     })
   })
-  describe('trimSlashes()', () => {
-    it('should keep string with no slashes', () => {
-      expect(trimSlashes('foo')).toEqual('foo')
-    })
-    it('should trim edge slashes', () => {
-      expect(trimSlashes('/foo/')).toEqual('foo')
-    })
-    it('should only trim edge slashes', () => {
-      expect(trimSlashes('/foo/bar/')).toEqual('foo/bar')
-    })
-    it('should return empty string for no input', () => {
-      expect(trimSlashes()).toEqual('')
-    })
-    it('should return empty string for /', () => {
-      expect(trimSlashes('/')).toEqual('')
+
+  describe('cutPathToRoot', () => {
+    it('should return a root of the path', () => {
+      expect(cutPathToRoot('./root/path/to/')).toBe('./root')
     })
   })
+
+  describe('trimLeadingSlashes', () => {
+    it('should return a string with the leading slash trimmed', () => {
+      expect(trimLeadingSlashes('/path/to/')).toBe('path/to/')
+    })
+  })
+
+  describe('trimTrailingSlashes', () => {
+    it('should return a string with the trailing slash trimmed', () => {
+      expect(trimTrailingSlashes('/path/to/')).toBe('/path/to')
+    })
+  })
+
+  describe('trimDoubleSlashes', () => {
+    it('should return a string with double slashes trimmed', () => {
+      expect(trimDoubleSlashes('/path//to/')).toBe('/path/to/')
+    })
+  })
+
   describe('cleanSlashes()', () => {
     it('should keep string with no slashes', () => {
       expect(cleanSlashes('foo')).toEqual('foo')
     })
-    it('should replace // with /', () => {
-      expect(cleanSlashes('//')).toEqual('/')
+    it('should replace double slashes', () => {
+      expect(cleanSlashes('//')).toEqual('')
     })
-    it('should replace slashes at beginning', () => {
-      expect(cleanSlashes('//foo/bar/')).toEqual('/foo/bar/')
-    })
-    it('should replace slashes in middle', () => {
-      expect(cleanSlashes('/foo//bar/')).toEqual('/foo/bar/')
-    })
-    it('should replace slashes at end', () => {
-      expect(cleanSlashes('/foo/bar//')).toEqual('/foo/bar/')
+    it('should trim leading and trailing slashes', () => {
+      expect(cleanSlashes('/foo/bar/')).toEqual('foo/bar')
     })
     it('should replace multiple slashes', () => {
-      expect(cleanSlashes('///foo///bar///')).toEqual('/foo/bar/')
+      expect(cleanSlashes('/foo///bar/')).toEqual('foo/bar')
     })
     it('should return empty string for no input', () => {
       expect(cleanSlashes()).toEqual('')

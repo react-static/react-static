@@ -5,10 +5,7 @@ import nodePath from 'path'
 import chokidar from 'chokidar'
 
 import getDirname from '../utils/getDirname'
-
-const REGEX_TO_CUT_TO_ROOT = /(\..+?)\/.*/g
-const REGEX_TO_REMOVE_TRAILING_SLASH = /^\/{0,}/g
-const REGEX_TO_REMOVE_LEADING_SLASH = /\/{0,}$/g
+import { cleanSlashes, cutPathToRoot } from '../utils/shared'
 
 const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 // the default static.config.js location
@@ -17,11 +14,6 @@ const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
 )
 const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index.js'
-
-export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROOT, '$1')
-
-export const trimLeadingAndTrailingSlashes = (string = '') =>
-  string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '').replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
 
 export const buildConfigation = (config = {}) => {
   // path defaults
@@ -46,7 +38,7 @@ export const buildConfigation = (config = {}) => {
       ? resolvePath(config.paths.devDist || config.paths.dist)
       : resolvePath(config.paths.dist)
 
-  const ASSETS = nodePath.join(DIST, config.paths.assets)
+  const ASSETS = nodePath.resolve(DIST, config.paths.assets)
 
   const paths = {
     ROOT: config.paths.root,
@@ -62,6 +54,22 @@ export const buildConfigation = (config = {}) => {
     HTML_TEMPLATE: nodePath.join(DIST, 'index.html'),
     STATIC_DATA: nodePath.join(ASSETS, 'staticData'),
   }
+
+  let siteRoot = ''
+  let basePath = ''
+
+  if (process.env.REACT_STATIC_ENV === 'development') {
+    basePath = cleanSlashes(config.devBasePath)
+  } else if (process.env.REACT_STATIC_STAGING === 'true') {
+    siteRoot = cutPathToRoot(config.stagingSiteRoot, '$1')
+    basePath = cleanSlashes(config.stagingBasePath)
+  } else {
+    siteRoot = cutPathToRoot(config.siteRoot, '$1')
+    basePath = cleanSlashes(config.basePath)
+  }
+
+  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath || ''}`)}/`
+  const assetsPath = `${cleanSlashes(`${publicPath}/${config.paths.assets || ''}`)}/`
 
   // Defaults
   const finalConfig = {
@@ -79,11 +87,10 @@ export const buildConfigation = (config = {}) => {
     ...config,
     // Materialized Overrides
     paths,
-    siteRoot: cutPathToRoot(config.siteRoot, '$1'),
-    stagingSiteRoot: cutPathToRoot(config.stagingSiteRoot, '$1'),
-    basePath: trimLeadingAndTrailingSlashes(config.basePath),
-    stagingBasePath: trimLeadingAndTrailingSlashes(config.stagingBasePath),
-    devBasePath: trimLeadingAndTrailingSlashes(config.devBasePath),
+    siteRoot,
+    basePath,
+    publicPath,
+    assetsPath,
     extractCssChunks: config.extractCssChunks || false,
     inlineCss: config.inlineCss || false,
   }

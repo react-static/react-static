@@ -15,10 +15,10 @@ export default async function build ({ config: originalConfig, staging, debug } 
   process.env.BABEL_ENV = 'production'
 
   if (staging) {
-    process.env.REACT_STATIC_STAGING = true
+    process.env.REACT_STATIC_STAGING = 'true'
   }
   if (debug) {
-    process.env.REACT_STATIC_DEBUG = true
+    process.env.REACT_STATIC_DEBUG = 'true'
   }
 
   // Allow config location to be overriden

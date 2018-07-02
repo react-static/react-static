@@ -10,7 +10,7 @@ import Helmet from 'react-helmet'
 import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
 import glob from 'glob'
-import path from 'path'
+import nodePath from 'path'
 import fs from 'fs-extra'
 
 import getConfig from './getConfig'
@@ -28,8 +28,10 @@ process.on('message', async payload => {
     const { config: oldConfig, routes, defaultOutputFileRate } = payload
     // Get config again
     const config = await getConfig(oldConfig.originalConfig)
+
     // Use the node version of the app created with webpack
-    const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
+    const Comp = require(glob.sync(nodePath.resolve(config.paths.ASSETS, 'static.*.js'))[0]).default
+
     // Retrieve the document template
     const DocumentTemplate = config.Document || DefaultDocument
 
@@ -63,14 +65,6 @@ async function exportRoute ({
   const {
     sharedPropsHashes, templateID, localProps, allProps, path: routePath,
   } = route
-
-  const basePath =
-    process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
-  const hrefReplace = new RegExp(
-    `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
-    'gm'
-  )
-  const srcReplace = new RegExp(`(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`, 'gm')
 
   // This routeInfo will be saved to disk. It should only include the
   // localProps and hashes to construct all of the props later.
@@ -206,20 +200,26 @@ async function exportRoute ({
   // If the siteRoot is set and we're not in staging, prefix all absolute URL's
   // with the siteRoot
   if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
-    html = html.replace(hrefReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
+    const hrefReplace = new RegExp(
+      `(href=["'])\\/(${config.basePath ? `${config.basePath}\\/` : ''})?([^\\/])`,
+      'gm'
+    )
+
+    html = html.replace(hrefReplace, `$1${process.env.REACT_STATIC_PUBLIC_PATH}$3`)
   }
 
-  html = html.replace(srcReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
+  const srcReplace = new RegExp(`(src=["'])\\/(${config.basePath ? `${config.basePath}\\/` : ''})?([^\\/])`, 'gm')
+  html = html.replace(srcReplace, `$1${process.env.REACT_STATIC_PUBLIC_PATH}$3`)
 
   // If the route is a 404 page, write it directly to 404.html, instead of
   // inside a directory.
   const htmlFilename =
     route.path === '404'
-      ? path.join(config.paths.DIST, '404.html')
-      : path.join(config.paths.DIST, route.path, 'index.html')
+      ? nodePath.join(config.paths.DIST, '404.html')
+      : nodePath.join(config.paths.DIST, route.path, 'index.html')
 
   // Make the routeInfo sit right next to its companion html file
-  const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.json')
+  const routeInfoFilename = nodePath.join(config.paths.DIST, route.path, 'routeInfo.json')
 
   const res = await Promise.all([
     fs.outputFile(htmlFilename, html),

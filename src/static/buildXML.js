@@ -1,5 +1,5 @@
 import fs from 'fs-extra'
-import path from 'path'
+import nodePath from 'path'
 
 import { pathJoin } from '../utils/shared'
 
@@ -43,21 +43,17 @@ export const generateXML = ({ routes, prefixPath }) =>
     .map(makeGenerateRouteXML({ prefixPath }))
     .join('')}</urlset>`
 
-export const getSiteRoot = ({ stagingSiteRoot, siteRoot }) =>
-  process.env.REACT_STATIC_STAGING === 'true' ? stagingSiteRoot : siteRoot
-
 export default async ({ config }) => {
   const { routes, paths = {}, disableRoutePrefixing } = config
 
   const { DIST } = paths
-  const siteRoot = getSiteRoot(config)
-  const prefixPath = disableRoutePrefixing ? siteRoot : process.env.REACT_STATIC_PUBLICPATH
+  const prefixPath = disableRoutePrefixing ? config.siteRoot : process.env.REACT_STATIC_PUBLIC_PATH
 
-  if (!siteRoot) {
+  if (!config.siteRoot) {
     return
   }
 
   const xml = generateXML({ routes, prefixPath })
 
-  await fs.writeFile(path.join(DIST, 'sitemap.xml'), xml)
+  await fs.writeFile(nodePath.join(DIST, 'sitemap.xml'), xml)
 }

@@ -15,11 +15,11 @@ export default async ({
   process.env.BABEL_ENV = 'production'
 
   if (staging) {
-    process.env.REACT_STATIC_STAGING = true
+    process.env.REACT_STATIC_STAGING = 'true'
   }
 
   if (debug) {
-    process.env.REACT_STATIC_DEBUG = true
+    process.env.REACT_STATIC_DEBUG = 'true'
   }
 
   let config
@@ -62,7 +62,6 @@ export default async ({
     })
   } catch (e) {
     const PrettyError = require('pretty-error')
-    console.log()
     console.log(new PrettyError().render(e))
     process.exit(1)
   }

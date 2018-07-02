@@ -1,11 +1,46 @@
 export { poolAll, createPool } from 'swimmer'
 
+const REGEX_TO_CUT_TO_ROOT = /(\..+?)\/.*/g
+const REGEX_TO_REMOVE_LEADING_SLASH = /^\/{1,}/g
+const REGEX_TO_REMOVE_TRAILING_SLASH = /\/{1,}$/g
+const REGEX_TO_REMOVE_DOUBLE_SLASH = /\/{2,}/g
+
+export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROOT, '$1')
+
+export const trimLeadingSlashes = (string = '') => string.replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
+
+export const trimTrailingSlashes = (string = '') => string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '')
+
+export const trimDoubleSlashes = (string = '') => string.replace(REGEX_TO_REMOVE_DOUBLE_SLASH, '/')
+
+export const cleanSlashes = (string, options = {}) => {
+  if (!string) return ''
+
+  const { leading = true, trailing = true, double = true } = options
+  let cleanedString = string
+
+  if (leading) {
+    cleanedString = trimLeadingSlashes(cleanedString)
+  }
+
+  if (trailing) {
+    cleanedString = trimTrailingSlashes(cleanedString)
+  }
+
+  if (double) {
+    cleanedString = trimDoubleSlashes(cleanedString)
+  }
+
+  return cleanedString
+}
+
 export function pathJoin (...paths) {
-  let newPath = paths.map(trimSlashes).join('/')
+  let newPath = paths.map(cleanSlashes).join('/')
   if (!newPath || newPath === '/') {
     return '/'
   }
-  newPath = trimSlashes(newPath)
+
+  newPath = cleanSlashes(newPath)
   if (newPath.includes('?')) {
     newPath = newPath.substring(0, newPath.indexOf('?'))
   }
@@ -23,8 +58,8 @@ export function cleanPath (path) {
     path = path.replace(/#.*/, '')
     path = path.replace(/\?.*/, '')
   }
-  if (process.env.REACT_STATIC_BASEPATH) {
-    path = path.replace(new RegExp(`^\\/?${process.env.REACT_STATIC_BASEPATH}\\/`), '')
+  if (process.env.REACT_STATIC_BASE_PATH) {
+    path = path.replace(new RegExp(`^\\/?${process.env.REACT_STATIC_BASE_PATH}\\/`), '')
   }
   path = path || '/'
   return pathJoin(path)
@@ -46,20 +81,4 @@ export function deprecate (from, to) {
   console.warn(
     `React-Static deprecation notice: ${from} will be deprecated in favor of ${to} in the next major release.`
   )
-}
-
-export function trimSlashes (str) {
-  if (!str) {
-    return ''
-  }
-
-  return str.replace(/^\/{1,}/g, '').replace(/\/{1,}$/g, '')
-}
-
-export function cleanSlashes (str) {
-  if (!str) {
-    return ''
-  }
-
-  return str.replace(/\/{2,}/g, '/')
 }
