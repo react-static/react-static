@@ -5,7 +5,7 @@ import nodePath from 'path'
 import chokidar from 'chokidar'
 
 import getDirname from '../utils/getDirname'
-import { cleanSlashes, cutPathToRoot } from '../utils/shared'
+import { cleanSlashes, cutPathToRoot, isAbsoluteUrl } from '../utils/shared'
 
 const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 // the default static.config.js location
@@ -68,8 +68,12 @@ export const buildConfigation = (config = {}) => {
     basePath = cleanSlashes(config.basePath)
   }
 
-  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath || ''}`)}/`
-  const assetsPath = `${cleanSlashes(`${publicPath}/${config.paths.assets || ''}`)}/`
+  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`)}/`
+
+  let assetsPath = cleanSlashes(config.assetsPath || config.paths.assets)
+  if (assetsPath && !isAbsoluteUrl(assetsPath)) {
+    assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
+  }
 
   // Defaults
   const finalConfig = {

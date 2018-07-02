@@ -9,9 +9,18 @@ export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROO
 
 export const trimLeadingSlashes = (string = '') => string.replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
 
-export const trimTrailingSlashes = (string = '') => string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '')
+export const trimTrailingSlashes = (string = '') =>
+  string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '')
 
-export const trimDoubleSlashes = (string = '') => string.replace(REGEX_TO_REMOVE_DOUBLE_SLASH, '/')
+export const trimDoubleSlashes = (string = '') => {
+  if (isAbsoluteUrl(string)) {
+    const [scheme, path] = string.split('://')
+
+    return [scheme, path.replace(REGEX_TO_REMOVE_DOUBLE_SLASH, '/')].join('://')
+  }
+
+  return string.replace(REGEX_TO_REMOVE_DOUBLE_SLASH, '/')
+}
 
 export const cleanSlashes = (string, options = {}) => {
   if (!string) return ''
@@ -81,4 +90,12 @@ export function deprecate (from, to) {
   console.warn(
     `React-Static deprecation notice: ${from} will be deprecated in favor of ${to} in the next major release.`
   )
+}
+
+export function isAbsoluteUrl (url) {
+  if (typeof url !== 'string') {
+    return false
+  }
+
+  return /^[a-z][a-z0-9+.-]*:/.test(url)
 }

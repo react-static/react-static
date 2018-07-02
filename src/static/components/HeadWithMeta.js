@@ -1,5 +1,5 @@
 import React from 'react'
-import { pathJoin } from '../../utils/shared'
+import { isAbsoluteUrl, cleanSlashes, trimTrailingSlashes } from '../../utils/shared'
 
 const REGEX_FOR_STYLE_TAG = /<style>|<\/style>/gi
 
@@ -36,6 +36,10 @@ export const makeHeadWithMeta = ({
     })
   }
 
+  const assetsPath = isAbsoluteUrl(process.env.REACT_STATIC_ASSETS_PATH)
+    ? trimTrailingSlashes(process.env.REACT_STATIC_ASSETS_PATH)
+    : `/${cleanSlashes(process.env.REACT_STATIC_ASSETS_PATH)}`
+
   return (
     <head {...rest}>
       {head.base}
@@ -47,7 +51,7 @@ export const makeHeadWithMeta = ({
             key={`clientScript_${script}`}
             rel="preload"
             as="script"
-            href={`/${pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script)}`}
+            href={`${assetsPath}/${script}`}
           />
         ))}
       {renderLinkCSS &&
@@ -58,12 +62,12 @@ export const makeHeadWithMeta = ({
               key={`clientStyleSheetPreload_${styleSheet}`}
               rel="preload"
               as="style"
-              href={`/${pathJoin(process.env.REACT_STATIC_ASSETS_PATH, styleSheet)}`}
+              href={`${assetsPath}/${styleSheet}`}
             />,
             <link
               key={`clientStyleSheet_${styleSheet}`}
               rel="stylesheet"
-              href={`/${pathJoin(process.env.REACT_STATIC_ASSETS_PATH, styleSheet)}`}
+              href={`${assetsPath}/${styleSheet}`}
             />,
           ],
           []

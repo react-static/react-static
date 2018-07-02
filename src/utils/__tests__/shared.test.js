@@ -3,6 +3,7 @@ import {
   cleanPath,
   cleanSlashes,
   cutPathToRoot,
+  isAbsoluteUrl,
   trimLeadingSlashes,
   trimTrailingSlashes,
   trimDoubleSlashes,
@@ -93,6 +94,32 @@ describe('utils/shared', () => {
     })
     it('should return empty string for no input', () => {
       expect(cleanSlashes()).toEqual('')
+    })
+    it('should work for absolute path', () => {
+      expect(cleanSlashes('https://example.com/foo//bar/')).toEqual('https://example.com/foo/bar')
+    })
+  })
+  describe('isAbsoluteUrl()', () => {
+    it('should work for http', () => {
+      expect(isAbsoluteUrl('http://example.com')).toBeTruthy()
+    })
+    it('should work for https', () => {
+      expect(isAbsoluteUrl('https://example.com')).toBeTruthy()
+    })
+    it('should work for mailto', () => {
+      expect(isAbsoluteUrl('mailto://example.com')).toBeTruthy()
+    })
+    it('should work for file', () => {
+      expect(isAbsoluteUrl('file://example.com')).toBeTruthy()
+    })
+    it('shouldnt work for non url', () => {
+      expect(isAbsoluteUrl('/foo/bar')).toBeFalsy()
+    })
+    it('shouldnt work for empty input', () => {
+      expect(isAbsoluteUrl('')).toBeFalsy()
+    })
+    it('shouldnt work for undefined input', () => {
+      expect(isAbsoluteUrl()).toBeFalsy()
     })
   })
 })
