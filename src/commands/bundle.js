@@ -6,7 +6,7 @@ import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder, time, timeEnd } from '../utils'
 
-export default async function build ({ config, staging, debug } = {}) {
+export default async function build ({ config: originalConfig, staging, debug } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
@@ -22,7 +22,8 @@ export default async function build ({ config, staging, debug } = {}) {
   }
 
   // Allow config location to be overriden
-  config = await getConfig(config)
+  let config = await getConfig(originalConfig)
+  config.originalConfig = originalConfig
 
   if (debug) {
     console.log('DEBUG - Resolved static.config.js:')

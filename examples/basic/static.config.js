@@ -9,7 +9,6 @@ export default {
     return [
       {
         path: '/blog',
-        component: 'src/containers/Blog',
         getData: () => ({
           posts,
         }),

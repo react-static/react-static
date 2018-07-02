@@ -1,12 +1,10 @@
 import fs from 'fs-extra'
-import chalk from 'chalk'
 //
 import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import getConfig from '../static/getConfig'
-import { timeEnd, time } from '../utils'
 
 export default async ({
-  config, staging, debug, isBuild,
+  config: originalConfig, staging, debug, isBuild,
 } = {}) => {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
@@ -24,9 +22,12 @@ export default async ({
     process.env.REACT_STATIC_DEBUG = true
   }
 
+  let config
+
   // Allow config location to be overriden
   if (!isBuild) {
-    config = await getConfig(config)
+    config = await getConfig(originalConfig)
+    config.originalConfig = originalConfig
     // Restore the process environment variables that were present during the build
     const bundledEnv = await fs.readJson(`${config.paths.DIST}/bundle-environment.json`)
     Object.keys(bundledEnv).forEach(key => {
@@ -35,6 +36,8 @@ export default async ({
       }
     })
     config = await prepareRoutes({ config, opts: { dev: false } })
+  } else {
+    config = originalConfig
   }
 
   if (!config.routes) {
@@ -59,7 +62,7 @@ export default async ({
     })
   } catch (e) {
     const PrettyError = require('pretty-error')
-    console.log() // new line
+    console.log()
     console.log(new PrettyError().render(e))
     process.exit(1)
   }

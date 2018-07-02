@@ -1,32 +1,23 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger */
 
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import fs from 'fs-extra'
-import glob from 'glob'
 import path from 'path'
-import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
-import { ReportChunks } from 'react-universal-component'
 import chalk from 'chalk'
-import flushChunks from 'webpack-flush-chunks'
-
-import { makeHtmlWithMeta } from './components/HtmlWithMeta'
-import { makeHeadWithMeta } from './components/HeadWithMeta'
-import { makeBodyWithMeta } from './components/BodyWithMeta'
+import OS from 'os'
+import { fork } from 'child_process'
 
 import generateRoutes from './generateRoutes'
 import getRoutes from './getRoutes'
-import { DefaultDocument } from './RootComponents'
 import buildXMLandRSS from './buildXML'
 import { progress, time, timeEnd } from '../utils'
 import { poolAll } from '../utils/shared'
-import Redirect from '../client/components/Redirect'
 
 export { buildXMLandRSS }
 
 const defaultOutputFileRate = 100
+
+const cores = Math.max(OS.cpus().length, 1)
 
 export const extractTemplates = async config => {
   console.log('=> Building Templates')
@@ -192,194 +183,58 @@ export const fetchRoutes = async config => {
   )
   timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 
-  exportSharedRouteData(config, sharedProps)
+  return exportSharedRouteData(config, sharedProps)
 }
 
 const buildHTML = async ({ config, siteData, clientStats }) => {
-  // Use the node version of the app created with webpack
-  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
-
-  // Retrieve the document template
-  const DocumentTemplate = config.Document || DefaultDocument
-
   console.log('=> Exporting HTML...')
-
   const htmlProgress = progress(config.routes.length)
-
   time(chalk.green('=> [\u2713] HTML Exported'))
 
-  const basePath =
-    process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
-  const hrefReplace = new RegExp(
-    `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
-    'gm'
-  )
-  const srcReplace = new RegExp(`(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`, 'gm')
+  const exporters = []
+  for (let i = 0; i < cores; i++) {
+    exporters.push(
+      fork(require.resolve('./exportRoute'), [], {
+        env: {
+          ...process.env,
+          REACT_STATIC_SLAVE: 'true',
+        },
+      })
+    )
+  }
 
-  await poolAll(
-    config.routes.map(route => async () => {
-      const {
-        sharedPropsHashes, templateID, localProps, allProps, path: routePath,
-      } = route
+  const exporterRoutes = exporters.map(() => [])
 
-      // This routeInfo will be saved to disk. It should only include the
-      // localProps and hashes to construct all of the props later.
-      const routeInfo = {
-        path: routePath,
-        templateID,
-        sharedPropsHashes,
-        localProps,
-      }
+  config.routes.forEach((route, i) => {
+    exporterRoutes[i % exporterRoutes.length].push(route)
+  })
 
-      // This embeddedRouteInfo will be inlined into the HTML for this route.
-      // It should only include the full props, not the partials.
-      const embeddedRouteInfo = {
-        ...routeInfo,
-        localProps: null,
-        allProps,
-        siteData,
-      }
-
-      // Inject allProps into static build
-      class InitialPropsContext extends Component {
-        static childContextTypes = {
-          routeInfo: PropTypes.object,
-          staticURL: PropTypes.string,
-        }
-        getChildContext () {
-          return {
-            routeInfo: embeddedRouteInfo,
-            staticURL: route.path === '/' ? route.path : `/${route.path}`,
-          }
-        }
-        render () {
-          return this.props.children
-        }
-      }
-
-      // Make a place to collect chunks, meta info and head tags
-      const renderMeta = {}
-      const chunkNames = []
-      let head = {}
-      let clientScripts = []
-      let clientStyleSheets = []
-      let clientCss = {}
-
-      let FinalComp
-
-      if (route.redirect) {
-        FinalComp = () => <Redirect fromPath={route.path} to={route.redirect} />
-      } else {
-        FinalComp = props => (
-          <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
-            <InitialPropsContext>
-              <Comp {...props} />
-            </InitialPropsContext>
-          </ReportChunks>
-        )
-      }
-
-      const renderToStringAndExtract = comp => {
-        // Rend the app to string!
-        const appHtml = renderToString(comp)
-        const { scripts, stylesheets, css } = flushChunks(clientStats, {
-          chunkNames,
+  await Promise.all(
+    exporters.map((exporter, i) => {
+      const routes = exporterRoutes[i]
+      return new Promise((resolve, reject) => {
+        exporter.send({
+          config,
+          routes,
+          siteData,
+          clientStats,
+          defaultOutputFileRate,
         })
-
-        clientScripts = scripts
-        clientStyleSheets = stylesheets
-        clientCss = css
-        // Extract head calls using Helmet synchronously right after renderToString
-        // to not introduce any race conditions in the meta data rendering
-        const helmet = Helmet.renderStatic()
-        head = {
-          htmlProps: helmet.htmlAttributes.toComponent(),
-          bodyProps: helmet.bodyAttributes.toComponent(),
-          base: helmet.base.toComponent(),
-          link: helmet.link.toComponent(),
-          meta: helmet.meta.toComponent(),
-          noscript: helmet.noscript.toComponent(),
-          script: helmet.script.toComponent(),
-          style: helmet.style.toComponent(),
-          title: helmet.title.toComponent(),
-        }
-
-        return appHtml
-      }
-
-      let appHtml
-
-      try {
-        // Allow extractions of meta via config.renderToString
-        appHtml = await config.renderToHtml(
-          renderToStringAndExtract,
-          FinalComp,
-          renderMeta,
-          clientStats
-        )
-      } catch (error) {
-        error.message = `Failed exporting HTML for URL ${route.path} (${route.component}): ${
-          error.message
-        }`
-        throw error
-      }
-
-      const DocumentHtml = renderToStaticMarkup(
-        <DocumentTemplate
-          Html={makeHtmlWithMeta({ head })}
-          Head={makeHeadWithMeta({
-            head,
-            route,
-            clientScripts,
-            config,
-            clientStyleSheets,
-            clientCss,
-          })}
-          Body={makeBodyWithMeta({
-            head,
-            route,
-            embeddedRouteInfo,
-            clientScripts,
-            config,
-          })}
-          siteData={siteData}
-          routeInfo={embeddedRouteInfo}
-          renderMeta={renderMeta}
-        >
-          <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
-        </DocumentTemplate>
-      )
-
-      // Render the html for the page inside of the base document.
-      let html = `<!DOCTYPE html>${DocumentHtml}`
-
-      // If the siteRoot is set and we're not in staging, prefix all absolute URL's
-      // with the siteRoot
-      if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
-        html = html.replace(hrefReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
-      }
-
-      html = html.replace(srcReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
-
-      // If the route is a 404 page, write it directly to 404.html, instead of
-      // inside a directory.
-      const htmlFilename =
-        route.path === '404'
-          ? path.join(config.paths.DIST, '404.html')
-          : path.join(config.paths.DIST, route.path, 'index.html')
-
-      // Make the routeInfo sit right next to its companion html file
-      const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.json')
-
-      const res = await Promise.all([
-        fs.outputFile(htmlFilename, html),
-        !route.redirect ? fs.outputJson(routeInfoFilename, routeInfo) : Promise.resolve(),
-      ])
-      htmlProgress.tick()
-      return res
-    }),
-    Number(config.outputFileRate) || defaultOutputFileRate
+        exporter.on('message', ({ type, err }) => {
+          if (err) {
+            reject(err)
+          }
+          if (type === 'tick') {
+            htmlProgress.tick()
+          }
+          if (type === 'done') {
+            resolve()
+          }
+        })
+      })
+    })
   )
+
   timeEnd(chalk.green('=> [\u2713] HTML Exported'))
 }
 
