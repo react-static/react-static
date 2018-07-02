@@ -3,7 +3,7 @@
 import nodePath from 'path'
 import chokidar from 'chokidar'
 
-import { glob, debounce, progress } from '../utils'
+import { glob, debounce } from '../utils'
 import { pathJoin } from '../utils/shared'
 
 let watcher
@@ -16,10 +16,6 @@ export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROO
 export const trimLeadingAndTrailingSlashes = (string = '') =>
   string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '').replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
 
-const consoleWarningForRouteWithoutNoIndex = route =>
-  route.noIndex &&
-  console.warn(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
-
 const countRoutes = (routes, count = 0) => {
   routes.forEach(route => {
     count += 1
@@ -30,10 +26,8 @@ const countRoutes = (routes, count = 0) => {
   return count
 }
 
-export const normalizeRoute = (route, parent = {}, config = {}, bar) => {
-  const { children, ...routeWithOutChildren } = route
+export const normalizeRoute = (route, parent = {}) => {
   const { path: parentPath = '/' } = parent
-  const { tree: keepRouteChildren = false } = config
 
   if (!route.path) {
     throw new Error(`No path defined for route: ${JSON.stringify(route)}`)
@@ -42,10 +36,12 @@ export const normalizeRoute = (route, parent = {}, config = {}, bar) => {
   const originalRoutePath = pathJoin(route.path)
   const routePath = pathJoin(parentPath, route.path)
 
-  consoleWarningForRouteWithoutNoIndex(route)
+  if (route.noIndex) {
+    console.warn(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
+  }
 
   const normalizedRoute = {
-    ...(keepRouteChildren ? route : routeWithOutChildren),
+    ...route,
     path: routePath,
     originalPath: originalRoutePath,
     noindex: route.noindex || parent.noindex || route.noIndex,
@@ -69,11 +65,17 @@ export const normalizeAllRoutes = (routes = [], config) => {
     // if structure is nested (tree === true) normalizedRoute will
     // have children otherwise we fall back to the original route children
     // Normalize the route
-    const normalizedRoute = normalizeRoute(route, parent, config)
+    let normalizedRoute = normalizeRoute(route, parent)
 
     // we check an array of paths to see
     // if route path already existings
     const existingRoute = existingRoutes[normalizedRoute.path]
+
+    if (normalizedRoute.children) {
+      normalizedRoute.children = normalizedRoute.children.map(childRoute =>
+        recurseRoute(childRoute, normalizedRoute)
+      )
+    }
 
     // If the route exists and is a page route, we need to decorate the
     // page route with this routes information
@@ -83,6 +85,7 @@ export const normalizeAllRoutes = (routes = [], config) => {
           ...normalizedRoute,
           component: existingRoute.component,
         })
+        normalizedRoute = existingRoute
       } else if (!config.disableDuplicateRoutesWarning) {
         // Otherwise, we shouldn't have duplicate routes
         console.warn(
@@ -103,23 +106,21 @@ export const normalizeAllRoutes = (routes = [], config) => {
       has404 = true
     }
 
-    normalizedRoute.children = normalizedRoute.children
-      ? normalizedRoute.children.map(childRoute => recurseRoute(childRoute, parent))
-      : normalizedRoute.children
-
     return normalizedRoute
   }
 
   let normalizedRoutes = routes.map(route => recurseRoute(route))
 
-  if (config.tree) {
+  if (!config.tree) {
     const flatRoutes = []
     const recurseRoute = route => {
       flatRoutes.push(route)
       if (route.children) {
         route.children.forEach(recurseRoute)
       }
+      route.children = undefined
     }
+    normalizedRoutes.forEach(recurseRoute)
     normalizedRoutes = flatRoutes
   }
 
