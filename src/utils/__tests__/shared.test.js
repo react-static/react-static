@@ -7,6 +7,7 @@ import {
   trimLeadingSlashes,
   trimTrailingSlashes,
   trimDoubleSlashes,
+  makePathAbsolute,
 } from '../shared'
 
 describe('utils/shared', () => {
@@ -120,6 +121,17 @@ describe('utils/shared', () => {
     })
     it('shouldnt work for undefined input', () => {
       expect(isAbsoluteUrl()).toBeFalsy()
+    })
+  })
+  describe('makePathAbsolute()', () => {
+    it('should return / if no input', () => {
+      expect(makePathAbsolute()).toEqual('/')
+    })
+    it('should return if already absolute', () => {
+      expect(makePathAbsolute('http://example.com')).toEqual('http://example.com')
+    })
+    it('should make path absolute', () => {
+      expect(makePathAbsolute('foo/bar')).toEqual('/foo/bar')
     })
   })
 })

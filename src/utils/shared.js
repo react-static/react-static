@@ -99,3 +99,15 @@ export function isAbsoluteUrl (url) {
 
   return /^[a-z][a-z0-9+.-]*:/.test(url)
 }
+
+export function makePathAbsolute (path) {
+  if (typeof path !== 'string') {
+    return '/'
+  }
+
+  if (isAbsoluteUrl(path)) {
+    return path
+  }
+
+  return `/${trimLeadingSlashes(path)}`
+}

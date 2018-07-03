@@ -15,7 +15,7 @@ import fs from 'fs-extra'
 
 import getConfig from './getConfig'
 import { DefaultDocument } from './RootComponents'
-import { poolAll } from '../utils/shared'
+import { poolAll, makePathAbsolute } from '../utils/shared'
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
 import { makeHeadWithMeta } from './components/HeadWithMeta'
 import { makeBodyWithMeta } from './components/BodyWithMeta'
@@ -199,17 +199,18 @@ async function exportRoute ({
 
   // If the siteRoot is set and we're not in staging, prefix all absolute URL's
   // with the siteRoot
+  const publicPath = makePathAbsolute(process.env.REACT_STATIC_PUBLIC_PATH)
   if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
     const hrefReplace = new RegExp(
       `(href=["'])\\/(${config.basePath ? `${config.basePath}\\/` : ''})?([^\\/])`,
       'gm'
     )
 
-    html = html.replace(hrefReplace, `$1${process.env.REACT_STATIC_PUBLIC_PATH}$3`)
+    html = html.replace(hrefReplace, `$1${publicPath}$3`)
   }
 
   const srcReplace = new RegExp(`(src=["'])\\/(${config.basePath ? `${config.basePath}\\/` : ''})?([^\\/])`, 'gm')
-  html = html.replace(srcReplace, `$1${process.env.REACT_STATIC_PUBLIC_PATH}$3`)
+  html = html.replace(srcReplace, `$1${publicPath}$3`)
 
   // If the route is a 404 page, write it directly to 404.html, instead of
   // inside a directory.

@@ -1,5 +1,5 @@
 import React from 'react'
-import { isAbsoluteUrl, cleanSlashes, trimTrailingSlashes } from '../../utils/shared'
+import { pathJoin, makePathAbsolute } from '../../utils/shared'
 
 const REGEX_FOR_SCRIPT = /<(\/)?(script)/gi
 
@@ -21,29 +21,18 @@ export const makeBodyWithMeta = ({
   // It should only include the full props, not the partials.
   embeddedRouteInfo,
   clientScripts = [],
-}) => ({ children, ...rest }) => {
-  const assetsPath = isAbsoluteUrl(process.env.REACT_STATIC_ASSETS_PATH)
-    ? trimTrailingSlashes(process.env.REACT_STATIC_ASSETS_PATH)
-    : `/${cleanSlashes(process.env.REACT_STATIC_ASSETS_PATH)}`
-
-  return (
-    <body {...head.bodyProps} {...rest}>
-      {children}
-      {!route.redirect && (
-        <script
-          type="text/javascript"
-          dangerouslySetInnerHTML={generateRouteInformation(embeddedRouteInfo)}
-        />
-      )}
-      {!route.redirect &&
-        clientScripts.map(script => (
-          <script
-            key={script}
-            defer
-            type="text/javascript"
-            src={`${assetsPath}/${script}`}
-          />
-        ))}
-    </body>
-  )
-}
+}) => ({ children, ...rest }) => (
+  <body {...head.bodyProps} {...rest}>
+    {children}
+    {!route.redirect && (
+      <script
+        type="text/javascript"
+        dangerouslySetInnerHTML={generateRouteInformation(embeddedRouteInfo)}
+      />
+    )}
+    {!route.redirect &&
+      clientScripts.map(script => (
+        <script key={script} defer type="text/javascript" src={makePathAbsolute(pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script))} />
+      ))}
+  </body>
+)
