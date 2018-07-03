@@ -35,26 +35,27 @@ process.on('message', async payload => {
 
     await poolAll(
       routes.map(route => async () => {
-        try {
-          await exportRoute({
-            ...payload,
-            config,
-            route,
-            Comp,
-            DocumentTemplate,
-          })
+        await exportRoute({
+          ...payload,
+          config,
+          route,
+          Comp,
+          DocumentTemplate,
+        })
+        if (process.connected) {
           process.send({ type: 'tick' })
-        } catch (err) {
-          process.send({ type: 'error', err })
-          process.exit(1)
         }
       }),
       Number(config.outputFileRate) || defaultOutputFileRate
     )
+    if (process.connected) {
+      process.send({ type: 'done' })
+    }
   } catch (err) {
-    process.send({ type: 'error', err })
+    if (process.connected) {
+      process.send({ type: 'error', err })
+    }
   }
-  process.send({ type: 'done' })
 })
 
 async function exportRoute ({

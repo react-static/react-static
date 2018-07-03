@@ -23,7 +23,7 @@
     "buildDocs": "cd www && yarn && yarn build",
     "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "serveDocs": "serve www/dist -p 3000",
-    "test": "yarn build && yarn unitTest && yarn lint && yarn test-sample-build",
+    "test": "yarn build && yarn unitTest && yarn lint",
     "lint": "eslint src examples test",
     "unitTest": "NODE_ENV=test yarn jest src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",

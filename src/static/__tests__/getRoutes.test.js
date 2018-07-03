@@ -1,7 +1,8 @@
-import path from 'path'
+// import path from 'path'
 
-import getConfig from '../getConfig'
-import getRoutes, { normalizeRoute } from '../getRoutes'
+// import getConfig from '../getConfig'
+// import getRoutes, { normalizeRoute } from '../getRoutes'
+import { normalizeRoute } from '../getRoutes'
 
 jest.mock('../../utils/getDirname', () => () => './dirname/')
 

@@ -164,6 +164,7 @@ export const fetchRoutes = async config => {
 
   console.log('=> Exporting Route Data...')
   time(chalk.green('=> [\u2713] Route Data Exported'))
+  const dataWriteProgress = progress(config.routes.length)
   await poolAll(
     config.routes.map(route => async () => {
       // Loop through the props and build the prop maps
@@ -178,6 +179,7 @@ export const fetchRoutes = async config => {
           route.localProps[key] = value
         }
       })
+      dataWriteProgress.tick()
     }),
     Number(config.outputFileRate) || defaultOutputFileRate
   )
@@ -187,7 +189,7 @@ export const fetchRoutes = async config => {
 }
 
 const buildHTML = async ({ config, siteData, clientStats }) => {
-  console.log('=> Exporting HTML...')
+  console.log(`=> Exporting HTML (${cores} workers)...`)
   const htmlProgress = progress(config.routes.length)
   time(chalk.green('=> [\u2713] HTML Exported'))
 
