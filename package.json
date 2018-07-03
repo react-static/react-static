@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "6.0.0-beta.0",
+  "version": "6.0.0-beta.2",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -15,7 +15,7 @@
   "scripts": {
     "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' --source-maps && yarn prepGitignore",
     "start": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*' --source-maps ",
-    "postpublish": "git push --tags",
+    "postpublish": "sleep 2 && git push --tags",
     "prepublishOnly": "yarn build && yarn test",
     "publishNext": "yarn publish --tag next",
     "prepGitignore": "node scripts/prepGitignore.js",
@@ -23,12 +23,11 @@
     "buildDocs": "cd www && yarn && yarn build",
     "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "serveDocs": "serve www/dist -p 3000",
-    "test": "yarn unitTest && yarn lint && yarn run test-sample-build",
+    "test": "yarn build && yarn unitTest && yarn lint && yarn test-sample-build",
     "lint": "eslint src examples test",
     "unitTest": "NODE_ENV=test yarn jest src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
-    "test-large-build": "cd test/stress-test-routes && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build",
-    "test-sample-build": "cd test/minimal-website && yarn && rm -rf node_modules/react-static && ln -s -f ../../../ ./node_modules/react-static && ../../bin/react-static build"
+    "test-sample-build": "yarn link && cd examples/basic && yarn && yarn link react-static && yarn build"
   },
   "dependencies": {
     "@types/react": "^16.0.18",
