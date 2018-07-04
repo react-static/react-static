@@ -20,6 +20,7 @@
     "react": "^16.0.0",
     "react-apollo": "^2.0.0",
     "react-dom": "^16.0.0",
+    "react-hot-loader": "^4.3.3",
     "react-router": "^4.2.0",
     "react-static": "^5"
   },
