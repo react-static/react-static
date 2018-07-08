@@ -112,8 +112,12 @@ export const fetchRoutes = async config => {
   console.log('=> Fetching Route Data...')
   const dataProgress = progress(config.routes.length)
   time(chalk.green('=> [\u2713] Route Data Downloaded'))
-  await poolAll(
-    config.routes.map(route => async () => {
+
+  // Use a traditional for loop here for perf
+  const downloadTasks = []
+  for (let i = 0; i < config.routes.length; i++) {
+    const route = config.routes[i]
+    downloadTasks.push(async () => {
       // Fetch allProps from each route
       route.allProps = !!route.getData && (await route.getData({ route, dev: false }))
       // Default allProps (must be an object)
@@ -156,17 +160,19 @@ export const fetchRoutes = async config => {
           }
         })
       dataProgress.tick()
-    }),
-    Number(config.outputFileRate) || defaultOutputFileRate
-  )
-
+    })
+  }
+  await poolAll(downloadTasks, Number(config.outputFileRate) || defaultOutputFileRate)
   timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
 
   console.log('=> Exporting Route Data...')
   time(chalk.green('=> [\u2713] Route Data Exported'))
   const dataWriteProgress = progress(config.routes.length)
-  await poolAll(
-    config.routes.map(route => async () => {
+  // Use a traditional for loop for perf here
+  const writeTasks = []
+  for (let i = 0; i < config.routes.length; i++) {
+    const route = config.routes[i]
+    writeTasks.push(async () => {
       // Loop through the props and build the prop maps
       route.localProps = {}
       route.sharedPropsHashes = {}
@@ -180,7 +186,10 @@ export const fetchRoutes = async config => {
         }
       })
       dataWriteProgress.tick()
-    }),
+    })
+  }
+  await poolAll(
+    writeTasks,
     Number(config.outputFileRate) || defaultOutputFileRate
   )
   timeEnd(chalk.green('=> [\u2713] Route Data Exported'))

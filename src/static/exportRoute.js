@@ -23,6 +23,28 @@ import Redirect from '../client/components/Redirect'
 
 //
 
+let cachedBasePath
+let cachedHrefReplace
+let cachedSrcReplace
+
+// Inject allProps into static build
+class InitialPropsContext extends Component {
+  static childContextTypes = {
+    routeInfo: PropTypes.object,
+    staticURL: PropTypes.string,
+  }
+  getChildContext () {
+    const { embeddedRouteInfo, route } = this.props
+    return {
+      routeInfo: embeddedRouteInfo,
+      staticURL: route.path === '/' ? route.path : `/${route.path}`,
+    }
+  }
+  render () {
+    return this.props.children
+  }
+}
+
 process.on('message', async payload => {
   try {
     const { config: oldConfig, routes, defaultOutputFileRate } = payload
@@ -33,8 +55,10 @@ process.on('message', async payload => {
     // Retrieve the document template
     const DocumentTemplate = config.Document || DefaultDocument
 
-    await poolAll(
-      routes.map(route => async () => {
+    const tasks = []
+    for (let i = 0; i < routes.length; i++) {
+      const route = routes[i]
+      tasks.push(async () => {
         await exportRoute({
           ...payload,
           config,
@@ -45,9 +69,9 @@ process.on('message', async payload => {
         if (process.connected) {
           process.send({ type: 'tick' })
         }
-      }),
-      Number(config.outputFileRate) || defaultOutputFileRate
-    )
+      })
+    }
+    await poolAll(tasks, Number(config.outputFileRate) || defaultOutputFileRate)
     if (process.connected) {
       process.send({ type: 'done' })
     }
@@ -66,12 +90,23 @@ async function exportRoute ({
   } = route
 
   const basePath =
-    process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath
-  const hrefReplace = new RegExp(
-    `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
-    'gm'
-  )
-  const srcReplace = new RegExp(`(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`, 'gm')
+    cachedBasePath ||
+    (cachedBasePath =
+      process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath)
+
+  const hrefReplace =
+    cachedHrefReplace ||
+    (cachedHrefReplace = new RegExp(
+      `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
+      'gm'
+    ))
+
+  const srcReplace =
+    cachedSrcReplace ||
+    (cachedSrcReplace = new RegExp(
+      `(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
+      'gm'
+    ))
 
   // This routeInfo will be saved to disk. It should only include the
   // localProps and hashes to construct all of the props later.
@@ -91,23 +126,6 @@ async function exportRoute ({
     siteData,
   }
 
-  // Inject allProps into static build
-  class InitialPropsContext extends Component {
-    static childContextTypes = {
-      routeInfo: PropTypes.object,
-      staticURL: PropTypes.string,
-    }
-    getChildContext () {
-      return {
-        routeInfo: embeddedRouteInfo,
-        staticURL: route.path === '/' ? route.path : `/${route.path}`,
-      }
-    }
-    render () {
-      return this.props.children
-    }
-  }
-
   // Make a place to collect chunks, meta info and head tags
   const renderMeta = {}
   const chunkNames = []
@@ -123,7 +141,7 @@ async function exportRoute ({
   } else {
     FinalComp = props => (
       <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
-        <InitialPropsContext>
+        <InitialPropsContext embeddedRouteInfo={embeddedRouteInfo} route={route}>
           <Comp {...props} />
         </InitialPropsContext>
       </ReportChunks>
