@@ -188,7 +188,8 @@ export const fetchRoutes = async config => {
   return exportSharedRouteData(config, sharedProps)
 }
 
-const buildHTML = async ({ config, siteData, clientStats }) => {
+const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
+  const { routes, ...config } = oldConfig
   console.log(`=> Exporting HTML (${cores} workers)...`)
   const htmlProgress = progress(config.routes.length)
   time(chalk.green('=> [\u2713] HTML Exported'))
@@ -207,7 +208,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
 
   const exporterRoutes = exporters.map(() => [])
 
-  config.routes.forEach((route, i) => {
+  routes.forEach((route, i) => {
     exporterRoutes[i % exporterRoutes.length].push(route)
   })
 
