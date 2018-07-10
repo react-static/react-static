@@ -13,7 +13,7 @@ export default App
 if (typeof document !== 'undefined') {
   const renderMethod = module.hot ? ReactDOM.render : ReactDOM.hydrate || ReactDOM.render
   const render = Comp => {
-    renderMethod(<Comp />, document.getElementById('root'))
+    renderMethod(<AppContainer><Comp /></AppContainer>, document.getElementById('root'))
   }
 
   // Render!

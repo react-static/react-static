@@ -18,9 +18,11 @@ if (typeof document !== 'undefined') {
 
   const render = Comp => {
     renderMethod(
-      <MuiThemeProvider theme={muiTheme}>
-        <Comp />
-      </MuiThemeProvider>,
+      <AppContainer>
+        <MuiThemeProvider theme={muiTheme}>
+          <Comp />
+        </MuiThemeProvider>
+      </AppContainer>,
       document.getElementById('root')
     )
   }
