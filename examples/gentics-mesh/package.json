@@ -20,7 +20,6 @@
     "react-number-format": "^3.3.4",
     "react-router": "^4.2.0",
     "react-static": "^5",
-    "react-static-routes": "^1.0.0",
     "reactstrap": "^6.0.1",
     "string-strip-html": "^1.4.2"
   },

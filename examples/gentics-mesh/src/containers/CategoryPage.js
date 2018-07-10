@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react'
 import { withRouteData } from 'react-static'
 import { Row } from 'reactstrap'
-import VehicleCard from './VehicleCard'
+//
+import VehicleCard from 'components//VehicleCard'
 
 export default withRouteData(({ category, items }) => (
   <Fragment>
@@ -10,7 +11,7 @@ export default withRouteData(({ category, items }) => (
 
     <Row>
       {items.map(item => (
-        <div className="product-row col-xs-12 col-sm-6 col-md-4" key={item.uuid} >
+        <div className="product-row col-xs-12 col-sm-6 col-md-4" key={item.uuid}>
           <VehicleCard product={item} />
         </div>
       ))}

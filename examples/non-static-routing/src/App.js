@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router, Link, Route, Switch } from 'react-static'
 import universal from 'react-universal-component'
-import { hot } from 'react-hot-loader'
+
 //
 import Routes from 'react-static-routes'
 
@@ -28,4 +28,4 @@ const App = () => (
   </Router>
 )
 
-export default hot(module)(App)
+export default App

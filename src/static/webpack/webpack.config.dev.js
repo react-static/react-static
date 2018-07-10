@@ -1,6 +1,7 @@
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import path from 'path'
 
 import rules from './rules'
@@ -10,22 +11,26 @@ export default function ({ config }) {
     ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
   } = config.paths
 
-  config.publicPath = config.devBasePath ? `/${config.devBasePath}/` : '/'
-
+  process.env.REACT_STATIC_PUBLICPATH = config.devBasePath ? `/${config.devBasePath}/` : '/'
   process.env.REACT_STATIC_BASEPATH = config.devBasePath
 
   return {
+    mode: 'development',
+    optimization: {
+      noEmitOnErrors: true,
+      concatenateModules: true,
+    },
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
-      require.resolve('react-hot-loader'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
       path.resolve(ROOT, config.entry),
     ],
     output: {
-      filename: 'app.[hash:8].js',
+      filename: '[name].js', // never hash dev code
+      chunkFilename: 'templates/[name].js',
       path: DIST,
-      publicPath: config.publicPath || '/',
+      publicPath: process.env.REACT_STATIC_PUBLICPATH || '/',
     },
     module: {
       rules: rules({ config, stage: 'dev' }),
@@ -47,10 +52,11 @@ export default function ({ config }) {
         template: `!!raw-loader!${HTML_TEMPLATE}`,
       }),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
       new CaseSensitivePathsPlugin(),
+      new ExtractCssChunks({ hot: true }),
     ],
-    devtool: 'eval-source-map',
+    devtool: 'cheap-module-source-map',
   }
 }

@@ -21,7 +21,6 @@ export default {
       },
       {
         path: '/blog',
-        component: 'src/containers/Blog',
         getData: () => ({
           posts
         }),

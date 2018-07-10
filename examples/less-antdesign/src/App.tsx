@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Router } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
-import { hot } from 'react-hot-loader'
+
 //
 import Routes from 'react-static-routes'
 import { Layout, Menu, Icon } from 'antd'
@@ -97,4 +97,4 @@ class App extends React.Component {
   }
 }
 
-export default hot(module)(App)
+export default App

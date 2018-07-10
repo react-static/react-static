@@ -8,18 +8,16 @@ import autoCompletePrompt from 'inquirer-autocomplete-prompt'
 import matchSorter from 'match-sorter'
 import downloadGitRepo from 'download-git-repo'
 import { promisify } from 'util'
-import { ChalkColor } from '../utils'
+import { ChalkColor, time, timeEnd } from '../utils'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
-export default async function create ({
-  name, template, isCLI, silent = !isCLI,
-} = {}) {
+export default async function create ({ name, template, isCLI } = {}) {
   const prompts = []
 
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
 
-  if (!silent) console.log('')
+  console.log('')
 
   let exampleList = files.filter(d => !d.startsWith('.'))
   exampleList = ['basic', ...exampleList.filter(d => d !== 'basic')]
@@ -69,8 +67,8 @@ export default async function create ({
     throw new Error('A project template is required. Please use options.template to define one.')
   }
 
-  if (!silent) console.time(chalk.green(`=> [\u2713] Project "${name}" created`))
-  if (!silent) console.log('=> Creating new react-static project...')
+  time(chalk.green(`=> [\u2713] Project "${name}" created`))
+  console.log('=> Creating new react-static project...')
   const dest = path.resolve(process.cwd(), name)
 
   if (template === 'custom') {
@@ -103,26 +101,23 @@ export default async function create ({
   const isYarn = shouldUseYarn()
 
   if (isCLI) {
-    if (!silent) {
-      console.log(
-        `=> Installing dependencies with: ${
-          isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
-        }...`
-      )
-    }
+    console.log(
+      `=> Installing dependencies with: ${
+        isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
+      }...`
+    )
     // We install react-static separately to ensure we always have the latest stable release
     execSync(
       `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
         isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
       }`
     )
-    if (!silent) console.log('')
+    console.log('')
   }
 
-  if (!silent) console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
+  timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
 
-  if (!silent) {
-    console.log(`
+  console.log(`
   ${chalk.green('=> To get started:')}
 
     cd ${name} ${
@@ -143,47 +138,44 @@ export default async function create ({
   isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
 } serve ${chalk.green('- Test a production build locally')}
   `)
-  }
 
   async function fetchTemplate (template, dest) {
-    if (!silent) console.log('')
+    console.log('')
     if (template.startsWith('https://') || template.startsWith('git@')) {
       try {
-        if (!silent) console.log(chalk.green(`Downloading template: ${template}`))
+        console.log(chalk.green(`Downloading template: ${template}`))
         await git(`clone --recursive ${template} ${dest}`)
       } catch (err) {
-        if (!silent) console.log(chalk.red(`Download of ${template} failed`))
+        console.log(chalk.red(`Download of ${template} failed`))
         throw err
       }
     } else if (template.startsWith('http://')) {
       // use download-git-repo to fetch remote repository
       const getGitHubRepo = promisify(downloadGitRepo)
       try {
-        if (!silent) console.log(chalk.green(`Downloading template: ${template}`))
+        console.log(chalk.green(`Downloading template: ${template}`))
         await getGitHubRepo(template, dest)
       } catch (err) {
-        if (!silent) console.log(chalk.red(`Download of ${template} failed`))
+        console.log(chalk.red(`Download of ${template} failed`))
         throw err
       }
     } else {
       // If it's an exapmle template, copy it from there
       if (exampleList.includes(template)) {
         try {
-          if (!silent) console.log(chalk.green(`Using template: ${template}`))
+          console.log(chalk.green(`Using template: ${template}`))
           return fs.copy(path.resolve(__dirname, `../../examples/${template}`), dest)
         } catch (err) {
-          if (!silent) console.log(chalk.red(`Copying the template: ${template} failed`))
+          console.log(chalk.red(`Copying the template: ${template} failed`))
           throw err
         }
       }
       // template must be local, copy directly
       try {
-        if (!silent) console.log(chalk.green(`Using template from directory: ${template}`))
+        console.log(chalk.green(`Using template from directory: ${template}`))
         await fs.copy(path.resolve(__dirname, template), dest)
       } catch (err) {
-        if (!silent) {
-          console.log(chalk.red(`Copying the template from directory: ${template} failed`))
-        }
+        console.log(chalk.red(`Copying the template from directory: ${template} failed`))
         throw err
       }
     }

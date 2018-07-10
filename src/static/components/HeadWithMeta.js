@@ -46,7 +46,7 @@ export const makeHeadWithMeta = ({
             key={`clientScript_${script}`}
             rel="preload"
             as="script"
-            href={`${config.publicPath}${script}`}
+            href={`${process.env.REACT_STATIC_PUBLICPATH}${script}`}
           />
         ))}
       {renderLinkCSS &&
@@ -57,12 +57,12 @@ export const makeHeadWithMeta = ({
               key={`clientStyleSheetPreload_${styleSheet}`}
               rel="preload"
               as="style"
-              href={`${config.publicPath}${styleSheet}`}
+              href={`${process.env.REACT_STATIC_PUBLICPATH}${styleSheet}`}
             />,
             <link
               key={`clientStyleSheet_${styleSheet}`}
               rel="stylesheet"
-              href={`${config.publicPath}${styleSheet}`}
+              href={`${process.env.REACT_STATIC_PUBLICPATH}${styleSheet}`}
             />,
           ],
           []

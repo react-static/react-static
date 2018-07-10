@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router, onLoading } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
-import { hot } from 'react-hot-loader'
+
 import nprogress from 'nprogress'
 import { loadLanguages } from 'reprism'
 //
@@ -89,4 +89,4 @@ class App extends React.Component {
   }
 }
 
-export default hot(module)(App)
+export default App
