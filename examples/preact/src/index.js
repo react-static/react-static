@@ -11,7 +11,12 @@ export default App
 // Render your app
 if (typeof document !== 'undefined') {
   const render = Comp => {
-    ReactDOM.render(<Comp />, document.getElementById('root'))
+    ReactDOM.render(
+      <AppContainer>
+        <Comp />
+      </AppContainer>,
+      document.getElementById('root')
+    )
   }
 
   // Render!

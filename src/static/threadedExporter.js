@@ -11,7 +11,6 @@ import { DefaultDocument } from './RootComponents'
 import { poolAll } from '../utils/shared'
 import exportRoute from './exportRoute'
 
-
 process.on('message', async payload => {
   try {
     const { config: oldConfig, routes } = payload
