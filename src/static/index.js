@@ -193,7 +193,8 @@ export const fetchRoutes = async config => {
   return exportSharedRouteData(config, sharedProps)
 }
 
-const buildHTML = async ({ config, siteData, clientStats }) => {
+const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
+  const { routes, ...config } = oldConfig
   time(chalk.green('=> [\u2713] HTML Exported'))
 
   // Single threaded export
@@ -224,7 +225,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
 
     const exporterRoutes = exporters.map(() => [])
 
-    config.routes.forEach((route, i) => {
+    routes.forEach((route, i) => {
       exporterRoutes[i % exporterRoutes.length].push(route)
     })
 
