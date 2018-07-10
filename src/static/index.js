@@ -189,7 +189,7 @@ export const fetchRoutes = async config => {
 }
 
 const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
-  const { routes, ...config } = oldConfig;
+  const { routes, ...config } = oldConfig
   console.log(`=> Exporting HTML (${cores} workers)...`)
   const htmlProgress = progress(config.routes.length)
   time(chalk.green('=> [\u2713] HTML Exported'))
