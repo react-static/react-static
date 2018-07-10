@@ -22,8 +22,7 @@ if (typeof document !== 'undefined') {
 
   // Render!
   render(App)
-
-  // webpack Hot Module Replacement API
+  // Hot Module Replacement
   if (module.hot) {
     module.hot.accept('./App', () => render(require('./App').default))
   }
