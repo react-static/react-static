@@ -10,13 +10,13 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
+    "react-hot-loader": "^4.3.3",
     "axios": "^0.16.2",
     "bootstrap": "^4.1.1",
     "lodash": "^4.17.10",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-dotdotdot": "^1.2.3",
-    "react-hot-loader": "^4.0.0-beta.21",
     "react-number-format": "^3.3.4",
     "react-router": "^4.2.0",
     "react-static": "^5",

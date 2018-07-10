@@ -8,6 +8,7 @@
     "build": "react-static build && cordova run"
   },
   "dependencies": {
+    "react-hot-loader": "^4.3.3",
     "axios": "^0.16.2",
     "cordova-ios": "^4.5.3",
     "cordova-plugin-compat": "^1.2.0",
