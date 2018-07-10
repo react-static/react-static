@@ -4,11 +4,11 @@ For those node-heads out there, React Static provides a Node API for full progra
 
 The following exports are available via the `react-static/node` module:
 
-* [create](#create)
-* [start](#start)
-* [build](#build)
-* [rebuildRoutes](#rebuildroutes)
-* [makePageRoutes](#makePageRoutes)
+- [create](#create)
+- [start](#start)
+- [build](#build)
+- [rebuildRoutes](#rebuildroutes)
+- [makePageRoutes](#makePageRoutes)
 
 We recommended using the latest ES6 import syntax:
 
@@ -20,34 +20,31 @@ import { create, start, build } from 'react-static/node'
 
 Creates a new react-static project.
 
-* Arguments
-  * `name: string` - The name of your new project (relative to the current-working directory), or the full path to the new directory you wish to create
-  * `location: string`
-    * The name of the template in the `examples` directory
-    * The full URL of a public git repository
-    * The full path to a local directory
-  * `silent: boolean: true` - Set to true to show standard logging as you would normally see in the CLI
-* Returns a `Promise`
+- Arguments
+  - `name: string` - The name of your new project (relative to the current-working directory), or the full path to the new directory you wish to create
+  - `location: string`
+    - The name of the template in the `examples` directory
+    - The full URL of a public git repository
+    - The full path to a local directory
+- Returns a `Promise`
 
 ### `start`
 
 Starts the development server.
 
-* Arguments
-  * `config: object || string` - The config object to use, or the path of the `static.config.js` file you wish to use.
-  * `silent: boolean: true` - Set to true to show standard logging as you would normally see in the CLI
-* Returns a `Promise` that will **never resolve**. The process must be exited by the user to stop the server.
+- Arguments
+  - `config: object || string` - The config object to use, or the path of the `static.config.js` file you wish to use.
+- Returns a `Promise` that will **never resolve**. The process must be exited by the user to stop the server.
 
 ### `build`
 
 Builds your site for production. Outputs to a `dist` directory in your project.
 
-* Arguments
-  * `config: object || string` - The config object to use, or the path of the `static.config.js` file you wish to use.
-  * `staging` - When `true`, no siteRoot replacement or absolute URL optimizations are performed, allowing a production build of your site to function on localhost more easily. Use this argument to test a production build locally.
-  * `debug` - When `true`, your build will **not** be `uglified` allowing you to debug production errors (as long as they are unrelated to minification or uglification)
-  * `silent: boolean: true` - Set to true to show standard logging as you would normally see in the CLI
-* Returns a `Promise`
+- Arguments
+  - `config: object || string` - The config object to use, or the path of the `static.config.js` file you wish to use.
+  - `staging` - When `true`, no siteRoot replacement or absolute URL optimizations are performed, allowing a production build of your site to function on localhost more easily. Use this argument to test a production build locally.
+  - `debug` - When `true`, your build will **not** be `uglified` allowing you to debug production errors (as long as they are unrelated to minification or uglification)
+- Returns a `Promise`
 
 ### `rebuildRoutes`
 
@@ -85,21 +82,21 @@ export default {
 
 A utility function to aid in splitting an array of items into separate pages for use in your `static.config.js`
 
-* Arguments
-  * `options{}` - **Required**
-    * `items: Array` - **Required** - The array of items to split into pages
-    * `pageSize: Int` - **Required** - The number of items on each page
-    * `route{}: Object` - **Required**
-      * `path: String` - **Required** - The base path that all pages will share
-      * `component: String` - The base component that all pages will share
-    * `decorate: Function` - **Required**
-      * Arguments:
-        * `items: Array` - The items for the given page
-        * `pageIndex: Int` - The page index for the given page
-        * `totalPages: Int` - The total number of pages that were generated
-      * Returns an `Object` that will decorate the base route. In most cases, this will probably include the `getData` and `children` keys, but can contain any route supported keys
-    * `pageToken: String` - The string that will be used to prefix each page.
-* Returns an array of routes objects
+- Arguments
+  - `options{}` - **Required**
+    - `items: Array` - **Required** - The array of items to split into pages
+    - `pageSize: Int` - **Required** - The number of items on each page
+    - `route{}: Object` - **Required**
+      - `path: String` - **Required** - The base path that all pages will share
+      - `component: String` - The base component that all pages will share
+    - `decorate: Function` - **Required**
+      - Arguments:
+        - `items: Array` - The items for the given page
+        - `pageIndex: Int` - The page index for the given page
+        - `totalPages: Int` - The total number of pages that were generated
+      - Returns an `Object` that will decorate the base route. In most cases, this will probably include the `getData` and `children` keys, but can contain any route supported keys
+    - `pageToken: String` - The string that will be used to prefix each page.
+- Returns an array of routes objects
 
 Example:
 

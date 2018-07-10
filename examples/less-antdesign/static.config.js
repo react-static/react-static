@@ -5,7 +5,7 @@ import { ServerStyleSheet } from 'styled-components'
 * For Less Support
 * */
 import autoprefixer from 'autoprefixer'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import ExtractCSS from 'extract-css-chunks-webpack-plugin'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 
 /*
@@ -18,7 +18,9 @@ const fs = require('fs')
 
 const lessToJs = require('less-vars-to-js')
 
-const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, 'src/theme-ant-overwrite.less'), 'utf8'))
+const themeVariables = lessToJs(
+  fs.readFileSync(path.join(__dirname, 'src/theme-ant-overwrite.less'), 'utf8')
+)
 
 const webpack = require('webpack')
 
@@ -31,16 +33,7 @@ export default {
     const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     return [
       {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      {
-        path: '/about',
-        component: 'src/containers/About',
-      },
-      {
         path: '/blog',
-        component: 'src/containers/Blog',
         getData: () => ({
           posts,
         }),
@@ -51,10 +44,6 @@ export default {
             post,
           }),
         })),
-      },
-      {
-        is404: true,
-        component: 'src/containers/404',
       },
     ]
   },
@@ -77,9 +66,7 @@ export default {
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             {renderMeta.styleTags}
           </Head>
-          <Body>
-            {children}
-          </Body>
+          <Body>{children}</Body>
         </Html>
       )
     }
@@ -175,16 +162,9 @@ export default {
       loaders = ['style-loader'].concat(loaders)
     } else if (stage === 'prod') {
       // Extract to style.css
-      loaders = ExtractTextPlugin.extract({
-        fallback: {
-          loader: 'style-loader',
-          options: {
-            hmr: false,
-            sourceMap: false,
-          },
-        },
-        use: loaders,
-      })
+      loaders = {
+        use: [ExtractCSS.loader].concat(loaders),
+      }
     }
 
     const lessLoader = {
@@ -205,13 +185,12 @@ export default {
     if (stage === 'prod') {
       // Update ExtractTextPlugin with current instance
       config.plugins.forEach((plugin, index) => {
-        if (plugin instanceof ExtractTextPlugin) {
-          config.plugins[index] = new ExtractTextPlugin({
+        if (plugin instanceof ExtractCSS) {
+          config.plugins[index] = new ExtractCSS({
             filename: getPath => {
               process.env.extractedCSSpath = 'styles.css'
               return getPath('styles.css')
             },
-            allChunks: true,
           })
         }
       })

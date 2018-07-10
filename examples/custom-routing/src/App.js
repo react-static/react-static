@@ -1,6 +1,6 @@
 import React from 'react'
 import { Router, Route, Switch, Link } from 'react-static'
-import { hot } from 'react-hot-loader'
+
 //
 import Home from 'containers/Home'
 import About from 'containers/About'
@@ -29,4 +29,4 @@ const App = () => (
   </Router>
 )
 
-export default hot(module)(App)
+export default App

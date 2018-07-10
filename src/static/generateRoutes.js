@@ -5,25 +5,15 @@ import fs from 'fs-extra'
 export default async ({ config }) => {
   const { templates, routes } = config
 
-  const id404 = routes.find(route => route.path === '404').templateID
+  const route404 = routes.find(route => route.path === '404')
+  const id404 = route404.templateID
 
-  const file = `
-
-import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
-${
-  process.env.NODE_ENV === 'production'
-    ? `
+  const productionImports = `
 import universal, { setHasBabelPlugin } from 'react-universal-component'
-`
-    : ''
-}
-import { cleanPath } from 'react-static'
+  `
+  const developmentImports = ''
 
-${
-  process.env.NODE_ENV === 'production'
-    ? `
-
+  const productionTemplates = `
 setHasBabelPlugin()
 
 const universalOptions = {
@@ -34,7 +24,7 @@ const universalOptions = {
   },
 }
 
-  ${templates
+${templates
     .map((template, index) => {
       const templatePath = path.relative(
         config.paths.DIST,
@@ -44,26 +34,36 @@ const universalOptions = {
     })
     .join('\n')}
 `
-    : templates
-      .map((template, index) => {
-        const templatePath = path.relative(
-          config.paths.DIST,
-          path.resolve(config.paths.ROOT, template)
-        )
-        return `import t_${index} from '${slash(templatePath)}'`
-      })
-      .join('\n')
-}
+
+  const developmentTemplates = templates
+    .map((template, index) => {
+      const templatePath = path.relative(
+        config.paths.DIST,
+        path.resolve(config.paths.ROOT, template)
+      )
+      return `import t_${index} from '${slash(templatePath)}'`
+    })
+    .join('\n')
+
+  const file = `
+import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
+import { cleanPath } from 'react-static'
+${process.env.NODE_ENV === 'production' ? productionImports : developmentImports}
+
+${process.env.NODE_ENV === 'production' ? productionTemplates : developmentTemplates}
 
 // Template Map
 global.componentsByTemplateID = global.componentsByTemplateID || [
   ${templates.map((template, index) => `t_${index}`).join(',\n')}
 ]
 
-// Template Tree
-global.templateIDsByPath = global.templateIDsByPath || {
+const defaultTemplateIDs = {
   '404': ${id404}
 }
+
+// Template Tree
+global.templateIDsByPath = global.templateIDsByPath || defaultTemplateIDs
 
 // Get template for given path
 const getComponentForPath = path => {
@@ -75,8 +75,16 @@ global.reactStaticGetComponentForPath = getComponentForPath
 global.reactStaticRegisterTemplateIDForPath = (path, id) => {
   global.templateIDsByPath[path] = id
 }
+global.clearTemplateIDs = () => {
+  global.templateIDsByPath = defaultTemplateIDs
+}
 
 export default class Routes extends Component {
+  componentDidMount () {
+    global.clearTemplateIDs = () => {
+      this.setState({})
+    }
+  }
   render () {
     const { component: Comp, render, children } = this.props
 
@@ -85,11 +93,11 @@ export default class Routes extends Component {
       let is404 = path === '404'
       if (!Comp) {
         is404 = true
-        Comp = getComponentForPath('404')
+        Comp = getComponentForPath('/404')
       }
       return newProps => (
         Comp
-          ? <Comp {...newProps} {...(is404 ? {is404: true} : {})} />
+          ? <Comp {...newProps} {...(is404 ? {path: '404'} : {})} />
           : null
       )
     }
@@ -129,5 +137,5 @@ export default class Routes extends Component {
 
   const dynamicRoutesPath = path.join(config.paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
-  await fs.writeFile(dynamicRoutesPath, file)
+  await fs.outputFile(dynamicRoutesPath, file)
 }

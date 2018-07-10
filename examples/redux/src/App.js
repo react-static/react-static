@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router, Link } from 'react-static'
 import { Provider } from 'react-redux'
-import { hot } from 'react-hot-loader'
+
 import Routes from 'react-static-routes'
 //
 import store from './connectors/redux'
@@ -25,4 +25,4 @@ const App = () => (
   </Provider>
 )
 
-export default hot(module)(App)
+export default App
