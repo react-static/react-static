@@ -108,6 +108,7 @@ function common (config) {
         SRC,
         DIST,
       ],
+      mainFields: ['browser', 'main'],
       extensions: ['.js', '.json', '.jsx'],
     },
     externals: [],

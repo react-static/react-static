@@ -43,6 +43,7 @@ export default function ({ config }) {
         SRC,
         DIST,
       ],
+      mainFields: ['browser', 'main'],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [

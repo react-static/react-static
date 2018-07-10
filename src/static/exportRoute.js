@@ -1,21 +1,12 @@
-/* eslint-disable import/first, import/no-dynamic-require */
-
-require('babel-register')
-require('../utils/binHelper')
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import Helmet from 'react-helmet'
 import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
-import glob from 'glob'
 import path from 'path'
 import fs from 'fs-extra'
 
-import getConfig from './getConfig'
-import { DefaultDocument } from './RootComponents'
-import { poolAll } from '../utils/shared'
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
 import { makeHeadWithMeta } from './components/HeadWithMeta'
 import { makeBodyWithMeta } from './components/BodyWithMeta'
@@ -45,45 +36,13 @@ class InitialPropsContext extends Component {
   }
 }
 
-process.on('message', async payload => {
-  try {
-    const { config: oldConfig, routes, defaultOutputFileRate } = payload
-    // Get config again
-    const config = await getConfig(oldConfig.originalConfig)
-    // Use the node version of the app created with webpack
-    const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
-    // Retrieve the document template
-    const DocumentTemplate = config.Document || DefaultDocument
-
-    const tasks = []
-    for (let i = 0; i < routes.length; i++) {
-      const route = routes[i]
-      tasks.push(async () => {
-        await exportRoute({
-          ...payload,
-          config,
-          route,
-          Comp,
-          DocumentTemplate,
-        })
-        if (process.connected) {
-          process.send({ type: 'tick' })
-        }
-      })
-    }
-    await poolAll(tasks, Number(config.outputFileRate) || defaultOutputFileRate)
-    if (process.connected) {
-      process.send({ type: 'done' })
-    }
-  } catch (err) {
-    if (process.connected) {
-      process.send({ type: 'error', err })
-    }
-  }
-})
-
-async function exportRoute ({
-  config, Comp, DocumentTemplate, route, siteData, clientStats,
+export default async function exportRoute ({
+  config,
+  Comp,
+  DocumentTemplate,
+  route,
+  siteData,
+  clientStats,
 }) {
   const {
     sharedPropsHashes, templateID, localProps, allProps, path: routePath,

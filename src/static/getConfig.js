@@ -66,6 +66,7 @@ export const buildConfigation = (config = {}) => {
     getSiteData: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
     prefetchRate: 3,
+    maxThreads: Infinity,
     disableRouteInfoWarning: false,
     disableRoutePrefixing: false,
     outputFileRate: 100,

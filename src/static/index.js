@@ -12,10 +12,9 @@ import getRoutes from './getRoutes'
 import buildXMLandRSS from './buildXML'
 import { progress, time, timeEnd } from '../utils'
 import { poolAll } from '../utils/shared'
+import exporter from './exporter'
 
 export { buildXMLandRSS }
-
-const defaultOutputFileRate = 100
 
 const cores = Math.max(OS.cpus().length, 1)
 
@@ -98,7 +97,7 @@ export const exportSharedRouteData = async (config, sharedProps) => {
         )
         jsonProgress.tick()
       }),
-      Number(config.outputFileRate) || defaultOutputFileRate
+      Number(config.outputFileRate)
     )
     timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
   }
@@ -162,7 +161,7 @@ export const fetchRoutes = async config => {
       dataProgress.tick()
     })
   }
-  await poolAll(downloadTasks, Number(config.outputFileRate) || defaultOutputFileRate)
+  await poolAll(downloadTasks, Number(config.outputFileRate))
   timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
 
   console.log('=> Exporting Route Data...')
@@ -188,63 +187,72 @@ export const fetchRoutes = async config => {
       dataWriteProgress.tick()
     })
   }
-  await poolAll(
-    writeTasks,
-    Number(config.outputFileRate) || defaultOutputFileRate
-  )
+  await poolAll(writeTasks, Number(config.outputFileRate))
   timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 
   return exportSharedRouteData(config, sharedProps)
 }
 
 const buildHTML = async ({ config, siteData, clientStats }) => {
-  console.log(`=> Exporting HTML (${cores} workers)...`)
-  const htmlProgress = progress(config.routes.length)
   time(chalk.green('=> [\u2713] HTML Exported'))
 
-  const exporters = []
-  for (let i = 0; i < cores; i++) {
-    exporters.push(
-      fork(require.resolve('./exportRoute'), [], {
-        env: {
-          ...process.env,
-          REACT_STATIC_SLAVE: 'true',
-        },
+  // Single threaded export
+  if (config.maxThreads <= 1) {
+    console.log('=> Exporting HTML...')
+    await exporter({
+      config,
+      siteData,
+      clientStats,
+    })
+  } else {
+    // Multi-threaded export
+    const threads = Math.min(cores, config.maxThreads)
+    const htmlProgress = progress(config.routes.length)
+    console.log(`=> Exporting HTML across ${cores} threads...`)
+
+    const exporters = []
+    for (let i = 0; i < threads; i++) {
+      exporters.push(
+        fork(require.resolve('./threadedExporter'), [], {
+          env: {
+            ...process.env,
+            REACT_STATIC_SLAVE: 'true',
+          },
+        })
+      )
+    }
+
+    const exporterRoutes = exporters.map(() => [])
+
+    config.routes.forEach((route, i) => {
+      exporterRoutes[i % exporterRoutes.length].push(route)
+    })
+
+    await Promise.all(
+      exporters.map((exporter, i) => {
+        const routes = exporterRoutes[i]
+        return new Promise((resolve, reject) => {
+          exporter.send({
+            config,
+            routes,
+            siteData,
+            clientStats,
+          })
+          exporter.on('message', ({ type, err }) => {
+            if (err) {
+              reject(err)
+            }
+            if (type === 'tick') {
+              htmlProgress.tick()
+            }
+            if (type === 'done') {
+              resolve()
+            }
+          })
+        })
       })
     )
   }
-
-  const exporterRoutes = exporters.map(() => [])
-
-  config.routes.forEach((route, i) => {
-    exporterRoutes[i % exporterRoutes.length].push(route)
-  })
-
-  await Promise.all(
-    exporters.map((exporter, i) => {
-      const routes = exporterRoutes[i]
-      return new Promise((resolve, reject) => {
-        exporter.send({
-          config,
-          routes,
-          siteData,
-          clientStats,
-          defaultOutputFileRate,
-        })
-        exporter.on('message', ({ type, err }) => {
-          if (err) {
-            reject(err)
-          }
-          if (type === 'tick') {
-            htmlProgress.tick()
-          }
-          if (type === 'done') {
-            resolve()
-          }
-        })
-      })
-    })
-  )
 
   timeEnd(chalk.green('=> [\u2713] HTML Exported'))
 }
