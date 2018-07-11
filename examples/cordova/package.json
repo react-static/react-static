@@ -14,7 +14,6 @@
     "cordova-plugin-geolocation": "^2.4.3",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-whitelist": "^1.3.2",
-    "react-router": "^4.2.0",
     "react-static": "^5",
     "styled-components": "^2.2.3",
     "webpack-cordova-plugin": "^0.1.6"

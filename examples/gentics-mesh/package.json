@@ -15,7 +15,6 @@
     "lodash": "^4.17.10",
     "react-dotdotdot": "^1.2.3",
     "react-number-format": "^3.3.4",
-    "react-router": "^4.2.0",
     "react-static": "^5",
     "reactstrap": "^6.0.1",
     "string-strip-html": "^1.4.2"

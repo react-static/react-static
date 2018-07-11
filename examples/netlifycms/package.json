@@ -16,7 +16,6 @@
     "moment": "^2.20.1",
     "react-markdown": "^3.1.0",
     "react-moment": "^0.7.0",
-    "react-router": "^4.2.0",
     "react-static": "^5.1.10"
   },
   "devDependencies": {

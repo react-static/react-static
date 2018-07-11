@@ -13,7 +13,6 @@
     "axios": "^0.16.2",
     "emotion": "^9.2.4",
     "react-emotion": "^9.2.4",
-    "react-router": "^4.2.0",
     "react-static": "^5"
   },
   "devDependencies": {

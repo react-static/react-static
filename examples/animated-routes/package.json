@@ -13,7 +13,6 @@
     "axios": "^0.16.2",
     "d3-ease": "^1.0.3",
     "react-move": "^2.6.0",
-    "react-router": "^4.2.0",
     "react-static": "^5",
     "recompose": "^0.26.0"
   },
