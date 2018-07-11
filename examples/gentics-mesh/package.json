@@ -13,7 +13,6 @@
     "axios": "^0.16.2",
     "bootstrap": "^4.1.1",
     "lodash": "^4.17.10",
-    "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-dotdotdot": "^1.2.3",
     "react-number-format": "^3.3.4",
