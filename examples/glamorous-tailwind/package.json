@@ -11,7 +11,6 @@
     "generate:tailwindcss": "postcss ./tailwind.css -o ./tailwind.custom.css"
   },
   "dependencies": {
-    "react-hot-loader": "^4.3.3",
     "axios": "^0.16.2",
     "glamor": "^2.20.40",
     "glamorous": "^4.9.7",

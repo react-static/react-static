@@ -10,7 +10,6 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "react-hot-loader": "^4.3.3",
     "algoliasearch": "^3.24.11",
     "axios": "^0.16.2",
     "react": "^16.0.0",

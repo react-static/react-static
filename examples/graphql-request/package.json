@@ -10,7 +10,6 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "react-hot-loader": "^4.3.3",
     "graphql-request": "^1.4.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

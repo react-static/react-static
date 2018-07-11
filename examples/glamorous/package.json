@@ -10,7 +10,6 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "react-hot-loader": "^4.3.3",
     "axios": "^0.16.2",
     "glamor": "^2.20.40",
     "glamorous": "^4.9.7",
