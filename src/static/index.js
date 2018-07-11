@@ -208,7 +208,7 @@ const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
   } else {
     // Multi-threaded export
     const threads = Math.min(cores, config.maxThreads)
-    const htmlProgress = progress(config.routes.length)
+    const htmlProgress = progress(routes.length)
     console.log(`=> Exporting HTML across ${cores} threads...`)
 
     const exporters = []
