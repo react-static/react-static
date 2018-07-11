@@ -172,6 +172,9 @@ export const getRoutesFromPages = async ({ config, opts = {} }, cb) => {
       .on(
         'all',
         debounce(async (type, file) => {
+          if (!['add', 'unlink'].includes(type)) {
+            return
+          }
           const filename = file.split('/').reverse()[0]
           if (filename.startsWith('.')) {
             return
