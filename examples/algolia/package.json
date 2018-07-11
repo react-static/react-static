@@ -12,7 +12,6 @@
   "dependencies": {
     "algoliasearch": "^3.24.11",
     "axios": "^0.16.2",
-    "react-dom": "^16.0.0",
     "react-instantsearch": "^4.5.1",
     "react-router": "^4.2.0",
     "react-static": "^5.1.8"

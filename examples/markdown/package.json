@@ -13,7 +13,6 @@
     "chokidar": "2.0.3",
     "htmr": "0.6.3",
     "jdown": "^0.3.0",
-    "react-dom": "^16.0.0",
     "react-router": "^4.2.0",
     "react-static": "5.7.5"
   },
