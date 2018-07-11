@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "6.0.0-beta.4",
+  "version": "6.0.0-beta.6",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -16,7 +16,7 @@
     "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' --source-maps inline && yarn prepGitignore",
     "start": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*' --source-maps inline ",
     "postpublish": "sleep 2 && git push --tags",
-    "prepublishOnly": "yarn build && yarn test",
+    "prepublishOnlys": "yarn build && yarn test",
     "publishNext": "yarn publish --tag next",
     "prepGitignore": "node scripts/prepGitignore.js",
     "startDocs": "cd www && yarn start",
