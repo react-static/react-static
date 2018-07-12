@@ -1,3 +1,5 @@
+const r = require.resolve
+
 module.exports = () => {
   const { NODE_ENV, BABEL_ENV } = process.env
 
@@ -6,7 +8,7 @@ module.exports = () => {
   return {
     presets: [
       [
-        '@babel/preset-env',
+        r('@babel/preset-env'),
         {
           useBuiltIns: false,
           targets: {
@@ -16,13 +18,12 @@ module.exports = () => {
           },
         },
       ],
-      ['@babel/preset-react', { development: !PRODUCTION }],
+      [r('@babel/preset-react'), { development: !PRODUCTION }],
     ],
     plugins: [
-      !PRODUCTION && 'react-hot-loader/babel',
-      'universal-import',
+      PRODUCTION ? r('babel-plugin-universal-import') : r('react-hot-loader/babel'),
       [
-        '@babel/plugin-transform-runtime',
+        r('@babel/plugin-transform-runtime'),
         {
           helpers: false,
           polyfill: false,
@@ -30,9 +31,10 @@ module.exports = () => {
           moduleName: 'babel-runtime',
         },
       ],
-      '@babel/plugin-proposal-class-properties',
-      '@babel/plugin-proposal-optional-chaining',
-      '@babel/plugin-proposal-export-default-from',
+      r('@babel/plugin-syntax-dynamic-import'),
+      r('@babel/plugin-proposal-class-properties'),
+      r('@babel/plugin-proposal-optional-chaining'),
+      r('@babel/plugin-proposal-export-default-from'),
     ].filter(Boolean),
   }
 }

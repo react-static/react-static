@@ -420,7 +420,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "7.0.0-beta.53"
 
-"@babel/plugin-syntax-dynamic-import@7.0.0-beta.53":
+"@babel/plugin-syntax-dynamic-import@7.0.0-beta.53", "@babel/plugin-syntax-dynamic-import@^7.0.0-beta.53":
   version "7.0.0-beta.53"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-dynamic-import/-/plugin-syntax-dynamic-import-7.0.0-beta.53.tgz#b3e940f87ee87aaf14391b171c63476fd01af323"
   dependencies:
@@ -8782,7 +8782,7 @@ webpack-dev-server@^3.1.4:
     webpack-log "^1.1.2"
     yargs "11.0.0"
 
-webpack-flush-chunks@^2.0.0:
+webpack-flush-chunks@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/webpack-flush-chunks/-/webpack-flush-chunks-2.0.1.tgz#f50c256b4c282e35ec0d60add3b0384a75f4fb5c"
 
