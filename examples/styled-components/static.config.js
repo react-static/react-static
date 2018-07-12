@@ -4,24 +4,47 @@ import { ServerStyleSheet } from 'styled-components'
 
 export default {
   getSiteData: () => ({
-    title: 'React Static',
+    title: 'React Static'
   }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    const { data: posts } = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts'
+    )
     return [
       {
+        path: '/',
+        component: 'src/containers/Home'
+      },
+      {
+        path: '/about',
+        component: 'src/containers/About'
+      },
+      {
         path: '/blog',
+        component: 'src/containers/Blog',
         getData: () => ({
-          posts,
+          posts
         }),
-        children: posts.map(post => ({
+        children: posts.map((post,index) => ({
           path: `/post/${post.id}`,
           component: 'src/containers/Post',
           getData: () => ({
-            post,
-          }),
-        })),
+            previousPost: {
+              title: posts[index - 1] ? posts[index - 1].title : '',
+              path: (post.id < 1) ? '' : `/blog/post/${post.id - 1}`
+            },
+            nextPost: {
+              title: posts[index + 1] ? posts[index + 1].title : '',
+              path: `/blog/post/${post.id + 1}` 
+            },
+            post
+          })
+        }))
       },
+      {
+        is404: true,
+        component: 'src/containers/404'
+      }
     ]
   },
   renderToHtml: (render, Comp, meta) => {
@@ -31,21 +54,22 @@ export default {
     return html
   },
   Document: class CustomHtml extends Component {
-    render () {
-      const {
-        Html, Head, Body, children, renderMeta,
-      } = this.props
+    render() {
+      const { Html, Head, Body, children, renderMeta } = this.props
 
       return (
         <Html>
           <Head>
             <meta charSet="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
             {renderMeta.styleTags}
           </Head>
           <Body>{children}</Body>
         </Html>
       )
     }
-  },
+  }
 }
