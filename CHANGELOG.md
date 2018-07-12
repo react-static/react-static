@@ -3,15 +3,19 @@
 #### New Features
 
 - A `pages` directory is now available. Any files in this directory will automatically become unique routes with no configuration necessary.
+- `react`, `react-dom`, `react-router` and `react-hot-loader` dependencies are now optional as project dependencies and will resolve using react-static's versions if needed.
 
 #### Breaking Changes
 
-- Upgraded to Webpack 4
+- Upgraded to Webpack 4 - Make sure your webpack modifications are compliant with its new API
+- Upgraded to Babel 7 - Make sure your babel plugins are compliant with this version.
+- `react-hot-loader`'s `hot(module)(Component)` syntax has been changed to now use the `<AppContainer>` approach. This is much easier than using the `hot(module)(Component)` in every module you create.
 - Removed the `is404` property from the 404 route. To designate a 404 route, you can now place a `404.js` file in your pages directory or create a route where the `path === '404'`
 
 #### Fixes & Optimizations
 
-- Much better performance when building routes for large sites
+- React-Hot-Loader should not work out of the box for all projects. If it doesn't, please report it immediately!
+- Much better performance when building routes for large sites via general performance improvements and also multi-threading HTML exporting
 - Fixed an issue where XML sitemaps contained invalid characters
 - Refactored many files to be more easily testable
 

@@ -1,6 +1,6 @@
 /* eslint-disable import/first, import/no-dynamic-require */
 
-require('babel-register')
+require('@babel/register')
 require('../utils/binHelper')
 
 import glob from 'glob'
