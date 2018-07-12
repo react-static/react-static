@@ -78,18 +78,23 @@ export default class Routes extends Component {
     global.clearTemplateIDs = () => {
       this.setState({})
     }
-
+    ${
+  process.env.NODE_ENV !== 'production'
+    ? `
     if (typeof document !== 'undefined' && module.hot) {
       ${templates
     .map((template, index) => {
       const templatePath = path.relative(paths.DIST, path.resolve(paths.ROOT, template))
       return `module.hot.accept('${slash(templatePath)}', () => {
-        global.componentsByTemplateID[${index}] = require('${slash(templatePath)}').default
-        this.forceUpdate()
-      })`
+            global.componentsByTemplateID[${index}] = require('${slash(templatePath)}').default
+            this.forceUpdate()
+          })`
     })
     .join('\n')}
-    }
+      }
+`
+    : ''
+}
 
   }
   render () {

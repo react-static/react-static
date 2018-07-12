@@ -97,7 +97,7 @@
     "webpack": "^4.8.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-dev-server": "^3.1.4",
-    "webpack-flush-chunks": "^2.0.0",
+    "webpack-flush-chunks": "^2.0.1",
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
