@@ -3,7 +3,7 @@ import slash from 'slash'
 import fs from 'fs-extra'
 
 export default async ({ config }) => {
-  const { templates, routes } = config
+  const { templates, routes, paths } = config
 
   const route404 = routes.find(route => route.path === '404')
   const id404 = route404.templateID
@@ -26,10 +26,7 @@ const universalOptions = {
 
 ${templates
     .map((template, index) => {
-      const templatePath = path.relative(
-        config.paths.DIST,
-        path.resolve(config.paths.ROOT, template)
-      )
+      const templatePath = path.relative(paths.DIST, path.resolve(paths.ROOT, template))
       return `const t_${index} = universal(import('${slash(templatePath)}'), universalOptions)`
     })
     .join('\n')}
@@ -37,10 +34,7 @@ ${templates
 
   const developmentTemplates = templates
     .map((template, index) => {
-      const templatePath = path.relative(
-        config.paths.DIST,
-        path.resolve(config.paths.ROOT, template)
-      )
+      const templatePath = path.relative(paths.DIST, path.resolve(paths.ROOT, template))
       return `import t_${index} from '${slash(templatePath)}'`
     })
     .join('\n')
@@ -84,6 +78,19 @@ export default class Routes extends Component {
     global.clearTemplateIDs = () => {
       this.setState({})
     }
+
+    if (typeof document !== 'undefined' && module.hot) {
+      ${templates
+    .map((template, index) => {
+      const templatePath = path.relative(paths.DIST, path.resolve(paths.ROOT, template))
+      return `module.hot.accept('${slash(templatePath)}', () => {
+        global.componentsByTemplateID[${index}] = require('${slash(templatePath)}').default
+        this.forceUpdate()
+      })`
+    })
+    .join('\n')}
+    }
+
   }
   render () {
     const { component: Comp, render, children } = this.props
@@ -95,7 +102,7 @@ export default class Routes extends Component {
         is404 = true
         Comp = getComponentForPath('/404')
       }
-      return newProps => (
+      return (newProps = {}) => (
         Comp
           ? <Comp {...newProps} {...(is404 ? {path: '404'} : {})} />
           : null
@@ -127,7 +134,7 @@ export default class Routes extends Component {
         // If Comp is used as a component here, it triggers React to re-mount the entire
         // component tree underneath during reconciliation, losing all internal state.
         // By unwrapping it here we keep the real, static component exposed directly to React.
-        return Comp && Comp({ ...props, key: props.location.pathname })
+        return Comp && Comp()
       }} />
     )
   }
@@ -135,7 +142,7 @@ export default class Routes extends Component {
 
 `
 
-  const dynamicRoutesPath = path.join(config.paths.DIST, 'react-static-routes.js')
+  const dynamicRoutesPath = path.join(paths.DIST, 'react-static-routes.js')
   await fs.remove(dynamicRoutesPath)
   await fs.outputFile(dynamicRoutesPath, file)
 }

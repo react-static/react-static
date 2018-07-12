@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "6.0.0-beta.2",
+  "version": "6.0.0-beta.8",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -13,10 +13,10 @@
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' --source-maps && yarn prepGitignore",
-    "start": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*' --source-maps ",
+    "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' --source-maps inline && yarn prepGitignore",
+    "start": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*' --source-maps inline ",
     "postpublish": "sleep 2 && git push --tags",
-    "prepublishOnly": "yarn build && yarn test",
+    "prepublishOnlys": "yarn build && yarn test",
     "publishNext": "yarn publish --tag next",
     "prepGitignore": "node scripts/prepGitignore.js",
     "startDocs": "cd www && yarn start",
@@ -80,7 +80,6 @@
     "react-dom": "^16",
     "react-helmet": "^5.2.0",
     "react-hot-loader": "^4.3.3",
-    "react-hot-loader-loader": "^0.0.6",
     "react-router-dom": "^4.3.1",
     "react-universal-component": "^2.9.0",
     "serve": "^6.4.10",

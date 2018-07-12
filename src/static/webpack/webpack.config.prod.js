@@ -91,12 +91,13 @@ function common (config) {
         }
         : {},
       modules: [
-        path.resolve(__dirname, '../../../node_modules'),
-        'node_modules',
-        NODE_MODULES,
         SRC,
+        NODE_MODULES,
+        'node_modules',
+        path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
+      mainFields: ['browser', 'main'],
       extensions: ['.js', '.json', '.jsx'],
     },
     externals: [],

@@ -1,71 +1,73 @@
-/* eslint-disable import/first, import/no-dynamic-require */
-
-require('babel-register')
-require('../utils/binHelper')
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import Helmet from 'react-helmet'
 import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
-import glob from 'glob'
 import nodePath from 'path'
 import fs from 'fs-extra'
 
-import getConfig from './getConfig'
-import { DefaultDocument } from './RootComponents'
-import { poolAll, makePathAbsolute } from '../utils/shared'
+import Redirect from '../client/components/Redirect'
+import { makePathAbsolute } from '../utils/shared'
+
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
 import { makeHeadWithMeta } from './components/HeadWithMeta'
 import { makeBodyWithMeta } from './components/BodyWithMeta'
-import Redirect from '../client/components/Redirect'
 
 //
 
-process.on('message', async payload => {
-  try {
-    const { config: oldConfig, routes, defaultOutputFileRate } = payload
-    // Get config again
-    const config = await getConfig(oldConfig.originalConfig)
+let cachedBasePath
+let cachedHrefReplace
+let cachedSrcReplace
 
-    // Use the node version of the app created with webpack
-    const Comp = require(glob.sync(nodePath.resolve(config.paths.ASSETS, 'static.*.js'))[0]).default
-
-    // Retrieve the document template
-    const DocumentTemplate = config.Document || DefaultDocument
-
-    await poolAll(
-      routes.map(route => async () => {
-        await exportRoute({
-          ...payload,
-          config,
-          route,
-          Comp,
-          DocumentTemplate,
-        })
-        if (process.connected) {
-          process.send({ type: 'tick' })
-        }
-      }),
-      Number(config.outputFileRate) || defaultOutputFileRate
-    )
-    if (process.connected) {
-      process.send({ type: 'done' })
-    }
-  } catch (err) {
-    if (process.connected) {
-      process.send({ type: 'error', err })
+// Inject allProps into static build
+class InitialPropsContext extends Component {
+  static childContextTypes = {
+    routeInfo: PropTypes.object,
+    staticURL: PropTypes.string,
+  }
+  getChildContext () {
+    const { embeddedRouteInfo, route } = this.props
+    return {
+      routeInfo: embeddedRouteInfo,
+      staticURL: route.path === '/' ? route.path : `/${route.path}`,
     }
   }
-})
+  render () {
+    return this.props.children
+  }
+}
 
-async function exportRoute ({
-  config, Comp, DocumentTemplate, route, siteData, clientStats,
+export default async function exportRoute ({
+  config,
+  Comp,
+  DocumentTemplate,
+  route,
+  siteData,
+  clientStats,
 }) {
   const {
     sharedPropsHashes, templateID, localProps, allProps, path: routePath,
   } = route
+
+  const basePath =
+    cachedBasePath ||
+    (cachedBasePath =
+      process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath)
+
+  const hrefReplace =
+    cachedHrefReplace ||
+    (cachedHrefReplace = new RegExp(
+      `(href=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
+      'gm'
+    ))
+
+  const srcReplace =
+    cachedSrcReplace ||
+    (cachedSrcReplace = new RegExp(
+      `(src=["'])\\/(${basePath ? `${basePath}\\/` : ''})?([^\\/])`,
+      'gm'
+    ))
 
   // This routeInfo will be saved to disk. It should only include the
   // localProps and hashes to construct all of the props later.
@@ -85,23 +87,6 @@ async function exportRoute ({
     siteData,
   }
 
-  // Inject allProps into static build
-  class InitialPropsContext extends Component {
-    static childContextTypes = {
-      routeInfo: PropTypes.object,
-      staticURL: PropTypes.string,
-    }
-    getChildContext () {
-      return {
-        routeInfo: embeddedRouteInfo,
-        staticURL: route.path === '/' ? route.path : `/${route.path}`,
-      }
-    }
-    render () {
-      return this.props.children
-    }
-  }
-
   // Make a place to collect chunks, meta info and head tags
   const renderMeta = {}
   const chunkNames = []
@@ -117,7 +102,7 @@ async function exportRoute ({
   } else {
     FinalComp = props => (
       <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
-        <InitialPropsContext>
+        <InitialPropsContext embeddedRouteInfo={embeddedRouteInfo} route={route}>
           <Comp {...props} />
         </InitialPropsContext>
       </ReportChunks>
@@ -202,15 +187,9 @@ async function exportRoute ({
   // with the siteRoot
   const publicPath = makePathAbsolute(process.env.REACT_STATIC_PUBLIC_PATH)
   if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
-    const hrefReplace = new RegExp(
-      `(href=["'])\\/(${config.basePath ? `${config.basePath}\\/` : ''})?([^\\/])`,
-      'gm'
-    )
-
     html = html.replace(hrefReplace, `$1${publicPath}$3`)
   }
 
-  const srcReplace = new RegExp(`(src=["'])\\/(${config.basePath ? `${config.basePath}\\/` : ''})?([^\\/])`, 'gm')
   html = html.replace(srcReplace, `$1${publicPath}$3`)
 
   // If the route is a 404 page, write it directly to 404.html, instead of

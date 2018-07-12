@@ -3,7 +3,7 @@ export default {
   entry: './root/src/index.js',
   extractCssChunks: false,
   inlineCss: false,
-  outputFileRate: 10,
+  outputFileRate: 100,
   paths: {
     DIST: './root/tmp/dev-server',
     ASSETS: './root/tmp/dev-server',
