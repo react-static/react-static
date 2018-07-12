@@ -138,13 +138,45 @@ export default async function exportRoute ({
   let appHtml
 
   try {
-    // Allow extractions of meta via config.renderToString
-    appHtml = await config.renderToHtml(
-      renderToStringAndExtract,
-      FinalComp,
-      renderMeta,
-      clientStats
-    )
+    // Run the beforeRenderToComponent hook // TODO: document this
+    FinalComp = config.plugins
+      .map(plugin => plugin.beforeRenderToComponent)
+      .filter(Boolean)
+      .reduce(
+        (curr, beforeRenderToComponent) => beforeRenderToComponent(curr, { meta: renderMeta }),
+        FinalComp
+      )
+
+    // Run the configs renderToComponent function
+    let RenderedComp = await config.renderToComponent(FinalComp, {
+      meta: renderMeta,
+      clientStats,
+    })
+
+    // Run the beforeRenderToHtml hook
+    // Rum the Html hook
+    RenderedComp = config.plugins
+      .map(plugin => plugin.beforeRenderToHtml)
+      .filter(Boolean)
+      .reduce(
+        (curr, beforeRenderToHtml) => beforeRenderToHtml(curr, { meta: renderMeta }),
+        RenderedComp
+      )
+
+    // Run the configs renderToHtml function
+    appHtml = await config.renderToHtml(renderToStringAndExtract, RenderedComp, {
+      meta: renderMeta,
+      clientStats,
+    })
+
+    // Rum the Html hook
+    appHtml = config.plugins
+      .map(plugin => plugin.beforeHtmlToDocument)
+      .filter(Boolean)
+      .reduce(
+        (curr, beforeHtmlToDocument) => beforeHtmlToDocument(curr, { meta: renderMeta }),
+        appHtml
+      )
   } catch (error) {
     error.message = `Failed exporting HTML for URL ${route.path} (${route.component}): ${
       error.message
@@ -162,6 +194,7 @@ export default async function exportRoute ({
         config,
         clientStyleSheets,
         clientCss,
+        meta: renderMeta,
       })}
       Body={makeBodyWithMeta({
         head,

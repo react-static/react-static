@@ -13,11 +13,11 @@
     "axios": "^0.16.2",
     "emotion": "^9.2.4",
     "react-emotion": "^9.2.4",
-    "react-static": "^5"
+    "react-static": "^5",
+    "react-static-plugin-emotion": "^1.0.0"
   },
   "devDependencies": {
     "babel-plugin-emotion": "^9.2.4",
-    "emotion-server": "^9.2.4",
     "eslint-config-react-tools": "1.x.x",
     "serve": "^6.1.0"
   }

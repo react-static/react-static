@@ -3,6 +3,7 @@
 import React from 'react'
 import nodePath from 'path'
 import chokidar from 'chokidar'
+import resolveFrom from 'resolve-from'
 
 import getDirname from '../utils/getDirname'
 
@@ -31,6 +32,7 @@ export const buildConfigation = (config = {}) => {
     dist: 'dist',
     devDist: 'tmp/dev-server',
     public: 'public',
+    plugins: 'plugins', // TODO: document
     pages: 'src/pages', // TODO: document
     nodeModules: 'node_modules',
     ...(config.paths || {}),
@@ -50,6 +52,7 @@ export const buildConfigation = (config = {}) => {
     LOCAL_NODE_MODULES: nodePath.resolve(getDirname(), '../../node_modules'),
     SRC: resolvePath(config.paths.src),
     PAGES: resolvePath(config.paths.pages),
+    PLUGINS: resolvePath(config.paths.plugins),
     DIST: distPath,
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath(config.paths.nodeModules),
@@ -64,7 +67,8 @@ export const buildConfigation = (config = {}) => {
     // Defaults
     entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
     getSiteData: () => ({}),
-    renderToHtml: (render, Comp) => render(<Comp />),
+    renderToComponent: Comp => <Comp />,
+    renderToHtml: (render, comp) => render(comp),
     prefetchRate: 3,
     maxThreads: Infinity,
     disableRouteInfoWarning: false,
@@ -72,6 +76,7 @@ export const buildConfigation = (config = {}) => {
     outputFileRate: 100,
     extensions: ['.js', '.jsx'], // TODO: document
     getRoutes: async () => DEFAULT_ROUTES,
+    plugins: [],
     // Config Overrides
     ...config,
     // Materialized Overrides
@@ -89,6 +94,34 @@ export const buildConfigation = (config = {}) => {
   process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
   process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = finalConfig.disableRouteInfoWarning
   process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = finalConfig.disableRoutePrefixing
+
+  // Fetch plugins, if any
+  finalConfig.plugins = finalConfig.plugins.map(plugin => {
+    let resolver = plugin
+    let options = {}
+    if (Array.isArray(plugin)) {
+      resolver = plugin[0]
+      options = plugin[1] || {}
+    }
+    // Attempt a direct require for absolute paths
+    try {
+      plugin = require(resolver)
+    } catch (err) {
+      try {
+        // Attempt a /plugins directory require
+        plugin = require(nodePath.resolve(paths.PLUGINS, resolver))
+      } catch (err) {
+        // Attempt a root directory require (node_modules)
+        plugin = require(resolveFrom(process.cwd(), resolver))
+      }
+    }
+
+    return {
+      resolver,
+      options,
+      ...plugin,
+    }
+  })
 
   return finalConfig
 }

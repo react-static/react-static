@@ -219,6 +219,7 @@ const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
             ...process.env,
             REACT_STATIC_SLAVE: 'true',
           },
+          stdio: 'inherit',
         })
       )
     }
@@ -239,9 +240,12 @@ const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
             siteData,
             clientStats,
           })
-          exporter.on('message', ({ type, err }) => {
-            if (err) {
-              reject(err)
+          exporter.on('message', ({ type, payload }) => {
+            if (type === 'error') {
+              reject(payload)
+            }
+            if (type === 'log') {
+              console.log(...payload)
             }
             if (type === 'tick') {
               htmlProgress.tick()

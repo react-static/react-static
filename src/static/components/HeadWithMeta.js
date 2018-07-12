@@ -19,6 +19,7 @@ export const makeHeadWithMeta = ({
   config,
   clientStyleSheets,
   clientCss,
+  meta,
 }) => ({ children, ...rest }) => {
   const renderLinkCSS = !route.redirect && !config.inlineCss
   const useHelmetTitle = head.title && head.title[0] && head.title[0].props.children !== ''
@@ -34,6 +35,13 @@ export const makeHeadWithMeta = ({
       return true
     })
   }
+
+  const pluginHeads = config.plugins
+    .map(plugin => plugin.Head)
+    .filter(Boolean)
+    .map(PluginHead => <PluginHead meta={meta} />)
+
+  console.log(pluginHeads)
 
   return (
     <head {...rest}>
@@ -72,6 +80,7 @@ export const makeHeadWithMeta = ({
       {head.script}
       {config.inlineCss && <InlineStyle clientCss={clientCss} />}
       {head.style}
+      {pluginHeads}
       {childrenArray}
     </head>
   )
