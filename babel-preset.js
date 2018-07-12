@@ -33,6 +33,7 @@ module.exports = () => {
       '@babel/plugin-proposal-class-properties',
       '@babel/plugin-proposal-optional-chaining',
       '@babel/plugin-proposal-export-default-from',
+      '@babel/plugin-syntax-dynamic-import',
     ].filter(Boolean),
   }
 }
