@@ -30,6 +30,13 @@ export const normalizeRoute = (route, parent = {}) => {
   const { path: parentPath = '/' } = parent
 
   if (!route.path) {
+    if (route.is404) {
+      throw new Error(
+        `route.is404 has been deprecated. Use \`path: '404'\` instead! Route: ${JSON.stringify(
+          route
+        )}`
+      )
+    }
     throw new Error(`No path defined for route: ${JSON.stringify(route)}`)
   }
 
@@ -165,6 +172,9 @@ export const getRoutesFromPages = async ({ config, opts = {} }, cb) => {
       .on(
         'all',
         debounce(async (type, file) => {
+          if (!['add', 'unlink'].includes(type)) {
+            return
+          }
           const filename = file.split('/').reverse()[0]
           if (filename.startsWith('.')) {
             return

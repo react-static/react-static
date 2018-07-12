@@ -80,10 +80,10 @@ describe('generateXML', () => {
 })
 
 describe('getSiteRoot', () => {
-  const oldProcessEnv = [...process.env]
+  const oldProcessEnv = { ...process.env }
 
   afterEach(() => {
-    process.env = [...oldProcessEnv]
+    process.env = { ...oldProcessEnv }
   })
 
   describe('when enviroment is staging', () => {
@@ -117,10 +117,10 @@ describe('getSiteRoot', () => {
 })
 
 describe('when custom properties are defined', () => {
-  const oldProcessEnv = [...process.env]
+  const oldProcessEnv = { ...process.env }
 
   afterEach(() => {
-    process.env = [...oldProcessEnv]
+    process.env = { ...oldProcessEnv }
   })
 
   beforeEach(() => {

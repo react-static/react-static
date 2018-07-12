@@ -9,7 +9,7 @@ exports[`ErrorCatcher by default should render children 1`] = `
 exports[`ErrorCatcher when children throw an error should catch errors with componentDidCatch 1`] = `
 Object {
   "componentStack": "
-    in ChildComponentWithError
+    in ChildComponentWithError (at ErrorCatcher.test.js:26)
     in ErrorCatcher (created by WrapperComponent)
     in WrapperComponent",
 }
@@ -22,7 +22,7 @@ exports[`ErrorCatcher when children throw an error should catch errors with comp
     errorInfo={
       Object {
         "componentStack": "
-    in ChildComponentWithError
+    in ChildComponentWithError (at ErrorCatcher.test.js:26)
     in ErrorCatcher (created by WrapperComponent)
     in WrapperComponent",
       }
@@ -65,7 +65,7 @@ exports[`ErrorCatcher when children throw an error should catch errors with comp
       >
         <code>
           
-    in ChildComponentWithError
+    in ChildComponentWithError (at ErrorCatcher.test.js:26)
     in ErrorCatcher (created by WrapperComponent)
     in WrapperComponent
         </code>

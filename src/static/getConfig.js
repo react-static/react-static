@@ -66,9 +66,10 @@ export const buildConfigation = (config = {}) => {
     getSiteData: () => ({}),
     renderToHtml: (render, Comp) => render(<Comp />),
     prefetchRate: 3,
+    maxThreads: Infinity,
     disableRouteInfoWarning: false,
     disableRoutePrefixing: false,
-    outputFileRate: 10,
+    outputFileRate: 100,
     extensions: ['.js', '.jsx'], // TODO: document
     getRoutes: async () => DEFAULT_ROUTES,
     // Config Overrides
@@ -96,7 +97,7 @@ const buildConfigFromPath = configPath => {
   const filename = nodePath.resolve(configPath)
   delete require.cache[filename]
   try {
-    const config = require(configPath).default
+    const config = require(filename).default
     return buildConfigation(config)
   } catch (err) {
     console.error(err)

@@ -16,17 +16,14 @@ if (typeof document !== 'undefined') {
       <AppContainer>
         <Comp />
       </AppContainer>,
-      document.getElementById('root'),
+      document.getElementById('root')
     )
   }
 
   // Render!
   render(App)
-
   // Hot Module Replacement
   if (module.hot) {
-    module.hot.accept('./App', () => {
-      render(require('./App').default)
-    })
+    module.hot.accept('./App', () => render(require('./App').default))
   }
 }

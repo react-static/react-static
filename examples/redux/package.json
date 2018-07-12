@@ -12,10 +12,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "json-loader": "^0.5.7",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
-    "react-router": "^4.2.0",
     "react-static": "^5",
     "redux": "^3.7.2"
   },

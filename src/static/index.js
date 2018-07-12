@@ -12,10 +12,9 @@ import getRoutes from './getRoutes'
 import buildXMLandRSS from './buildXML'
 import { progress, time, timeEnd } from '../utils'
 import { poolAll } from '../utils/shared'
+import exporter from './exporter'
 
 export { buildXMLandRSS }
-
-const defaultOutputFileRate = 100
 
 const cores = Math.max(OS.cpus().length, 1)
 
@@ -98,7 +97,7 @@ export const exportSharedRouteData = async (config, sharedProps) => {
         )
         jsonProgress.tick()
       }),
-      Number(config.outputFileRate) || defaultOutputFileRate
+      Number(config.outputFileRate)
     )
     timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
   }
@@ -112,8 +111,12 @@ export const fetchRoutes = async config => {
   console.log('=> Fetching Route Data...')
   const dataProgress = progress(config.routes.length)
   time(chalk.green('=> [\u2713] Route Data Downloaded'))
-  await poolAll(
-    config.routes.map(route => async () => {
+
+  // Use a traditional for loop here for perf
+  const downloadTasks = []
+  for (let i = 0; i < config.routes.length; i++) {
+    const route = config.routes[i]
+    downloadTasks.push(async () => {
       // Fetch allProps from each route
       route.allProps = !!route.getData && (await route.getData({ route, dev: false }))
       // Default allProps (must be an object)
@@ -156,17 +159,19 @@ export const fetchRoutes = async config => {
           }
         })
       dataProgress.tick()
-    }),
-    Number(config.outputFileRate) || defaultOutputFileRate
-  )
-
+    })
+  }
+  await poolAll(downloadTasks, Number(config.outputFileRate))
   timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
 
   console.log('=> Exporting Route Data...')
   time(chalk.green('=> [\u2713] Route Data Exported'))
   const dataWriteProgress = progress(config.routes.length)
-  await poolAll(
-    config.routes.map(route => async () => {
+  // Use a traditional for loop for perf here
+  const writeTasks = []
+  for (let i = 0; i < config.routes.length; i++) {
+    const route = config.routes[i]
+    writeTasks.push(async () => {
       // Loop through the props and build the prop maps
       route.localProps = {}
       route.sharedPropsHashes = {}
@@ -180,9 +185,9 @@ export const fetchRoutes = async config => {
         }
       })
       dataWriteProgress.tick()
-    }),
-    Number(config.outputFileRate) || defaultOutputFileRate
-  )
+    })
+  }
+  await poolAll(writeTasks, Number(config.outputFileRate))
   timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 
   return exportSharedRouteData(config, sharedProps)
@@ -190,53 +195,65 @@ export const fetchRoutes = async config => {
 
 const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
   const { routes, ...config } = oldConfig
-  console.log(`=> Exporting HTML (${cores} workers)...`)
-  const htmlProgress = progress(config.routes.length)
   time(chalk.green('=> [\u2713] HTML Exported'))
 
-  const exporters = []
-  for (let i = 0; i < cores; i++) {
-    exporters.push(
-      fork(require.resolve('./exportRoute'), [], {
-        env: {
-          ...process.env,
-          REACT_STATIC_SLAVE: 'true',
-        },
+  // Single threaded export
+  if (config.maxThreads <= 1) {
+    console.log('=> Exporting HTML...')
+    await exporter({
+      config,
+      siteData,
+      clientStats,
+    })
+  } else {
+    // Multi-threaded export
+    const threads = Math.min(cores, config.maxThreads)
+    const htmlProgress = progress(routes.length)
+    console.log(`=> Exporting HTML across ${cores} threads...`)
+
+    const exporters = []
+    for (let i = 0; i < threads; i++) {
+      exporters.push(
+        fork(require.resolve('./threadedExporter'), [], {
+          env: {
+            ...process.env,
+            REACT_STATIC_SLAVE: 'true',
+          },
+        })
+      )
+    }
+
+    const exporterRoutes = exporters.map(() => [])
+
+    routes.forEach((route, i) => {
+      exporterRoutes[i % exporterRoutes.length].push(route)
+    })
+
+    await Promise.all(
+      exporters.map((exporter, i) => {
+        const routes = exporterRoutes[i]
+        return new Promise((resolve, reject) => {
+          exporter.send({
+            config,
+            routes,
+            siteData,
+            clientStats,
+          })
+          exporter.on('message', ({ type, err }) => {
+            if (err) {
+              reject(err)
+            }
+            if (type === 'tick') {
+              htmlProgress.tick()
+            }
+            if (type === 'done') {
+              resolve()
+            }
+          })
+        })
       })
     )
   }
-
-  const exporterRoutes = exporters.map(() => [])
-
-  routes.forEach((route, i) => {
-    exporterRoutes[i % exporterRoutes.length].push(route)
-  })
-
-  await Promise.all(
-    exporters.map((exporter, i) => {
-      const routes = exporterRoutes[i]
-      return new Promise((resolve, reject) => {
-        exporter.send({
-          config,
-          routes,
-          siteData,
-          clientStats,
-          defaultOutputFileRate,
-        })
-        exporter.on('message', ({ type, err }) => {
-          if (err) {
-            reject(err)
-          }
-          if (type === 'tick') {
-            htmlProgress.tick()
-          }
-          if (type === 'done') {
-            resolve()
-          }
-        })
-      })
-    })
-  )
 
   timeEnd(chalk.green('=> [\u2713] HTML Exported'))
 }
