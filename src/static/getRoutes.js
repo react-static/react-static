@@ -43,7 +43,7 @@ export const normalizeRoute = (route, parent = {}) => {
   const originalRoutePath = pathJoin(route.path)
   const routePath = pathJoin(parentPath, route.path)
 
-  if (route.noIndex) {
+  if (typeof route.noIndex !== 'undefined') {
     console.warn(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
   }
 

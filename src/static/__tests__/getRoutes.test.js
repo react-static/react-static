@@ -27,17 +27,29 @@ describe('normalizeRoute', () => {
       })
     })
 
-    describe('when noIndex is true', () => {
+    describe('when noindex is true, but a child route is noindex: false', () => {
+      it('should return a normalized route with noindex as true', () => {
+        const route = normalizeRoute({
+          path: '/path/',
+          noindex: true,
+          children: [
+            {
+              path: 'child',
+              noindex: false,
+            },
+          ],
+        })
+
+        expect(route.noindex).toEqual(true)
+        expect(route.children[0].noindex).toEqual(false)
+      })
+    })
+
+    describe('when noIndex (camelCase) is true', () => {
       let spy
 
       beforeEach(() => {
         spy = jest.spyOn(console, 'warn').mockImplementation(() => {})
-      })
-
-      it('should return a normalized route with noindex as true', () => {
-        const route = normalizeRoute({ path: '/path/', noIndex: true })
-
-        expect(route.noindex).toEqual(true)
       })
 
       it('should warns the user to use noIndex', () => {
