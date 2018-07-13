@@ -52,8 +52,7 @@ export default async function exportRoute ({
 
   const basePath =
     cachedBasePath ||
-    (cachedBasePath =
-      process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath)
+    (cachedBasePath = config.basePath)
 
   const hrefReplace =
     cachedHrefReplace ||
