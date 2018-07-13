@@ -32,8 +32,8 @@ export default (total, label, options) => {
             .replace('[:bar]', '')
             .replace(':current', curr)
             .replace(':total', total)
-            .replace(':elapsed', isNaN(elapsed) ? '0.0' : (elapsed / 1000).toFixed(1))
-            .replace(':eta', isNaN(eta) || !isFinite(eta) ? '0.0' : (eta / 1000).toFixed(1))
+            .replace(':elapsed', Number.isNaN(elapsed) ? '0.0' : (elapsed / 1000).toFixed(1))
+            .replace(':eta', Number.isNaN(eta) || !Number.isFinite(eta) ? '0.0' : (eta / 1000).toFixed(1))
             .replace(':percent', `${percent.toFixed(0)}%`)
             .replace(':rate', Math.round(rate))}\n`
         )
