@@ -2,7 +2,6 @@ import { reloadRoutes } from 'react-static/node'
 import fs from 'fs-extra'
 import path from 'path'
 import React, { Component } from 'react'
-import { ServerStyleSheet } from 'styled-components'
 import chokidar from 'chokidar'
 
 chokidar.watch('../docs').on('all', () => reloadRoutes())
@@ -151,15 +150,12 @@ const menu = [
 ]
 
 export default {
+  plugins: ['react-static-plugin-styled-components'],
   getSiteData: () => ({
     menu,
     repoName,
   }),
   getRoutes: () => [
-    {
-      path: '/',
-      component: 'src/containers/Home',
-    },
     ...docPages.map(page => ({
       path: `docs/${page.path}`,
       component: 'src/containers/Doc',
@@ -170,21 +166,11 @@ export default {
         title: page.title,
       }),
     })),
-    {
-      path: '404',
-      component: 'src/containers/404',
-    },
   ],
-  renderToHtml: (render, Comp, meta) => {
-    const sheet = new ServerStyleSheet()
-    const html = render(sheet.collectStyles(<Comp />))
-    meta.styleTags = sheet.getStyleElement()
-    return html
-  },
   Document: class CustomHtml extends Component {
     render () {
       const {
-        Html, Head, Body, children, renderMeta,
+        Html, Head, Body, children,
       } = this.props
 
       return (
@@ -196,7 +182,6 @@ export default {
               href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i"
               rel="stylesheet"
             />
-            {renderMeta.styleTags}
             <title>{repoName}</title>
           </Head>
           <Body>{children}</Body>
