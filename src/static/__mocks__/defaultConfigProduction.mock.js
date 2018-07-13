@@ -7,6 +7,7 @@ export default {
   outputFileRate: 100,
   paths: {
     DIST: './root/dist',
+    TEMP: './root/tmp',
     HTML_TEMPLATE: './root/dist/index.html',
     LOCAL_NODE_MODULES: './dirname/../../node_modules',
     NODE_MODULES: './root/node_modules',

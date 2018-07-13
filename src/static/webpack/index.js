@@ -314,12 +314,12 @@ export async function buildProductionBundles ({ config }) {
       const prodStatsJson = prodStats.toJson()
 
       fs.outputFileSync(
-        path.join(config.paths.DIST, 'client-stats.json'),
+        path.join(config.paths.TEMP, 'client-stats.json'),
         JSON.stringify(prodStatsJson, null, 2)
       )
 
       fs.outputFileSync(
-        path.join(config.paths.DIST, 'bundle-environment.json'),
+        path.join(config.paths.TEMP, 'bundle-environment.json'),
         JSON.stringify(process.env, null, 2)
       )
 
