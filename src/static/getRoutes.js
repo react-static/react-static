@@ -8,14 +8,6 @@ import { pathJoin } from '../utils/shared'
 
 let watcher
 let routesCache
-const REGEX_TO_CUT_TO_ROOT = /(\..+?)\/.*/g
-const REGEX_TO_REMOVE_TRAILING_SLASH = /^\/{0,}/g
-const REGEX_TO_REMOVE_LEADING_SLASH = /\/{0,}$/g
-
-export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROOT, '$1')
-
-export const trimLeadingAndTrailingSlashes = (string = '') =>
-  string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '').replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
 
 const countRoutes = (routes, count = 0) => {
   routes.forEach(route => {

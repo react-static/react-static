@@ -1,4 +1,5 @@
 import React from 'react'
+import { pathJoin, makePathAbsolute } from '../../utils/shared'
 
 const REGEX_FOR_SCRIPT = /<(\/)?(script)/gi
 
@@ -31,12 +32,7 @@ export const makeBodyWithMeta = ({
     )}
     {!route.redirect &&
       clientScripts.map(script => (
-        <script
-          key={script}
-          defer
-          type="text/javascript"
-          src={`${process.env.REACT_STATIC_PUBLICPATH}${script}`}
-        />
+        <script key={script} defer type="text/javascript" src={makePathAbsolute(pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script))} />
       ))}
   </body>
 )

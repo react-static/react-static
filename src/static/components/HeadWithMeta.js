@@ -1,4 +1,5 @@
 import React from 'react'
+import { pathJoin, makePathAbsolute } from '../../utils/shared'
 
 const REGEX_FOR_STYLE_TAG = /<style>|<\/style>/gi
 
@@ -52,27 +53,24 @@ export const makeHeadWithMeta = ({
             key={`clientScript_${script}`}
             rel="preload"
             as="script"
-            href={`${process.env.REACT_STATIC_PUBLICPATH}${script}`}
+            href={makePathAbsolute(pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script))}
           />
         ))}
       {renderLinkCSS &&
-        clientStyleSheets.reduce(
-          (memo, styleSheet) => [
+        clientStyleSheets.reduce((memo, styleSheet) => {
+          const href = makePathAbsolute(pathJoin(process.env.REACT_STATIC_ASSETS_PATH, styleSheet))
+
+          return [
             ...memo,
             <link
               key={`clientStyleSheetPreload_${styleSheet}`}
               rel="preload"
               as="style"
-              href={`${process.env.REACT_STATIC_PUBLICPATH}${styleSheet}`}
+              href={href}
             />,
-            <link
-              key={`clientStyleSheet_${styleSheet}`}
-              rel="stylesheet"
-              href={`${process.env.REACT_STATIC_PUBLICPATH}${styleSheet}`}
-            />,
-          ],
-          []
-        )}
+            <link key={`clientStyleSheet_${styleSheet}`} rel="stylesheet" href={href} />,
+          ]
+        }, [])}
       {head.link}
       {head.noscript}
       {head.script}

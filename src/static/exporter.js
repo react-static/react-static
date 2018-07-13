@@ -13,7 +13,7 @@ import { progress } from '../utils'
 export default async ({ config, siteData, clientStats }) => {
   const htmlProgress = progress(config.routes.length)
   // Use the node version of the app created with webpack
-  const Comp = require(glob.sync(path.resolve(config.paths.DIST, 'static.*.js'))[0]).default
+  const Comp = require(glob.sync(path.resolve(config.paths.ASSETS, 'static.*.js'))[0]).default
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
 

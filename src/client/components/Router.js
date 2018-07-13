@@ -161,7 +161,7 @@ export default class Router extends React.Component {
         } else {
           const options = disableRoutePrefixing
             ? {}
-            : { basename: process.env.REACT_STATIC_BASEPATH }
+            : { basename: process.env.REACT_STATIC_BASE_PATH }
           resolvedHistory = createBrowserHistory(options)
         }
       }
@@ -182,7 +182,7 @@ export default class Router extends React.Component {
           basename={
             disableRoutePrefixing
               ? ''
-              : process.env.REACT_STATIC_BASEPATH
+              : process.env.REACT_STATIC_BASE_PATH
           }
           {...rest}
         >

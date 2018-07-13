@@ -164,6 +164,10 @@ Works exactly like `basePath`, but only when building with the `--staging` build
 
 Works exactly like `basePath`, but only when running the dev server.
 
+### `assetsPath`
+
+Your `assetsPath` determines where your bundled JS and CSS will be loaded from. This is helpful if you want to host your assets in an external location such as a CDN.
+
 ### `extractCssChunks`
 
 `extractCssChunks` replaces default `ExtractTextPlugin` with `ExtractCssChunks`. It enables automatic CSS splitting into separate files by routes as well as dynamic components (using `react-universal-component`). More information about the [plugin](https://github.com/faceyspacey/extract-css-chunks-webpack-plugin) and [why it is useful as a part of CSS delivery optimisation](https://github.com/faceyspacey/extract-css-chunks-webpack-plugin#what-about-glamorous-styled-components-styled-jsx-aphrodite-etc). Defaults to `false`.
@@ -418,6 +422,7 @@ export default {
     dist: 'dist', // The production output directory.
     devDist: 'tmp/dev-server', // The development scratch directory.
     public: 'public' // The public directory (files copied to dist during build)
+    assets: 'dist' // The output directory for bundled JS and CSS
   }
 }
 ```

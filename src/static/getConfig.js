@@ -6,10 +6,7 @@ import chokidar from 'chokidar'
 import resolveFrom from 'resolve-from'
 
 import getDirname from '../utils/getDirname'
-
-const REGEX_TO_CUT_TO_ROOT = /(\..+?)\/.*/g
-const REGEX_TO_REMOVE_TRAILING_SLASH = /^\/{0,}/g
-const REGEX_TO_REMOVE_LEADING_SLASH = /\/{0,}$/g
+import { cleanSlashes, cutPathToRoot, isAbsoluteUrl } from '../utils/shared'
 
 const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 // the default static.config.js location
@@ -18,11 +15,6 @@ const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
 )
 const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index.js'
-
-export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROOT, '$1')
-
-export const trimLeadingAndTrailingSlashes = (string = '') =>
-  string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '').replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
 
 export const buildConfigation = (config = {}) => {
   // path defaults
@@ -36,6 +28,7 @@ export const buildConfigation = (config = {}) => {
     plugins: 'plugins', // TODO: document
     pages: 'src/pages', // TODO: document
     nodeModules: 'node_modules',
+    assets: '',
     ...(config.paths || {}),
   }
 
@@ -43,25 +36,48 @@ export const buildConfigation = (config = {}) => {
   const resolvePath = relativePath => nodePath.resolve(config.paths.root, relativePath)
 
   // Resolve all paths
-  const distPath =
+  const DIST =
     process.env.REACT_STATIC_ENV === 'development'
       ? resolvePath(config.paths.devDist || config.paths.dist)
       : resolvePath(config.paths.dist)
+
+  const ASSETS = nodePath.resolve(DIST, config.paths.assets)
 
   const paths = {
     ROOT: config.paths.root,
     LOCAL_NODE_MODULES: nodePath.resolve(getDirname(), '../../node_modules'),
     SRC: resolvePath(config.paths.src),
     PAGES: resolvePath(config.paths.pages),
+    DIST,
+    ASSETS,
     PLUGINS: resolvePath(config.paths.plugins),
     TEMP: resolvePath(config.paths.temp),
-    DIST: distPath,
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath(config.paths.nodeModules),
     EXCLUDE_MODULES: config.paths.excludeResolvedModules || resolvePath(config.paths.nodeModules),
     PACKAGE: resolvePath('package.json'),
-    HTML_TEMPLATE: nodePath.join(distPath, 'index.html'),
-    STATIC_DATA: nodePath.join(distPath, 'staticData'),
+    HTML_TEMPLATE: nodePath.join(DIST, 'index.html'),
+    STATIC_DATA: nodePath.join(ASSETS, 'staticData'),
+  }
+
+  let siteRoot = ''
+  let basePath = ''
+
+  if (process.env.REACT_STATIC_ENV === 'development') {
+    basePath = cleanSlashes(config.devBasePath)
+  } else if (process.env.REACT_STATIC_STAGING === 'true') {
+    siteRoot = cutPathToRoot(config.stagingSiteRoot, '$1')
+    basePath = cleanSlashes(config.stagingBasePath)
+  } else {
+    siteRoot = cutPathToRoot(config.siteRoot, '$1')
+    basePath = cleanSlashes(config.basePath)
+  }
+
+  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`)}/`
+
+  let assetsPath = cleanSlashes(config.assetsPath || config.paths.assets)
+  if (assetsPath && !isAbsoluteUrl(assetsPath)) {
+    assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
   }
 
   // Defaults
@@ -83,11 +99,10 @@ export const buildConfigation = (config = {}) => {
     ...config,
     // Materialized Overrides
     paths,
-    siteRoot: cutPathToRoot(config.siteRoot, '$1'),
-    stagingSiteRoot: cutPathToRoot(config.stagingSiteRoot, '$1'),
-    basePath: trimLeadingAndTrailingSlashes(config.basePath),
-    stagingBasePath: trimLeadingAndTrailingSlashes(config.stagingBasePath),
-    devBasePath: trimLeadingAndTrailingSlashes(config.devBasePath),
+    siteRoot,
+    basePath,
+    publicPath,
+    assetsPath,
     extractCssChunks: config.extractCssChunks || false,
     inlineCss: config.inlineCss || false,
   }

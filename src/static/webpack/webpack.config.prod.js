@@ -10,24 +10,13 @@ import rules from './rules'
 
 function common (config) {
   const {
-    ROOT, DIST, NODE_MODULES, SRC,
+    ROOT, DIST, NODE_MODULES, SRC, ASSETS,
   } = config.paths
 
-  // Trailing slash
-  process.env.REACT_STATIC_PUBLICPATH = process.env.REACT_STATIC_STAGING
-    ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
-    : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
-  process.env.REACT_STATIC_PUBLIC_PATH = process.env.REACT_STATIC_PUBLICPATH
-
-  // Trailing slash mysiteroot.com/
-  process.env.REACT_STATIC_SITE_ROOT = `${
-    process.env.REACT_STATIC_STAGING ? config.stagingSiteRoot : config.siteRoot
-  }/`
-
-  // No slashes base/path
-  process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
-    ? config.stagingBasePath
-    : config.basePath
+  process.env.REACT_STATIC_SITE_ROOT = config.siteRoot
+  process.env.REACT_STATIC_BASE_PATH = config.basePath
+  process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
+  process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
   const splitChunks = {
     chunks: 'all',
@@ -76,8 +65,8 @@ function common (config) {
     output: {
       filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
       chunkFilename: 'templates/[name].[chunkHash:8].js',
-      path: DIST,
-      publicPath: process.env.REACT_STATIC_PUBLICPATH || '/',
+      path: ASSETS,
+      publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
     },
     optimization: {
       minimize: true,

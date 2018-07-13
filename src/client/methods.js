@@ -150,14 +150,14 @@ export async function prefetchData (path, { priority } = {}) {
           // If priority, get it immediately
           if (priority) {
             const { data: prop } = await axios.get(
-              `${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`
+              pathJoin(process.env.REACT_STATIC_ASSETS_PATH, `staticData/${hash}.json`)
             )
             propsByHash[hash] = prop
           } else {
             // Non priority, share inflight requests and use pool
             if (!inflightPropHashes[hash]) {
               inflightPropHashes[hash] = requestPool.add(() =>
-                axios.get(`${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`)
+                axios.get(pathJoin(process.env.REACT_STATIC_ASSETS_PATH, `staticData/${hash}.json`))
               )
             }
             const { data: prop } = await inflightPropHashes[hash]

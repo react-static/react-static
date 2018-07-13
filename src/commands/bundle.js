@@ -15,10 +15,10 @@ export default async function build ({ config: originalConfig, staging, debug } 
   process.env.BABEL_ENV = 'production'
 
   if (staging) {
-    process.env.REACT_STATIC_STAGING = true
+    process.env.REACT_STATIC_STAGING = 'true'
   }
   if (debug) {
-    process.env.REACT_STATIC_DEBUG = true
+    process.env.REACT_STATIC_DEBUG = 'true'
   }
 
   // Allow config location to be overriden
@@ -43,6 +43,14 @@ export default async function build ({ config: originalConfig, staging, debug } 
   time(chalk.green('=> [\u2713] Dist cleaned'))
   await fs.remove(config.paths.DIST)
   timeEnd(chalk.green('=> [\u2713] Dist cleaned'))
+
+  // Empty ASSETS folder
+  if (config.paths.ASSETS && config.paths.ASSETS !== config.paths.DIST) {
+    console.log('=> Cleaning assets...')
+    time(chalk.green('=> [\u2713] Assets cleaned'))
+    await fs.emptyDir(config.paths.ASSETS)
+    timeEnd(chalk.green('=> [\u2713] Assets cleaned'))
+  }
 
   config = await prepareRoutes({ config, opts: { dev: false } })
 

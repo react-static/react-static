@@ -21,6 +21,7 @@ const cores = Math.max(OS.cpus().length, 1)
 export const extractTemplates = async config => {
   console.log('=> Building Templates')
   time(chalk.green('=> [\u2713] Templates Built'))
+
   // Dedupe all templates into an array
   const templates = []
 
