@@ -147,7 +147,7 @@ export default {
 
 Automatic data and prop splitting is based on identity comparison `===`. If you break this referential integrity, React Static cannot detect that two props are the same.
 
-**An example of what not do**
+**An example of what not to do**
 <br/>
 
 ```javascript
@@ -172,7 +172,7 @@ export default {
         path: '/help',
         component: 'src/containers/Help',
         getData: async () => ({
-          supportMenu { ...supportMenu } // Even though this supportMenu object
+          supportMenu: { ...supportMenu } // Even though this supportMenu object
           // is exactly the same as the original, it is not the actual original.
           // This would not work!
         })

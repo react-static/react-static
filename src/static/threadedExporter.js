@@ -42,8 +42,9 @@ process.on('message', async payload => {
       process.send({ type: 'done' })
     }
   } catch (err) {
+    console.error(err)
     if (process.connected) {
-      process.send({ type: 'error', err })
+      process.send({ type: 'error', payload: err })
     }
   }
 })
