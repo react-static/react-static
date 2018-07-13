@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-require('@babel/register')
+
 require('../lib/utils/binHelper')
 const program = require('commander')
 const chalk = require('chalk')

@@ -41,8 +41,6 @@ export const makeHeadWithMeta = ({
     .filter(Boolean)
     .map(PluginHead => <PluginHead meta={meta} />)
 
-  console.log(pluginHeads)
-
   return (
     <head {...rest}>
       {head.base}
