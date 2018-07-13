@@ -22,6 +22,7 @@ export const buildConfigation = (config = {}) => {
     root: nodePath.resolve(process.cwd()),
     src: 'src',
     dist: 'dist',
+    temp: 'tmp',
     devDist: 'tmp/dev-server',
     public: 'public',
     plugins: 'plugins', // TODO: document
@@ -50,6 +51,7 @@ export const buildConfigation = (config = {}) => {
     DIST,
     ASSETS,
     PLUGINS: resolvePath(config.paths.plugins),
+    TEMP: resolvePath(config.paths.temp),
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath(config.paths.nodeModules),
     EXCLUDE_MODULES: config.paths.excludeResolvedModules || resolvePath(config.paths.nodeModules),

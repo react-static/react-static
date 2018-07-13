@@ -29,7 +29,7 @@ export default async ({
     config = await getConfig(originalConfig)
     config.originalConfig = originalConfig
     // Restore the process environment variables that were present during the build
-    const bundledEnv = await fs.readJson(`${config.paths.DIST}/bundle-environment.json`)
+    const bundledEnv = await fs.readJson(`${config.paths.TEMP}/bundle-environment.json`)
     Object.keys(bundledEnv).forEach(key => {
       if (typeof process.env[key] === 'undefined') {
         process.env[key] = bundledEnv[key]
@@ -49,7 +49,7 @@ export default async ({
     console.log(config)
   }
 
-  const clientStats = await fs.readJson(`${config.paths.DIST}/client-stats.json`)
+  const clientStats = await fs.readJson(`${config.paths.TEMP}/client-stats.json`)
 
   if (!clientStats) {
     throw new Error('No Client Stats Found')

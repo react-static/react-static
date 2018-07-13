@@ -7,6 +7,7 @@ import { glob, debounce } from '../utils'
 import { pathJoin } from '../utils/shared'
 
 let watcher
+let routesCache
 
 const countRoutes = (routes, count = 0) => {
   routes.forEach(route => {
@@ -35,7 +36,7 @@ export const normalizeRoute = (route, parent = {}) => {
   const originalRoutePath = pathJoin(route.path)
   const routePath = pathJoin(parentPath, route.path)
 
-  if (route.noIndex) {
+  if (typeof route.noIndex !== 'undefined') {
     console.warn(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
   }
 
@@ -43,7 +44,7 @@ export const normalizeRoute = (route, parent = {}) => {
     ...route,
     path: routePath,
     originalPath: originalRoutePath,
-    noindex: route.noindex || parent.noindex || route.noIndex,
+    noindex: typeof route.noindex !== 'undefined' ? route.noindex : parent.noindex,
     hasGetProps: !!route.getData,
   }
 
@@ -155,8 +156,7 @@ export const getRoutesFromPages = async ({ config, opts = {} }, cb) => {
     return routes
   }
 
-  const hasWatcher = !!watcher
-  if (opts.dev && !hasWatcher) {
+  if (opts.dev && !watcher) {
     watcher = chokidar
       .watch(config.paths.PAGES, {
         ignoreInitial: true,
@@ -173,16 +173,18 @@ export const getRoutesFromPages = async ({ config, opts = {} }, cb) => {
           }
           const pages = await glob(pagesGlob)
           const routes = handle(pages)
+          routesCache = routes
           cb(routes)
         }),
         50
       )
   }
-  if (!hasWatcher) {
-    const pages = await glob(pagesGlob)
-    const routes = handle(pages)
-    return cb(routes)
+  if (routesCache) {
+    return cb(routesCache)
   }
+  const pages = await glob(pagesGlob)
+  const routes = handle(pages)
+  return cb(routes)
 }
 
 // At least ensure the index page is defined for export

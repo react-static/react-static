@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "react-static": "^5",
-    "react-static-plugin-styled-components": "^1.0.0",
+    "react-static": "^5.9.7",
+    "react-static-plugin-styled-components": "^1.0.1",
     "styled-components": "^3"
   },
   "devDependencies": {

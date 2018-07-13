@@ -2,7 +2,6 @@ import { reloadRoutes } from 'react-static/node'
 import fs from 'fs-extra'
 import path from 'path'
 import React, { Component } from 'react'
-import { ServerStyleSheet } from 'styled-components'
 import chokidar from 'chokidar'
 
 chokidar.watch('../docs').on('all', () => reloadRoutes())
@@ -35,6 +34,11 @@ const docPages = [
     path: 'config',
     title: 'Config',
     markdownSrc: '../docs/config.md',
+  },
+  {
+    path: 'plugins',
+    title: 'Plugins',
+    markdownSrc: '../docs/plugins.md',
   },
   {
     path: 'cli',
@@ -75,45 +79,11 @@ const menu = [
   },
   {
     name: 'Core Concepts',
-    children: [
-      { name: 'Overview', link: '/docs/concepts' },
-      {
-        name: 'CSS and CSS-in-JS',
-        link: '/docs/concepts#css-and-css-in-js',
-      },
-      {
-        name: 'Code, Data, and Prop Splitting',
-        link: '/docs/concepts#code-data-and-prop-splitting',
-      },
-      {
-        name: 'Writing universal, "node-safe" code',
-        link: '/docs/concepts/#writing-universal-node-safe-code',
-      },
-      { name: 'Environment Variables', link: '/docs/concepts/#environment-variables' },
-      {
-        name: 'Building your site for production',
-        link: '/docs/concepts/#building-your-site-for-production',
-      },
-      { name: 'Continuous Integration', link: '/docs/concepts/#continuous-integration' },
-      { name: 'Hosting', link: '/docs/concepts/#hosting' },
-      { name: 'Using a CMS', link: '/docs/concepts/#using-a-cms' },
-      {
-        name: 'Rebuilding your site with Webhooks',
-        link: '/docs/concepts/#rebuilding-your-site-with-webhooks',
-      },
-      { name: '404 Handling', link: '/docs/concepts/#404-handling' },
-      { name: 'Non-Static Routing', link: '/docs/concepts/#non-static-routing' },
-      {
-        name: 'Webpack Customization and Plugins',
-        link: '/docs/concepts/#webpack-customization-and-plugins',
-      },
-      {
-        name: 'Using Preact in Production',
-        link: '/docs/concepts/#using-preact-in-production',
-      },
-      { name: 'Pagination', link: '/docs/concepts/#pagination' },
-      { name: 'Browser Support', link: '/docs/concepts/#browser-support' },
-    ],
+    link: '/docs/concepts',
+  },
+  {
+    name: 'Plugins',
+    link: '/docs/plugins',
   },
   {
     name: 'API Reference',
@@ -151,15 +121,12 @@ const menu = [
 ]
 
 export default {
+  plugins: ['react-static-plugin-styled-components'],
   getSiteData: () => ({
     menu,
     repoName,
   }),
   getRoutes: () => [
-    {
-      path: '/',
-      component: 'src/containers/Home',
-    },
     ...docPages.map(page => ({
       path: `docs/${page.path}`,
       component: 'src/containers/Doc',
@@ -170,21 +137,11 @@ export default {
         title: page.title,
       }),
     })),
-    {
-      path: '404',
-      component: 'src/containers/404',
-    },
   ],
-  renderToHtml: (render, Comp, meta) => {
-    const sheet = new ServerStyleSheet()
-    const html = render(sheet.collectStyles(<Comp />))
-    meta.styleTags = sheet.getStyleElement()
-    return html
-  },
   Document: class CustomHtml extends Component {
     render () {
       const {
-        Html, Head, Body, children, renderMeta,
+        Html, Head, Body, children,
       } = this.props
 
       return (
@@ -196,7 +153,6 @@ export default {
               href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i"
               rel="stylesheet"
             />
-            {renderMeta.styleTags}
             <title>{repoName}</title>
           </Head>
           <Body>{children}</Body>
