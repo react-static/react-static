@@ -133,7 +133,7 @@ export async function startDevServer ({ config }) {
       // Since routes may change during dev, this function can rebuild all of the config
       // routes. It also references the original config when possible, to make sure it
       // uses any up to date getData callback generated from new or replacement routes.
-      reloadWebpackRoutes = () => {
+      reloadWebpackRoutes = config => {
         // Serve each routes data
         config.routes.forEach(({ path: routePath }) => {
           app.get(
@@ -160,7 +160,7 @@ export async function startDevServer ({ config }) {
         })
       }
 
-      reloadWebpackRoutes()
+      reloadWebpackRoutes(config)
 
       if (config.devServer && config.devServer.before) {
         config.devServer.before(app)
@@ -234,12 +234,12 @@ export async function startDevServer ({ config }) {
   socket.listen(messagePort)
 
   resolvedReloadRoutes = async paths => {
-    await prepareRoutes({ config, opts: { dev: true } }, async config => {
+    await prepareRoutes({ config, opts: { dev: true }, silent: true }, async config => {
       if (!paths) {
         paths = config.routes.map(route => route.path)
       }
       paths = paths.map(cleanPath)
-      reloadWebpackRoutes()
+      reloadWebpackRoutes(config)
       socket.emit('message', { type: 'reloadRoutes', paths })
     })
   }

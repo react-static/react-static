@@ -7,6 +7,7 @@ import { glob, debounce } from '../utils'
 import { pathJoin } from '../utils/shared'
 
 let watcher
+let routesCache
 const REGEX_TO_CUT_TO_ROOT = /(\..+?)\/.*/g
 const REGEX_TO_REMOVE_TRAILING_SLASH = /^\/{0,}/g
 const REGEX_TO_REMOVE_LEADING_SLASH = /\/{0,}$/g
@@ -163,8 +164,7 @@ export const getRoutesFromPages = async ({ config, opts = {} }, cb) => {
     return routes
   }
 
-  const hasWatcher = !!watcher
-  if (opts.dev && !hasWatcher) {
+  if (opts.dev && !watcher) {
     watcher = chokidar
       .watch(config.paths.PAGES, {
         ignoreInitial: true,
@@ -181,16 +181,18 @@ export const getRoutesFromPages = async ({ config, opts = {} }, cb) => {
           }
           const pages = await glob(pagesGlob)
           const routes = handle(pages)
+          routesCache = routes
           cb(routes)
         }),
         50
       )
   }
-  if (!hasWatcher) {
-    const pages = await glob(pagesGlob)
-    const routes = handle(pages)
-    return cb(routes)
+  if (routesCache) {
+    return cb(routesCache)
   }
+  const pages = await glob(pagesGlob)
+  const routes = handle(pages)
+  return cb(routes)
 }
 
 // At least ensure the index page is defined for export

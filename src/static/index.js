@@ -51,19 +51,19 @@ export const extractTemplates = async config => {
   return templates
 }
 
-export const prepareRoutes = async ({ config, opts }, cb = d => d) => {
-  console.log('=> Building Routes...')
+export const prepareRoutes = async ({ config, opts, silent }, cb = d => d) => {
+  if (!silent) console.log('=> Building Routes...')
   // set the static routes
   process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
 
-  time(chalk.green('=> [\u2713] Routes Built'))
+  if (!silent) time(chalk.green('=> [\u2713] Routes Built'))
   return getRoutes(
     {
       config,
       opts,
     },
     async routes => {
-      timeEnd(chalk.green('=> [\u2713] Routes Built'))
+      if (!silent) timeEnd(chalk.green('=> [\u2713] Routes Built'))
       config.routes = routes
       config.templates = extractTemplates(config)
       return cb(config)
