@@ -51,7 +51,7 @@ export const normalizeRoute = (route, parent = {}) => {
     ...route,
     path: routePath,
     originalPath: originalRoutePath,
-    noindex: route.noindex || parent.noindex || route.noIndex,
+    noindex: typeof route.noindex !== 'undefined' ? route.noIndex : parent.noIndex,
     hasGetProps: !!route.getData,
   }
 
