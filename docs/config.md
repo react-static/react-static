@@ -360,30 +360,46 @@ export default {
 }
 ```
 
+### `renderToComponent`
+
+An optional function that can be used to override the process of render the base app component via JSX
+
+- Arguments
+  - `App`: The final react-component for your app to be rendered
+  - options{}: an options object
+    - meta: The render meta for this page.
+- Returns a JSX element, eg. `return <App />`
+
+Default:
+
+```javascript
+// static.config.js
+export default {
+  renderToComponent: async (App, { meta, clientStats }) => {
+    return <App />
+  }
+}
+```
+
 ### `renderToHtml`
 
 An optional function that can be used to customize the static rendering logic.
 
 - Arguments
   - `render: Function`: A function that renders a react component to an html string
-  - `Component`: the final react component for your site that needs to be rendered to an HTML
-  - `meta`, a **mutable** object that is exposed to the optional Document component as a prop
-  - `webpackStats`, the webpack stats generated from the "prod" stage
+  - `JSXElement`: the final react element (that has already been rendered via `<Comp />`) for your site that needs to be rendered to an HTML
+  - options{}: an options object
+    - `meta`, a **mutable** object that is exposed to the optional Document component as a prop
+    - `clientStats`, the webpack client stats generated from the "prod" stage
 - Returns an HTML string to be rendered into your `Document` component provided in your config (or the default one).
 
-This also happens to be the perfect place for css-in-js integration (see [styled-components] and [glamorous] examples for more information)
-
-Example:
+Default:
 
 ```javascript
 // static.config.js
 export default {
-  renderToHtml: async (render, Component, meta, webpackStats) => {
-    // Add meta you may want
-    meta.hello = 'world'
-
-    // Use any custom rendering logic
-    return render(<Component />)
+  renderToHtml: async (render, app, { meta, clientStats }) => {
+    return render(app)
   }
 }
 ```

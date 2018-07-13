@@ -5,6 +5,8 @@
 - A `pages` directory is now available. Any files in this directory will automatically become unique routes with no configuration necessary.
 - `react`, `react-dom`, `react-router` and `react-hot-loader` dependencies are now optional as project dependencies and will resolve using react-static's versions if needed.
 - Plugin system. Hook and the like capable of altering and adding features to a project non-invasively.
+- Created `react-static-plugin-emotion`
+- Created `react-static-plugin-styled-components`
 
 #### Breaking Changes
 
