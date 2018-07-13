@@ -36,7 +36,7 @@ export const makeHeadWithMeta = ({
     })
   }
 
-  const pluginHeads = config.plugins
+  const pluginHeads = (config.plugins || [])
     .map(plugin => plugin.Head)
     .filter(Boolean)
     .map(PluginHead => <PluginHead meta={meta} />)
