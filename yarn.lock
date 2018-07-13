@@ -5320,7 +5320,7 @@ jest-worker@^23.2.0:
   dependencies:
     merge-stream "^1.0.1"
 
-jest@^23.4.0:
+jest@^23.4.1:
   version "23.4.1"
   resolved "https://registry.yarnpkg.com/jest/-/jest-23.4.1.tgz#39550c72f3237f63ae1b434d8d122cdf6fa007b6"
   dependencies:
@@ -7267,10 +7267,6 @@ react-side-effect@^1.1.0:
   dependencies:
     exenv "^1.2.1"
     shallowequal "^1.0.1"
-
-react-static-plugin-styled-components@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-static-plugin-styled-components/-/react-static-plugin-styled-components-1.0.2.tgz#008118734d093fff942f4e3478f2bd7a58be305a"
 
 react-test-renderer@^16.0.0-0:
   version "16.4.1"
