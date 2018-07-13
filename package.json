@@ -44,6 +44,7 @@
     "@types/react": "^16.0.18",
     "@types/react-helmet": "^5.0.6",
     "@types/react-router-dom": "^4.2.7",
+    "@babel/runtime": "^7.0.0-beta.53",
     "async-sema": "^1.4.1",
     "autoprefixer": "^7.1.5",
     "axios": "^0.18.0",
