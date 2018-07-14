@@ -6,6 +6,7 @@ const typescriptWebpackPaths = require('./webpack.config.js')
 
 export default {
   entry: path.join(__dirname, 'src', 'index.tsx'),
+  extensions: ['.js', '.jsx', '.ts', '.tsx'],
   getSiteData: () => ({
     title: 'React Static',
   }),
