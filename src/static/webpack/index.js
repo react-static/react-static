@@ -9,7 +9,7 @@ import fs from 'fs-extra'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import { findAvailablePort, time, timeEnd } from '../../utils'
+import { findAvailablePort, time, timeEnd, getConfigPluginHooks } from '../../utils'
 import { cleanPath } from '../../utils/shared'
 import { prepareRoutes } from '../'
 
@@ -49,22 +49,22 @@ export function webpackConfig ({ config, stage }) {
 
   const defaultLoaders = getStagedRules({ config, stage })
 
-  if (config.webpack) {
-    let transformers = config.webpack
-    if (!Array.isArray(config.webpack)) {
-      transformers = [config.webpack]
+  const transformers = getConfigPluginHooks(config, 'webpack').reduce((all, curr) => {
+    if (Array.isArray(curr)) {
+      return [...all, ...curr]
     }
+    return [...all, curr]
+  }, [])
 
-    transformers.forEach(transformer => {
-      const modifiedConfig = transformer(webpackConfig, {
-        stage,
-        defaultLoaders,
-      })
-      if (modifiedConfig) {
-        webpackConfig = modifiedConfig
-      }
+  transformers.forEach(transformer => {
+    const modifiedConfig = transformer(webpackConfig, {
+      stage,
+      defaultLoaders,
     })
-  }
+    if (modifiedConfig) {
+      webpackConfig = modifiedConfig
+    }
+  })
   return webpackConfig
 }
 

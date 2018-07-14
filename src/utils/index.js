@@ -100,3 +100,7 @@ export function debounce (func, wait, immediate) {
     if (callNow) func(...args)
   }
 }
+
+export function getConfigPluginHooks (config, hook) {
+  return [...(config.plugins || []).map(plugin => plugin[hook]), config[hook]].filter(Boolean)
+}
