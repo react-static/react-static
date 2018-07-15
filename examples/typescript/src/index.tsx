@@ -22,8 +22,6 @@ if (typeof document !== 'undefined') {
 
   // Render!
   render(App)
-  // Render!
-  render(App)
   // Hot Module Replacement
   if (module.hot) {
     module.hot.accept('./App', () => render(require('./App').default))
