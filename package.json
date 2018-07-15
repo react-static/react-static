@@ -59,7 +59,7 @@
     "css-loader": "^0.28.11",
     "download-git-repo": "^1.0.2",
     "eslint-config-react-tools": "^1.2.5",
-    "extract-css-chunks-webpack-plugin": "^3.0.5",
+    "extract-css-chunks-webpack-plugin": "^3.0.7",
     "file-loader": "^1.1.11",
     "fs-extra": "^4.0.2",
     "git-promise": "^0.3.1",
