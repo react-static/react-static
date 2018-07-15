@@ -1,8 +1,7 @@
 import axios from 'axios'
-import React from 'react'
-import { renderStylesToString } from 'emotion-server'
 
 export default {
+  plugins: ['react-static-plugin-emotion'],
   getSiteData: () => ({
     title: 'React Static',
   }),
@@ -24,5 +23,4 @@ export default {
       },
     ]
   },
-  renderToHtml: (render, Comp) => renderStylesToString(render(<Comp />)),
 }

@@ -50,13 +50,12 @@ React-Static is different from most React-based static-site generators. It follo
 
 The following templates contain the bare-minimum for each css approach to function properly with server-side rendering. You can start with these templates using the `react-static create` CLI command, or transfer the logic to an existin project (pay close attention to the `static.config.js` file if that is the case).
 
-- [glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
-- [glamorous-tailwind](https://github.com/nozzle/react-static/tree/master/examples/glamorous-tailwind)
-- [less-antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
-- [material-ui](https://github.com/nozzle/react-static/tree/master/examples/material-ui)
-- [sass](https://github.com/nozzle/react-static/tree/master/examples/sass)
+- [emotion](https://github.com/nozzle/react-static/tree/master/examples/emotion)
 - [styled-components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
+- [sass](https://github.com/nozzle/react-static/tree/master/examples/sass)
 - [styled-jsx](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
+- [material-ui](https://github.com/nozzle/react-static/tree/master/examples/material-ui)
+- [less-antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
 - [tailwind-css](https://github.com/nozzle/react-static/tree/master/examples/tailwind-css)
 
 ### Integrating New CSS-in-JS Libraries
@@ -159,7 +158,7 @@ export default {
     return [
       {
         path: '/',
-        component: 'src/containers/Home',
+        component: 'src/containers/Home'
       },
       {
         path: '/docs',
@@ -176,9 +175,9 @@ export default {
           // is exactly the same as the original, it is not the actual original.
           // This would not work!
         })
-      },
+      }
     ]
-  },
+  }
 }
 ```
 

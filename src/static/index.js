@@ -21,6 +21,7 @@ const cores = Math.max(OS.cpus().length, 1)
 export const extractTemplates = async config => {
   console.log('=> Building Templates')
   time(chalk.green('=> [\u2713] Templates Built'))
+
   // Dedupe all templates into an array
   const templates = []
 
@@ -51,19 +52,19 @@ export const extractTemplates = async config => {
   return templates
 }
 
-export const prepareRoutes = async ({ config, opts }, cb = d => d) => {
-  console.log('=> Building Routes...')
+export const prepareRoutes = async ({ config, opts, silent }, cb = d => d) => {
+  if (!silent) console.log('=> Building Routes...')
   // set the static routes
   process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
 
-  time(chalk.green('=> [\u2713] Routes Built'))
+  if (!silent) time(chalk.green('=> [\u2713] Routes Built'))
   return getRoutes(
     {
       config,
       opts,
     },
     async routes => {
-      timeEnd(chalk.green('=> [\u2713] Routes Built'))
+      if (!silent) timeEnd(chalk.green('=> [\u2713] Routes Built'))
       config.routes = routes
       config.templates = extractTemplates(config)
       return cb(config)
@@ -219,6 +220,7 @@ const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
             ...process.env,
             REACT_STATIC_SLAVE: 'true',
           },
+          stdio: 'inherit',
         })
       )
     }
@@ -239,9 +241,12 @@ const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
             siteData,
             clientStats,
           })
-          exporter.on('message', ({ type, err }) => {
-            if (err) {
-              reject(err)
+          exporter.on('message', ({ type, payload }) => {
+            if (type === 'error') {
+              reject(payload)
+            }
+            if (type === 'log') {
+              console.log(...payload)
             }
             if (type === 'tick') {
               htmlProgress.tick()

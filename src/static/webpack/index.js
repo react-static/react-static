@@ -9,7 +9,7 @@ import fs from 'fs-extra'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import { findAvailablePort, time, timeEnd } from '../../utils'
+import { findAvailablePort, time, timeEnd, getConfigPluginHooks } from '../../utils'
 import { cleanPath } from '../../utils/shared'
 import { prepareRoutes } from '../'
 
@@ -49,22 +49,22 @@ export function webpackConfig ({ config, stage }) {
 
   const defaultLoaders = getStagedRules({ config, stage })
 
-  if (config.webpack) {
-    let transformers = config.webpack
-    if (!Array.isArray(config.webpack)) {
-      transformers = [config.webpack]
+  const transformers = getConfigPluginHooks(config, 'webpack').reduce((all, curr) => {
+    if (Array.isArray(curr)) {
+      return [...all, ...curr]
     }
+    return [...all, curr]
+  }, [])
 
-    transformers.forEach(transformer => {
-      const modifiedConfig = transformer(webpackConfig, {
-        stage,
-        defaultLoaders,
-      })
-      if (modifiedConfig) {
-        webpackConfig = modifiedConfig
-      }
+  transformers.forEach(transformer => {
+    const modifiedConfig = transformer(webpackConfig, {
+      stage,
+      defaultLoaders,
     })
-  }
+    if (modifiedConfig) {
+      webpackConfig = modifiedConfig
+    }
+  })
   return webpackConfig
 }
 
@@ -133,7 +133,7 @@ export async function startDevServer ({ config }) {
       // Since routes may change during dev, this function can rebuild all of the config
       // routes. It also references the original config when possible, to make sure it
       // uses any up to date getData callback generated from new or replacement routes.
-      reloadWebpackRoutes = () => {
+      reloadWebpackRoutes = config => {
         // Serve each routes data
         config.routes.forEach(({ path: routePath }) => {
           app.get(
@@ -160,7 +160,7 @@ export async function startDevServer ({ config }) {
         })
       }
 
-      reloadWebpackRoutes()
+      reloadWebpackRoutes(config)
 
       if (config.devServer && config.devServer.before) {
         config.devServer.before(app)
@@ -234,12 +234,12 @@ export async function startDevServer ({ config }) {
   socket.listen(messagePort)
 
   resolvedReloadRoutes = async paths => {
-    await prepareRoutes({ config, opts: { dev: true } }, async config => {
+    await prepareRoutes({ config, opts: { dev: true }, silent: true }, async config => {
       if (!paths) {
         paths = config.routes.map(route => route.path)
       }
       paths = paths.map(cleanPath)
-      reloadWebpackRoutes()
+      reloadWebpackRoutes(config)
       socket.emit('message', { type: 'reloadRoutes', paths })
     })
   }
@@ -314,12 +314,12 @@ export async function buildProductionBundles ({ config }) {
       const prodStatsJson = prodStats.toJson()
 
       fs.outputFileSync(
-        path.join(config.paths.DIST, 'client-stats.json'),
+        path.join(config.paths.TEMP, 'client-stats.json'),
         JSON.stringify(prodStatsJson, null, 2)
       )
 
       fs.outputFileSync(
-        path.join(config.paths.DIST, 'bundle-environment.json'),
+        path.join(config.paths.TEMP, 'bundle-environment.json'),
         JSON.stringify(process.env, null, 2)
       )
 

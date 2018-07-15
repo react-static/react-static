@@ -4,13 +4,15 @@ import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import Helmet from 'react-helmet'
 import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
-import path from 'path'
+import nodePath from 'path'
 import fs from 'fs-extra'
+
+import Redirect from '../client/components/Redirect'
+import { makePathAbsolute } from '../utils/shared'
 
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
 import { makeHeadWithMeta } from './components/HeadWithMeta'
 import { makeBodyWithMeta } from './components/BodyWithMeta'
-import Redirect from '../client/components/Redirect'
 
 //
 
@@ -50,8 +52,7 @@ export default async function exportRoute ({
 
   const basePath =
     cachedBasePath ||
-    (cachedBasePath =
-      process.env.REACT_STATIC_STAGING === 'true' ? config.stagingBasePath : config.basePath)
+    (cachedBasePath = config.basePath)
 
   const hrefReplace =
     cachedHrefReplace ||
@@ -138,13 +139,45 @@ export default async function exportRoute ({
   let appHtml
 
   try {
-    // Allow extractions of meta via config.renderToString
-    appHtml = await config.renderToHtml(
-      renderToStringAndExtract,
-      FinalComp,
-      renderMeta,
-      clientStats
-    )
+    // Run the beforeRenderToComponent hook // TODO: document this
+    FinalComp = config.plugins
+      .map(plugin => plugin.beforeRenderToComponent)
+      .filter(Boolean)
+      .reduce(
+        (curr, beforeRenderToComponent) => beforeRenderToComponent(curr, { meta: renderMeta }),
+        FinalComp
+      )
+
+    // Run the configs renderToComponent function
+    let RenderedComp = await config.renderToComponent(FinalComp, {
+      meta: renderMeta,
+      clientStats,
+    })
+
+    // Run the beforeRenderToHtml hook
+    // Rum the Html hook
+    RenderedComp = config.plugins
+      .map(plugin => plugin.beforeRenderToHtml)
+      .filter(Boolean)
+      .reduce(
+        (curr, beforeRenderToHtml) => beforeRenderToHtml(curr, { meta: renderMeta }),
+        RenderedComp
+      )
+
+    // Run the configs renderToHtml function
+    appHtml = await config.renderToHtml(renderToStringAndExtract, RenderedComp, {
+      meta: renderMeta,
+      clientStats,
+    })
+
+    // Rum the Html hook
+    appHtml = config.plugins
+      .map(plugin => plugin.beforeHtmlToDocument)
+      .filter(Boolean)
+      .reduce(
+        (curr, beforeHtmlToDocument) => beforeHtmlToDocument(curr, { meta: renderMeta }),
+        appHtml
+      )
   } catch (error) {
     error.message = `Failed exporting HTML for URL ${route.path} (${route.component}): ${
       error.message
@@ -162,6 +195,7 @@ export default async function exportRoute ({
         config,
         clientStyleSheets,
         clientCss,
+        meta: renderMeta,
       })}
       Body={makeBodyWithMeta({
         head,
@@ -183,21 +217,22 @@ export default async function exportRoute ({
 
   // If the siteRoot is set and we're not in staging, prefix all absolute URL's
   // with the siteRoot
+  const publicPath = makePathAbsolute(process.env.REACT_STATIC_PUBLIC_PATH)
   if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {
-    html = html.replace(hrefReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
+    html = html.replace(hrefReplace, `$1${publicPath}$3`)
   }
 
-  html = html.replace(srcReplace, `$1${process.env.REACT_STATIC_PUBLICPATH}$3`)
+  html = html.replace(srcReplace, `$1${publicPath}$3`)
 
   // If the route is a 404 page, write it directly to 404.html, instead of
   // inside a directory.
   const htmlFilename =
     route.path === '404'
-      ? path.join(config.paths.DIST, '404.html')
-      : path.join(config.paths.DIST, route.path, 'index.html')
+      ? nodePath.join(config.paths.DIST, '404.html')
+      : nodePath.join(config.paths.DIST, route.path, 'index.html')
 
   // Make the routeInfo sit right next to its companion html file
-  const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.json')
+  const routeInfoFilename = nodePath.join(config.paths.DIST, route.path, 'routeInfo.json')
 
   const res = await Promise.all([
     fs.outputFile(htmlFilename, html),

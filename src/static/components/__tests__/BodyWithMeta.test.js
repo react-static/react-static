@@ -4,7 +4,7 @@ import { makeBodyWithMeta } from '../BodyWithMeta'
 
 describe('BodyWithMeta', () => {
   test('when route is a static route', () => {
-    process.env.REACT_STATIC_PUBLICPATH = 'public/path'
+    process.env.REACT_STATIC_ASSETS_PATH = 'assets/path'
     const BodyWithMeta = makeBodyWithMeta({
       head: { bodyProps: { lang: 'en' } },
       route: { redirect: false },

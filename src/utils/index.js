@@ -5,12 +5,12 @@ import OpenPort from 'openport'
 import fs from 'fs-extra'
 import nodeGlob from 'glob'
 import { performance } from 'perf_hooks'
-import Progress from 'progress'
 //
 import { Html, Head, Body } from '../static/RootComponents'
 
 //
 
+export { default as progress } from './progress'
 export const ChalkColor = {
   yarn: '#2c8ebb',
   npm: '#cb3837',
@@ -101,11 +101,6 @@ export function debounce (func, wait, immediate) {
   }
 }
 
-export function progress (len, label) {
-  return new Progress(
-    `=> ${label ? `${label} ` : ''}[:bar] :current/:total :percent :rate/s :etas `,
-    {
-      total: len,
-    }
-  )
+export function getConfigPluginHooks (config, hook) {
+  return [...(config.plugins || []).map(plugin => plugin[hook]), config[hook]].filter(Boolean)
 }

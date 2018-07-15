@@ -3,12 +3,10 @@
 import React from 'react'
 import nodePath from 'path'
 import chokidar from 'chokidar'
+import resolveFrom from 'resolve-from'
 
 import getDirname from '../utils/getDirname'
-
-const REGEX_TO_CUT_TO_ROOT = /(\..+?)\/.*/g
-const REGEX_TO_REMOVE_TRAILING_SLASH = /^\/{0,}/g
-const REGEX_TO_REMOVE_LEADING_SLASH = /\/{0,}$/g
+import { cleanSlashes, cutPathToRoot, isAbsoluteUrl } from '../utils/shared'
 
 const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 // the default static.config.js location
@@ -18,21 +16,19 @@ const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
 const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index.js'
 
-export const cutPathToRoot = (string = '') => string.replace(REGEX_TO_CUT_TO_ROOT, '$1')
-
-export const trimLeadingAndTrailingSlashes = (string = '') =>
-  string.replace(REGEX_TO_REMOVE_TRAILING_SLASH, '').replace(REGEX_TO_REMOVE_LEADING_SLASH, '')
-
 export const buildConfigation = (config = {}) => {
   // path defaults
   config.paths = {
     root: nodePath.resolve(process.cwd()),
     src: 'src',
     dist: 'dist',
+    temp: 'tmp',
     devDist: 'tmp/dev-server',
     public: 'public',
+    plugins: 'plugins', // TODO: document
     pages: 'src/pages', // TODO: document
     nodeModules: 'node_modules',
+    assets: '',
     ...(config.paths || {}),
   }
 
@@ -40,23 +36,48 @@ export const buildConfigation = (config = {}) => {
   const resolvePath = relativePath => nodePath.resolve(config.paths.root, relativePath)
 
   // Resolve all paths
-  const distPath =
+  const DIST =
     process.env.REACT_STATIC_ENV === 'development'
       ? resolvePath(config.paths.devDist || config.paths.dist)
       : resolvePath(config.paths.dist)
+
+  const ASSETS = nodePath.resolve(DIST, config.paths.assets)
 
   const paths = {
     ROOT: config.paths.root,
     LOCAL_NODE_MODULES: nodePath.resolve(getDirname(), '../../node_modules'),
     SRC: resolvePath(config.paths.src),
     PAGES: resolvePath(config.paths.pages),
-    DIST: distPath,
+    DIST,
+    ASSETS,
+    PLUGINS: resolvePath(config.paths.plugins),
+    TEMP: resolvePath(config.paths.temp),
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath(config.paths.nodeModules),
     EXCLUDE_MODULES: config.paths.excludeResolvedModules || resolvePath(config.paths.nodeModules),
     PACKAGE: resolvePath('package.json'),
-    HTML_TEMPLATE: nodePath.join(distPath, 'index.html'),
-    STATIC_DATA: nodePath.join(distPath, 'staticData'),
+    HTML_TEMPLATE: nodePath.join(DIST, 'index.html'),
+    STATIC_DATA: nodePath.join(ASSETS, 'staticData'),
+  }
+
+  let siteRoot = ''
+  let basePath = ''
+
+  if (process.env.REACT_STATIC_ENV === 'development') {
+    basePath = cleanSlashes(config.devBasePath)
+  } else if (process.env.REACT_STATIC_STAGING === 'true') {
+    siteRoot = cutPathToRoot(config.stagingSiteRoot, '$1')
+    basePath = cleanSlashes(config.stagingBasePath)
+  } else {
+    siteRoot = cutPathToRoot(config.siteRoot, '$1')
+    basePath = cleanSlashes(config.basePath)
+  }
+
+  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`)}/`
+
+  let assetsPath = cleanSlashes(config.assetsPath || config.paths.assets)
+  if (assetsPath && !isAbsoluteUrl(assetsPath)) {
+    assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
   }
 
   // Defaults
@@ -64,7 +85,8 @@ export const buildConfigation = (config = {}) => {
     // Defaults
     entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
     getSiteData: () => ({}),
-    renderToHtml: (render, Comp) => render(<Comp />),
+    renderToComponent: Comp => <Comp />,
+    renderToHtml: (render, comp) => render(comp),
     prefetchRate: 3,
     maxThreads: Infinity,
     disableRouteInfoWarning: false,
@@ -72,15 +94,15 @@ export const buildConfigation = (config = {}) => {
     outputFileRate: 100,
     extensions: ['.js', '.jsx'], // TODO: document
     getRoutes: async () => DEFAULT_ROUTES,
+    plugins: [],
     // Config Overrides
     ...config,
     // Materialized Overrides
     paths,
-    siteRoot: cutPathToRoot(config.siteRoot, '$1'),
-    stagingSiteRoot: cutPathToRoot(config.stagingSiteRoot, '$1'),
-    basePath: trimLeadingAndTrailingSlashes(config.basePath),
-    stagingBasePath: trimLeadingAndTrailingSlashes(config.stagingBasePath),
-    devBasePath: trimLeadingAndTrailingSlashes(config.devBasePath),
+    siteRoot,
+    basePath,
+    publicPath,
+    assetsPath,
     extractCssChunks: config.extractCssChunks || false,
     inlineCss: config.inlineCss || false,
   }
@@ -89,6 +111,34 @@ export const buildConfigation = (config = {}) => {
   process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
   process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = finalConfig.disableRouteInfoWarning
   process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = finalConfig.disableRoutePrefixing
+
+  // Fetch plugins, if any
+  finalConfig.plugins = finalConfig.plugins.map(plugin => {
+    let resolver = plugin
+    let options = {}
+    if (Array.isArray(plugin)) {
+      resolver = plugin[0]
+      options = plugin[1] || {}
+    }
+    // Attempt a direct require for absolute paths
+    try {
+      plugin = require(resolver)
+    } catch (err) {
+      try {
+        // Attempt a /plugins directory require
+        plugin = require(nodePath.resolve(paths.PLUGINS, resolver))
+      } catch (err) {
+        // Attempt a root directory require (node_modules)
+        plugin = require(resolveFrom(process.cwd(), resolver))
+      }
+    }
+
+    return {
+      resolver,
+      options,
+      ...plugin,
+    }
+  })
 
   return finalConfig
 }

@@ -1,9 +1,4 @@
-import getConfig, {
-  cutPathToRoot,
-  trimLeadingAndTrailingSlashes,
-  buildConfigation,
-} from '../getConfig'
-
+import getConfig, { buildConfigation } from '../getConfig'
 import defaultConfigDevelopment from '../__mocks__/defaultConfigDevelopment.mock'
 import defaultConfigProduction from '../__mocks__/defaultConfigProduction.mock'
 
@@ -21,18 +16,6 @@ const testConfiguration = (configuration, configurationMock) => {
   expect(configuration.renderToHtml).toBeInstanceOf(Function)
   expect(configuration.getRoutes).toBeInstanceOf(Function)
 }
-
-describe('cutPathToRoot', () => {
-  it('should return a root of the path', () => {
-    expect(cutPathToRoot('./root/path/to/')).toBe('./root')
-  })
-})
-
-describe('trimLeadingAndTrailingSlashes', () => {
-  it('should return a String with the leading and trailing slash trimmed', () => {
-    expect(trimLeadingAndTrailingSlashes('/path/to/')).toBe('path/to')
-  })
-})
 
 describe('buildConfigation', () => {
   let reactStaticEnviroment

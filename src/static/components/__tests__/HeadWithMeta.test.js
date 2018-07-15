@@ -5,7 +5,7 @@ import { makeHeadWithMeta } from '../HeadWithMeta'
 describe('HeadWithMeta', () => {
   let data
   beforeEach(() => {
-    process.env.REACT_STATIC_PUBLICPATH = 'public/path'
+    process.env.REACT_STATIC_ASSETS_PATH = 'assets/path'
     const inlineCSS = `
       body {
         display: block;

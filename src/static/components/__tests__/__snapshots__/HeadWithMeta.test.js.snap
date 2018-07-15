@@ -14,13 +14,13 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
     </title>
     <link
       as="script"
-      href="public/pathmain.js"
+      href="/assets/path/main.js"
       key="clientScript_main.js"
       rel="preload"
     />
     <link
       as="script"
-      href="public/pathbootstrap.js"
+      href="/assets/path/bootstrap.js"
       key="clientScript_bootstrap.js"
       rel="preload"
     />
@@ -65,35 +65,35 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
   >
     <link
       as="script"
-      href="public/pathmain.js"
+      href="/assets/path/main.js"
       key="clientScript_main.js"
       rel="preload"
     />
     <link
       as="script"
-      href="public/pathbootstrap.js"
+      href="/assets/path/bootstrap.js"
       key="clientScript_bootstrap.js"
       rel="preload"
     />
     <link
       as="style"
-      href="public/pathmain.css"
+      href="/assets/path/main.css"
       key="clientStyleSheetPreload_main.css"
       rel="preload"
     />
     <link
-      href="public/pathmain.css"
+      href="/assets/path/main.css"
       key="clientStyleSheet_main.css"
       rel="stylesheet"
     />
     <link
       as="style"
-      href="public/pathbootstrap.css"
+      href="/assets/path/bootstrap.css"
       key="clientStyleSheetPreload_bootstrap.css"
       rel="preload"
     />
     <link
-      href="public/pathbootstrap.css"
+      href="/assets/path/bootstrap.css"
       key="clientStyleSheet_bootstrap.css"
       rel="stylesheet"
     />
@@ -122,35 +122,35 @@ exports[`HeadWithMeta when route has title as child 1`] = `
     </title>
     <link
       as="script"
-      href="public/pathmain.js"
+      href="/assets/path/main.js"
       key="clientScript_main.js"
       rel="preload"
     />
     <link
       as="script"
-      href="public/pathbootstrap.js"
+      href="/assets/path/bootstrap.js"
       key="clientScript_bootstrap.js"
       rel="preload"
     />
     <link
       as="style"
-      href="public/pathmain.css"
+      href="/assets/path/main.css"
       key="clientStyleSheetPreload_main.css"
       rel="preload"
     />
     <link
-      href="public/pathmain.css"
+      href="/assets/path/main.css"
       key="clientStyleSheet_main.css"
       rel="stylesheet"
     />
     <link
       as="style"
-      href="public/pathbootstrap.css"
+      href="/assets/path/bootstrap.css"
       key="clientStyleSheetPreload_bootstrap.css"
       rel="preload"
     />
     <link
-      href="public/pathbootstrap.css"
+      href="/assets/path/bootstrap.css"
       key="clientStyleSheet_bootstrap.css"
       rel="stylesheet"
     />
@@ -198,35 +198,35 @@ exports[`HeadWithMeta when route is a static route 1`] = `
     </title>
     <link
       as="script"
-      href="public/pathmain.js"
+      href="/assets/path/main.js"
       key="clientScript_main.js"
       rel="preload"
     />
     <link
       as="script"
-      href="public/pathbootstrap.js"
+      href="/assets/path/bootstrap.js"
       key="clientScript_bootstrap.js"
       rel="preload"
     />
     <link
       as="style"
-      href="public/pathmain.css"
+      href="/assets/path/main.css"
       key="clientStyleSheetPreload_main.css"
       rel="preload"
     />
     <link
-      href="public/pathmain.css"
+      href="/assets/path/main.css"
       key="clientStyleSheet_main.css"
       rel="stylesheet"
     />
     <link
       as="style"
-      href="public/pathbootstrap.css"
+      href="/assets/path/bootstrap.css"
       key="clientStyleSheetPreload_bootstrap.css"
       rel="preload"
     />
     <link
-      href="public/pathbootstrap.css"
+      href="/assets/path/bootstrap.css"
       key="clientStyleSheet_bootstrap.css"
       rel="stylesheet"
     />
