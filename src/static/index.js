@@ -203,6 +203,7 @@ const buildHTML = async ({ config: oldConfig, siteData, clientStats }) => {
     console.log('=> Exporting HTML...')
     await exporter({
       config,
+      routes,
       siteData,
       clientStats,
     })
