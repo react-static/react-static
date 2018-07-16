@@ -43,9 +43,9 @@ export default class Router extends React.Component {
     let { routeInfo } = context
     let path = cleanPath(context.staticURL)
 
-    if (typeof document !== 'undefined') {
+    if (typeof window !== 'undefined') {
       routeInfo = window.__routeInfo
-      const { href } = window.location
+      const href = decodeURIComponent(window.location.href)
       path = cleanPath(href)
     }
 
