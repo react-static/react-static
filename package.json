@@ -45,8 +45,7 @@
     "@types/react": "^16.0.18",
     "@types/react-helmet": "^5.0.6",
     "@types/react-router-dom": "^4.2.7",
-    "async-sema": "^1.4.1",
-    "autoprefixer": "^7.1.5",
+    "autoprefixer": "^8.6.5",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.0-beta",
     "babel-plugin-universal-import": "^3.0.0",
@@ -57,7 +56,7 @@
     "cors": "^2.8.4",
     "css-loader": "^1.0.0",
     "download-git-repo": "^1.0.2",
-    "eslint-config-react-tools": "^1.2.5",
+    "eslint-config-react-tools": "^2.0.0",
     "extract-css-chunks-webpack-plugin": "^3.0.7",
     "file-loader": "^1.1.11",
     "fs-extra": "^6.0.1",
@@ -110,6 +109,7 @@
     "enzyme-to-json": "^3.3.4",
     "eslint": "^5.1.0",
     "jest": "^23.4.1",
+    "prettier": "1.13.7",
     "rimraf": "^2.6.2"
   },
   "prettier": {
