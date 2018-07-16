@@ -11,13 +11,12 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "react-static": "^5"
+    "node-sass": "^4.7.2",
+    "react-static": "next",
+    "sass-loader": "^6.0.6"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "node-sass": "^4.7.2",
-    "sass-loader": "^6.0.6",
     "serve": "^6.1.0"
   }
 }

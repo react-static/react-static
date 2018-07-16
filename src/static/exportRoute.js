@@ -8,6 +8,7 @@ import nodePath from 'path'
 import fs from 'fs-extra'
 
 import Redirect from '../client/components/Redirect'
+import { getConfigPluginHooks } from '../utils/'
 import { makePathAbsolute } from '../utils/shared'
 
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
@@ -50,9 +51,7 @@ export default async function exportRoute ({
     sharedPropsHashes, templateID, localProps, allProps, path: routePath,
   } = route
 
-  const basePath =
-    cachedBasePath ||
-    (cachedBasePath = config.basePath)
+  const basePath = cachedBasePath || (cachedBasePath = config.basePath)
 
   const hrefReplace =
     cachedHrefReplace ||
@@ -140,13 +139,10 @@ export default async function exportRoute ({
 
   try {
     // Run the beforeRenderToComponent hook // TODO: document this
-    FinalComp = config.plugins
-      .map(plugin => plugin.beforeRenderToComponent)
-      .filter(Boolean)
-      .reduce(
-        (curr, beforeRenderToComponent) => beforeRenderToComponent(curr, { meta: renderMeta }),
-        FinalComp
-      )
+    FinalComp = getConfigPluginHooks(config, 'beforeRenderToComponent').reduce(
+      (curr, beforeRenderToComponent) => beforeRenderToComponent(curr, { meta: renderMeta }),
+      FinalComp
+    )
 
     // Run the configs renderToComponent function
     let RenderedComp = await config.renderToComponent(FinalComp, {
@@ -156,13 +152,10 @@ export default async function exportRoute ({
 
     // Run the beforeRenderToHtml hook
     // Rum the Html hook
-    RenderedComp = config.plugins
-      .map(plugin => plugin.beforeRenderToHtml)
-      .filter(Boolean)
-      .reduce(
-        (curr, beforeRenderToHtml) => beforeRenderToHtml(curr, { meta: renderMeta }),
-        RenderedComp
-      )
+    RenderedComp = getConfigPluginHooks(config, 'beforeRenderToHtml').reduce(
+      (curr, beforeRenderToHtml) => beforeRenderToHtml(curr, { meta: renderMeta }),
+      RenderedComp
+    )
 
     // Run the configs renderToHtml function
     appHtml = await config.renderToHtml(renderToStringAndExtract, RenderedComp, {
@@ -170,14 +163,11 @@ export default async function exportRoute ({
       clientStats,
     })
 
-    // Rum the Html hook
-    appHtml = config.plugins
-      .map(plugin => plugin.beforeHtmlToDocument)
-      .filter(Boolean)
-      .reduce(
-        (curr, beforeHtmlToDocument) => beforeHtmlToDocument(curr, { meta: renderMeta }),
-        appHtml
-      )
+    // Rum the beforeHtmlToDocument hook
+    appHtml = getConfigPluginHooks(config, 'beforeHtmlToDocument').reduce(
+      (curr, beforeHtmlToDocument) => beforeHtmlToDocument(curr, { meta: renderMeta }),
+      appHtml
+    )
   } catch (error) {
     error.message = `Failed exporting HTML for URL ${route.path} (${route.component}): ${
       error.message
@@ -214,6 +204,12 @@ export default async function exportRoute ({
 
   // Render the html for the page inside of the base document.
   let html = `<!DOCTYPE html>${DocumentHtml}`
+
+  // Rum the beforeDocumentToFile hook
+  html = getConfigPluginHooks(config, 'beforeDocumentToFile').reduce(
+    (curr, beforeDocumentToFile) => beforeDocumentToFile(curr, { meta: renderMeta }),
+    html
+  )
 
   // If the siteRoot is set and we're not in staging, prefix all absolute URL's
   // with the siteRoot

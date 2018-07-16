@@ -122,21 +122,21 @@ export const buildConfigation = (config = {}) => {
     }
     // Attempt a direct require for absolute paths
     try {
-      plugin = require(resolver)
+      plugin = require(resolver).default
     } catch (err) {
       try {
         // Attempt a /plugins directory require
-        plugin = require(nodePath.resolve(paths.PLUGINS, resolver))
+        plugin = require(nodePath.resolve(paths.PLUGINS, resolver)).default
       } catch (err) {
         // Attempt a root directory require (node_modules)
-        plugin = require(resolveFrom(process.cwd(), resolver))
+        plugin = require(resolveFrom(process.cwd(), resolver)).default
       }
     }
 
     return {
       resolver,
       options,
-      ...plugin,
+      ...plugin(options),
     }
   })
 
