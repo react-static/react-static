@@ -46,50 +46,51 @@ If a plugin is installed via any method other than the `plugins` directory, it w
 
 ### Plugin API
 
-Plugins hooks are executed throughout the lifecycle of a react-static build in the order below
+Plugins hooks are executed throughout the lifecycle of a react-static build in the order below:
 
-- `webpack: Function|Function[]`: See [`config.webpack`](/docs/config/#webpack).
+**`webpack: Function|Function[]`**: See [`config.webpack`](/docs/config/#webpack).
 
-- `Head: Component|Function`: Append arbitrary JSX to the Head component of the application.
+**`Head: Component|Function`**: Append arbitrary JSX to the Head component of the application.
 
-  - Must be a react or functional component that returns its contents wrapped in a `<React.Fragment>`.
-  - Provides the user `meta` object as a prop.
-  - Example:
-    ```javascript
-    Head: ({ meta }) => (
-      <React.Fragment>
-        <link rel="stylesheet" href="..." />
-      </React.Fragment>
-    )
-    ```
+- Must be a react or functional component that returns its contents wrapped in a `<React.Fragment>`.
+- Provides the user `meta` object as a prop.
+- Example:
+  ```javascript
+  Head: ({ meta }) => (
+    <React.Fragment>
+      <link rel="stylesheet" href="..." />
+    </React.Fragment>
+  )
+  ```
 
-- `beforeRenderToComponent: Function`: Intercept and proxy the `App` component before it is rendered to an element via `<App />`.
+**`beforeRenderToComponent: Function`**: Intercept and proxy the `App` component before it is rendered to an element via `<App />`.
 
-  - Arguments:
-    - `App` - The `App` component (not yet rendered to an element via `<App />`)
-    - `options{}`
-      - `meta` - The user `meta` object
-  - Returns a new `App` component (not yet rendered to an element)
+- Arguments:
+  - `App` - The `App` component (not yet rendered to an element via `<App />`)
+  - `options{}`
+    - `meta` - The user `meta` object
+- Returns a new `App` component (not yet rendered to an element)
 
-- `beforeRenderToHtml: Function`: Intercept and proxy the rendered `<App />` element before it is rendered to HTML.
+**`beforeRenderToHtml: Function`**: Intercept and proxy the rendered `<App />` element before it is rendered to HTML.
 
-  - Arguments:
-    - `app` - The `app` element (has already been rendered via `<App />`)
-    - `options{}`
-      - `meta` - The user `meta` object
-  - Returns a new react element for the App
+- Arguments:
+  - `app` - The `app` element (has already been rendered via `<App />`)
+  - `options{}`
+    - `meta` - The user `meta` object
+- Returns a new react element for the App
 
-- `beforeHtmlToDocument: Function`: Intercept and proxy the app `html` string before it is injected into the `Document` component.
+**`beforeHtmlToDocument: Function`**: Intercept and proxy the app `html` string before it is injected into the `Document` component.
 
-  - Arguments:
-    - `html` - The app `html` string to be injected into the Document component
-    - `options{}`
-      - `meta` - The user `meta` object
-  - Returns a new `html` string to be injected into the `Document` component
+- Arguments:
+  - `html` - The app `html` string to be injected into the Document component
+  - `options{}`
+    - `meta` - The user `meta` object
+- Returns a new `html` string to be injected into the `Document` component
 
-- `beforeDocumentToFile: Function`: Intercept and proxy the final `html` string before it is written to disk.
-  - Arguments:
-    - `html` - The final `html` string before it is written to disk
-    - `options{}`
-      - `meta` - The user `meta` object
-  - Returns a new final `html` string to be written to disk.
+**`beforeDocumentToFile: Function`**: Intercept and proxy the final `html` string before it is written to disk.
+
+- Arguments:
+  - `html` - The final `html` string before it is written to disk
+  - `options{}`
+    - `meta` - The user `meta` object
+- Returns a new final `html` string to be written to disk.
