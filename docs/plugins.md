@@ -59,13 +59,14 @@ Append arbitrary JSX to the Head component of the application.
 - Must be a react or functional component that returns its contents wrapped in a `<React.Fragment>`.
 - Provides the user `meta` object as a prop.
 - Example:
-  ```javascript
-  Head: ({ meta }) => (
-    <React.Fragment>
-      <link rel="stylesheet" href="..." />
-    </React.Fragment>
-  )
-  ```
+
+```javascript
+Head: ({ meta }) => (
+  <React.Fragment>
+    <link rel="stylesheet" href="..." />
+  </React.Fragment>
+)
+```
 
 #### `beforeRenderToComponent: Function`
 
