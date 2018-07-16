@@ -1,4 +1,4 @@
-export default function () {
+export default function() {
   return {
     loader: 'url-loader',
     exclude: [/\.js$/, /\.html$/, /\.json$/],

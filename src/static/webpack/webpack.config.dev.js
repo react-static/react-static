@@ -6,10 +6,8 @@ import path from 'path'
 
 import rules from './rules'
 
-export default function ({ config }) {
-  const {
-    ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
-  } = config.paths
+export default function({ config }) {
+  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
 
   process.env.REACT_STATIC_BASE_PATH = config.basePath
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath

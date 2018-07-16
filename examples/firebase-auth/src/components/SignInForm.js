@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { withRouter } from 'react-static'
 
@@ -15,7 +14,7 @@ const INITIAL_STATE = {
 }
 
 class SignInForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = { ...INITIAL_STATE }
@@ -25,7 +24,8 @@ class SignInForm extends Component {
     const { email, password } = this.state
     const { history } = this.props
 
-    auth.doSignInWithEmailAndPassword(email, password)
+    auth
+      .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }))
         history.push('/dashboard')
@@ -37,7 +37,7 @@ class SignInForm extends Component {
     event.preventDefault()
   }
 
-  render () {
+  render() {
     const { email, password, error } = this.state
     const isInvalid = password === '' || email === ''
 
@@ -45,20 +45,24 @@ class SignInForm extends Component {
       <form onSubmit={this.onSubmit}>
         <input
           value={email}
-          onChange={event => this.setState(updateByPropertyName('email', event.target.value))}
+          onChange={event =>
+            this.setState(updateByPropertyName('email', event.target.value))
+          }
           type="text"
           placeholder="Email Address"
         />
         <input
           value={password}
-          onChange={event => this.setState(updateByPropertyName('password', event.target.value))}
+          onChange={event =>
+            this.setState(updateByPropertyName('password', event.target.value))
+          }
           type="password"
           placeholder="password"
         />
         <button disabled={isInvalid} type="submit">
-        Sign In
+          Sign In
         </button>
-        { error && <p>{error.message}</p> }
+        {error && <p>{error.message}</p>}
       </form>
     )
   }

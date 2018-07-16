@@ -24,13 +24,11 @@ const HashLinked = styled.a`
     }
   }
 `
-
 const Header = Type => ({ id, ...rest }) => (
   <HashLinked href={`#${id}`}>
     <Type id={id} {...rest} />
   </HashLinked>
 )
-
 const renderers = {
   a: ({ href = '', ...rest }) => {
     const to = href.startsWith('/') ? href.replace('.md', '') : href
@@ -43,12 +41,10 @@ const renderers = {
   h5: Header('h5'),
   h6: Header('h6'),
 }
-
 class Markdown extends PureComponent {
-  render () {
+  render() {
     const { source } = this.props
     return <Smackdown source={source} renderers={renderers} />
   }
 }
-
 export default Markdown

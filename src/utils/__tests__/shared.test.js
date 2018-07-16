@@ -97,7 +97,9 @@ describe('utils/shared', () => {
       expect(cleanSlashes()).toEqual('')
     })
     it('should work for absolute path', () => {
-      expect(cleanSlashes('https://example.com/foo//bar/')).toEqual('https://example.com/foo/bar')
+      expect(cleanSlashes('https://example.com/foo//bar/')).toEqual(
+        'https://example.com/foo/bar'
+      )
     })
   })
   describe('isAbsoluteUrl()', () => {
@@ -128,7 +130,9 @@ describe('utils/shared', () => {
       expect(makePathAbsolute()).toEqual('/')
     })
     it('should return if already absolute', () => {
-      expect(makePathAbsolute('http://example.com')).toEqual('http://example.com')
+      expect(makePathAbsolute('http://example.com')).toEqual(
+        'http://example.com'
+      )
     })
     it('should make path absolute', () => {
       expect(makePathAbsolute('foo/bar')).toEqual('/foo/bar')

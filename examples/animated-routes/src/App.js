@@ -82,7 +82,7 @@ const AnimatedRoutes = getContext({
                   },
                   () => ({
                     router: data.router,
-                  }),
+                  })
                 )(props => <div {...props} />)
 
                 return (
@@ -114,7 +114,9 @@ const App = () => (
   <Router>
     <div>
       <nav>
-        <Link exact to="/">Home</Link>
+        <Link exact to="/">
+          Home
+        </Link>
         <Link to="/about">About</Link>
         <Link to="/blog">Blog</Link>
       </nav>

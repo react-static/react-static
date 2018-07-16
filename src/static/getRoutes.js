@@ -37,14 +37,19 @@ export const normalizeRoute = (route, parent = {}) => {
   const routePath = pathJoin(parentPath, route.path)
 
   if (typeof route.noIndex !== 'undefined') {
-    console.warn(`=> Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`)
+    console.warn(
+      `=> Warning: Route ${
+        route.path
+      } is using 'noIndex'. Did you mean 'noindex'?`
+    )
   }
 
   const normalizedRoute = {
     ...route,
     path: routePath,
     originalPath: originalRoutePath,
-    noindex: typeof route.noindex !== 'undefined' ? route.noindex : parent.noindex,
+    noindex:
+      typeof route.noindex !== 'undefined' ? route.noindex : parent.noindex,
     hasGetProps: !!route.getData,
   }
 
@@ -133,7 +138,9 @@ export const normalizeAllRoutes = (routes = [], config) => {
 
 export const getRoutesFromPages = async ({ config, opts = {} }, cb) => {
   // Make a glob extension to get all pages with the set extensions from the pages directory
-  const globExtensions = config.extensions.map(ext => `${ext.slice(1)}`).join(',')
+  const globExtensions = config.extensions
+    .map(ext => `${ext.slice(1)}`)
+    .join(',')
   const pagesGlob = `${config.paths.PAGES}/**/*.{${globExtensions}}`
   // Get the pages
 
@@ -193,7 +200,11 @@ const getRoutes = async ({ config, opts }, cb = d => d) =>
   getRoutesFromPages({ config, opts }, async pageRoutes => {
     const routes = await config.getRoutes(opts)
     const allRoutes = [...pageRoutes, ...routes]
-    const { routes: allNormalizedRoutes, hasIndex, has404 } = normalizeAllRoutes(allRoutes, config)
+    const {
+      routes: allNormalizedRoutes,
+      hasIndex,
+      has404,
+    } = normalizeAllRoutes(allRoutes, config)
     // If no Index page was found, throw an error. This is required
     if (!hasIndex) {
       throw new Error(

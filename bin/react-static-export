@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-
 require('../lib/utils/binHelper')
 const program = require('commander')
 const exportCmd = require('../lib/commands/export')
@@ -14,12 +13,13 @@ program
 
 const { config, staging, debug } = program
 
-exportCmd.default({
-  config,
-  staging,
-  debug,
-  isCLI: true,
-})
+exportCmd
+  .default({
+    config,
+    staging,
+    debug,
+    isCLI: true,
+  })
   .then(() => {
     process.exit(0)
   })

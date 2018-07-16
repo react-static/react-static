@@ -77,7 +77,9 @@ describe('normalizeRoute', () => {
 
       describe('when route is 404', () => {
         it('should not throw an error', () => {
-          expect(() => normalizeRoute({ component: '/no/path/', path: '404' })).not.toThrow()
+          expect(() =>
+            normalizeRoute({ component: '/no/path/', path: '404' })
+          ).not.toThrow()
         })
       })
     })
@@ -96,7 +98,10 @@ describe('normalizeRoute', () => {
 
       describe('when parent noindex is true', () => {
         it('should return a normalized route with noindex as true', () => {
-          const route = normalizeRoute({ path: '/to/' }, { path: '/path/', noindex: true })
+          const route = normalizeRoute(
+            { path: '/to/' },
+            { path: '/path/', noindex: true }
+          )
 
           expect(route.noindex).toEqual(true)
         })

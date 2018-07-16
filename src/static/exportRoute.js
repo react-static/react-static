@@ -27,19 +27,19 @@ class InitialPropsContext extends Component {
     routeInfo: PropTypes.object,
     staticURL: PropTypes.string,
   }
-  getChildContext () {
+  getChildContext() {
     const { embeddedRouteInfo, route } = this.props
     return {
       routeInfo: embeddedRouteInfo,
       staticURL: route.path === '/' ? route.path : `/${route.path}`,
     }
   }
-  render () {
+  render() {
     return this.props.children
   }
 }
 
-export default async function exportRoute ({
+export default (async function exportRoute({
   config,
   Comp,
   DocumentTemplate,
@@ -48,7 +48,11 @@ export default async function exportRoute ({
   clientStats,
 }) {
   const {
-    sharedPropsHashes, templateID, localProps, allProps, path: routePath,
+    sharedPropsHashes,
+    templateID,
+    localProps,
+    allProps,
+    path: routePath,
   } = route
 
   const basePath = cachedBasePath || (cachedBasePath = config.basePath)
@@ -100,7 +104,10 @@ export default async function exportRoute ({
   } else {
     FinalComp = props => (
       <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
-        <InitialPropsContext embeddedRouteInfo={embeddedRouteInfo} route={route}>
+        <InitialPropsContext
+          embeddedRouteInfo={embeddedRouteInfo}
+          route={route}
+        >
           <Comp {...props} />
         </InitialPropsContext>
       </ReportChunks>
@@ -140,7 +147,8 @@ export default async function exportRoute ({
   try {
     // Run the beforeRenderToComponent hook // TODO: document this
     FinalComp = getConfigPluginHooks(config, 'beforeRenderToComponent').reduce(
-      (curr, beforeRenderToComponent) => beforeRenderToComponent(curr, { meta: renderMeta }),
+      (curr, beforeRenderToComponent) =>
+        beforeRenderToComponent(curr, { meta: renderMeta }),
       FinalComp
     )
 
@@ -153,25 +161,31 @@ export default async function exportRoute ({
     // Run the beforeRenderToHtml hook
     // Rum the Html hook
     RenderedComp = getConfigPluginHooks(config, 'beforeRenderToHtml').reduce(
-      (curr, beforeRenderToHtml) => beforeRenderToHtml(curr, { meta: renderMeta }),
+      (curr, beforeRenderToHtml) =>
+        beforeRenderToHtml(curr, { meta: renderMeta }),
       RenderedComp
     )
 
     // Run the configs renderToHtml function
-    appHtml = await config.renderToHtml(renderToStringAndExtract, RenderedComp, {
-      meta: renderMeta,
-      clientStats,
-    })
+    appHtml = await config.renderToHtml(
+      renderToStringAndExtract,
+      RenderedComp,
+      {
+        meta: renderMeta,
+        clientStats,
+      }
+    )
 
     // Rum the beforeHtmlToDocument hook
     appHtml = getConfigPluginHooks(config, 'beforeHtmlToDocument').reduce(
-      (curr, beforeHtmlToDocument) => beforeHtmlToDocument(curr, { meta: renderMeta }),
+      (curr, beforeHtmlToDocument) =>
+        beforeHtmlToDocument(curr, { meta: renderMeta }),
       appHtml
     )
   } catch (error) {
-    error.message = `Failed exporting HTML for URL ${route.path} (${route.component}): ${
-      error.message
-    }`
+    error.message = `Failed exporting HTML for URL ${route.path} (${
+      route.component
+    }): ${error.message}`
     throw error
   }
 
@@ -207,7 +221,8 @@ export default async function exportRoute ({
 
   // Rum the beforeDocumentToFile hook
   html = getConfigPluginHooks(config, 'beforeDocumentToFile').reduce(
-    (curr, beforeDocumentToFile) => beforeDocumentToFile(curr, { meta: renderMeta }),
+    (curr, beforeDocumentToFile) =>
+      beforeDocumentToFile(curr, { meta: renderMeta }),
     html
   )
 
@@ -228,11 +243,17 @@ export default async function exportRoute ({
       : nodePath.join(config.paths.DIST, route.path, 'index.html')
 
   // Make the routeInfo sit right next to its companion html file
-  const routeInfoFilename = nodePath.join(config.paths.DIST, route.path, 'routeInfo.json')
+  const routeInfoFilename = nodePath.join(
+    config.paths.DIST,
+    route.path,
+    'routeInfo.json'
+  )
 
   const res = await Promise.all([
     fs.outputFile(htmlFilename, html),
-    !route.redirect ? fs.outputJson(routeInfoFilename, routeInfo) : Promise.resolve(),
+    !route.redirect
+      ? fs.outputJson(routeInfoFilename, routeInfo)
+      : Promise.resolve(),
   ])
   return res
-}
+})

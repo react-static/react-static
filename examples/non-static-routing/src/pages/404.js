@@ -13,7 +13,7 @@ export default class extends React.Component {
   state = {
     ready: false,
   }
-  componentDidMount () {
+  componentDidMount() {
     this.makeReady()
   }
   makeReady = () => {
@@ -23,7 +23,7 @@ export default class extends React.Component {
       })
     }
   }
-  render () {
+  render() {
     return this.state.ready ? (
       <div>
         <h1>404 - Oh no's! We couldn't find that page :(</h1>

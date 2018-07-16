@@ -3,12 +3,12 @@ import reactClickOutside from 'react-click-outside'
 //
 
 class ClickOutside extends PureComponent {
-  handleClickOutside () {
+  handleClickOutside() {
     if (this.props.onClickOutside) {
       this.props.onClickOutside()
     }
   }
-  render () {
+  render() {
     return this.props.children
   }
 }

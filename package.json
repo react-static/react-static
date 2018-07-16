@@ -22,6 +22,7 @@
     "startDocs": "cd www && yarn start",
     "buildDocs": "cd www && yarn && yarn build",
     "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
+    "prettier": "prettier --config .prettierrc.js {examples/*/src,node,scripts,src,www/src}/**/*.js --write",
     "serveDocs": "serve www/dist -p 3000",
     "test": "yarn build && yarn unitTest && yarn lint",
     "lint": "eslint src examples test",
@@ -108,13 +109,15 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
     "eslint": "^5.1.0",
+    "husky": "^1.0.0-rc.13",
     "jest": "^23.4.1",
     "prettier": "1.13.7",
     "rimraf": "^2.6.2"
   },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier"
+    }
   },
   "jest": {
     "verbose": true,

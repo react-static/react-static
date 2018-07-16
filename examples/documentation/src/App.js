@@ -69,7 +69,7 @@ const AppStyles = styled.div`
 `
 
 class App extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     onLoading(loading => {
       if (loading) {
         nprogress.start()
@@ -78,7 +78,7 @@ class App extends React.Component {
       }
     })
   }
-  render () {
+  render() {
     return (
       <Router>
         <AppStyles>

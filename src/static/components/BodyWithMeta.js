@@ -6,9 +6,9 @@ const REGEX_FOR_SCRIPT = /<(\/)?(script)/gi
 const generateRouteInformation = embeddedRouteInfo => ({
   __html: `
     window.__routeInfo = ${JSON.stringify(embeddedRouteInfo).replace(
-    REGEX_FOR_SCRIPT,
-    '<"+"$1$2'
-  )};`,
+      REGEX_FOR_SCRIPT,
+      '<"+"$1$2'
+    )};`,
 })
 
 // Not only do we pass react-helmet attributes and the app.js here, but
@@ -32,7 +32,14 @@ export const makeBodyWithMeta = ({
     )}
     {!route.redirect &&
       clientScripts.map(script => (
-        <script key={script} defer type="text/javascript" src={makePathAbsolute(pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script))} />
+        <script
+          key={script}
+          defer
+          type="text/javascript"
+          src={makePathAbsolute(
+            pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script)
+          )}
+        />
       ))}
   </body>
 )

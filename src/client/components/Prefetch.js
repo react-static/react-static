@@ -10,13 +10,13 @@ export default class Prefetch extends React.Component {
     type: null,
     onLoad: () => {},
   }
-  async componentDidMount () {
+  async componentDidMount() {
     const { path, onLoad, type } = this.props
     const cleanedPath = cleanPath(path)
     const data = await prefetch(cleanedPath, { type })
     onLoad(data, cleanedPath)
   }
-  render () {
+  render() {
     return unwrapArray(this.props.children)
   }
 }

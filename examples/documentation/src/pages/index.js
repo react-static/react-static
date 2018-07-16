@@ -36,13 +36,21 @@ const Styles = styled.div`
     .background1 {
       transform: scale(3) rotate(50deg);
       transform-origin: top left;
-      background: linear-gradient(to bottom, rgba(0, 120, 150, 0.05), transparent 15px);
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 120, 150, 0.05),
+        transparent 15px
+      );
     }
 
     .background2 {
       transform: scale(3) rotate(-25deg);
       transform-origin: top right;
-      background: linear-gradient(to bottom, rgba(0, 120, 150, 0.05), transparent 15px);
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 120, 150, 0.05),
+        transparent 15px
+      );
     }
   }
 
@@ -116,12 +124,20 @@ export default () => (
           <div className="background1" />
           <div className="background2" />
         </div>
-        <img src={logoImg} alt="" style={{ display: 'block', margin: '0 auto' }} />
+        <img
+          src={logoImg}
+          alt=""
+          style={{ display: 'block', margin: '0 auto' }}
+        />
         <h1>My Awesome Library</h1>
-        <h2>The most bestest blazingliest fastest freaking way to do something awesome.</h2>
+        <h2>
+          The most bestest blazingliest fastest freaking way to do something
+          awesome.
+        </h2>
         <p>
-          My Awesome Libary was built to help you get stuff done fast. It will change your live by
-          being faster, lighter, and easier to use than the next thing.
+          My Awesome Libary was built to help you get stuff done fast. It will
+          change your live by being faster, lighter, and easier to use than the
+          next thing.
         </p>
         <Cards>
           <Card to="/docs" background="#ff6073">

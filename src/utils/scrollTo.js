@@ -19,7 +19,7 @@ const getPosition = (start, end, elapsed, duration, easeFn) => {
   return start + (end - start) * easeFn(elapsed / duration)
 }
 
-export default function scrollTo (element, options) {
+export default function scrollTo(element, options) {
   const { duration, offset, context } = { ...defaultOptions, ...options }
   const start = window.pageYOffset
   let innerHeight

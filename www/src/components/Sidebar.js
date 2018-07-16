@@ -38,7 +38,7 @@ const SidebarStyles = styled.div`
     @media screen and (max-width: ${breakpoint}px) {
       transform: translateX(-100%);
       ${props =>
-    props.isOpen &&
+        props.isOpen &&
         css`
           box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
           transform: translateX(0%);
@@ -74,7 +74,7 @@ const SidebarStyles = styled.div`
       }
 
       ${props =>
-    !props.isOpen &&
+        !props.isOpen &&
         css`
           transform: translateX(100%) rotate(180deg);
         `};
@@ -172,7 +172,7 @@ class Sidebar extends React.Component {
     this.setState({
       isOpen,
     })
-  render () {
+  render() {
     const { children } = this.props
     const { isOpen } = this.state
     return (

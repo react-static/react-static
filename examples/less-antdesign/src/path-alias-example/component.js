@@ -7,8 +7,8 @@ import React from 'react'
 
 const helloFromThePast = (
   <h4>
-    TypeScript is enabled. Use it when and where you want. This text was imported via a TypeScript
-    alias.
+    TypeScript is enabled. Use it when and where you want. This text was
+    imported via a TypeScript alias.
   </h4>
 )
 

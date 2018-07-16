@@ -21,7 +21,9 @@ module.exports = () => {
       [r('@babel/preset-react'), { development: !PRODUCTION }],
     ],
     plugins: [
-      PRODUCTION ? r('babel-plugin-universal-import') : r('react-hot-loader/babel'),
+      PRODUCTION
+        ? r('babel-plugin-universal-import')
+        : r('react-hot-loader/babel'),
       [
         r('@babel/plugin-transform-runtime'),
         {

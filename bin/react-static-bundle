@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-
 require('../lib/utils/binHelper')
 const program = require('commander')
 const bundleCmd = require('../lib/commands/bundle')
@@ -14,13 +13,13 @@ program
 
 const { config, staging, debug } = program
 
-
-bundleCmd.default({
-  config,
-  staging,
-  debug,
-  isCLI: true,
-})
+bundleCmd
+  .default({
+    config,
+    staging,
+    debug,
+    isCLI: true,
+  })
   .then(() => {
     process.exit(0)
   })

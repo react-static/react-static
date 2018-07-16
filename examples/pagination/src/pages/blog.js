@@ -33,7 +33,10 @@ export default () => (
             page += 1
             return (
               <span key={page}>
-                <PaginationLink to={`/blog/page/${page}`} isCurrent={page === currentPage}>
+                <PaginationLink
+                  to={`/blog/page/${page}`}
+                  isCurrent={page === currentPage}
+                >
                   {page}
                 </PaginationLink>
               </span>

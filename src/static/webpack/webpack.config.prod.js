@@ -8,10 +8,8 @@ import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import rules from './rules'
 
-function common (config) {
-  const {
-    ROOT, DIST, NODE_MODULES, SRC, ASSETS,
-  } = config.paths
+function common(config) {
+  const { ROOT, DIST, NODE_MODULES, SRC, ASSETS } = config.paths
 
   process.env.REACT_STATIC_SITE_ROOT = config.siteRoot
   process.env.REACT_STATIC_BASE_PATH = config.basePath
@@ -86,9 +84,9 @@ function common (config) {
     resolve: {
       alias: config.preact
         ? {
-          react: 'preact-compat',
-          'react-dom': 'preact-compat',
-        }
+            react: 'preact-compat',
+            'react-dom': 'preact-compat',
+          }
         : {},
       modules: [
         SRC,
@@ -112,7 +110,7 @@ function common (config) {
   }
 }
 
-export default function ({ config, isNode }) {
+export default function({ config, isNode }) {
   const result = common(config)
   if (!isNode) return result
   result.output.filename = 'static.[chunkHash:8].js'
@@ -122,7 +120,11 @@ export default function ({ config, isNode }) {
   result.target = 'node'
   result.externals = [
     nodeExternals({
-      whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
+      whitelist: [
+        'react-universal-component',
+        'webpack-flush-chunks',
+        'react-static-routes',
+      ],
     }),
   ]
   //

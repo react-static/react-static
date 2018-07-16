@@ -1,11 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`generateXML should return the XML for route 1`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\"><url><loc>/blog/path/to/somewhere/</loc><priority>0.5</priority></url></urlset>"`;
+exports[
+  `generateXML should return the XML for route 1`
+] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\"><url><loc>/blog/path/to/somewhere/</loc><priority>0.5</priority></url></urlset>"`
 
-exports[`generateXML when noindex defined and route is 404 should return a the XML with \`/best-lib/\` route  1`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\"><url><loc>/blog/path/to/article/</loc><priority>0.5</priority></url></urlset>"`;
+exports[
+  `generateXML when noindex defined and route is 404 should return a the XML with \`/best-lib/\` route  1`
+] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\"><url><loc>/blog/path/to/article/</loc><priority>0.5</priority></url></urlset>"`
 
-exports[`makeGenerateRouteXML should use encoding for XML-values 1`] = `"<url><loc>/this-&amp;-that/&quot;官话&quot;-is-chinese-&apos;ру́сский язы́к&apos;-is-russian/</loc><priority>0.5</priority></url>"`;
+exports[
+  `makeGenerateRouteXML should use encoding for XML-values 1`
+] = `"<url><loc>/this-&amp;-that/&quot;官话&quot;-is-chinese-&apos;ру́сский язы́к&apos;-is-russian/</loc><priority>0.5</priority></url>"`
 
-exports[`makeGenerateRouteXML when custom properties are defined should return the XML for route 1`] = `"<url><loc>/blog/path/to/somewhere/</loc><lastmod>10/10/2010</lastmod><priority>0.2</priority></url>"`;
+exports[
+  `makeGenerateRouteXML when custom properties are defined should return the XML for route 1`
+] = `"<url><loc>/blog/path/to/somewhere/</loc><lastmod>10/10/2010</lastmod><priority>0.2</priority></url>"`
 
-exports[`when custom properties are defined should return the XML site 1`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\"><url><loc>www.example.com/path/to/somewhere/</loc><lastmod>10/10/2010</lastmod><priority>0.2</priority></url></urlset>"`;
+exports[
+  `when custom properties are defined should return the XML site 1`
+] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\"><url><loc>www.example.com/path/to/somewhere/</loc><lastmod>10/10/2010</lastmod><priority>0.2</priority></url></urlset>"`

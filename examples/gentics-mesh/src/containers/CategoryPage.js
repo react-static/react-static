@@ -11,7 +11,10 @@ export default withRouteData(({ category, items }) => (
 
     <Row>
       {items.map(item => (
-        <div className="product-row col-xs-12 col-sm-6 col-md-4" key={item.uuid}>
+        <div
+          className="product-row col-xs-12 col-sm-6 col-md-4"
+          key={item.uuid}
+        >
           <VehicleCard product={item} />
         </div>
       ))}

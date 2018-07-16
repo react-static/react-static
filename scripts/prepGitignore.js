@@ -13,8 +13,7 @@ const fs = require('fs-extra')
 
 const examplesDir = path.resolve(__dirname, '../examples/')
 
-fs
-  .readdir(examplesDir)
+fs.readdir(examplesDir)
   .then(files =>
     Promise.all(
       files

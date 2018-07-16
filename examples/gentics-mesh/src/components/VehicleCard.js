@@ -1,7 +1,14 @@
 import React from 'react'
 import * as PropTypes from 'prop-types'
 import { Link } from 'react-static'
-import { Card, CardImg, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap'
+import {
+  Card,
+  CardImg,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  Button,
+} from 'reactstrap'
 import Dotdotdot from 'react-dotdotdot'
 import stripHtml from 'string-strip-html'
 import NumberFormat from 'react-number-format'
@@ -10,7 +17,7 @@ class VehicleCard extends React.Component {
   static propTypes = {
     product: PropTypes.object.isRequired,
   }
-  render () {
+  render() {
     const vehicle = this.props.product
     return (
       <Card className="mb-4 box-shadow">

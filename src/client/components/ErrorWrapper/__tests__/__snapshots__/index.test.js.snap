@@ -1,23 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ErrorWrapper when process.env.REACT_STATIC_ENV is \`development\` should wrap the child with the ErrorCatcher 1`] = `
+exports[
+  `ErrorWrapper when process.env.REACT_STATIC_ENV is \`development\` should wrap the child with the ErrorCatcher 1`
+] = `
 <ErrorCatcher>
   <span>
     hello
   </span>
 </ErrorCatcher>
-`;
+`
 
-exports[`ErrorWrapper when process.env.REACT_STATIC_ENV is \`production\` should not wrap the child with the ErrorCatcher 1`] = `
+exports[
+  `ErrorWrapper when process.env.REACT_STATIC_ENV is \`production\` should not wrap the child with the ErrorCatcher 1`
+] = `
 <span>
   hello
 </span>
-`;
+`
 
-exports[`ErrorWrapper when process.env.REACT_STATIC_ENV is \`production\` when showErrorsInProduction is defined should wrap the child with the ErrorCatcher 1`] = `
+exports[
+  `ErrorWrapper when process.env.REACT_STATIC_ENV is \`production\` when showErrorsInProduction is defined should wrap the child with the ErrorCatcher 1`
+] = `
 <ErrorCatcher>
   <span>
     hello
   </span>
 </ErrorCatcher>
-`;
+`

@@ -11,7 +11,9 @@ export default withRouteData(({ allPosts }) => (
               <img
                 className="home-link"
                 alt={post.title}
-                src={`https://media.graphcms.com/resize=w:100,h:100,fit:crop/${post.coverImage.handle}`}
+                src={`https://media.graphcms.com/resize=w:100,h:100,fit:crop/${
+                  post.coverImage.handle
+                }`}
               />
             </div>
             <h3>{post.title}</h3>

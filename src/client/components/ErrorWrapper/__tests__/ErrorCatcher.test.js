@@ -28,7 +28,9 @@ describe('ErrorCatcher', () => {
       )
 
       expect(ErrorCatcher.prototype.componentDidCatch).toHaveBeenCalled()
-      expect(errorCatcher.state('error')).toEqual(new Error('Error thrown from problem child'))
+      expect(errorCatcher.state('error')).toEqual(
+        new Error('Error thrown from problem child')
+      )
       expect(errorCatcher.state('errorInfo')).toMatchSnapshot()
       expect(errorCatcher).toMatchSnapshot()
     })

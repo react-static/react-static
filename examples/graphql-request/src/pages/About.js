@@ -9,7 +9,9 @@ export default withRouteData(({ allAuthors }) => (
           <img
             className="about-avatar"
             alt={author.name}
-            src={`https://media.graphcms.com/resize=w:100,h:100,fit:crop/${author.avatar.handle}`}
+            src={`https://media.graphcms.com/resize=w:100,h:100,fit:crop/${
+              author.avatar.handle
+            }`}
           />
           <h1>Hello! My name is {author.name}</h1>
         </div>

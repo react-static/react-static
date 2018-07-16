@@ -29,14 +29,14 @@ const styles = {
 
 class App extends PureComponent {
   // Remove the server-side injected CSS.
-  componentDidMount () {
+  componentDidMount() {
     const jssStyles = document.getElementById('jss-server-side')
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles)
     }
   }
 
-  render () {
+  render() {
     const { classes } = this.props
 
     return (

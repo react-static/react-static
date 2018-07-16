@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { connect } from 'react-redux'
 //
@@ -20,7 +19,7 @@ const CounterConnected = connect(
   dispatch => ({
     increment: () => dispatch({ type: 'INCREMENT' }),
     reset: () => dispatch({ type: 'RESET' }),
-  }),
+  })
 )(Counter)
 
 // /////////////////////////////////////////////////////////

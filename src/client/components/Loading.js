@@ -8,16 +8,15 @@ export default class Loading extends React.Component {
   state = {
     loading,
   }
-  componentWillMount () {
+  componentWillMount() {
     this.unsubscribe = onLoading(loading =>
       this.setState({
         loading,
-      }))
+      })
+    )
   }
-  render () {
-    const {
-      component, render, children, ...rest
-    } = this.props
+  render() {
+    const { component, render, children, ...rest } = this.props
     const finalProps = {
       ...rest,
       loading: this.state.loading,
@@ -32,8 +31,8 @@ export default class Loading extends React.Component {
   }
 }
 
-export function withLoading (Comp) {
-  return function ConnectedLoading (props) {
+export function withLoading(Comp) {
+  return function ConnectedLoading(props) {
     return <Loading component={Comp} {...props} />
   }
 }

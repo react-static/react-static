@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 
 import SignUpForm from '../components/SignUpForm'
 
-const SignUp = (props, { authUser }) => <div>{authUser ? <SignUpAuth /> : <SignUpNonAuth />}</div>
+const SignUp = (props, { authUser }) => (
+  <div>{authUser ? <SignUpAuth /> : <SignUpNonAuth />}</div>
+)
 
 SignUp.contextTypes = {
   authUser: PropTypes.object,

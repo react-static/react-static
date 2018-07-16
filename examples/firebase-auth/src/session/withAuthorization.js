@@ -6,7 +6,7 @@ import { firebase } from '../firebase'
 
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
-    componentDidMount () {
+    componentDidMount() {
       firebase.auth.onAuthStateChanged(authUser => {
         if (!condition(authUser)) {
           this.props.history.push('/signin')
@@ -14,7 +14,7 @@ const withAuthorization = condition => Component => {
       })
     }
 
-    render () {
+    render() {
       return this.context.authUser ? <Component {...this.props} /> : null
     }
   }

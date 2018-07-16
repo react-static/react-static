@@ -6,7 +6,11 @@ import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder, time, timeEnd } from '../utils'
 
-export default async function build ({ config: originalConfig, staging, debug } = {}) {
+export default (async function build({
+  config: originalConfig,
+  staging,
+  debug,
+} = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
@@ -70,4 +74,4 @@ export default async function build ({ config: originalConfig, staging, debug } 
   }
 
   return config
-}
+})

@@ -15,5 +15,5 @@ module.exports = {
   export: exporter,
   reloadRoutes,
   makePageRoutes,
-  normalizeRoutes
+  normalizeRoutes,
 }

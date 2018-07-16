@@ -10,12 +10,12 @@ import { poolAll } from '../utils/shared'
 import exportRoute from './exportRoute'
 import { progress } from '../utils'
 
-export default async ({
-  config, routes, siteData, clientStats,
-}) => {
+export default async ({ config, routes, siteData, clientStats }) => {
   const htmlProgress = progress(routes.length)
   // Use the node version of the app created with webpack
-  const Comp = require(glob.sync(path.resolve(config.paths.ASSETS, 'static.*.js'))[0]).default
+  const Comp = require(glob.sync(
+    path.resolve(config.paths.ASSETS, 'static.*.js')
+  )[0]).default
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
 

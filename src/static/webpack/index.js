@@ -9,7 +9,12 @@ import fs from 'fs-extra'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import { findAvailablePort, time, timeEnd, getConfigPluginHooks } from '../../utils'
+import {
+  findAvailablePort,
+  time,
+  timeEnd,
+  getConfigPluginHooks,
+} from '../../utils'
 import { cleanPath } from '../../utils/shared'
 import { prepareRoutes } from '../'
 
@@ -30,7 +35,7 @@ export { reloadRoutes }
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
-export function webpackConfig ({ config, stage }) {
+export function webpackConfig({ config, stage }) {
   let webpackConfig
   if (stage === 'dev') {
     webpackConfig = require('./webpack.config.dev').default({ config })
@@ -49,12 +54,15 @@ export function webpackConfig ({ config, stage }) {
 
   const defaultLoaders = getStagedRules({ config, stage })
 
-  const transformers = getConfigPluginHooks(config, 'webpack').reduce((all, curr) => {
-    if (Array.isArray(curr)) {
-      return [...all, ...curr]
-    }
-    return [...all, curr]
-  }, [])
+  const transformers = getConfigPluginHooks(config, 'webpack').reduce(
+    (all, curr) => {
+      if (Array.isArray(curr)) {
+        return [...all, ...curr]
+      }
+      return [...all, curr]
+    },
+    []
+  )
 
   transformers.forEach(transformer => {
     const modifiedConfig = transformer(webpackConfig, {
@@ -68,12 +76,12 @@ export function webpackConfig ({ config, stage }) {
   return webpackConfig
 }
 
-export async function buildCompiler ({ config, stage }) {
+export async function buildCompiler({ config, stage }) {
   return webpack(webpackConfig({ config, stage }))
 }
 
 // Starts the development server
-export async function startDevServer ({ config }) {
+export async function startDevServer({ config }) {
   if (devServer) {
     return devServer
   }
@@ -82,7 +90,8 @@ export async function startDevServer ({ config }) {
 
   // Default to localhost:3000, or use a custom combo if defined in static.config.js
   // or environment variables
-  const intendedPort = (config.devServer && config.devServer.port) || process.env.PORT || 3000
+  const intendedPort =
+    (config.devServer && config.devServer.port) || process.env.PORT || 3000
   const port = await findAvailablePort(Number(intendedPort))
   // Find an available port for messages, as long as it's not the devServer port
   const messagePort = await findAvailablePort(4000, [port])
@@ -95,7 +104,10 @@ export async function startDevServer ({ config }) {
       )
     )
   }
-  const host = (config.devServer && config.devServer.host) || process.env.HOST || 'http://localhost'
+  const host =
+    (config.devServer && config.devServer.host) ||
+    process.env.HOST ||
+    'http://localhost'
 
   const devServerConfig = {
     hot: true,
@@ -137,7 +149,9 @@ export async function startDevServer ({ config }) {
         // Serve each routes data
         config.routes.forEach(({ path: routePath }) => {
           app.get(
-            `/__react-static__/routeInfo/${encodeURI(routePath === '/' ? '' : routePath)}`,
+            `/__react-static__/routeInfo/${encodeURI(
+              routePath === '/' ? '' : routePath
+            )}`,
             async (req, res, next) => {
               // Make sure we have the most up to date route from the config, not
               // an out of dat object.
@@ -146,7 +160,9 @@ export async function startDevServer ({ config }) {
                 if (!route) {
                   throw new Error('Route could not be found!')
                 }
-                const allProps = route.getData ? await route.getData({ dev: true }) : {}
+                const allProps = route.getData
+                  ? await route.getData({ dev: true })
+                  : {}
                 res.json({
                   ...route,
                   allProps,
@@ -196,7 +212,10 @@ export async function startDevServer ({ config }) {
       if (isSuccessful) {
         if (first) {
           timeEnd(chalk.green('=> [\u2713] Build Complete'))
-          console.log(chalk.green('=> [\u2713] App serving at'), `${host}:${port}`)
+          console.log(
+            chalk.green('=> [\u2713] App serving at'),
+            `${host}:${port}`
+          )
         } else {
           timeEnd(chalk.green('=> [\u2713] Build Updated'))
         }
@@ -234,14 +253,17 @@ export async function startDevServer ({ config }) {
   socket.listen(messagePort)
 
   resolvedReloadRoutes = async paths => {
-    await prepareRoutes({ config, opts: { dev: true }, silent: true }, async config => {
-      if (!paths) {
-        paths = config.routes.map(route => route.path)
+    await prepareRoutes(
+      { config, opts: { dev: true }, silent: true },
+      async config => {
+        if (!paths) {
+          paths = config.routes.map(route => route.path)
+        }
+        paths = paths.map(cleanPath)
+        reloadWebpackRoutes(config)
+        socket.emit('message', { type: 'reloadRoutes', paths })
       }
-      paths = paths.map(cleanPath)
-      reloadWebpackRoutes(config)
-      socket.emit('message', { type: 'reloadRoutes', paths })
-    })
+    )
   }
 
   await new Promise((resolve, reject) => {
@@ -256,7 +278,7 @@ export async function startDevServer ({ config }) {
   return devServer
 }
 
-export async function buildProductionBundles ({ config }) {
+export async function buildProductionBundles({ config }) {
   return new Promise((resolve, reject) => {
     webpack([
       webpackConfig({ config, stage: 'prod' }),
@@ -277,7 +299,7 @@ export async function buildProductionBundles ({ config }) {
       checkBuildStats('prod', prodStats)
       checkBuildStats('node', nodeStats)
 
-      function checkBuildStats (stage, stageStats) {
+      function checkBuildStats(stage, stageStats) {
         const buildErrors = stageStats.hasErrors()
         const buildWarnings = stageStats.hasWarnings()
 

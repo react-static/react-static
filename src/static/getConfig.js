@@ -33,7 +33,8 @@ export const buildConfigation = (config = {}) => {
   }
 
   // Use the root to resolve all other relative paths
-  const resolvePath = relativePath => nodePath.resolve(config.paths.root, relativePath)
+  const resolvePath = relativePath =>
+    nodePath.resolve(config.paths.root, relativePath)
 
   // Resolve all paths
   const DIST =
@@ -54,7 +55,9 @@ export const buildConfigation = (config = {}) => {
     TEMP: resolvePath(config.paths.temp),
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath(config.paths.nodeModules),
-    EXCLUDE_MODULES: config.paths.excludeResolvedModules || resolvePath(config.paths.nodeModules),
+    EXCLUDE_MODULES:
+      config.paths.excludeResolvedModules ||
+      resolvePath(config.paths.nodeModules),
     PACKAGE: resolvePath('package.json'),
     HTML_TEMPLATE: nodePath.join(DIST, 'index.html'),
     STATIC_DATA: nodePath.join(ASSETS, 'staticData'),
@@ -109,8 +112,10 @@ export const buildConfigation = (config = {}) => {
 
   // Set env variables to be used client side
   process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
-  process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = finalConfig.disableRouteInfoWarning
-  process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = finalConfig.disableRoutePrefixing
+  process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING =
+    finalConfig.disableRouteInfoWarning
+  process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING =
+    finalConfig.disableRoutePrefixing
 
   // Fetch plugins, if any
   finalConfig.plugins = finalConfig.plugins.map(plugin => {
@@ -155,7 +160,10 @@ const buildConfigFromPath = configPath => {
   }
 }
 
-const fromFile = async (configPath = DEFAULT_PATH_FOR_STATIC_CONFIG, subscribe) => {
+const fromFile = async (
+  configPath = DEFAULT_PATH_FOR_STATIC_CONFIG,
+  subscribe
+) => {
   const config = buildConfigFromPath(configPath)
 
   if (subscribe) {
@@ -168,7 +176,7 @@ const fromFile = async (configPath = DEFAULT_PATH_FOR_STATIC_CONFIG, subscribe) 
 }
 
 // Retrieves the static.config.js from the current project directory
-export default async function getConfig (customConfig, cb) {
+export default (async function getConfig(customConfig, cb) {
   if (typeof customConfig === 'object') {
     // return a custom config obj
     const builtConfig = buildConfigation(customConfig)
@@ -181,4 +189,4 @@ export default async function getConfig (customConfig, cb) {
   // return a custom config file location
   // defaults to constant paath for static config
   return fromFile(customConfig, cb)
-}
+})
