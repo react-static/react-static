@@ -40,10 +40,12 @@ process.on('message', async payload => {
     if (process.connected) {
       process.send({ type: 'done' })
     }
+    process.exit()
   } catch (err) {
     console.error(err)
     if (process.connected) {
       process.send({ type: 'error', payload: err })
     }
+    process.exit(1)
   }
 })
