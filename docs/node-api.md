@@ -7,7 +7,7 @@ The following exports are available via the `react-static/node` module:
 - [create](#create)
 - [start](#start)
 - [build](#build)
-- [rebuildRoutes](#rebuildroutes)
+- [reloadRoutes](#reloadRoutes)
 - [makePageRoutes](#makePageRoutes)
 
 We recommended using the latest ES6 import syntax:
@@ -46,7 +46,7 @@ Builds your site for production. Outputs to a `dist` directory in your project.
   - `debug` - When `true`, your build will **not** be `uglified` allowing you to debug production errors (as long as they are unrelated to minification or uglification)
 - Returns a `Promise`
 
-### `rebuildRoutes`
+### `reloadRoutes`
 
 Intended for use in your `static.config.js` during development. When called it will rebuild all of your your routes and routeData by calling `config.getRoutes()` again. Any new routes or data returned will be hot-reloaded into your running development application. Its main use cases are very applicable if your routes or routeData are changing constantly during development and you do not want to restart the dev server. You can use this method to reload when local files are changed, update at a set timing interval, or even subscribe to an event stream from an API or CMS.
 
