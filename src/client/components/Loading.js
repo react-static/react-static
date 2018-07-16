@@ -8,6 +8,7 @@ export default class Loading extends React.Component {
   state = {
     loading,
   }
+
   componentWillMount() {
     this.unsubscribe = onLoading(loading =>
       this.setState({
@@ -15,6 +16,7 @@ export default class Loading extends React.Component {
       })
     )
   }
+
   render() {
     const { component, render, children, ...rest } = this.props
     const finalProps = {

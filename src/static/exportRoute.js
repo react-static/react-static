@@ -8,7 +8,7 @@ import nodePath from 'path'
 import fs from 'fs-extra'
 
 import Redirect from '../client/components/Redirect'
-import { getConfigPluginHooks } from '../utils/'
+import { getConfigPluginHooks } from '../utils'
 import { makePathAbsolute } from '../utils/shared'
 
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'

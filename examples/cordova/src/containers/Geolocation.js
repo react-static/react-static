@@ -6,6 +6,7 @@ export default class MyLocation extends Component {
   state = {
     startingLocation: {},
   }
+
   async componentWillMount() {
     // get current position
     const startingLocation = await Geolocation.getCurrentPosition()
@@ -24,10 +25,12 @@ export default class MyLocation extends Component {
       }
     )
   }
+
   componentWillUnmount() {
     // to stop watching
     if (this.stopWatching) this.stopWatching()
   }
+
   render() {
     const { startingLocation, currentLocation } = this.state
     return (

@@ -11,7 +11,8 @@ import { connect } from 'react-redux'
 const Person = ({ data: { loading, error, Fake } }) => {
   if (loading) {
     return <p>Loading...</p>
-  } else if (error) {
+  }
+  if (error) {
     return <p>Error!</p>
   }
   return (

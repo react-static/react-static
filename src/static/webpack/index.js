@@ -16,7 +16,7 @@ import {
   getConfigPluginHooks,
 } from '../../utils'
 import { cleanPath } from '../../utils/shared'
-import { prepareRoutes } from '../'
+import { prepareRoutes } from ".."
 
 let resolvedReloadRoutes
 let reloadWebpackRoutes

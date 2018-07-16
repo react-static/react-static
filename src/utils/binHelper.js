@@ -1,8 +1,8 @@
 require('@babel/register')
 
 const updateNotifier = require('update-notifier')
-const pkg = require('../../package.json')
 const PrettyError = require('pretty-error')
+const pkg = require('../../package.json')
 
 updateNotifier({ pkg }).notify({
   isGlobal: false,

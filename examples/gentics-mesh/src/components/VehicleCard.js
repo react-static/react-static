@@ -17,6 +17,7 @@ class VehicleCard extends React.Component {
   static propTypes = {
     product: PropTypes.object.isRequired,
   }
+
   render() {
     const vehicle = this.props.product
     return (

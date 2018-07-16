@@ -10,7 +10,8 @@ import gql from 'graphql-tag'
 const Person = ({ data: { loading, error, Fake } }) => {
   if (loading) {
     return <p>Loading...</p>
-  } else if (error) {
+  }
+  if (error) {
     return <p>Error!</p>
   }
   return (

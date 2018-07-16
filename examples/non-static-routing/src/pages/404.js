@@ -13,9 +13,11 @@ export default class extends React.Component {
   state = {
     ready: false,
   }
+
   componentDidMount() {
     this.makeReady()
   }
+
   makeReady = () => {
     if (!this.state.ready) {
       this.setState({
@@ -23,6 +25,7 @@ export default class extends React.Component {
       })
     }
   }
+
   render() {
     return this.state.ready ? (
       <div>

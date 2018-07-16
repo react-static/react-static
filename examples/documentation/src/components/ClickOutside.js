@@ -8,6 +8,7 @@ class ClickOutside extends PureComponent {
       this.props.onClickOutside()
     }
   }
+
   render() {
     return this.props.children
   }

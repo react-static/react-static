@@ -167,10 +167,12 @@ class Sidebar extends React.Component {
   state = {
     isOpen: false,
   }
+
   toggle = isOpen =>
     this.setState({
       isOpen,
     })
+
   render() {
     const { children } = this.props
     const { isOpen } = this.state
