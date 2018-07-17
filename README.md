@@ -114,8 +114,12 @@ Once you've installed and test driven sufficiently, you may want to:
 
 ### Plugins
 
-- [react-static-plugin-emotion](https://github.com/nozzle/react-static-plugin-emotion)
-- [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components)
+- CSS & Style Tooling
+  - [react-static-plugin-emotion](https://github.com/nozzle/react-static-plugin-emotion) - Adds SSR support for Emotion components.
+  - [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
+  - [react-static-plugin-sass](https://github.com/nozzle/react-static-plugin-sass) - Adds SSR and general support for SASS
+- React Alternatives
+  - [react-static-plugin-preact](https://github.com/nozzle/react-static-plugin-preact) - Adds preact support
 
 ## Examples and Templates
 

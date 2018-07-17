@@ -7,6 +7,7 @@
 - Plugin system. Hook and the like capable of altering and adding features to a project non-invasively.
 - Created `react-static-plugin-emotion`
 - Created `react-static-plugin-styled-components`
+- Updated eslint and prettier and configured both to run on the pre-commit git hook
 
 #### Breaking Changes
 
@@ -16,6 +17,7 @@
 - Removed the `is404` property from the 404 route. To designate a 404 route, you can now place a `404.js` file in your pages directory or create a route where the `path === '404'`
 - `static.config.js` will now be imported and run multiple times depending on how many threads your build environment supports. If this is a problem, you can use the `process.env.REACT_STATIC_SLAVE === 'true'` condition to detect if the instance is a threaded export slave or not.
 - `config.renderToHtml` is now deprecated and has been replaced by two separate functions called `renderToComponent` and `renderToHtml`. `renderToComponent` is responsible for actually rendering the main app component via JSX eg. `Comp => <Comp />`, and `renderToHtml` is responsible for taking the rendered react-component and converting it to HTML eg. `(comp, render) => render(comp)`.
+- `config.usePreact` is no longer an option in the `static.config.js` file. Use the react-static-plugin-preact plugin.
 
 #### Fixes & Optimizations
 

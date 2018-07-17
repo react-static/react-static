@@ -82,12 +82,6 @@ function common(config) {
       rules: rules({ config, stage: 'prod', isNode: false }),
     },
     resolve: {
-      alias: config.preact
-        ? {
-            react: 'preact-compat',
-            'react-dom': 'preact-compat',
-          }
-        : {},
       modules: [
         SRC,
         NODE_MODULES,
