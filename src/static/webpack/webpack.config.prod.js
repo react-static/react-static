@@ -89,7 +89,7 @@ function common(config) {
         path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
-      extensions: ['.js', '.json', '.jsx'],
+      extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx']
     },
     externals: [],
     target: undefined,

@@ -42,7 +42,7 @@ export default function({ config }) {
         path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
-      extensions: ['.js', '.json', '.jsx'],
+      extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
