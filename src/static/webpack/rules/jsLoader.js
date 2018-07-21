@@ -1,3 +1,5 @@
+import babelPreset from '../../../../babel-preset';
+
 export default function({ config, stage }) {
   return {
     test: /\.(js|jsx)$/,
@@ -6,6 +8,7 @@ export default function({ config, stage }) {
       {
         loader: 'babel-loader',
         options: {
+          presets: [[babelPreset, { modules: false }]],
           cacheDirectory: stage !== 'prod',
         },
       },
