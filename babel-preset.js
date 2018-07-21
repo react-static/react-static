@@ -10,6 +10,7 @@ module.exports = () => {
       [
         r('@babel/preset-env'),
         {
+          modules: false,
           useBuiltIns: false,
           targets: {
             browsers: PRODUCTION
