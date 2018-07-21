@@ -89,7 +89,6 @@ function common(config) {
         path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
-      mainFields: ['browser', 'main'],
       extensions: ['.js', '.json', '.jsx'],
     },
     externals: [],

@@ -42,7 +42,6 @@ export default function({ config }) {
         path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
-      mainFields: ['browser', 'main'],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [
