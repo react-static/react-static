@@ -80,6 +80,7 @@ function common(config) {
     },
     module: {
       rules: rules({ config, stage: 'prod', isNode: false }),
+      strictExportPresence: true,
     },
     resolve: {
       modules: [

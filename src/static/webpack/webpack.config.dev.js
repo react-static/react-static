@@ -33,6 +33,7 @@ export default function({ config }) {
     },
     module: {
       rules: rules({ config, stage: 'dev' }),
+      strictExportPresence: true,
     },
     resolve: {
       modules: [
