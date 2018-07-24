@@ -33,7 +33,7 @@ export const findAvailablePort = (start, avoid = []) =>
     )
   )
 
-export function copyPublicFolder (config) {
+export function copyPublicFolder(config) {
   fs.ensureDirSync(config.paths.PUBLIC)
 
   fs.copySync(config.paths.PUBLIC, config.paths.DIST, {
@@ -42,10 +42,20 @@ export function copyPublicFolder (config) {
   })
 }
 
-export async function createIndexFilePlaceholder ({ config, Component, siteData }) {
+export async function createIndexFilePlaceholder({
+  config,
+  Component,
+  siteData,
+}) {
   // Render the base document component to string with siteprops
   const DocumentHtml = renderToString(
-    <Component renderMeta={{}} Html={Html} Head={Head} Body={Body} siteData={siteData}>
+    <Component
+      renderMeta={{}}
+      Html={Html}
+      Head={Head}
+      Body={Body}
+      siteData={siteData}
+    >
       <div id="root" />
     </Component>
   )
@@ -55,15 +65,15 @@ export async function createIndexFilePlaceholder ({ config, Component, siteData 
   await fs.outputFile(config.paths.HTML_TEMPLATE, html)
 }
 
-export function isArray (a) {
+export function isArray(a) {
   return Array.isArray(a)
 }
 
-export function isObject (a) {
+export function isObject(a) {
   return !Array.isArray(a) && typeof a === 'object' && a !== null
 }
 
-export function glob (path, options = {}) {
+export function glob(path, options = {}) {
   return new Promise((resolve, reject) =>
     nodeGlob(path, options, (err, files) => {
       if (err) {
@@ -75,19 +85,21 @@ export function glob (path, options = {}) {
 }
 
 const times = {}
-export function time (message) {
+export function time(message) {
   times[message] = performance.now() / 1000
 }
-export function timeEnd (message) {
+export function timeEnd(message) {
   if (times[message]) {
     console.log(
-      `${message} (${Math.round((performance.now() / 1000 - times[message]) * 10) / 10}s)`
+      `${message} (${Math.round(
+        (performance.now() / 1000 - times[message]) * 10
+      ) / 10}s)`
     )
     times[message] = null
   }
 }
 
-export function debounce (func, wait, immediate) {
+export function debounce(func, wait, immediate) {
   let timeout
   return (...args) => {
     const later = () => {
@@ -101,6 +113,9 @@ export function debounce (func, wait, immediate) {
   }
 }
 
-export function getConfigPluginHooks (config, hook) {
-  return [...(config.plugins || []).map(plugin => plugin[hook]), config[hook]].filter(Boolean)
+export function getConfigPluginHooks(config, hook) {
+  return [
+    ...(config.plugins || []).map(plugin => plugin[hook]),
+    config[hook],
+  ].filter(Boolean)
 }

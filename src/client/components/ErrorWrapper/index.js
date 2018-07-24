@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 import ErrorCatcher from './ErrorCatcher'
 
 const ErrorWrapper = ({ showErrorsInProduction, children }) => {
-  if (process.env.REACT_STATIC_ENV === 'development' || showErrorsInProduction) {
+  if (
+    process.env.REACT_STATIC_ENV === 'development' ||
+    showErrorsInProduction
+  ) {
     return <ErrorCatcher>{children}</ErrorCatcher>
   }
 

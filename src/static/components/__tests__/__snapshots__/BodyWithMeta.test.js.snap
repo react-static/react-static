@@ -13,7 +13,7 @@ exports[`BodyWithMeta when route is a redirect route 1`] = `
     </div>
   </body>
 </Component>
-`;
+`
 
 exports[`BodyWithMeta when route is a static route 1`] = `
 <Component
@@ -49,4 +49,4 @@ exports[`BodyWithMeta when route is a static route 1`] = `
     />
   </body>
 </Component>
-`;
+`

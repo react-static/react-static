@@ -27,8 +27,10 @@ describe('buildConfigation', () => {
   beforeEach(() => {
     reactStaticEnviroment = process.env.REACT_STATIC_ENV
     reactStaticPrefetchRate = process.env.REACT_STATIC_PREFETCH_RATE
-    reactStaticDisableRouteInfoWarning = process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
-    reactStaticDisableRoutePreFixing = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+    reactStaticDisableRouteInfoWarning =
+      process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
+    reactStaticDisableRoutePreFixing =
+      process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
     spyProcess = jest.spyOn(process, 'cwd').mockImplementation(() => './root/')
   })
 

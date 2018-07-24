@@ -7,7 +7,7 @@ const fromObjectToList = object =>
   object ? Object.keys(object).map(key => ({ ...object[key], index: key })) : []
 
 class HomePage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -15,13 +15,13 @@ class HomePage extends Component {
     }
   }
 
-  componentDidMount () {
-    db
-      .onceGetUsers()
-      .then(snapshot => this.setState(() => ({ users: fromObjectToList(snapshot.val()) })))
+  componentDidMount() {
+    db.onceGetUsers().then(snapshot =>
+      this.setState(() => ({ users: fromObjectToList(snapshot.val()) }))
+    )
   }
 
-  render () {
+  render() {
     const { users } = this.state
 
     return (

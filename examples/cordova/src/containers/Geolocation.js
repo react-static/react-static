@@ -6,7 +6,8 @@ export default class MyLocation extends Component {
   state = {
     startingLocation: {},
   }
-  async componentWillMount () {
+
+  async componentWillMount() {
     // get current position
     const startingLocation = await Geolocation.getCurrentPosition()
     this.setState({
@@ -21,14 +22,16 @@ export default class MyLocation extends Component {
       },
       err => {
         console.error('Oh no! There was an error trying to locate you.', err)
-      },
+      }
     )
   }
-  componentWillUnmount () {
+
+  componentWillUnmount() {
     // to stop watching
     if (this.stopWatching) this.stopWatching()
   }
-  render () {
+
+  render() {
     const { startingLocation, currentLocation } = this.state
     return (
       <div>

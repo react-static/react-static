@@ -15,7 +15,7 @@ export default class SiteData extends React.Component {
   state = {
     siteData: false,
   }
-  async componentWillMount () {
+  async componentWillMount() {
     if (process.env.REACT_STATIC_ENV === 'development') {
       const { data: siteData } = await (() => {
         if (siteDataPromise) {
@@ -32,13 +32,11 @@ export default class SiteData extends React.Component {
       })
     }
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.unmounting = true
   }
-  render () {
-    const {
-      component, render, children, ...rest
-    } = this.props
+  render() {
+    const { component, render, children, ...rest } = this.props
     let siteData
 
     // Get siteInfo from window
@@ -49,7 +47,11 @@ export default class SiteData extends React.Component {
     }
 
     // Get siteInfo from context (SSR)
-    if (!siteData && this.context.routeInfo && this.context.routeInfo.siteData) {
+    if (
+      !siteData &&
+      this.context.routeInfo &&
+      this.context.routeInfo.siteData
+    ) {
       siteData = this.context.routeInfo && this.context.routeInfo.siteData
     }
 
@@ -79,8 +81,8 @@ export default class SiteData extends React.Component {
   }
 }
 
-export function withSiteData (Comp) {
-  return function ConnectedSiteData (props) {
+export function withSiteData(Comp) {
+  return function ConnectedSiteData(props) {
     return <SiteData component={Comp} {...props} />
   }
 }

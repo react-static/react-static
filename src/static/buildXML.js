@@ -47,7 +47,9 @@ export default async ({ config }) => {
   const { routes, paths = {}, disableRoutePrefixing } = config
 
   const { DIST } = paths
-  const prefixPath = disableRoutePrefixing ? config.siteRoot : process.env.REACT_STATIC_PUBLIC_PATH
+  const prefixPath = disableRoutePrefixing
+    ? config.siteRoot
+    : process.env.REACT_STATIC_PUBLIC_PATH
 
   if (!config.siteRoot) {
     return

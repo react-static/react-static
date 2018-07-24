@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -12,7 +11,8 @@ import { connect } from 'react-redux'
 const Person = ({ data: { loading, error, Fake } }) => {
   if (loading) {
     return <p>Loading...</p>
-  } else if (error) {
+  }
+  if (error) {
     return <p>Error!</p>
   }
   return (
@@ -53,7 +53,7 @@ const CounterConnected = connect(
   dispatch => ({
     increment: () => dispatch({ type: 'INCREMENT' }),
     reset: () => dispatch({ type: 'RESET' }),
-  }),
+  })
 )(Counter)
 
 // /////////////////////////////////////////////////////////
@@ -61,7 +61,10 @@ const CounterConnected = connect(
 const About = () => (
   <div>
     <h1>This is what we're all about.</h1>
-    <p>React, static sites, performance, speed. It's the stuff that makes us tick.</p>
+    <p>
+      React, static sites, performance, speed. It's the stuff that makes us
+      tick.
+    </p>
     <h2>Here is a person loaded from graphql:</h2>
     <PersonWithData />
     <h2>Here is a redux counter:</h2>

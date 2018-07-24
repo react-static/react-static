@@ -2,8 +2,7 @@ import autoprefixer from 'autoprefixer'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 
-
-function initCSSLoader (stage) {
+function initCSSLoader(stage) {
   const cssLoader = [
     {
       loader: 'css-loader',
@@ -38,7 +37,7 @@ function initCSSLoader (stage) {
   return cssLoader
 }
 
-export default function ({ stage, isNode }) {
+export default function({ stage, isNode }) {
   let cssLoader = initCSSLoader(stage)
   if (stage === 'node' || isNode) {
     return {

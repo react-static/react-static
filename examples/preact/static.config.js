@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  preact: true,
+  plugins: ['react-static-plugin-preact'],
   getRoutes: async () => {
     const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     return [

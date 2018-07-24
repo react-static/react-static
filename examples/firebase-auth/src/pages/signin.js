@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { Link } from 'react-static'
 import SignInForm from '../components/SignInForm'
@@ -11,9 +10,7 @@ export default () => (
       <Link to="/forgotpw">Forgot Password?</Link>
     </p>
     <p>
-      Don't have an account?
-      {' '}
-      <Link to="/signup">Sign Up</Link>
+      Don't have an account? <Link to="/signup">Sign Up</Link>
     </p>
   </div>
 )

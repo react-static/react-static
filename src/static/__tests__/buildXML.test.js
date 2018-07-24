@@ -43,7 +43,9 @@ describe('makeGenerateRouteXML', () => {
   })
 
   it('should use encoding for XML-values', () => {
-    const generateRouteXML = makeGenerateRouteXML({ prefixPath: '/this-&-that/' })
+    const generateRouteXML = makeGenerateRouteXML({
+      prefixPath: '/this-&-that/',
+    })
     const route = {
       path: '/"官话"-is-chinese-\'ру́сский язы́к\'-is-russian',
     }

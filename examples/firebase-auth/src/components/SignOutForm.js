@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { withRouter } from 'react-static'
 
@@ -12,7 +11,7 @@ const INITIAL_STATE = {
   error: null,
 }
 class SignOutForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = { ...INITIAL_STATE }
@@ -21,7 +20,8 @@ class SignOutForm extends Component {
   onSubmit = event => {
     const { history } = this.props
 
-    auth.doSignOut()
+    auth
+      .doSignOut()
       .then(() => {
         history.push('/')
       })
@@ -32,14 +32,12 @@ class SignOutForm extends Component {
     event.preventDefault()
   }
 
-  render () {
+  render() {
     const { error } = this.state
     return (
       <form onSubmit={this.onSubmit}>
-        <button type="submit">
-        Sign Out
-        </button>
-        { error && <p>{error.message}</p> }
+        <button type="submit">Sign Out</button>
+        {error && <p>{error.message}</p>}
       </form>
     )
   }

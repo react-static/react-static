@@ -26,15 +26,23 @@ const universalOptions = {
 
 ${templates
     .map((template, index) => {
-      const templatePath = path.relative(paths.DIST, path.resolve(paths.ROOT, template))
-      return `const t_${index} = universal(import('${slash(templatePath)}'), universalOptions)`
+      const templatePath = path.relative(
+        paths.DIST,
+        path.resolve(paths.ROOT, template)
+      )
+      return `const t_${index} = universal(import('${slash(
+        templatePath
+      )}'), universalOptions)`
     })
     .join('\n')}
 `
 
   const developmentTemplates = templates
     .map((template, index) => {
-      const templatePath = path.relative(paths.DIST, path.resolve(paths.ROOT, template))
+      const templatePath = path.relative(
+        paths.DIST,
+        path.resolve(paths.ROOT, template)
+      )
       return `import t_${index} from '${slash(templatePath)}'`
     })
     .join('\n')
@@ -43,9 +51,17 @@ ${templates
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import { cleanPath } from 'react-static'
-${process.env.NODE_ENV === 'production' ? productionImports : developmentImports}
+${
+    process.env.NODE_ENV === 'production'
+      ? productionImports
+      : developmentImports
+  }
 
-${process.env.NODE_ENV === 'production' ? productionTemplates : developmentTemplates}
+${
+    process.env.NODE_ENV === 'production'
+      ? productionTemplates
+      : developmentTemplates
+  }
 
 // Template Map
 global.componentsByTemplateID = global.componentsByTemplateID || [
@@ -79,22 +95,27 @@ export default class Routes extends Component {
       this.setState({})
     }
     ${
-  process.env.NODE_ENV !== 'production'
-    ? `
+      process.env.NODE_ENV !== 'production'
+        ? `
     if (typeof document !== 'undefined' && module.hot) {
       ${templates
-    .map((template, index) => {
-      const templatePath = path.relative(paths.DIST, path.resolve(paths.ROOT, template))
-      return `module.hot.accept('${slash(templatePath)}', () => {
-            global.componentsByTemplateID[${index}] = require('${slash(templatePath)}').default
+        .map((template, index) => {
+          const templatePath = path.relative(
+            paths.DIST,
+            path.resolve(paths.ROOT, template)
+          )
+          return `module.hot.accept('${slash(templatePath)}', () => {
+            global.componentsByTemplateID[${index}] = require('${slash(
+            templatePath
+          )}').default
             this.forceUpdate()
           })`
-    })
-    .join('\n')}
+        })
+        .join('\n')}
       }
 `
-    : ''
-}
+        : ''
+    }
 
   }
   render () {
@@ -134,7 +155,7 @@ export default class Routes extends Component {
 
     // This is the default auto-routing renderer
     return (
-      <Route path='*' render={props => {
+      <Route render={props => {
         let Comp = getFullComponentForPath(props.location.pathname)
         // If Comp is used as a component here, it triggers React to re-mount the entire
         // component tree underneath during reconciliation, losing all internal state.

@@ -7,7 +7,7 @@ import PrefetchWhenSeen from './PrefetchWhenSeen'
 //
 
 // Detects internal link url schemas
-function isRoutingUrl (to) {
+function isRoutingUrl(to) {
   if (typeof to === 'undefined') return false
   return (
     !to.match(/^([A-z]?)+:/) && // starts with external protocol
@@ -27,14 +27,14 @@ const reactRouterProps = [
   'replace',
 ]
 
-function SmartLink ({
-  prefetch = true, scrollToTop = true, onClick, ...rest
-}) {
+function SmartLink({ prefetch = true, scrollToTop = true, onClick, ...rest }) {
   const { to } = rest
   let resolvedTo = to
   if (isObject(to)) {
     if (!to.pathname && to.path) {
-      console.warn('You are using the `path` key in a <Link to={...} /> when you should be using the `pathname` key. This will be deprecated in future versions!')
+      console.warn(
+        'You are using the `path` key in a <Link to={...} /> when you should be using the `pathname` key. This will be deprecated in future versions!'
+      )
       to.pathname = to.path
       delete to.path
       resolvedTo = to.pathname
@@ -61,7 +61,9 @@ function SmartLink ({
         <PrefetchWhenSeen
           path={resolvedTo}
           type={prefetch}
-          render={({ handleRef }) => <ReactRouterNavLink {...finalRest} innerRef={handleRef} />}
+          render={({ handleRef }) => (
+            <ReactRouterNavLink {...finalRest} innerRef={handleRef} />
+          )}
         />
       )
     }
@@ -74,7 +76,9 @@ function SmartLink ({
   delete aRest.to
 
   reactRouterProps.filter(prop => aRest[prop]).forEach(prop => {
-    console.warn(`Warning: ${prop} makes no sense on a <Link to="${aRest.href}">.`)
+    console.warn(
+      `Warning: ${prop} makes no sense on a <Link to="${aRest.href}">.`
+    )
   })
   reactRouterProps.forEach(prop => delete aRest[prop])
 

@@ -54,7 +54,7 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
     />
   </head>
 </Component>
-`;
+`
 
 exports[`HeadWithMeta when route has no helmet title 1`] = `
 <Component
@@ -106,7 +106,7 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
     />
   </head>
 </Component>
-`;
+`
 
 exports[`HeadWithMeta when route has title as child 1`] = `
 <Component
@@ -161,7 +161,7 @@ exports[`HeadWithMeta when route has title as child 1`] = `
     />
   </head>
 </Component>
-`;
+`
 
 exports[`HeadWithMeta when route is a redirect route 1`] = `
 <Component
@@ -182,7 +182,7 @@ exports[`HeadWithMeta when route is a redirect route 1`] = `
     />
   </head>
 </Component>
-`;
+`
 
 exports[`HeadWithMeta when route is a static route 1`] = `
 <Component
@@ -237,4 +237,4 @@ exports[`HeadWithMeta when route is a static route 1`] = `
     />
   </head>
 </Component>
-`;
+`

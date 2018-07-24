@@ -14,7 +14,11 @@ const Post = props => {
 }
 
 export default () => (
-  <InstantSearch appId="applicationID" apiKey="searchOnlyApiKey" indexName="posts">
+  <InstantSearch
+    appId="applicationID"
+    apiKey="searchOnlyApiKey"
+    indexName="posts"
+  >
     <SearchBox />
     <Hits hitComponent={Post} />
   </InstantSearch>

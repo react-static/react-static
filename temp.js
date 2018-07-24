@@ -2,7 +2,7 @@ import path from 'path'
 import { execSync } from 'child_process'
 import fs from 'fs-extra'
 
-async function main () {
+async function main() {
   const files = await fs.readdir(path.resolve('./examples/'))
   files.forEach(file => {
     if (file.startsWith('.')) {

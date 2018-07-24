@@ -21,22 +21,22 @@ const RouteData = withRouter(
     state = {
       loaded: false,
     }
-    componentWillMount () {
+    componentWillMount() {
       if (process.env.REACT_STATIC_ENV === 'development') {
         this.loadRouteData()
       }
     }
-    componentDidMount () {
+    componentDidMount() {
       instances.push(this)
     }
-    componentWillReceiveProps (nextProps) {
+    componentWillReceiveProps(nextProps) {
       if (process.env.REACT_STATIC_ENV === 'development') {
         if (this.props.location.pathname !== nextProps.location.pathname) {
           this.setState({ loaded: false }, this.loadRouteData)
         }
       }
     }
-    componentWillUnmount () {
+    componentWillUnmount() {
       instances = instances.filter(d => d !== this)
       this.unmounting = true
     }
@@ -63,7 +63,7 @@ const RouteData = withRouter(
           })
         }
       })()
-    render () {
+    render() {
       const {
         component,
         render,
@@ -88,7 +88,11 @@ const RouteData = withRouter(
       }
 
       // Attempt to get routeInfo from context (SSR)
-      if (!allProps && this.context.routeInfo && this.context.routeInfo.allProps) {
+      if (
+        !allProps &&
+        this.context.routeInfo &&
+        this.context.routeInfo.allProps
+      ) {
         loaded = true // Override loaded to true
         allProps = this.context.routeInfo && this.context.routeInfo.allProps
       } else if (routeInfoByPath[path]) {
@@ -128,8 +132,8 @@ const RouteData = withRouter(
 
 export default RouteData
 
-export function withRouteData (Comp) {
-  return function ConnectedRouteData (props) {
+export function withRouteData(Comp) {
+  return function ConnectedRouteData(props) {
     return <RouteData component={Comp} {...props} />
   }
 }

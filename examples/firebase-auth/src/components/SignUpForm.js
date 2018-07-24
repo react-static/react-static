@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { withRouter } from 'react-static'
 
@@ -17,7 +16,7 @@ const INITIAL_STATE = {
 }
 
 class SignUpForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = { ...INITIAL_STATE }
   }
@@ -27,7 +26,8 @@ class SignUpForm extends Component {
 
     const { history } = this.props
 
-    auth.doCreateUserWithEmailAndPassword(email, passwordOne)
+    auth
+      .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         db.doCreateUser(authUser.uid, username, email)
           .then(() => {
@@ -44,37 +44,49 @@ class SignUpForm extends Component {
     event.preventDefault()
   }
 
-  render () {
-    const {
-      username, email, passwordOne, passwordTwo, error,
-    } = this.state
-    const isInvalid = passwordOne !== passwordTwo ||
-      passwordOne === '' || username === '' ||
+  render() {
+    const { username, email, passwordOne, passwordTwo, error } = this.state
+    const isInvalid =
+      passwordOne !== passwordTwo ||
+      passwordOne === '' ||
+      username === '' ||
       email === ''
 
     return (
       <form onSubmit={this.onSubmit}>
         <input
           value={username}
-          onChange={event => this.setState(updateByPropertyName('username', event.target.value))}
+          onChange={event =>
+            this.setState(updateByPropertyName('username', event.target.value))
+          }
           type="text"
           placeholder="Full Name"
         />
         <input
           value={email}
-          onChange={event => this.setState(updateByPropertyName('email', event.target.value))}
+          onChange={event =>
+            this.setState(updateByPropertyName('email', event.target.value))
+          }
           type="text"
           placeholder="Email Address"
         />
         <input
           value={passwordOne}
-          onChange={event => this.setState(updateByPropertyName('passwordOne', event.target.value))}
+          onChange={event =>
+            this.setState(
+              updateByPropertyName('passwordOne', event.target.value)
+            )
+          }
           type="password"
           placeholder="Password"
         />
         <input
           value={passwordTwo}
-          onChange={event => this.setState(updateByPropertyName('passwordTwo', event.target.value))}
+          onChange={event =>
+            this.setState(
+              updateByPropertyName('passwordTwo', event.target.value)
+            )
+          }
           type="password"
           placeholder="Confirm Password"
         />
@@ -82,7 +94,7 @@ class SignUpForm extends Component {
           Sign Up
         </button>
 
-        { error && <p>{error.message}</p>}
+        {error && <p>{error.message}</p>}
       </form>
     )
   }

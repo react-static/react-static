@@ -14,7 +14,9 @@ const App = () => (
   <Router>
     <div>
       <nav>
-        <Link exact to="/">Home</Link>
+        <Link exact to="/">
+          Home
+        </Link>
         <Link to="/non-static">Non-Static Route</Link>
         <Link to="/i-dont-match-any-route">Non-Matching Route</Link>
       </nav>

@@ -11,7 +11,6 @@ import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 /*
 * For TypeScript Support
 * */
-const typescriptWebpackPaths = require('./webpack.config.js')
 
 const path = require('path')
 const fs = require('fs')
@@ -23,6 +22,7 @@ const themeVariables = lessToJs(
 )
 
 const webpack = require('webpack')
+const typescriptWebpackPaths = require('./webpack.config.js')
 
 //
 export default {

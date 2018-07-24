@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-
 require('../lib/utils/binHelper')
 const program = require('commander')
 const buildCmd = require('../lib/commands/build')

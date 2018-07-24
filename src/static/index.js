@@ -55,7 +55,10 @@ export const extractTemplates = async config => {
 export const prepareRoutes = async ({ config, opts, silent }, cb = d => d) => {
   if (!silent) console.log('=> Building Routes...')
   // set the static routes
-  process.env.REACT_STATIC_ROUTES_PATH = path.join(config.paths.DIST, 'react-static-routes.js')
+  process.env.REACT_STATIC_ROUTES_PATH = path.join(
+    config.paths.DIST,
+    'react-static-routes.js'
+  )
 
   if (!silent) time(chalk.green('=> [\u2713] Routes Built'))
   return getRoutes(
@@ -119,7 +122,8 @@ export const fetchRoutes = async config => {
     const route = config.routes[i]
     downloadTasks.push(async () => {
       // Fetch allProps from each route
-      route.allProps = !!route.getData && (await route.getData({ route, dev: false }))
+      route.allProps =
+        !!route.getData && (await route.getData({ route, dev: false }))
       // Default allProps (must be an object)
       if (!route.allProps) {
         route.allProps = {}

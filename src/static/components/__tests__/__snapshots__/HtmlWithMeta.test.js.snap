@@ -15,4 +15,4 @@ exports[`HtmlWithMeta when route is a static route 1`] = `
     </head>
   </html>
 </Component>
-`;
+`

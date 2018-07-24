@@ -10,7 +10,7 @@ import { createIndexFilePlaceholder } from '../utils'
 let cleaned
 let indexCreated
 
-export default async function start ({ config, debug } = {}) {
+export default (async function start({ config, debug } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined') {
     process.env.NODE_ENV = 'development'
@@ -58,4 +58,4 @@ export default async function start ({ config, debug } = {}) {
   await new Promise(() => {
     // Do nothing, the user must exit this command
   })
-}
+})

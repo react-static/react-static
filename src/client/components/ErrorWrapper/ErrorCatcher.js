@@ -12,7 +12,7 @@ export default class ErrorCatcher extends React.Component {
     errorInfo: null,
   }
 
-  componentDidCatch (error, errorInfo) {
+  componentDidCatch(error, errorInfo) {
     // Catch errors in any child components and re-renders with an error message
     this.setState({
       error,
@@ -20,7 +20,7 @@ export default class ErrorCatcher extends React.Component {
     })
   }
 
-  render () {
+  render() {
     const { error } = this.state
 
     // Fallback UI if an error occurs

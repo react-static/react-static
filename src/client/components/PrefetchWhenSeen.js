@@ -3,12 +3,16 @@ import React from 'react'
 import { cleanPath } from '../../utils/shared'
 import { prefetch } from '../methods'
 
-const ioIsSupported = typeof window !== 'undefined' && 'IntersectionObserver' in window
+const ioIsSupported =
+  typeof window !== 'undefined' && 'IntersectionObserver' in window
 const handleIntersection = (element, callback) => {
   const io = new window.IntersectionObserver(entries => {
     entries.forEach(entry => {
       // Edge doesn't support isIntersecting. intersectionRatio > 0 works as a fallback
-      if (element === entry.target && (entry.isIntersecting || entry.intersectionRatio > 0)) {
+      if (
+        element === entry.target &&
+        (entry.isIntersecting || entry.intersectionRatio > 0)
+      ) {
         io.unobserve(element)
         io.disconnect()
         callback()
@@ -28,7 +32,7 @@ export default class PrefetchWhenSeen extends React.Component {
     onLoad: () => {},
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (!ioIsSupported) {
       this.runPrefetch()
     }
@@ -48,10 +52,8 @@ export default class PrefetchWhenSeen extends React.Component {
     }
   }
 
-  render () {
-    const {
-      component, render, children, ...rest
-    } = this.props
+  render() {
+    const { component, render, children, ...rest } = this.props
     if (component) {
       return React.createElement(component, {
         handleRef: this.handleRef,

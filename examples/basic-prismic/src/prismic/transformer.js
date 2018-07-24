@@ -1,4 +1,4 @@
-export default function transform (prismicData) {
+export default function transform(prismicData) {
   const data = prismicData.data
   const result = {}
   const entries = Object.entries(data)

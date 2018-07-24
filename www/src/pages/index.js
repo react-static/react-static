@@ -40,13 +40,21 @@ const Styles = styled.div`
     .background1 {
       transform: scale(3) rotate(50deg);
       transform-origin: top left;
-      background: linear-gradient(to bottom, rgba(0, 120, 150, 0.05), transparent 15px);
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 120, 150, 0.05),
+        transparent 15px
+      );
     }
 
     .background2 {
       transform: scale(3) rotate(-25deg);
       transform-origin: top right;
-      background: linear-gradient(to bottom, rgba(0, 120, 150, 0.05), transparent 15px);
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 120, 150, 0.05),
+        transparent 15px
+      );
     }
   }
 
@@ -126,12 +134,14 @@ export default () => (
     <img src={logoImg} alt="" style={{ display: 'block', margin: '0 auto' }} />
     <h1>React Static</h1>
     <h2>
-      A progressive static-site generator for React by <Link to="https://nozzle.io">Nozzle.io</Link>
+      A progressive static-site generator for React by{' '}
+      <Link to="https://nozzle.io">Nozzle.io</Link>
     </h2>
     <p>
-      React-Static is a fast, lightweight, and powerful framework for building static-progressive
-      React applications and websites. It's been carefully designed to meet the highest standards of
-      SEO, site performance, and user/developer experience.
+      React-Static is a fast, lightweight, and powerful framework for building
+      static-progressive React applications and websites. It's been carefully
+      designed to meet the highest standards of SEO, site performance, and
+      user/developer experience.
     </p>
     <Cards>
       <Card to="/docs/#quick-start" background="#ff6073">

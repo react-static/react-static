@@ -9,7 +9,11 @@ const Header = () => (
       <div>
         <Head>
           <title>
-            {`${title ? `${title} | Gentics Mesh` : 'Gentics Mesh | React Static Sample'}`}
+            {`${
+              title
+                ? `${title} | Gentics Mesh`
+                : 'Gentics Mesh | React Static Sample'
+            }`}
           </title>
           <meta name="mesh-node-id" content={node.uuid} />
         </Head>
