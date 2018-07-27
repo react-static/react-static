@@ -59,6 +59,7 @@ export const makeHeadWithMeta = ({
             )}
           />
         ))}
+      {childrenArray}
       {renderLinkCSS &&
         clientStyleSheets.reduce((memo, styleSheet) => {
           const href = makePathAbsolute(
@@ -86,7 +87,6 @@ export const makeHeadWithMeta = ({
       {config.inlineCss && <InlineStyle clientCss={clientCss} />}
       {head.style}
       {pluginHeads}
-      {childrenArray}
     </head>
   )
 }
