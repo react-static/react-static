@@ -28,9 +28,7 @@ module.exports = () => {
         r('@babel/plugin-transform-runtime'),
         {
           helpers: false,
-          polyfill: false,
-          regenerator: true,
-          moduleName: '@babel/runtime',
+          regenerator: true
         },
       ],
       r('@babel/plugin-syntax-dynamic-import'),
