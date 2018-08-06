@@ -26,9 +26,6 @@ export const makeHeadWithMeta = ({
   const useHelmetTitle =
     head.title && head.title[0] && head.title[0].props.children !== ''
   let childrenArray = React.Children.toArray(children)
-  console.error(`children beforehand:`)
-  console.error(children)
-  console.error(typeof(children))
   if (useHelmetTitle) {
     head.title[0] = React.cloneElement(head.title[0], { key: 'title' })
     childrenArray = children.filter(child => {
@@ -40,8 +37,6 @@ export const makeHeadWithMeta = ({
       return true
     })
   }
-  console.error(`children array beforehand:`)
-  console.error(childrenArray)
   const childrenCSS = childrenArray.filter(child => {
     if (
       child.type === 'link' &&
@@ -69,9 +64,6 @@ export const makeHeadWithMeta = ({
     }
     return true
   })
-  console.error(childrenJS)
-  console.error(childrenCSS)
-  console.error(childrenArray)
 
   const pluginHeads = (config.plugins || [])
     .map(plugin => plugin.Head)
