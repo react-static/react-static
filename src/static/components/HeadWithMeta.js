@@ -25,10 +25,13 @@ export const makeHeadWithMeta = ({
   const renderLinkCSS = !route.redirect && !config.inlineCss
   const useHelmetTitle =
     head.title && head.title[0] && head.title[0].props.children !== ''
-  let childrenArray = children
+  let childrenArray = React.Children.toArray(children)
+  console.error(`children beforehand:`)
+  console.error(children)
+  console.error(typeof(children))
   if (useHelmetTitle) {
     head.title[0] = React.cloneElement(head.title[0], { key: 'title' })
-    childrenArray = React.Children.toArray(children).filter(child => {
+    childrenArray = children.filter(child => {
       if (child.type === 'title') {
         // Filter out the title of the Document in static.config.js
         // if there is a helmet title on this route
@@ -37,6 +40,38 @@ export const makeHeadWithMeta = ({
       return true
     })
   }
+  console.error(`children array beforehand:`)
+  console.error(childrenArray)
+  const childrenCSS = childrenArray.filter(child => {
+    if (
+      child.type === 'link' &&
+      child.props &&
+      child.props.rel === 'stylesheet'
+    ) {
+      return true
+    } else if (child.type === 'style') {
+      return true
+    }
+    return false
+  })
+  const childrenJS = childrenArray.filter(child => child.type === 'script')
+  childrenArray = childrenArray.filter(child => {
+    if (
+      child.type === 'link' &&
+      child.props &&
+      child.props.rel === 'stylesheet'
+    ) {
+      return false
+    } else if (child.type === 'style') {
+      return false
+    } else if (child.type === 'script') {
+      return false
+    }
+    return true
+  })
+  console.error(childrenJS)
+  console.error(childrenCSS)
+  console.error(childrenArray)
 
   const pluginHeads = (config.plugins || [])
     .map(plugin => plugin.Head)
@@ -59,7 +94,6 @@ export const makeHeadWithMeta = ({
             )}
           />
         ))}
-      {childrenArray}
       {renderLinkCSS &&
         clientStyleSheets.reduce((memo, styleSheet) => {
           const href = makePathAbsolute(
@@ -87,6 +121,9 @@ export const makeHeadWithMeta = ({
       {config.inlineCss && <InlineStyle clientCss={clientCss} />}
       {head.style}
       {pluginHeads}
+      {childrenArray}
+      {childrenJS}
+      {childrenCSS}
     </head>
   )
 }
