@@ -28,7 +28,7 @@ export const makeHeadWithMeta = ({
   let childrenArray = React.Children.toArray(children)
   if (useHelmetTitle) {
     head.title[0] = React.cloneElement(head.title[0], { key: 'title' })
-    childrenArray = children.filter(child => {
+    childrenArray = childrenArray.filter(child => {
       if (child.type === 'title') {
         // Filter out the title of the Document in static.config.js
         // if there is a helmet title on this route
@@ -75,6 +75,7 @@ export const makeHeadWithMeta = ({
       {head.base}
       {useHelmetTitle && head.title}
       {head.meta}
+      {childrenJS}
       {!route.redirect &&
         clientScripts.map(script => (
           <link
@@ -86,6 +87,7 @@ export const makeHeadWithMeta = ({
             )}
           />
         ))}
+      {childrenCSS}
       {renderLinkCSS &&
         clientStyleSheets.reduce((memo, styleSheet) => {
           const href = makePathAbsolute(
@@ -114,8 +116,6 @@ export const makeHeadWithMeta = ({
       {head.style}
       {pluginHeads}
       {childrenArray}
-      {childrenJS}
-      {childrenCSS}
     </head>
   )
 }
