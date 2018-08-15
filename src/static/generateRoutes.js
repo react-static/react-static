@@ -20,7 +20,7 @@ const universalOptions = {
   loading: () => null,
   error: props => {
     console.error(props.error);
-    return <div>An error occurred loading this page's template. More information is available in the console.</div>;
+    return "An error occurred loading this page's template. More information is available in the console.";
   },
 }
 
