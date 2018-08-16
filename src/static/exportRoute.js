@@ -10,6 +10,7 @@ import fs from 'fs-extra'
 import Redirect from '../client/components/Redirect'
 import { getConfigPluginHooks } from '../utils'
 import { makePathAbsolute } from '../utils/shared'
+import { absoluteToRelativeChunkName } from '../utils/chunkBuilder'
 
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
 import { makeHeadWithMeta } from './components/HeadWithMeta'
@@ -103,7 +104,19 @@ export default (async function exportRoute({
     FinalComp = () => <Redirect fromPath={route.path} to={route.redirect} />
   } else {
     FinalComp = props => (
-      <ReportChunks report={chunkName => chunkNames.push(chunkName)}>
+      <ReportChunks
+        report={chunkName => {
+          // if we are building to a absolute path we must make the detected chunkName relative and matching to the one we set in generateRoutes
+          if (!config.paths.DIST.startsWith(config.paths.ROOT)) {
+            chunkName = absoluteToRelativeChunkName(
+              config.paths.ROOT,
+              chunkName
+            )
+          }
+
+          chunkNames.push(chunkName)
+        }}
+      >
         <InitialPropsContext
           embeddedRouteInfo={embeddedRouteInfo}
           route={route}
