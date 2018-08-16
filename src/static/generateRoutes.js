@@ -26,10 +26,17 @@ const universalOptions = {
 
 ${templates
     .map((template, index) => {
-      const templatePath = path.relative(
+      let templatePath = path.relative(
         paths.DIST,
         path.resolve(paths.ROOT, template)
       )
+
+      // relative resolving produces the wrong path, a "../" is missing
+      // as the files looks equal, we simple use an absolute path then
+      if (paths.DIST.indexOf(paths.ROOT) !== 0) {
+        templatePath = path.resolve(paths.ROOT, template)
+      }
+
       return `const t_${index} = universal(import('${slash(
         templatePath
       )}'), universalOptions)`
