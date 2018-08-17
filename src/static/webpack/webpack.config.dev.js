@@ -33,6 +33,7 @@ export default function({ config }) {
     },
     module: {
       rules: rules({ config, stage: 'dev' }),
+      strictExportPresence: true,
     },
     resolve: {
       modules: [
@@ -42,8 +43,7 @@ export default function({ config }) {
         path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
-      mainFields: ['browser', 'main'],
-      extensions: ['.js', '.json', '.jsx'],
+      extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),

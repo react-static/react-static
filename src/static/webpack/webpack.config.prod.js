@@ -80,6 +80,7 @@ function common(config) {
     },
     module: {
       rules: rules({ config, stage: 'prod', isNode: false }),
+      strictExportPresence: true,
     },
     resolve: {
       modules: [
@@ -89,8 +90,7 @@ function common(config) {
         path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
-      mainFields: ['browser', 'main'],
-      extensions: ['.js', '.json', '.jsx'],
+      extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx']
     },
     externals: [],
     target: undefined,
