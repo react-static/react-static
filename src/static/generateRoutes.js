@@ -130,7 +130,7 @@ export default class Routes extends Component {
       }
       return (newProps = {}) => (
         Comp
-          ? <Comp {...newProps} {...(is404 ? {path: '404'} : {})} />
+          ? <Comp {...newProps} {...(is404 ? {is404: true} : {})} />
           : null
       )
     }
