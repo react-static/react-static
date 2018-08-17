@@ -1,6 +1,6 @@
 const r = require.resolve
 
-module.exports = () => {
+module.exports = (api, options = {}) => {
   const { NODE_ENV, BABEL_ENV } = process.env
 
   const PRODUCTION = (BABEL_ENV || NODE_ENV) === 'production'
@@ -10,6 +10,7 @@ module.exports = () => {
       [
         r('@babel/preset-env'),
         {
+          modules: options.modules,
           useBuiltIns: false,
           targets: {
             browsers: PRODUCTION
@@ -28,9 +29,7 @@ module.exports = () => {
         r('@babel/plugin-transform-runtime'),
         {
           helpers: false,
-          polyfill: false,
           regenerator: true,
-          moduleName: '@babel/runtime',
         },
       ],
       r('@babel/plugin-syntax-dynamic-import'),

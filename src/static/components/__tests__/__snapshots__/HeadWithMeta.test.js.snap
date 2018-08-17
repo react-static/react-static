@@ -97,11 +97,14 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
       key="clientStyleSheet_bootstrap.css"
       rel="stylesheet"
     />
-    <title>
+    <title
+      key=".0"
+    >
       Document Title
     </title>
     <meta
       content="Helmet application"
+      key=".1"
       name="description"
     />
   </head>

@@ -35,6 +35,7 @@ export default function({ config, stage }) {
         options: {
           ...babelFile,
           root: config.paths.ROOT,
+          presets: [[babelPreset, { modules: false }]],
           cacheDirectory: stage !== 'prod',
         },
       },
