@@ -38,7 +38,9 @@ class HomePage extends Component {
 const UserList = ({ users }) => (
   <div>
     <h2>List of App User IDs</h2>
-    {users.map(user => <div key={user.index}>{user.index}</div>)}
+    {users.map(user => (
+      <div key={user.index}>{user.index}</div>
+    ))}
   </div>
 )
 

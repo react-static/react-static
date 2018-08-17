@@ -28,7 +28,8 @@ const ProjectPage = () => (
               The source code for this example can be found on{' '}
               <Link to="https://github.com/nozzle/react-static/tree/master/examples/gentics-mesh">
                 GitHub
-              </Link>.
+              </Link>
+              .
             </p>
             <Button outline color="primary">
               <Link to="https://getmesh.io">Learn more...</Link>
