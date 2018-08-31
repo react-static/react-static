@@ -98,7 +98,7 @@ React Static also has a very unique and amazing way of requesting the least amou
 
 - **Routes** - Under the hood, React Static is automatically handling route splitting for you. Other than listing your routes in your `static.config.js`, you don't have to do anything!
 - **Route Data & Shared Data** - Each route's `getData` function results in a separate data file for each route being stored (usually). While exporting this data however, each individual key of every data object is checked against each other for `===` equality. When a data key is found to be used in more than one route, it is promoted to a _shared data fragment_ and stored in its own file.
-- **Manual Code Splitting with Universal** - React Static comes built in with support for [`react-universal-component`](https://github.com/faceyspacey/react-universal-component). This means aside from the automatic code splitting that React Static offers, you can also manually code split very large components if you choose to do so. See the ["About" page in the dynamic-imports example](https://github.com/nozzle/react-static/blob/master/examples/dynamic-imports/src/containers/About.js) to see how it works and how easy it is!
+- **Manual Code Splitting with Universal** - React Static comes built in with support for [`react-universal-component`](https://github.com/faceyspacey/react-universal-component). This means aside from the automatic code splitting that React Static offers, you can also manually code split very large components if you choose to do so. See the ["About" page in the dynamic-imports example](https://github.com/nozzle/react-static/blob/master/examples/dynamic-imports/src/pages/about.js) to see how it works and how easy it is!
 
 #### Why is all of this cool?
 
