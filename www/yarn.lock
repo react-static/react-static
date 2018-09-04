@@ -3076,16 +3076,14 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-css-chunks-webpack-plugin@^2.0.18:
-  version "2.0.19"
-  resolved "https://registry.yarnpkg.com/extract-css-chunks-webpack-plugin/-/extract-css-chunks-webpack-plugin-2.0.19.tgz#a2babd7f51568165944f5ed4816bcd4bf84f5bbb"
+extract-css-chunks-webpack-plugin@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/extract-css-chunks-webpack-plugin/-/extract-css-chunks-webpack-plugin-3.1.1.tgz#b5a5bbc441fc87238d1b365f315a315090146a9a"
   dependencies:
-    ajv "4.11.2"
-    async "^2.5.0"
     loader-utils "^1.1.0"
-    schema-utils "^0.3.0"
-    style-loader "^0.18.2"
-    webpack-sources "^1.0.1"
+    lodash "^4.17.5"
+    normalize-url "^1.9.1"
+    webpack-sources "^1.1.0"
 
 extract-hoc-compose@^0.0.1:
   version "0.0.1"
@@ -5968,7 +5966,7 @@ react-static@^5.8.1:
     css-loader "^0.28.7"
     download-git-repo "^1.0.2"
     eslint-config-react-tools "^1.2.3"
-    extract-css-chunks-webpack-plugin "^2.0.18"
+    extract-css-chunks-webpack-plugin "^3.1.1"
     extract-hoc "^0.0.5"
     extract-hoc-compose "^0.0.1"
     extract-text-webpack-plugin "^3.0.1"
