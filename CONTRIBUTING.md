@@ -25,7 +25,7 @@ If you have an idea for a new feature or optimization, discuss it in an issue or
 **In `react-static`:**
 
 1.  Install dependencies by running `yarn`
-2.  Run the development watcher with `yarn watch`. This will watch all files for changes and build automatically to `lib`
+2.  Run the development watcher with `yarn start`. This will watch all files for changes and build automatically to `lib`
 3.  Link react-static globally using `yarn link`. This will make it available on your machine to other projects.
 4.  Make your changes
 
