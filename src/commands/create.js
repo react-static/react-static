@@ -9,6 +9,7 @@ import matchSorter from 'match-sorter'
 import downloadGitRepo from 'download-git-repo'
 import { promisify } from 'util'
 import { ChalkColor, time, timeEnd } from '../utils'
+import {version} from '../../package.json';
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
@@ -116,8 +117,8 @@ export default (async function create({ name, template, isCLI } = {}) {
     execSync(
       `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
         isYarn
-          ? 'yarn add react-static@latest'
-          : 'npm install react-static@latest --save'
+          ? `yarn add react-static@${version}`
+          : `npm install react-static@${version} --save`
       }`
     )
     console.log('')
