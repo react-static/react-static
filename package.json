@@ -29,8 +29,7 @@
     "lint": "eslint src test && yarn prettier",
     "unitTest": "NODE_ENV=test yarn jest src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
-    "test-sample-build": "yarn link && cd examples/basic && yarn && yarn link react-static && yarn build",
-    "standard": "./node_modules/.bin/standard index.js"
+    "test-sample-build": "yarn link && cd examples/basic && yarn && yarn link react-static && yarn build"
   },
   "dependencies": {
     "@babel/cli": "^7.0.0-rc.1",
@@ -120,12 +119,10 @@
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.10.0",
-    "ghooks": "^1.2.4",
     "husky": "^1.0.0-rc.13",
     "jest": "^23.5.0",
     "prettier": "1.14.2",
-    "rimraf": "^2.6.2",
-    "standard": "^8.4.0"
+    "rimraf": "^2.6.2"
   },
   "husky": {
     "hooks": {
@@ -149,10 +146,5 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ]
-  },
-  "config": {
-    "ghooks": {
-      "pre-commit": "npm run standard"
-    }
   }
 }
