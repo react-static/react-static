@@ -4,11 +4,3 @@ node_js:
 - stable
 script:
 - npm test
-deploy:
-  provider: npm
-  email: tannerlinsley@gmail.com
-  api_key:
-    secure: LFfZ1ggy0Fa2bnktEhZsjDEUE6nZqRpfYUz8lsYvTIG26UxcA3zgMTf3pV+nBUZClIFziN0eLqE6HgQQj3rRWAVL0Kxnhsk6XdIY3CPeVpqqc/Q/XrFAD2zG+ddX9gpYvEUfsP6J0mUKM1Gin0TsfY3/+o+lqZyF1+4PnBgzwGiczupK+K3mSYdTDrqnDkbSGL8GlqWZoYciHJuf+BE1PZNIvGomEfAaNTPg3BmqPmOv5W+I5kMao+ONmoYRNWVFLPGgmDIi8QnL9ZgtB6edUsOTrLtTCLDvo6nQKZbZd22BwtKwlJXbMWKHGw+gZqjAyQj7JOHTpBrXwUuSmicdkTC4QP7aMPFyfXZ7hJjoSg4JiWUvfVH5z5ymF96wIxKvt7RONp0jTvyo2GWHrblp3TtUapWr/Ja9AkHHaqSoNUy/KQWjMFJjf6WE8QkbJ3KewYSedgOGmT+NYwz1uUCrQLiU0PWx0pbItmlbAZCTU8D5XngSiMvtLNntpaefSOuXyAPtUotEX4MruSZZZFmSjLPeglgUuAJ2hpU4BpN32zYgyibCB0pinY1FWyPEi50+kaZLWT5gcSLJN07AATf6ofi2BKh+x51KH3gon6Or88MImbucNXG8OSKAPpfGlJOqZI9oRjFWHhxfZDTFP0eSYbh6pyTMfM6WmQYRnHLxraY=
-  on:
-    tags: true
-    repo: nozzle/react-static
