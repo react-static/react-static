@@ -24,11 +24,13 @@
     "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "prettier": "prettier --config .prettierrc.js {examples/*/src,node,scripts,src,www/src}/**/*.js --write",
     "serveDocs": "serve www/dist -p 3000",
-    "test": "yarn build && yarn unitTest && yarn lint",
+    "test": "./node_modules/.bin/nyc ./node_modules/.bin/ava -v",
     "lint": "eslint src test && yarn prettier",
     "unitTest": "NODE_ENV=test yarn jest src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
-    "test-sample-build": "yarn link && cd examples/basic && yarn && yarn link react-static && yarn build"
+    "test-sample-build": "yarn link && cd examples/basic && yarn && yarn link react-static && yarn build",
+    "report-coverage": "./node_modules/.bin/nyc report --reporter=lcov > coverage.lcov && codecov",
+    "standard": "./node_modules/.bin/standard index.js"
   },
   "dependencies": {
     "@babel/cli": "^7.0.0-rc.1",
@@ -121,7 +123,13 @@
     "husky": "^1.0.0-rc.13",
     "jest": "^23.5.0",
     "prettier": "1.14.2",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "ava": "^0.16.0",
+    "co-exec": "^1.0",
+    "codecov": "^1.0.1",
+    "ghooks": "^1.2.4",
+    "nyc": "^10.0.0",
+    "standard": "^8.4.0"
   },
   "husky": {
     "hooks": {
@@ -145,5 +153,10 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ]
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run standard"
+    }
   }
 }
