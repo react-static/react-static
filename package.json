@@ -24,12 +24,11 @@
     "buildDocsProd": "yarn build && yarn link && cd www && yarn && yarn link react-static && yarn build",
     "prettier": "prettier --config .prettierrc.js {examples/*/src,node,scripts,src,www/src}/**/*.js --write",
     "serveDocs": "serve www/dist -p 3000",
-    "test": "./node_modules/.bin/nyc ./node_modules/.bin/ava -v",
+    "test": "yarn build && yarn lint && yarn unitTest",
     "lint": "eslint src test && yarn prettier",
     "unitTest": "NODE_ENV=test yarn jest src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
     "test-sample-build": "yarn link && cd examples/basic && yarn && yarn link react-static && yarn build",
-    "report-coverage": "./node_modules/.bin/nyc report --reporter=lcov > coverage.lcov && codecov",
     "standard": "./node_modules/.bin/standard index.js"
   },
   "dependencies": {
@@ -120,15 +119,11 @@
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.10.0",
+    "ghooks": "^1.2.4",
     "husky": "^1.0.0-rc.13",
     "jest": "^23.5.0",
     "prettier": "1.14.2",
     "rimraf": "^2.6.2",
-    "ava": "^0.16.0",
-    "co-exec": "^1.0",
-    "codecov": "^1.0.1",
-    "ghooks": "^1.2.4",
-    "nyc": "^10.0.0",
     "standard": "^8.4.0"
   },
   "husky": {
