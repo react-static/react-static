@@ -1,3 +1,5 @@
+### React Static v6 is under active development on the [v6 branch](https://github.com/nozzle/react-static/tree/v6)! The docs below are for the stable 5.x.x version.
+
 ![React Static Logo](https://github.com/nozzle/react-static/raw/master/media/logo.png)
 
 [![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![David Dependancy Status](https://david-dm.org/nozzle/react-static.svg)](https://david-dm.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-static)
