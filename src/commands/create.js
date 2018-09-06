@@ -8,16 +8,18 @@ import autoCompletePrompt from 'inquirer-autocomplete-prompt'
 import matchSorter from 'match-sorter'
 import downloadGitRepo from 'download-git-repo'
 import { promisify } from 'util'
-import { ChalkColor, time, timeEnd } from '../utils'
+import { ChalkColor } from '../utils'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
-export default (async function create({ name, template, isCLI } = {}) {
+export default async function create ({
+  name, template, isCLI, silent = !isCLI,
+} = {}) {
   const prompts = []
 
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
 
-  console.log('')
+  if (!silent) console.log('')
 
   let exampleList = files.filter(d => !d.startsWith('.'))
   exampleList = ['basic', ...exampleList.filter(d => d !== 'basic')]
@@ -60,19 +62,15 @@ export default (async function create({ name, template, isCLI } = {}) {
   }
 
   if (!name) {
-    throw new Error(
-      'A project name is required. Please use options.name to define one.'
-    )
+    throw new Error('A project name is required. Please use options.name to define one.')
   }
 
   if (!template) {
-    throw new Error(
-      'A project template is required. Please use options.template to define one.'
-    )
+    throw new Error('A project template is required. Please use options.template to define one.')
   }
 
-  time(chalk.green(`=> [\u2713] Project "${name}" created`))
-  console.log('=> Creating new react-static project...')
+  if (!silent) console.time(chalk.green(`=> [\u2713] Project "${name}" created`))
+  if (!silent) console.log('=> Creating new react-static project...')
   const dest = path.resolve(process.cwd(), name)
 
   if (template === 'custom') {
@@ -105,105 +103,94 @@ export default (async function create({ name, template, isCLI } = {}) {
   const isYarn = shouldUseYarn()
 
   if (isCLI) {
-    console.log(
-      `=> Installing dependencies with: ${
-        isYarn
-          ? chalk.hex(ChalkColor.yarn)('Yarn')
-          : chalk.hex(ChalkColor.npm)('NPM')
-      }...`
-    )
+    if (!silent) {
+      console.log(
+        `=> Installing dependencies with: ${
+          isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
+        }...`
+      )
+    }
     // We install react-static separately to ensure we always have the latest stable release
     execSync(
       `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
-        isYarn
-          ? 'yarn add react-static@latest'
-          : 'npm install react-static@latest --save'
+        isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
       }`
     )
-    console.log('')
+    if (!silent) console.log('')
   }
 
-  timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
+  if (!silent) console.timeEnd(chalk.green(`=> [\u2713] Project "${name}" created`))
 
-  console.log(`
+  if (!silent) {
+    console.log(`
   ${chalk.green('=> To get started:')}
 
     cd ${name} ${
-    !isCLI
-      ? `&& ${
-          isYarn
-            ? chalk.hex(ChalkColor.yarn)('yarn')
-            : chalk.hex(ChalkColor.npm)('npm install')
-        }`
-      : ''
+  !isCLI
+    ? `&& ${
+      isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm install')
+    }`
+    : ''
+}
+
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} start ${chalk.green('- Start the development server')}
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} build ${chalk.green('- Build for production')}
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} serve ${chalk.green('- Test a production build locally')}
+  `)
   }
 
-    ${
-      isYarn
-        ? chalk.hex(ChalkColor.yarn)('yarn')
-        : chalk.hex(ChalkColor.npm)('npm run')
-    } start ${chalk.green('- Start the development server')}
-    ${
-      isYarn
-        ? chalk.hex(ChalkColor.yarn)('yarn')
-        : chalk.hex(ChalkColor.npm)('npm run')
-    } build ${chalk.green('- Build for production')}
-    ${
-      isYarn
-        ? chalk.hex(ChalkColor.yarn)('yarn')
-        : chalk.hex(ChalkColor.npm)('npm run')
-    } serve ${chalk.green('- Test a production build locally')}
-  `)
-
-  async function fetchTemplate(template, dest) {
-    console.log('')
+  async function fetchTemplate (template, dest) {
+    if (!silent) console.log('')
     if (template.startsWith('https://') || template.startsWith('git@')) {
       try {
-        console.log(chalk.green(`Downloading template: ${template}`))
+        if (!silent) console.log(chalk.green(`Downloading template: ${template}`))
         await git(`clone --recursive ${template} ${dest}`)
       } catch (err) {
-        console.log(chalk.red(`Download of ${template} failed`))
+        if (!silent) console.log(chalk.red(`Download of ${template} failed`))
         throw err
       }
     } else if (template.startsWith('http://')) {
       // use download-git-repo to fetch remote repository
       const getGitHubRepo = promisify(downloadGitRepo)
       try {
-        console.log(chalk.green(`Downloading template: ${template}`))
+        if (!silent) console.log(chalk.green(`Downloading template: ${template}`))
         await getGitHubRepo(template, dest)
       } catch (err) {
-        console.log(chalk.red(`Download of ${template} failed`))
+        if (!silent) console.log(chalk.red(`Download of ${template} failed`))
         throw err
       }
     } else {
       // If it's an exapmle template, copy it from there
       if (exampleList.includes(template)) {
         try {
-          console.log(chalk.green(`Using template: ${template}`))
-          return fs.copy(
-            path.resolve(__dirname, `../../examples/${template}`),
-            dest
-          )
+          if (!silent) console.log(chalk.green(`Using template: ${template}`))
+          return fs.copy(path.resolve(__dirname, `../../examples/${template}`), dest)
         } catch (err) {
-          console.log(chalk.red(`Copying the template: ${template} failed`))
+          if (!silent) console.log(chalk.red(`Copying the template: ${template} failed`))
           throw err
         }
       }
       // template must be local, copy directly
       try {
-        console.log(chalk.green(`Using template from directory: ${template}`))
+        if (!silent) console.log(chalk.green(`Using template from directory: ${template}`))
         await fs.copy(path.resolve(__dirname, template), dest)
       } catch (err) {
-        console.log(
-          chalk.red(`Copying the template from directory: ${template} failed`)
-        )
+        if (!silent) {
+          console.log(chalk.red(`Copying the template from directory: ${template} failed`))
+        }
         throw err
       }
     }
   }
-})
+}
 
-function shouldUseYarn() {
+function shouldUseYarn () {
   try {
     execSync('yarnpkg --version', { stdio: 'ignore' })
     return true

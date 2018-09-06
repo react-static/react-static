@@ -1,4 +1,10 @@
-import getConfig, { buildConfigation } from '../getConfig'
+import getConfig, {
+  cutPathToRoot,
+  trimLeadingAndTrailingSlashes,
+  createNormalizedRoute,
+  makeGetRoutes,
+  buildConfigation,
+} from '../getConfig'
 import defaultConfigDevelopment from '../__mocks__/defaultConfigDevelopment.mock'
 import defaultConfigProduction from '../__mocks__/defaultConfigProduction.mock'
 
@@ -17,6 +23,212 @@ const testConfiguration = (configuration, configurationMock) => {
   expect(configuration.getRoutes).toBeInstanceOf(Function)
 }
 
+describe('cutPathToRoot', () => {
+  it('should return a root of the path', () => {
+    expect(cutPathToRoot('./root/path/to/')).toBe('./root')
+  })
+})
+
+describe('trimLeadingAndTrailingSlashes', () => {
+  it('should return a String with the leading and trailing slash trimmed', () => {
+    expect(trimLeadingAndTrailingSlashes('/path/to/')).toBe('path/to')
+  })
+})
+
+describe('createNormalizedRoute', () => {
+  describe('when working route is provided', () => {
+    it('should return a normalized route', async () => {
+      const route = createNormalizedRoute({ path: '/path/' })
+
+      expect(route).toEqual({
+        hasGetProps: false,
+        noindex: undefined,
+        originalPath: 'path',
+        path: 'path',
+      })
+    })
+
+    describe('when noindex is true', () => {
+      it('should return a normalized route with noindex as true', () => {
+        const route = createNormalizedRoute({ path: '/path/', noindex: true })
+
+        expect(route.noindex).toEqual(true)
+      })
+    })
+
+    describe('when noIndex is true', () => {
+      let spy
+
+      beforeEach(() => {
+        spy = jest.spyOn(console, 'warn').mockImplementation(() => {})
+      })
+
+      it('should return a normalized route with noindex as true', () => {
+        const route = createNormalizedRoute({ path: '/path/', noIndex: true })
+
+        expect(route.noindex).toEqual(true)
+      })
+
+      it('should warns the user to use noIndex', () => {
+        createNormalizedRoute({ path: '/path/', noIndex: true })
+
+        expect(spy).toHaveBeenCalled()
+        expect(spy).toBeCalledWith(
+          "=> Warning: Route /path/ is using 'noIndex'. Did you mean 'noindex'?"
+        )
+      })
+
+      afterEach(() => {
+        spy.mockRestore()
+      })
+    })
+
+    describe('when path is not defined', () => {
+      it('should throw an error', () => {
+        const route = { component: '/no/path/', noIndex: true }
+
+        expect(() => createNormalizedRoute(route)).toThrow(
+          `No path defined for route: ${JSON.stringify(route)}`
+        )
+      })
+
+      describe('when route is 404', () => {
+        it('should not throw an error', () => {
+          expect(() => createNormalizedRoute({ component: '/no/path/', is404: true })).not.toThrow()
+        })
+      })
+    })
+
+    describe('when parent route is provided', () => {
+      it('should return a normalized route', () => {
+        const route = createNormalizedRoute({ path: '/to/' }, { path: '/path/' })
+
+        expect(route).toEqual({
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: 'to',
+          path: 'path/to',
+        })
+      })
+
+      describe('when parent noindex is true', () => {
+        it('should return a normalized route with noindex as true', () => {
+          const route = createNormalizedRoute({ path: '/to/' }, { path: '/path/', noindex: true })
+
+          expect(route.noindex).toEqual(true)
+        })
+      })
+    })
+  })
+})
+
+describe('makeGetRoutes', () => {
+  describe('when getRoutes is defined on config', () => {
+    it('should return routes', async () => {
+      const config = { getRoutes: async () => [{ path: '/path' }] }
+
+      const getRoutes = makeGetRoutes(config)
+      const routes = await getRoutes()
+
+      expect(routes).toEqual([
+        {
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: 'path',
+          path: 'path',
+        },
+      ])
+    })
+
+    it('should return routes', async () => {
+      const config = {
+        getRoutes: async () => [{ path: '/path' }, { is404: true, path: '404' }],
+      }
+
+      const getRoutes = makeGetRoutes(config)
+      const routes = await getRoutes()
+
+      expect(routes).toEqual([
+        {
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: 'path',
+          path: 'path',
+        },
+        {
+          hasGetProps: false,
+          is404: true,
+          noindex: undefined,
+          originalPath: '404',
+          path: '404',
+        },
+      ])
+    })
+
+    describe('when routes has children', () => {
+      const routesWithChildren = [
+        {
+          path: '/path',
+          children: [
+            {
+              path: 'to',
+              children: [
+                {
+                  path: 'blog',
+                },
+                {
+                  path: 'slug',
+                },
+              ],
+            },
+          ],
+        },
+      ]
+
+      it('should return a flat Array of routes', async () => {
+        const config = { getRoutes: async () => routesWithChildren }
+
+        const getRoutes = makeGetRoutes(config)
+        const routes = await getRoutes()
+
+        expect(routes).toMatchSnapshot()
+      })
+
+      describe('when config.tree is defined', () => {
+        it('should return a flat Array of routes', async () => {
+          const config = {
+            getRoutes: async () => routesWithChildren,
+            tree: true,
+          }
+
+          const getRoutes = makeGetRoutes(config)
+          const routes = await getRoutes()
+
+          expect(routes).toMatchSnapshot()
+        })
+      })
+    })
+  })
+
+  describe('when getRoutes is not defined on config', () => {
+    it('should return default route', async () => {
+      const config = {}
+
+      const getRoutes = makeGetRoutes(config)
+      const routes = await getRoutes()
+
+      expect(routes).toEqual([
+        {
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: '/',
+          path: '/',
+        },
+      ])
+    })
+  })
+})
+
 describe('buildConfigation', () => {
   let reactStaticEnviroment
   let reactStaticPrefetchRate
@@ -27,10 +239,8 @@ describe('buildConfigation', () => {
   beforeEach(() => {
     reactStaticEnviroment = process.env.REACT_STATIC_ENV
     reactStaticPrefetchRate = process.env.REACT_STATIC_PREFETCH_RATE
-    reactStaticDisableRouteInfoWarning =
-      process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
-    reactStaticDisableRoutePreFixing =
-      process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+    reactStaticDisableRouteInfoWarning = process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
+    reactStaticDisableRoutePreFixing = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
     spyProcess = jest.spyOn(process, 'cwd').mockImplementation(() => './root/')
   })
 
@@ -118,10 +328,10 @@ describe('getConfig', () => {
   })
 
   describe('when no path or configuration is not provided', () => {
-    it('should return a configuration using default file', async () => {
+    it('should return a configuration using default file', () => {
       // mapped by the moduleNameMapper in package.js -> src/static/__mocks__/static.config.js
       // default path is 'static.config.js'
-      const configuration = await getConfig()
+      const configuration = getConfig()
 
       testConfiguration(configuration, {
         ...defaultConfigProduction,
@@ -131,9 +341,9 @@ describe('getConfig', () => {
   })
 
   describe('when provided a path to configuration', () => {
-    it('should return a configuration using file provided', async () => {
+    it('should return a configuration using file provided', () => {
       // mapped by the moduleNameMapper in package.js -> src/static/__mocks__/static.config.js
-      const configuration = await getConfig('./path/to/static.config.js')
+      const configuration = getConfig('./path/to/static.config.js')
 
       testConfiguration(configuration, {
         ...defaultConfigProduction,
@@ -143,8 +353,8 @@ describe('getConfig', () => {
   })
 
   describe('when provided a configuration', () => {
-    it('should return a merged configuration', async () => {
-      const configuration = await getConfig({
+    it('should return a merged configuration', () => {
+      const configuration = getConfig({
         entry: 'another/path/to/entry/index.js',
       })
 

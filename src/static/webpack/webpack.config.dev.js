@@ -6,12 +6,16 @@ import path from 'path'
 
 import rules from './rules'
 
-export default function({ config }) {
-  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
+process.traceDeprecation = true
 
-  process.env.REACT_STATIC_BASE_PATH = config.basePath
-  process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
-  process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
+export default function ({ config }) {
+  const {
+    ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
+  } = config.paths
+
+  config.publicPath = config.devBasePath ? `/${config.devBasePath}/` : '/'
+
+  process.env.REACT_STATIC_BASEPATH = config.devBasePath
 
   return {
     mode: 'development',
@@ -21,6 +25,7 @@ export default function({ config }) {
     },
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
+      require.resolve('react-hot-loader'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
       path.resolve(ROOT, config.entry),
@@ -29,21 +34,20 @@ export default function({ config }) {
       filename: '[name].js', // never hash dev code
       chunkFilename: 'templates/[name].js',
       path: DIST,
-      publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
+      publicPath: config.publicPath || '/',
     },
     module: {
       rules: rules({ config, stage: 'dev' }),
-      strictExportPresence: true,
     },
     resolve: {
       modules: [
-        SRC,
-        NODE_MODULES,
-        'node_modules',
         path.resolve(__dirname, '../../../node_modules'),
+        'node_modules',
+        NODE_MODULES,
+        SRC,
         DIST,
       ],
-      extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
+      extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
@@ -52,11 +56,11 @@ export default function({ config }) {
         template: `!!raw-loader!${HTML_TEMPLATE}`,
       }),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
+      new webpack.NamedModulesPlugin(),
       new CaseSensitivePathsPlugin(),
       new ExtractCssChunks({ hot: true }),
     ],
-    devtool: 'cheap-module-source-map',
+    devtool: 'eval-source-map',
   }
 }

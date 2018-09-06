@@ -1,13 +1,11 @@
 import fs from 'fs-extra'
+import chalk from 'chalk'
 //
 import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import getConfig from '../static/getConfig'
 
 export default async ({
-  config: originalConfig,
-  staging,
-  debug,
-  isBuild,
+  config, staging, debug, isCLI, silent = !isCLI,
 } = {}) => {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
@@ -18,35 +16,23 @@ export default async ({
   process.env.BABEL_ENV = 'production'
 
   if (staging) {
-    process.env.REACT_STATIC_STAGING = 'true'
+    process.env.REACT_STATIC_STAGING = true
   }
 
   if (debug) {
-    process.env.REACT_STATIC_DEBUG = 'true'
+    process.env.REACT_STATIC_DEBUG = true
   }
 
-  let config
-
   // Allow config location to be overriden
-  if (!isBuild) {
-    config = await getConfig(originalConfig)
-    config.originalConfig = originalConfig
-    // Restore the process environment variables that were present during the build
-    const bundledEnv = await fs.readJson(
-      `${config.paths.TEMP}/bundle-environment.json`
-    )
-    Object.keys(bundledEnv).forEach(key => {
-      if (typeof process.env[key] === 'undefined') {
-        process.env[key] = bundledEnv[key]
-      }
-    })
-    config = await prepareRoutes({ config, opts: { dev: false } })
-  } else {
-    config = originalConfig
+  if (config && typeof config === 'object' && !config.generated) {
+    config = getConfig(config)
   }
 
   if (!config.routes) {
+    if (!silent) console.log('=> Building Routes...')
+    if (!silent) console.time(chalk.green('=> [\u2713] Routes Built'))
     await prepareRoutes(config, { dev: false })
+    if (!silent) console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
   }
 
   if (debug) {
@@ -54,9 +40,7 @@ export default async ({
     console.log(config)
   }
 
-  const clientStats = await fs.readJson(
-    `${config.paths.TEMP}/client-stats.json`
-  )
+  const clientStats = await fs.readJson(`${config.paths.DIST}/client-stats.json`)
 
   if (!clientStats) {
     throw new Error('No Client Stats Found')
@@ -69,6 +53,7 @@ export default async ({
     })
   } catch (e) {
     const PrettyError = require('pretty-error')
+    console.log() // new line
     console.log(new PrettyError().render(e))
     process.exit(1)
   }

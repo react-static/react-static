@@ -35,7 +35,7 @@ export default class Router extends React.Component {
   state = {
     ready: false,
   }
-  constructor(props, context) {
+  constructor (props, context) {
     super()
 
     // In SRR and production, synchronously register the templateID for the
@@ -43,9 +43,9 @@ export default class Router extends React.Component {
     let { routeInfo } = context
     let path = cleanPath(context.staticURL)
 
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined') {
       routeInfo = window.__routeInfo
-      const href = decodeURIComponent(window.location.href)
+      const { href } = window.location
       path = cleanPath(href)
     }
 
@@ -53,7 +53,7 @@ export default class Router extends React.Component {
       registerTemplateIDForPath(path, routeInfo.templateID)
     }
   }
-  componentDidMount() {
+  componentDidMount () {
     this.bootstrapRouteInfo()
   }
   bootstrapRouteInfo = () =>
@@ -67,8 +67,7 @@ export default class Router extends React.Component {
         if (window.__routeInfo && window.__routeInfo.path === path) {
           const { allProps } = window.__routeInfo
           Object.keys(window.__routeInfo.sharedPropsHashes).forEach(propKey => {
-            propsByHash[window.__routeInfo.sharedPropsHashes[propKey]] =
-              allProps[propKey]
+            propsByHash[window.__routeInfo.sharedPropsHashes[propKey]] = allProps[propKey]
           })
         }
 
@@ -92,15 +91,13 @@ export default class Router extends React.Component {
     }
     // Here, we patch the push and replace methods on history so we can
     // intercept them.
-    ;['push', 'replace'].forEach(method => {
+    ['push', 'replace'].forEach(method => {
       // Hold on to the original method, we will need it.
       const originalMethod = resolvedHistory[method]
       // Replace it with our own patched version
       resolvedHistory[method] = async (...args) => {
         // Clean the path first
-        const path = cleanPath(
-          typeof args[0] === 'string' ? args[0] : args[0].path
-        )
+        const path = cleanPath(typeof args[0] === 'string' ? args[0] : args[0].path)
         // Notify a soft loading state
         setLoading(1)
         // Determine as quickly as possible if we need to fetch data for this route
@@ -127,7 +124,7 @@ export default class Router extends React.Component {
     // Only patch navigation once :)
     this.patchedNavigation = true
   }
-  render() {
+  render () {
     const {
       history,
       type,
@@ -142,8 +139,7 @@ export default class Router extends React.Component {
     } = this.props
     const { staticURL } = this.context
     const context = staticURL ? {} : undefined
-    const disableRoutePrefixing =
-      process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
+    const disableRoutePrefixing = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
 
     const { ready } = this.state
 
@@ -165,7 +161,7 @@ export default class Router extends React.Component {
         } else {
           const options = disableRoutePrefixing
             ? {}
-            : { basename: process.env.REACT_STATIC_BASE_PATH }
+            : { basename: process.env.REACT_STATIC_BASEPATH }
           resolvedHistory = createBrowserHistory(options)
         }
       }
@@ -184,7 +180,9 @@ export default class Router extends React.Component {
           location={staticURL}
           context={context}
           basename={
-            disableRoutePrefixing ? '' : process.env.REACT_STATIC_BASE_PATH
+            disableRoutePrefixing
+              ? ''
+              : process.env.REACT_STATIC_BASEPATH
           }
           {...rest}
         >

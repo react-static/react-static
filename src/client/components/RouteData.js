@@ -21,22 +21,22 @@ const RouteData = withRouter(
     state = {
       loaded: false,
     }
-    componentWillMount() {
+    componentWillMount () {
       if (process.env.REACT_STATIC_ENV === 'development') {
         this.loadRouteData()
       }
     }
-    componentDidMount() {
+    componentDidMount () {
       instances.push(this)
     }
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps (nextProps) {
       if (process.env.REACT_STATIC_ENV === 'development') {
         if (this.props.location.pathname !== nextProps.location.pathname) {
           this.setState({ loaded: false }, this.loadRouteData)
         }
       }
     }
-    componentWillUnmount() {
+    componentWillUnmount () {
       instances = instances.filter(d => d !== this)
       this.unmounting = true
     }
@@ -47,10 +47,7 @@ const RouteData = withRouter(
       })()
     loadRouteData = () =>
       (async () => {
-        const {
-          is404,
-          location: { pathname },
-        } = this.props
+        const { is404, location: { pathname } } = this.props
         const path = cleanPath(is404 ? '404' : pathname)
         try {
           await prefetch(path)
@@ -63,13 +60,9 @@ const RouteData = withRouter(
           })
         }
       })()
-    render() {
+    render () {
       const {
-        component,
-        render,
-        children,
-        location: { pathname },
-        ...rest
+        component, render, children, location: { pathname }, ...rest
       } = this.props
       let { loaded } = this.state
 
@@ -78,21 +71,13 @@ const RouteData = withRouter(
       let allProps
 
       // Attempt to get routeInfo from window (first-load on client)
-      if (
-        typeof window !== 'undefined' &&
-        window.__routeInfo &&
-        (window.__routeInfo.path === path || window.__routeInfo.path === '404')
-      ) {
+      if (typeof window !== 'undefined' && window.__routeInfo && (window.__routeInfo.path === path || window.__routeInfo.path === '404')) {
         loaded = true // Since these are synchronous, override loading to true
         allProps = window.__routeInfo.allProps
       }
 
       // Attempt to get routeInfo from context (SSR)
-      if (
-        !allProps &&
-        this.context.routeInfo &&
-        this.context.routeInfo.allProps
-      ) {
+      if (!allProps && this.context.routeInfo && this.context.routeInfo.allProps) {
         loaded = true // Override loaded to true
         allProps = this.context.routeInfo && this.context.routeInfo.allProps
       } else if (routeInfoByPath[path]) {
@@ -132,8 +117,8 @@ const RouteData = withRouter(
 
 export default RouteData
 
-export function withRouteData(Comp) {
-  return function ConnectedRouteData(props) {
+export function withRouteData (Comp) {
+  return function ConnectedRouteData (props) {
     return <RouteData component={Comp} {...props} />
   }
 }

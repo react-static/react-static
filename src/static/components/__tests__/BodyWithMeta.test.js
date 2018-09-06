@@ -4,7 +4,6 @@ import { makeBodyWithMeta } from '../BodyWithMeta'
 
 describe('BodyWithMeta', () => {
   test('when route is a static route', () => {
-    process.env.REACT_STATIC_ASSETS_PATH = 'assets/path'
     const BodyWithMeta = makeBodyWithMeta({
       head: { bodyProps: { lang: 'en' } },
       route: { redirect: false },
@@ -12,6 +11,9 @@ describe('BodyWithMeta', () => {
         routeDate: 'here',
       },
       clientScripts: ['main.js', 'bootstrap.js'],
+      config: {
+        publicPath: 'public/path',
+      },
     })
 
     const bodyWithMeta = mount(

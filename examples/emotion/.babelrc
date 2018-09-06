@@ -1,4 +1,4 @@
 {
-  "presets": ["react-static/babel-preset.js"],
+  "extends": "react-static/.babelrc",
   "plugins": ["babel-plugin-emotion"]
 }
