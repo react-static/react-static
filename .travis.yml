@@ -4,8 +4,6 @@ node_js:
 - stable
 script:
 - npm test
-after_success:
-- npm run report-coverage
 deploy:
   provider: npm
   email: tannerlinsley@gmail.com
