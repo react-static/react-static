@@ -90,7 +90,7 @@ function common(config) {
         path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
-      extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx']
+      extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
     },
     externals: [],
     target: undefined,
@@ -107,6 +107,8 @@ function common(config) {
 export default function({ config, isNode }) {
   const result = common(config)
   if (!isNode) return result
+
+  // Node only!!!
   result.output.filename = 'static.[chunkHash:8].js'
   result.output.libraryTarget = 'umd'
   result.optimization.minimize = false
@@ -121,8 +123,6 @@ export default function({ config, isNode }) {
       ],
     }),
   ]
-  //
-  // module.rules
   result.module.rules = rules({ config, stage: 'prod', isNode: true })
   result.plugins = [
     new webpack.EnvironmentPlugin(process.env),

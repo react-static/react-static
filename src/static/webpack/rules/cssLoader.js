@@ -46,7 +46,7 @@ export default function({ stage, isNode }) {
     }
   }
 
-  cssLoader = [ExtractCssChunks.loader].concat(cssLoader) // seeing as it's HMR, why not :)
+  cssLoader = [ExtractCssChunks.loader, ...cssLoader] // seeing as it's HMR, why not :)
 
   return {
     test: /\.css$/,
