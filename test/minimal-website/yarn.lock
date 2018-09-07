@@ -3249,8 +3249,8 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-css-chunks-webpack-plugin@^3.1.1:
-  version "3.1.1"
+extract-css-chunks-webpack-plugin@^3.1.2-beta.2:
+  version "3.1.2-beta.2"
   resolved "https://registry.yarnpkg.com/extract-css-chunks-webpack-plugin/-/extract-css-chunks-webpack-plugin-3.1.1.tgz#b5a5bbc441fc87238d1b365f315a315090146a9a"
   dependencies:
     loader-utils "^1.1.0"
