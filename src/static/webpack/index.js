@@ -16,7 +16,7 @@ import {
   getConfigPluginHooks,
 } from '../../utils'
 import { cleanPath } from '../../utils/shared'
-import { prepareRoutes } from ".."
+import { prepareRoutes } from '..'
 
 let resolvedReloadRoutes
 let reloadWebpackRoutes
@@ -161,7 +161,7 @@ export async function startDevServer({ config }) {
                   throw new Error('Route could not be found!')
                 }
                 const allProps = route.getData
-                  ? await route.getData({ dev: true })
+                  ? await route.getData({ route, dev: true })
                   : {}
                 res.json({
                   ...route,
