@@ -523,3 +523,17 @@ export default {
   disableRoutePrefixing: true
 }
 ```
+
+### `maxThreads`
+
+An optional `Number` of maximum threads to use when exporting your site's pages. By default this is set to `Infinity` to use all available threads on the machine React Static is running on.
+
+NOTE: This only affects the process that are rendering your pages to html files, not the initial bundling process. 
+
+```javascript
+// static.config.js
+export default {
+  maxThreads: 1 // Will only use one thread to export your site
+}
+```
+
