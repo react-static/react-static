@@ -4,29 +4,25 @@ exports[`ErrorCatcher by default should render children 1`] = `
 <span>
   hello
 </span>
-`
+`;
 
-exports[
-  `ErrorCatcher when children throw an error should catch errors with componentDidCatch 1`
-] = `
+exports[`ErrorCatcher when children throw an error should catch errors with componentDidCatch 1`] = `
 Object {
   "componentStack": "
-    in ChildComponentWithError (at ErrorCatcher.test.js:26)
+    in ChildComponentWithError
     in ErrorCatcher (created by WrapperComponent)
     in WrapperComponent",
 }
-`
+`;
 
-exports[
-  `ErrorCatcher when children throw an error should catch errors with componentDidCatch 2`
-] = `
+exports[`ErrorCatcher when children throw an error should catch errors with componentDidCatch 2`] = `
 <ErrorCatcher>
   <ErrorUI
     error={[Error: Error thrown from problem child]}
     errorInfo={
       Object {
         "componentStack": "
-    in ChildComponentWithError (at ErrorCatcher.test.js:26)
+    in ChildComponentWithError
     in ErrorCatcher (created by WrapperComponent)
     in WrapperComponent",
       }
@@ -69,7 +65,7 @@ exports[
       >
         <code>
           
-    in ChildComponentWithError (at ErrorCatcher.test.js:26)
+    in ChildComponentWithError
     in ErrorCatcher (created by WrapperComponent)
     in WrapperComponent
         </code>
@@ -80,4 +76,4 @@ exports[
     </div>
   </ErrorUI>
 </ErrorCatcher>
-`
+`;

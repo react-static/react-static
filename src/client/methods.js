@@ -10,8 +10,7 @@ const inflightRouteInfo = {}
 const inflightPropHashes = {}
 let loading = 0
 let loadingSubscribers = []
-const disableRouteInfoWarning =
-  process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING === 'true'
+const disableRouteInfoWarning = process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING === 'true'
 
 const requestPool = createPool({
   concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE) || 3,
@@ -19,19 +18,14 @@ const requestPool = createPool({
 
 export const reloadRouteData = () => {
   // Delete all cached data
-  ;[
-    routeInfoByPath,
-    propsByHash,
-    erroredPaths,
-    inflightRouteInfo,
-    inflightPropHashes,
-  ].forEach(part => {
-    Object.keys(part).forEach(key => {
-      delete part[key]
-    })
-  })
+  [routeInfoByPath, propsByHash, erroredPaths, inflightRouteInfo, inflightPropHashes].forEach(
+    part => {
+      Object.keys(part).forEach(key => {
+        delete part[key]
+      })
+    }
+  )
   // Force each RouteData component to reload
-  // clearTemplateIDs()
   global.reloadAll()
 }
 
@@ -54,9 +48,7 @@ if (process.env.REACT_STATIC_ENV === 'development') {
         }
       })
     } catch (err) {
-      console.log(
-        'React-Static data hot-loader websocket encountered the following error:'
-      )
+      console.log('React-Static data hot-loader websocket encountered the following error:')
       console.error(err)
     }
   }
@@ -92,9 +84,10 @@ export const getRouteInfo = async (path, { priority } = {}) => {
         (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
           ? process.env.REACT_STATIC_SITE_ROOT
           : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
-      const cacheBuster = process.env.REACT_STATIC_CACHE_BUST
-        ? `?${process.env.REACT_STATIC_CACHE_BUST}`
-        : ''
+      const cacheBuster =
+        process.env.REACT_STATIC_CACHE_BUST
+          ? `?${process.env.REACT_STATIC_CACHE_BUST}`
+          : ''
       const getPath = `${routeInfoRoot}${pathJoin(
         path,
         'routeInfo.json'
@@ -114,10 +107,7 @@ export const getRouteInfo = async (path, { priority } = {}) => {
     }
   } catch (err) {
     erroredPaths[path] = true
-    if (
-      process.env.REACT_STATIC_ENV === 'production' ||
-      disableRouteInfoWarning
-    ) {
+    if (process.env.REACT_STATIC_ENV === 'production' || disableRouteInfoWarning) {
       return
     }
     console.warn(
@@ -131,7 +121,7 @@ export const getRouteInfo = async (path, { priority } = {}) => {
   return routeInfoByPath[path]
 }
 
-export async function prefetchData(path, { priority } = {}) {
+export async function prefetchData (path, { priority } = {}) {
   // Get route info so we can check if path has any data
   const routeInfo = await getRouteInfo(path, { priority })
 
@@ -163,22 +153,14 @@ export async function prefetchData(path, { priority } = {}) {
           // If priority, get it immediately
           if (priority) {
             const { data: prop } = await axios.get(
-              pathJoin(
-                process.env.REACT_STATIC_ASSETS_PATH,
-                `staticData/${hash}.json`
-              )
+              `${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`
             )
             propsByHash[hash] = prop
           } else {
             // Non priority, share inflight requests and use pool
             if (!inflightPropHashes[hash]) {
               inflightPropHashes[hash] = requestPool.add(() =>
-                axios.get(
-                  pathJoin(
-                    process.env.REACT_STATIC_ASSETS_PATH,
-                    `staticData/${hash}.json`
-                  )
-                )
+                axios.get(`${process.env.REACT_STATIC_PUBLIC_PATH}staticData/${hash}.json`)
               )
             }
             const { data: prop } = await inflightPropHashes[hash]
@@ -186,10 +168,7 @@ export async function prefetchData(path, { priority } = {}) {
             propsByHash[hash] = prop
           }
         } catch (err) {
-          console.log(
-            'Error: There was an error retrieving a prop for this route! hashID:',
-            hash
-          )
+          console.log('Error: There was an error retrieving a prop for this route! hashID:', hash)
           console.error(err)
         }
         if (!priority) {
@@ -209,7 +188,7 @@ export async function prefetchData(path, { priority } = {}) {
   return routeInfo.allProps
 }
 
-export async function prefetchTemplate(path, { priority } = {}) {
+export async function prefetchTemplate (path, { priority } = {}) {
   // Clean the path
   path = cleanPath(path)
   // Get route info so we can check if path has any data
@@ -232,7 +211,7 @@ export async function prefetchTemplate(path, { priority } = {}) {
   }
 }
 
-export async function needsPrefetch(path, options = {}) {
+export async function needsPrefetch (path, options = {}) {
   // Clean the path
   path = cleanPath(path)
 
@@ -254,7 +233,7 @@ export async function needsPrefetch(path, options = {}) {
   }
 }
 
-export async function prefetch(path, options = {}) {
+export async function prefetch (path, options = {}) {
   // Clean the path
   path = cleanPath(path)
 
@@ -270,10 +249,7 @@ export async function prefetch(path, options = {}) {
   } else if (type === 'template') {
     await prefetchTemplate(path, options)
   } else {
-    ;[data] = await Promise.all([
-      prefetchData(path, options),
-      prefetchTemplate(path, options),
-    ])
+    [data] = await Promise.all([prefetchData(path, options), prefetchTemplate(path, options)])
   }
 
   if (options.priority) {
@@ -298,22 +274,15 @@ export const onLoading = cb => {
   }
 }
 
-export function getComponentForPath(path) {
+export function getComponentForPath (path) {
   path = cleanPath(path)
-  return (
-    global.reactStaticGetComponentForPath &&
-    global.reactStaticGetComponentForPath(path)
-  )
+  return global.reactStaticGetComponentForPath && global.reactStaticGetComponentForPath(path)
 }
 
-export function registerTemplateIDForPath(path, templateID) {
+export function registerTemplateIDForPath (path, templateID) {
   path = cleanPath(path)
   return (
     global.reactStaticGetComponentForPath &&
     global.reactStaticRegisterTemplateIDForPath(path, templateID)
   )
-}
-
-export function clearTemplateIDs() {
-  return global.clearTemplateIDs && global.clearTemplateIDs()
 }

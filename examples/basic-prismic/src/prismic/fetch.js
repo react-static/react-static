@@ -1,9 +1,11 @@
+
 import apiEndpoint from './config'
 import transform from './transformer'
 
 const Prismic = require('prismic-javascript')
 
-export default (async function getData() {
+
+export default async function getData () {
   const api = await Prismic.getApi(apiEndpoint)
   const response = await api.query('')
 
@@ -14,4 +16,4 @@ export default (async function getData() {
     ...transform(data),
   }))
   return mapped
-})
+}

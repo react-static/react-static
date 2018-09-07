@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react'
 import { Router } from 'react-static'
-
+import { hot } from 'react-hot-loader'
 import Routes from 'react-static-routes'
 
 import './app.css'
-import Header from './components/Header'
-import Footer from './components/Footer'
+import Header from './containers/Header'
+import Footer from './containers/Footer'
 
 const App = () => (
   <Router>
@@ -19,4 +19,4 @@ const App = () => (
   </Router>
 )
 
-export default App
+export default hot(module)(App)
