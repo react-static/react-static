@@ -364,7 +364,7 @@ export default {
 }
 ```
 
-### `renderToComponent`
+### `renderToElement`
 
 An optional function that can be used to override the process of render the base app component via JSX
 
@@ -379,7 +379,7 @@ Default:
 ```javascript
 // static.config.js
 export default {
-  renderToComponent: async (App, { meta, clientStats }) => {
+  renderToElement: async (App, { meta, clientStats }) => {
     return <App />
   }
 }

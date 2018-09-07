@@ -89,7 +89,7 @@ Head: ({ meta }) => (
 )
 ```
 
-#### `beforeRenderToComponent: Function`
+#### `beforeRenderToElement: Function`
 
 Intercept and proxy the `App` component before it is rendered to an element via `<App />`.
 
