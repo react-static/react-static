@@ -12,12 +12,15 @@
   "dependencies": {
     "axios": "^0.16.2",
     "emotion": "^9.2.4",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-emotion": "^9.2.4",
-    "react-static": "^5",
-    "react-static-plugin-emotion": "^1.0.0"
+    "react-router": "^4.2.0",
+    "react-static": "^5"
   },
   "devDependencies": {
     "babel-plugin-emotion": "^9.2.4",
+    "emotion-server": "^9.2.4",
     "eslint-config-react-tools": "1.x.x",
     "serve": "^6.1.0"
   }

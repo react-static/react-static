@@ -3,6 +3,7 @@ import buildXMLandRSS, {
   getPermaLink,
   makeGenerateRouteXML,
   generateXML,
+  getSiteRoot,
 } from '../buildXML'
 
 describe('getPermaLink', () => {
@@ -43,9 +44,7 @@ describe('makeGenerateRouteXML', () => {
   })
 
   it('should use encoding for XML-values', () => {
-    const generateRouteXML = makeGenerateRouteXML({
-      prefixPath: '/this-&-that/',
-    })
+    const generateRouteXML = makeGenerateRouteXML({ prefixPath: '/this-&-that/' })
     const route = {
       path: '/"官话"-is-chinese-\'ру́сский язы́к\'-is-russian',
     }
@@ -70,7 +69,7 @@ describe('generateXML', () => {
         routes: [
           { path: '/path/to/article/' },
           { path: '/path/to/somewhere/', noindex: true },
-          { path: '404' },
+          { path: '404', is404: true },
         ],
         prefixPath: '/blog/',
       })
@@ -80,11 +79,48 @@ describe('generateXML', () => {
   })
 })
 
-describe('when custom properties are defined', () => {
-  const oldProcessEnv = { ...process.env }
+describe('getSiteRoot', () => {
+  const oldProcessEnv = [...process.env]
 
   afterEach(() => {
-    process.env = { ...oldProcessEnv }
+    process.env = [...oldProcessEnv]
+  })
+
+  describe('when enviroment is staging', () => {
+    it('should return the siteRoot', () => {
+      process.env = { REACT_STATIC_STAGING: undefined }
+      const config = {
+        siteRoot: 'www.example.com',
+        stagingSiteRoot: 'www.staging.example.com',
+      }
+
+      const siteRoot = getSiteRoot(config)
+
+      expect(siteRoot).toEqual('www.example.com')
+    })
+  })
+
+  describe('when enviroment is staging', () => {
+    it('should return the stagingSiteRoot for siteRoot', () => {
+      process.env.REACT_STATIC_STAGING = 'true'
+
+      const config = {
+        siteRoot: 'www.example.com',
+        stagingSiteRoot: 'www.staging.example.com',
+      }
+
+      const siteRoot = getSiteRoot(config)
+
+      expect(siteRoot).toEqual('www.staging.example.com')
+    })
+  })
+})
+
+describe('when custom properties are defined', () => {
+  const oldProcessEnv = [...process.env]
+
+  afterEach(() => {
+    process.env = [...oldProcessEnv]
   })
 
   beforeEach(() => {

@@ -1,9 +1,5 @@
-export default function makePageRoutes({
-  items,
-  pageSize,
-  pageToken = 'page',
-  route,
-  decorate,
+export default function makePageRoutes ({
+  items, pageSize, pageToken = 'page', route, decorate,
 }) {
   const itemsCopy = [...items] // Make a copy of the items
   const pages = [] // Make an array for all of the different pages

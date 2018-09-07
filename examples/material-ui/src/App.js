@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Router, Link } from 'react-static'
-
+import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 
@@ -29,14 +29,14 @@ const styles = {
 
 class App extends PureComponent {
   // Remove the server-side injected CSS.
-  componentDidMount() {
+  componentDidMount () {
     const jssStyles = document.getElementById('jss-server-side')
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles)
     }
   }
 
-  render() {
+  render () {
     const { classes } = this.props
 
     return (
@@ -63,4 +63,4 @@ class App extends PureComponent {
 
 const AppWithStyles = withStyles(styles)(App)
 
-export default AppWithStyles
+export default hot(module)(AppWithStyles)
