@@ -8,28 +8,13 @@ import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import rules from './rules'
 
+function common(config) {
+  const { ROOT, DIST, NODE_MODULES, SRC, ASSETS } = config.paths
 
-function common (config) {
-  const {
-    ROOT, DIST, NODE_MODULES, SRC,
-  } = config.paths
-
-  // Trailing slash
-  config.publicPath = process.env.REACT_STATIC_STAGING
-    ? `${config.stagingSiteRoot}/${config.stagingBasePath ? `${config.stagingBasePath}/` : ''}`
-    : `${config.siteRoot}/${config.basePath ? `${config.basePath}/` : ''}`
+  process.env.REACT_STATIC_SITE_ROOT = config.siteRoot
+  process.env.REACT_STATIC_BASE_PATH = config.basePath
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
-
-  // Trailing slash mysiteroot.com/
-  process.env.REACT_STATIC_SITE_ROOT = `${
-    process.env.REACT_STATIC_STAGING ? config.stagingSiteRoot : config.siteRoot
-  }/`
-
-  // No slashes base/path
-  process.env.REACT_STATIC_BASEPATH = process.env.REACT_STATIC_STAGING
-    ? config.stagingBasePath
-    : config.basePath
-
+  process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
   const splitChunks = {
     chunks: 'all',
@@ -78,8 +63,8 @@ function common (config) {
     output: {
       filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
       chunkFilename: 'templates/[name].[chunkHash:8].js',
-      path: DIST,
-      publicPath: config.publicPath || '/',
+      path: ASSETS,
+      publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
     },
     optimization: {
       minimize: true,
@@ -95,22 +80,17 @@ function common (config) {
     },
     module: {
       rules: rules({ config, stage: 'prod', isNode: false }),
+      strictExportPresence: true,
     },
     resolve: {
-      alias: config.preact
-        ? {
-          react: 'preact-compat',
-          'react-dom': 'preact-compat',
-        }
-        : {},
       modules: [
-        path.resolve(__dirname, '../../../node_modules'),
-        'node_modules',
-        NODE_MODULES,
         SRC,
+        NODE_MODULES,
+        'node_modules',
+        path.resolve(__dirname, '../../../node_modules'),
         DIST,
       ],
-      extensions: ['.js', '.json', '.jsx'],
+      extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
     },
     externals: [],
     target: undefined,
@@ -124,9 +104,11 @@ function common (config) {
   }
 }
 
-export default function ({ config, isNode }) {
+export default function({ config, isNode }) {
   const result = common(config)
   if (!isNode) return result
+
+  // Node only!!!
   result.output.filename = 'static.[chunkHash:8].js'
   result.output.libraryTarget = 'umd'
   result.optimization.minimize = false
@@ -134,11 +116,13 @@ export default function ({ config, isNode }) {
   result.target = 'node'
   result.externals = [
     nodeExternals({
-      whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
+      whitelist: [
+        'react-universal-component',
+        'webpack-flush-chunks',
+        'react-static-routes',
+      ],
     }),
   ]
-  //
-  // module.rules
   result.module.rules = rules({ config, stage: 'prod', isNode: true })
   result.plugins = [
     new webpack.EnvironmentPlugin(process.env),
