@@ -1379,7 +1379,7 @@ babel-plugin-syntax-object-rest-spread@^6.13.0:
   version "6.13.0"
   resolved "http://registry.npmjs.org/babel-plugin-syntax-object-rest-spread/-/babel-plugin-syntax-object-rest-spread-6.13.0.tgz#fd6536f2bce13836ffa3a5458c4903a597bb3bf5"
 
-babel-plugin-universal-import@^3.0.0:
+babel-plugin-universal-import@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/babel-plugin-universal-import/-/babel-plugin-universal-import-3.0.2.tgz#e2aeb2cec76fa000d1f30fc25a5ab83d4863d8d0"
   dependencies:
@@ -3527,9 +3527,9 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-css-chunks-webpack-plugin@^3.0.11:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/extract-css-chunks-webpack-plugin/-/extract-css-chunks-webpack-plugin-3.1.1.tgz#b5a5bbc441fc87238d1b365f315a315090146a9a"
+extract-css-chunks-webpack-plugin@^3.1.2-beta.2:
+  version "3.1.2-beta.2"
+  resolved "https://registry.yarnpkg.com/extract-css-chunks-webpack-plugin/-/extract-css-chunks-webpack-plugin-3.1.2-beta.2.tgz#15238594dbcea0f4aa0f52c15935d30fb2145ae6"
   dependencies:
     loader-utils "^1.1.0"
     lodash "^4.17.5"
@@ -7246,7 +7246,7 @@ react-test-renderer@^16.0.0-0:
     react-is "^16.5.0"
     schedule "^0.3.0"
 
-react-universal-component@^3.0.0:
+react-universal-component@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/react-universal-component/-/react-universal-component-3.0.1.tgz#48ecc3391f4e735a5b3cf8a6fa860409e25086b7"
   dependencies:
