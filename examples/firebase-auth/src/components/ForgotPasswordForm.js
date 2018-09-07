@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 
 import { auth } from '../firebase'
@@ -12,7 +13,7 @@ const INITIAL_STATE = {
 }
 
 class ForgotPasswordForm extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = { ...INITIAL_STATE }
@@ -21,8 +22,7 @@ class ForgotPasswordForm extends Component {
   onSubmit = event => {
     const { email } = this.state
 
-    auth
-      .doPasswordReset(email)
+    auth.doPasswordReset(email)
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }))
       })
@@ -33,8 +33,11 @@ class ForgotPasswordForm extends Component {
     event.preventDefault()
   }
 
-  render() {
-    const { email, error } = this.state
+  render () {
+    const {
+      email,
+      error,
+    } = this.state
 
     const isInvalid = email === ''
 
@@ -42,9 +45,7 @@ class ForgotPasswordForm extends Component {
       <form onSubmit={this.onSubmit}>
         <input
           value={this.state.email}
-          onChange={event =>
-            this.setState(updateByPropertyName('email', event.target.value))
-          }
+          onChange={event => this.setState(updateByPropertyName('email', event.target.value))}
           type="text"
           placeholder="Email Address"
         />
@@ -52,7 +53,7 @@ class ForgotPasswordForm extends Component {
           Reset My Password
         </button>
 
-        {error && <p>{error.message}</p>}
+        { error && <p>{error.message}</p> }
       </form>
     )
   }

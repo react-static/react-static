@@ -11,12 +11,16 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "node-sass": "^4.7.2",
-    "react-static": "^6.0.0-beta.15",
-    "sass-loader": "^6.0.6"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router": "^4.2.0",
+    "react-static": "^5"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6",
     "serve": "^6.1.0"
   }
 }

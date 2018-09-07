@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-
+import { hot } from 'react-hot-loader'
 //
 import './app.css'
 import logo from './logo.png'
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <div className="App">
         <header className="App-header">
@@ -20,4 +20,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default hot(module)(App)

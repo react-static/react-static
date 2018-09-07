@@ -21,6 +21,14 @@ export default {
     })
 
     return [
+      {
+        path: '/',
+        component: 'src/containers/Home',
+      },
+      {
+        path: '/about',
+        component: 'src/containers/About',
+      },
       // Make an index route for every 5 blog posts
       ...makePageRoutes({
         items: posts,
@@ -29,7 +37,7 @@ export default {
         route: {
           // Use this route as the base route
           path: 'blog',
-          component: 'src/pages/blog',
+          component: 'src/containers/Blog',
         },
         decorate: (posts, i, totalPages) => ({
           // For each page, supply the posts, page and totalPages
@@ -38,19 +46,20 @@ export default {
             currentPage: i,
             totalPages,
           }),
+          // Make the routes for each blog post
+          children: posts.map(post => ({
+            path: `/blog/post/${post.id}`,
+            component: 'src/containers/Post',
+            getData: () => ({
+              post,
+              user: users.find(user => user.id === post.userId),
+            }),
+          })),
         }),
       }),
-      // Make the routes for each blog post
-      ...posts.map(post => ({
-        path: `/blog/post/${post.id}`,
-        component: 'src/containers/Post',
-        getData: () => ({
-          post,
-          user: users.find(user => user.id === post.userId),
-        }),
-      })),
       {
         path: '/users',
+        component: 'src/containers/Users',
         getData: () => ({
           users,
         }),
@@ -62,6 +71,10 @@ export default {
             posts: postsByUserID[user.id],
           }),
         })),
+      },
+      {
+        is404: true,
+        component: 'src/containers/404',
       },
     ]
   },

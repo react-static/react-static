@@ -1,17 +1,17 @@
 import React from 'react'
 import { Router, onLoading } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
-
+import { hot } from 'react-hot-loader'
 import nprogress from 'nprogress'
 import { loadLanguages } from 'reprism'
 //
-import jsx from 'reprism/languages/jsx'
-import bash from 'reprism/languages/bash'
-
 import Routes from 'react-static-routes'
 
 import 'nprogress/nprogress.css'
 import 'react-smackdown/themes/smackdown-light.css'
+
+import jsx from 'reprism/languages/jsx'
+import bash from 'reprism/languages/bash'
 
 loadLanguages(jsx, bash)
 
@@ -68,7 +68,7 @@ const AppStyles = styled.div`
 `
 
 class App extends React.Component {
-  componentDidMount() {
+  componentDidMount () {
     onLoading(loading => {
       if (loading) {
         nprogress.start()
@@ -77,7 +77,7 @@ class App extends React.Component {
       }
     })
   }
-  render() {
+  render () {
     return (
       <Router>
         <AppStyles>
@@ -88,4 +88,4 @@ class App extends React.Component {
   }
 }
 
-export default App
+export default hot(module)(App)

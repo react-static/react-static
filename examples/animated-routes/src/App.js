@@ -4,7 +4,7 @@ import { easeQuadOut } from 'd3-ease'
 import { NodeGroup } from 'react-move'
 import { withContext, getContext } from 'recompose'
 import PropTypes from 'prop-types'
-
+import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 
@@ -82,7 +82,7 @@ const AnimatedRoutes = getContext({
                   },
                   () => ({
                     router: data.router,
-                  })
+                  }),
                 )(props => <div {...props} />)
 
                 return (
@@ -114,9 +114,7 @@ const App = () => (
   <Router>
     <div>
       <nav>
-        <Link exact to="/">
-          Home
-        </Link>
+        <Link exact to="/">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/blog">Blog</Link>
       </nav>
@@ -127,4 +125,4 @@ const App = () => (
   </Router>
 )
 
-export default App
+export default hot(module)(App)
