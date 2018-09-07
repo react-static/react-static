@@ -88,7 +88,7 @@ export const buildConfigation = (config = {}) => {
     // Defaults
     entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
     getSiteData: () => ({}),
-    renderToComponent: Comp => <Comp />,
+    renderToElement: Comp => <Comp />,
     renderToHtml: (render, comp) => render(comp),
     prefetchRate: 3,
     maxThreads: Infinity,

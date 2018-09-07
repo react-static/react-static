@@ -145,15 +145,15 @@ export default (async function exportRoute({
   let appHtml
 
   try {
-    // Run the beforeRenderToComponent hook // TODO: document this
-    FinalComp = getConfigPluginHooks(config, 'beforeRenderToComponent').reduce(
-      (curr, beforeRenderToComponent) =>
-        beforeRenderToComponent(curr, { meta: renderMeta }),
+    // Run the beforeRenderToElement hook // TODO: document this
+    FinalComp = getConfigPluginHooks(config, 'beforeRenderToElement').reduce(
+      (curr, beforeRenderToElement) =>
+        beforeRenderToElement(curr, { meta: renderMeta }),
       FinalComp
     )
 
-    // Run the configs renderToComponent function
-    let RenderedComp = await config.renderToComponent(FinalComp, {
+    // Run the configs renderToElement function
+    let RenderedComp = await config.renderToElement(FinalComp, {
       meta: renderMeta,
       clientStats,
     })

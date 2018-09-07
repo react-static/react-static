@@ -110,8 +110,7 @@ Once you've installed and test driven sufficiently, you may want to:
 
 - [Read about the core concepts of React Static](/docs/concepts.md)
 - [Join the React Static Spectrum community!](https://spectrum.chat/react-static)
-
-* [Familiarize yourself with the API and all that is possible!](/docs/config.md)
+- [Familiarize yourself with the API!](/docs/config.md)
 
 ### Plugins
 
@@ -121,6 +120,7 @@ Once you've installed and test driven sufficiently, you may want to:
   - [react-static-plugin-sass](https://github.com/nozzle/react-static-plugin-sass) - Adds SSR and general support for SASS
 - React Alternatives
   - [react-static-plugin-preact](https://github.com/nozzle/react-static-plugin-preact) - Adds preact support
+  - Don't see a plugin? [Help us build it!](/docs/plugins.md)
 
 ## Examples and Templates
 
