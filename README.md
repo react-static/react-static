@@ -64,6 +64,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [BlockAce - Blockchain Jobs Board](https://blockace.io 'The Best Blockchain Jobs Board')
 * [Luke Haas - Personal Website](https://lukehaas.me)
 * [KleineKoning.nl - Webshop](https://kleinekoning.nl)
+* [Savieo - Save Web Videos](https://savieo.com)
 
 ## Quick Start
 
