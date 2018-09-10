@@ -11,7 +11,7 @@ module.exports = (api, options = {}) => {
         r('@babel/preset-env'),
         {
           modules: options.modules,
-          useBuiltIns: false,
+          useBuiltIns: 'entry',
           targets: {
             browsers: PRODUCTION
               ? ['last 4 versions', 'safari >= 7', 'ie >= 9']
@@ -22,9 +22,11 @@ module.exports = (api, options = {}) => {
       [r('@babel/preset-react'), { development: !PRODUCTION }],
     ],
     plugins: [
+      r('babel-plugin-macros'),
       PRODUCTION
         ? r('babel-plugin-universal-import')
         : r('react-hot-loader/babel'),
+      r('@babel/plugin-transform-destructuring'),
       [
         r('@babel/plugin-transform-runtime'),
         {
@@ -32,6 +34,7 @@ module.exports = (api, options = {}) => {
           regenerator: true,
         },
       ],
+      r('babel-plugin-transform-react-remove-prop-types'),
       r('@babel/plugin-syntax-dynamic-import'),
       r('@babel/plugin-proposal-class-properties'),
       r('@babel/plugin-proposal-optional-chaining'),
