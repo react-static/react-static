@@ -9,9 +9,9 @@ import path from 'path'
 import Helmet from 'react-helmet'
 import shorthash from 'shorthash'
 import { ReportChunks } from 'react-universal-component'
+import flushChunks from 'webpack-flush-chunks'
 import Progress from 'progress'
 import chalk from 'chalk'
-import flushChunks from 'webpack-flush-chunks'
 
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
 import { makeHeadWithMeta } from './components/HeadWithMeta'
@@ -104,10 +104,12 @@ export const fetchRoutes = async config => {
   console.log('=> Fetching Route Data...')
   const dataProgress = Bar(config.routes.length)
   console.time(chalk.green('=> [\u2713] Route Data Downloaded'))
+
   await poolAll(
     config.routes.map(route => async () => {
       // Fetch allProps from each route
       route.allProps = !!route.getData && (await route.getData({ route, dev: false }))
+
       // Default allProps (must be an object)
       if (!route.allProps) {
         route.allProps = {}
@@ -247,6 +249,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
       let clientScripts = []
       let clientStyleSheets = []
       let clientCss = {}
+      let ClientCssHash
 
       let FinalComp
 
@@ -265,13 +268,18 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
       const renderToStringAndExtract = comp => {
         // Rend the app to string!
         const appHtml = renderToString(comp)
-        const { scripts, stylesheets, css } = flushChunks(clientStats, {
+        const {
+          scripts, stylesheets, css, CssHash,
+        } = flushChunks(clientStats, {
           chunkNames,
+          outputPath: config.paths.DIST,
         })
 
         clientScripts = scripts
         clientStyleSheets = stylesheets
         clientCss = css
+        ClientCssHash = CssHash
+
         // Extract head calls using Helmet synchronously right after renderToString
         // to not introduce any race conditions in the meta data rendering
         const helmet = Helmet.renderStatic()
@@ -323,6 +331,7 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
             route,
             embeddedRouteInfo,
             clientScripts,
+            ClientCssHash,
             config,
           })}
           siteData={siteData}

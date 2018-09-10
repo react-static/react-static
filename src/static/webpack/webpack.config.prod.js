@@ -2,14 +2,15 @@ import webpack from 'webpack'
 import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
-import nodeExternals from 'webpack-node-externals'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import nodeExternals from 'webpack-node-externals'
+// import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
+// import WebpackPwaManifest from 'webpack-pwa-manifest'
+//
 import rules from './rules'
 
-
-function common (config) {
+export default function ({ config, isNode }) {
   const {
     ROOT, DIST, NODE_MODULES, SRC,
   } = config.paths
@@ -30,71 +31,26 @@ function common (config) {
     ? config.stagingBasePath
     : config.basePath
 
-
-  const splitChunks = {
-    chunks: 'all',
-    minSize: 10000,
-    minChunks: 1,
-    maxAsyncRequests: 5,
-    maxInitialRequests: 5,
-    automaticNameDelimiter: '~',
-    name: true,
-    cacheGroups: {
-      vendors: {
-        test: /[\\/]node_modules[\\/]/,
-        priority: -10,
-        chunks: 'all',
-      },
-      default: {
-        minChunks: 2,
-        priority: -20,
-        reuseExistingChunk: true,
-      },
-    },
-  }
-
-  let extrackCSSChunks = new ExtractCssChunks({
-    filename: '[name].[chunkHash:8].css',
-    chunkFilename: '[id].[chunkHash:8].css',
-  })
-
-  if (!config.extractCssChunks) {
-    splitChunks.cacheGroups = {
-      styles: {
-        name: 'styles',
-        test: /\.css$/,
-        chunks: 'all',
-        enforce: true,
-      },
-    }
-    extrackCSSChunks = new ExtractCssChunks({
-      filename: '[name].[chunkHash:8].css',
-    })
-  }
   return {
-    mode: 'production',
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: path.resolve(ROOT, config.entry),
     output: {
-      filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
+      filename: isNode ? 'static.[chunkHash:8].js' : '[name].[chunkHash:8].js',
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: DIST,
       publicPath: config.publicPath || '/',
+      libraryTarget: isNode ? 'umd' : undefined,
     },
-    optimization: {
-      minimize: true,
-      minimizer: [
-        new UglifyJsPlugin({
-          cache: true,
-          parallel: true,
-          sourceMap: true, // set to true if you want JS source maps
+    target: isNode ? 'node' : undefined,
+    externals: isNode
+      ? [
+        nodeExternals({
+          whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
         }),
-        new OptimizeCSSAssetsPlugin({}),
-      ],
-      splitChunks,
-    },
+      ]
+      : [],
     module: {
-      rules: rules({ config, stage: 'prod', isNode: false }),
+      rules: rules({ config, stage: 'prod', isNode }),
     },
     resolve: {
       alias: config.preact
@@ -112,40 +68,59 @@ function common (config) {
       ],
       extensions: ['.js', '.json', '.jsx'],
     },
-    externals: [],
-    target: undefined,
     plugins: [
       new webpack.EnvironmentPlugin(process.env),
-      extrackCSSChunks,
+      !isNode &&
+        (config.extractCssChunks
+          ? new ExtractCssChunks()
+          : new ExtractTextPlugin({
+            filename: getPath => {
+              process.env.extractedCSSpath = getPath('styles.[hash:8].css')
+              return process.env.extractedCSSpath
+            },
+            allChunks: true,
+          })),
       new CaseSensitivePathsPlugin(),
-      config.bundleAnalyzer && new BundleAnalyzerPlugin(),
+      !isNode &&
+        new webpack.optimize.CommonsChunkPlugin({
+          name: 'bootstrap', // Named bootstrap to support the webpack-flush-chunks plugin
+          minChunks: Infinity,
+        }),
+      isNode &&
+        new webpack.optimize.LimitChunkCountPlugin({
+          maxChunks: 1,
+        }),
+      !isNode && !process.env.REACT_STATIC_DEBUG && new webpack.optimize.UglifyJsPlugin(),
+      // !isNode &&
+      //   new SWPrecacheWebpackPlugin({
+      //     cacheId: config.siteName || 'my-site-name',
+      //     dontCacheBustUrlsMatching: /\.\w{8}\./,
+      //     filename: 'service-worker.js',
+      //     minify: true,
+      //     navigateFallback: '/index.html',
+      //     staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      //   }),
+      // !isNode &&
+      //   new WebpackPwaManifest({
+      //     name: config.pwa.name || 'My React Static App',
+      //     short_name: config.pwa.shortName || 'My React Static App',
+      //     description: config.pwa.description || 'An app I built with React Static!',
+      //     background_color: config.pwa.backgroundColor || '#01579b',
+      //     theme_color: config.pwa.themeColor || '#01579b',
+      //     'theme-color': config.pwa.themeColor || '#01579b',
+      //     start_url: config.pwa.startUrl || '/',
+      //     icons: [],
+      //     icons: [
+      //       {
+      //         src: path.resolve('src/images/icon.png'),
+      //         sizes: [96, 128, 192, 256, 384, 512],
+      //         destination: path.join('assets', 'icons'),
+      //       },
+      //     ],
+      //   }),
+      config.bundleAnalyzer && !isNode && new BundleAnalyzerPlugin(),
     ].filter(d => d),
+
     devtool: 'source-map',
   }
-}
-
-export default function ({ config, isNode }) {
-  const result = common(config)
-  if (!isNode) return result
-  result.output.filename = 'static.[chunkHash:8].js'
-  result.output.libraryTarget = 'umd'
-  result.optimization.minimize = false
-  result.optimization.minimizer = []
-  result.target = 'node'
-  result.externals = [
-    nodeExternals({
-      whitelist: ['react-universal-component', 'webpack-flush-chunks', 'react-static-routes'],
-    }),
-  ]
-  //
-  // module.rules
-  result.module.rules = rules({ config, stage: 'prod', isNode: true })
-  result.plugins = [
-    new webpack.EnvironmentPlugin(process.env),
-    new CaseSensitivePathsPlugin(),
-    new webpack.optimize.LimitChunkCountPlugin({
-      maxChunks: 1,
-    }),
-  ]
-  return result
 }

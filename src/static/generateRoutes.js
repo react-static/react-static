@@ -5,13 +5,7 @@ import fs from 'fs-extra'
 export default async ({ config }) => {
   const { templates, routes } = config
 
-  const route404 = routes.find(route => route.path === '404')
-  if (!route404) {
-    throw new Error(
-      'Could not find a valid 404 route. Make sure you either have a 404.js page or are defining a route where `path === 404`.'
-    )
-  }
-  const id404 = route404.templateID
+  const id404 = routes.find(route => route.path === '404').templateID
 
   const file = `
 

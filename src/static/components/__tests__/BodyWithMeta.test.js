@@ -11,6 +11,7 @@ describe('BodyWithMeta', () => {
         routeDate: 'here',
       },
       clientScripts: ['main.js', 'bootstrap.js'],
+      ClientCssHash: () => <style>{'body{ width:100%; height: 100%; }'}</style>,
       config: {
         publicPath: 'public/path',
       },
@@ -32,7 +33,11 @@ describe('BodyWithMeta', () => {
       embeddedRouteInfo: {
         routeDate: 'here',
       },
-      clientScripts: ['main.js', 'bootstrap.js'],
+      clientScripts: [
+        <script text="text/javascript" src="main.js" />,
+        <script text="text/javascript" src="bootstrap.js" />,
+      ],
+      ClientCssHash: () => <style>{'body{ width:100%; height: 100%; }'}</style>,
       config: {},
     })
 

@@ -94,7 +94,9 @@ describe('createNormalizedRoute', () => {
 
       describe('when route is 404', () => {
         it('should not throw an error', () => {
-          expect(() => createNormalizedRoute({ component: '/no/path/', is404: true })).not.toThrow()
+          expect(() =>
+            createNormalizedRoute({ component: '/no/path/', is404: true })
+          ).not.toThrow()
         })
       })
     })
@@ -136,6 +138,13 @@ describe('makeGetRoutes', () => {
           noindex: undefined,
           originalPath: 'path',
           path: 'path',
+        },
+        {
+          hasGetProps: false,
+          is404: true,
+          noindex: undefined,
+          originalPath: '404',
+          path: '404',
         },
       ])
     })
@@ -224,6 +233,13 @@ describe('makeGetRoutes', () => {
           originalPath: '/',
           path: '/',
         },
+        {
+          hasGetProps: false,
+          noindex: undefined,
+          originalPath: '404',
+          is404: true,
+          path: '404',
+        },
       ])
     })
   })
@@ -239,8 +255,10 @@ describe('buildConfigation', () => {
   beforeEach(() => {
     reactStaticEnviroment = process.env.REACT_STATIC_ENV
     reactStaticPrefetchRate = process.env.REACT_STATIC_PREFETCH_RATE
-    reactStaticDisableRouteInfoWarning = process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
-    reactStaticDisableRoutePreFixing = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
+    reactStaticDisableRouteInfoWarning =
+      process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
+    reactStaticDisableRoutePreFixing =
+      process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
     spyProcess = jest.spyOn(process, 'cwd').mockImplementation(() => './root/')
   })
 

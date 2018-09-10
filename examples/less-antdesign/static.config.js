@@ -5,7 +5,7 @@ import { ServerStyleSheet } from 'styled-components'
 * For Less Support
 * */
 import autoprefixer from 'autoprefixer'
-import ExtractCSS from 'extract-css-chunks-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 
 /*
@@ -175,9 +175,16 @@ export default {
       loaders = ['style-loader'].concat(loaders)
     } else if (stage === 'prod') {
       // Extract to style.css
-      loaders = {
-        use: [ExtractCSS.loader].concat(loaders),
-      }
+      loaders = ExtractTextPlugin.extract({
+        fallback: {
+          loader: 'style-loader',
+          options: {
+            hmr: false,
+            sourceMap: false,
+          },
+        },
+        use: loaders,
+      })
     }
 
     const lessLoader = {
@@ -198,12 +205,13 @@ export default {
     if (stage === 'prod') {
       // Update ExtractTextPlugin with current instance
       config.plugins.forEach((plugin, index) => {
-        if (plugin instanceof ExtractCSS) {
-          config.plugins[index] = new ExtractCSS({
+        if (plugin instanceof ExtractTextPlugin) {
+          config.plugins[index] = new ExtractTextPlugin({
             filename: getPath => {
               process.env.extractedCSSpath = 'styles.css'
               return getPath('styles.css')
             },
+            allChunks: true,
           })
         }
       })

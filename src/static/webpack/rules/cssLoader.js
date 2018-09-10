@@ -1,10 +1,10 @@
 import autoprefixer from 'autoprefixer'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 
-
-function initCSSLoader (stage) {
-  const cssLoader = [
+export default function ({ config, stage, isNode }) {
+  let cssLoader = [
     {
       loader: 'css-loader',
       options: {
@@ -29,25 +29,30 @@ function initCSSLoader (stage) {
               'Firefox ESR',
               'not ie < 9', // React doesn't support IE8 anyway
             ],
-            flexbox: 'no-2009', // I'd opt in for this - safari 9 & IE 10.
+            flexbox: 'no-2009',
           }),
         ],
       },
     },
   ]
-  return cssLoader
-}
 
-export default function ({ stage, isNode }) {
-  let cssLoader = initCSSLoader(stage)
-  if (stage === 'node' || isNode) {
-    return {
-      test: /\.css$/,
-      loader: cssLoader,
-    }
+  if (stage === 'dev') {
+    cssLoader = ['style-loader'].concat(cssLoader)
+  } else if (!isNode) {
+    cssLoader = (config.extractCssChunks
+      ? ExtractCssChunks
+      : ExtractTextPlugin
+    ).extract({
+      fallback: {
+        loader: 'style-loader',
+        options: {
+          sourceMap: false,
+          hmr: false,
+        },
+      },
+      use: cssLoader,
+    })
   }
-
-  cssLoader = [ExtractCssChunks.loader].concat(cssLoader) // seeing as it's HMR, why not :)
 
   return {
     test: /\.css$/,

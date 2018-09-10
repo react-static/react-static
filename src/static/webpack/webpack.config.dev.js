@@ -1,12 +1,9 @@
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
-import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import path from 'path'
 
 import rules from './rules'
-
-process.traceDeprecation = true
 
 export default function ({ config }) {
   const {
@@ -18,11 +15,6 @@ export default function ({ config }) {
   process.env.REACT_STATIC_BASEPATH = config.devBasePath
 
   return {
-    mode: 'development',
-    optimization: {
-      noEmitOnErrors: true,
-      concatenateModules: true,
-    },
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
       require.resolve('react-hot-loader'),
@@ -31,8 +23,7 @@ export default function ({ config }) {
       path.resolve(ROOT, config.entry),
     ],
     output: {
-      filename: '[name].js', // never hash dev code
-      chunkFilename: 'templates/[name].js',
+      filename: 'app.[hash:8].js',
       path: DIST,
       publicPath: config.publicPath || '/',
     },
@@ -59,7 +50,6 @@ export default function ({ config }) {
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
       new CaseSensitivePathsPlugin(),
-      new ExtractCssChunks({ hot: true }),
     ],
     devtool: 'eval-source-map',
   }
