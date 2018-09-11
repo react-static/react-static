@@ -31,8 +31,7 @@ export default function({ config, stage }) {
   }
 
   return {
-    test: /\.(js|jsx)$/,
-    exclude: new RegExp(`(node_modules|${config.paths.EXCLUDE_MODULES})`),
+    test: /\.(js|jsx|mjs)$/,
     use: [
       {
         loader: 'babel-loader',
@@ -41,6 +40,8 @@ export default function({ config, stage }) {
           root: config.paths.ROOT,
           presets: [[babelPreset, { modules: false }]],
           cacheDirectory: isRelativePath ? stage !== 'prod' : config.paths.TEMP,
+          compact: stage === 'prod',
+          highlightCode: true,
         },
       },
     ],
