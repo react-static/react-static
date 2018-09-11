@@ -16,6 +16,11 @@ function common(config) {
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
+  if (!DIST.startsWith(ROOT)) {
+    // we build outside of project dir, so reset some paths
+    process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath.replace(DIST, "");
+  }
+
   const splitChunks = {
     chunks: 'all',
     minSize: 10000,
