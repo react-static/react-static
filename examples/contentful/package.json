@@ -1,0 +1,28 @@
+{
+  "name": "react-static-example-contentful",
+  "version": "1.0.",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-static start",
+    "stage": "react-static build --staging",
+    "build": "react-static build",
+    "serve": "serve dist -p 3000"
+  },
+  "dependencies": {
+    "contentful": "^7.0.3",
+    "lodash": "^4.17.10",
+    "moment": "^2.20.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-hot-loader": "^4.0.0-beta.21",
+    "react-markdown": "^3.1.0",
+    "react-moment": "^0.7.0",
+    "react-router": "^4.2.0",
+    "react-static": "^6.0.0-beta.18"
+  },
+  "devDependencies": {
+    "eslint-config-react-tools": "1.x.x",
+    "serve": "^7.0.0"
+  }
+}
