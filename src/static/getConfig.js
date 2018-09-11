@@ -5,6 +5,7 @@ import nodePath from 'path'
 import chokidar from 'chokidar'
 import resolveFrom from 'resolve-from'
 
+import { getConfigPluginHooks } from '../utils'
 import getDirname from '../utils/getDirname'
 import { cleanSlashes, cutPathToRoot, isAbsoluteUrl } from '../utils/shared'
 
@@ -84,7 +85,7 @@ export const buildConfigation = (config = {}) => {
   }
 
   // Defaults
-  const finalConfig = {
+  let finalConfig = {
     // Defaults
     entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
     getSiteData: () => ({}),
@@ -117,8 +118,7 @@ export const buildConfigation = (config = {}) => {
   process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING =
     finalConfig.disableRoutePrefixing
 
-  // Fetch plugins, if any
-  finalConfig.plugins = finalConfig.plugins.map(plugin => {
+  const resolvePlugin = plugin => {
     let resolver = plugin
     let options = {}
     if (Array.isArray(plugin)) {
@@ -138,12 +138,26 @@ export const buildConfigation = (config = {}) => {
       }
     }
 
-    return {
+    const resolvedPlugin = {
       resolver,
       options,
       ...plugin(options),
     }
-  })
+
+    // Recursively resolve plugins
+    if (resolvedPlugin.plugins) {
+      resolvedPlugin.plugins = resolvedPlugin.plugins.map(resolvePlugin)
+    }
+
+    return resolvedPlugin
+  }
+  // Fetch plugins, if any
+  finalConfig.plugins = finalConfig.plugins.map(resolvePlugin)
+
+  finalConfig = getConfigPluginHooks(config, 'beforeRenderToElement').reduce(
+    (curr, config) => config(curr),
+    finalConfig
+  )
 
   return finalConfig
 }

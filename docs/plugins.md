@@ -69,6 +69,14 @@ If a plugin is installed via any method other than the `plugins` directory, it w
 
 Plugins hooks are executed throughout the lifecycle of a react-static build in the order below:
 
+#### `config: Function`
+
+A hook to modify the final `static.config.js` for React Static.
+
+- Arguments:
+  - `config{}` - The `static.config.js`
+- Returns a new or modified `config{}` object
+
 #### `webpack: Function|Function[]`
 
 See [`config.webpack`](/docs/config/#webpack).
@@ -128,3 +136,7 @@ Intercept and proxy the final `html` string before it is written to disk.
   - `options{}`
     - `meta` - The user `meta` object
 - Returns a new final `html` string to be written to disk.
+
+#### `plugins: Array(plugin)`
+
+An array of plugins that this plugin depends on. Follows the same format as `static.config.js` does for importing plugins and options.
