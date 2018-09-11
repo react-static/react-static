@@ -1,6 +1,7 @@
 import path from 'path'
 import slash from 'slash'
 import fs from 'fs-extra'
+import { chunkNameFromFile } from '../utils/chunkBuilder'
 
 export default async ({ config }) => {
   const { templates, routes, paths } = config
@@ -26,13 +27,24 @@ const universalOptions = {
 
 ${templates
     .map((template, index) => {
-      const templatePath = path.relative(
+      let templatePath = path.relative(
         paths.DIST,
         path.resolve(paths.ROOT, template)
       )
+
+      let chunkName = ''
+
+      // relative resolving produces the wrong path, a "../" is missing
+      // as the files looks equal, we simple use an absolute path then
+      if (!paths.DIST.startsWith(paths.ROOT)) {
+        templatePath = path.resolve(paths.ROOT, template)
+
+        chunkName = `/* webpackChunkName: "${chunkNameFromFile(template)}" */`
+      }
+
       return `const t_${index} = universal(import('${slash(
         templatePath
-      )}'), universalOptions)`
+      )}'${chunkName}), universalOptions)`
     })
     .join('\n')}
 `
