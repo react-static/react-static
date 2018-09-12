@@ -7249,9 +7249,9 @@ react-test-renderer@^16.0.0-0:
     react-is "^16.5.0"
     schedule "^0.3.0"
 
-react-universal-component@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/react-universal-component/-/react-universal-component-3.0.1.tgz#48ecc3391f4e735a5b3cf8a6fa860409e25086b7"
+react-universal-component@^3.0.2-beta.0:
+  version "3.0.2-beta.0"
+  resolved "https://registry.yarnpkg.com/react-universal-component/-/react-universal-component-3.0.2-beta.0.tgz#f1a49c2c7d72f30f71e2d1c94000fb9d0ae44b84"
   dependencies:
     hoist-non-react-statics "^2.2.1"
     prop-types "^15.5.10"
