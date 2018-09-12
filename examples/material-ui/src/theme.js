@@ -6,7 +6,7 @@ export default {
     accent: red,
     type: 'light',
     background: {
-      appBar: '#108db8'
-    }
-  }
+      appBar: '#108db8',
+    },
+  },
 }
