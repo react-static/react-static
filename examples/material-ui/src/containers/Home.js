@@ -1,7 +1,7 @@
 import React from 'react'
 import { withSiteData } from 'react-static'
 //
-import Typography from 'material-ui/Typography'
+import Typography from '@material-ui/core/Typography'
 import logoImg from '../logo.png'
 
 export default withSiteData(() => (

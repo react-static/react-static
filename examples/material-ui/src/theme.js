@@ -1,4 +1,4 @@
-import { green, red } from 'material-ui/colors'
+import { green, red } from '@material-ui/core/colors'
 
 export default {
   palette: {
@@ -6,7 +6,7 @@ export default {
     accent: red,
     type: 'light',
     background: {
-      appBar: '#108db8',
-    },
-  },
+      appBar: '#108db8'
+    }
+  }
 }
