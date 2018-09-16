@@ -23,7 +23,7 @@
 
 #### Fixes & Optimizations
 
-- React-Hot-Loader should not work out of the box for all projects. If it doesn't, please report it immediately!
+- React-Hot-Loader should now work out of the box for all projects. If it doesn't, please report it immediately!
 - Much better performance when building routes for large sites via general performance improvements and also multi-threading HTML exporting
 - Fixed an issue where XML sitemaps contained invalid characters
 - Refactored many files to be more easily testable
