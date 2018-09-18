@@ -112,24 +112,3 @@ export function debounce(func, wait, immediate) {
     if (callNow) func(...args)
   }
 }
-
-export function getConfigPluginHooks(config, hook) {
-  // The flat hooks
-  const hooks = []
-
-  // Adds a plugin hook to the hook list
-  const addToHooks = plugin => {
-    // Add the hook
-    hooks.push(plugin[hook])
-
-    // Recurse into sub plugins if needs be
-    if (plugin.plugins) {
-      plugin.plugins.forEach(addToHooks)
-    }
-  }
-  // Start with the config plugins
-  ;(config.plugins || []).forEach(addToHooks)
-
-  // Filter out falsey entries
-  return hooks.filter(Boolean)
-}

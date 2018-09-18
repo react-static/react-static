@@ -13,7 +13,7 @@ import {
   prefetch,
   setLoading,
   registerTemplateIDForPath,
-} from '../methods'
+} from '../'
 import RouterScroller from './RouterScroller'
 import DevSpinner from './DevSpinner'
 import ErrorWrapper from './ErrorWrapper'

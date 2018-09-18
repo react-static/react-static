@@ -9,13 +9,8 @@ import fs from 'fs-extra'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import {
-  findAvailablePort,
-  time,
-  timeEnd,
-  getConfigPluginHooks,
-} from '../../utils'
-import { cleanPath } from '../../utils/shared'
+import { findAvailablePort, time, timeEnd } from '../../utils'
+import { cleanPath, getPluginHooks } from '../../utils/shared'
 import { prepareRoutes } from '..'
 
 let resolvedReloadRoutes
@@ -54,7 +49,7 @@ export function webpackConfig({ config, stage }) {
 
   const defaultLoaders = getStagedRules({ config, stage })
 
-  const transformers = getConfigPluginHooks(config, 'webpack').reduce(
+  const transformers = getPluginHooks(config.plugins, 'webpack').reduce(
     (all, curr) => {
       if (Array.isArray(curr)) {
         return [...all, ...curr]

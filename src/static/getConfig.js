@@ -5,9 +5,13 @@ import nodePath from 'path'
 import chokidar from 'chokidar'
 import resolveFrom from 'resolve-from'
 
-import { getConfigPluginHooks } from '../utils'
 import getDirname from '../utils/getDirname'
-import { cleanSlashes, cutPathToRoot, isAbsoluteUrl } from '../utils/shared'
+import {
+  cleanSlashes,
+  cutPathToRoot,
+  isAbsoluteUrl,
+  getPluginHooks,
+} from '../utils/shared'
 
 const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 // the default static.config.js location
@@ -26,8 +30,8 @@ export const buildConfigation = (config = {}) => {
     temp: 'tmp',
     devDist: 'tmp/dev-server',
     public: 'public',
-    plugins: 'plugins', // TODO: document
-    pages: 'src/pages', // TODO: document
+    plugins: 'plugins',
+    pages: 'src/pages',
     nodeModules: 'node_modules',
     assets: '',
     ...(config.paths || {}),
@@ -154,7 +158,7 @@ export const buildConfigation = (config = {}) => {
   // Fetch plugins, if any
   finalConfig.plugins = finalConfig.plugins.map(resolvePlugin)
 
-  finalConfig = getConfigPluginHooks(config, 'beforeRenderToElement').reduce(
+  finalConfig = getPluginHooks(config.plugins, 'beforeRenderToElement').reduce(
     (curr, config) => config(curr),
     finalConfig
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { cleanPath, unwrapArray } from '../../utils/shared'
-import { prefetch } from '../methods'
+import { prefetch } from '../'
 
 export default class Prefetch extends React.Component {
   static defaultProps = {

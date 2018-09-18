@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 
-import { prefetch, routeInfoByPath } from '../methods'
+import { prefetch, routeInfoByPath } from '../'
 import { cleanPath } from '../../utils/shared'
 import DevSpinner from './DevSpinner'
 
@@ -77,7 +77,7 @@ const RouteData = withRouter(
 
       let allProps
 
-      // Attempt to get routeInfo from window (first-load on client)
+      // Attempt to get routeInfo from window (first-load on browser)
       if (
         typeof window !== 'undefined' &&
         window.__routeInfo &&

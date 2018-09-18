@@ -7,9 +7,8 @@ import flushChunks from 'webpack-flush-chunks'
 import nodePath from 'path'
 import fs from 'fs-extra'
 
-import Redirect from '../client/components/Redirect'
-import { getConfigPluginHooks } from '../utils'
-import { makePathAbsolute } from '../utils/shared'
+import Redirect from '../browser/components/Redirect'
+import { makePathAbsolute, getPluginHooks } from '../utils/shared'
 import { absoluteToRelativeChunkName } from '../utils/chunkBuilder'
 
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
@@ -159,7 +158,7 @@ export default (async function exportRoute({
 
   try {
     // Run the beforeRenderToElement hook // TODO: document this
-    FinalComp = getConfigPluginHooks(config, 'beforeRenderToElement').reduce(
+    FinalComp = getPluginHooks(config.plugins, 'beforeRenderToElement').reduce(
       (curr, beforeRenderToElement) =>
         beforeRenderToElement(curr, { meta: renderMeta }),
       FinalComp
@@ -173,7 +172,7 @@ export default (async function exportRoute({
 
     // Run the beforeRenderToHtml hook
     // Rum the Html hook
-    RenderedComp = getConfigPluginHooks(config, 'beforeRenderToHtml').reduce(
+    RenderedComp = getPluginHooks(config.plugins, 'beforeRenderToHtml').reduce(
       (curr, beforeRenderToHtml) =>
         beforeRenderToHtml(curr, { meta: renderMeta }),
       RenderedComp
@@ -190,7 +189,7 @@ export default (async function exportRoute({
     )
 
     // Rum the beforeHtmlToDocument hook
-    appHtml = getConfigPluginHooks(config, 'beforeHtmlToDocument').reduce(
+    appHtml = getPluginHooks(config.plugins, 'beforeHtmlToDocument').reduce(
       (curr, beforeHtmlToDocument) =>
         beforeHtmlToDocument(curr, { meta: renderMeta }),
       appHtml
@@ -233,7 +232,7 @@ export default (async function exportRoute({
   let html = `<!DOCTYPE html>${DocumentHtml}`
 
   // Rum the beforeDocumentToFile hook
-  html = getConfigPluginHooks(config, 'beforeDocumentToFile').reduce(
+  html = getPluginHooks(config.plugins, 'beforeDocumentToFile').reduce(
     (curr, beforeDocumentToFile) =>
       beforeDocumentToFile(curr, { meta: renderMeta }),
     html

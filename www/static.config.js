@@ -56,9 +56,9 @@ const docPages = [
     markdownSrc: '../docs/components.md',
   },
   {
-    path: 'methods',
-    title: 'Methods',
-    markdownSrc: '../docs/methods.md',
+    path: 'browser',
+    title: 'Browser',
+    markdownSrc: '../docs/browser.md',
   },
   {
     path: 'changelog',
@@ -106,7 +106,7 @@ const menu = [
       },
       {
         name: 'Methods',
-        link: '/docs/methods',
+        link: '/docs/browser',
       },
     ],
   },

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { cleanPath } from '../../utils/shared'
-import { prefetch } from '../methods'
+import { prefetch } from '../'
 
 const ioIsSupported =
   typeof window !== 'undefined' && 'IntersectionObserver' in window

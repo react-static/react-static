@@ -1,6 +1,6 @@
 import React from 'react'
 //
-import { loading, onLoading } from '../methods'
+import { loading, onLoading } from '../'
 
 //
 
