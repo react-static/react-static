@@ -4,8 +4,9 @@ import Moment from 'react-moment'
 import Markdown from 'react-markdown'
 //
 
-const renderHeroImage = (post) => {
-  if (post.heroImage) return <img className="image" src={post.heroImage.fields.file.url} alt="" />
+const renderHeroImage = post => {
+  if (post.heroImage)
+    return <img className="image" src={post.heroImage.fields.file.url} alt="" />
 }
 
 export default withRouteData(({ post }) => (

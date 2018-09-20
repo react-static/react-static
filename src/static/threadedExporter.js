@@ -1,6 +1,6 @@
 /* eslint-disable import/first, import/no-dynamic-require */
 
-require('../utils/binHelper')
+const { setIgnorePath } = require('../utils/binHelper')
 
 import glob from 'glob'
 import path from 'path'
@@ -15,6 +15,9 @@ process.on('message', async payload => {
     const { config: oldConfig, routes } = payload
     // Get config again
     const config = await getConfig(oldConfig.originalConfig)
+
+    setIgnorePath(config.paths.DIST)
+
     // Use the node version of the app created with webpack
     const Comp = require(glob.sync(
       path.resolve(config.paths.ASSETS, 'static.*.js')

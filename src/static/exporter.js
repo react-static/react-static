@@ -1,6 +1,6 @@
 /* eslint-disable import/first, import/no-dynamic-require */
 
-require('../utils/binHelper')
+const { setIgnorePath } = require('../utils/binHelper')
 
 import glob from 'glob'
 import path from 'path'
@@ -13,6 +13,9 @@ import { progress } from '../utils'
 export default async ({ config, routes, siteData, clientStats }) => {
   const htmlProgress = progress(routes.length)
   // Use the node version of the app created with webpack
+
+  setIgnorePath(config.paths.DIST)
+
   const Comp = require(glob.sync(
     path.resolve(config.paths.ASSETS, 'static.*.js')
   )[0]).default
