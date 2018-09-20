@@ -65,6 +65,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [Luke Haas - Personal Website](https://lukehaas.me)
 * [KleineKoning.nl - Webshop](https://kleinekoning.nl)
 * [Savieo - Save Web Videos](https://savieo.com)
+* [Stoplight.io - Documentation & API Reference](https://docs.stoplight.io)
 
 ## Quick Start
 
