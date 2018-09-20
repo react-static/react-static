@@ -1,4 +1,16 @@
-require('@babel/register')
+let ignorePath
+
+require('@babel/register')({
+  ignore: [
+    function babelIgnore(filename) {
+      // true if should ignore
+      return (
+        /\/node_modules\//.test(filename) ||
+        (ignorePath && ignorePath.test(filename))
+      )
+    },
+  ],
+})
 
 const updateNotifier = require('update-notifier')
 const PrettyError = require('pretty-error')
@@ -45,3 +57,9 @@ console.error = (err, ...rest) =>
 process.on('unhandledRejection', r => {
   console.error(r)
 })
+
+module.exports = {
+  setIgnorePath(path) {
+    ignorePath = path ? new RegExp(path) : undefined
+  },
+}
