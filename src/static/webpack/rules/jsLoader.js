@@ -37,6 +37,7 @@ export default function({ config, stage }) {
         loader: 'babel-loader',
         options: {
           ...babelFile,
+          exclude: new RegExp(`(node_modules|${config.paths.EXCLUDE_MODULES})`),
           root: config.paths.ROOT,
           presets: [[babelPreset, { modules: false }]],
           cacheDirectory: isRelativePath ? stage !== 'prod' : config.paths.TEMP,
