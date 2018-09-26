@@ -49,7 +49,7 @@ export function webpackConfig({ config, stage }) {
 
   const defaultLoaders = getStagedRules({ config, stage })
 
-  const transformers = getPluginHooks(config.plugins, 'webpack').reduce(
+  const transformers = getPluginHooks(config.plugins, 'webpack').concat(config.webpack || []).reduce(
     (all, curr) => {
       if (Array.isArray(curr)) {
         return [...all, ...curr]
@@ -57,17 +57,21 @@ export function webpackConfig({ config, stage }) {
       return [...all, curr]
     },
     []
-  )
+  );
 
   transformers.forEach(transformer => {
-    const modifiedConfig = transformer(webpackConfig, {
-      stage,
-      defaultLoaders,
-    })
-    if (modifiedConfig) {
-      webpackConfig = modifiedConfig
+    if (typeof transformer === 'function') {
+      const modifiedConfig = transformer(webpackConfig, {
+        stage,
+        defaultLoaders,
+      })
+
+      if (modifiedConfig) {
+        webpackConfig = modifiedConfig
+      }
     }
   })
+
   return webpackConfig
 }
 
