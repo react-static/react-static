@@ -3,7 +3,7 @@ import babelPreset from '../../../../babel-preset';
 
 // we check which babel config file exists in the project root
 const readBabelConfig = (root) => {
-  const babelFiles = [`${root}/.babelrc`, `${root}/.babelrc.js`,`${root}/.babel.config.js`];
+  const babelFiles = [`${root}/.babelrc`, `${root}/.babelrc.js`,`${root}/babel.config.js`];
 
   let extendsFile = {};
 
