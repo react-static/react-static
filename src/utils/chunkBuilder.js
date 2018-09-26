@@ -28,6 +28,10 @@ export const absoluteToRelativeChunkName = (ROOT, chunkName) => {
     ''
   )
 
+  if (relativeChunkName.startsWith("-")) {
+    relativeChunkName = relativeChunkName.substr(1);
+  }
+
   // cut of the extension if any
   if (relativeChunkName.indexOf('.')) {
     relativeChunkName = relativeChunkName.substr(
