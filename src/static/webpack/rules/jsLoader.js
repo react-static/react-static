@@ -32,7 +32,9 @@ export default function({ config, stage }) {
 
   return {
     test: /\.(js|jsx|mjs)$/,
+    include: [config.paths.SRC, `${config.paths.DIST}/react-static-routes.js`],
     use: [
+      // 'thread-loader',
       {
         loader: 'babel-loader',
         options: {
