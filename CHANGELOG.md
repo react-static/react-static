@@ -1,8 +1,8 @@
-# 5.9.8
+# 5.9.8-9
 
 #### Fixes & Optimizations
 
-- Retag this release for @latest. During some experimentation with semantic-release, a release to the @latest npm tag was made on the v6 branch.
+- Retag this release for @latest. Due to some experimentation with semantic-release, a release to the @latest npm tag has been made on the v6 branch in various scenarios.
 
 # 5.9.7
 
@@ -15,14 +15,15 @@
 
 #### Fixes & Optimizations
 
-* Log errors during build configuration step to aid in build debugging.
-- Updates examples sites & various documentation typos
 - Log errors during build configuration step to aid in build debugging.
-- Moved away from Slack to Spectrum for support and community.
-- Fixed a regression that prevented cache busting on routeInfo.js files
-- static/index.js logic is now broken up into smaller pieces.
-- Added various tests for parts of static/index.js
-- Upgraded snapshots for testing
+
+* Updates examples sites & various documentation typos
+* Log errors during build configuration step to aid in build debugging.
+* Moved away from Slack to Spectrum for support and community.
+* Fixed a regression that prevented cache busting on routeInfo.js files
+* static/index.js logic is now broken up into smaller pieces.
+* Added various tests for parts of static/index.js
+* Upgraded snapshots for testing
 
 # 5.9.4 - 5.9.5
 
