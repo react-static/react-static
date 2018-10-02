@@ -1,3 +1,15 @@
+# 5.9.11
+
+#### Fixes & Optimizations
+
+- Exclude `.history` and `.github` files from npm package
+
+# 5.9.10
+
+#### Fixes & Optimizations
+
+- Fix sourcemap generation for UglifyJS
+
 # 5.9.8-9
 
 #### Fixes & Optimizations
