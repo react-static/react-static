@@ -3,6 +3,8 @@ import { withSiteData } from 'react-static'
 import { Card } from 'antd'
 //
 
+import logoImg from '../logo.png'
+
 export default withSiteData(() => (
   <div>
     <Card

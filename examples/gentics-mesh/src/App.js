@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react'
-import { Router } from 'react-static'
-
-
+import { Router, Routes } from 'react-static'
 
 import './app.css'
 import Header from './components/Header'

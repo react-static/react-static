@@ -1,10 +1,11 @@
 import React from 'react'
-import { Link, Router } from 'react-static'
+import { Link, Router, Routes } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 
 //
 
 import { Layout, Menu, Icon } from 'antd'
+
 const { Header, Sider, Content, Footer } = Layout
 
 injectGlobal`
@@ -56,19 +57,28 @@ class App extends React.Component {
             <Logo />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
               <Menu.Item key="1">
-                <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <Link
+                  to="/"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
                   <Icon type="home" />
                   <span>Home</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to="/blog" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <Link
+                  to="/blog"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
                   <Icon type="bars" />
                   <span>Blog</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to="/about" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <Link
+                  to="/about"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
                   <Icon type="pushpin-o" />
                   <span>About</span>
                 </Link>
@@ -83,12 +93,18 @@ class App extends React.Component {
               />
             </Header>
             <Content
-              style={{ margin: '32px 32px', padding: 24, background: '#fff', minHeight: 280 }}
+              style={{
+                margin: '32px 32px',
+                padding: 24,
+                background: '#fff',
+                minHeight: 280,
+              }}
             >
               <Routes />
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-              React Static — Example with ant design UI & TypeScript / LESS loaders
+              React Static — Example with ant design UI & TypeScript / LESS
+              loaders
             </Footer>
           </Layout>
         </Layout>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Routes, Route, Switch, Link } from 'react-static'
+import { Router, Route, Switch, Link } from 'react-static'
 
 //
 import Home from 'containers/Home'
