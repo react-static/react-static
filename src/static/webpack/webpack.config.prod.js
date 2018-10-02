@@ -18,7 +18,7 @@ function common(config) {
 
   if (!DIST.startsWith(ROOT)) {
     // we build outside of project dir, so reset some paths
-    process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath.replace(DIST, "");
+    process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath.replace(DIST, '')
   }
 
   const splitChunks = {
@@ -88,6 +88,9 @@ function common(config) {
       strictExportPresence: true,
     },
     resolve: {
+      alias: {
+        'react-static/routes': path.join(DIST, 'react-static-routes.js'),
+      },
       modules: [
         SRC,
         NODE_MODULES,
@@ -124,7 +127,7 @@ export default function({ config, isNode }) {
       whitelist: [
         'react-universal-component',
         'webpack-flush-chunks',
-        'react-static-routes',
+        'react-static/routes',
       ],
     }),
   ]

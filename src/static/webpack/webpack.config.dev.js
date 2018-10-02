@@ -36,6 +36,9 @@ export default function({ config }) {
       strictExportPresence: true,
     },
     resolve: {
+      alias: {
+        'react-static/routes': path.join(DIST, 'react-static-routes.js'),
+      },
       modules: [
         SRC,
         NODE_MODULES,

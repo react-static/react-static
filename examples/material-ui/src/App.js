@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react'
-import { Router, Link } from 'react-static'
+import { Router, Routes, Link } from 'react-static'
 
 //
-import Routes from 'react-static-routes'
 
 import CssBaseline from 'material-ui/CssBaseline'
 import AppBar from 'material-ui/AppBar'

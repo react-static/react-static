@@ -5,7 +5,7 @@ React-Static is packed with awesome components to help you be productive. Some a
 React-Static Components:
 
 * [Router](#router)
-* [Routes](#routes-react-static-routes)
+* [Routes](#routes)
 * [RouteData](#routedata)
 * [SiteData](#sitedata)
 * [Link](#link)
@@ -53,14 +53,13 @@ import { Router } from 'react-static'
 export default () => <Router>...</Router>
 ```
 
-### `Routes` (`react-static-routes`)
+### `Routes`
 
-React Static handles all of your routing for you using `react-router` under the hood. All you need to do is import `react-static-routes` and specify where you want to render them:
+React Static handles all of your routing for you using `react-router` under the hood. All you need to do is import `Routes` and specify where you want to render them:
 
 ```javascript
 // App.js
-import { Router } from 'react-static'
-import Routes from 'react-static-routes'
+import { Router, Routes } from 'react-static'
 
 export default () => (
   <Router>
@@ -69,9 +68,7 @@ export default () => (
 )
 ```
 
-The routes that will be rendered will be the **routes** returned by the `getRoutes` function of this config.
-
-**Important!** - `react-static-routes` is not a module you need to install. It is a dynamically generated file that is built with the rest of your site at dev and prod stages. If you install the `react-static-routes` node modules, you will be greeted with a notice to uninstall it and remove it from your dependencies :)
+The routes that will be rendered are the **routes** returned by the `getRoutes` function of this config.
 
 ##### Custom `Routes` Rendering
 
@@ -80,8 +77,7 @@ Occasionally, you may need to render the automatic `<Routes>` component in a cus
 **Render Prop Formats**
 
 ```javascript
-import { Router } from 'react-static'
-import Routes from 'react-static-routes'
+import { Router, Routes } from 'react-static'
 
 // This is the default renderer for `<Routes>`
 const RenderRoutes = ({ getComponentForPath }) => (

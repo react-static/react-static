@@ -1,12 +1,11 @@
 import React from 'react'
-import { Router, Route, Link, cleanPath } from 'react-static'
+import { Router, Routes, Route, Link, cleanPath } from 'react-static'
 import { easeQuadOut } from 'd3-ease'
 import { NodeGroup } from 'react-move'
 import { withContext, getContext } from 'recompose'
 import PropTypes from 'prop-types'
 
 //
-import Routes from 'react-static-routes'
 
 import './app.css'
 

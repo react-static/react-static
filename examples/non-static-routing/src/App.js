@@ -1,9 +1,8 @@
 import React from 'react'
-import { Router, Link, Route, Switch } from 'react-static'
+import { Router, Routes, Link, Route, Switch } from 'react-static'
 import universal from 'react-universal-component'
 
 //
-import Routes from 'react-static-routes'
 
 import './app.css'
 

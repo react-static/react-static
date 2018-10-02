@@ -1,8 +1,7 @@
 import React from 'react'
-import { Router, Link } from 'react-static'
+import { Router, Routes, Link } from 'react-static'
 
 // tslint:disable-next-line:no-implicit-dependencies
-import Routes from 'react-static-routes'
 
 import './app.css'
 

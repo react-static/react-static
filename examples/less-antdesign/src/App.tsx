@@ -3,7 +3,7 @@ import { Link, Router } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 
 //
-import Routes from 'react-static-routes'
+
 import { Layout, Menu, Icon } from 'antd'
 const { Header, Sider, Content, Footer } = Layout
 

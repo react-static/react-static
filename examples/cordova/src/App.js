@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Link, Route, Switch } from 'react-static'
+import { Router, Routes, Link, Route, Switch } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 
 //

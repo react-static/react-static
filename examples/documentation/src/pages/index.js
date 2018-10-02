@@ -3,8 +3,6 @@ import { SiteData, Link, Head } from 'react-static'
 import styled from 'styled-components'
 //
 
-import logoImg from '../logo.png'
-
 const Styles = styled.div`
   display: flex;
   flex-direction: column;

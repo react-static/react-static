@@ -20,6 +20,8 @@
 - `config.renderToHtml` behaves differently now. It is now ONLY responsible for taking your apps react element and converting it to HTML eg. `(reactElement, render) => render(reactElement)`. The process of rendering your apps component to an element is now done in `config.renderToElement`.
 - `config.renderToElement` is a new hook that is ONLY responsible for rendering the main app component from JSX eg. `Comp => <Comp />`.
 - `config.usePreact` is no longer an option in the `static.config.js` file. Use the `react-static-plugin-preact` plugin.
+- A new loader for external JS files is now used after the normal `jsLoader` called `jsLoaderExternal`. It is responsible for handling all javascript files that are not located in your projects source.
+- The Routes (and `react-static-routes`) import has been replaced by simply doing `import { Routes } from 'react-static'`. Under the hood, this uses a webpack alias to point to the generated `dist/react-static-routes.js` file, and thus won't confuse linters or IDEs like codesandbox :).
 
 #### Fixes & Optimizations
 

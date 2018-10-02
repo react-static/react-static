@@ -269,8 +269,7 @@ Example - Handling a non-static admin route:
 
 ```javascript
 // App.js
-import { Router, Route, Switch } from 'react-static'
-import Routes from 'react-static-routes'
+import { Router, Routes, Route, Switch } from 'react-static'
 
 import Admin from 'containers/Admin'
 

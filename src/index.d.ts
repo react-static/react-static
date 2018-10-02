@@ -17,6 +17,9 @@ declare module 'react-static' {
   import { Helmet } from 'react-helmet'
   export class Head extends Helmet {}
 
+  // Generated Routes
+  export class Routes extends React.Component {}
+
   export function withRouteData(comp: any): any
   export function withSiteData(comp: any): any
   export const RouteData: React.Component
@@ -57,9 +60,4 @@ declare module 'react-static' {
     prefetch?: boolean | string
   }
   export class Link extends React.Component<LinkProps, any> {}
-}
-
-declare module 'react-static-routes' {
-  class Routes extends React.Component {}
-  export default Routes
 }

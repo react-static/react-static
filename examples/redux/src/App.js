@@ -1,8 +1,7 @@
 import React from 'react'
-import { Router, Link } from 'react-static'
+import { Router, Routes, Link } from 'react-static'
 import { Provider } from 'react-redux'
 
-import Routes from 'react-static-routes'
 //
 import store from './connectors/redux'
 
