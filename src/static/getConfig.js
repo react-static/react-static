@@ -202,6 +202,7 @@ export const buildConfigation = (config = {}) => {
     stagingBasePath: trimLeadingAndTrailingSlashes(config.stagingBasePath),
     devBasePath: trimLeadingAndTrailingSlashes(config.devBasePath),
     extractCssChunks: config.extractCssChunks || false,
+    generateSourceMaps: config.generateSourceMaps || true,
     inlineCss: config.inlineCss || false,
     getRoutes: makeGetRoutes(config),
     generated: true,
