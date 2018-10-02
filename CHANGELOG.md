@@ -1,3 +1,9 @@
+# 5.9.12
+
+#### Fixes & Optimizations
+
+- Fix incomplete npm build
+
 # 5.9.11
 
 #### Fixes & Optimizations
