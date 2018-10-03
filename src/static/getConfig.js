@@ -158,7 +158,7 @@ export const buildConfigation = (config = {}) => {
   // Fetch plugins, if any
   finalConfig.plugins = finalConfig.plugins.map(resolvePlugin)
 
-  finalConfig = getPluginHooks(config.plugins, 'beforeRenderToElement').reduce(
+  finalConfig = getPluginHooks(config.plugins, 'config').reduce(
     (curr, config) => config(curr),
     finalConfig
   )

@@ -6,7 +6,7 @@ import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder, time, timeEnd } from '../utils'
 
-export default (async function build({
+export default (async function bundle({
   config: originalConfig,
   staging,
   debug,
