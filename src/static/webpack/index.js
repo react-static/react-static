@@ -49,15 +49,14 @@ export function webpackConfig({ config, stage }) {
 
   const defaultLoaders = getStagedRules({ config, stage })
 
-  const transformers = getPluginHooks(config.plugins, 'webpack').concat(config.webpack || []).reduce(
-    (all, curr) => {
+  const transformers = getPluginHooks(config.plugins, 'webpack')
+    .concat(config.webpack || [])
+    .reduce((all, curr) => {
       if (Array.isArray(curr)) {
         return [...all, ...curr]
       }
       return [...all, curr]
-    },
-    []
-  );
+    }, [])
 
   transformers.forEach(transformer => {
     if (typeof transformer === 'function') {
@@ -249,7 +248,6 @@ export async function startDevServer({ config }) {
 
   // Start the messages socket
   const socket = io()
-  socket.listen(messagePort)
 
   resolvedReloadRoutes = async paths => {
     await prepareRoutes(
@@ -273,6 +271,11 @@ export async function startDevServer({ config }) {
       resolve()
     })
   })
+
+  // Make sure we start listening on the message port after the dev server.
+  // We do this mostly to appease codesandbox.io, since they autobind to the first
+  // port that opens up for their preview window.
+  socket.listen(messagePort)
 
   return devServer
 }
