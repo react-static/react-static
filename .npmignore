@@ -6,6 +6,8 @@
 .env.production.local
 .env.test.local
 .esm-cache
+.github
+.history
 *.log
 *.sketch
 */cordova/platforms
