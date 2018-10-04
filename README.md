@@ -45,6 +45,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [Nozzle.io](https://nozzle.io) ([source](https://github.com/nozzle/nozzle.io))
 * [Timber.io](https://timber.io)
 * [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
+* [StaticGen.com](https://www.staticgen.com) ([source](https://github.com/netlify/staticgen))
 * [Manta.life](https://manta.life) ([source](https://github.com/MantaApp/Website))
 * [Manticore Games](http://manticoregames.com)
 * [BlackSandSolutions.co](https://www.blacksandsolutions.co)
@@ -65,6 +66,10 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 * [Luke Haas - Personal Website](https://lukehaas.me)
 * [KleineKoning.nl - Webshop](https://kleinekoning.nl)
 * [Savieo - Save Web Videos](https://savieo.com)
+* [Anagrams.io - Anagram generator](https://anagrams.io)
+* [Stoplight.io - Documentation & API Reference](https://docs.stoplight.io)
+* [Smash Tier List](https://smash-tier-list.com) ([source](https://github.com/desko27/smash-tier-list))
+* [HackDuke 2018](https://hackduke.org/) ([source](https://github.com/hack-duke/hackduke-code-for-good-website-2018))
 
 ## Quick Start
 

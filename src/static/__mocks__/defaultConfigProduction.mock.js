@@ -3,6 +3,7 @@ export default {
   devBasePath: '',
   entry: './root/src/index.js',
   extractCssChunks: false,
+  generateSourceMaps: true,
   inlineCss: false,
   outputFileRate: 10,
   paths: {

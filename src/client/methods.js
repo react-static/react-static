@@ -111,7 +111,7 @@ export const getRouteInfo = async (path, { priority } = {}) => {
       return
     }
     console.warn(
-      `Could not load routeInfo for path: ${originalPath}. If this is a static route, make sure any link to this page is valid! If this is not a static route, you can desregard this warning.`
+      `Could not load routeInfo for path: ${originalPath}. If this is a static route, make sure any link to this page is valid! If this is not a static route, you can disregard this warning.`
     )
   }
   if (!priority) {
