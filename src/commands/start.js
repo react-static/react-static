@@ -1,6 +1,6 @@
 import fs from 'fs-extra'
 //
-import { prepareRoutes } from '../static'
+import { prepareRoutes, preparePlugins } from '../static'
 import { DefaultDocument } from '../static/RootComponents'
 import { startDevServer, reloadRoutes } from '../static/webpack'
 import getConfig from '../static/getConfig'
@@ -46,6 +46,8 @@ export default (async function start({ config, debug } = {}) {
         siteData,
       })
     }
+
+    await preparePlugins({ config })
 
     await prepareRoutes({ config, opts: { dev: true } }, async config => {
       reloadRoutes()

@@ -1,38 +1,44 @@
-import fs from "fs";
-import babelPreset from '../../../../babel-preset';
+import fs from 'fs'
+import babelPreset from '../../../../babel-preset'
 
 // we check which babel config file exists in the project root
-const readBabelConfig = (root) => {
-  const babelFiles = [`${root}/.babelrc`, `${root}/.babelrc.js`,`${root}/babel.config.js`];
+const readBabelConfig = root => {
+  const babelFiles = [
+    `${root}/.babelrc`,
+    `${root}/.babelrc.js`,
+    `${root}/babel.config.js`,
+  ]
 
-  let extendsFile = {};
+  let extendsFile = {}
 
   babelFiles.forEach(file => {
     try {
-      fs.statSync(file);
-      extendsFile = {extends: file}
-    }
-    catch(err) {
+      fs.statSync(file)
+      extendsFile = { extends: file }
+    } catch (err) {
       // dont do anything
     }
-  });
+  })
 
-  return extendsFile;
+  return extendsFile
 }
 
-
 export default function({ config, stage }) {
-  let babelFile = {};
+  let babelFile = {}
 
-  const isRelativePath = config.paths.DIST.startsWith(config.paths.ROOT);
+  const isRelativePath = config.paths.DIST.startsWith(config.paths.ROOT)
 
   if (!isRelativePath) {
-    babelFile = readBabelConfig(config.paths.ROOT);
+    babelFile = readBabelConfig(config.paths.ROOT)
   }
 
   return {
     test: /\.(js|jsx|mjs)$/,
-    include: [config.paths.SRC, `${config.paths.DIST}/react-static-routes.js`],
+    include: [
+      config.paths.SRC,
+      `${config.paths.DIST}/react-static-routes.js`,
+      `${config.paths.DIST}/react-static-browser-plugins.js`,
+    ],
     use: [
       // 'thread-loader',
       {

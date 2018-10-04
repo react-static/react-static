@@ -9,6 +9,7 @@ import { fork } from 'child_process'
 
 import generateRoutes from './generateRoutes'
 import getRoutes from './getRoutes'
+import generateBrowserPlugins from './generateBrowserPlugins'
 import buildXMLandRSS from './buildXML'
 import { progress, time, timeEnd } from '../utils'
 import { poolAll } from '../utils/shared'
@@ -73,6 +74,10 @@ export const prepareRoutes = async ({ config, opts, silent }, cb = d => d) => {
       return cb(config)
     }
   )
+}
+
+export const preparePlugins = ({ config }) => {
+  generateBrowserPlugins({ config })
 }
 
 export const fetchSiteData = async config => {

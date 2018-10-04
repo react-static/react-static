@@ -38,6 +38,10 @@ export default function({ config }) {
     resolve: {
       alias: {
         'react-static/routes': path.join(DIST, 'react-static-routes.js'),
+        'react-static/plugins': path.join(
+          DIST,
+          'react-static-browser-plugins.js'
+        ),
       },
       modules: [
         SRC,

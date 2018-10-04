@@ -124,7 +124,7 @@ export function getPluginHooks(plugins = [], hook) {
   // Adds a plugin hook to the hook list
   const addToHooks = plugin => {
     // Add the hook
-    hooks.push(plugin[hook])
+    hooks.push(plugin.hooks[hook])
 
     // Recurse into sub plugins if needs be
     if (plugin.plugins) {

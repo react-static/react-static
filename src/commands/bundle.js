@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import chalk from 'chalk'
 //
-import { prepareRoutes } from '../static'
+import { prepareRoutes, preparePlugins } from '../static'
 import { buildProductionBundles } from '../static/webpack'
 import getConfig from '../static/getConfig'
 import { copyPublicFolder, time, timeEnd } from '../utils'
@@ -55,6 +55,8 @@ export default (async function bundle({
     await fs.emptyDir(config.paths.ASSETS)
     timeEnd(chalk.green('=> [\u2713] Assets cleaned'))
   }
+
+  await preparePlugins({ config })
 
   config = await prepareRoutes({ config, opts: { dev: false } })
 

@@ -4,6 +4,7 @@ import React from 'react'
 import nodePath from 'path'
 import chokidar from 'chokidar'
 import resolveFrom from 'resolve-from'
+import fs from 'fs-extra'
 
 import getDirname from '../utils/getDirname'
 import {
@@ -89,7 +90,7 @@ export const buildConfigation = (config = {}) => {
   }
 
   // Defaults
-  let finalConfig = {
+  config = {
     // Defaults
     entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
     getSiteData: () => ({}),
@@ -116,36 +117,52 @@ export const buildConfigation = (config = {}) => {
   }
 
   // Set env variables to be used client side
-  process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
+  process.env.REACT_STATIC_PREFETCH_RATE = config.prefetchRate
   process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING =
-    finalConfig.disableRouteInfoWarning
+    config.disableRouteInfoWarning
   process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING =
-    finalConfig.disableRoutePrefixing
+    config.disableRoutePrefixing
 
   const resolvePlugin = plugin => {
     let resolver = plugin
+    let location = resolver
     let options = {}
     if (Array.isArray(plugin)) {
       resolver = plugin[0]
       options = plugin[1] || {}
     }
+    let getHooks = () => ({})
     // Attempt a direct require for absolute paths
     try {
-      plugin = require(resolver).default
+      getHooks = require(resolver).default
     } catch (err) {
       try {
         // Attempt a /plugins directory require
-        plugin = require(nodePath.resolve(paths.PLUGINS, resolver)).default
+        location = nodePath.resolve(paths.PLUGINS, resolver)
+        getHooks = require(location).default
       } catch (err) {
         // Attempt a root directory require (node_modules)
-        plugin = require(resolveFrom(process.cwd(), resolver)).default
+        location = resolveFrom(process.cwd(), resolver)
+        getHooks = require(location).default
       }
     }
 
+    // remove any `index.js` suffix
+    location = location.replace(/index\.js$/g, '')
+
+    // Build the browser location
+    let browserLocation = nodePath.join(location, 'browser.js')
+    // Detect if the browser plugin entry exists, and provide the location to it
+    browserLocation = fs.pathExistsSync(browserLocation)
+      ? browserLocation
+      : null
+
     const resolvedPlugin = {
       resolver,
+      location,
+      browserLocation,
       options,
-      ...plugin(options),
+      hooks: getHooks(options) || {},
     }
 
     // Recursively resolve plugins
@@ -156,14 +173,14 @@ export const buildConfigation = (config = {}) => {
     return resolvedPlugin
   }
   // Fetch plugins, if any
-  finalConfig.plugins = finalConfig.plugins.map(resolvePlugin)
+  config.plugins = config.plugins.map(resolvePlugin)
 
-  finalConfig = getPluginHooks(config.plugins, 'config').reduce(
+  config = getPluginHooks(config.plugins, 'config').reduce(
     (curr, config) => config(curr),
-    finalConfig
+    config
   )
 
-  return finalConfig
+  return config
 }
 
 const buildConfigFromPath = configPath => {
@@ -178,10 +195,7 @@ const buildConfigFromPath = configPath => {
   }
 }
 
-const fromFile = async (
-  configPath = DEFAULT_PATH_FOR_STATIC_CONFIG,
-  subscribe
-) => {
+const fromFile = (configPath = DEFAULT_PATH_FOR_STATIC_CONFIG, subscribe) => {
   const config = buildConfigFromPath(configPath)
 
   if (subscribe) {
