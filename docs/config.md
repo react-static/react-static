@@ -329,7 +329,7 @@ export default {
         {
           oneOf: [
             defaultLoaders.jsLoader,
-            defaultLoaders.External,
+            defaultLoaders.jsLoaderExternal,
             defaultLoaders.cssLoader,
             {
               loader: 'file-loader',
