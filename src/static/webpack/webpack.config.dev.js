@@ -61,8 +61,7 @@ export default function({ config }) {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
-      new CaseSensitivePathsPlugin(),
-      new ExtractCssChunks({ hot: true }),
+      new CaseSensitivePathsPlugin()
     ],
     devtool: 'cheap-module-source-map',
   }

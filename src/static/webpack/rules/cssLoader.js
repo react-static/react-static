@@ -37,8 +37,10 @@ function initCSSLoader(stage) {
   return cssLoader
 }
 
-export default function({ stage, isNode }) {
+export default function(args) {
+  const { stage, isNode } = args
   let cssLoader = initCSSLoader(stage)
+
   if (stage === 'node' || isNode) {
     return {
       test: /\.css$/,
@@ -46,7 +48,9 @@ export default function({ stage, isNode }) {
     }
   }
 
-  cssLoader = [ExtractCssChunks.loader, ...cssLoader] // seeing as it's HMR, why not :)
+  // currently, css hmr in extract-css-chunks-webpack-plugin is broken
+  // therefore we use style-loader in dev for css hmr to work
+  cssLoader = [stage === 'dev' ? { loader: 'style-loader' } : ExtractCssChunks.loader, ...cssLoader]
 
   return {
     test: /\.css$/,
