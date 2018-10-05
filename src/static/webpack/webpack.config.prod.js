@@ -16,6 +16,12 @@ function common(config) {
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
+  const reactStaticRoutesPath = path.join(DIST, 'react-static-routes.js')
+  const reactStaticBrowserPluginsPath = path.join(
+    DIST,
+    'react-static-browser-plugins.js'
+  )
+
   if (!DIST.startsWith(ROOT)) {
     // we build outside of project dir, so reset some paths
     process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath.replace(DIST, '')
@@ -89,11 +95,8 @@ function common(config) {
     },
     resolve: {
       alias: {
-        'react-static/routes': path.join(DIST, 'react-static-routes.js'),
-        'react-static/plugins': path.join(
-          DIST,
-          'react-static-browser-plugins.js'
-        ),
+        'react-static/routes': reactStaticRoutesPath,
+        'react-static/plugins': reactStaticBrowserPluginsPath,
       },
       modules: [
         SRC,
@@ -131,7 +134,7 @@ export default function({ config, isNode }) {
       whitelist: [
         'react-universal-component',
         'webpack-flush-chunks',
-        'react-static/routes',
+        'react-static',
       ],
     }),
   ]

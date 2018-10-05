@@ -13,6 +13,12 @@ export default function({ config }) {
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
+  const reactStaticRoutesPath = path.join(DIST, 'react-static-routes.js')
+  const reactStaticBrowserPluginsPath = path.join(
+    DIST,
+    'react-static-browser-plugins.js'
+  )
+
   return {
     mode: 'development',
     optimization: {
@@ -37,11 +43,8 @@ export default function({ config }) {
     },
     resolve: {
       alias: {
-        'react-static/routes': path.join(DIST, 'react-static-routes.js'),
-        'react-static/plugins': path.join(
-          DIST,
-          'react-static-browser-plugins.js'
-        ),
+        'react-static/routes': reactStaticRoutesPath,
+        'react-static/plugins': reactStaticBrowserPluginsPath,
       },
       modules: [
         SRC,

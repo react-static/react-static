@@ -35,6 +35,8 @@ export const reloadRouteData = () => {
   global.reloadAll()
 }
 
+// When in development, init a socket to listen for data changes
+// When the data changes, we invalidate and reload all of the route data
 if (process.env.REACT_STATIC_ENV === 'development') {
   const io = require('socket.io-client')
   const run = async () => {
