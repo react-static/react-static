@@ -44,13 +44,29 @@ See the [/docs#plugins](Readme's Plugin section) for the official list of suppor
 
 ## Building A Plugin
 
-A plugin is a single `default export` of a `function` that recieves **plugin options from the user (optional)** and **returns an `object`** providing any number of **hook methods** to use.
+A plugin is currently comprised of either
+- A single `plugin-name.js` file, which is provided the **node/server** plugin API
+- A plugin directory containing
+  - An `index.js` file, which is provided the **node/server** plugin API
+  - A `browser.js` file, which is provided the **browser** plugin API
+  
+The `index.js` file is used in the server-side/cli/node context and implements all of the [Node Plugin API hooks](#node-plugin-api) found below
+The `browser.js` file is used in the browser context and implements all of the [Node Plugin API hooks](#browser-plugin-api) found below
+  
+## Why separate server and browser entry points for plugins?
+We use separate entry points for server and browser context so as to not create conflict with imports that may not be supported in both environments. This is opposite a react-static app, where you are advised to write both browser and node-safe code throughout.
 
-A plugin typically looks like this:
+Both plugin file types must export a `function` as the `default export`. That function recieves **plugin options from the user (optional)** and then **returns an `object`** providing any **hook methods** you need to implement
+
+Here is an example of what a plugin typically looks like:
 
 ```javascript
 export default pluginOptions => ({
   someHook: (hookItem, hookOptions) => {
+    // Do something amazing!
+    return hookItem
+  },
+  anotherHook: (hookItem, hookOptions) => {
     // Do something amazing!
     return hookItem
   }
@@ -65,7 +81,7 @@ export default pluginOptions => ({
 
 If a plugin is installed via any method other than the `plugins` directory, it will not be transformed by react-static's `.babelrc` runtime, so you **must compile your plugin to be ES5 compatible if you distribute it**. This can be done via `@babel/core` and the babel-cli. The [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components) plugin does this and is a prime example to follow.
 
-## Plugin API
+## Node Plugin API
 
 Plugins hooks are executed throughout the lifecycle of a react-static build in the order below:
 
@@ -136,6 +152,12 @@ Intercept and proxy the final `html` string before it is written to disk.
   - `options{}`
     - `meta` - The user `meta` object
 - Returns a new final `html` string to be written to disk.
+
+#### `plugins: Array(plugin)`
+
+An array of plugins that this plugin depends on. Follows the same format as `static.config.js` does for importing plugins and options.
+
+## Browser Plugin API
 
 #### `plugins: Array(plugin)`
 
