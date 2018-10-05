@@ -36,8 +36,8 @@ export default function({ config, stage }) {
     test: /\.(js|jsx|mjs)$/,
     include: [
       config.paths.SRC,
-      `${config.paths.DIST}/react-static-routes.js`,
-      `${config.paths.DIST}/react-static-browser-plugins.js`,
+      /react-static-routes\.js/,
+      /react-static-browser-plugins\.js/,
     ],
     use: [
       // 'thread-loader',
