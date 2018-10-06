@@ -207,7 +207,7 @@ if (typeof document !== 'undefined') {
 
 During your adventures, you may need to access specific environment variables. The following environment variables are available across all of react-static, including your app:
 
-* `process.env.REACT_STATIC_ENV` can equal to one of:
+* `process.env.REACT_STATIC_ENV` can equal one of:
   * `production` - the environment is being built via webpack for **production**
   * `development` - the environment is being built via webpack for **development**
   * `node` - the environment is being built via **node** for **SSR**

@@ -1,6 +1,6 @@
 # Methods
 
-In addition to components, React-Static exports a some simple functions to help you in programmatic use cases:
+In addition to components, React-Static exports some simple functions to help you in programmatic use cases:
 
 * [onLoading](/docs/methods/#onloading)
 * [prefetch](/docs/methods/#prefetch)
