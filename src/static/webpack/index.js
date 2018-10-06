@@ -92,7 +92,9 @@ export async function startDevServer({ config }) {
     (config.devServer && config.devServer.port) || process.env.PORT || 3000
   const port = await findAvailablePort(Number(intendedPort))
   // Find an available port for messages, as long as it's not the devServer port
-  const messagePort = await findAvailablePort(4000, [port])
+  const intendedMessagePort =
+    (config.devServer && config.devServer.messagePort) || process.env.MESSAGE_PORT || 4000
+  const messagePort = await findAvailablePort(Number(intendedMessagePort), [port])
   if (intendedPort !== port) {
     time(
       chalk.red(
