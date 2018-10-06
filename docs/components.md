@@ -85,7 +85,7 @@ import Routes from 'react-static-routes'
 
 // This is the default renderer for `<Routes>`
 const RenderRoutes = ({ getComponentForPath }) => (
-  // The default renderer uses a catch all route to recieve the pathname
+  // The default renderer uses a catch all route to receive the pathname
   <Route
     path="*"
     render={props => {
@@ -130,7 +130,7 @@ Render Props
 * Any props that you passed in it's corresponding route's `getData` method.
 * `is404: boolean` - Will be set to `true` if the page requests results in a 404. This is useful for runtime 404's where the url of the page may remain what the user requested, but the route is not found.
 
-Here is a an example show all of the different syntaxes you can use:
+Here is an example showing all of the different syntaxes you can use:
 
 **static.config.js**
 
@@ -371,12 +371,12 @@ export () => (
 
 ### `Prefetch`
 
-Prefetch is a react component that accepts a `path` prop, and optional `only` prop and an optional single child to render. When this component is rendered, any data or template required to render the `path` will be prefetched. This ensures that if the user then navigates to that route , they will not have to wait for the required data to load.
+Prefetch is a react component that accepts a `path` prop, an optional `only` prop and an optional single child to render. When this component is rendered, any data or template required to render the `path` will be prefetched. This ensures that if the user then navigates to that route , they will not have to wait for the required data to load.
 
 Props:
 
 * `path: String` **Required** - The path you want to prefetch.
-* `type: String.oneOf(['data', 'template'])` - An optional string denoted whether to only load the `data` or `template` for the path.
+* `type: String.oneOf(['data', 'template'])` - An optional string denoting whether to only load the `data` or `template` for the path.
 
 Notes:
 

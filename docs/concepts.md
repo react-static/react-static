@@ -48,7 +48,7 @@ React-Static is different from most React-based static-site generators. It follo
 
 ### Existing Templates
 
-The following templates contain the bare-minimum for each css approach to function properly with server-side rendering. You can start with these templates using the `react-static create` CLI command, or transfer the logic to an existin project (pay close attention to the `static.config.js` file if that is the case).
+The following templates contain the bare-minimum for each css approach to function properly with server-side rendering. You can start with these templates using the `react-static create` CLI command, or transfer the logic to an existing project (pay close attention to the `static.config.js` file if that is the case).
 
 * [glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
 * [glamorous-tailwind](https://github.com/nozzle/react-static/tree/master/examples/glamorous-tailwind)
@@ -61,7 +61,7 @@ The following templates contain the bare-minimum for each css approach to functi
 
 ### Integrating New CSS-in-JS Libraries
 
-Most, if not all, CSS-in-JS libraries require that you to **extract** the styles used in your app during the usage of `ReactDOMServer.renderToString` or `ReactDOMServer.renderToStaticMarkup`, then inject them into the head of your `index.html`.
+Most, if not all, CSS-in-JS libraries require that you **extract** the styles used in your app during the usage of `ReactDOMServer.renderToString` or `ReactDOMServer.renderToStaticMarkup`, then inject them into the head of your `index.html`.
 
 React-Static allows you to decorate its HTML and Document rendering processes by using the static.config.js [`renderToHtml`](/docs/config/#rendertohtml) and [`Document`](/docs/config/#document) properties. Below are the relevant pieces used in the existing styled-components template:
 
@@ -147,7 +147,7 @@ export default {
 
 Automatic data and prop splitting is based on identity comparison `===`. If you break this referential integrity, React Static cannot detect that two props are the same.
 
-**An example of what not do**
+**An example of what not to do**
 <br/>
 
 ```javascript
