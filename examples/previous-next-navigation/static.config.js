@@ -8,10 +8,6 @@ export default {
     const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
     return [
       {
-        path: '/about',
-        component: 'src/containers/About',
-      },
-      {
         path: '/blog',
         getData: () => ({
           posts,
