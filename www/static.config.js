@@ -14,7 +14,7 @@ const repoURL = `https://github.com/${repo}`
 
 try {
   // eslint-disable-next-line
-  process.env.REPO_VERSION = require(path.resolve('../package.json')).version
+  process.env.REPO_VERSION = require(path.resolve('../packages/react-static/package.json')).version
 } catch (err) {
   //
 }

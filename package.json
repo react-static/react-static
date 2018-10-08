@@ -4,8 +4,8 @@
     "publishNext": "lerna publish --npm-tag next",
     "build": "lerna run 'build' --ignore react-static-example-*",
     "watch": "lerna run 'watch' --ignore react-static-example-* --parallel",
-    "startDocs": "cd www && yarn start",
-    "buildDocs": "cd www && yarn build",
+    "startDocs": "cd www && yarn && yarn start",
+    "buildDocs": "cd www && yarn && yarn build",
     "serveDocs": "serve www/dist -p 3000",
     "test": "lerna run test",
     "test-sample-build": "yarn link && cd examples/basic && yarn && yarn link react-static && yarn build"
