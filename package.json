@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "publishNext": "lerna publish --preid beta --npm-tag next",
+    "publishNext": "lerna publish prerelease --preid beta --npm-tag next",
     "build": "lerna run 'build' --ignore react-static-example-*",
     "watch": "lerna run 'watch' --ignore react-static-example-* --parallel",
     "startDocs": "cd www && yarn && yarn start",
