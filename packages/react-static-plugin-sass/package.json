@@ -1,0 +1,24 @@
+{
+  "name": "react-static-plugin-sass",
+  "version": "1.0.1",
+  "description": "A React-Static plugin that adds SSR support for sass",
+  "main": "lib.js",
+  "repository": "https://github.com/nozzle/react-static-plugin-sass.git",
+  "author": "Tanner Linsley <tannerlinsley@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "babel index.js > lib.js",
+    "prepublishOnly": "yarn build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0"
+  },
+  "dependencies": {
+    "extract-css-chunks-webpack-plugin": "^3.1.1",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^7.1.0"
+  }
+}
