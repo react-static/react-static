@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-sass",
-  "version": "1.0.1",
+  "version": "6.0.0-beta.26",
   "description": "A React-Static plugin that adds SSR support for sass",
   "main": "lib.js",
   "repository": "https://github.com/nozzle/react-static-plugin-sass.git",

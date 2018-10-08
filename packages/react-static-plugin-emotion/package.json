@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-emotion",
-  "version": "1.0.6",
+  "version": "6.0.0-beta.26",
   "description": "A React-Static plugin that adds CSS-in-JS/SSR support for emotion & react-emotion",
   "main": "index.js",
   "repository": "https://github.com/nozzle/react-static-plugin-emotion.git",

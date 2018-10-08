@@ -1,7 +1,7 @@
 {
   "name": "react-static-example-cordova",
   "displayName": "React Static",
-  "version": "1.0.0",
+  "version": "6.0.0-beta.26",
   "main": "index.js",
   "scripts": {
     "start": "react-static start",
@@ -14,7 +14,7 @@
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-ionic-webview": "^2.2.0",
     "cordova-plugin-whitelist": "^1.3.2",
-    "react-static": "6.0.0-beta.25",
+    "react-static": "^6.0.0-beta.26",
     "styled-components": "^3.4.9",
     "webpack-cordova-plugin": "^0.1.6"
   },

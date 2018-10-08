@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-apollo",
-  "version": "1.0.1",
+  "version": "6.0.0-beta.26",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -18,7 +18,7 @@
     "graphql-tag": "^2.5.0",
     "json-loader": "^0.5.7",
     "react-apollo": "^2.0.0",
-    "react-static": "6.0.0-beta.25"
+    "react-static": "^6.0.0-beta.26"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
