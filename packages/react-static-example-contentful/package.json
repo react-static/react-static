@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-contentful",
-  "version": "1.0.",
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
