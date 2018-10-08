@@ -1,0 +1,24 @@
+{
+  "name": "react-static-plugin-styled-components",
+  "version": "1.0.6",
+  "description": "A React-Static plugin that adds CSS-in-JS/SSR support for styled-components",
+  "main": "lib.js",
+  "repository": "https://github.com/nozzle/react-static-plugin-styled-components.git",
+  "author": "Tanner Linsley <tannerlinsley@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "babel index.js > lib.js",
+    "prepublishOnly": "yarn build"
+  },
+  "peerDependencies": {
+    "react": "^16.4.1",
+    "styled-components": "^3.3.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0"
+  }
+}

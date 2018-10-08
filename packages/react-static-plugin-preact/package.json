@@ -1,0 +1,23 @@
+{
+  "name": "react-static-plugin-preact",
+  "version": "1.0.3",
+  "description": "A React-Static plugin that adds support for preact",
+  "main": "lib.js",
+  "repository": "https://github.com/nozzle/react-static-plugin-preact.git",
+  "author": "Tanner Linsley <tannerlinsley@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "babel index.js > lib.js",
+    "prepublishOnly": "yarn build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.53",
+    "@babel/core": "^7.0.0-beta.53",
+    "@babel/preset-env": "^7.0.0-beta.53"
+  },
+  "dependencies": {
+    "preact": "^8.2.9",
+    "preact-compat": "^3.18.0"
+  }
+}

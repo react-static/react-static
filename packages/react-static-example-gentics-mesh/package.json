@@ -1,0 +1,26 @@
+{
+  "name": "react-static-example-gentics-mesh",
+  "version": "1.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-static start",
+    "stage": "react-static build --staging",
+    "build": "react-static build",
+    "serve": "serve dist -p 3000"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.1.1",
+    "lodash": "^4.17.10",
+    "react-dotdotdot": "^1.2.3",
+    "react-number-format": "^3.3.4",
+    "react-static": "6.0.0-beta.25",
+    "reactstrap": "^6.0.1",
+    "string-strip-html": "^3.2.0"
+  },
+  "devDependencies": {
+    "eslint-config-react-tools": "1.x.x",
+    "serve": "^10.0.2"
+  }
+}

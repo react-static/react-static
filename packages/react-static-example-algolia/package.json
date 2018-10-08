@@ -1,0 +1,22 @@
+{
+  "name": "react-static-example-algolia",
+  "version": "1.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-static start",
+    "stage": "react-static build --staging",
+    "build": "react-static build",
+    "serve": "serve dist -p 3000"
+  },
+  "dependencies": {
+    "algoliasearch": "^3.24.11",
+    "axios": "^0.18.0",
+    "react-instantsearch": "^5.3.1",
+    "react-static": "6.0.0-beta.25"
+  },
+  "devDependencies": {
+    "eslint-config-react-tools": "1.x.x",
+    "serve": "^10.0.2"
+  }
+}

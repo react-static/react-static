@@ -1,0 +1,24 @@
+{
+  "name": "react-static-example-emotion",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-static start",
+    "stage": "react-static build --staging",
+    "build": "react-static build",
+    "serve": "serve dist -p 3000"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "emotion": "^9.2.4",
+    "react-emotion": "^9.2.4",
+    "react-static": "6.0.0-beta.25",
+    "react-static-plugin-emotion": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-plugin-emotion": "^9.2.4",
+    "eslint-config-react-tools": "1.x.x",
+    "serve": "^10.0.2"
+  }
+}
