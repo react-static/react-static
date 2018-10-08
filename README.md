@@ -154,7 +154,6 @@ All of the following examples can be used as a template at project creation.
 * [Non Static Routing](https://github.com/nozzle/react-static/tree/master/examples/non-static-routing)
 * [On The Fly Routing](https://github.com/nozzle/react-static/tree/master/examples/on-the-fly-routing)
 * [Pagination](https://github.com/nozzle/react-static/tree/master/examples/pagination)
-
 * [Documentation](https://github.com/nozzle/react-static/tree/master/examples/documentation)
 
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
