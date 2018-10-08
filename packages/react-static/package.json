@@ -15,10 +15,9 @@
   "scripts": {
     "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' -s",
     "watch": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*' -s",
-    "prettier": "prettier --config .prettierrc.js {examples/*/src,node,scripts,src,www/src}/**/*.js --write",
-    "test": "yarn build && yarn lint && yarn unitTest",
-    "lint": "eslint src test && yarn prettier",
-    "unitTest": "NODE_ENV=test yarn jest src",
+    "test": "yarn lint && yarn unitTest",
+    "lint": "eslint src",
+    "unitTest": "NODE_ENV=test yarn jest ./src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
     "prepGitignore": "node scripts/prepGitignore.js",
     "preversion": "yarn build && yarn test"

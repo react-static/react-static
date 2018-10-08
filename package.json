@@ -7,8 +7,8 @@
     "startDocs": "cd www && yarn && yarn start",
     "buildDocs": "cd www && yarn && yarn build",
     "serveDocs": "serve www/dist -p 3000",
-    "test": "lerna run test",
-    "test-sample-build": "yarn link && cd examples/basic && yarn && yarn link react-static && yarn build"
+    "test": "yarn prettier && lerna run test",
+    "prettier": "prettier --config .prettierrc.js {scripts,www/src/,packages/*/{src,node}}/**/*.js --write"
   },
   "husky": {
     "hooks": {
