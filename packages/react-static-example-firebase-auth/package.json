@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "firebase": "^4.8.0",
+    "firebase": "latest",
     "prop-types": "^15.6.0",
-    "react-static": "^5"
+    "react-static": "6.0.0-beta.25"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",

@@ -10,16 +10,16 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "axios": "^0.16.2",
-    "gray-matter": "^3.1.1",
-    "klaw": "^2.1.1",
+    "axios": "^0.18.0",
+    "gray-matter": "^4.0.1",
+    "klaw": "^3.0.0",
     "moment": "^2.20.1",
-    "react-markdown": "^3.1.0",
-    "react-moment": "^0.7.0",
-    "react-static": "^5.1.10"
+    "react-markdown": "^4.0.2",
+    "react-moment": "^0.8.1",
+    "react-static": "6.0.0-beta.25"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
-    "serve": "^6.1.0"
+    "serve": "^10.0.2"
   }
 }

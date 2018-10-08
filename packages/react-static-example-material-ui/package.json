@@ -9,13 +9,13 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.18.0",
     "material-ui": "^1.0.0-beta.37",
     "material-ui-icons": "^1.0.0-beta.36",
-    "react-static": "^4.8.4"
+    "react-static": "^5.9.12"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
-    "serve": "^6.1.0"
+    "serve": "^10.0.2"
   }
 }

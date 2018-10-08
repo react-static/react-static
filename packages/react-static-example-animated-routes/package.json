@@ -10,14 +10,14 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.18.0",
     "d3-ease": "^1.0.3",
     "react-move": "^2.6.0",
-    "react-static": "^5",
-    "recompose": "^0.26.0"
+    "react-static": "6.0.0-beta.25",
+    "recompose": "^0.30.0"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
-    "serve": "^6.1.0"
+    "serve": "^10.0.2"
   }
 }

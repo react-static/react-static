@@ -10,17 +10,17 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
     "lodash": "^4.17.10",
     "react-dotdotdot": "^1.2.3",
     "react-number-format": "^3.3.4",
-    "react-static": "^5",
+    "react-static": "6.0.0-beta.25",
     "reactstrap": "^6.0.1",
-    "string-strip-html": "^1.4.2"
+    "string-strip-html": "^3.2.0"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
-    "serve": "^6.1.0"
+    "serve": "^10.0.2"
   }
 }
