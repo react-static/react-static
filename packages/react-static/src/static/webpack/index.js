@@ -9,9 +9,14 @@ import fs from 'fs-extra'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import { findAvailablePort, time, timeEnd } from '../../utils'
-import { cleanPath, getPluginHooks } from '../../utils/shared'
-import { prepareRoutes } from '..'
+import { prepareRoutes } from '../'
+import {
+  cleanPath,
+  makeHookReducer,
+  findAvailablePort,
+  time,
+  timeEnd,
+} from '../../utils'
 
 let resolvedReloadRoutes
 let reloadWebpackRoutes
@@ -30,7 +35,7 @@ export { reloadRoutes }
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
-export function webpackConfig({ config, stage }) {
+export async function webpackConfig({ config, stage }) {
   let webpackConfig
   if (stage === 'dev') {
     webpackConfig = require('./webpack.config.dev').default({ config })
@@ -49,33 +54,19 @@ export function webpackConfig({ config, stage }) {
 
   const defaultLoaders = getStagedRules({ config, stage })
 
-  const transformers = getPluginHooks(config.plugins, 'webpack')
-    .concat(config.webpack || [])
-    .reduce((all, curr) => {
-      if (Array.isArray(curr)) {
-        return [...all, ...curr]
-      }
-      return [...all, curr]
-    }, [])
+  const webpackHook = makeHookReducer(config.plugins, 'webpack')
 
-  transformers.forEach(transformer => {
-    if (typeof transformer === 'function') {
-      const modifiedConfig = transformer(webpackConfig, {
-        stage,
-        defaultLoaders,
-      })
-
-      if (modifiedConfig) {
-        webpackConfig = modifiedConfig
-      }
-    }
+  webpackConfig = await webpackHook(webpackConfig, {
+    config,
+    stage,
+    defaultLoaders,
   })
 
   return webpackConfig
 }
 
 export async function buildCompiler({ config, stage }) {
-  return webpack(webpackConfig({ config, stage }))
+  return webpack(await webpackConfig({ config, stage }))
 }
 
 // Starts the development server
@@ -281,11 +272,12 @@ export async function startDevServer({ config }) {
 }
 
 export async function buildProductionBundles({ config }) {
-  return new Promise((resolve, reject) => {
-    webpack([
-      webpackConfig({ config, stage: 'prod' }),
-      webpackConfig({ config, stage: 'node' }),
-    ]).run((err, stats) => {
+  const allWebpackConfigs = [
+    await webpackConfig({ config, stage: 'prod' }),
+    await webpackConfig({ config, stage: 'node' }),
+  ]
+  return new Promise(async (resolve, reject) => {
+    webpack(allWebpackConfigs).run((err, stats) => {
       if (err) {
         console.log(chalk.red(err.stack || err))
         if (err.details) {

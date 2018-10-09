@@ -7,7 +7,7 @@ import path from 'path'
 
 import getConfig from './getConfig'
 import { DefaultDocument } from './RootComponents'
-import { poolAll } from '../utils/shared'
+import { poolAll } from '../utils'
 import exportRoute from './exportRoute'
 
 process.on('message', async payload => {

@@ -117,7 +117,46 @@ export function makePathAbsolute(path) {
   return `/${trimLeadingSlashes(path)}`
 }
 
-export function getPluginHooks(plugins = [], hook) {
+export function makeHookReducer(
+  plugins = [],
+  hook,
+  compare = (prev, next) => (typeof next !== 'undefined' ? next : prev)
+) {
+  const hooks = flattenHooks(plugins, hook)
+  // Returns a runner that takes a value (and opts) and
+  // reduces the value through each hook, returning the
+  // final value
+  // compare is a function which is used to compare
+  // the prev and next value and decide which to use.
+  // By default, if undefined is returned from a reducer, the prev value
+  // is retained
+  return async (value, opts) => {
+    value = await hooks.reduce(async (prevPromise, hook) => {
+      const prev = await prevPromise
+      const next = await hook(prev, opts)
+      return compare(prev, next)
+    }, Promise.resolve(value))
+    return value
+  }
+}
+
+export function makeHookMapper(plugins = [], hook) {
+  const hooks = flattenHooks(plugins, hook)
+  // Returns a runner that takes options and returns
+  // a flat array of values mapped from each hook
+  return async opts => {
+    const vals = []
+    await hooks.reduce(async (prevPromise, hook) => {
+      await prevPromise
+      const val = await hook(opts)
+      vals.push(val)
+    }, Promise.resolve())
+
+    return vals.filter(d => typeof d !== 'undefined')
+  }
+}
+
+function flattenHooks(plugins, hook) {
   // The flat hooks
   const hooks = []
 

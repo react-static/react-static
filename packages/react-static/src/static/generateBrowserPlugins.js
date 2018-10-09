@@ -12,12 +12,12 @@ export default async ({ config }) => {
     // Return an array of plugins
     `[${plugins
       .map(plugin => {
-        const { browserLocation } = plugin
+        const { browserResolver } = plugin
 
         // Add the plugin to the list of imports
-        let impIndex = browserLocation ? imports.indexOf(browserLocation) : -1
-        if (impIndex === -1 && browserLocation) {
-          imports.push(slash(browserLocation))
+        let impIndex = browserResolver ? imports.indexOf(browserResolver) : -1
+        if (impIndex === -1 && browserResolver) {
+          imports.push(slash(browserResolver))
           impIndex = imports.length - 1
         }
 
@@ -27,7 +27,7 @@ export default async ({ config }) => {
   return {
     ...plugin,
     plugins: ${recurse(plugin.plugins || [])},
-    hooks: ${browserLocation ? `imp${impIndex}(plugins.options)` : `{}`}
+    hooks: ${browserResolver ? `imp${impIndex}(plugins.options)` : `{}`}
   }
 })()`
       })

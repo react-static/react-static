@@ -8,7 +8,7 @@ import nodePath from 'path'
 import fs from 'fs-extra'
 
 import Redirect from '../browser/components/Redirect'
-import { makePathAbsolute, getPluginHooks } from '../utils/shared'
+import { makePathAbsolute, makeHookReducer } from '../utils'
 import { absoluteToRelativeChunkName } from '../utils/chunkBuilder'
 
 import { makeHtmlWithMeta } from './components/HtmlWithMeta'
@@ -158,11 +158,14 @@ export default (async function exportRoute({
 
   try {
     // Run the beforeRenderToElement hook // TODO: document this
-    FinalComp = getPluginHooks(config.plugins, 'beforeRenderToElement').reduce(
-      (curr, beforeRenderToElement) =>
-        beforeRenderToElement(curr, { meta: renderMeta }),
-      FinalComp
+    const beforeRenderToElementHook = makeHookReducer(
+      config.plugins,
+      'beforeRenderToElement'
     )
+    FinalComp = await beforeRenderToElementHook(FinalComp, {
+      config,
+      meta: renderMeta,
+    })
 
     // Run the configs renderToElement function
     let RenderedComp = await config.renderToElement(FinalComp, {
@@ -172,11 +175,14 @@ export default (async function exportRoute({
 
     // Run the beforeRenderToHtml hook
     // Rum the Html hook
-    RenderedComp = getPluginHooks(config.plugins, 'beforeRenderToHtml').reduce(
-      (curr, beforeRenderToHtml) =>
-        beforeRenderToHtml(curr, { meta: renderMeta }),
-      RenderedComp
+    const beforeRenderToHtml = makeHookReducer(
+      config.plugins,
+      'beforeRenderToHtml'
     )
+    RenderedComp = await beforeRenderToHtml(RenderedComp, {
+      config,
+      meta: renderMeta,
+    })
 
     // Run the configs renderToHtml function
     appHtml = await config.renderToHtml(
@@ -189,11 +195,11 @@ export default (async function exportRoute({
     )
 
     // Rum the beforeHtmlToDocument hook
-    appHtml = getPluginHooks(config.plugins, 'beforeHtmlToDocument').reduce(
-      (curr, beforeHtmlToDocument) =>
-        beforeHtmlToDocument(curr, { meta: renderMeta }),
-      appHtml
+    const beforeHtmlToDocument = makeHookReducer(
+      config.plugins,
+      'beforeHtmlToDocument'
     )
+    appHtml = await beforeHtmlToDocument(appHtml, { config, meta: renderMeta })
   } catch (error) {
     error.message = `Failed exporting HTML for URL ${route.path} (${
       route.component
@@ -204,15 +210,17 @@ export default (async function exportRoute({
   const DocumentHtml = renderToStaticMarkup(
     <DocumentTemplate
       Html={makeHtmlWithMeta({ head })}
-      Head={makeHeadWithMeta({
-        head,
-        route,
-        clientScripts,
-        config,
-        clientStyleSheets,
-        clientCss,
-        meta: renderMeta,
-      })}
+      Head={
+        await makeHeadWithMeta({
+          head,
+          route,
+          clientScripts,
+          config,
+          clientStyleSheets,
+          clientCss,
+          meta: renderMeta,
+        })
+      }
       Body={makeBodyWithMeta({
         head,
         route,
@@ -232,11 +240,11 @@ export default (async function exportRoute({
   let html = `<!DOCTYPE html>${DocumentHtml}`
 
   // Rum the beforeDocumentToFile hook
-  html = getPluginHooks(config.plugins, 'beforeDocumentToFile').reduce(
-    (curr, beforeDocumentToFile) =>
-      beforeDocumentToFile(curr, { meta: renderMeta }),
-    html
+  const beforeDocumentToFile = makeHookReducer(
+    config.plugins,
+    'beforeDocumentToFile'
   )
+  html = await beforeDocumentToFile(html, { meta: renderMeta })
 
   // If the siteRoot is set and we're not in staging, prefix all absolute URL's
   // with the siteRoot

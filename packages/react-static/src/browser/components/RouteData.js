@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 
 import { prefetch, routeInfoByPath } from '../'
-import { cleanPath } from '../../utils/shared'
+import { cleanPath } from '../../utils/browser'
 import DevSpinner from './DevSpinner'
 
 const warnedPaths = {}

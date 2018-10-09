@@ -1,3 +1,5 @@
 .history
 node_modules
 lib.js
+/node.api.js
+/browser.api.js

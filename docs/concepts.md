@@ -287,7 +287,7 @@ To learn more about how `react-router` components work, visit [React-Router's Do
 
 # Webpack Customization and Plugins
 
-React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, use the handy [`webpack` property in your `static.config.js` file](/docs/config.md/#webpack).
+React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, you can create a `node.api.js` file in your project and use the handy [webpack API](/docs/config.md/#webpack) to extend it!
 
 # Using Preact in Production
 

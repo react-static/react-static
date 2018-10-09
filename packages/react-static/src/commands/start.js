@@ -1,54 +1,59 @@
 import fs from 'fs-extra'
 //
-import { prepareRoutes, preparePlugins } from '../static'
-import { DefaultDocument } from '../static/RootComponents'
-import { startDevServer, reloadRoutes } from '../static/webpack'
-import getConfig from '../static/getConfig'
+import {
+  prepareRoutes,
+  preparePlugins,
+  startDevServer,
+  reloadRoutes,
+  getConfig,
+} from '../static'
 import { createIndexFilePlaceholder } from '../utils'
 //
 
 let cleaned
 let indexCreated
 
-export default (async function start({ config, debug } = {}) {
+export default (async function start({ configPath, debug } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined') {
     process.env.NODE_ENV = 'development'
+  }
+  if (debug) {
+    process.env.REACT_STATIC_DEBUG = 'true'
   }
   process.env.REACT_STATIC_ENV = 'development'
   process.env.BABEL_ENV = 'development'
 
   // Use callback style to subscribe to changes
-  await getConfig(config, async config => {
+  await getConfig(configPath, async config => {
     if (debug) {
       console.log('DEBUG - Resolved static.config.js:')
       console.log(config)
     }
 
+    // TODO: move to plugin
     if (!cleaned) {
       cleaned = true
       // Clean the dist folder
       await fs.remove(config.paths.DIST)
     }
 
-    // Get the site props
-    const siteData = await config.getSiteData({ dev: true })
+    // Get the site data
+    // TODO: move to plugin
+    config.siteData = await config.getSiteData({ dev: true })
 
-    // Resolve the base HTML template
-    const Component = config.Document || DefaultDocument
-
+    // Render an index.html placeholder
+    // TODO: move to plugin
     if (!indexCreated) {
       indexCreated = true
-      // Render an index.html placeholder
       await createIndexFilePlaceholder({
         config,
-        Component,
-        siteData,
       })
     }
 
-    await preparePlugins({ config })
+    config = await preparePlugins({ config })
 
+    // TODO: move to plugin
     await prepareRoutes({ config, opts: { dev: true } }, async config => {
       reloadRoutes()
 

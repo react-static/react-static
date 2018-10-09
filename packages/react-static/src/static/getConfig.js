@@ -11,18 +11,18 @@ import {
   cleanSlashes,
   cutPathToRoot,
   isAbsoluteUrl,
-  getPluginHooks,
-} from '../utils/shared'
+  makeHookReducer,
+} from '../utils'
 
-const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 // the default static.config.js location
+const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
   nodePath.join(process.cwd(), DEFAULT_NAME_FOR_STATIC_CONFIG_FILE)
 )
 const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index.js'
 
-export const buildConfigation = (config = {}) => {
+export const buildConfigation = async (config = {}) => {
   // path defaults
   config.paths = {
     root: nodePath.resolve(process.cwd()),
@@ -89,6 +89,10 @@ export const buildConfigation = (config = {}) => {
     assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
   }
 
+  // Add the project root as a plugin. This allows the dev
+  // to use the plugin api directory in their project if they want
+  const plugins = [paths.ROOT, ...config.plugins]
+
   // Defaults
   config = {
     // Defaults
@@ -103,10 +107,10 @@ export const buildConfigation = (config = {}) => {
     outputFileRate: 100,
     extensions: ['.js', '.jsx'], // TODO: document
     getRoutes: async () => DEFAULT_ROUTES,
-    plugins: [],
     // Config Overrides
     ...config,
     // Materialized Overrides
+    plugins,
     paths,
     siteRoot,
     basePath,
@@ -123,67 +127,82 @@ export const buildConfigation = (config = {}) => {
   process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING =
     config.disableRoutePrefixing
 
-  const resolvePlugin = plugin => {
-    let resolver = plugin
-    let location = resolver
+  const resolvePlugin = location => {
     let options = {}
-    if (Array.isArray(plugin)) {
-      resolver = plugin[0]
-      options = plugin[1] || {}
+    if (Array.isArray(location)) {
+      location = location[0]
+      options = location[1] || {}
     }
+
     let getHooks = () => ({})
-    // Attempt a direct require for absolute paths
-    try {
-      getHooks = require(resolver).default
-    } catch (err) {
-      try {
-        // Attempt a /plugins directory require
-        location = nodePath.resolve(paths.PLUGINS, resolver)
-        getHooks = require(location).default
-      } catch (err) {
-        // Attempt a root directory require (node_modules)
-        location = resolveFrom(process.cwd(), resolver)
-        getHooks = require(location).default
+
+    const originalLocation = location
+
+    if (!fs.pathExistsSync(originalLocation)) {
+      // If not an absolute path try from the plugins directory
+      location = nodePath.resolve(paths.PLUGINS, originalLocation)
+      if (!fs.pathExistsSync(location)) {
+        // If not in the plugins directory, try from the currentworking directory
+        location = resolveFrom(process.cwd(), originalLocation)
+        if (!fs.pathExistsSync(location)) {
+          location = null
+        }
       }
     }
 
-    // remove any `index.js` suffix
-    location = location.replace(/index\.js$/g, '')
-
-    // Build the browser location
-    let browserLocation = nodePath.join(location, 'browser.js')
-    // Detect if the browser plugin entry exists, and provide the location to it
-    browserLocation = fs.pathExistsSync(browserLocation)
-      ? browserLocation
-      : null
-
-    const resolvedPlugin = {
-      resolver,
-      location,
-      browserLocation,
-      options,
-      hooks: getHooks(options) || {},
+    if (!location) {
+      throw new Error(
+        `Oh crap! Could not find a plugin directory for the plugin: "${originalLocation}". We must bail!`
+      )
     }
 
-    // Recursively resolve plugins
-    if (resolvedPlugin.plugins) {
-      resolvedPlugin.plugins = resolvedPlugin.plugins.map(resolvePlugin)
-    }
+    let nodeLocation = nodePath.join(location, 'node.api.js')
+    let browserLocation = nodePath.join(location, 'browser.api.js')
 
-    return resolvedPlugin
+    try {
+      // Get the hooks for the node api
+      if (fs.pathExistsSync(nodeLocation)) {
+        getHooks = require(nodeLocation).default
+      } else {
+        nodeLocation = null
+      }
+
+      // Detect if the browser plugin entry exists, and provide the nodeResolver to it
+      browserLocation = fs.pathExistsSync(browserLocation)
+        ? browserLocation
+        : null
+
+      const resolvedPlugin = {
+        location,
+        nodeLocation,
+        browserLocation,
+        options,
+        hooks: getHooks(options) || {},
+      }
+
+      // Recursively resolve plugins
+      if (resolvedPlugin.plugins) {
+        resolvedPlugin.plugins = resolvedPlugin.plugins.map(resolvePlugin)
+      }
+
+      return resolvedPlugin
+    } catch (err) {
+      console.error(
+        `The following error occurred in the plugin located at "${nodeLocation}"`
+      )
+      throw err
+    }
   }
-  // Fetch plugins, if any
+
   config.plugins = config.plugins.map(resolvePlugin)
 
-  config = getPluginHooks(config.plugins, 'config').reduce(
-    (curr, config) => config(curr),
-    config
-  )
+  const configHook = makeHookReducer(config.plugins, 'config')
+  config = await configHook(config)
 
   return config
 }
 
-const buildConfigFromPath = configPath => {
+const buildConfigFromPath = async configPath => {
   const filename = nodePath.resolve(configPath)
   delete require.cache[filename]
   try {
@@ -195,30 +214,21 @@ const buildConfigFromPath = configPath => {
   }
 }
 
-const fromFile = (configPath = DEFAULT_PATH_FOR_STATIC_CONFIG, subscribe) => {
-  const config = buildConfigFromPath(configPath)
+// Retrieves the static.config.js from the current project directory
+export default (async function getConfig(
+  configPath = DEFAULT_PATH_FOR_STATIC_CONFIG,
+  subscription
+) {
+  const config = await buildConfigFromPath(configPath)
 
-  if (subscribe) {
-    chokidar.watch(configPath).on('all', () => {
-      subscribe(buildConfigFromPath(configPath))
+  if (subscription) {
+    // If subscribing, return a never ending promise
+    return new Promise(() => {
+      chokidar.watch(configPath).on('all', async () => {
+        subscription(await buildConfigFromPath(configPath))
+      })
     })
   }
 
   return config
-}
-
-// Retrieves the static.config.js from the current project directory
-export default (async function getConfig(customConfig, cb) {
-  if (typeof customConfig === 'object') {
-    // return a custom config obj
-    const builtConfig = buildConfigation(customConfig)
-    if (cb) {
-      cb(builtConfig)
-    }
-    return builtConfig
-  }
-
-  // return a custom config file location
-  // defaults to constant paath for static config
-  return fromFile(customConfig, cb)
 })

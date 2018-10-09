@@ -1,5 +1,8 @@
 let ignorePath
 
+// Allow as much stack tracing as possible
+Error.stackTraceLimit = Infinity
+
 require('@babel/register')({
   ignore: [
     function babelIgnore(filename) {
