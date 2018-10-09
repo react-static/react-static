@@ -3544,9 +3544,9 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-css-chunks-webpack-plugin@^3.1.2-beta.2:
-  version "3.1.2-beta.5"
-  resolved "https://registry.yarnpkg.com/extract-css-chunks-webpack-plugin/-/extract-css-chunks-webpack-plugin-3.1.2-beta.5.tgz#aa6d5c62cc14054f0ac61997bf8dbdc991c8bf11"
+extract-css-chunks-webpack-plugin@^3.2.1-alpha.0:
+  version "3.2.1-alpha.0"
+  resolved "https://registry.yarnpkg.com/extract-css-chunks-webpack-plugin/-/extract-css-chunks-webpack-plugin-3.2.1-alpha.0.tgz#a3302b79cd135c698f518c2a02928c649cf09965"
   dependencies:
     loader-utils "^1.1.0"
     lodash "^4.17.5"
