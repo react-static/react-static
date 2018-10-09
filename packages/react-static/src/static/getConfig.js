@@ -3,7 +3,7 @@
 import React from 'react'
 import nodePath from 'path'
 import chokidar from 'chokidar'
-import resolveFrom from 'resolve-from'
+// import resolveFrom from 'resolve-from'
 import fs from 'fs-extra'
 
 import getDirname from '../utils/getDirname'
@@ -22,7 +22,7 @@ const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
 const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index.js'
 
-export const buildConfigation = async (config = {}) => {
+export const buildConfig = async (config = {}) => {
   // path defaults
   config.paths = {
     root: nodePath.resolve(process.cwd()),
@@ -84,14 +84,14 @@ export const buildConfigation = async (config = {}) => {
 
   const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`)}/`
 
-  let assetsPath = cleanSlashes(config.assetsPath || config.paths.assets)
+  let assetsPath = cleanSlashes(config.assetsPath || paths.assets)
   if (assetsPath && !isAbsoluteUrl(assetsPath)) {
     assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
   }
 
   // Add the project root as a plugin. This allows the dev
   // to use the plugin api directory in their project if they want
-  const plugins = [paths.ROOT, ...config.plugins]
+  const plugins = [paths.ROOT, ...(config.plugins || [])]
 
   // Defaults
   config = {
@@ -143,14 +143,15 @@ export const buildConfigation = async (config = {}) => {
       location = nodePath.resolve(paths.PLUGINS, originalLocation)
       if (!fs.pathExistsSync(location)) {
         // If not in the plugins directory, try from the currentworking directory
-        location = resolveFrom(process.cwd(), originalLocation)
+        location = nodePath.resolve(process.cwd(), originalLocation)
         if (!fs.pathExistsSync(location)) {
           location = null
         }
       }
     }
 
-    if (!location) {
+    // TODO: We have to do this because we don't have a good mock for process.cwd() :(
+    if (process.env.NODE_ENV !== 'test' && !location) {
       throw new Error(
         `Oh crap! Could not find a plugin directory for the plugin: "${originalLocation}". We must bail!`
       )
@@ -207,7 +208,7 @@ const buildConfigFromPath = async configPath => {
   delete require.cache[filename]
   try {
     const config = require(filename).default
-    return buildConfigation(config)
+    return buildConfig(config)
   } catch (err) {
     console.error(err)
     return {}

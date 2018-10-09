@@ -1,4 +1,4 @@
-import getConfig, { buildConfigation } from '../getConfig'
+import getConfig, { buildConfig } from '../getConfig'
 import defaultConfigDevelopment from '../__mocks__/defaultConfigDevelopment.mock'
 import defaultConfigProduction from '../__mocks__/defaultConfigProduction.mock'
 
@@ -17,7 +17,7 @@ const testConfiguration = (configuration, configurationMock) => {
   expect(configuration.getRoutes).toBeInstanceOf(Function)
 }
 
-describe('buildConfigation', () => {
+describe('buildConfig', () => {
   let reactStaticEnviroment
   let reactStaticPrefetchRate
   let reactStaticDisableRouteInfoWarning
@@ -35,67 +35,67 @@ describe('buildConfigation', () => {
   })
 
   describe('default configuration', () => {
-    test('when REACT_STATIC_ENV is development', () => {
+    test('when REACT_STATIC_ENV is development', async () => {
       process.env.REACT_STATIC_ENV = 'development'
 
-      const configuration = buildConfigation()
+      const configuration = await buildConfig()
 
       testConfiguration(configuration, defaultConfigDevelopment)
     })
 
-    it('when REACT_STATIC_ENV is production', () => {
+    it('when REACT_STATIC_ENV is production', async () => {
       process.env.REACT_STATIC_ENV = 'production'
 
-      const configuration = buildConfigation()
+      const configuration = await buildConfig()
 
       testConfiguration(configuration, defaultConfigProduction)
     })
   })
 
-  test('REACT_STATIC_PREFETCH_RATE is set by the prefetchRate (default)', () => {
+  test('REACT_STATIC_PREFETCH_RATE is set by the prefetchRate (default)', async () => {
     process.env.REACT_STATIC_PREFETCH_RATE = null
 
-    buildConfigation()
+    await buildConfig()
 
     expect(process.env.REACT_STATIC_PREFETCH_RATE).toBe('3')
   })
 
-  test('REACT_STATIC_PREFETCH_RATE is set by the prefetchRate (from config)', () => {
+  test('REACT_STATIC_PREFETCH_RATE is set by the prefetchRate (from config)', async () => {
     process.env.REACT_STATIC_PREFETCH_RATE = null
 
-    buildConfigation({ prefetchRate: 10 })
+    await buildConfig({ prefetchRate: 10 })
 
     expect(process.env.REACT_STATIC_PREFETCH_RATE).toBe('10')
   })
 
-  test('REACT_STATIC_DISABLE_ROUTE_INFO_WARNING is set by the disableRouteInfoWarning (default)', () => {
+  test('REACT_STATIC_DISABLE_ROUTE_INFO_WARNING is set by the disableRouteInfoWarning (default)', async () => {
     process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = null
 
-    buildConfigation()
+    await buildConfig()
 
     expect(process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING).toBe('false')
   })
 
-  test('REACT_STATIC_DISABLE_ROUTE_INFO_WARNING is set by the disableRouteInfoWarning (from config)', () => {
+  test('REACT_STATIC_DISABLE_ROUTE_INFO_WARNING is set by the disableRouteInfoWarning (from config)', async () => {
     process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = null
 
-    buildConfigation({ disableRouteInfoWarning: true })
+    await buildConfig({ disableRouteInfoWarning: true })
 
     expect(process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING).toBe('true')
   })
 
-  test('REACT_STATIC_DISABLE_ROUTE_PREFIXING is set by the disableRouteInfoWarning (default)', () => {
+  test('REACT_STATIC_DISABLE_ROUTE_PREFIXING is set by the disableRouteInfoWarning (default)', async () => {
     process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = null
 
-    buildConfigation()
+    await buildConfig()
 
     expect(process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING).toBe('false')
   })
 
-  test('REACT_STATIC_DISABLE_ROUTE_PREFIXING is set by the disableRouteInfoWarning (from config)', () => {
+  test('REACT_STATIC_DISABLE_ROUTE_PREFIXING is set by the disableRouteInfoWarning (from config)', async () => {
     process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = null
 
-    buildConfigation({ disableRoutePrefixing: true })
+    await buildConfig({ disableRoutePrefixing: true })
 
     expect(process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING).toBe('true')
   })
@@ -138,19 +138,6 @@ describe('getConfig', () => {
       testConfiguration(configuration, {
         ...defaultConfigProduction,
         entry: 'path/to/entry/index.js',
-      })
-    })
-  })
-
-  describe('when provided a configuration', () => {
-    it('should return a merged configuration', async () => {
-      const configuration = await getConfig({
-        entry: 'another/path/to/entry/index.js',
-      })
-
-      testConfiguration(configuration, {
-        ...defaultConfigProduction,
-        entry: 'another/path/to/entry/index.js',
       })
     })
   })

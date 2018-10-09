@@ -22,6 +22,7 @@
 - `config.usePreact` is no longer an option in the `static.config.js` file. Use the `react-static-plugin-preact` plugin.
 - A new loader for external JS files is now used after the normal `jsLoader` called `jsLoaderExternal`. It is responsible for handling all javascript files that are not located in your projects source.
 - The Routes (and `react-static-routes`) import has been replaced by simply doing `import { Routes } from 'react-static'`. Under the hood, this uses a webpack alias to point to the generated `dist/react-static-routes.js` file, and thus won't confuse linters or IDEs like codesandbox :).
+- Passing an object as the config to react-static is no longer supported. You must pass a location of the root of the project.
 
 #### Fixes & Optimizations
 
