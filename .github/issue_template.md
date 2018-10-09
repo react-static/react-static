@@ -33,9 +33,9 @@ If you answered "No":
 
 ### Environment
 
-1.  `react-static -v`:
+1.  `react-static -V`:
 2.  `node -v`:
-3.  `yarn --version or npm -v`:
+3.  `npm -v`:
 4.  Operating system:
 5.  Browser and version (if relevant):
 

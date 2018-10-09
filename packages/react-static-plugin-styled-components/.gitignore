@@ -1,0 +1,5 @@
+.history
+lib.js
+node_modules
+*.log
+.DS_Store
