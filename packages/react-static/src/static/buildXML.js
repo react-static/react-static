@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import nodePath from 'path'
 
-import { pathJoin } from '../utils/shared'
+import { pathJoin } from '../utils'
 
 const REGEX_TO_GET_LAST_SLASH = /\/{1,}$/gm
 

@@ -24,3 +24,5 @@ package-lock.json
 tmp
 yarn-debug.log*
 yarn-error.log*
+packages/*/node.api.js
+packages/*/browser.api.js

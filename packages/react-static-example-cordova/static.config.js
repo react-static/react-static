@@ -17,10 +17,8 @@ export default {
     return html
   },
   Document: class CustomHtml extends Component {
-    render () {
-      const {
-        Html, Head, Body, children, renderMeta,
-      } = this.props
+    render() {
+      const { Html, Head, Body, children, renderMeta } = this.props
 
       return (
         <Html>
@@ -53,6 +51,7 @@ export default {
     // Serve from the ios build folder
     contentBase: path.resolve(__dirname, './platforms/ios/www/'),
   },
+  // TODO: This is deprecated, use config.hooks.webpack
   webpack: (config, { stage }) => {
     if (stage !== 'dev') {
       // Cordova serves from file, so relative links, please.
@@ -63,14 +62,20 @@ export default {
   onStart: async () => {
     // Replace content src with webpack dev server
     const cordovaConfig = await fs.readFile(filePath, 'utf8')
-    const replacement = cordovaConfig.replace('src="index.html"', 'src="http://localhost:3000"')
+    const replacement = cordovaConfig.replace(
+      'src="index.html"',
+      'src="http://localhost:3000"'
+    )
     await fs.writeFile(filePath, replacement, 'utf8')
     execSync('cordova run', { stdio: [null, null, 2] })
   },
   onBuild: async () => {
     // Replace content src with index.html
     const cordovaConfig = await fs.readFile(filePath, 'utf8')
-    const replacement = cordovaConfig.replace('src="http://localhost:3000"', 'src="index.html"')
+    const replacement = cordovaConfig.replace(
+      'src="http://localhost:3000"',
+      'src="index.html"'
+    )
     await fs.writeFile(filePath, replacement, 'utf8')
   },
 }

@@ -4,7 +4,7 @@ export class DefaultDocument extends Component {
   render() {
     const { Html, Head, Body, children } = this.props
     return (
-      <Html lang="en-US">
+      <Html>
         <Head>
           <meta charSet="UTF-8" />
           <meta
@@ -19,7 +19,7 @@ export class DefaultDocument extends Component {
 }
 
 export const Html = ({ children, ...rest }) => (
-  <html lang="en" {...rest}>
+  <html lang="en-US" {...rest}>
     {children}
   </html>
 )

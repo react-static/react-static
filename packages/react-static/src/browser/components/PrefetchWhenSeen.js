@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { cleanPath } from '../../utils/shared'
+import { cleanPath } from '../../utils/browser'
 import { prefetch } from '../'
 
 const ioIsSupported =

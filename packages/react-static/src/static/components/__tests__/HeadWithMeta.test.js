@@ -36,8 +36,8 @@ describe('HeadWithMeta', () => {
     }
   })
 
-  test('when route is a static route', () => {
-    const HeadWithMeta = makeHeadWithMeta(data)
+  test('when route is a static route', async () => {
+    const HeadWithMeta = await makeHeadWithMeta(data)
 
     const headWithMeta = mount(
       <HeadWithMeta className="body">
@@ -48,9 +48,9 @@ describe('HeadWithMeta', () => {
     expect(headWithMeta).toMatchSnapshot()
   })
 
-  test('when route is a redirect route', () => {
+  test('when route is a redirect route', async () => {
     data.route.redirect = true
-    const HeadWithMeta = makeHeadWithMeta(data)
+    const HeadWithMeta = await makeHeadWithMeta(data)
 
     const headWithMeta = mount(
       <HeadWithMeta className="body">
@@ -61,9 +61,9 @@ describe('HeadWithMeta', () => {
     expect(headWithMeta).toMatchSnapshot()
   })
 
-  test('when route has inline CSS', () => {
+  test('when route has inline CSS', async () => {
     data.config.inlineCss = true
-    const HeadWithMeta = makeHeadWithMeta(data)
+    const HeadWithMeta = await makeHeadWithMeta(data)
 
     const headWithMeta = mount(
       <HeadWithMeta className="body">
@@ -74,8 +74,8 @@ describe('HeadWithMeta', () => {
     expect(headWithMeta).toMatchSnapshot()
   })
 
-  test('when route has title as child', () => {
-    const HeadWithMeta = makeHeadWithMeta(data)
+  test('when route has title as child', async () => {
+    const HeadWithMeta = await makeHeadWithMeta(data)
 
     const headWithMeta = mount(
       <HeadWithMeta className="body">
@@ -87,8 +87,8 @@ describe('HeadWithMeta', () => {
     expect(headWithMeta).toMatchSnapshot()
   })
 
-  test('when route has no helmet title', () => {
-    const HeadWithMeta = makeHeadWithMeta({
+  test('when route has no helmet title', async () => {
+    const HeadWithMeta = await makeHeadWithMeta({
       ...data,
       head: {
         ...data.head,

@@ -1,5 +1,5 @@
 import fsExtra from 'fs-extra'
-import buildXMLandRSS, {
+import buildXML, {
   getPermaLink,
   makeGenerateRouteXML,
   generateXML,
@@ -95,7 +95,7 @@ describe('when custom properties are defined', () => {
     it('should not write a sitemap', () => {
       const spy = jest.spyOn(fsExtra, 'writeFile').mockImplementation(() => {})
 
-      buildXMLandRSS({ config: {} })
+      buildXML({ config: {} })
 
       expect(spy).not.toHaveBeenCalled()
     })
@@ -120,7 +120,7 @@ describe('when custom properties are defined', () => {
       },
     }
 
-    buildXMLandRSS({ config })
+    buildXML({ config })
 
     expect(fn).toHaveBeenCalledTimes(1)
     expect(fn.mock.calls[0][0]).toBe('path/to/dist/sitemap.xml')

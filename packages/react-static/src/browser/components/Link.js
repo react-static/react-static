@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink as ReactRouterNavLink } from 'react-router-dom'
 //
-import { isObject } from '../../utils/shared'
+import { isObject } from '../../utils/browser'
 import PrefetchWhenSeen from './PrefetchWhenSeen'
 
 //

@@ -2,11 +2,21 @@
   "name": "react-static-plugin-emotion",
   "version": "6.0.0-beta.26",
   "description": "A React-Static plugin that adds CSS-in-JS/SSR support for emotion & react-emotion",
-  "main": "index.js",
+  "main": "node.api.js",
   "repository": "https://github.com/nozzle/react-static-plugin-emotion.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "build": "babel src --out-dir .",
+    "watch": "babel src --out-dir . -w",
+    "preversion": "yarn build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.53",
+    "@babel/core": "^7.0.0-beta.53",
+    "@babel/preset-env": "^7.0.0-beta.53"
+  },
   "dependencies": {
     "emotion": "^9.2.5",
     "emotion-server": "^9.2.5",

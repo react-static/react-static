@@ -6,9 +6,8 @@ import glob from 'glob'
 import path from 'path'
 
 import { DefaultDocument } from './RootComponents'
-import { poolAll } from '../utils/shared'
+import { poolAll, progress } from '../utils'
 import exportRoute from './exportRoute'
-import { progress } from '../utils'
 
 export default async ({ config, routes, siteData, clientStats }) => {
   const htmlProgress = progress(routes.length)

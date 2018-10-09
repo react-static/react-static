@@ -1,4 +1,4 @@
-import { deprecate } from './utils/shared'
+import { deprecate } from './utils/browser'
 import { withRouteData, withSiteData } from './browser/'
 
 //
@@ -37,7 +37,7 @@ export { prefetch, onLoading } from './browser/'
 export { default as scrollTo } from './utils/scrollTo'
 
 // Private Utils
-export { cleanPath } from './utils/shared'
+export { cleanPath } from './utils/browser'
 
 // Deprecations
 export const getRouteProps = (...args) => {

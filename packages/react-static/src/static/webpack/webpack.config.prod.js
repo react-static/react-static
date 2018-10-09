@@ -67,6 +67,7 @@ function common(config) {
       filename: '[name].[chunkHash:8].css',
     })
   }
+
   return {
     mode: 'production',
     context: path.resolve(__dirname, '../../../node_modules'),
@@ -78,6 +79,7 @@ function common(config) {
       publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
     },
     optimization: {
+      sideEffects: true,
       minimize: true,
       minimizer: [
         new UglifyJsPlugin({

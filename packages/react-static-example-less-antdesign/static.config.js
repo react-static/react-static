@@ -30,7 +30,9 @@ export default {
     title: 'React Static',
   }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    const { data: posts } = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts'
+    )
     return [
       {
         path: '/blog',
@@ -54,16 +56,17 @@ export default {
     return html
   },
   Document: class CustomHtml extends Component {
-    render () {
-      const {
-        Html, Head, Body, children, renderMeta,
-      } = this.props
+    render() {
+      const { Html, Head, Body, children, renderMeta } = this.props
 
       return (
         <Html>
           <Head>
             <meta charSet="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
             {renderMeta.styleTags}
           </Head>
           <Body>{children}</Body>
@@ -71,6 +74,7 @@ export default {
       )
     }
   },
+  // TODO: This is deprecated, use config.hooks.webpack
   webpack: (config, { stage, defaultLoaders }) => {
     /*
     * TypeScript Support
@@ -178,7 +182,12 @@ export default {
 
     config.module.rules = [
       {
-        oneOf: [jsTsLoader, lessLoader, defaultLoaders.cssLoader, defaultLoaders.fileLoader],
+        oneOf: [
+          jsTsLoader,
+          lessLoader,
+          defaultLoaders.cssLoader,
+          defaultLoaders.fileLoader,
+        ],
       },
     ]
 

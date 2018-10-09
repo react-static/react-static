@@ -5,7 +5,7 @@ import createMemoryHistory from 'history/createMemoryHistory'
 import createHashHistory from 'history/createHashHistory'
 import { Router as ReactRouter, StaticRouter } from 'react-router-dom'
 //
-import { cleanPath } from '../../utils/shared'
+import { cleanPath } from '../../utils/browser'
 import {
   getRouteInfo,
   propsByHash,

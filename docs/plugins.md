@@ -1,93 +1,103 @@
 # Plugins
 
-React Static ships with a simple plugin system that allows both plugin creators and site developers extend React-Static's built-in functionality.
+React Static ships with a simple plugin API that allows both plugin creators and site developers extend React-Static's core functionality.
+
+## Official Plugins
+
+See the [/docs#plugins](Readme's Plugin section) for the official list of supported react-static plugins
+
+## Installing A Plugin
+
+There are 2 ways to install plugins:
+
+- **NPM**. You can install any react-static compatible plugin via `npm`. Once it is installed, it can be used by React Static.
+- **Locally via the `/plugins` directory** - If you have a custom plugin or are developing a plugin locally, you can place your plugin directory in the `/plugins` directory in your project roo. It can then be used by React Static.
 
 ## Using Plugins
 
-You can use plugins 3 different ways:
+Once a plugin is installed, you can add use and configure it by adding it to the `plugins` array in your `static.config.js`:
 
-- `static.config.js` - Little did you know your `static.config.js` file is already a fancy built-in plugin! Any [plugin hooks](#plugin-api) documented here can also be used directly in your `static.config.js`.
-- The `/plugins/` directory in the root of your project. Any file you place here can be added to the `plugins: []` array in your `static.config.js`.
-- By installing it as a `node_module`. You can install any react-static compatible plugin via `npm` and add it to the `plugins: []` array in your `static.config.js`.
+```javascript
+// static.config.js
+
+export default {
+  plugins: [
+    'react-static-plugin-emotion',
+    'my-custom-plugin'
+  ]
+}
+```
+
+#### Plugin Execution and Order
+
+**ORDER IS IMPORTANT!!!** Plugins are executed in the order that they are defined in the `plugins: []` array in the `static.config.js`. Also, any methods used directory in the `static.config.js` will be performed last.
 
 #### Plugin Resolution
-
 Plugins are resolved in this order:
 
 1.  Plugins with an absolute path. Eg. `~/path/to/my/plugin.js` would resolve to that path.
 2.  Plugins found in the `/plugins` directory of your project root. Eg. `myPlugin` would resolve to `/plugins/myPlugins.js`.
 3.  Plugins found in `node_modules`. Eg. `react-static-plugin-emotion` would resolve to `node_modules/react-static-plugin-emotion`.
 
-#### Plugin Options
+## Plugin Options
 
 Plugins can be passed options by using an array (similar to how babel and eslint work).
 - The first item in the array is the `plugin name string`
 - The second item in the array is the `options object` that will be passed to the plugin
 
-
 ```javascript
 export default {
   plugins: [
     [
-      'react-static-plugin-awesome',
+      'react-static-plugin-awesomeness',
       {
-        awesomeOption: true,
+        isAwesome: true,
       }
     ]
   ]
 }
 ```
 
-## Official Plugins
+## Plugin API
 
-See the [/docs#plugins](Readme's Plugin section) for the official list of supported react-static plugins
-
-## Building A Plugin
-
-A plugin is currently comprised of either
-- A single `plugin-name.js` file, which is provided the **node/server** plugin API
-- A plugin directory containing
-  - An `index.js` file, which is provided the **node/server** plugin API
-  - A `browser.js` file, which is provided the **browser** plugin API
+Plugins at the end of the day, are just a `directory` with the following files at the directory's root:
+- `node.api.js` - Exposes the [Node Plugin API](#node-plugin-api)
+- `browser.api.js` - Exposes the [Browser Plugin API](#browser-plugin-api)
   
-The `index.js` file is used in the server-side/cli/node context and implements all of the [Node Plugin API hooks](#node-plugin-api) found below
-The `browser.js` file is used in the browser context and implements all of the [Node Plugin API hooks](#browser-plugin-api) found below
-  
-## Why separate server and browser entry points for plugins?
-We use separate entry points for server and browser context so as to not create conflict with imports that may not be supported in both environments. This is opposite a react-static app, where you are advised to write both browser and node-safe code throughout.
+## Why separate node and browser entry points for plugins?
+We use separate entry points for node and browser context so as to not create conflict with imports that may not be supported in both environments.
 
-Both plugin file types must export a `function` as the `default export`. That function recieves **plugin options from the user (optional)** and then **returns an `object`** providing any **hook methods** you need to implement
+To use either API, the corresponding file must:
+- Provide a `function` as the `default export`
+- That function recieves **plugin options from the user (optional)** 
+- **Return an `object`** providing any **API methods** to implement
 
-Here is an example of what a plugin typically looks like:
+Here is an **pseudo** example of what a plugin typically looks like:
 
 ```javascript
 export default pluginOptions => ({
-  someHook: (hookItem, hookOptions) => {
+  reducerMethod: (Item, Options) => {
     // Do something amazing!
-    return hookItem
+    return Item
   },
-  anotherHook: (hookItem, hookOptions) => {
+  mappedMethod: (Options) => {
     // Do something amazing!
-    return hookItem
+    return true
   }
 })
 ```
 
-## Plugin Execution and Order
-
-**ORDER IS IMPORTANT!!!** Plugins are executed in the order that they are defined in the `plugins: []` array in the `static.config.js`. Also, any hooks used directory in the `static.config.js` will be performed last.
-
-## Plugins must be compiled if installed via node_modules
+#### Plugins must be compiled if installed via node_modules
 
 If a plugin is installed via any method other than the `plugins` directory, it will not be transformed by react-static's `.babelrc` runtime, so you **must compile your plugin to be ES5 compatible if you distribute it**. This can be done via `@babel/core` and the babel-cli. The [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components) plugin does this and is a prime example to follow.
 
 ## Node Plugin API
 
-Plugins hooks are executed throughout the lifecycle of a react-static build in the order below:
+Plugins methods are executed throughout the lifecycle of a react-static build in the order below:
 
 #### `config: Function`
 
-A hook to modify the final `static.config.js` for React Static.
+A method to modify the final `static.config.js` for React Static.
 
 - Arguments:
   - `config{}` - The `static.config.js`
@@ -108,6 +118,7 @@ Append arbitrary JSX to the Head component of the application.
 ```javascript
 Head: ({ meta }) => (
   <React.Fragment>
+    <link rel="stylesheet" href="..." />
     <link rel="stylesheet" href="..." />
   </React.Fragment>
 )
@@ -159,6 +170,4 @@ An array of plugins that this plugin depends on. Follows the same format as `sta
 
 ## Browser Plugin API
 
-#### `plugins: Array(plugin)`
-
-An array of plugins that this plugin depends on. Follows the same format as `static.config.js` does for importing plugins and options.
+There are no browser methods yet! Let's add some :)

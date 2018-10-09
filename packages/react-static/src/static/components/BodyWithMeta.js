@@ -1,5 +1,5 @@
 import React from 'react'
-import { pathJoin, makePathAbsolute } from '../../utils/shared'
+import { pathJoin, makePathAbsolute } from '../../utils'
 
 const REGEX_FOR_SCRIPT = /<(\/)?(script)/gi
 

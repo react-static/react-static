@@ -6,9 +6,10 @@ import fs from 'fs-extra'
 import nodeGlob from 'glob'
 import { performance } from 'perf_hooks'
 //
-import { Html, Head, Body } from '../static/RootComponents'
+import { DefaultDocument, Html, Head, Body } from '../static/RootComponents'
 
-//
+// Export all shared utils
+export * from './browser'
 
 export { default as progress } from './progress'
 export const ChalkColor = {
@@ -43,11 +44,10 @@ export function copyPublicFolder(config) {
 }
 
 export async function createIndexFilePlaceholder({
-  config,
-  Component,
-  siteData,
+  config: { Document, paths, siteData },
 }) {
   // Render the base document component to string with siteprops
+  const Component = Document || DefaultDocument
   const DocumentHtml = renderToString(
     <Component
       renderMeta={{}}
@@ -62,15 +62,7 @@ export async function createIndexFilePlaceholder({
   const html = `<!DOCTYPE html>${DocumentHtml}`
 
   // Write the Document to index.html
-  await fs.outputFile(config.paths.HTML_TEMPLATE, html)
-}
-
-export function isArray(a) {
-  return Array.isArray(a)
-}
-
-export function isObject(a) {
-  return !Array.isArray(a) && typeof a === 'object' && a !== null
+  await fs.outputFile(paths.HTML_TEMPLATE, html)
 }
 
 export function glob(path, options = {}) {

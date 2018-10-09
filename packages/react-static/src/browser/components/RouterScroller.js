@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import RAF from 'raf'
 //
-import { unwrapArray } from '../../utils/shared'
+import { unwrapArray } from '../../utils/browser'
 import scrollTo from '../../utils/scrollTo'
 
 const RouterScroller = withRouter(

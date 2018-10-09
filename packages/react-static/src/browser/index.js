@@ -1,7 +1,7 @@
 /* eslint-disable import/no-mutable-exports */
 
 import axios from 'axios'
-import { createPool, cleanPath, pathJoin } from '../utils/shared'
+import { createPool, cleanPath, pathJoin } from '../utils/browser'
 
 export const routeInfoByPath = {}
 export const propsByHash = {}

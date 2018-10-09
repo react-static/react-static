@@ -1,7 +1,6 @@
 import fs from 'fs-extra'
 //
-import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
-import getConfig from '../static/getConfig'
+import { exportRoutes, buildXML, prepareRoutes, getConfig } from '../static'
 
 export default async ({
   config: originalConfig,
@@ -73,7 +72,7 @@ export default async ({
     process.exit(1)
   }
 
-  await buildXMLandRSS({ config })
+  await buildXML({ config })
 
   if (config.onBuild) {
     await config.onBuild({ config })

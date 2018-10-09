@@ -1,41 +1,23 @@
 # Contributing
 
-Below are the rules of contribution! They're here to keep the library running smoothly, protect contributors, and respect everyone's time as an open source developer :)
+We're stoked that you want to help contribute to React Static! Below are a number of ways you can contribute, even if you're not a developer!
 
-### Use the community
+- Give us a shoutout on Twitter and show of your cool site! @reactstaticjs
+- Add a site you've built with React Static to our site list in the Readme
+- Write a quick article about your experience with React Static and what you enjoyed/disliked?
+- Help us write more tests!
+- Help us improve our documentation or codebase! You can submit PR's for anything from typos to code comments explaining what a part of the source code does.
+- Help others in our [Spectrum Support Community](https://spectrum.chat/react-static)
+- Review and help fix [issues](https://github.com/nozzle/react-static/issues)
 
-If you plan on contributing to React-Static in any way, we suggest you [click here to sign up for the React-Tools Spectrum community](https://spectrum.chat/react-static). The community is your greatest tool when building new features or fixing bugs :)
+## Getting started with the source code!
 
-### Claim Issues
-
-If you are fixing an issue or bug, please take ownership on it. Too often do multiple devs attempt to fix the same issue at the same time! By claiming it and **stating your estimated timeline** you help triage expectations around the board!
-
-### Open an RFP or discussion for new features. (Requests for Proposals)
-
-If you have an idea for a new feature or optimization, discuss it in an issue or [spectrum thread](https://spectrum.chat/react-static) before coding into the night! It could very well end up that the feature or problem is being solved in another area or that your solution needs some more work to fit into the overal architecture.
-
-## Suggested Dev Environment
-
-* Yarn
-* Prettier
-* Latest LTS release of Node
-
-## Setup & Development
-
-**In `react-static`:**
-
-1.  Install dependencies by running `yarn`
-2.  Run the development watcher with `yarn start`. This will watch all files for changes and build automatically to `lib`
-3.  Link react-static globally using `yarn link`. This will make it available on your machine to other projects.
-4.  Make your changes
-
-**Testing in an example or personal project:**
-
-1.  Install all dependencies by running `yarn`
-2.  Link the project's `react-static` dependency to your linked repo one by running `yarn link react-static`.
-3.  Run `react-static` in your project **via node_modules (not the global cli)**. All examples should have a `yarn start` command that does this for you. This is to ensure the cli is using the linked dependency and not the global CLI (which for now is not linkable via yarn)
-4.  Make your changes
-
-## Testing
-
-Unfortunately, there are no official tests for React-Static yet. If you would like to write the, please do! Now is a great time as the library is very stable. Since we do not have any unit or integration tests in place, please take great care to test your changes on as many examples as possible, including your own in production if necessary.
+* Install the latest stable version of node
+* Install the latest stable version of `yarn` (We use yarn workspaces, so `npm` will not work for development)
+* Clone the `react-static` repo to your machine
+* Run `yarn` in the root of the repository (will install all dependencies (deduped) for all packages)
+* Run a script
+  - `yarn watch` - Watches the core packages for changes and compiles them for development
+  - `yarn build` - Builds all packages for release
+  - `yarn test` - Runs the testing suite for all packages
+  - `yarn startDocs` - Starts the documentation site in development mode

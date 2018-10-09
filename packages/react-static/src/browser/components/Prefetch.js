@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { cleanPath, unwrapArray } from '../../utils/shared'
+import { cleanPath, unwrapArray } from '../../utils/browser'
 import { prefetch } from '../'
 
 export default class Prefetch extends React.Component {
