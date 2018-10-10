@@ -1,13 +1,18 @@
 import React from 'react'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 
-export default options => ({
+export default () => ({
+  webpack: config => {
+    // Make sure the stylesheet instance is the same across the node instance
+    config.externals.push('styled-components')
+    return config
+  },
   // Use beforeRenderToHtml to extract the styles into the page meta
-  beforeRenderToElement: (App, { meta }) => {
-    meta.styleComponentsSheet = new ServerStyleSheet()
-    return props => (
-      <StyleSheetManager sheet={meta.styleComponentsSheet.instance}>
-        <App {...props} />
+  beforeRenderToHtml: (element, { meta }) => {
+    meta.styledComponentsSheet = new ServerStyleSheet()
+    return (
+      <StyleSheetManager sheet={meta.styledComponentsSheet.instance}>
+        {element}
       </StyleSheetManager>
     )
   },
@@ -16,5 +21,5 @@ export default options => ({
     // has been rendered to an html string. So we wait until the head
     // to call the sheet's getStyleElement function
     // and then insert the tag into the Head
-    meta.styleComponentsSheet.getStyleElement(),
+    meta.styledComponentsSheet.getStyleElement(),
 })
