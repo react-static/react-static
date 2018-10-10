@@ -3,7 +3,7 @@
 import React from 'react'
 import nodePath from 'path'
 import chokidar from 'chokidar'
-// import resolveFrom from 'resolve-from'
+import resolveFrom from 'resolve-from'
 import fs from 'fs-extra'
 
 import getDirname from '../utils/getDirname'
@@ -143,7 +143,14 @@ export const buildConfig = async (config = {}) => {
       location = nodePath.resolve(paths.PLUGINS, originalLocation)
       if (!fs.pathExistsSync(location)) {
         // If not in the plugins directory, try from the currentworking directory
-        location = nodePath.resolve(process.cwd(), originalLocation)
+        try {
+          location = resolveFrom(process.cwd(), originalLocation)
+          location = location.includes('.')
+            ? nodePath.resolve(location, '../')
+            : location
+        } catch (err) {
+          //
+        }
         if (!fs.pathExistsSync(location)) {
           location = null
         }
