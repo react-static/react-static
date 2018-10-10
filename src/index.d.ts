@@ -17,12 +17,23 @@ declare module 'react-static' {
   import { Helmet } from 'react-helmet';
   export class Head extends Helmet {}
 
-  export function withRouteData(comp: any): any;
-  export function withSiteData(comp: any): any;
-  export const RouteData: React.Component;
-  export const SiteData: React.Component;
+  export function withRouteData<E extends React.ReactNode>(fn: (data: any) => E): E;
+  export function withSiteData<E extends React.ReactNode>(fn: (data: any) => E): E;
+  export type DataProviderProps<T> = {
+    render(routeData: T): React.ReactNode;
+  } | {
+    children(routeData: T): React.ReactNode;
+  } | {
+    component(routeData: T): React.ReactNode;
+  };
+  export const RouteData: React.StatelessComponent<DataProviderProps<any>>;
+  export const SiteData: React.StatelessComponent<DataProviderProps<any>>;
 
-  export function prefetch(path: any): Promise<any>;
+  export interface PrefetchOptions {
+    type?: 'data' | 'template' | any;
+    priority?: boolean;
+  }
+  export function prefetch(path: string, options: PrefetchOptions): Promise<any>;
   export function scrollTo(
     height: number | React.DOMElement<any, any>,
     options?: {
@@ -30,12 +41,24 @@ declare module 'react-static' {
       offset?: number;
       context?: React.DOMElement<any, any>;
     }
-  ): Promise<any>;
+  ): Promise<void>;
 
-  export const Prefetch: React.Component;
-  export const PrefetchWhenSeen: React.Component;
+  export interface PrefetchProps extends Pick<PrefetchOptions, 'type'> {
+    path: string;
+    onLoad?(data: any, cleanedPath: string);
+  }
+  export const Prefetch: React.StatelessComponent<PrefetchProps>;
+  export const PrefetchWhenSeen: React.StatelessComponent<PrefetchProps>;
 
-  export const Loading: React.Component;
+  export const enum LoadingState {
+    Finished = 0,
+    NotLoaded = 0,
+    Soft = 1,
+    Hard = 2,
+  }
+  export type LoadingEventUnsubscriber = () => void;
+  export function onLoading(fn: (state: LoadingState) => void): LoadingEventUnsubscriber;
+  export const Loading: React.StatelessComponent<DataProviderProps<LoadingState>>;
 
   // Overwriting react-router export as react-static does (no-op)
   export const BrowserRouter: undefined;
