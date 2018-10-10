@@ -86,3 +86,114 @@ declare module 'react-static-routes' {
   class Routes extends React.Component {}
   export default Routes
 }
+
+declare module 'react-static/node' {
+  import { Configuration, RuleSetRule, Stats } from 'webpack';
+  import { Configuration as devConfiguration } from 'webpack-dev-server';
+  export interface DefaultLoaders {
+    jsLoader: RuleSetRule;
+    cssLoader: RuleSetRule;
+    fileLoader: RuleSetRule;
+  }
+  export interface RouteInfo<SiteData> {
+    path: string;
+    templateID: number;
+    sharedPropsHashes: any;
+    localProps: any;
+    allProps: any;
+    siteData: SiteData;
+  }
+  export interface DocumentProps<Meta, SiteData> {
+    Html: React.DetailedHTMLFactory<React.HtmlHTMLAttributes<HTMLHtmlElement>, HTMLHtmlElement>;
+    Head: React.DetailedHTMLFactory<React.HTMLAttributes<HTMLElement>, HTMLHeadElement>;
+    Body: React.DetailedHTMLFactory<React.HTMLAttributes<HTMLBodyElement>, HTMLBodyElement>;
+    children: React.ReactInstance;
+    routeInfo?: RouteInfo<SiteData>;
+    siteData?: SiteData;
+    renderMeta?: Meta;
+  }
+  export interface WebpackArgs {
+    stage: 'prod' | 'dev' | 'node';
+    defaultLoaders: DefaultLoaders;
+  }
+  export type WebpackConfigurator = (config: Configuration, args: WebpackArgs) => Configuration;
+  export interface PathsConfig {
+    root: string;
+    src: string;
+    dist: string;
+    devDist: string;
+    public: string;
+  }
+  export interface ConfigObject<Meta = any, SiteData = any> {
+    entry: string;
+    getRoutes(): Promise<RouteData[]> | RouteData;
+
+    getSiteData(): PromiseLike<SiteData> | SiteData;
+    siteRoot?: string;
+    stagingSiteRoot?: string;
+
+    basePath?: string;
+    stagingBasePath?: string;
+    devBasePath?: string;
+
+    extractCssChunks?: boolean;
+    generateSourceMap?: boolean;
+    Document?: React.StatelessComponent<DocumentProps<Meta, SiteData>>;
+
+    webpack: WebpackConfigurator | WebpackConfigurator[];
+    devServer?: devConfiguration;
+
+    renderToHtml?(
+      render: (component: React.ReactInstance) => string,
+      component: React.StatelessComponent,
+      meata: Meta,
+      webpackStats: Stats,
+    ): string;
+
+    paths?: PathsConfig;
+
+    onStart?(option: { devServer: Readonly<devConfiguration> }): void;
+    onBuild?(): void;
+
+    bundleAnalyzer?: boolean;
+    outputFileRate?: number;
+    prefetchRate?: number;
+    disableRouteInfoWarning?: boolean;
+    disableDuplicateRoutesWarning?: boolean;
+    disableRoutePrefixing?: boolean;
+  }
+
+  export type Config = ConfigObject | string;
+  export function create(name: string, location: string, silent?: boolean): Promise<any>;
+  export function start(config: Config, silent?: boolean): Promise<never>;
+  export function build(config: Config, staging: boolean, debug: boolean, silent?: boolean): Promise<any>;
+  export function rebuildRoutes(): void;
+  export interface BaseRouteRoute {
+    component: string;
+    getData?(resolvedRoute: any, flags: any[], dev: boolean): Promise<any> | any;
+    noindex?: boolean;
+    permalink?: string;
+    lastModified?: string;
+    priority?: number;
+  }
+  export interface NotFoundRoute extends BaseRouteRoute {
+    is404: true;
+  }
+  export interface RedirectRoute extends BaseRouteRoute {
+    redirect: string;
+  }
+  export interface Route extends BaseRouteRoute {
+    path: string;
+    children?: RouteData[];
+  }
+  export type RouteData = NotFoundRoute | Route | RedirectRoute;
+  export interface MakingPageRoutesOption<T> {
+    items: T[];
+    pageSize: number;
+    route: RouteData;
+    decorate(items: T[], pageIndex: number, totalPages: number): RouteData;
+    pageToken: string;
+  }
+
+  export function makePageRoutes<T>(options: MakingPageRoutesOption<T>): RouteData[];
+}
