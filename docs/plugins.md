@@ -4,7 +4,7 @@ React Static ships with a simple plugin API that allows both plugin creators and
 
 ## Official Plugins
 
-See the [Readme's Plugin section](/docs#plugins) for the official list of supported react-static plugins
+See the [Readme's Plugin section](/README.md#plugins) for the official list of supported react-static plugins
 
 ## Installing A Plugin
 
