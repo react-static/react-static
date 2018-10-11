@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { time, timeEnd } from '../utils'
 
-import generateRoutes from './generateRoutes'
+import generateTemplates from './generateTemplates'
 
 export default (async function extractTemplates(config) {
   console.log('=> Building Templates')
@@ -30,7 +30,7 @@ export default (async function extractTemplates(config) {
 
   config.templates = templates
 
-  await generateRoutes({
+  await generateTemplates({
     config,
   })
 

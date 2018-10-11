@@ -13,7 +13,7 @@ export default function({ config }) {
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
-  const reactStaticRoutesPath = path.join(DIST, 'react-static-routes.js')
+  const reactStaticTemplatesPath = path.join(DIST, 'react-static-templates.js')
   const reactStaticBrowserPluginsPath = path.join(
     DIST,
     'react-static-browser-plugins.js'
@@ -43,7 +43,7 @@ export default function({ config }) {
     },
     resolve: {
       alias: {
-        'react-static/routes': reactStaticRoutesPath,
+        'react-static/templates': reactStaticTemplatesPath,
         'react-static/plugins': reactStaticBrowserPluginsPath,
       },
       modules: [

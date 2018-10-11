@@ -180,7 +180,7 @@ export default class Routes extends Component {
 
 `
 
-  const dynamicRoutesPath = path.join(paths.DIST, 'react-static-routes.js')
+  const dynamicRoutesPath = path.join(paths.DIST, 'react-static-templates.js')
   await fs.remove(dynamicRoutesPath)
   await fs.outputFile(dynamicRoutesPath, file)
 }

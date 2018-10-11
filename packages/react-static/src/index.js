@@ -28,7 +28,7 @@ export { default as Redirect } from './browser/components/Redirect'
 export { NavLink, Link } from './browser/components/Link'
 
 // Routes
-export { default as Routes } from 'react-static/routes'
+export { default as Routes } from 'react-static/templates'
 
 // Methods
 export { prefetch, onLoading } from './browser/'

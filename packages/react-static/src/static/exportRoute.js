@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import Helmet from 'react-helmet'
 import { ReportChunks } from 'react-universal-component'
@@ -20,24 +19,6 @@ import { makeBodyWithMeta } from './components/BodyWithMeta'
 let cachedBasePath
 let cachedHrefReplace
 let cachedSrcReplace
-
-// Inject allProps into static build
-class InitialPropsContext extends Component {
-  static childContextTypes = {
-    routeInfo: PropTypes.object,
-    staticURL: PropTypes.string,
-  }
-  getChildContext() {
-    const { embeddedRouteInfo, route } = this.props
-    return {
-      routeInfo: embeddedRouteInfo,
-      staticURL: route.path === '/' ? route.path : `/${route.path}`,
-    }
-  }
-  render() {
-    return this.props.children
-  }
-}
 
 export default (async function exportRoute({
   config,
@@ -97,6 +78,16 @@ export default (async function exportRoute({
   let clientStyleSheets = []
   let clientCss = {}
 
+  // This is somewhat of a dirty hack to get around the limitations
+  // of the new react context. Since it cannot survive across node instances
+  // and bundling, we have to use our own means of transporting the routeInfo
+  // and staticURL to the application code during export.
+  // This also get's cleaned up after export. No lingering allowed.
+  global.__reactStaticExportContext = {
+    routeInfo: embeddedRouteInfo,
+    staticURL: route.path === '/' ? route.path : `/${route.path}`,
+  }
+
   let FinalComp
 
   if (route.redirect) {
@@ -105,7 +96,7 @@ export default (async function exportRoute({
     FinalComp = props => (
       <ReportChunks
         report={chunkName => {
-          // if we are building to a absolute path we must make the detected chunkName relative and matching to the one we set in generateRoutes
+          // if we are building to a absolute path we must make the detected chunkName relative and matching to the one we set in generateTemplates
           if (!config.paths.DIST.startsWith(config.paths.ROOT)) {
             chunkName = absoluteToRelativeChunkName(
               config.paths.ROOT,
@@ -116,12 +107,7 @@ export default (async function exportRoute({
           chunkNames.push(chunkName)
         }}
       >
-        <InitialPropsContext
-          embeddedRouteInfo={embeddedRouteInfo}
-          route={route}
-        >
-          <Comp {...props} />
-        </InitialPropsContext>
+        <Comp {...props} />
       </ReportChunks>
     )
   }
@@ -193,6 +179,10 @@ export default (async function exportRoute({
         clientStats,
       }
     )
+
+    // Since we just rendered to string, it's safe to
+    // null out the exportContext :)
+    global.__reactStaticExportContext = null
 
     // Rum the beforeHtmlToDocument hook
     const beforeHtmlToDocument = makeHookReducer(

@@ -22,7 +22,7 @@ export default (async function prepareRoutes(
   // set the static routes
   process.env.REACT_STATIC_ROUTES_PATH = path.join(
     config.paths.DIST,
-    'react-static-routes.js'
+    'react-static-templates.js'
   )
 
   if (!silent) time(chalk.green('=> [\u2713] Routes Built'))
