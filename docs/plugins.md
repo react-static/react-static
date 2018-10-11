@@ -1,21 +1,21 @@
 # Plugins
 
-React Static ships with a simple plugin API that allows both plugin creators and site developers extend React-Static's core functionality.
+React Static ships with a simple plugin API that allows both plugin creators and site developers to extend React-Static's core functionality.
 
 ## Official Plugins
 
-See the [/docs#plugins](Readme's Plugin section) for the official list of supported react-static plugins
+See the [Readme's Plugin section](/README.md#plugins) for the official list of supported react-static plugins
 
 ## Installing A Plugin
 
 There are 2 ways to install plugins:
 
 - **NPM**. You can install any react-static compatible plugin via `npm`. Once it is installed, it can be used by React Static.
-- **Locally via the `/plugins` directory** - If you have a custom plugin or are developing a plugin locally, you can place your plugin directory in the `/plugins` directory in your project roo. It can then be used by React Static.
+- **Locally via the `/plugins` directory** - If you have a custom plugin or are developing a plugin locally, you can place your plugin directory in the `/plugins` directory in your project root. It can then be used by React Static.
 
 ## Using Plugins
 
-Once a plugin is installed, you can add use and configure it by adding it to the `plugins` array in your `static.config.js`:
+Once a plugin is installed, you can use and configure it by adding it to the `plugins` array in your `static.config.js`:
 
 ```javascript
 // static.config.js
@@ -63,13 +63,13 @@ export default {
 Plugins at the end of the day, are just a `directory` with the following files at the directory's root:
 - `node.api.js` - Exposes the [Node Plugin API](#node-plugin-api)
 - `browser.api.js` - Exposes the [Browser Plugin API](#browser-plugin-api)
-  
+
 ## Why separate node and browser entry points for plugins?
 We use separate entry points for node and browser context so as to not create conflict with imports that may not be supported in both environments.
 
 To use either API, the corresponding file must:
 - Provide a `function` as the `default export`
-- That function recieves **plugin options from the user (optional)** 
+- That function recieves **plugin options from the user (optional)**
 - **Return an `object`** providing any **API methods** to implement
 
 Here is an **pseudo** example of what a plugin typically looks like:

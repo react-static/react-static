@@ -8,7 +8,7 @@ In addition to components, React-Static exports a some simple functions to help 
 
 ### `onLoading`
 
-If you need to imperatively subscribe to React-Static's global loading state, you can use `onLoading`. Via a callback, you have access to a `loading` state, which will be set to `0`, `1`, or `2` depending on the loading state. This changes when react-static is waiting either navigating to a new page or waiting on assets to load (this won't happen often, hopefully not at all). Use this to show a loading indicator if you'd like!
+If you need to imperatively subscribe to React-Static's global loading state, you can use `onLoading`. Via a callback, you have access to a `loading` state, which will be set to `0`, `1`, or `2` depending on the loading state. This changes when react-static is either navigating to a new page or waiting on assets to load (this won't happen often, hopefully not at all). Use this to show a loading indicator if you'd like!
 
 Possible `loading` states:
 
