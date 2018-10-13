@@ -1,4 +1,4 @@
 {
   "extends": "react-static/.babelrc",
-  "plugins": ["babel-plugin-tailwind"]
+  "plugins": ["babel-plugin-tailwind", "react-hot-loader/babel"]
 }
