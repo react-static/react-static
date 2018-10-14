@@ -14,7 +14,7 @@
 */cordova/www
 coverage
 dist
-
+lib
 docs-dist
 examples/*/gitignore
 examples/*/yarn.lock
