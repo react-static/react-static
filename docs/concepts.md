@@ -252,7 +252,7 @@ Examples:
 
 # 404 Handling
 
-Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found. Most static-site servers also default to use the `/404.html` page when a static route cannot be found. This works perfect with react-static, since we export that file for you automatically!
+Making a 404 page in React Static is extremely simple. Define a route with `is404` set to `true` and a `component` path to render the 404 page. Note that no `path` property is needed for a 404 route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found. Most static-site servers also default to use the `/404.html` page when a static route cannot be found. This works perfectly with React Static, since we export that file for you automatically!
 
 # Non-Static Routing
 
@@ -310,7 +310,7 @@ Due to the complexity of maintaining a fully tooled development experience, Reac
 
 # Pagination
 
-Pagination in react-static is no different than any other route, it's just a matter of how you get there. When exporting your routes, you are expected to create a separate route for each page if needed, and only pass data to that route for the items on it.
+Pagination in React Static is no different than any other route, it's just a matter of how you get there. When exporting your routes, you are expected to create a separate route for each page if needed, and only pass data to that route for the items on it.
 
 Here is a very simple proof of concept function that demonstrates how to do this:
 
