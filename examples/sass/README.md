@@ -1,11 +1,11 @@
-# React-Static - Basic Example
+# React Static - SASS Example
 
-This example is the most basic version of react-static available. It includes:
+This example is based on the most basic version of React Static available. It includes:
 - Babel
 - SASS/SCSS imports
 - Image imports
 - File imports
-- SASS Loader
-- Automatic Routing
+- SASS loader
+- Automatic routing
 
 To get started, run `react-static create` and use the `sass` template.

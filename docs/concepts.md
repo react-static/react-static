@@ -19,32 +19,32 @@
 
 # Overview
 
-React-Static is different from most React-based static-site generators. It follows a very natural flow from data all the way to static files, then finally a progressively enhanced react-app. Not only does this provide a safe separation of concern, but by keeping the data pipelining and react templating as separate as possible, your site can be visualized and built in a single pass as a "function of state" from the data you pass it.
+React Static is different from most React-based static-site generators. It follows a very natural flow from data all the way to static files, then finally a progressively enhanced React app. Not only does this provide a safe separation of concerns, but by keeping the data pipelining and React templating as separate as possible, your site can be visualized and built in a single pass as a "function of state" from the data you pass it.
 
 ### Dev Stage
 
-1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMS's, graphql endpoints, etc.
+1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMS's, GraphQL endpoints, etc.
 2.  Using your data, you define or generate **every static route** for your site and supply the appropriate data to each one.
 3.  Simultaneously, you provide each route with the component that should be used to render it.
-4.  Using React-Static's components like `RouteProps` and `SiteProps` you can access the data for each route and use it to render your site!
-5.  React-Static can then export every page in your site with tenacious speed and accuracy.
+4.  Using React Static's components like `RouteProps` and `SiteProps` you can access the data for each route and use it to render your site!
+5.  React Static can then export every page in your site with tenacious speed and accuracy.
     preview
 
 ### Client Stage
 
 1.  On first page load, only the bare minimum of assets are downloaded to show the content as quickly as possible. This includes the page specific HTML and CSS that were exported at build time.
 2.  Simultaneously, only the necessary bootstrap code, template code and data needed to mount react for that particular route are **pushed** to the browser.
-3.  React invisibly mounts over the rendered HTML
-4.  The rest of the website is optimistically pre-cached
+3.  React invisibly mounts over the rendered HTML.
+4.  The rest of the website is optimistically pre-cached.
 5.  All further navigation is seemingly instantaneous!
 
 ![Flow Chart](https://github.com/nozzle/react-static/raw/master/media/flow.png)
 
 # CSS and CSS-in-JS
 
-**React-Static ships with a built-in css style-loader,** frequently found in most webpack configurations. You can easily import `css` files and they will be automatically appended to the head of the document when that route is visited.
+**React Static ships with a built-in CSS style-loader,** frequently found in most webpack configurations. You can easily import `css` files and they will be automatically appended to the head of the document when that route is visited.
 
-**React-Static supports all CSS-in-JS libraries.** Each library and solution usually requires a slightly different approach to server-side rendering, so we have provided ample hooks for you to integrate into.
+**React Static supports all CSS-in-JS libraries.** Each library and solution usually requires a slightly different approach to server-side rendering, so we have provided ample hooks for you to integrate into.
 
 ### Existing Templates
 
@@ -63,7 +63,7 @@ The following templates contain the bare-minimum for each css approach to functi
 
 Most, if not all, CSS-in-JS libraries require that you **extract** the styles used in your app during the usage of `ReactDOMServer.renderToString` or `ReactDOMServer.renderToStaticMarkup`, then inject them into the head of your `index.html`.
 
-React-Static allows you to decorate its HTML and Document rendering processes by using the static.config.js [`renderToHtml`](/docs/config/#rendertohtml) and [`Document`](/docs/config/#document) properties. Below are the relevant pieces used in the existing styled-components template:
+React Static allows you to decorate its HTML and Document rendering processes by using the `static.config.js` file's [`renderToHtml`](/docs/config/#rendertohtml) and [`Document`](/docs/config/#document) properties. Below are the relevant pieces used in the existing styled-components template:
 
 ```javascript
 // examples/styled-components/static.config.js
@@ -184,7 +184,7 @@ export default {
 
 # Writing universal, "node-safe" code
 
-Because React-Static code is both used in the browser and node (during build), it's very, very important that your code be "universal" or in other words "node safe". Most of us are used to writing javascript from the browser's perspective, so there are some things to watch out for:
+Because React Static code is both used in the browser and node (during build), it's very, very important that your code be "universal" or in other words "node safe". Most of us are used to writing javascript from the browser's perspective, so there are some things to watch out for:
 
 * Check before using `window`, `document` or browser only APIs. Since these objects do not technically exist in the node environment, make sure you check that they exist before attempting to use them. The easiest way to do this is to keep code that relies on them in `componentDidMount` or inside a condition, eg.
 
@@ -288,11 +288,11 @@ To learn more about how `react-router` components work, visit [React-Router's Do
 
 # Webpack Customization and Plugins
 
-React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, use the handy [`webpack` property in your `static.config.js` file](/docs/config.md/#webpack).
+React Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, use the handy [`webpack` property in your `static.config.js` file](/docs/config.md/#webpack).
 
 # Using Preact in Production
 
-Who wouldn't want to make their JS bundle as small as possible? Simply set `preact: true` in your `static.config.js` and React-Static will ship preact with your site instead of React. This can significantly reduce the size of your app and load times!
+Who wouldn't want to make their JS bundle as small as possible? Simply set `preact: true` in your `static.config.js` and React Static will ship Preact with your site instead of React. This can significantly reduce the size of your app and load times!
 
 **Example**
 
@@ -384,7 +384,7 @@ Of course, you're free to build your pagination routes however you'd like! This 
 
 # Browser Support
 
-React-Static dually relies on lowest common browser support between React itself and your choice of Babel polyfills.
+React Static dually relies on lowest common browser support between React itself and your choice of Babel polyfills.
 
 * All latest versions of modern browsers (Chrome, Firefox, Safari) are supported out of the box.
 * Internet Explorer is supported, but requires using `babel-polyfill` to work (mainly relying on the `Promise` polyfill)

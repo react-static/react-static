@@ -1,8 +1,8 @@
 # Components
 
-React-Static is packed with awesome components to help you be productive. Some are required for React-Static to work properly, others are available merely for your convenience:
+React Static is packed with awesome components to help you be productive. Some are required for React Static to work properly, others are available merely for your convenience:
 
-React-Static Components:
+React Static Components:
 
 * [Router](#router)
 * [Routes](#routes-react-static-routes)
@@ -15,7 +15,7 @@ React-Static Components:
 * [PrefetchWhenSeen](#prefetchwhenseen)
 * [Redirect](#redirect)
 
-React-Router Components:
+React Router Components:
 
 * [Prompt](#prompt)
 * [Route](#route)
@@ -23,7 +23,7 @@ React-Router Components:
 * [matchPath](#matchpath)
 * [withRouter](#withRouter)
 
-# React-Static Components
+# React Static Components
 
 ### `Router`
 

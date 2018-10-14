@@ -1,6 +1,6 @@
-# React-Static - Blank Example
+# React Static - Blank Example
 
-This example is a blank version of react-static. It includes::
+This example is a blank version of React Static. It includes::
 - Babel
 - CSS imports
 - Image imports

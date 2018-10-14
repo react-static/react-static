@@ -14,7 +14,7 @@ A **progressive static-site generator** for React.
 
 [**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
 
-React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of **SEO, site performance, and user/developer experience**.
+React Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of **SEO, site performance, and user/developer experience**.
 
 [![Sponsored By GraphCMS](https://github.com/nozzle/react-static/raw/master/media/graphcms.svg?sanitize=true)](http://graphcms.com/?ref=tlinsley)
 
@@ -35,10 +35,10 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 ## Videos & Tutorials
 
 * [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
-* [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
-* [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
+* [Introducing React Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
+* [Using React Static to replace Create React App](https://youtu.be/1pBzh7IM1s8) (5 min)
 
-## Sites Built with React-Static
+## Sites Built with React Static
 
 * [React-Static.js.org](https://react-static.js.org) ([source](https://github.com/nozzle/react-static/tree/master/www))
 * [React-Charts.js.org](https://react-charts.js.org) ([source](https://github.com/nozzle/react-charts/tree/master/www))
@@ -125,7 +125,7 @@ Once you've installed and test driven sufficiently, you may want to:
 All of the following examples can be used as a template at project creation.
 
 * [Basic](https://github.com/nozzle/react-static/tree/master/examples/basic)
-* [Blank (Create-React-App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
+* [Blank (Create React App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
 * [Preact](https://github.com/nozzle/react-static/tree/master/examples/preact)
 * [Animated Routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes)
 * [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
@@ -133,8 +133,8 @@ All of the following examples can be used as a template at project creation.
 * [Firebase Auth](https://github.com/nozzle/react-static/tree/master/examples/firebase-auth)
 * [Glamorous & Tailwind CSS](https://github.com/nozzle/react-static/tree/master/examples/glamorous-tailwind)
 * [Glamorous](https://github.com/nozzle/react-static/tree/master/examples/glamorous)
-* [LESS & Antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
-* [Styled-Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
+* [LESS & Ant Design](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
+* [Styled Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
 * [Redux](https://github.com/nozzle/react-static/tree/master/examples/redux)
 * [Apollo GraphQL](https://github.com/nozzle/react-static/tree/master/examples/apollo)
 * [Apollo & Redux](https://github.com/nozzle/react-static/tree/master/examples/apollo-redux)
@@ -142,7 +142,7 @@ All of the following examples can be used as a template at project creation.
 * [Cordova (Hybrid App)](https://github.com/nozzle/react-static/tree/master/examples/cordova)
 * [Basic Prismic (Headless CMS)](https://github.com/nozzle/react-static/tree/master/examples/basic-prismic)
 * [GraphCMS](https://github.com/nozzle/react-static/tree/master/examples/graphql-request)
-* [Sass](https://github.com/nozzle/react-static/tree/master/examples/sass)
+* [SASS](https://github.com/nozzle/react-static/tree/master/examples/sass)
 * [Tailwind CSS](https://github.com/nozzle/react-static/tree/master/examples/tailwindcss)
 * [Algolia](https://github.com/nozzle/react-static/tree/master/examples/algolia)
 * [Styled-JSX](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
@@ -151,8 +151,8 @@ All of the following examples can be used as a template at project creation.
 * [Markdown](https://github.com/nozzle/react-static/tree/master/examples/markdown)
 * [Emotion](https://github.com/nozzle/react-static/tree/master/examples/emotion)
 * [Material UI](https://github.com/nozzle/react-static/tree/master/examples/material-ui)
-* [Non Static Routing](https://github.com/nozzle/react-static/tree/master/examples/non-static-routing)
-* [On The Fly Routing](https://github.com/nozzle/react-static/tree/master/examples/on-the-fly-routing)
+* [Non-Static Routing](https://github.com/nozzle/react-static/tree/master/examples/non-static-routing)
+* [On-The-Fly Routing](https://github.com/nozzle/react-static/tree/master/examples/on-the-fly-routing)
 * [Pagination](https://github.com/nozzle/react-static/tree/master/examples/pagination)
 * [Documentation](https://github.com/nozzle/react-static/tree/master/examples/documentation)
 
@@ -170,7 +170,7 @@ Can't find an example? We invite you to write one! Simply copy the `basic` or `b
 
 ## Chat with us on the React Static Spectrum community!
 
-Need some help? Have a quick question? [Click here to sign up for the React-Tools spectrum community](https://spectrum.chat/react-static)! We are constantly answering questions, discussing features and helping each other out!
+Need some help? Have a quick question? [Click here to sign up for the React Static Spectrum community](https://spectrum.chat/react-static)! We are constantly answering questions, discussing features and helping each other out!
 
 ## Contributing
 

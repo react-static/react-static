@@ -11,7 +11,7 @@ class App extends Component {
       <div className="text-center">
         <header className="App-header bg-grey-light text-black p-1">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="text-2xl">Welcome to React-Static</h1>
+          <h1 className="text-2xl">Welcome to React Static</h1>
         </header>
         <p className="text-lg">
           To get started, edit <code>src/App.js</code> and save to reload.
