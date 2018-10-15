@@ -542,3 +542,14 @@ export default {
 }
 ```
 
+### `minLoadTime`
+
+An optional `Number` of milliseconds to show the loading spinner when templates, siteData or routeData are not immediately available. If you are preloading aggressively, you shouldn't see a loader at all, but if a loader is shown, 's a good user experience to make is as un-flashy as possible.
+
+```javascript
+// static.config.js
+export default {
+  minLoadTime: 200
+}
+```
+

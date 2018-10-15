@@ -107,6 +107,7 @@ export const buildConfig = async (config = {}) => {
     outputFileRate: 100,
     extensions: ['.js', '.jsx'],
     getRoutes: async () => DEFAULT_ROUTES,
+    minLoadTime: 200,
     // Config Overrides
     ...config,
     // Materialized Overrides
@@ -121,6 +122,7 @@ export const buildConfig = async (config = {}) => {
   }
 
   // Set env variables to be used client side
+  process.env.REACT_STATIC_MIN_LOAD_TIME = config.minLoadTime
   process.env.REACT_STATIC_PREFETCH_RATE = config.prefetchRate
   process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING =
     config.disableRouteInfoWarning

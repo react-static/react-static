@@ -6,8 +6,8 @@ import onVisible from './utils/Visibility'
 
 // RouteInfo / RouteData
 export const routeInfoByPath = {}
+export const routeErrorByPath = {}
 export const propsByHash = {}
-const erroredPaths = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
 const disableRouteInfoWarning =
@@ -32,29 +32,7 @@ init()
 
 // When in development, init a socket to listen for data changes
 // When the data changes, we invalidate and reload all of the route data
-async function init() {
-  if (
-    process.env.REACT_STATIC_ENV === 'production' &&
-    typeof document !== 'undefined'
-  ) {
-    // Hydrate routeInfoByPath with any window variables
-    const {
-      path,
-      allProps,
-      sharedPropsHashes,
-      templateIndex,
-    } = window.__routeInfo
-
-    // Injest and cache the embedded routeInfo in the page if possible
-    Object.keys(sharedPropsHashes).forEach(propKey => {
-      propsByHash[sharedPropsHashes[propKey]] = allProps[propKey]
-    })
-
-    // In SRR and production, synchronously register the templateIndex for the
-    // initial path
-    registerTemplateIndexForPath(path, templateIndex)
-  }
-
+function init() {
   // In development, we need to open a socket to listen for changes to data
   if (process.env.REACT_STATIC_ENV === 'development') {
     const io = require('socket.io-client')
@@ -114,7 +92,7 @@ export function reloadRouteData() {
   ;[
     routeInfoByPath,
     propsByHash,
-    erroredPaths,
+    routeErrorByPath,
     inflightRouteInfo,
     inflightPropHashes,
   ].forEach(part => {
@@ -127,19 +105,17 @@ export function reloadRouteData() {
 }
 
 export async function getRouteInfo(path, { priority } = {}) {
-  if (typeof document === 'undefined') {
-    return
-  }
-  const originalPath = path
   path = getRoutePath(path)
   // Check the cache first
   if (routeInfoByPath[path]) {
     return routeInfoByPath[path]
   }
-  if (erroredPaths[path]) {
+  // Check for an error or non-existent static route
+  if (routeErrorByPath[path]) {
     return
   }
   let routeInfo
+
   try {
     if (process.env.REACT_STATIC_ENV === 'development') {
       // In dev, request from the webpack dev server
@@ -151,6 +127,7 @@ export async function getRouteInfo(path, { priority } = {}) {
       const { data } = await inflightRouteInfo[path]
       routeInfo = data
     } else {
+      // In production, fetch the JSON file
       const routeInfoRoot =
         (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
           ? process.env.REACT_STATIC_SITE_ROOT
@@ -176,16 +153,9 @@ export async function getRouteInfo(path, { priority } = {}) {
       }
     }
   } catch (err) {
-    erroredPaths[path] = true
-    if (
-      process.env.REACT_STATIC_ENV === 'production' ||
-      disableRouteInfoWarning
-    ) {
-      return
-    }
-    console.warn(
-      `Could not load routeInfo for path: ${originalPath}. If this is a static route, make sure any link to this page is valid! If this is not a static route, you can desregard this warning.`
-    )
+    // If there was an error, mark the path as errored
+    routeErrorByPath[path] = true
+    return
   }
   if (!priority) {
     delete inflightRouteInfo[path]
@@ -265,7 +235,7 @@ export async function prefetchData(path, { priority } = {}) {
     })
   )
 
-  // Cache the entire props for the route
+  // Cache allProps for the route
   routeInfo.allProps = allProps
 
   // Return the props
@@ -292,28 +262,6 @@ export async function prefetchTemplate(path, { priority } = {}) {
     }
     routeInfo.templateLoaded = true
     return Template
-  }
-}
-
-export async function needsPrefetch(path, options = {}) {
-  // Clean the path
-  path = getRoutePath(path)
-
-  if (!path) {
-    return false
-  }
-
-  // Get route info so we can check if path has any data
-  const routeInfo = await getRouteInfo(path, options)
-
-  // Not a static route? Bail out.
-  if (!routeInfo) {
-    return true
-  }
-
-  // Defer to the cache first
-  if (!routeInfo.allProps || !routeInfo.templateLoaded) {
-    return true
   }
 }
 
@@ -344,4 +292,11 @@ export async function prefetch(path, options = {}) {
   }
 
   return data
+}
+
+export function getCurrentRoutePath() {
+  // If in the browser, use the window
+  if (typeof document !== 'undefined') {
+    return getRoutePath(decodeURIComponent(window.location.href))
+  }
 }

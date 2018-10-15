@@ -7,8 +7,10 @@ import {
   getRouteInfo,
   prefetchTemplate,
   registerTemplateIndexForPath,
+  getCurrentRoutePath,
 } from '../'
-import { getRoutePath, getCurrentRoutePath } from '../utils'
+import { withStaticInfo } from './StaticInfo'
+import { getRoutePath, isSSR } from '../utils'
 import Spinner from './Spinner'
 
 let locationSubscribers = []
@@ -41,86 +43,98 @@ function init() {
   }
 }
 
-export default class Routes extends Component {
-  static defaultProps = {
-    Loader: Spinner,
-  }
-  state = {
-    ready: process.env.NODE_ENV === 'production',
-  }
-  componentDidMount() {
-    templateUpdated.cb = () => this.forceUpdate()
-    this.fetchRouteInfo()
-    this.offLocationChange = onLocationChange(() => this.forceUpdate())
-  }
-  componentWillUnmount() {
-    if (this.offLocationChange) this.offLocationChange()
-  }
-  fetchRouteInfo = async () => {
-    const currentRoutePath = getCurrentRoutePath()
-    if (process.env.REACT_STATIC_ENV === 'development') {
-      try {
-        const routeInfo = await getRouteInfo(currentRoutePath, {
-          priority: true,
-        })
-        if (routeInfo) {
-          registerTemplateIndexForPath(
-            currentRoutePath,
-            routeInfo.templateIndex
-          )
+export default withStaticInfo(
+  class Routes extends Component {
+    static defaultProps = {
+      Loader: Spinner,
+    }
+    state = {
+      ready: process.env.NODE_ENV === 'production',
+    }
+    componentDidMount() {
+      templateUpdated.cb = () => this.forceUpdate()
+      this.fetchRouteInfo()
+      this.offLocationChange = onLocationChange(() => this.forceUpdate())
+    }
+    componentWillUnmount() {
+      if (this.offLocationChange) this.offLocationChange()
+    }
+    fetchRouteInfo = async () => {
+      const currentRoutePath = getCurrentRoutePath()
+
+      if (process.env.REACT_STATIC_ENV === 'development') {
+        try {
+          const routeInfo = await getRouteInfo(currentRoutePath, {
+            priority: true,
+          })
+          if (routeInfo) {
+            registerTemplateIndexForPath(
+              currentRoutePath,
+              routeInfo.templateIndex
+            )
+          }
+        } finally {
+          this.setState({ ready: true })
         }
-      } finally {
-        this.setState({ ready: true })
       }
+    }
+    render() {
+      const { children, Loader, staticInfo } = this.props
+      const { ready } = this.state
+
+      const currentRoutePath = isSSR() ? staticInfo.path : getCurrentRoutePath()
+
+      const getComponentForPath = routePath => {
+        // Clean the path
+        routePath = getRoutePath(routePath)
+
+        // Try and get the component
+        let Comp = templates[templateIndexByPath[routePath]]
+
+        // Detect a 404
+        let is404 = routePath === '404'
+        // Detect a non-attempted template
+        if (typeof Comp === 'undefined') {
+          ;(async () => {
+            await Promise.all([
+              prefetchTemplate(routePath),
+              new Promise(resolve =>
+                setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
+              ),
+            ])
+            this.forceUpdate()
+          })()
+          return Loader
+        }
+        // Detect a loading template
+        if (Comp === null) {
+          return Loader
+        }
+        // Detect a failed template
+        if (Comp === false) {
+          if (templateIndexByPath) is404 = true
+          Comp = templates[templateIndexByPath['/404']]
+        }
+        return (newProps = {}) =>
+          Comp ? (
+            <Comp {...newProps} {...(is404 ? { is404: true } : {})} />
+          ) : null
+      }
+
+      const renderProps = {
+        getComponentForPath,
+      }
+
+      if (!ready) {
+        return <Loader />
+      }
+
+      if (children) {
+        return children(renderProps)
+      }
+
+      const Comp = getComponentForPath(currentRoutePath)
+      return <Comp />
     }
   }
-  render() {
-    const { children, Loader } = this.props
-    const { ready } = this.state
-
-    const currentRoutePath = getCurrentRoutePath()
-
-    const getComponentForPath = routePath => {
-      // Clean the path
-      routePath = getRoutePath(routePath)
-      // Try and get the component
-      let Comp = templates[templateIndexByPath[routePath]]
-      // Detect a 404
-      let is404 = routePath === '404'
-      // Detect a non-attempted template
-      if (typeof Comp === 'undefined') {
-        ;(async () => {
-          await prefetchTemplate(routePath)
-          this.forceUpdate()
-        })()
-        return Loader
-      }
-      // Detect a loading template
-      if (Comp === null) {
-        return Loader
-      }
-      // Detect a failed template
-      if (Comp === false) {
-        if (templateIndexByPath) is404 = true
-        Comp = templates[templateIndexByPath['/404']]
-      }
-      return (newProps = {}) =>
-        Comp ? <Comp {...newProps} {...(is404 ? { is404: true } : {})} /> : null
-    }
-
-    const renderProps = {
-      getComponentForPath,
-    }
-
-    if (!ready) {
-      return <Loader />
-    }
-
-    if (children) {
-      return children(renderProps)
-    }
-
-    const Comp = getComponentForPath(currentRoutePath)
-    return <Comp />
-  }
-}
+)

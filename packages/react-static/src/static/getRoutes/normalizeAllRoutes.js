@@ -26,10 +26,12 @@ export default function normalizeAllRoutes(routes = [], config) {
       )
     }
 
+    let isPageExtension
     // If the route exists and is a page route, we need to decorate the
     // page route with this routes information
     if (existingRoute) {
       if (existingRoute.isPage) {
+        isPageExtension = true
         Object.assign(existingRoute, {
           ...normalizedRoute,
           component: existingRoute.component,
@@ -55,10 +57,16 @@ export default function normalizeAllRoutes(routes = [], config) {
       has404 = true
     }
 
+    if (isPageExtension) {
+      return false
+    }
+
     return normalizedRoute
   }
 
-  let normalizedRoutes = routes.map(route => recurseRoute(route))
+  let normalizedRoutes = routes
+    .map(route => recurseRoute(route))
+    .filter(Boolean)
 
   if (!config.tree) {
     const flatRoutes = []

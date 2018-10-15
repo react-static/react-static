@@ -1,10 +1,15 @@
 import React from 'react'
 
-import { prefetch, routeInfoByPath } from '../'
-import { getCurrentRoutePath } from '../utils'
+import {
+  prefetch,
+  routeInfoByPath,
+  routeErrorByPath,
+  getCurrentRoutePath,
+} from '../'
+import { isSSR } from '../utils'
 import Spinner from './Spinner'
+import { withStaticInfo } from './StaticInfo'
 
-const warnedPaths = {}
 let instances = []
 
 // TODO:v6 Do we need this anymore? It's for when data changes in
@@ -15,67 +20,73 @@ let instances = []
 //   instances.forEach(instance => instance.reloadRouteData())
 // }
 
-export default class RouteData extends React.Component {
-  static defaultProps = {
-    Loader: Spinner,
-  }
-  componentDidMount() {
-    if (process.env.REACT_STATIC_ENV === 'development') {
-      instances.push(this)
-      this.loadRouteData()
+const RouteData = withStaticInfo(
+  class RouteData extends React.Component {
+    static defaultProps = {
+      Loader: Spinner,
     }
-  }
-  componentWillUnmount() {
-    if (process.env.REACT_STATIC_ENV === 'development') {
-      instances = instances.filter(d => d !== this)
-    }
-    this.unmounting = true
-  }
-  // reloadRouteData = () =>
-  //   (async () => {
-  //     await this.loadRouteData()
-  //     this.forceUpdate()
-  //   })()
-  loadRouteData = () =>
-    (async () => {
-      const { is404 } = this.props
-      const routePath = getCurrentRoutePath()
-      try {
-        await prefetch(routePath)
-        return new Promise(resolve => {
-          this.setState({ loading: false }, resolve)
-        })
-      } catch (err) {
-        return new Promise(resolve => {
-          this.setState({ loading: false }, resolve)
-        })
+    componentDidMount() {
+      if (typeof document !== 'undefined') {
+        this.loadRouteData()
       }
-    })()
-  render() {
-    const { children, Loader } = this.props
-    const path = getCurrentRoutePath()
-
-    // If we haven't requested the routeInfo yet, or it's loading
-    // Show a spinner
-    if (!routeInfoByPath[path] || routeInfoByPath[path].loading) {
-      return <Loader />
+      instances.push(this)
     }
-
-    if (routeInfoByPath[path]) {
-      // Otherwise, get it from the routeInfoByPath (subsequent client side)
-      return children(routeInfoByPath[path].allProps)
+    componentDidUpdate() {
+      if (typeof document !== 'undefined') {
+        if (this.currentPath !== getCurrentRoutePath()) {
+          this.currentPath = getCurrentRoutePath()
+          this.loadRouteData()
+        }
+      }
     }
-
-    if (!warnedPaths[path]) {
-      warnedPaths[path] = true
-      throw new Error(
-        `React-Static could not find any data for this route: ${path}. If this is a dynamic route, please remove any reliance on RouteData or withRouteData from this routes components`
-      )
+    componentWillUnmount() {
+      instances = instances.filter(d => d !== this)
+      this.unmounting = true
     }
+    // reloadRouteData = () =>
+    //   (async () => {
+    //     await this.loadRouteData()
+    //     this.forceUpdate()
+    //   })()
+    loadRouteData = () =>
+      (async () => {
+        const { is404 } = this.props // TODO:v6 We need to figure out 404 template and data loading
+        await Promise.all([
+          prefetch(getCurrentRoutePath()),
+          new Promise(resolve =>
+            setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
+          ),
+        ])
+        this.setState({ loading: false })
+      })()
+    render() {
+      const { children, Loader, staticInfo } = this.props
+      const path = isSSR() ? staticInfo.path : getCurrentRoutePath()
 
-    return null
+      // If there was an error reported for this path, throw an error
+      if (routeErrorByPath[path]) {
+        throw new Error(
+          `React-Static: <RouteData> could not find any data for this route: ${path}. If this is a dynamic route, please remove any reliance on RouteData or withRouteData from this routes components`
+        )
+      }
+
+      // If we haven't requested the routeInfo yet, or it's loading
+      // Show a spinner
+      if (!routeInfoByPath[path] || !routeInfoByPath[path].allProps) {
+        return <Loader />
+      }
+
+      if (routeInfoByPath[path]) {
+        // Otherwise, get it from the routeInfoByPath (subsequent client side)
+        return children(routeInfoByPath[path].allProps)
+      }
+
+      return null
+    }
   }
-}
+)
+
+export default RouteData
 
 export function withRouteData(Comp, opts = {}) {
   return props => (

@@ -1,7 +1,5 @@
 export { poolAll, createPool } from 'swimmer'
 
-const exportContext = global.__reactStaticExportContext
-
 const REGEX_TO_CUT_TO_ROOT = /(\..+?)\/.*/g
 const REGEX_TO_REMOVE_LEADING_SLASH = /^\/{1,}/g
 const REGEX_TO_REMOVE_TRAILING_SLASH = /\/{1,}$/g
@@ -58,25 +56,6 @@ export function pathJoin(...paths) {
     newPath = newPath.substring(0, newPath.indexOf('?'))
   }
   return newPath
-}
-
-export function getCurrentRoutePath() {
-  // If no routePath is passed
-  // For SSR, return exportContext
-  if (exportContext) {
-    return exportContext.routePath
-  }
-
-  // If in the browser, use the window
-  if (typeof document !== 'undefined') {
-    return getRoutePath(decodeURIComponent(window.location.href))
-  }
-}
-
-export function getEmbeddedRouteInfo() {
-  if (exportContext) {
-    return exportContext.routeInfo
-  }
 }
 
 // This function is for extracting a routePath from a path or string

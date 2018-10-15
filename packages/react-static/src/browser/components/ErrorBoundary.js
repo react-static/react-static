@@ -8,6 +8,9 @@ export default class ErrorBoundary extends React.Component {
     info: false,
   }
   componentDidCatch(error, info) {
+    if (typeof document === 'undefined') {
+      throw error
+    }
     this.setState({ error, info })
   }
   render() {

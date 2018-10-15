@@ -1,4 +1,5 @@
 import { pathJoin } from '../../utils'
+import { getRoutePath } from '../../browser/utils'
 
 export default function normalizeRoute(route, parent = {}) {
   const { path: parentPath = '/' } = parent
@@ -6,7 +7,7 @@ export default function normalizeRoute(route, parent = {}) {
   if (!route.path) {
     if (route.is404) {
       throw new Error(
-        `route.is404 has been deprecated. Use \`path: '404'\` instead! Route: ${JSON.stringify(
+        `route.is404 has been deprecated. Use \`path: '/404'\` instead! Route: ${JSON.stringify(
           route
         )}`
       )
@@ -27,7 +28,7 @@ export default function normalizeRoute(route, parent = {}) {
 
   const normalizedRoute = {
     ...route,
-    path: routePath,
+    path: getRoutePath(routePath),
     originalPath: originalRoutePath,
     noindex:
       typeof route.noindex !== 'undefined' ? route.noindex : parent.noindex,

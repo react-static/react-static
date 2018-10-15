@@ -18,7 +18,6 @@ export {
 export { default as Prefetch } from './browser/components/Prefetch'
 export { default as Routes } from './browser/components/Routes'
 export { default as Root } from './browser/components/Root'
-export { default as Link } from './browser/components/router/Link'
 
 // Migration Hints
 export const Loading = () => {

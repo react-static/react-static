@@ -55,10 +55,10 @@ export default (async function exportRoute({
   // This routeInfo will be saved to disk. It should only include the
   // localProps and hashes to construct all of the props later.
   const routeInfo = {
-    path: routePath,
     templateIndex,
     sharedPropsHashes,
     localProps,
+    path: routePath,
   }
 
   // This embeddedRouteInfo will be inlined into the HTML for this route.
@@ -78,19 +78,14 @@ export default (async function exportRoute({
   let clientStyleSheets = []
   let clientCss = {}
 
-  const routePath = route.path === '/' ? route.path : `/${route.path}`
-
-  // This is somewhat of a dirty hack to get around the limitations
-  // of the new react context. Since it cannot survive across node instances
-  // and bundling, we have to use our own means of transporting the routeInfo
-  // and routePath to the application code during export.
-  // This also get's cleaned up after export. No lingering allowed.
-  global.__reactStaticExportContext = {
-    routeInfo: embeddedRouteInfo,
-    routePath,
-  }
-
   let FinalComp
+
+  // Get the react component from the Comp and
+  // pass it the export context. This uses
+  // reactContext under the hood to pass down
+  // the exportContext, since react's new context
+  // api doesn't survive across bundling.
+  Comp = Comp(embeddedRouteInfo)
 
   if (route.redirect) {
     FinalComp = () => <Redirect fromPath={route.path} to={route.redirect} />
@@ -181,10 +176,6 @@ export default (async function exportRoute({
       }
     )
 
-    // Since we just rendered to string, it's safe to
-    // null out the exportContext :)
-    global.__reactStaticExportContext = null
-
     // Rum the beforeHtmlToDocument hook
     const beforeHtmlToDocument = makeHookReducer(
       config.plugins,
@@ -249,7 +240,7 @@ export default (async function exportRoute({
   // If the route is a 404 page, write it directly to 404.html, instead of
   // inside a directory.
   const htmlFilename =
-    route.path === '404'
+    route.path === '/404'
       ? nodePath.join(config.paths.DIST, '404.html')
       : nodePath.join(config.paths.DIST, route.path, 'index.html')
 
