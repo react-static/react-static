@@ -6,7 +6,7 @@ import flushChunks from 'webpack-flush-chunks'
 import nodePath from 'path'
 import fs from 'fs-extra'
 
-import Redirect from '../browser/components/Redirect'
+import Redirect from './components/Redirect'
 import { makePathAbsolute, makeHookReducer } from '../utils'
 import { absoluteToRelativeChunkName } from '../utils/chunkBuilder'
 
@@ -30,7 +30,7 @@ export default (async function exportRoute({
 }) {
   const {
     sharedPropsHashes,
-    templateID,
+    templateIndex,
     localProps,
     allProps,
     path: routePath,
@@ -56,7 +56,7 @@ export default (async function exportRoute({
   // localProps and hashes to construct all of the props later.
   const routeInfo = {
     path: routePath,
-    templateID,
+    templateIndex,
     sharedPropsHashes,
     localProps,
   }
@@ -78,14 +78,16 @@ export default (async function exportRoute({
   let clientStyleSheets = []
   let clientCss = {}
 
+  const routePath = route.path === '/' ? route.path : `/${route.path}`
+
   // This is somewhat of a dirty hack to get around the limitations
   // of the new react context. Since it cannot survive across node instances
   // and bundling, we have to use our own means of transporting the routeInfo
-  // and staticURL to the application code during export.
+  // and routePath to the application code during export.
   // This also get's cleaned up after export. No lingering allowed.
   global.__reactStaticExportContext = {
     routeInfo: embeddedRouteInfo,
-    staticURL: route.path === '/' ? route.path : `/${route.path}`,
+    routePath,
   }
 
   let FinalComp
@@ -143,7 +145,6 @@ export default (async function exportRoute({
   let appHtml
 
   try {
-    // Run the beforeRenderToElement hook // TODO: document this
     const beforeRenderToElementHook = makeHookReducer(
       config.plugins,
       'beforeRenderToElement'

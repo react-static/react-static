@@ -31,7 +31,6 @@ export default (async function start({ configPath, debug } = {}) {
       console.log(config)
     }
 
-    // TODO: move to plugin
     if (!cleaned) {
       cleaned = true
       // Clean the dist folder
@@ -39,11 +38,9 @@ export default (async function start({ configPath, debug } = {}) {
     }
 
     // Get the site data
-    // TODO: move to plugin
     config.siteData = await config.getSiteData({ dev: true })
 
     // Render an index.html placeholder
-    // TODO: move to plugin
     if (!indexCreated) {
       indexCreated = true
       await createIndexFilePlaceholder({
@@ -53,7 +50,6 @@ export default (async function start({ configPath, debug } = {}) {
 
     config = await preparePlugins({ config })
 
-    // TODO: move to plugin
     await prepareRoutes({ config, opts: { dev: true } }, async config => {
       reloadRoutes()
 

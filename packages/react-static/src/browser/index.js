@@ -1,23 +1,115 @@
-/* eslint-disable import/no-mutable-exports */
-
 import axios from 'axios'
-import { createPool, cleanPath, pathJoin } from '../utils/browser'
+//
+import { createPool, getRoutePath, pathJoin } from './utils'
+import onMutation from './utils/Mutation'
+import onVisible from './utils/Visibility'
 
+// RouteInfo / RouteData
 export const routeInfoByPath = {}
 export const propsByHash = {}
 const erroredPaths = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
-let loading = 0
-let loadingSubscribers = []
 const disableRouteInfoWarning =
   process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING === 'true'
 
 const requestPool = createPool({
-  concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE) || 3,
+  concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE),
 })
 
-export const reloadRouteData = () => {
+// Templates
+export const templates = []
+export const templateUpdated = { cb: () => {} }
+export const registerTemplates = tmps => {
+  templates.splice(0, Infinity, ...tmps)
+  templateUpdated.cb()
+}
+export const templateIndexByPath = {
+  '404': 0,
+}
+
+init()
+
+// When in development, init a socket to listen for data changes
+// When the data changes, we invalidate and reload all of the route data
+async function init() {
+  if (
+    process.env.REACT_STATIC_ENV === 'production' &&
+    typeof document !== 'undefined'
+  ) {
+    // Hydrate routeInfoByPath with any window variables
+    const {
+      path,
+      allProps,
+      sharedPropsHashes,
+      templateIndex,
+    } = window.__routeInfo
+
+    // Injest and cache the embedded routeInfo in the page if possible
+    Object.keys(sharedPropsHashes).forEach(propKey => {
+      propsByHash[sharedPropsHashes[propKey]] = allProps[propKey]
+    })
+
+    // In SRR and production, synchronously register the templateIndex for the
+    // initial path
+    registerTemplateIndexForPath(path, templateIndex)
+  }
+
+  // In development, we need to open a socket to listen for changes to data
+  if (process.env.REACT_STATIC_ENV === 'development') {
+    const io = require('socket.io-client')
+    const run = async () => {
+      try {
+        const {
+          data: { port },
+        } = await axios.get('/__react-static__/getMessagePort')
+        const socket = io(`http://localhost:${port}`)
+        socket.on('connect', () => {
+          console.log(
+            'React-Static data hot-loader websocket connected. Listening for data changes...'
+          )
+        })
+        socket.on('message', ({ type }) => {
+          if (type === 'reloadRoutes') {
+            reloadRouteData()
+          }
+        })
+      } catch (err) {
+        console.log(
+          'React-Static data hot-loader websocket encountered the following error:'
+        )
+        console.error(err)
+      }
+    }
+    run()
+  }
+
+  startPreloader()
+}
+
+function startPreloader() {
+  if (typeof document !== 'undefined') {
+    // When the dom mutates, check it for a tags
+    onMutation(() => {
+      const els = [].slice.call(document.querySelectorAll('a[href]'))
+      els.forEach(el => {
+        if (el.__RSVisibilityObserver) {
+          return
+        }
+        el.__RSVisibilityObserver = onVisible(el, () => {
+          prefetch(el.getAttribute('href'))
+        })
+      })
+    })
+  }
+}
+
+export function registerTemplateIndexForPath(path, index) {
+  path = getRoutePath(path)
+  templateIndexByPath[path] = index
+}
+
+export function reloadRouteData() {
   // Delete all cached data
   ;[
     routeInfoByPath,
@@ -31,46 +123,15 @@ export const reloadRouteData = () => {
     })
   })
   // Force each RouteData component to reload
-  // clearTemplateIDs()
   global.reloadAll()
 }
 
-// When in development, init a socket to listen for data changes
-// When the data changes, we invalidate and reload all of the route data
-if (process.env.REACT_STATIC_ENV === 'development') {
-  const io = require('socket.io-client')
-  const run = async () => {
-    try {
-      const {
-        data: { port },
-      } = await axios.get('/__react-static__/getMessagePort')
-      const socket = io(`http://localhost:${port}`)
-      socket.on('connect', () => {
-        console.log(
-          'React-Static data hot-loader websocket connected. Listening for data changes...'
-        )
-      })
-      socket.on('message', ({ type }) => {
-        if (type === 'reloadRoutes') {
-          reloadRouteData()
-        }
-      })
-    } catch (err) {
-      console.log(
-        'React-Static data hot-loader websocket encountered the following error:'
-      )
-      console.error(err)
-    }
-  }
-  run()
-}
-
-export const getRouteInfo = async (path, { priority } = {}) => {
+export async function getRouteInfo(path, { priority } = {}) {
   if (typeof document === 'undefined') {
     return
   }
   const originalPath = path
-  path = cleanPath(path)
+  path = getRoutePath(path)
   // Check the cache first
   if (routeInfoByPath[path]) {
     return routeInfoByPath[path]
@@ -213,30 +274,30 @@ export async function prefetchData(path, { priority } = {}) {
 
 export async function prefetchTemplate(path, { priority } = {}) {
   // Clean the path
-  path = cleanPath(path)
+  path = getRoutePath(path)
   // Get route info so we can check if path has any data
   const routeInfo = await getRouteInfo(path)
 
   if (routeInfo) {
-    registerTemplateIDForPath(path, routeInfo.templateID)
+    registerTemplateIndexForPath(path, routeInfo.templateIndex)
   }
 
   // Preload the template if available
-  const pathTemplate = getComponentForPath(path)
-  if (pathTemplate && pathTemplate.preload) {
+  const Template = templates[templateIndexByPath[path]]
+  if (Template && Template.preload) {
     if (priority) {
-      await pathTemplate.preload()
+      await Template.preload()
     } else {
-      await requestPool.add(() => pathTemplate.preload())
+      await requestPool.add(() => Template.preload())
     }
     routeInfo.templateLoaded = true
-    return pathTemplate
+    return Template
   }
 }
 
 export async function needsPrefetch(path, options = {}) {
   // Clean the path
-  path = cleanPath(path)
+  path = getRoutePath(path)
 
   if (!path) {
     return false
@@ -258,7 +319,7 @@ export async function needsPrefetch(path, options = {}) {
 
 export async function prefetch(path, options = {}) {
   // Clean the path
-  path = cleanPath(path)
+  path = getRoutePath(path)
 
   const { type } = options
 
@@ -283,39 +344,4 @@ export async function prefetch(path, options = {}) {
   }
 
   return data
-}
-
-export const setLoading = d => {
-  if (loading !== d) {
-    loading = d
-    loadingSubscribers.forEach(s => s())
-  }
-}
-
-export const onLoading = cb => {
-  const ccb = () => cb(loading)
-  loadingSubscribers.push(ccb)
-  return () => {
-    loadingSubscribers = loadingSubscribers.filter(d => d !== ccb)
-  }
-}
-
-export function getComponentForPath(path) {
-  path = cleanPath(path)
-  return (
-    global.reactStaticGetComponentForPath &&
-    global.reactStaticGetComponentForPath(path)
-  )
-}
-
-export function registerTemplateIDForPath(path, templateID) {
-  path = cleanPath(path)
-  return (
-    global.reactStaticGetComponentForPath &&
-    global.reactStaticRegisterTemplateIDForPath(path, templateID)
-  )
-}
-
-export function clearTemplateIDs() {
-  return global.clearTemplateIDs && global.clearTemplateIDs()
 }

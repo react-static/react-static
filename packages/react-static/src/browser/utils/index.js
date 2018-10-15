@@ -1,5 +1,7 @@
 export { poolAll, createPool } from 'swimmer'
 
+const exportContext = global.__reactStaticExportContext
+
 const REGEX_TO_CUT_TO_ROOT = /(\..+?)\/.*/g
 const REGEX_TO_REMOVE_LEADING_SLASH = /^\/{1,}/g
 const REGEX_TO_REMOVE_TRAILING_SLASH = /\/{1,}$/g
@@ -58,25 +60,50 @@ export function pathJoin(...paths) {
   return newPath
 }
 
-export function cleanPath(path) {
-  // Resolve the local path
-  if (!path || path === '/') {
+export function getCurrentRoutePath() {
+  // If no routePath is passed
+  // For SSR, return exportContext
+  if (exportContext) {
+    return exportContext.routePath
+  }
+
+  // If in the browser, use the window
+  if (typeof document !== 'undefined') {
+    return getRoutePath(decodeURIComponent(window.location.href))
+  }
+}
+
+export function getEmbeddedRouteInfo() {
+  if (exportContext) {
+    return exportContext.routeInfo
+  }
+}
+
+// This function is for extracting a routePath from a path or string
+// RoutePaths do not have query params, basePaths, and should
+// resemble the same string as passed in the static.config.js routes
+export function getRoutePath(routePath) {
+  // Detect falsey paths and the root path
+  if (!routePath || routePath === '/') {
     return '/'
   }
+
   // Remove origin, hashes, and query params
   if (typeof document !== 'undefined') {
-    path = path.replace(window.location.origin, '')
-    path = path.replace(/#.*/, '')
-    path = path.replace(/\?.*/, '')
+    routePath = routePath.replace(window.location.origin, '')
+    routePath = routePath.replace(/#.*/, '')
+    routePath = routePath.replace(/\?.*/, '')
   }
+
+  // Be sure to remove the base path
   if (process.env.REACT_STATIC_BASE_PATH) {
-    path = path.replace(
+    routePath = routePath.replace(
       new RegExp(`^\\/?${process.env.REACT_STATIC_BASE_PATH}\\/`),
       ''
     )
   }
-  path = path || '/'
-  return pathJoin(path)
+  routePath = routePath || '/'
+  return pathJoin(routePath)
 }
 
 export function unwrapArray(arg, defaultValue) {
@@ -94,6 +121,12 @@ export function isObject(a) {
 export function deprecate(from, to) {
   console.warn(
     `React-Static deprecation notice: ${from} will be deprecated in favor of ${to} in the next major release.`
+  )
+}
+
+export function removal(from) {
+  console.warn(
+    `React-Static removal notice: ${from} is no longer supported in this version of React-Static. Please refer to the CHANGELOG for details.`
   )
 }
 
@@ -175,4 +208,14 @@ function flattenHooks(plugins, hook) {
 
   // Filter out falsey entries
   return hooks.filter(Boolean)
+}
+
+export function isSSR() {
+  return typeof document === 'undefined'
+}
+
+export function getBasePath() {
+  return process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
+    ? ''
+    : process.env.REACT_STATIC_BASE_PATH
 }

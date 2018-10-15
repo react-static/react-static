@@ -105,7 +105,7 @@ export const buildConfig = async (config = {}) => {
     disableRouteInfoWarning: false,
     disableRoutePrefixing: false,
     outputFileRate: 100,
-    extensions: ['.js', '.jsx'], // TODO: document
+    extensions: ['.js', '.jsx'],
     getRoutes: async () => DEFAULT_ROUTES,
     // Config Overrides
     ...config,

@@ -6,7 +6,7 @@ import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 import tailwindcss from 'tailwindcss'
 
 export default {
-  // TODO: This is deprecated, use config.hooks.webpack
+  // TODO:v6 This is deprecated, use config.hooks.webpack
   webpack: (config, { stage, defaultLoaders }) => {
     let loaders = [
       {

@@ -12,8 +12,8 @@ const PaginationLink = styled(({ isCurrent, ...rest }) => <Link {...rest} />)`
 `
 
 export default () => (
-  <RouteData
-    render={({ posts, currentPage, totalPages }) => (
+  <RouteData>
+    {({ posts, currentPage, totalPages }) => (
       <div>
         <Head>
           <title>Blog | React Static</title>
@@ -45,5 +45,5 @@ export default () => (
         </div>
       </div>
     )}
-  />
+  </RouteData>
 )

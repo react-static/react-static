@@ -177,8 +177,8 @@ class Sidebar extends React.Component {
     const { children } = this.props
     const { isOpen } = this.state
     return (
-      <SiteData
-        render={({ menu }) => (
+      <SiteData>
+        {({ menu }) => (
           <SidebarStyles className="sidebar" isOpen={isOpen}>
             <ClickOutside
               onClickOutside={() => {
@@ -212,7 +212,7 @@ class Sidebar extends React.Component {
             <div className="content">{children}</div>
           </SidebarStyles>
         )}
-      />
+      </SiteData>
     )
   }
 }

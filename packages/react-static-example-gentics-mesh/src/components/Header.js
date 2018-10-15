@@ -4,8 +4,8 @@ import { RouteData, Head } from 'react-static'
 import Navigation from 'components/Navigation'
 
 const Header = () => (
-  <RouteData
-    render={({ title, node }) => (
+  <RouteData>
+    {({ title, node }) => (
       <div>
         <Head>
           <title>
@@ -22,6 +22,6 @@ const Header = () => (
         </div>
       </div>
     )}
-  />
+  </RouteData>
 )
 export default Header

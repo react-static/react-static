@@ -9,7 +9,7 @@ import { performance } from 'perf_hooks'
 import { DefaultDocument, Html, Head, Body } from '../static/RootComponents'
 
 // Export all shared utils
-export * from './browser'
+export * from '../browser/utils'
 
 export { default as progress } from './progress'
 export const ChalkColor = {

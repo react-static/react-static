@@ -51,7 +51,7 @@ export default {
     // Serve from the ios build folder
     contentBase: path.resolve(__dirname, './platforms/ios/www/'),
   },
-  // TODO: This is deprecated, use config.hooks.webpack
+  // TODO:v6 This is deprecated, use config.hooks.webpack
   webpack: (config, { stage }) => {
     if (stage !== 'dev') {
       // Cordova serves from file, so relative links, please.
