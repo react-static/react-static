@@ -8,9 +8,9 @@ import {
   trimTrailingSlashes,
   trimDoubleSlashes,
   makePathAbsolute,
-} from '../browser'
+} from '../'
 
-describe('utils/browser', () => {
+describe('browser/utils', () => {
   describe('pathJoin()', () => {
     it('should strip slashes', () => {
       expect(pathJoin('/foo/bar/')).toEqual('foo/bar')
