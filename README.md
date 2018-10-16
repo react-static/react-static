@@ -70,6 +70,8 @@ React Static is a fast, lightweight, and powerful framework for building static-
 * [Stoplight.io - Documentation & API Reference](https://docs.stoplight.io)
 * [Smash Tier List](https://smash-tier-list.com) ([source](https://github.com/desko27/smash-tier-list))
 * [HackDuke 2018](https://hackduke.org/) ([source](https://github.com/hack-duke/hackduke-code-for-good-website-2018))
+* [HackerCamp Paty 2018](https://camp.rhms.cf/) ([source](https://github.com/RioHackerSpace/camp.rhms.cf))
+
 
 ## Quick Start
 
