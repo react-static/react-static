@@ -30,6 +30,7 @@
 - The `Prefetch` component is now smart like `PrefetchWhenSeen` was.
 - The client-side `Redirect` component has been deprecated. Redirects should be done in the `static.config.js`. If the user needs to do any redirects for dynamic/runtime routes, they can use their favorite router's redirect solution.
 - `Router` has been deprecated and replaced by the `Root` component. The `Root` component implements the `HashScroller` component, an `ErrorBoundary` and a very simple and non-invasive route context using `@reach/router` (the recommended router). The base router is customizable or replaceable if the user wishes to use a different router.
+- `config.disableRouteInfoWarning` has been depracated. Do not use `RouteInfo` on non-static pages!
 
 #### Fixes & Optimizations
 

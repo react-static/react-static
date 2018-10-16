@@ -22,7 +22,6 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [bundleAnalyzer](#bundleanalyzer)
 - [outputFileRate](#outputfilerate)
 - [prefetchRate](#prefetchrate)
-- [disableRouteInfoWarning](#disablerouteinfowarning)
 - [disableDuplicateRoutesWarning](#disableDuplicateRoutesWarning)
 - [disableRoutePrefixing](#disablerouteprefixing)
 
@@ -492,17 +491,6 @@ An optional `Int`. The maximum number of inflight requests for preloading route 
 // static.config.js
 export default {
   prefetchRate: 10
-}
-```
-
-### `disableRouteInfoWarning`
-
-An optional `Boolean`. Set to `true` to disable warnings during development when `routeInfo.json` is not found for a specific route. Useful if you are using custom routing!
-
-```javascript
-// static.config.js
-export default {
-  disableRouteInfoWarning: true
 }
 ```
 

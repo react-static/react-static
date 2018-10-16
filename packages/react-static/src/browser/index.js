@@ -10,8 +10,6 @@ export const routeErrorByPath = {}
 export const propsByHash = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
-const disableRouteInfoWarning =
-  process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING === 'true'
 
 const requestPool = createPool({
   concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE),
@@ -71,10 +69,7 @@ function startPreloader() {
     onMutation(() => {
       const els = [].slice.call(document.querySelectorAll('a[href]'))
       els.forEach(el => {
-        if (el.__RSVisibilityObserver) {
-          return
-        }
-        el.__RSVisibilityObserver = onVisible(el, () => {
+        onVisible(el, () => {
           prefetch(el.getAttribute('href'))
         })
       })
