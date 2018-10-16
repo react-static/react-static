@@ -5802,7 +5802,7 @@ emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
 
-emotion-server@^9.2.5:
+emotion-server@^9.2.4, emotion-server@^9.2.5:
   version "9.2.12"
   resolved "https://registry.yarnpkg.com/emotion-server/-/emotion-server-9.2.12.tgz#aaaaa04843108943d1ce5a796e0bc40b06a3223e"
   dependencies:
@@ -13257,6 +13257,18 @@ react-smackdown@^1.0.0-beta.3:
     reprism "^0.0.11"
     showdown "^1.8.6"
 
+react-static-plugin-emotion@^1.0.5:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-static-plugin-emotion/-/react-static-plugin-emotion-1.0.6.tgz#2fe2b5daf2cdb628462bab71581d5d1bb410503e"
+  dependencies:
+    emotion "^9.2.5"
+    emotion-server "^9.2.5"
+    react-emotion "^9.2.5"
+
+react-static-plugin-styled-components@^1.0.4:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-static-plugin-styled-components/-/react-static-plugin-styled-components-1.0.6.tgz#0016a0ba93fafe6a01b3a5e77b88285352963320"
+
 react-static@^5.9.12:
   version "5.9.12"
   resolved "https://registry.yarnpkg.com/react-static/-/react-static-5.9.12.tgz#4dd5e24b9fa53531c2ccbe966c4223f8b6d0d1bc"
@@ -15110,6 +15122,20 @@ style-loader@^0.19.0:
 styled-components@3.4.9, styled-components@^3, styled-components@^3.4.9:
   version "3.4.9"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-3.4.9.tgz#519abeb351b37be5b7de6a15ff9e4efeb9d772da"
+  dependencies:
+    buffer "^5.0.3"
+    css-to-react-native "^2.0.3"
+    fbjs "^0.8.16"
+    hoist-non-react-statics "^2.5.0"
+    prop-types "^15.5.4"
+    react-is "^16.3.1"
+    stylis "^3.5.0"
+    stylis-rule-sheet "^0.0.10"
+    supports-color "^3.2.3"
+
+styled-components@^3.3.3:
+  version "3.4.10"
+  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-3.4.10.tgz#9a654c50ea2b516c36ade57ddcfa296bf85c96e1"
   dependencies:
     buffer "^5.0.3"
     css-to-react-native "^2.0.3"
