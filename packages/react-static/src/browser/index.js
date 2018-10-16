@@ -15,6 +15,9 @@ const requestPool = createPool({
   concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE),
 })
 
+// Plugins
+export const plugins = []
+
 // Templates
 export const templates = []
 export const templateUpdated = { cb: () => {} }
@@ -64,7 +67,7 @@ function init() {
     run()
   }
 
-  startPreloader()
+  // startPreloader()
 }
 
 function startPreloader() {
@@ -116,6 +119,7 @@ export async function getRouteInfo(path, { priority } = {}) {
   if (routeErrorByPath[path]) {
     return
   }
+
   let routeInfo
 
   try {
@@ -130,6 +134,7 @@ export async function getRouteInfo(path, { priority } = {}) {
       routeInfo = data
     } else {
       // In production, fetch the JSON file
+      // Find the location of the routeInfo.json file
       const routeInfoRoot =
         (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
           ? process.env.REACT_STATIC_SITE_ROOT
@@ -276,6 +281,7 @@ export async function prefetch(path, options = {}) {
 
   const { type } = options
 
+  // If it's priority, we stop the queue temporarily
   if (options.priority) {
     requestPool.stop()
   }
@@ -292,6 +298,7 @@ export async function prefetch(path, options = {}) {
     ])
   }
 
+  // If it was priority, start the queue again
   if (options.priority) {
     requestPool.start()
   }

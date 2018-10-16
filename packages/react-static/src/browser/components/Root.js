@@ -8,8 +8,6 @@ import ErrorBoundary from './ErrorBoundary'
 import HashScroller from './HashScroller'
 import { withStaticInfo } from './StaticInfo'
 
-const DefaultPath = ({ render }) => render
-
 // If we're in SSR, set the ServerLocation
 // if (isSSR()) {
 //   routePath = getCurrentRoutePath()
@@ -17,6 +15,8 @@ const DefaultPath = ({ render }) => render
 //     <ServerLocation url={routePath}>{children}</ServerLocation>
 //   )
 // }
+
+const DefaultPath = ({ render }) => render
 
 const DefaultRouter = ({ children, ...rest }) => (
   <ReachRouter {...rest}>

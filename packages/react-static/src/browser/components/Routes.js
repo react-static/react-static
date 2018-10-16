@@ -93,6 +93,7 @@ export default withStaticInfo(
           is404 = true
           Comp = templatesByPath['/404']
         }
+
         // Detect an unloaded template
         if (!Comp) {
           ;(async () => {
@@ -106,6 +107,7 @@ export default withStaticInfo(
           })()
           return Loader
         }
+
         return (newProps = {}) =>
           Comp ? (
             <Comp {...newProps} {...(is404 ? { is404: true } : {})} />

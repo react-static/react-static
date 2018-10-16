@@ -76,12 +76,8 @@ const RouteData = withStaticInfo(
         return <Loader />
       }
 
-      if (routeInfoByPath[path]) {
-        // Otherwise, get it from the routeInfoByPath (subsequent client side)
-        return children(routeInfoByPath[path].allProps)
-      }
-
-      return null
+      // Otherwise, get it from the routeInfoByPath (subsequent client side)
+      return children(routeInfoByPath[path].allProps)
     }
   }
 )
