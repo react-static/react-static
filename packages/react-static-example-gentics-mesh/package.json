@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-gentics-mesh",
-  "version": "6.0.0-beta.27",
+  "version": "6.0.0-beta.28",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,7 @@
     "lodash": "^4.17.10",
     "react-dotdotdot": "^1.2.3",
     "react-number-format": "^3.3.4",
-    "react-static": "^6.0.0-beta.27",
+    "react-static": "^6.0.0-beta.28",
     "reactstrap": "^6.0.1",
     "string-strip-html": "^3.2.0"
   },
