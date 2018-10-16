@@ -2,7 +2,7 @@ import React from 'react'
 import { Router as ReachRouter } from '@reach/router'
 
 //
-import { routeInfoByPath, propsByHash, registerTemplateIndexForPath } from '../'
+import { routeInfoByPath, propsByHash, registerTemplateForPath } from '../'
 import { getBasePath } from '../utils'
 import ErrorBoundary from './ErrorBoundary'
 import HashScroller from './HashScroller'
@@ -50,7 +50,7 @@ const Root = withStaticInfo(
 
         // In SRR and production, synchronously register the templateIndex for the
         // initial path
-        registerTemplateIndexForPath(path, templateIndex)
+        registerTemplateForPath(path, templateIndex)
       }
     }
     render() {

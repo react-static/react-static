@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 //
 import {
-  templates,
-  templateIndexByPath,
+  templatesByPath,
+  templateErrorByPath,
   templateUpdated,
   getRouteInfo,
   prefetchTemplate,
-  registerTemplateIndexForPath,
+  registerTemplateForPath,
   getCurrentRoutePath,
 } from '../'
 import { withStaticInfo } from './StaticInfo'
@@ -68,10 +68,7 @@ export default withStaticInfo(
             priority: true,
           })
           if (routeInfo) {
-            registerTemplateIndexForPath(
-              currentRoutePath,
-              routeInfo.templateIndex
-            )
+            registerTemplateForPath(currentRoutePath, routeInfo.templateIndex)
           }
         } finally {
           this.setState({ ready: true })
@@ -87,14 +84,17 @@ export default withStaticInfo(
       const getComponentForPath = routePath => {
         // Clean the path
         routePath = getRoutePath(routePath)
-
         // Try and get the component
-        let Comp = templates[templateIndexByPath[routePath]]
-
+        let Comp = templatesByPath[routePath]
         // Detect a 404
         let is404 = routePath === '404'
-        // Detect a non-attempted template
-        if (typeof Comp === 'undefined') {
+        // Detect a failed template
+        if (templateErrorByPath[routePath]) {
+          is404 = true
+          Comp = templatesByPath['/404']
+        }
+        // Detect an unloaded template
+        if (!Comp) {
           ;(async () => {
             await Promise.all([
               prefetchTemplate(routePath),
@@ -106,23 +106,10 @@ export default withStaticInfo(
           })()
           return Loader
         }
-        // Detect a loading template
-        if (Comp === null) {
-          return Loader
-        }
-        // Detect a failed template
-        if (Comp === false) {
-          if (templateIndexByPath) is404 = true
-          Comp = templates[templateIndexByPath['/404']]
-        }
         return (newProps = {}) =>
           Comp ? (
             <Comp {...newProps} {...(is404 ? { is404: true } : {})} />
           ) : null
-      }
-
-      const renderProps = {
-        getComponentForPath,
       }
 
       if (!ready) {
@@ -130,7 +117,9 @@ export default withStaticInfo(
       }
 
       if (children) {
-        return children(renderProps)
+        return children({
+          getComponentForPath,
+        })
       }
 
       const Comp = getComponentForPath(currentRoutePath)

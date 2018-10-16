@@ -52,8 +52,6 @@ export default () => (
 **Render Props** - These special props are sent to your rendered component or render function
 
 * `getComponentForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no component is found.
-* `templates[templateIndex: component]` - An array of all of the loaded templates.
-* `templateIndexByPath{path: templateIndex}` - A object mapping paths to their corresponding templateIndex.
 
 ### `RouteData`
 

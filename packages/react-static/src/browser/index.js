@@ -22,9 +22,13 @@ export const registerTemplates = tmps => {
   templates.splice(0, Infinity, ...tmps)
   templateUpdated.cb()
 }
-export const templateIndexByPath = {
+const templateIndexByPath = {
   '404': 0,
 }
+export const templatesByPath = {
+  '404': templates[0],
+}
+export const templateErrorByPath = {}
 
 init()
 
@@ -77,9 +81,10 @@ function startPreloader() {
   }
 }
 
-export function registerTemplateIndexForPath(path, index) {
+export function registerTemplateForPath(path, index) {
   path = getRoutePath(path)
   templateIndexByPath[path] = index
+  templatesByPath[path] = templates[index]
 }
 
 export function reloadRouteData() {
@@ -101,10 +106,12 @@ export function reloadRouteData() {
 
 export async function getRouteInfo(path, { priority } = {}) {
   path = getRoutePath(path)
+
   // Check the cache first
   if (routeInfoByPath[path]) {
     return routeInfoByPath[path]
   }
+
   // Check for an error or non-existent static route
   if (routeErrorByPath[path]) {
     return
@@ -135,11 +142,12 @@ export async function getRouteInfo(path, { priority } = {}) {
         'routeInfo.json'
       )}${cacheBuster}`
 
+      // If this is a priority call bypass the queue
       if (priority) {
-        // In production, request from route's routeInfo.json
         const { data } = await axios.get(getPath)
         routeInfo = data
       } else {
+        // Otherwise, add it to the queue
         if (!inflightRouteInfo[path]) {
           inflightRouteInfo[path] = requestPool.add(() => axios.get(getPath))
         }
@@ -244,11 +252,11 @@ export async function prefetchTemplate(path, { priority } = {}) {
   const routeInfo = await getRouteInfo(path)
 
   if (routeInfo) {
-    registerTemplateIndexForPath(path, routeInfo.templateIndex)
+    registerTemplateForPath(path, routeInfo.templateIndex)
   }
 
   // Preload the template if available
-  const Template = templates[templateIndexByPath[path]]
+  const Template = templatesByPath[path]
   if (Template && Template.preload) {
     if (priority) {
       await Template.preload()
@@ -258,6 +266,8 @@ export async function prefetchTemplate(path, { priority } = {}) {
     routeInfo.templateLoaded = true
     return Template
   }
+  // If no template was found, mark it with an error
+  templateErrorByPath[path] = true
 }
 
 export async function prefetch(path, options = {}) {
