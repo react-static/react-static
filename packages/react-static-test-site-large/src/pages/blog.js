@@ -1,5 +1,6 @@
 import React from 'react'
-import { RouteData, Link, Head } from 'react-static'
+import { RouteData, Head } from 'react-static'
+import { Link } from '@reach/router'
 
 //
 
@@ -22,8 +23,8 @@ const PaginationLink = styled
   : Link
 
 export default () => (
-  <RouteData
-    render={({ posts, currentPage, totalPages }) => (
+  <RouteData>
+    {({ posts, currentPage, totalPages }) => (
       <div>
         <Head>
           <title>Blog | React Static</title>
@@ -55,5 +56,5 @@ export default () => (
         </div>
       </div>
     )}
-  />
+  </RouteData>
 )

@@ -9,19 +9,19 @@
     "build-styled": "STYLE_SYSTEM=styled yarn build",
     "build-emotion": "STYLE_SYSTEM=emotion yarn build",
     "build-pagination": "PAGINATION=true yarn build",
-    "buildAll": "rm -rf dist",
     "bundle": "react-static bundle",
     "export": "react-static export",
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
+    "@reach/router": "^1.2.1",
     "axios": "^0.16.2",
     "emotion": "^9.2.4",
     "emotion-server": "^9.2.4",
     "react-emotion": "^9.2.4",
-    "react-static": "^6.0.0-beta.25",
-    "react-static-plugin-emotion": "^1.0.5",
-    "react-static-plugin-styled-components": "^1.0.4",
+    "react-static": "^6.0.0-beta.27",
+    "react-static-plugin-emotion": "^6.0.0-beta.27",
+    "react-static-plugin-styled-components": "^6.0.0-beta.27",
     "styled-components": "^3.3.3"
   },
   "devDependencies": {
