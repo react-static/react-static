@@ -9,6 +9,7 @@ import {
 import { isSSR } from '../utils'
 import Spinner from './Spinner'
 import { withStaticInfo } from './StaticInfo'
+import onLocationChange from '../utils/Location'
 
 let instances = []
 
@@ -26,20 +27,11 @@ const RouteData = withStaticInfo(
       Loader: Spinner,
     }
     componentDidMount() {
-      if (typeof document !== 'undefined') {
-        this.loadRouteData()
-      }
       instances.push(this)
-    }
-    componentDidUpdate() {
-      if (typeof document !== 'undefined') {
-        if (this.currentPath !== getCurrentRoutePath()) {
-          this.currentPath = getCurrentRoutePath()
-          this.loadRouteData()
-        }
-      }
+      this.offLocationChange = onLocationChange(() => this.forceUpdate())
     }
     componentWillUnmount() {
+      if (this.offLocationChange) this.offLocationChange()
       instances = instances.filter(d => d !== this)
       this.unmounting = true
     }
@@ -48,36 +40,35 @@ const RouteData = withStaticInfo(
     //     await this.loadRouteData()
     //     this.forceUpdate()
     //   })()
-    loadRouteData = () =>
-      (async () => {
-        // const { is404 } = this.props // TODO:v6 We need to figure out 404 template and data loading
-        await Promise.all([
-          prefetch(getCurrentRoutePath()),
-          new Promise(resolve =>
-            setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
-          ),
-        ])
-        this.setState({ loading: false })
-      })()
     render() {
       const { children, Loader, staticInfo } = this.props
-      const path = isSSR() ? staticInfo.path : getCurrentRoutePath()
+      const routePath = isSSR() ? staticInfo.path : getCurrentRoutePath()
 
       // If there was an error reported for this path, throw an error
-      if (routeErrorByPath[path]) {
+      if (routeErrorByPath[routePath]) {
         throw new Error(
-          `React-Static: <RouteData> could not find any data for this route: ${path}. If this is a dynamic route, please remove any reliance on RouteData or withRouteData from this routes components`
+          `React-Static: <RouteData> could not find any data for this route: ${routePath}. If this is a dynamic route, please remove any reliance on RouteData or withRouteData from this routes components`
         )
       }
 
       // If we haven't requested the routeInfo yet, or it's loading
-      // Show a spinner
-      if (!routeInfoByPath[path] || !routeInfoByPath[path].allProps) {
+      // Show a spinner and prefetch the data
+      // TODO:suspense - This will become a suspense resource
+      if (!routeInfoByPath[routePath] || !routeInfoByPath[routePath].allProps) {
+        ;(async () => {
+          await Promise.all([
+            prefetch(routePath, { priority: true }),
+            new Promise(resolve =>
+              setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
+            ),
+          ])
+          this.forceUpdate()
+        })()
         return <Loader />
       }
 
       // Otherwise, get it from the routeInfoByPath (subsequent client side)
-      return children(routeInfoByPath[path].allProps)
+      return children(routeInfoByPath[routePath].allProps)
     }
   }
 )

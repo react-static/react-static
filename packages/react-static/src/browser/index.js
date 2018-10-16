@@ -254,7 +254,7 @@ export async function prefetchTemplate(path, { priority } = {}) {
   // Clean the path
   path = getRoutePath(path)
   // Get route info so we can check if path has any data
-  const routeInfo = await getRouteInfo(path)
+  const routeInfo = await getRouteInfo(path, { priority })
 
   if (routeInfo) {
     registerTemplateForPath(path, routeInfo.templateIndex)
@@ -262,17 +262,20 @@ export async function prefetchTemplate(path, { priority } = {}) {
 
   // Preload the template if available
   const Template = templatesByPath[path]
-  if (Template && Template.preload) {
+  if (!Template) {
+    // If no template was found, mark it with an error
+    templateErrorByPath[path] = true
+    return
+  }
+  if (!routeInfo.templateLoaded && Template.preload) {
     if (priority) {
       await Template.preload()
     } else {
       await requestPool.add(() => Template.preload())
     }
     routeInfo.templateLoaded = true
-    return Template
   }
-  // If no template was found, mark it with an error
-  templateErrorByPath[path] = true
+  return Template
 }
 
 export async function prefetch(path, options = {}) {
