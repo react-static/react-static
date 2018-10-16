@@ -9,6 +9,7 @@
 - Created `react-static-plugin-styled-components`
 - Updated eslint and prettier and configured both to run on the pre-commit git hook
 - `config.maxThreads` now lets you specify how many maximum threads to use to export your html files.
+- `config.disablePreload` lets you disabled automatic preloading for debugging worst case scenarios.
 
 #### Breaking Changes
 

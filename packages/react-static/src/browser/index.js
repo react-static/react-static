@@ -67,7 +67,7 @@ function init() {
     run()
   }
 
-  // startPreloader()
+  if (process.env.REACT_STATIC_DISABLE_PRELOAD === 'false') startPreloader()
 }
 
 function startPreloader() {

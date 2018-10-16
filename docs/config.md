@@ -541,3 +541,14 @@ export default {
 }
 ```
 
+
+### `disablePreload`
+
+Set this boolean to `true` to disable all preloading. This is mostly meant for debugging at this point, but the internal mechanics could soon be converted into a condition to either preload or not based on the client (mobile, slow-connection, etc)
+
+```javascript
+// static.config.js
+export default {
+  disablePreload: true
+}
+```

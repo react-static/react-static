@@ -107,6 +107,7 @@ export const buildConfig = async (config = {}) => {
     extensions: ['.js', '.jsx'],
     getRoutes: async () => DEFAULT_ROUTES,
     minLoadTime: 200,
+    disablePreload: false,
     // Config Overrides
     ...config,
     // Materialized Overrides
@@ -125,6 +126,7 @@ export const buildConfig = async (config = {}) => {
   process.env.REACT_STATIC_PREFETCH_RATE = config.prefetchRate
   process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING =
     config.disableRoutePrefixing
+  process.env.REACT_STATIC_DISABLE_PRELOAD = config.disablePreload
 
   const resolvePlugin = location => {
     let options = {}
