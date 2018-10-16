@@ -1,5 +1,5 @@
 import templates from 'react-static/templates'
-import { registerTemplates } from 'react-static'
+import { registerTemplates } from './browser'
 
 registerTemplates(templates)
 

@@ -50,7 +50,7 @@ const RouteData = withStaticInfo(
     //   })()
     loadRouteData = () =>
       (async () => {
-        const { is404 } = this.props // TODO:v6 We need to figure out 404 template and data loading
+        // const { is404 } = this.props // TODO:v6 We need to figure out 404 template and data loading
         await Promise.all([
           prefetch(getCurrentRoutePath()),
           new Promise(resolve =>

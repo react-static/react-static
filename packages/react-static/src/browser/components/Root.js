@@ -1,9 +1,9 @@
 import React from 'react'
-import { Router as ReachRouter, ServerLocation } from '@reach/router'
+import { Router as ReachRouter } from '@reach/router'
 
 //
 import { routeInfoByPath, propsByHash, registerTemplateIndexForPath } from '../'
-import { isSSR, getBasePath } from '../utils'
+import { getBasePath } from '../utils'
 import ErrorBoundary from './ErrorBoundary'
 import HashScroller from './HashScroller'
 import { withStaticInfo } from './StaticInfo'

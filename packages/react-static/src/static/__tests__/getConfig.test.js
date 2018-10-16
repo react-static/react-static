@@ -20,7 +20,6 @@ const testConfiguration = (configuration, configurationMock) => {
 describe('buildConfig', () => {
   let reactStaticEnviroment
   let reactStaticPrefetchRate
-  let reactStaticDisableRouteInfoWarning
   let reactStaticDisableRoutePreFixing
   let spyProcess
 
