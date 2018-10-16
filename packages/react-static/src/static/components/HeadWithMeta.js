@@ -74,7 +74,9 @@ export async function makeHeadWithMeta({
 
     return (
       <head {...rest}>
-        <meta name="generator" content={`React Static ${version}`} />
+        {process.env.NODE_ENV !== 'testing' ? (
+          <meta name="generator" content={`React Static ${version}`} />
+        ) : null}
         {head.base}
         {useHelmetTitle && head.title}
         {head.meta}

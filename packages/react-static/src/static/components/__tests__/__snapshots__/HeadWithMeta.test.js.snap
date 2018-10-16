@@ -8,7 +8,7 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
     className="body"
   >
     <meta
-      content="React Static 6.0.0-beta.26"
+      content="React Static 6.0.0-beta.27"
       name="generator"
     />
     <title
@@ -68,7 +68,7 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
     className="body"
   >
     <meta
-      content="React Static 6.0.0-beta.26"
+      content="React Static 6.0.0-beta.27"
       name="generator"
     />
     <link
@@ -127,7 +127,7 @@ exports[`HeadWithMeta when route has title as child 1`] = `
     className="body"
   >
     <meta
-      content="React Static 6.0.0-beta.26"
+      content="React Static 6.0.0-beta.27"
       name="generator"
     />
     <title
@@ -186,7 +186,7 @@ exports[`HeadWithMeta when route is a redirect route 1`] = `
     className="body"
   >
     <meta
-      content="React Static 6.0.0-beta.26"
+      content="React Static 6.0.0-beta.27"
       name="generator"
     />
     <title
@@ -211,7 +211,7 @@ exports[`HeadWithMeta when route is a static route 1`] = `
     className="body"
   >
     <meta
-      content="React Static 6.0.0-beta.26"
+      content="React Static 6.0.0-beta.27"
       name="generator"
     />
     <title
