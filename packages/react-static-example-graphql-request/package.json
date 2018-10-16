@@ -17,5 +17,6 @@
   "devDependencies": {
     "eslint-config-react-tools": "^1.0.10",
     "serve": "^10.0.2"
-  }
+  },
+  "gitHead": "350700130b7501622eac16aa139107c684b62b01"
 }
