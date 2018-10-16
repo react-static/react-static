@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-sass",
-  "version": "6.0.0-beta.26",
+  "version": "6.0.0-beta.27",
   "description": "A React-Static plugin that adds SSR support for sass",
   "main": "node.api.js",
   "repository": "https://github.com/nozzle/react-static-plugin-sass.git",
@@ -21,5 +21,6 @@
     "extract-css-chunks-webpack-plugin": "^3.1.1",
     "node-sass": "^4.7.2",
     "sass-loader": "^7.1.0"
-  }
+  },
+  "gitHead": "350700130b7501622eac16aa139107c684b62b01"
 }

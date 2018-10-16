@@ -1,11 +1,11 @@
 import React from 'react'
-import { Router, Routes, Link } from 'react-static'
+import { Root, Routes, Link } from 'react-static'
 //
 
 import './app.css'
 
 export default () => (
-  <Router>
+  <Root>
     <div>
       <nav>
         <Link exact to="/">
@@ -36,5 +36,5 @@ export default () => (
         `}
       </style>
     </div>
-  </Router>
+  </Root>
 )

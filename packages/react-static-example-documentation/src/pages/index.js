@@ -113,8 +113,8 @@ const Card = styled(Link)`
 `
 
 export default () => (
-  <SiteData
-    render={({ repo, repoURL, repoName }) => (
+  <SiteData>
+    {({ repo, repoURL, repoName }) => (
       <Styles>
         <Head>
           <title>Home | {repoName}</title>
@@ -156,5 +156,5 @@ export default () => (
         </div>
       </Styles>
     )}
-  />
+  </SiteData>
 )

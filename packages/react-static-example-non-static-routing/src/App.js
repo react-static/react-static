@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Routes, Link, Route, Switch } from 'react-static'
+import { Root, Routes, Link, Route, Switch } from 'react-static'
 import universal from 'react-universal-component'
 
 //
@@ -10,7 +10,7 @@ import './app.css'
 const NonStatic = universal(import('./containers/NonStatic'))
 
 const App = () => (
-  <Router>
+  <Root>
     <div>
       <nav>
         <Link exact to="/">
@@ -26,7 +26,7 @@ const App = () => (
         </Switch>
       </div>
     </div>
-  </Router>
+  </Root>
 )
 
 export default App

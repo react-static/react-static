@@ -1,9 +1,7 @@
 import React from 'react'
 
-let DevSpinner = () => null // eslint-disable-line
-
-if (process.env.REACT_STATIC_ENV === 'development') {
-  DevSpinner = () => (
+export default function Spinner() {
+  return (
     <div
       className="react-static-loading"
       style={{
@@ -49,5 +47,3 @@ if (process.env.REACT_STATIC_ENV === 'development') {
     </div>
   )
 }
-
-export default DevSpinner

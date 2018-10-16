@@ -22,7 +22,6 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [bundleAnalyzer](#bundleanalyzer)
 - [outputFileRate](#outputfilerate)
 - [prefetchRate](#prefetchrate)
-- [disableRouteInfoWarning](#disablerouteinfowarning)
 - [disableDuplicateRoutesWarning](#disableDuplicateRoutesWarning)
 - [disableRoutePrefixing](#disablerouteprefixing)
 
@@ -495,17 +494,6 @@ export default {
 }
 ```
 
-### `disableRouteInfoWarning`
-
-An optional `Boolean`. Set to `true` to disable warnings during development when `routeInfo.json` is not found for a specific route. Useful if you are using custom routing!
-
-```javascript
-// static.config.js
-export default {
-  disableRouteInfoWarning: true
-}
-```
-
 ### `disableDuplicateRoutesWarning`
 
 An optional `Boolean`. Set to `true` to disable warnings of duplicate routes during builds.
@@ -539,6 +527,17 @@ NOTE: This only affects the process that are rendering your pages to html files,
 // static.config.js
 export default {
   maxThreads: 1 // Will only use one thread to export your site
+}
+```
+
+### `minLoadTime`
+
+An optional `Number` of milliseconds to show the loading spinner when templates, siteData or routeData are not immediately available. If you are preloading aggressively, you shouldn't see a loader at all, but if a loader is shown, 's a good user experience to make is as un-flashy as possible.
+
+```javascript
+// static.config.js
+export default {
+  minLoadTime: 200
 }
 ```
 

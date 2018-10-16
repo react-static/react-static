@@ -6,7 +6,7 @@ import flushChunks from 'webpack-flush-chunks'
 import nodePath from 'path'
 import fs from 'fs-extra'
 
-import Redirect from '../browser/components/Redirect'
+import Redirect from './components/Redirect'
 import { makePathAbsolute, makeHookReducer } from '../utils'
 import { absoluteToRelativeChunkName } from '../utils/chunkBuilder'
 
@@ -30,7 +30,7 @@ export default (async function exportRoute({
 }) {
   const {
     sharedPropsHashes,
-    templateID,
+    templateIndex,
     localProps,
     allProps,
     path: routePath,
@@ -55,10 +55,10 @@ export default (async function exportRoute({
   // This routeInfo will be saved to disk. It should only include the
   // localProps and hashes to construct all of the props later.
   const routeInfo = {
-    path: routePath,
-    templateID,
+    templateIndex,
     sharedPropsHashes,
     localProps,
+    path: routePath,
   }
 
   // This embeddedRouteInfo will be inlined into the HTML for this route.
@@ -78,17 +78,14 @@ export default (async function exportRoute({
   let clientStyleSheets = []
   let clientCss = {}
 
-  // This is somewhat of a dirty hack to get around the limitations
-  // of the new react context. Since it cannot survive across node instances
-  // and bundling, we have to use our own means of transporting the routeInfo
-  // and staticURL to the application code during export.
-  // This also get's cleaned up after export. No lingering allowed.
-  global.__reactStaticExportContext = {
-    routeInfo: embeddedRouteInfo,
-    staticURL: route.path === '/' ? route.path : `/${route.path}`,
-  }
-
   let FinalComp
+
+  // Get the react component from the Comp and
+  // pass it the export context. This uses
+  // reactContext under the hood to pass down
+  // the exportContext, since react's new context
+  // api doesn't survive across bundling.
+  Comp = Comp(embeddedRouteInfo)
 
   if (route.redirect) {
     FinalComp = () => <Redirect fromPath={route.path} to={route.redirect} />
@@ -143,7 +140,6 @@ export default (async function exportRoute({
   let appHtml
 
   try {
-    // Run the beforeRenderToElement hook // TODO: document this
     const beforeRenderToElementHook = makeHookReducer(
       config.plugins,
       'beforeRenderToElement'
@@ -179,10 +175,6 @@ export default (async function exportRoute({
         clientStats,
       }
     )
-
-    // Since we just rendered to string, it's safe to
-    // null out the exportContext :)
-    global.__reactStaticExportContext = null
 
     // Rum the beforeHtmlToDocument hook
     const beforeHtmlToDocument = makeHookReducer(
@@ -248,7 +240,7 @@ export default (async function exportRoute({
   // If the route is a 404 page, write it directly to 404.html, instead of
   // inside a directory.
   const htmlFilename =
-    route.path === '404'
+    route.path === '/404'
       ? nodePath.join(config.paths.DIST, '404.html')
       : nodePath.join(config.paths.DIST, route.path, 'index.html')
 

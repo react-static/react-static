@@ -19,11 +19,11 @@ export default (async function extractTemplates(config) {
     if (index === -1) {
       // If it's new, add it
       templates.push(route.component)
-      // Assign the templateID
-      route.templateID = templates.length - 1
+      // Assign the templateIndex
+      route.templateIndex = templates.length - 1
     } else {
-      // Assign the existing templateID
-      route.templateID = index
+      // Assign the existing templateIndex
+      route.templateIndex = index
     }
   })
   timeEnd(chalk.green('=> [\u2713] Templates Built'))

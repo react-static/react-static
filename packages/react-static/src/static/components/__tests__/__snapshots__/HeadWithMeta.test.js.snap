@@ -7,6 +7,10 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static 6.0.0-beta.27"
+      name="generator"
+    />
     <title
       key="title"
     >
@@ -54,7 +58,7 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
     />
   </head>
 </Component>
-`
+`;
 
 exports[`HeadWithMeta when route has no helmet title 1`] = `
 <Component
@@ -63,6 +67,10 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static 6.0.0-beta.27"
+      name="generator"
+    />
     <link
       as="script"
       href="/assets/path/main.js"
@@ -109,7 +117,7 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
     />
   </head>
 </Component>
-`
+`;
 
 exports[`HeadWithMeta when route has title as child 1`] = `
 <Component
@@ -118,6 +126,10 @@ exports[`HeadWithMeta when route has title as child 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static 6.0.0-beta.27"
+      name="generator"
+    />
     <title
       key="title"
     >
@@ -164,7 +176,7 @@ exports[`HeadWithMeta when route has title as child 1`] = `
     />
   </head>
 </Component>
-`
+`;
 
 exports[`HeadWithMeta when route is a redirect route 1`] = `
 <Component
@@ -173,6 +185,10 @@ exports[`HeadWithMeta when route is a redirect route 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static 6.0.0-beta.27"
+      name="generator"
+    />
     <title
       key="title"
     >
@@ -185,7 +201,7 @@ exports[`HeadWithMeta when route is a redirect route 1`] = `
     />
   </head>
 </Component>
-`
+`;
 
 exports[`HeadWithMeta when route is a static route 1`] = `
 <Component
@@ -194,6 +210,10 @@ exports[`HeadWithMeta when route is a static route 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static 6.0.0-beta.27"
+      name="generator"
+    />
     <title
       key="title"
     >
@@ -240,4 +260,4 @@ exports[`HeadWithMeta when route is a static route 1`] = `
     />
   </head>
 </Component>
-`
+`;

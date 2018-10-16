@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-redux",
-  "version": "6.0.0-beta.26",
+  "version": "6.0.0-beta.27",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -13,11 +13,12 @@
     "axios": "^0.18.0",
     "json-loader": "^0.5.7",
     "react-redux": "^5.0.6",
-    "react-static": "^6.0.0-beta.26",
+    "react-static": "^6.0.0-beta.27",
     "redux": "^4.0.0"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
     "serve": "^10.0.2"
-  }
+  },
+  "gitHead": "350700130b7501622eac16aa139107c684b62b01"
 }

@@ -2,56 +2,11 @@
 
 React-Static is packed with awesome components to help you be productive. Some are required for React-Static to work properly, others are available merely for your convenience:
 
-React-Static Components:
-
-* [Router](#router)
 * [Routes](#routes)
 * [RouteData](#routedata)
 * [SiteData](#sitedata)
-* [Link](#link)
-* [Loading](#loading)
 * [Head](#head)
 * [Prefetch](#prefetch)
-* [PrefetchWhenSeen](#prefetchwhenseen)
-* [Redirect](#redirect)
-
-React-Router Components:
-
-* [Prompt](#prompt)
-* [Route](#route)
-* [Switch](#switch)
-* [matchPath](#matchpath)
-* [withRouter](#withRouter)
-
-# React-Static Components
-
-### `Router`
-
-The `Router` component is required and is what makes static exporting easy! It will **automatically** handle both static and browser environments and is recommended to always be the root component of a react-static app.
-
-Props:
-
-* `type: one of:`
-  * `browser` - Uses `history.createBrowserHistory`
-  * `hash` - Uses `history.createHashHistory`
-  * `memory` - Uses `history.createMemoryHistory`
-* `autoScrollToTop: Boolean` - Set this to `false` to disable the automatic scroll-to-top when the site path changes. Defaults to `true`.
-* `autoScrollToHash: Boolean` - Set this to `false` to disable the automatic scroll-to-hash when the location hash changes. Defaults to `true`.
-* `scrollToTopDuration: Int` - The duration of the automatic scroll-to-top animation that happens on path changes. Defaults to `0`
-* `scrollToHashDuration: Int` - The duration of the automatic scroll-to-hash animation that happens on hash changes. Defaults to `800`
-* `scrollToHashOffset: Int` - The vertical offset of the automatic scroll-to-hash animation that happens on path changes. Defaults to `0`
-* `history: History` - An optional history object (most-often used for things like react-router-redux). Provides a helper method to subscribe to loading events. Note that this will override the `type` prop above.
-* `showErrorsInProduction: Boolean` - Set this to `true` to enable the debug/error page in production. Defaults to `false`.
-
-Example:
-
-```javascript
-// App.js
-import { Router } from 'react-static'
-
-// For standard component routing:
-export default () => <Router>...</Router>
-```
 
 ### `Routes`
 
@@ -59,12 +14,12 @@ React Static handles all of your routing for you using `react-router` under the 
 
 ```javascript
 // App.js
-import { Router, Routes } from 'react-static'
+import { Root, Routes } from 'react-static'
 
 export default () => (
-  <Router>
+  <Root>
     <Routes />
-  </Router>
+  </Root>
 )
 ```
 
@@ -72,44 +27,31 @@ The routes that will be rendered are the **routes** returned by the `getRoutes` 
 
 ##### Custom `Routes` Rendering
 
-Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize one of these three render prop formats:
-
-**Render Prop Formats**
+Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize a render prop:
 
 ```javascript
-import { Router, Routes } from 'react-static'
+import { Root, Routes } from 'react-static'
 
 // This is the default renderer for `<Routes>`
-const RenderRoutes = ({ getComponentForPath }) => (
-  // The default renderer uses a catch all route to recieve the pathname
-  <Route
-    path="*"
-    render={props => {
-      // The pathname is used to retrieve the component for that path
-      let Comp = getComponentForPath(props.location.pathname)
-      // The component is rendered!
-      return <Comp key={props.location.pathname} {...props} />
-    }}
-  />
-)
+const RenderRoutes = 
 
 export default () => (
-  <Router>
-    // pass a component (class or SFC)
-    <Routes component={RenderRoutes} />
-    // or, pass a render function
-    <Routes render={RenderRoutes} />
-    // or, pass a function as a child
-    <Routes>{RenderRoutes}</Routes>
-  </Router>
+  <Root>
+    <Routes>
+      {({ getComponentForPath }) => {
+        // The pathname is used to retrieve the component for that path
+        let Comp = getComponentForPath(window.location.href)
+        // The component is rendered!
+        return <Comp />
+      }}
+    </Routes>
+  </Root>
 )
 ```
 
 **Render Props** - These special props are sent to your rendered component or render function
 
 * `getComponentForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no component is found.
-* `componentsByTemplateID{templateID: component}` - An object mapping templateIDs to Components
-* `templateIDsByPath{path: templateID}` - A object mapping paths to their corresponding template ID.
 
 ### `RouteData`
 
@@ -148,19 +90,6 @@ module.exports = {
 ```javascript
 import { RouteData} from 'react-static'
 
-// "render" prop syntax - Recommended
-export default () => (
-  <RouteData render={({ songs }) => (
-    <div>
-      <h1>Top 100 Spotify Songs</h1>
-      <ul>
-        {songs.map(song => <li key={song.id}>{song.title}</li>)}
-      </ul>
-    </div>
-  )} />
-)
-
-// "children" prop syntax
 export default () => (
   <RouteData>
     {({ songs }) => (
@@ -178,21 +107,14 @@ export default () => (
 ```javascript
 import { RouteData, withRouteData } from 'react-static'
 
-// "component" syntax
-const TopSongs = ({ songs }) => (
+export default withRouteData(({ songs }) => (
   <div>
     <h1>Top 100 Spotify Songs</h1>
     <ul>
       {songs.map(song => <li key={song.id}>{song.title}</li>)}
     </ul>
   </div>
-)
-export default () => (
-  <RouteData component={TopSongs}
-)
-
-// HOC syntax
-export default withRouteData(TopSongs)
+))
 ```
 
 ### `SiteData`
@@ -215,14 +137,6 @@ module.exports = {
 ```javascript
 import { SiteData } from 'react-static'
 
-// "render" prop syntax - Recommended
-export default () => (
-  <SiteData render={({ siteTitle, metaDescription }) => (
-    <div>Welcome to {siteTitle}! {metaDescription}</div>
-  )} />
-)
-
-// "children" prop syntax
 export default () => (
   <SiteData>
     {({ siteTitle, metaDescription }) => (
@@ -235,16 +149,9 @@ export default () => (
 ```javascript
 import { SiteData, withSiteData } from 'react-static'
 
-// "component" syntax
-const Welcome = ({ siteTitle, metaDescription }) => (
+export default withSiteData(({ siteTitle, metaDescription }) => (
   <div>Welcome to {siteTitle}! {metaDescription}</div>
-)
-export default () => (
-  <SiteData component={Welcome} />
-)
-
-// HOC syntax
-export default withSiteData(Welcome)
+))
 ```
 
 ### `Link`
@@ -293,52 +200,6 @@ import { Link } from 'react-static'
 </Link>
 ```
 
-### `Loading`
-
-The loading component and it's companion HOC `withLoading` give you access to a `loading` prop, which will be set to `0`, `1`, or `2` depending on the loading state. This changes when react-static is waiting either navigating to a new page or waiting on assets to load (this won't happen often, hopefully not at all). Use these components to show a loading indicator if you'd like!
-
-Possible `loading` states:
-
-* `0` - Finished loading / not loading
-* `1` - A "soft" loading state for navigating to a new page.
-* `2` - A "hard" loading state for when assets are being requested.
-
-Example:
-
-```javascript
-import
-import { Loading, withLoading } from 'react-static'
-
-// "render" prop syntax - Recommended
-export default () => (
-  <Loading render={({ loading }) =>
-    <div>{loading && <span>Loading...</span>}</div>
-  )} />
-)
-
-// "children" prop syntax
-export default () => (
-  <Loading>
-    {({ loading }) => (
-      <div>{loading && <span>Loading...</span>}</div>
-    )}
-  </Loading>
-)
-
-//
-
-// "component" syntax
-const MyLoading = ({ loading }) => (
-  <div>{loading && <span>Loading...</span>}</div>
-)
-export default () => (
-  <Loading component={MyLoading}
-)
-
-// HOC syntax
-export default withLoading(MyLoading)
-```
-
 ### `Head`
 
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
@@ -367,19 +228,19 @@ export () => (
 
 ### `Prefetch`
 
-Prefetch is a react component that accepts a `path` prop, and optional `only` prop and an optional single child to render. When this component is rendered, any data or template required to render the `path` will be prefetched. This ensures that if the user then navigates to that route , they will not have to wait for the required data to load.
+Prefetch is a react component that can prefetch the assets for a given route when visibly rendered in the viewport. When it's content or element are visible in the viewport, the template and data required to render the path in the `path` prop will be prefetched. This increases the chance that if the user then navigates to that route, they will not have to wait for the required data to load. You can also force the prefetch to happen even if the element is outside the viewport via the `force` prop.
 
 Props:
 
 * `path: String` **Required** - The path you want to prefetch.
-* `type: String.oneOf(['data', 'template'])` - An optional string denoted whether to only load the `data` or `template` for the path.
+* `force: Boolean` - Force the prefetch even if the element is not visible in the viewport
 
 Notes:
 
-* If the path doesn't match a route, no data will be loaded.
-* If the route has already been loaded in the session, the synchronous cache will be used instead.
+* If the path doesn't match a valid static route, nothing will happen.
+* If the route has already been loaded in the session, nothing will happen.
 * If multiple instances of the same `path` are prefetched at the same time, only a single request will be made for all instances.
-* If used more often than needed, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
+* If abused, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
 
 Example:
 
@@ -395,60 +256,11 @@ import { Prefetch, Link } from 'react-static'
     Go to blog
   </Link>
 </Prefetch>
+
+// With a custom refHandler
+<Prefetch path='/blog'>
+  {({ handleRef }) => (
+    <MyComponent ref={handleRef}/>
+  )}
+</Prefetch>
 ```
-
-### `PrefetchWhenSeen`
-
-PrefetchWhenSeen's api is identical to the `Prefetch` component, except that it will not fire until the component is visible in the viewport. If the user's browser doesn't support the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), it will work just like the Prefetch component.
-
-Example:
-
-```javascript
-import { PrefetchWhenSeen, Link } from 'react-static'
-
-// Standalone
-<PrefetchWhenSeen path='/blog' />
-
-// With children
-<PrefetchWhenSeen path='/blog'>
-  <Link to='/blog'>
-    Go to blog
-  </Link>
-</PrefetchWhenSeen>
-```
-
-### `Redirect`
-
-A proxy of the `Redirect` component that handles both development and runtime redirects.
-
-* During development, uses the standard `react-router` `Redirect` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
-* During production, uses an `http-equiv` meta tag resulting in an immediate redirect equivalent to a 301 redirect.
-
-* Props
-
-  * `to: string | object` - The destination url or react-router `to` object.
-  * `delay: integer` - The delay in **seconds** for the `http-equiv` meta tag to activate.
-
-* Renders `null`
-
-# React Router Components
-
-### `Prompt`
-
-A direct export of the `Prompt` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
-
-### `Route`
-
-A direct export of the `Route` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
-
-### `Switch`
-
-A direct export of the `Switch` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
-
-### `matchPath`
-
-A direct export of the `matchPath` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)
-
-### `withRouter`
-
-A direct export of the `withRouter` component from [`react-router-dom`](https://reacttraining.com/react-router/web/api/)

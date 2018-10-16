@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Router, Routes } from 'react-static'
+import { Root, Link, Routes } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 
 //
@@ -46,7 +46,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <Router>
+      <Root>
         <Layout>
           <Sider
             style={{ backgroundColor: '#404040' }}
@@ -108,7 +108,7 @@ class App extends React.Component {
             </Footer>
           </Layout>
         </Layout>
-      </Router>
+      </Root>
     )
   }
 }

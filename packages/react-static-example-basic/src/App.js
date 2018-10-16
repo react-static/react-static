@@ -1,24 +1,21 @@
 import React from 'react'
-import { Router, Routes, Link } from 'react-static'
+import { Root, Routes } from 'react-static'
+import { Link } from '@reach/router'
 //
 
 import './app.css'
 
 const App = () => (
-  <Router>
-    <div>
-      <nav>
-        <Link exact to="/">
-          Home
-        </Link>
-        <Link to="/about">About</Link>
-        <Link to="/blog">Blog</Link>
-      </nav>
-      <div className="content">
-        <Routes />
-      </div>
+  <Root>
+    <nav>
+      <Link to="/">Home</Link>
+      <Link to="/about">About</Link>
+      <Link to="/blog">Blog</Link>
+    </nav>
+    <div className="content">
+      <Routes />
     </div>
-  </Router>
+  </Root>
 )
 
 export default App

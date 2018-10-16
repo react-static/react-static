@@ -5,7 +5,7 @@ This example is the most basic version of react-static available. It includes:
 - CSS imports
 - Image imports
 - File imports
-- Automatic Routing
+
 - Firebase 4.8.0
 
 Features :

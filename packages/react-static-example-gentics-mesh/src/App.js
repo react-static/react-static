@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
-import { Router, Routes } from 'react-static'
+import { Root, Routes } from 'react-static'
 
 import './app.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
 
 const App = () => (
-  <Router>
+  <Root>
     <Fragment>
       <Header />
       <main role="main" className="container">
@@ -14,7 +14,7 @@ const App = () => (
       </main>
       <Footer />
     </Fragment>
-  </Router>
+  </Root>
 )
 
 export default App

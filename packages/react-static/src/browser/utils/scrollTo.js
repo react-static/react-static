@@ -5,7 +5,7 @@ const ease = t => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t)
 const defaultOptions = {
   duration: 800,
   offset: 0,
-  context: typeof window !== 'undefined' && window,
+  context: typeof document !== 'undefined' && window,
 }
 
 const getTop = (element, offset, contextScrollHeight, contextVisibleHeight) =>

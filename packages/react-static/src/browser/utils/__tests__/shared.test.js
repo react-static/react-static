@@ -1,6 +1,6 @@
 import {
   pathJoin,
-  cleanPath,
+  getRoutePath,
   cleanSlashes,
   cutPathToRoot,
   isAbsoluteUrl,
@@ -8,9 +8,9 @@ import {
   trimTrailingSlashes,
   trimDoubleSlashes,
   makePathAbsolute,
-} from '../browser'
+} from '../'
 
-describe('utils/browser', () => {
+describe('browser/utils', () => {
   describe('pathJoin()', () => {
     it('should strip slashes', () => {
       expect(pathJoin('/foo/bar/')).toEqual('foo/bar')
@@ -29,26 +29,26 @@ describe('utils/browser', () => {
     })
   })
 
-  describe('cleanPath()', () => {
+  describe('getRoutePath()', () => {
     const basePath = process.env.REACT_STATIC_BASE_PATH
     beforeEach(() => {
       process.env.REACT_STATIC_BASE_PATH = 'base/path'
     })
 
     it('should return / for falsey path', () => {
-      expect(cleanPath('')).toEqual('/')
+      expect(getRoutePath('')).toEqual('/')
     })
 
     it('should return / for /', () => {
-      expect(cleanPath('/')).toEqual('/')
+      expect(getRoutePath('/')).toEqual('/')
     })
 
     it('should strip basePath', () => {
-      expect(cleanPath('base/path/foo/bar')).toEqual('foo/bar')
+      expect(getRoutePath('base/path/foo/bar')).toEqual('foo/bar')
     })
 
     it('should trim slashes', () => {
-      expect(cleanPath('/foo/bar/')).toEqual('foo/bar')
+      expect(getRoutePath('/foo/bar/')).toEqual('foo/bar')
     })
 
     afterEach(() => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Routes, Route, Link, cleanPath } from 'react-static'
+import { Root, Routes, Route, Link, getRoutePath } from 'react-static'
 import { easeQuadOut } from 'd3-ease'
 import { NodeGroup } from 'react-move'
 import { withContext, getContext } from 'recompose'
@@ -15,20 +15,20 @@ const AnimatedRoutes = getContext({
   // otherwise, a component may rerender with the wrong data
   // during animation
   router: PropTypes.object,
-  // We'll also look for the staticURL, so we can disable the animation during static render
-  staticURL: PropTypes.string,
-})(({ getComponentForPath, router, staticURL }) => (
+  // We'll also look for the routePath, so we can disable the animation during static render
+  routePath: PropTypes.string,
+})(({ getComponentForPath, router, routePath }) => (
   <Route
     path="*"
     render={props => {
       // Get the component for this path
-      let Comp = getComponentForPath(cleanPath(props.location.pathname))
+      let Comp = getComponentForPath(getRoutePath(props.location.pathname))
       if (!Comp) {
         Comp = getComponentForPath('404')
       }
 
       // When we're rendering for static HTML, be sure to NOT animate in.
-      if (staticURL) {
+      if (routePath) {
         return (
           // This relative wrapper is necessary for accurate rehydration :)
           <div style={{ position: 'relative' }}>
@@ -110,7 +110,7 @@ const AnimatedRoutes = getContext({
 ))
 
 const App = () => (
-  <Router>
+  <Root>
     <div>
       <nav>
         <Link exact to="/">
@@ -120,10 +120,10 @@ const App = () => (
         <Link to="/blog">Blog</Link>
       </nav>
       <div className="content">
-        <Routes component={AnimatedRoutes} />
+        <Routes>{AnimatedRoutes}</Routes>
       </div>
     </div>
-  </Router>
+  </Root>
 )
 
 export default App

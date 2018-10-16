@@ -3,8 +3,8 @@ import { Link, RouteData } from 'react-static'
 import { Container } from 'reactstrap'
 
 const Footer = () => (
-  <RouteData
-    render={() => (
+  <RouteData>
+    {() => (
       <Container>
         <footer className="small">
           <div className="container">
@@ -16,7 +16,7 @@ const Footer = () => (
         </footer>
       </Container>
     )}
-  />
+  </RouteData>
 )
 
 export default Footer

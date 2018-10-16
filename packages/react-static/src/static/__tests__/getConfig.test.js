@@ -20,15 +20,12 @@ const testConfiguration = (configuration, configurationMock) => {
 describe('buildConfig', () => {
   let reactStaticEnviroment
   let reactStaticPrefetchRate
-  let reactStaticDisableRouteInfoWarning
   let reactStaticDisableRoutePreFixing
   let spyProcess
 
   beforeEach(() => {
     reactStaticEnviroment = process.env.REACT_STATIC_ENV
     reactStaticPrefetchRate = process.env.REACT_STATIC_PREFETCH_RATE
-    reactStaticDisableRouteInfoWarning =
-      process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING
     reactStaticDisableRoutePreFixing =
       process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING
     spyProcess = jest.spyOn(process, 'cwd').mockImplementation(() => './root/')
@@ -68,42 +65,9 @@ describe('buildConfig', () => {
     expect(process.env.REACT_STATIC_PREFETCH_RATE).toBe('10')
   })
 
-  test('REACT_STATIC_DISABLE_ROUTE_INFO_WARNING is set by the disableRouteInfoWarning (default)', async () => {
-    process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = null
-
-    await buildConfig()
-
-    expect(process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING).toBe('false')
-  })
-
-  test('REACT_STATIC_DISABLE_ROUTE_INFO_WARNING is set by the disableRouteInfoWarning (from config)', async () => {
-    process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = null
-
-    await buildConfig({ disableRouteInfoWarning: true })
-
-    expect(process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING).toBe('true')
-  })
-
-  test('REACT_STATIC_DISABLE_ROUTE_PREFIXING is set by the disableRouteInfoWarning (default)', async () => {
-    process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = null
-
-    await buildConfig()
-
-    expect(process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING).toBe('false')
-  })
-
-  test('REACT_STATIC_DISABLE_ROUTE_PREFIXING is set by the disableRouteInfoWarning (from config)', async () => {
-    process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = null
-
-    await buildConfig({ disableRoutePrefixing: true })
-
-    expect(process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING).toBe('true')
-  })
-
   afterEach(() => {
     process.env.REACT_STATIC_ENV = reactStaticEnviroment
     process.env.REACT_STATIC_PREFETCH_RATE = reactStaticPrefetchRate
-    process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = reactStaticDisableRouteInfoWarning
     process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = reactStaticDisableRoutePreFixing
 
     spyProcess.mockRestore()

@@ -3,8 +3,8 @@ import { RouteData, Link, Head } from 'react-static'
 //
 
 export default () => (
-  <RouteData
-    render={({ users }) => (
+  <RouteData>
+    {({ users }) => (
       <div>
         <Head>
           <title>Users | React Static</title>
@@ -19,5 +19,5 @@ export default () => (
         </ul>
       </div>
     )}
-  />
+  </RouteData>
 )

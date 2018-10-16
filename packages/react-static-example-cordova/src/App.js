@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Link, Route, Switch } from 'react-static'
+import { Root, Link, Route, Switch } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 
 //
@@ -47,7 +47,7 @@ const AppStyles = styled.div`
 `
 
 const App = () => (
-  <Router type="hash">
+  <Root type="hash">
     <AppStyles>
       <nav>
         <Link exact to="/">
@@ -63,7 +63,7 @@ const App = () => (
         </Switch>
       </div>
     </AppStyles>
-  </Router>
+  </Root>
 )
 
 export default App

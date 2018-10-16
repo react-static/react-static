@@ -9,10 +9,6 @@
 declare module 'react-static' {
   import * as React from 'react'
 
-  // Passing on all react-router typings
-  export * from 'react-router-dom'
-  import { NavLinkProps } from 'react-router-dom'
-
   // Passing on helmet typings as "Head"
   import { Helmet } from 'react-helmet'
   export class Head extends Helmet {}
@@ -36,28 +32,4 @@ declare module 'react-static' {
   ): Promise<any>
 
   export const Prefetch: React.Component
-  export const PrefetchWhenSeen: React.Component
-
-  export const Loading: React.Component
-
-  // Overwriting react-router export as react-static does (no-op)
-  export const BrowserRouter: undefined
-  export const HashRouter: undefined
-  export const MemoryRouter: undefined
-  export const StaticRouter: undefined
-  export class Router extends React.Component<{
-    history?: any
-    autoScrollToTop?: boolean
-    autoScrollToHash?: boolean
-    scrollToHashDuration?: number
-    scrollToTopDuration?: number
-    showErrorsInProduction?: boolean
-  }> {}
-
-  export const NavLink: undefined
-  interface LinkProps extends NavLinkProps {
-    scrollToTop?: boolean
-    prefetch?: boolean | string
-  }
-  export class Link extends React.Component<LinkProps, any> {}
 }

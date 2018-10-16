@@ -1,12 +1,12 @@
 import React from 'react'
-import { Router, Routes, Link } from 'react-static'
+import { Root, Routes, Link } from 'react-static'
 import { hot } from 'react-hot-loader'
 //
 
 import './app.css'
 
 const App = () => (
-  <Router>
+  <Root>
     <div>
       <nav>
         <Link exact to="/">
@@ -19,7 +19,7 @@ const App = () => (
         <Routes />
       </div>
     </div>
-  </Router>
+  </Root>
 )
 
 export default hot(module)(App)

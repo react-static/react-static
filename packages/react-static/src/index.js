@@ -1,15 +1,12 @@
-import { deprecate } from './utils/browser'
-import { withRouteData, withSiteData } from './browser/'
-
-//
-
-// React Router Components
-export { Prompt, Route, Switch, matchPath, withRouter } from 'react-router-dom'
+import { removal } from './browser/utils'
 
 // Helmet
 export { Helmet as Head } from 'react-helmet'
 
-// React-Static Components
+// React-Static
+export * from './browser/'
+export { default as scrollTo } from './browser/utils/scrollTo'
+export { removal, getRoutePath, getBasePath } from './browser/utils'
 export {
   default as RouteData,
   withRouteData,
@@ -18,33 +15,17 @@ export {
   default as SiteData,
   withSiteData,
 } from './browser/components/SiteData'
-export { default as Loading, withLoading } from './browser/components/Loading'
 export { default as Prefetch } from './browser/components/Prefetch'
-export {
-  default as PrefetchWhenSeen,
-} from './browser/components/PrefetchWhenSeen'
-export { default as Router } from './browser/components/Router'
-export { default as Redirect } from './browser/components/Redirect'
-export { NavLink, Link } from './browser/components/Link'
+export { default as Routes } from './browser/components/Routes'
+export { default as Root } from './browser/components/Root'
 
-// Routes
-export { default as Routes } from 'react-static/templates'
-
-// Methods
-export { prefetch, onLoading } from './browser/'
-
-// Public Utils
-export { default as scrollTo } from './utils/scrollTo'
-
-// Private Utils
-export { cleanPath } from './utils/browser'
-
-// Deprecations
-export const getRouteProps = (...args) => {
-  deprecate('getRouteProps', 'withRouteData')
-  return withRouteData(...args)
+// Migration Hints
+export const Loading = () => {
+  removal('Loading')
 }
-export const getSiteData = (...args) => {
-  deprecate('getSiteData', 'withSiteData')
-  return withSiteData(...args)
+export const withLoading = () => {
+  removal('withLoading')
+}
+export const onLoading = () => {
+  removal('onLoading')
 }

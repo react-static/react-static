@@ -12,6 +12,6 @@ This example includes:
 - Google's Roboto font loaded from CDN
 - Image imports
 - File imports
-- Automatic Routing
+
 
 To get started, run `react-static create` and use the `material-ui` template.

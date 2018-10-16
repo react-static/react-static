@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-styled-components",
-  "version": "6.0.0-beta.26",
+  "version": "6.0.0-beta.27",
   "description": "A React-Static plugin that adds CSS-in-JS/SSR support for styled-components",
   "main": "node.api.js",
   "repository": "https://github.com/nozzle/react-static-plugin-styled-components.git",
@@ -21,5 +21,6 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0"
-  }
+  },
+  "gitHead": "350700130b7501622eac16aa139107c684b62b01"
 }

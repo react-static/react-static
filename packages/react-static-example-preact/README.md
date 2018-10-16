@@ -5,6 +5,6 @@ This example of React-Static uses `preact` in production via the use of `preact-
 - CSS imports
 - Image imports
 - File imports
-- Automatic Routing
+
 
 To get started, run `react-static create` and use the `preact` template.

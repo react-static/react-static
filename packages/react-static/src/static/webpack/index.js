@@ -11,7 +11,7 @@ import fs from 'fs-extra'
 import { getStagedRules } from './rules'
 import { prepareRoutes } from '../'
 import {
-  cleanPath,
+  getRoutePath,
   makeHookReducer,
   findAvailablePort,
   time,
@@ -247,7 +247,7 @@ export async function startDevServer({ config }) {
         if (!paths) {
           paths = config.routes.map(route => route.path)
         }
-        paths = paths.map(cleanPath)
+        paths = paths.map(getRoutePath)
         reloadWebpackRoutes(config)
         socket.emit('message', { type: 'reloadRoutes', paths })
       }

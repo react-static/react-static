@@ -28,7 +28,7 @@ added later)
 - Styled-Components
 - Image imports
 - File imports
-- Automatic Routing
+
 
 
 To get started, run `react-static create` and use the `less-antdesign` 

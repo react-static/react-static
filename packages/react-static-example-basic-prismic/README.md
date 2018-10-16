@@ -5,7 +5,7 @@ This example includes tweaks to use react-static to with prismic headless CMS. I
 - CSS imports
 - Image imports
 - File imports
-- Automatic Routing
+
 - Fetcing Data from [Prismic](https://prismic.io/)
 
 To get started, run `react-static create` and use the `basic-prismic` template.

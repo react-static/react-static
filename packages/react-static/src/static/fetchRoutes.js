@@ -26,10 +26,8 @@ export default (async function fetchRoutes(config) {
         route.allProps = {}
       }
 
-      // TODO: check if route.allProps is indeed an object
-
       // Loop through the props to find shared props between routes
-      // TODO: expose knobs to tweak these settings, perform them manually,
+      // TODO: Make this smarter and/or expose knobs to tweak these settings / perform them manually,
       // or simply just turn them off.
       Object.keys(route.allProps)
         .map(k => route.allProps[k])

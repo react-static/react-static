@@ -29,6 +29,7 @@ export default function({ config }) {
     entry: [
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
+      require.resolve('react-static/lib/bootstrapTemplates'),
       path.resolve(ROOT, config.entry),
     ],
     output: {

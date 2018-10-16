@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Routes, onLoading } from 'react-static'
+import { Root, Routes } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 
 import nprogress from 'nprogress'
@@ -8,7 +8,6 @@ import { loadLanguages } from 'reprism'
 import jsx from 'reprism/languages/jsx'
 import bash from 'reprism/languages/bash'
 
-import 'nprogress/nprogress.css'
 import 'react-smackdown/themes/smackdown-light.css'
 
 loadLanguages(jsx, bash)
@@ -66,22 +65,13 @@ const AppStyles = styled.div`
 `
 
 class App extends React.Component {
-  componentDidMount() {
-    onLoading(loading => {
-      if (loading) {
-        nprogress.start()
-      } else {
-        nprogress.done()
-      }
-    })
-  }
-  render() {
+  render () {
     return (
-      <Router>
+      <Root>
         <AppStyles>
           <Routes />
         </AppStyles>
-      </Router>
+      </Root>
     )
   }
 }

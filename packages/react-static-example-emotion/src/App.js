@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Routes, Link } from 'react-static'
+import { Root, Routes, Link } from 'react-static'
 import styled, { injectGlobal } from 'react-emotion'
 
 //
@@ -43,7 +43,7 @@ const AppStyles = styled.div`
 `
 
 const App = () => (
-  <Router>
+  <Root>
     <AppStyles>
       <nav>
         <Link exact to="/">
@@ -56,7 +56,7 @@ const App = () => (
         <Routes />
       </div>
     </AppStyles>
-  </Router>
+  </Root>
 )
 
 export default App

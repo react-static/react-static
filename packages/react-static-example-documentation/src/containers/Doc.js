@@ -7,10 +7,10 @@ import Markdown from 'components/Markdown'
 import Sidebar from 'components/Sidebar'
 
 const Doc = () => (
-  <SiteData
-    render={({ repoName }) => (
-      <RouteData
-        render={({ editPath, markdown, title }) => (
+  <SiteData>
+    {({ repoName }) => (
+      <RouteData>
+        {({ editPath, markdown, title }) => (
           <Sidebar>
             <Head>
               <title>{`${title} | ${repoName}`}</title>
@@ -21,9 +21,9 @@ const Doc = () => (
             </div>
           </Sidebar>
         )}
-      />
+      </RouteData>
     )}
-  />
+  </SiteData>
 )
 
 export default Doc

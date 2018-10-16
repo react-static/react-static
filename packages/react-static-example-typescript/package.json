@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-typescript",
-  "version": "6.0.0-beta.26",
+  "version": "6.0.0-beta.27",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -30,5 +30,6 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "all"
-  }
+  },
+  "gitHead": "350700130b7501622eac16aa139107c684b62b01"
 }

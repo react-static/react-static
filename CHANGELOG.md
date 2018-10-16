@@ -23,6 +23,15 @@
 - A new loader for external JS files is now used after the normal `jsLoader` called `jsLoaderExternal`. It is responsible for handling all javascript files that are not located in your projects source.
 - The Routes (and `react-static-routes`) import has been replaced by simply doing `import { Routes } from 'react-static'`. Under the hood, this uses a webpack alias to point to the generated `dist/react-static-routes.js` file, and thus won't confuse linters or IDEs like codesandbox :).
 - Passing an object as the config to react-static is no longer supported. You must pass a location of the root of the project.
+- All `render` and `component` props are now deprecated in favor of using `child-as-a-function` rendering. Anywhere you are using these props must be migrated to use a child as a function.
+- The `Loading` component has been removed. If you wish to show loading states in your app, you can use the `Loading` props for any components that support them. This is in preparation for React...Suspense!
+- React-Static no longer ships with any routing-related functionality. It functions independently of your routing paradigm. Thus, it no longer exports anything from `react-router`.
+- The `PrefetchWhenSeen` component has been deprecated in favor of only using the `Prefetch` component
+- The `Prefetch` component is now smart like `PrefetchWhenSeen` was.
+- The client-side `Redirect` component has been deprecated. Redirects should be done in the `static.config.js`. If the user needs to do any redirects for dynamic/runtime routes, they can use their favorite router's redirect solution.
+- `Router` has been deprecated and replaced by the `Root` component. The `Root` component implements the `HashScroller` component, an `ErrorBoundary` and a very simple and non-invasive route context using `@reach/router` (the recommended router). The base router is customizable or replaceable if the user wishes to use a different router.
+- The `Root` component renders a `div` under the hood (from reach/router). This may affect layouts during migration.
+- `config.disableRouteInfoWarning` has been depracated. Do not use `RouteInfo` on non-static pages!
 
 #### Fixes & Optimizations
 
@@ -132,7 +141,7 @@
 
 #### Fixes & Optimizations
 
-- Improved `getPath` and `cleanPath` methods, and added some simple tests for them.
+- Improved `getPath` and `getRoutePath` methods, and added some simple tests for them.
 
 # 5.8.0
 
@@ -563,7 +572,7 @@
 - Allow customization of dev server PORT and HOST via those environment variables. (Thanks [@rywils21](https://github.com/rywils21)!)
 - `config.getRoutes` is no longer required and will default to exporting a single root path.
 - Webpack configurations can now be exported and used externally. (Thanks [@crubier](https://github.com/crubier)!)
-- `<Router>` component now supports a `type` prop that can be: `browser`, `hash`, or `memory`, which defines which type of `history` object to create and use internally. Useful for non-web environments or situations where your app will be accessed in a filesystem or nested domain as opposed to a web server.
+- `<Root>` component now supports a `type` prop that can be: `browser`, `hash`, or `memory`, which defines which type of `history` object to create and use internally. Useful for non-web environments or situations where your app will be accessed in a filesystem or nested domain as opposed to a web server.
 - Added Redux example (Thanks [@crubier](https://github.com/crubier)!)
 - Added Apollo GraphQL example (Thanks [@crubier](https://github.com/crubier)!)
 - Added Redux + Apollo example (Thanks [@crubier](https://github.com/crubier)!)

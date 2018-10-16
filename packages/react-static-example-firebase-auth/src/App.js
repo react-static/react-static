@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Routes, Link } from 'react-static'
+import { Root, Routes, Link } from 'react-static'
 
 //
 
@@ -9,7 +9,7 @@ import withAuthentication from './session/withAuthentication'
 import './app.css'
 
 const App = withAuthentication(() => (
-  <Router>
+  <Root>
     <div>
       <nav>
         <Link exact to="/">
@@ -23,7 +23,7 @@ const App = withAuthentication(() => (
         <Routes />
       </div>
     </div>
-  </Router>
+  </Root>
 ))
 
 export default App

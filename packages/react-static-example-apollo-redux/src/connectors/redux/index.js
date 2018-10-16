@@ -2,7 +2,7 @@ import { createStore } from 'redux'
 
 import reducer from './reducers'
 
-if (typeof window === 'undefined') {
+if (typeof document === 'undefined') {
   global.window = {}
 }
 

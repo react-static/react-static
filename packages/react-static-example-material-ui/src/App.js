@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Router, Routes, Link } from 'react-static'
+import { Root, Routes, Link } from 'react-static'
 
 //
 
@@ -39,7 +39,7 @@ class App extends PureComponent {
     const { classes } = this.props
 
     return (
-      <Router>
+      <Root>
         <div className={classes.container}>
           <CssBaseline />
           <AppBar className={classes.appBar} color="default" position="static">
@@ -55,7 +55,7 @@ class App extends PureComponent {
             <Routes />
           </div>
         </div>
-      </Router>
+      </Root>
     )
   }
 }

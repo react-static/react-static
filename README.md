@@ -12,18 +12,18 @@ A **progressive static-site generator** for React.
 
 [**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
 
-React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of **SEO, site performance, and user/developer experience**.
+React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of static-site **performance, and user/developer experience**.
 
 [![Sponsored By GraphCMS](https://github.com/nozzle/react-static/raw/master/media/graphcms.svg?sanitize=true)](http://graphcms.com/?ref=tlinsley)
 
 ## Features
-
-- ⚛️ 100% React (or Preact!)
+- ⚛️ 100% React (and friends!)
 - 🚀 [Blazing](https://twitter.com/acdlite/status/974390255393505280) fast builds and performance.
 - 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
-- ✂️ Automatic code and data splitting for routes!
+- ✂️ Automatic code and data splitting!
 - 💥 Instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
-- 🎯 Built for **SEO**.
+- ☔️ Progressive Enchancement + Graceful Fallbacks
+- 🎯 **SEO** Friendly.
 - 🥇 React-first developer experience.
 - 😌 Painless project setup & migration.
 - 💯 Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux.
@@ -106,7 +106,7 @@ $ yarn serve
 $ yarn build # or react-static build
 ```
 
-Once you've installed and test driven sufficiently, you may want to:
+Once you've installed and test driven, you may want to:
 
 - [Read about the core concepts of React Static](/docs/concepts.md)
 - [Join the React Static Spectrum community!](https://spectrum.chat/react-static)
@@ -156,13 +156,10 @@ Can't find an example? We invite you to write one! Simply copy the `basic` or `b
 
 ## Documentation
 
-#### [Core Concepts](/docs/concepts.md)
-
-#### [API Reference](/docs/config.md)
-
-#### [Changelog](https://github.com/nozzle/react-static/blob/master/CHANGELOG.md)
-
-#### [Contributing Guide](https://github.com/nozzle/react-static/blob/master/CONTRIBUTING.md)
+- [Core Concepts](/docs/concepts.md)
+- [API Reference](/docs/config.md)
+- [Changelog](https://github.com/nozzle/react-static/blob/master/CHANGELOG.md)
+- [Contributing Guide](https://github.com/nozzle/react-static/blob/master/CONTRIBUTING.md)
 
 ## Chat with us on the React Static Spectrum community!
 
