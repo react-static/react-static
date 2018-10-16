@@ -14,10 +14,6 @@ export class RouterScroller extends React.Component {
       prev.location.pathname !== this.props.location.pathname &&
       !this.props.location.hash
     ) {
-      if (window.__noScrollTo) {
-        window.__noScrollTo = false
-        return
-      }
       this.scrollToTop()
       return
     }
