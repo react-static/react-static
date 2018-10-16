@@ -129,7 +129,7 @@ export default () => (
       A progressive static-site generator for React by <Link to="https://nozzle.io">Nozzle.io</Link>
     </h2>
     <p>
-      React-Static is a fast, lightweight, and powerful framework for building static-progressive
+      React Static is a fast, lightweight, and powerful framework for building static-progressive
       React applications and websites. It's been carefully designed to meet the highest standards of
       SEO, site performance, and user/developer experience.
     </p>

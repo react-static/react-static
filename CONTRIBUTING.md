@@ -4,7 +4,7 @@ Below are the rules of contribution! They're here to keep the library running sm
 
 ### Use the community
 
-If you plan on contributing to React-Static in any way, we suggest you [click here to sign up for the React-Tools Spectrum community](https://spectrum.chat/react-static). The community is your greatest tool when building new features or fixing bugs :)
+If you plan on contributing to React Static in any way, we suggest you [click here to sign up for the React Static Spectrum community](https://spectrum.chat/react-static). The community is your greatest tool when building new features or fixing bugs :)
 
 ### Claim Issues
 
@@ -12,7 +12,7 @@ If you are fixing an issue or bug, please take ownership on it. Too often do mul
 
 ### Open an RFP or discussion for new features. (Requests for Proposals)
 
-If you have an idea for a new feature or optimization, discuss it in an issue or [spectrum thread](https://spectrum.chat/react-static) before coding into the night! It could very well end up that the feature or problem is being solved in another area or that your solution needs some more work to fit into the overal architecture.
+If you have an idea for a new feature or optimization, discuss it in an issue or [Spectrum thread](https://spectrum.chat/react-static) before coding into the night! It could very well end up that the feature or problem is being solved in another area or that your solution needs some more work to fit into the overal architecture.
 
 ## Suggested Dev Environment
 
@@ -38,4 +38,4 @@ If you have an idea for a new feature or optimization, discuss it in an issue or
 
 ## Testing
 
-Unfortunately, there are no official tests for React-Static yet. If you would like to write the, please do! Now is a great time as the library is very stable. Since we do not have any unit or integration tests in place, please take great care to test your changes on as many examples as possible, including your own in production if necessary.
+Unfortunately, there are no official tests for React Static yet. If you would like to write them, please do! Now is a great time as the library is very stable. Since we do not have any unit or integration tests in place, please take great care to test your changes on as many examples as possible, including your own in production if necessary.

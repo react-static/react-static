@@ -1,20 +1,20 @@
-# React-Static - Algolia Example
+# React Static - Algolia Example
 
-This example is based on the basic version of react-static, but implements a simple Algolia search.
+This example is based on the basic version of React Static, but implements a simple Algolia search.
 
-Included basic react-static features:
+Included basic React Static features:
 
 * Babel
 * CSS imports
 * Image imports
 * File imports
-* Automatic Routing
+* Automatic routing
 
 To get started, run `react-static create` and use the `algolia` template.
 
 To make the search work you'll need to do the following:
 
-* Add your Algolia applicationID & adminApiKey to `algolia.js`
-* Add your applicationID & searchOnlyApiKey to `Search.js` container
+* Add your Algolia `applicationID` & `adminApiKey` to `algolia.js`
+* Add your `applicationID` & `searchOnlyApiKey` to `Search.js` container
 
-Algolia CSS styles are @imported in `app.css`.
+Algolia CSS styles are `@import`ed in `app.css`.

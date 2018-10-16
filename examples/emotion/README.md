@@ -1,10 +1,10 @@
-# React-Static - Emotion Example
+# React Static - Emotion Example
 
 This example includes:
 
 - Emotion
 - Image imports
 - File imports
-- Automatic Routing
+- Automatic routing
 
 To get started, run `react-static create` and use the `emotion` template.

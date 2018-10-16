@@ -1,6 +1,6 @@
-# React-Static - Apollo and Redux Example
+# React Static - Apollo and Redux Example
 
-This example is based on the most basic version of react-static available, and adds:
+This example is based on the most basic version of React Static available, and adds:
 
 - React Apollo
 - React Redux
