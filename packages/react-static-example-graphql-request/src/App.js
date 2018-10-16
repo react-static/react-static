@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Router, Routes } from 'react-static'
+import { Root, Routes } from 'react-static'
 
 //
 
@@ -8,14 +8,14 @@ import Header from './components/Header'
 import './app.css'
 
 const App = () => (
-  <Router>
+  <Root>
     <Fragment>
       <Header />
       <main>
         <Routes />
       </main>
     </Fragment>
-  </Router>
+  </Root>
 )
 
 export default App

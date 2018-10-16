@@ -14,12 +14,12 @@ React Static handles all of your routing for you using `react-router` under the 
 
 ```javascript
 // App.js
-import { Router, Routes } from 'react-static'
+import { Root, Routes } from 'react-static'
 
 export default () => (
-  <Router>
+  <Root>
     <Routes />
-  </Router>
+  </Root>
 )
 ```
 
@@ -30,13 +30,13 @@ The routes that will be rendered are the **routes** returned by the `getRoutes` 
 Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize a render prop:
 
 ```javascript
-import { Router, Routes } from 'react-static'
+import { Root, Routes } from 'react-static'
 
 // This is the default renderer for `<Routes>`
 const RenderRoutes = 
 
 export default () => (
-  <Router>
+  <Root>
     <Routes>
       {({ getComponentForPath }) => {
         // The pathname is used to retrieve the component for that path
@@ -45,7 +45,7 @@ export default () => (
         return <Comp />
       }}
     </Routes>
-  </Router>
+  </Root>
 )
 ```
 

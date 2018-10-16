@@ -269,17 +269,17 @@ Example - Handling a non-static admin route:
 
 ```javascript
 // App.js
-import { Router, Routes, Route, Switch } from 'react-static'
+import { Root, Routes, Route, Switch } from 'react-static'
 
 import Admin from 'containers/Admin'
 
 export default () => (
-  <Router>
+  <Root>
     <Switch>
       <Route path="/admin" component={Admin} /> // If /admin path is matched
       <Routes /> // Otherwise, fall back to static route handlers
     </Switch>
-  </Router>
+  </Root>
 )
 ```
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Routes } from 'react-static'
+import { Root, Routes } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 
 import nprogress from 'nprogress'
@@ -67,11 +67,11 @@ const AppStyles = styled.div`
 class App extends React.Component {
   render () {
     return (
-      <Router>
+      <Root>
         <AppStyles>
           <Routes />
         </AppStyles>
-      </Router>
+      </Root>
     )
   }
 }

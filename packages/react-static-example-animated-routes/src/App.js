@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Routes, Route, Link, getRoutePath } from 'react-static'
+import { Root, Routes, Route, Link, getRoutePath } from 'react-static'
 import { easeQuadOut } from 'd3-ease'
 import { NodeGroup } from 'react-move'
 import { withContext, getContext } from 'recompose'
@@ -110,7 +110,7 @@ const AnimatedRoutes = getContext({
 ))
 
 const App = () => (
-  <Router>
+  <Root>
     <div>
       <nav>
         <Link exact to="/">
@@ -123,7 +123,7 @@ const App = () => (
         <Routes>{AnimatedRoutes}</Routes>
       </div>
     </div>
-  </Router>
+  </Root>
 )
 
 export default App

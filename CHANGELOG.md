@@ -30,6 +30,7 @@
 - The `Prefetch` component is now smart like `PrefetchWhenSeen` was.
 - The client-side `Redirect` component has been deprecated. Redirects should be done in the `static.config.js`. If the user needs to do any redirects for dynamic/runtime routes, they can use their favorite router's redirect solution.
 - `Router` has been deprecated and replaced by the `Root` component. The `Root` component implements the `HashScroller` component, an `ErrorBoundary` and a very simple and non-invasive route context using `@reach/router` (the recommended router). The base router is customizable or replaceable if the user wishes to use a different router.
+- The `Root` component renders a `div` under the hood (from reach/router). This may affect layouts during migration.
 - `config.disableRouteInfoWarning` has been depracated. Do not use `RouteInfo` on non-static pages!
 
 #### Fixes & Optimizations
@@ -571,7 +572,7 @@
 - Allow customization of dev server PORT and HOST via those environment variables. (Thanks [@rywils21](https://github.com/rywils21)!)
 - `config.getRoutes` is no longer required and will default to exporting a single root path.
 - Webpack configurations can now be exported and used externally. (Thanks [@crubier](https://github.com/crubier)!)
-- `<Router>` component now supports a `type` prop that can be: `browser`, `hash`, or `memory`, which defines which type of `history` object to create and use internally. Useful for non-web environments or situations where your app will be accessed in a filesystem or nested domain as opposed to a web server.
+- `<Root>` component now supports a `type` prop that can be: `browser`, `hash`, or `memory`, which defines which type of `history` object to create and use internally. Useful for non-web environments or situations where your app will be accessed in a filesystem or nested domain as opposed to a web server.
 - Added Redux example (Thanks [@crubier](https://github.com/crubier)!)
 - Added Apollo GraphQL example (Thanks [@crubier](https://github.com/crubier)!)
 - Added Redux + Apollo example (Thanks [@crubier](https://github.com/crubier)!)

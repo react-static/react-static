@@ -1,12 +1,12 @@
 import React from 'react'
-import { Router, Routes, Link } from 'react-static'
+import { Root, Routes, Link } from 'react-static'
 
 // tslint:disable-next-line:no-implicit-dependencies
 
 import './app.css'
 
 const App = () => (
-  <Router>
+  <Root>
     <div>
       <nav>
         <Link exact to="/">
@@ -19,7 +19,7 @@ const App = () => (
         <Routes />
       </div>
     </div>
-  </Router>
+  </Root>
 )
 
 export default App

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, Switch, Link } from 'react-static'
+import { Root, Route, Switch, Link } from 'react-static'
 
 //
 import Home from 'containers/Home'
@@ -10,7 +10,7 @@ import NotFound from 'containers/404'
 import './app.css'
 
 const App = () => (
-  <Router>
+  <Root>
     <div>
       <nav>
         <Link exact to="/">
@@ -28,7 +28,7 @@ const App = () => (
         </Switch>
       </div>
     </div>
-  </Router>
+  </Root>
 )
 
 export default App

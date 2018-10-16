@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Switch, Route, Link } from 'react-static'
+import { Root, Switch, Route, Link } from 'react-static'
 
 import './app.css'
 
@@ -34,7 +34,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router>
+      <Root>
         <div>
           <nav>
             {this.state.dynamicRoutes.map((route, i) => (
@@ -62,7 +62,7 @@ class App extends React.Component {
             </button>
           </div>
         </div>
-      </Router>
+      </Root>
     )
   }
 }
