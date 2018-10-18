@@ -9,7 +9,6 @@ import matchSorter from 'match-sorter'
 import downloadGitRepo from 'download-git-repo'
 import { promisify } from 'util'
 import tarfs from 'tar-fs'
-import axios from 'axios'
 import gunzip from 'gunzip-maybe'
 //
 import { ChalkColor, time, timeEnd } from '../utils'
@@ -25,6 +24,8 @@ const typeExample = 'React Static Example'
 const tempDest = '.temp'
 
 export default (async function create({ name, template, isCLI } = {}) {
+  const isYarn = shouldUseYarn()
+
   const prompts = []
   console.log('')
 
@@ -231,8 +232,6 @@ export default (async function create({ name, template, isCLI } = {}) {
   if (fs.pathExistsSync(path.join(dest, 'gitignore'))) {
     fs.removeSync(path.join(dest, 'gitignore'))
   }
-
-  const isYarn = shouldUseYarn()
 
   if (isCLI) {
     console.log(
