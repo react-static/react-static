@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-graphql-request",
-  "version": "6.0.0-beta.28",
+  "version": "6.0.0-beta.29",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -12,7 +12,7 @@
   "dependencies": {
     "graphql-request": "^1.4.0",
     "react-markdown": "^4.0.2",
-    "react-static": "^6.0.0-beta.28"
+    "react-static": "^6.0.0-beta.29"
   },
   "devDependencies": {
     "eslint-config-react-tools": "^1.0.10",

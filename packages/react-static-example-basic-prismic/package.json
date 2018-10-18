@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-basic-prismic",
-  "version": "6.0.0-beta.28",
+  "version": "6.0.0-beta.29",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "prismic-javascript": "^1.5.0-beta.1",
-    "react-static": "^6.0.0-beta.28"
+    "react-static": "^6.0.0-beta.29"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
