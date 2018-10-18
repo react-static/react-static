@@ -1,8 +1,8 @@
 import React from 'react'
 import { pathJoin, makePathAbsolute, makeHookMapper } from '../../utils'
-import packagejson from '../../../package.json'
+// import packagejson from '../../../package.json'
 
-const { version } = packagejson
+// const { version } = packagejson
 
 const REGEX_FOR_STYLE_TAG = /<style>|<\/style>/gi
 
@@ -74,9 +74,9 @@ export async function makeHeadWithMeta({
 
     return (
       <head {...rest}>
-        {process.env.NODE_ENV !== 'testing' ? (
+        {/* {process.env.NODE_ENV !== 'testing' ? (
           <meta name="generator" content={`React Static ${version}`} />
-        ) : null}
+        ) : null} */}
         {head.base}
         {useHelmetTitle && head.title}
         {head.meta}
