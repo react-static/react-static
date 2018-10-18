@@ -16,7 +16,7 @@ export const trimTrailingSlashes = (string = '') =>
 
 export const trimDoubleSlashes = (string = '') => {
   if (isAbsoluteUrl(string)) {
-    const [scheme, path] = string.split('://')
+    const [scheme = '', path = ''] = string.split('://')
 
     return [scheme, path.replace(REGEX_TO_REMOVE_DOUBLE_SLASH, '/')].join('://')
   }

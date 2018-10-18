@@ -2,27 +2,40 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 import path from 'path'
 import git from 'git-promise'
-import { execSync } from 'child_process'
+import { execSync, exec } from 'child_process'
 import inquirer from 'inquirer'
 import autoCompletePrompt from 'inquirer-autocomplete-prompt'
 import matchSorter from 'match-sorter'
 import downloadGitRepo from 'download-git-repo'
 import { promisify } from 'util'
+import tarfs from 'tar-fs'
+import axios from 'axios'
+import gunzip from 'gunzip-maybe'
+//
 import { ChalkColor, time, timeEnd } from '../utils'
 import { version } from '../../package.json'
+import exampleList from '../exampleList.json'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
+const typeLocal = 'Local Directory...'
+const typeGit = 'GIT Repository...'
+const typeNpm = 'NPM package...'
+const typeExample = 'React Static Example'
+const tempDest = '.temp'
+
 export default (async function create({ name, template, isCLI } = {}) {
   const prompts = []
-
-  const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
-
   console.log('')
 
-  let exampleList = files.filter(d => !d.startsWith('.'))
-  exampleList = ['basic', ...exampleList.filter(d => d !== 'basic')]
-  const exampleChoices = [...exampleList, 'custom']
+  const firstExamples = ['basic', 'blank']
+  const npmExamples = [
+    ...firstExamples,
+    ...exampleList.filter(d => !firstExamples.includes(d)),
+  ]
+  const exampleChoices = [...npmExamples, typeLocal, typeGit, typeNpm]
+
+  let templateType = typeExample
 
   // prompt if --name argument is not passed from CLI
   // warning: since name will be set as a function by commander by default
@@ -76,27 +89,143 @@ export default (async function create({ name, template, isCLI } = {}) {
   console.log('=> Creating new react-static project...')
   const dest = path.resolve(process.cwd(), name)
 
-  if (template === 'custom') {
+  if (template === typeLocal) {
+    templateType = typeLocal
+    const { localDirectory } = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'localDirectory',
+        message: `Enter an local directory's absolute location (~/Desktop/my-template)`,
+      },
+    ])
+    template = localDirectory
+  }
+
+  if (template === typeNpm) {
+    templateType = typeNpm
+    const { npmRepoName } = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'npmRepoName',
+        message: 'Enter an NPM package name (my-npm-package)',
+      },
+    ])
+    template = npmRepoName
+  }
+
+  if (template === typeGit) {
+    templateType = typeGit
     const { githubRepoName } = await inquirer.prompt([
       {
         type: 'input',
         name: 'githubRepoName',
         message:
-          'Specify the full address of a public git repo from GitHub, BitBucket, GitLab, etc. (https://github.com/ownerName/repoName.git)',
-        default: 'basic',
+          'Enter a repository URL from GitHub, BitBucket, GitLab, or any other public repo. (https://github.com/ownerName/repoName.git)',
       },
     ])
     template = githubRepoName
   }
 
-  // Fetch template
-  await fetchTemplate(template, dest)
+  console.log('')
+
+  // GIT repositories
+  if (templateType === typeGit) {
+    if (template.startsWith('https://') || template.startsWith('git@')) {
+      try {
+        console.log(chalk.green(`Cloning Git template: ${template}`))
+        await git(`clone --recursive ${template} ${dest}`)
+      } catch (err) {
+        console.log(chalk.red(`Cloning Git template: ${template} failed!`))
+        throw err
+      }
+    } else if (template.startsWith('http://')) {
+      // use download-git-repo to fetch remote repository
+      const getGitHubRepo = promisify(downloadGitRepo)
+      try {
+        console.log(chalk.green(`Cloning Git template: ${template}`))
+        await getGitHubRepo(template, dest)
+      } catch (err) {
+        console.log(chalk.red(`Cloning Git template: ${template} failed!`))
+        throw err
+      }
+    }
+  } else if (templateType === typeExample || templateType === typeNpm) {
+    // NPM packages
+    const prefix = templateType === typeExample ? 'react-static-example-' : ''
+    const npmVersion = templateType === typeExample ? version : 'latest'
+    const packageName = `${prefix}${template}@${npmVersion}`
+    let tarName
+    console.log(chalk.green(`Downloading NPM template: ${packageName}`))
+    try {
+      tarName = (await new Promise((resolve, reject) => {
+        exec(
+          `${isYarn ? `yarn` : `npm`} pack ${packageName}`,
+          (error, stdout, stderr) => {
+            if (error) {
+              console.log(error)
+              reject(stderr)
+              return
+            }
+            console.log(stdout)
+            resolve(stdout)
+          }
+        )
+      })).replace(/\n/gm, '')
+
+      // return a promise and resolve when download finishes
+      await new Promise((resolve, reject) => {
+        // Stream the tarball through gunzip-maybe and then untar it to the destination
+
+        const writeStream = tarfs.extract(path.resolve(process.cwd(), tempDest))
+
+        fs.createReadStream(path.resolve(process.cwd(), tarName))
+          .pipe(gunzip())
+          .pipe(writeStream)
+
+        writeStream.on('finish', resolve)
+        writeStream.on('error', reject)
+      })
+
+      try {
+        // Move the untarred `package` directory to the root of the destination
+        await fs.renameSync(
+          path.resolve(process.cwd(), tempDest, 'package'),
+          path.resolve(process.cwd(), dest)
+        )
+      } catch (err) {
+        console.log(
+          chalk.red(`Directory already exists at ${(process.cwd(), dest)}!`)
+        )
+        throw err
+      }
+    } catch (err) {
+      console.log(chalk.red(`Downloading NPM template: ${packageName} failed!`))
+      throw err
+    } finally {
+      await fs.remove(path.resolve(process.cwd(), tarName))
+      await fs.remove(path.resolve(process.cwd(), tempDest))
+    }
+  } else {
+    // Local templates
+    try {
+      console.log(chalk.green(`Using template from directory: ${template}`))
+      await fs.copy(path.resolve(process.cwd(), template), dest)
+    } catch (err) {
+      console.log(
+        chalk.red(`Copying the template from directory: ${template} failed!`)
+      )
+      throw err
+    }
+  }
 
   // Since npm packaging will clobber .gitignore files
   // We need to rename the gitignore file to .gitignore
   // See: https://github.com/npm/npm/issues/1862
 
-  if (!fs.pathExistsSync(path.join(dest, '.gitignore'))) {
+  if (
+    !fs.pathExistsSync(path.join(dest, '.gitignore')) &&
+    fs.pathExistsSync(path.join(dest, 'gitignore'))
+  ) {
     await fs.move(path.join(dest, 'gitignore'), path.join(dest, '.gitignore'))
   }
   if (fs.pathExistsSync(path.join(dest, 'gitignore'))) {
@@ -114,13 +243,7 @@ export default (async function create({ name, template, isCLI } = {}) {
       }...`
     )
     // We install react-static separately to ensure we always have the latest stable release
-    execSync(
-      `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
-        isYarn
-          ? `yarn add react-static@${version}`
-          : `npm install react-static@${version} --save`
-      }`
-    )
+    execSync(`cd ${name} && ${isYarn ? 'yarn' : 'npm install'}`)
     console.log('')
   }
 
@@ -155,53 +278,6 @@ export default (async function create({ name, template, isCLI } = {}) {
         : chalk.hex(ChalkColor.npm)('npm run')
     } serve ${chalk.green('- Test a production build locally')}
   `)
-
-  async function fetchTemplate(template, dest) {
-    console.log('')
-    if (template.startsWith('https://') || template.startsWith('git@')) {
-      try {
-        console.log(chalk.green(`Downloading template: ${template}`))
-        await git(`clone --recursive ${template} ${dest}`)
-      } catch (err) {
-        console.log(chalk.red(`Download of ${template} failed`))
-        throw err
-      }
-    } else if (template.startsWith('http://')) {
-      // use download-git-repo to fetch remote repository
-      const getGitHubRepo = promisify(downloadGitRepo)
-      try {
-        console.log(chalk.green(`Downloading template: ${template}`))
-        await getGitHubRepo(template, dest)
-      } catch (err) {
-        console.log(chalk.red(`Download of ${template} failed`))
-        throw err
-      }
-    } else {
-      // If it's an exapmle template, copy it from there
-      if (exampleList.includes(template)) {
-        try {
-          console.log(chalk.green(`Using template: ${template}`))
-          return fs.copy(
-            path.resolve(__dirname, `../../examples/${template}`),
-            dest
-          )
-        } catch (err) {
-          console.log(chalk.red(`Copying the template: ${template} failed`))
-          throw err
-        }
-      }
-      // template must be local, copy directly
-      try {
-        console.log(chalk.green(`Using template from directory: ${template}`))
-        await fs.copy(path.resolve(__dirname, template), dest)
-      } catch (err) {
-        console.log(
-          chalk.red(`Copying the template from directory: ${template} failed`)
-        )
-        throw err
-      }
-    }
-  }
 })
 
 function shouldUseYarn() {

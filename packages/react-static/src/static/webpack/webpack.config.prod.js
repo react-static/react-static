@@ -73,8 +73,8 @@ function common(config) {
     mode: 'production',
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
-      require.resolve('react-static/lib/bootstrapTemplates'),
-      require.resolve('react-static/lib/bootstrapApp'),
+      require.resolve('../../bootstrapTemplates'),
+      require.resolve('../../bootstrapApp'),
     ],
     output: {
       filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
@@ -141,6 +141,8 @@ export default function({ config, isNode }) {
         'react-universal-component',
         'webpack-flush-chunks',
         'react-static',
+        'react-static/templates',
+        'react-static/plugins',
       ],
     }),
   ]

@@ -19,7 +19,8 @@
     "lint": "eslint src",
     "unitTest": "NODE_ENV=test yarn jest ./src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
-    "prepGitignore": "node scripts/prepGitignore.js",
+    "postbuild": "yarn buildExampleList",
+    "buildExampleList": "node lib/buildExampleList.js",
     "preversion": "yarn build && yarn test"
   },
   "dependencies": {
@@ -59,6 +60,7 @@
     "fs-extra": "^7.0.0",
     "git-promise": "^0.3.1",
     "glob": "^7.1.2",
+    "gunzip-maybe": "^1.4.1",
     "html-webpack-plugin": "^3.2.0",
     "inquirer": "^6.1.0",
     "inquirer-autocomplete-prompt": "^1.0.1",
@@ -90,6 +92,7 @@
     "socket.io-client": "^2.1.1",
     "style-loader": "0.23.1",
     "swimmer": "^1.4.0",
+    "tar-fs": "^1.16.3",
     "thread-loader": "^1.2.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "upath": "^1.1.0",

@@ -1,3 +1,4 @@
+import path from 'path'
 import { makeHookReducer } from '../../utils'
 
 import getRoutesFromPages from './getRoutesFromPages'
@@ -23,11 +24,15 @@ export default function getRoutes({ config, opts }, subscription = d => d) {
         'Could not find a route for the "index" page of your site! This is required. Please create a page or specify a route and template for this page.'
       )
     }
-    // If no 404 page was found, throw an error. This is required
+    // If no 404 page was found, add one. This is required.
     if (!has404) {
-      throw new Error(
-        'Could not find a route for the "404" page of your site! This is required. Please create a page or specify a route and template for this page.'
-      )
+      allNormalizedRoutes.unshift({
+        path: '404',
+        component: path.relative(
+          config.paths.ROOT,
+          path.resolve(__dirname, '../../browser/components/Default404')
+        ),
+      })
     }
     return subscription(allNormalizedRoutes)
   })
