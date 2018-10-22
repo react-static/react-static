@@ -4,6 +4,7 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
 // import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
 // import WebpackPwaManifest from 'webpack-pwa-manifest'
@@ -92,7 +93,7 @@ export default function ({ config, isNode }) {
         }),
       !isNode &&
         !process.env.REACT_STATIC_DEBUG &&
-        new webpack.optimize.UglifyJsPlugin({
+        new UglifyJsPlugin({
           sourceMap: config.generateSourceMaps,
         }),
       // !isNode &&
