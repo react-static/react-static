@@ -65,7 +65,7 @@ const AppStyles = styled.div`
 `
 
 class App extends React.Component {
-  render () {
+  render() {
     return (
       <Root>
         <AppStyles>
