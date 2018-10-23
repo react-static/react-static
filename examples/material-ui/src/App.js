@@ -4,10 +4,11 @@ import { hot } from 'react-hot-loader'
 //
 import Routes from 'react-static-routes'
 
-import Reboot from 'material-ui/Reboot'
-import AppBar from 'material-ui/AppBar'
-import Tabs, { Tab } from 'material-ui/Tabs'
-import { withStyles } from 'material-ui/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import AppBar from '@material-ui/core/AppBar'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import { withStyles } from '@material-ui/core/styles'
 
 // Custom styles
 const styles = {
@@ -42,7 +43,7 @@ class App extends PureComponent {
     return (
       <Router>
         <div className={classes.container}>
-          <Reboot />
+          <CssBaseline />
           <AppBar className={classes.appBar} color="default" position="static">
             <nav>
               <Tabs className={classes.tabs} value={false}>

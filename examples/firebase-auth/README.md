@@ -1,25 +1,25 @@
-# React-Static - Firebase Authentication
+# React Static - Firebase Authentication Example
 
-This example is the most basic version of react-static available. It includes:
+This example is based on the most basic version of React Static available. It includes:
 - Babel
 - CSS imports
 - Image imports
 - File imports
-- Automatic Routing
+- Automatic routing
 - Firebase 4.8.0
 
-Features :
-- Protected Routes
-- Sign In
-- Sign Up
-- Sign Out
-- Forgot Password
-- Change Password
+Features:
+- Protected routes
+- Sign in
+- Sign up
+- Sign out
+- Forgot password
+- Change password
 
 ### Setup
-- visit https://firebase.google.com/ to create a Firebase App
-- activate Email/Password Sign-In Method in your Firebase App
-- Use your own Firebase credential
-- copy and paste your Firebase Credentials into `src/firebase/firebase.js.template`
-- rename `src/firebase/firebase.js.template` to `src/firebase/firebase.js`
+- Visit https://firebase.google.com/ to create a Firebase app.
+- Activate Email/Password sign-in method in your Firebase app.
+- Use your own Firebase credentials.
+- Copy and paste your Firebase credentials into `src/firebase/config.js.template`.
+- Rename `src/firebase/config.js.template` to `src/firebase/config.js`.
 

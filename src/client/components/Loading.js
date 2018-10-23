@@ -12,11 +12,12 @@ export default class Loading extends React.Component {
     this.unsubscribe = onLoading(loading =>
       this.setState({
         loading,
-      })
-    )
+      }))
   }
   render () {
-    const { component, render, children, ...rest } = this.props
+    const {
+      component, render, children, ...rest
+    } = this.props
     const finalProps = {
       ...rest,
       loading: this.state.loading,

@@ -1,9 +1,9 @@
-# React-Static - Styled-Components Example
+# React Static - Styled Components Example
 
 This example includes:
-- Styled-Components
+- Styled Components
 - Image imports
 - File imports
-- Automatic Routing
+- Automatic routing
 
 To get started, run `react-static create` and use the `styled-components` template.

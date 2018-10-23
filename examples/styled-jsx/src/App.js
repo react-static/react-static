@@ -9,7 +9,7 @@ export default () => (
   <Router>
     <div>
       <nav>
-        <Link to="/">Home</Link>
+        <Link exact to="/">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/blog">Blog</Link>
       </nav>
@@ -31,7 +31,8 @@ export default () => (
         .content {
           padding: 1rem;
         }
-      `}</style>
+      `}
+      </style>
     </div>
   </Router>
 )

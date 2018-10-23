@@ -4,18 +4,19 @@ import { withRouteData, withSiteData } from './client/methods'
 //
 
 // React Router Components
-export { Prompt, Redirect, Route, Switch, matchPath, withRouter } from 'react-router-dom'
+export { Prompt, Route, Switch, matchPath, withRouter } from 'react-router-dom'
 
 // Helmet
 export { Helmet as Head } from 'react-helmet'
 
-// React-Static Components
+// React Static Components
 export RouteData, { withRouteData } from './client/components/RouteData'
 export SiteData, { withSiteData } from './client/components/SiteData'
 export Loading, { withLoading } from './client/components/Loading'
 export Prefetch from './client/components/Prefetch'
 export PrefetchWhenSeen from './client/components/PrefetchWhenSeen'
 export Router from './client/components/Router'
+export Redirect from './client/components/Redirect'
 export { NavLink, Link } from './client/components/Link'
 
 // Methods

@@ -1,27 +1,28 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import RAF from 'raf'
 //
 import { unwrapArray } from '../../utils/shared'
 import scrollTo from '../../utils/scrollTo'
 
-const RouterScroller = withRouter(
-  class RouterScroller extends React.Component {
-    componentDidMount () {
-      this.scrollToHash()
-    }
-    componentDidUpdate (prev) {
-      if (prev.location.pathname !== this.props.location.pathname && !this.props.location.hash) {
-        if (window.__noScrollTo) {
-          window.__noScrollTo = false
-          return
-        }
-        this.scrollToTop()
+const RouterScroller = withRouter(class RouterScroller extends React.Component {
+  componentDidMount () {
+    // Do not scroll to top on initial page load if hash does not exist
+    this.scrollToHash({ orScrollToTop: false })
+  }
+  componentDidUpdate (prev) {
+    if (prev.location.pathname !== this.props.location.pathname && !this.props.location.hash) {
+      if (window.__noScrollTo) {
+        window.__noScrollTo = false
         return
       }
-      if (prev.location.hash !== this.props.location.hash) {
-        return this.scrollToHash()
-      }
+      this.scrollToTop()
+      return
     }
+    if (prev.location.hash !== this.props.location.hash) {
+      this.scrollToHash()
+    }
+  }
     scrollToTop = () => {
       const { autoScrollToTop, scrollToTopDuration } = this.props
       if (autoScrollToTop) {
@@ -30,7 +31,7 @@ const RouterScroller = withRouter(
         })
       }
     }
-    scrollToHash = () => {
+    scrollToHash = ({ orScrollToTop = true } = {}) => {
       const {
         scrollToHashDuration,
         autoScrollToHash,
@@ -43,15 +44,26 @@ const RouterScroller = withRouter(
       if (hash) {
         const resolvedHash = hash.substring(1)
         if (resolvedHash) {
+          // We must attempt to scroll synchronously or we risk the browser scrolling for us
           const element = document.getElementById(resolvedHash)
           if (element !== null) {
             scrollTo(element, {
               duration: scrollToHashDuration,
               offset: scrollToHashOffset,
             })
+          } else {
+            RAF(() => {
+              const element = document.getElementById(resolvedHash)
+              if (element !== null) {
+                scrollTo(element, {
+                  duration: scrollToHashDuration,
+                  offset: scrollToHashOffset,
+                })
+              }
+            })
           }
         }
-      } else {
+      } else if (orScrollToTop) {
         scrollTo(0, {
           duration: scrollToHashDuration,
         })
@@ -60,7 +72,6 @@ const RouterScroller = withRouter(
     render () {
       return unwrapArray(this.props.children)
     }
-  }
-)
+})
 
 export default RouterScroller

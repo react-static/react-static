@@ -3,6 +3,9 @@ export default {
     {
       path: '/',
       component: 'src/Home',
+      getData: () => ({
+        'Ich ♥ Bücher': 'foo 𝌆 bar',
+      }),
     },
   ],
 }

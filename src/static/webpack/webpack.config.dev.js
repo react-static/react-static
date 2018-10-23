@@ -6,16 +6,18 @@ import path from 'path'
 import rules from './rules'
 
 export default function ({ config }) {
-  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
+  const {
+    ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE,
+  } = config.paths
 
   config.publicPath = config.devBasePath ? `/${config.devBasePath}/` : '/'
 
   process.env.REACT_STATIC_BASEPATH = config.devBasePath
 
   return {
-    context: path.resolve(__dirname, '../node_modules'),
+    context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
-      require.resolve('react-hot-loader/patch'),
+      require.resolve('react-hot-loader'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
       path.resolve(ROOT, config.entry),
@@ -30,7 +32,7 @@ export default function ({ config }) {
     },
     resolve: {
       modules: [
-        path.resolve(__dirname, '../node_modules'),
+        path.resolve(__dirname, '../../../node_modules'),
         'node_modules',
         NODE_MODULES,
         SRC,

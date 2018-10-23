@@ -1,20 +1,19 @@
 #!/usr/bin/env node
 
-require('babel-register')
-require('../lib/utils/binHelper')
 const chalk = require('chalk')
 const fs = require('fs')
 const commander = require('commander')
 const pkg = require('../package.json')
-
 
 commander
   .version(pkg.version)
   .description(pkg.description)
   .command('create', 'create a new project')
   .command('start', 'start the development server')
-  .command('build', 'build site for production')
-  .on('--help', function() {
+  .command('build', 'build (bundle/export) site for production')
+  .command('bundle', 'bundle webpack assets')
+  .command('export', 'export html from bundled assets')
+  .on('--help', () => {
     console.log('')
     console.log(`  ${chalk.green('Examples:')}`)
     console.log('')

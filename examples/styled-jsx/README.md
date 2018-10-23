@@ -1,11 +1,11 @@
-# React-Static - Styled-JSX Example
+# React Static - Styled-JSX Example
 
-This example is the most basic version of react-static available. It includes:
+This example is based on the most basic version of React Static available. It includes:
 - Styled-JSX
 - Babel
 - CSS imports
 - Image imports
 - File imports
-- Automatic Routing
+- Automatic routing
 
 To get started, run `react-static create` and use the `styled-jsx` template.

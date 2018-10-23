@@ -12,16 +12,9 @@ import { ChalkColor } from '../utils'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
-export default (...args) => {
-  try {
-    return create(...args)
-  } catch (err) {
-    console.log(err)
-    process.exit(1)
-  }
-}
-
-async function create ({ name, template, isCLI, silent = !isCLI } = {}) {
+export default async function create ({
+  name, template, isCLI, silent = !isCLI,
+} = {}) {
   const prompts = []
 
   const files = await fs.readdir(path.resolve(__dirname, '../../examples/'))
@@ -96,36 +89,32 @@ async function create ({ name, template, isCLI, silent = !isCLI } = {}) {
   // Fetch template
   await fetchTemplate(template, dest)
 
-  // Rename gitignore after the fact to prevent npm from renaming it to .npmignore
+  // Since npm packaging will clobber .gitignore files
+  // We need to rename the gitignore file to .gitignore
   // See: https://github.com/npm/npm/issues/1862
-  fs.move(path.join(dest, 'gitignore'), path.join(dest, '.gitignore'), [], err => {
-    if (err) {
-      // Append if there's already a `.gitignore` file there
-      if (err.code === 'EEXIST') {
-        const data = fs.readFileSync(path.join(dest, 'gitignore'))
-        fs.appendFileSync(path.join(dest, '.gitignore'), data)
-        fs.unlinkSync(path.join(dest, 'gitignore'))
-      } else {
-        throw err
-      }
-    }
-  })
+
+  if (!fs.pathExistsSync(path.join(dest, '.gitignore'))) {
+    await fs.move(path.join(dest, 'gitignore'), path.join(dest, '.gitignore'))
+  }
+  if (fs.pathExistsSync(path.join(dest, 'gitignore'))) {
+    fs.removeSync(path.join(dest, 'gitignore'))
+  }
 
   const isYarn = shouldUseYarn()
 
   if (isCLI) {
     if (!silent) {
       console.log(
-        `=> Installing dependencies with: ${isYarn
-          ? chalk.hex(ChalkColor.yarn)('Yarn')
-          : chalk.hex(ChalkColor.npm)('NPM')}...`
+        `=> Installing dependencies with: ${
+          isYarn ? chalk.hex(ChalkColor.yarn)('Yarn') : chalk.hex(ChalkColor.npm)('NPM')
+        }...`
       )
     }
     // We install react-static separately to ensure we always have the latest stable release
     execSync(
-      `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${isYarn
-        ? 'yarn add react-static@latest'
-        : 'npm install react-static@latest --save'}`
+      `cd ${name} && ${isYarn ? 'yarn' : 'npm install'} && ${
+        isYarn ? 'yarn add react-static@latest' : 'npm install react-static@latest --save'
+      }`
     )
     if (!silent) console.log('')
   }
@@ -134,26 +123,26 @@ async function create ({ name, template, isCLI, silent = !isCLI } = {}) {
 
   if (!silent) {
     console.log(`
-${chalk.green('=> To get started:')}
+  ${chalk.green('=> To get started:')}
 
-  cd ${name} ${!isCLI
-  ? `&& ${isYarn
-    ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm install')}`
-  : ''}
+    cd ${name} ${
+  !isCLI
+    ? `&& ${
+      isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm install')
+    }`
+    : ''
+}
 
-  ${isYarn
-    ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')} start ${chalk.green('- Start the development server')}
-  ${isYarn
-    ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')} build ${chalk.green('- Build for production')}
-  ${isYarn
-    ? chalk.hex(ChalkColor.yarn)('yarn')
-    : chalk.hex(ChalkColor.npm)('npm run')} serve ${chalk.green(
-  '- Test a production build locally'
-)}
-`)
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} start ${chalk.green('- Start the development server')}
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} build ${chalk.green('- Build for production')}
+    ${
+  isYarn ? chalk.hex(ChalkColor.yarn)('yarn') : chalk.hex(ChalkColor.npm)('npm run')
+} serve ${chalk.green('- Test a production build locally')}
+  `)
   }
 
   async function fetchTemplate (template, dest) {

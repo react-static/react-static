@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 // Your top level component
 import App from './App'

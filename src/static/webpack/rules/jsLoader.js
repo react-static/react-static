@@ -1,18 +1,13 @@
 export default function ({ config, stage }) {
   return {
     test: /\.(js|jsx)$/,
-    exclude: config.paths.NODE_MODULES,
+    exclude: config.paths.EXCLUDE_MODULES,
     use: [
       {
         loader: 'babel-loader',
-        options:
-          stage === 'production'
-            ? {
-              compact: false,
-            }
-            : {
-              cacheDirectory: true,
-            },
+        options: {
+          cacheDirectory: stage !== 'prod',
+        },
       },
     ],
   }

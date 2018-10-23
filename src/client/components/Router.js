@@ -16,6 +16,7 @@ import {
 } from '../methods'
 import RouterScroller from './RouterScroller'
 import DevSpinner from './DevSpinner'
+import ErrorWrapper from './ErrorWrapper'
 
 export default class Router extends React.Component {
   static defaultProps = {
@@ -25,6 +26,7 @@ export default class Router extends React.Component {
     scrollToTopDuration: 0,
     scrollToHashDuration: 800,
     scrollToHashOffset: 0,
+    showErrorsInProduction: false,
   }
   static contextTypes = {
     staticURL: PropTypes.string,
@@ -32,15 +34,13 @@ export default class Router extends React.Component {
   }
   state = {
     ready: false,
-    error: null,
-    errorInfo: null,
   }
   constructor (props, context) {
     super()
 
     // In SRR and production, synchronously register the templateID for the
     // initial path
-    let routeInfo = context.routeInfo
+    let { routeInfo } = context
     let path = cleanPath(context.staticURL)
 
     if (typeof document !== 'undefined') {
@@ -56,23 +56,16 @@ export default class Router extends React.Component {
   componentDidMount () {
     this.bootstrapRouteInfo()
   }
-  componentDidCatch (error, errorInfo) {
-    // Catch errors in any child components and re-renders with an error message
-    this.setState({
-      error,
-      errorInfo,
-    })
-  }
   bootstrapRouteInfo = () =>
     (async () => {
       if (typeof window !== 'undefined') {
         // Get the entry path from location
-        const { href } = window.location
+        const href = decodeURIComponent(window.location.href)
         const path = cleanPath(href)
 
         // Injest and cache the embedded routeInfo in the page if possible
         if (window.__routeInfo && window.__routeInfo.path === path) {
-          const allProps = window.__routeInfo.allProps
+          const { allProps } = window.__routeInfo
           Object.keys(window.__routeInfo.sharedPropsHashes).forEach(propKey => {
             propsByHash[window.__routeInfo.sharedPropsHashes[propKey]] = allProps[propKey]
           })
@@ -80,9 +73,12 @@ export default class Router extends React.Component {
 
         // In dev mode, request the templateID and ready the router
         if (process.env.REACT_STATIC_ENV === 'development') {
-          const routeInfo = await getRouteInfo(path)
-          if (routeInfo) {
-            registerTemplateIDForPath(path, routeInfo.templateID)
+          try {
+            const routeInfo = await getRouteInfo(path, { priority: true })
+            if (routeInfo) {
+              registerTemplateIDForPath(path, routeInfo.templateID)
+            }
+          } finally {
             this.setState({ ready: true })
           }
         }
@@ -102,20 +98,23 @@ export default class Router extends React.Component {
       resolvedHistory[method] = async (...args) => {
         // Clean the path first
         const path = cleanPath(typeof args[0] === 'string' ? args[0] : args[0].path)
+        // Notify a soft loading state
+        setLoading(1)
         // Determine as quickly as possible if we need to fetch data for this route
-        const shouldPrefetch = await needsPrefetch(path)
+        const shouldPrefetch = await needsPrefetch(path, { priority: true })
 
         // If we need to load...
         if (shouldPrefetch) {
-          // Notify with a loading state
-          setLoading(true)
+          // Notify with a hard loading state
+          setLoading(2)
           // Prefetch any data or templates needed with a high priority
           await prefetch(path, {
             priority: true,
           })
-          // Notify we're done loading
-          setLoading(false)
         }
+
+        // Notify we're done loading
+        setLoading(0)
 
         // Apply the original method and arguments as if nothing happened
         originalMethod.apply(resolvedHistory, args)
@@ -135,38 +134,17 @@ export default class Router extends React.Component {
       scrollToTopDuration,
       scrollToHashDuration,
       scrollToHashOffset,
+      showErrorsInProduction,
       ...rest
     } = this.props
     const { staticURL } = this.context
     const context = staticURL ? {} : undefined
+    const disableRoutePrefixing = process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
 
-    const { ready, error, errorInfo } = this.state
+    const { ready } = this.state
 
     let ResolvedRouter
     let resolvedHistory
-
-    if (error) {
-      // Fallback UI if an error occurs
-      return (
-        <div
-          style={{
-            margin: '1rem',
-            padding: '1rem',
-            background: 'rgba(0,0,0,0.05)',
-          }}
-        >
-          <h2>Oh-no! Something’s gone wrong!</h2>
-          <pre style={{ whiteSpace: 'normal', color: 'red' }}>
-            <code>{error && error.toString()}</code>
-          </pre>
-          <h3>This error occurred here:</h3>
-          <pre style={{ color: 'red', overflow: 'auto' }}>
-            <code>{errorInfo.componentStack}</code>
-          </pre>
-          <p>For more information, please see the console.</p>
-        </div>
-      )
-    }
 
     // If statically rendering, use the static router
     if (staticURL) {
@@ -181,9 +159,10 @@ export default class Router extends React.Component {
         } else if (type === 'hash') {
           resolvedHistory = createHashHistory()
         } else {
-          resolvedHistory = createBrowserHistory({
-            basename: process.env.REACT_STATIC_BASEPATH,
-          })
+          const options = disableRoutePrefixing
+            ? {}
+            : { basename: process.env.REACT_STATIC_BASEPATH }
+          resolvedHistory = createBrowserHistory(options)
         }
       }
       global.__reactStaticRouterHistory = resolvedHistory
@@ -195,25 +174,31 @@ export default class Router extends React.Component {
     }
 
     return (
-      <ResolvedRouter
-        history={resolvedHistory}
-        location={staticURL}
-        context={context}
-        basename={process.env.REACT_STATIC_BASEPATH}
-        {...rest}
-      >
-        <RouterScroller
-          {...{
-            autoScrollToTop,
-            autoScrollToHash,
-            scrollToTopDuration,
-            scrollToHashDuration,
-            scrollToHashOffset,
-          }}
+      <ErrorWrapper showErrorsInProduction={showErrorsInProduction}>
+        <ResolvedRouter
+          history={resolvedHistory}
+          location={staticURL}
+          context={context}
+          basename={
+            disableRoutePrefixing
+              ? ''
+              : process.env.REACT_STATIC_BASEPATH
+          }
+          {...rest}
         >
-          {children}
-        </RouterScroller>
-      </ResolvedRouter>
+          <RouterScroller
+            {...{
+              autoScrollToTop,
+              autoScrollToHash,
+              scrollToTopDuration,
+              scrollToHashDuration,
+              scrollToHashOffset,
+            }}
+          >
+            {children}
+          </RouterScroller>
+        </ResolvedRouter>
+      </ErrorWrapper>
     )
   }
 }
