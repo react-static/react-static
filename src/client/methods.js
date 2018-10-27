@@ -84,13 +84,12 @@ export const getRouteInfo = async (path, { priority } = {}) => {
         (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
           ? process.env.REACT_STATIC_SITE_ROOT
           : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
-      const cacheBuster =
-        process.env.REACT_STATIC_CACHE_BUST
-          ? `?${process.env.REACT_STATIC_CACHE_BUST}`
-          : ''
+      const cacheBuster = process.env.REACT_STATIC_CACHE_BUST
+        ? `?${process.env.REACT_STATIC_CACHE_BUST}`
+        : ''
       const getPath = `${routeInfoRoot}${pathJoin(
         path,
-        'routeInfo.json'
+        `routeInfo.${process.env.REACT_STATIC_BUILD_HASH}.json`
       )}${cacheBuster}`
 
       if (priority) {

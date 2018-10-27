@@ -360,7 +360,11 @@ const buildHTML = async ({ config, siteData, clientStats }) => {
         : path.join(config.paths.DIST, route.path, 'index.html')
 
       // Make the routeInfo sit right next to its companion html file
-      const routeInfoFilename = path.join(config.paths.DIST, route.path, 'routeInfo.json')
+      const routeInfoFilename = path.join(
+        config.paths.DIST,
+        route.path,
+        `routeInfo.${process.env.REACT_STATIC_BUILD_HASH}.json`
+      )
 
       const res = await Promise.all([
         fs.outputFile(htmlFilename, html),
