@@ -3,6 +3,7 @@
 import React from 'react'
 import path from 'path'
 import chokidar from 'chokidar'
+import shortid from 'shortid'
 
 import { pathJoin } from '../utils/shared'
 import { reloadRoutes } from './webpack'
@@ -212,11 +213,7 @@ export const buildConfigation = (config = {}) => {
   process.env.REACT_STATIC_PREFETCH_RATE = finalConfig.prefetchRate
   process.env.REACT_STATIC_DISABLE_ROUTE_INFO_WARNING = finalConfig.disableRouteInfoWarning
   process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING = finalConfig.disableRoutePrefixing
-  process.env.REACT_STATIC_BUILD_HASH =
-    finalConfig.buildHash ||
-    Math.random()
-      .toString(36)
-      .substr(2, 9)
+  process.env.REACT_STATIC_BUILD_HASH = finalConfig.buildHash || shortid.generate()
 
   return finalConfig
 }
