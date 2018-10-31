@@ -113,6 +113,7 @@ export const buildConfig = async (config = {}) => {
     // Materialized Overrides
     plugins,
     paths,
+    babelExcludes: config.babelExcludes || [],
     siteRoot,
     basePath,
     publicPath,
