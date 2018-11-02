@@ -34,7 +34,7 @@ module.exports = (api, options = {}) => {
           regenerator: true,
         },
       ],
-      r('babel-plugin-transform-react-remove-prop-types'),
+      PRODUCTION && r('babel-plugin-transform-react-remove-prop-types'),
       r('@babel/plugin-syntax-dynamic-import'),
       r('@babel/plugin-proposal-class-properties'),
       r('@babel/plugin-proposal-optional-chaining'),
