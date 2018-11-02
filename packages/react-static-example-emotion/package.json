@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-emotion",
-  "version": "6.0.0-beta.29",
+  "version": "6.0.0-beta.30",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -13,7 +13,7 @@
     "axios": "^0.18.0",
     "emotion": "^9.2.4",
     "react-emotion": "^9.2.4",
-    "react-static": "^6.0.0-beta.29",
+    "react-static": "^6.0.0-beta.30",
     "react-static-plugin-emotion": "^6.0.0-beta.28"
   },
   "devDependencies": {

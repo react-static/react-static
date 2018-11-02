@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-algolia",
-  "version": "6.0.0-beta.29",
+  "version": "6.0.0-beta.30",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -13,7 +13,7 @@
     "algoliasearch": "^3.24.11",
     "axios": "^0.18.0",
     "react-instantsearch": "^5.3.1",
-    "react-static": "^6.0.0-beta.29"
+    "react-static": "^6.0.0-beta.30"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",

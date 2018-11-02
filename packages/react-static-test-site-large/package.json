@@ -1,6 +1,6 @@
 {
   "name": "react-static-test-site-large",
-  "version": "6.0.0-beta.29",
+  "version": "6.0.0-beta.30",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -19,7 +19,7 @@
     "emotion": "^9.2.4",
     "emotion-server": "^9.2.4",
     "react-emotion": "^9.2.4",
-    "react-static": "^6.0.0-beta.29",
+    "react-static": "^6.0.0-beta.30",
     "react-static-plugin-emotion": "^6.0.0-beta.27",
     "react-static-plugin-styled-components": "^6.0.0-beta.27",
     "styled-components": "^3.3.3"

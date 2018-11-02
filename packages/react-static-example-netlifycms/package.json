@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-netlifycms",
-  "version": "6.0.0-beta.29",
+  "version": "6.0.0-beta.30",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -16,7 +16,7 @@
     "moment": "^2.20.1",
     "react-markdown": "^4.0.2",
     "react-moment": "^0.8.1",
-    "react-static": "^6.0.0-beta.29"
+    "react-static": "^6.0.0-beta.30"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",

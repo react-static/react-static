@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-animated-routes",
-  "version": "6.0.0-beta.29",
+  "version": "6.0.0-beta.30",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -13,7 +13,7 @@
     "axios": "^0.18.0",
     "d3-ease": "^1.0.3",
     "react-move": "^2.6.0",
-    "react-static": "^6.0.0-beta.29",
+    "react-static": "^6.0.0-beta.30",
     "recompose": "^0.30.0"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "react-static-example-basic-navigation",
-  "version": "6.0.0-beta.29",
+  "version": "6.0.0-beta.30",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,7 @@
     "react-dom": "^16.0.0",
     "react-hot-loader": "^4.0.0-beta.21",
     "react-router": "^4.2.0",
-    "react-static": "^6.0.0-beta.29"
+    "react-static": "^6.0.0-beta.30"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
