@@ -6,7 +6,7 @@ import logoImg from '../logo.png'
 
 export default withSiteData(() => (
   <div>
-    <Typography type="headline" align="center" gutterBottom>
+    <Typography type="h5" align="center" gutterBottom>
       Welcome to
     </Typography>
     <img src={logoImg} alt="" style={{ display: 'block', margin: '0 auto' }} />

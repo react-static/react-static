@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography'
 
 export default withRouteData(({ posts }) => (
   <div>
-    <Typography type="headline" gutterBottom>
+    <Typography type="h5" gutterBottom>
       It's blog time.
     </Typography>
     <Typography type="body1" component="div">
