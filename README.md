@@ -73,6 +73,7 @@ React Static is a fast, lightweight, and powerful framework for building static-
 * [HackerCamp Paty 2018](https://camp.rhms.cf/) ([source](https://github.com/RioHackerSpace/camp.rhms.cf))
 * [Fullstack HQ: Web Design & Development Team in the Philippines](https://fullstackhq.com/)
 * [Purposefinder - Discover your unique inner being and life path](https://purposefinder.io)
+* [Goodly: Student Loan Repayment as an Employee Benefit](https://www.goodlyapp.com)
 
 ## Quick Start
 
