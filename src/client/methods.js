@@ -206,7 +206,9 @@ export async function prefetchTemplate (path, { priority } = {}) {
     } else {
       await requestPool.add(() => pathTemplate.preload())
     }
-    routeInfo.templateLoaded = true
+    if (routeInfo) {
+      routeInfo.templateLoaded = true
+    }
     return pathTemplate
   }
 }
