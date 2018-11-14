@@ -9,7 +9,7 @@ export default withRouteData(({ post }) => (
     <Typography type="body1" component={Link} to="/blog" gutterBottom>
       {'<'} Back
     </Typography>
-    <Typography type="title" gutterBottom>
+    <Typography type="h6" gutterBottom>
       {post.title}
     </Typography>
     <Typography type="body1">

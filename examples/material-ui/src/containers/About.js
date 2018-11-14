@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 
 export default () => (
   <div>
-    <Typography type="headline" gutterBottom>
+    <Typography type="h5" gutterBottom>
       This is what we're all about.
     </Typography>
     <Typography type="body1">

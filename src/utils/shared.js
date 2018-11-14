@@ -44,7 +44,7 @@ export function isObject (a) {
 
 export function deprecate (from, to) {
   console.warn(
-    `React-Static deprecation notice: ${from} will be deprecated in favor of ${to} in the next major release.`
+    `React Static deprecation notice: ${from} will be deprecated in favor of ${to} in the next major release.`
   )
 }
 

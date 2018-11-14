@@ -1,17 +1,17 @@
-# React-Static - Material UI with JSS
+# React Static - Material UI with JSS
 
 > [Material UI](https://github.com/mui-org/material-ui) is a set of React components that implement Google's Material Design.
 
-This example is enabled with JSS server side rendering capabilities.
+This example uses JSS server-side rendering capabilities.
 
-To edit Material UI theme variables, use `src/theme.js`. To overwrite Material UI styling please refer to Material UI [documentation](https://material-ui-next.com/customization/overrides/).
+To edit Material UI theme variables, use `src/theme.js`. To overwrite Material UI styling please refer to the [Material UI documentation](https://material-ui.com/customization/overrides/).
 
 This example includes:
-- general JSS support
+- General JSS support
 - Material UI components and icons
 - Google's Roboto font loaded from CDN
 - Image imports
 - File imports
-- Automatic Routing
+- Automatic routing
 
 To get started, run `react-static create` and use the `material-ui` template.

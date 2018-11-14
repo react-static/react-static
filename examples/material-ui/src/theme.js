@@ -9,4 +9,7 @@ export default {
       appBar: '#108db8',
     },
   },
+  typography: {
+    useNextVariants: true,
+  },
 }

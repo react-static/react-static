@@ -1,9 +1,9 @@
-# React-Static - Animated Routes Example
+# React Static - Animated Routes Example
 
 This example is a fork of the `basic` template, and demonstrates how to animate routes with:
 
-* Automatic Routing
-* Routes Render Props
+* Automatic routing
+* Routes render props
 * React Move
 
 To get started in the CLI, run `react-static create` and use the `animated-routes` template.

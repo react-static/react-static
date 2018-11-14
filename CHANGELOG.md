@@ -309,7 +309,7 @@
 
 #### Features
 
-- Added Node API to React-Static via importing `react-static/node`
+- Added Node API to React Static via importing `react-static/node`
 - Added the ability to use a custom `static.config.js` via the CLI
 - Added `config.basePath` option for hosting and running react-static sites from a sub-route
 - Added `config.stagingSiteRoot`, `config.stagingBasePath`, `config.devBasePath`. Used for overriding the above options in specific environments
@@ -378,10 +378,10 @@
 
 #### Features
 
-- Automatic Route Splitting. From here on out as long a project is using the automatic component-based static routing, all route templates will be automatically deduped and split into separate modules. These modules are statically-rendered into every page that uses them, are preloaded asynchronously with React-Static built-in prefetching utiliies, and are also loaded on demand if needed as the client navigates through your site. Carry on!
+- Automatic Route Splitting. From here on out as long a project is using the automatic component-based static routing, all route templates will be automatically deduped and split into separate modules. These modules are statically-rendered into every page that uses them, are preloaded asynchronously with React Static's built-in prefetching utilities, and are also loaded on demand if needed as the client navigates through your site. Carry on!
 - Automatic prefetching of templates and assets. Any eligible `Link` component to a code/data-split destination will automatically queue a prefetch for the appropriate assets.
 - Render prop versions of `withRouteData` and `withSiteData` are now available as `RouteData` and `SiteData`. These support inline access to their respective props, instead of having to set up an HOC. They also support all three major render prop syntaxes, so render those props however you want!. See the README for more information.
-- Added a new `Loading` render prop component and a companion `withLoading` HOC component to easily display React-Static's loading state (that probably won't happen much, but still... ;).
+- Added a new `Loading` render prop component and a companion `withLoading` HOC component to easily display React Static's loading state (that probably won't happen much, but still... ;).
 - Added a new `Loading`/`withLoading` render prop / HOC component pair. You can render this component to gain access to the `loading` prop, which was previously only accessible via the `Router.subscribe` callback.
 - Path changes now automatically scroll to the top of the page. Duration defaults to `0`ms, but can be modifed via the `scrollToTopDuration` prop on the `Router` component.
 - Hash routing changes now automatically scroll to the element (or top of the page if the hash is removed but the path stays the same). Duration defaults to `800`ms, but can be modifed via the `scrollToHashDuration` prop on the `Router` component.
@@ -552,7 +552,7 @@
 - Added `onStart` hook. Fires after the first successful dev build when running `react-static start`
 - Added `onBuild` hook. Fires after a successful production build when running `react-static build`
 - Added `config.devServer`, which can be used to customize the configuration for the webpack-dev-server used in development. (Thanks [@rywils21](https://github.com/rywils21)!)
-- Added TypeScript typings for React-Static core exports (Thanks [@D1no](https://github.com/D1no)!)
+- Added TypeScript typings for React Static core exports (Thanks [@D1no](https://github.com/D1no)!)
 - Allow customization of dev server PORT and HOST via those environment variables. (Thanks [@rywils21](https://github.com/rywils21)!)
 - `config.getRoutes` is no longer required and will default to exporting a single root path.
 - Webpack configurations can now be exported and used externally. (Thanks [@crubier](https://github.com/crubier)!)

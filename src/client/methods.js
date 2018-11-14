@@ -39,7 +39,7 @@ if (process.env.REACT_STATIC_ENV === 'development') {
       const socket = io(`http://localhost:${port}`)
       socket.on('connect', () => {
         console.log(
-          'React-Static data hot-loader websocket connected. Listening for data changes...'
+          'React Static data hot-loader websocket connected. Listening for data changes...'
         )
       })
       socket.on('message', ({ type }) => {
@@ -48,7 +48,7 @@ if (process.env.REACT_STATIC_ENV === 'development') {
         }
       })
     } catch (err) {
-      console.log('React-Static data hot-loader websocket encountered the following error:')
+      console.log('React Static data hot-loader websocket encountered the following error:')
       console.error(err)
     }
   }

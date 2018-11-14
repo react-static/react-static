@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
 import chokidar from 'chokidar'
 
-chokidar.watch('../docs').on('all', () => reloadRoutes())
+chokidar.watch('./docs').on('all', () => reloadRoutes())
 
 //
 

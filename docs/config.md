@@ -1,6 +1,6 @@
 # Configuration (`static.config.js`)
 
-A `static.config.js` file is optional, but recommended at your project root to use react-static to its fullest potential. If present, it must `default export` an object optionally containing any of the following properties:
+A `static.config.js` file is optional, but recommended at your project root to use React Static to its fullest potential. If present, it must `export default` an object optionally containing any of the following properties:
 
 - [getRoutes](#getroutes)
 - [route](#route)
@@ -42,7 +42,7 @@ export default {
 
 ### `route`
 
-A route is an `object` that represents a unique location in your site and is the backbone of every React-Static site.
+A route is an `object` that represents a unique location in your site and is the backbone of every React Static site.
 
 It supports the following properties:
 
@@ -215,7 +215,7 @@ export default {
 
 ### `webpack`
 
-An optional function or array of functions to transform the default React-Static webpack config. Each function will receive the previous webpack config, and expect a modified or new config to be returned. You may also return a "falsey" or `undefined` value if you do not want to modify the config at all.
+An optional function or array of functions to transform the default React Static webpack config. Each function will receive the previous webpack config, and expect a modified or new config to be returned. You may also return a "falsey" or `undefined` value if you do not want to modify the config at all.
 
 **Function Signature**
 
