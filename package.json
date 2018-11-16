@@ -87,6 +87,7 @@
     "react-universal-component": "^2.8.1",
     "serve": "^6.4.10",
     "shorthash": "^0.0.2",
+    "shortid": "^2.2.13",
     "slash": "^1.0.0",
     "socket.io": "^2.1.0",
     "socket.io-client": "^2.1.0",
