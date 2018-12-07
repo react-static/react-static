@@ -1,25 +1,23 @@
 import React from 'react'
 import RAF from 'raf'
-import { Location } from '@reach/router'
+import onLocationChange from '../utils/Location'
 //
 import scrollTo from '../utils/scrollTo'
 
-export class RouterScroller extends React.Component {
+export default class RouterScroller extends React.Component {
   componentDidMount() {
     // Do not scroll to top on initial page load if hash does not exist
-    this.scrollToHash({ orScrollToTop: false })
-  }
-  componentDidUpdate(prev) {
-    if (
-      prev.location.pathname !== this.props.location.pathname &&
-      !this.props.location.hash
-    ) {
-      this.scrollToTop()
-      return
-    }
-    if (prev.location.hash !== this.props.location.hash) {
-      this.scrollToHash()
-    }
+    this.scrollToHash(window.location.hash, { orScrollToTop: false })
+
+    onLocationChange(({ hash, pathname }) => {
+      if (this.prevPathname !== pathname && !hash) {
+        this.scrollToTop()
+      } else if (this.prevHash !== hash) {
+        this.scrollToHash(hash)
+      }
+      this.prevPathname = pathname
+      this.prevHash = hash
+    })
   }
   scrollToTop = () => {
     const { autoScrollToTop, scrollToTopDuration } = this.props
@@ -29,12 +27,11 @@ export class RouterScroller extends React.Component {
       })
     }
   }
-  scrollToHash = ({ orScrollToTop = true } = {}) => {
+  scrollToHash = (hash, { orScrollToTop = true } = {}) => {
     const {
       scrollToHashDuration,
       autoScrollToHash,
       scrollToHashOffset,
-      location: { hash },
     } = this.props
     if (!autoScrollToHash) {
       return
@@ -68,10 +65,7 @@ export class RouterScroller extends React.Component {
     }
   }
   render() {
+    console.log(this.props.location)
     return this.props.children
   }
 }
-
-export default props => (
-  <Location>{location => <RouterScroller {...location} {...props} />}</Location>
-)

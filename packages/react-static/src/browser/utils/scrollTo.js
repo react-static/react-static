@@ -58,6 +58,6 @@ export default function scrollTo(element, options) {
 
       raf(step)
     }
-    raf(step)
+    step()
   })
 }

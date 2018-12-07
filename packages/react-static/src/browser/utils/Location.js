@@ -1,5 +1,6 @@
 let locationSubscribers = []
-const triggerLocationChange = () => locationSubscribers.forEach(s => s())
+const triggerLocationChange = location =>
+  locationSubscribers.forEach(s => s(location))
 const onLocationChange = cb => {
   locationSubscribers.push(cb)
   return () => {
@@ -18,12 +19,12 @@ function init() {
       if (oldPopstate) {
         oldPopstate(...args)
       }
-      triggerLocationChange()
+      triggerLocationChange(window.location)
     }
     ;['pushState', 'replaceState'].forEach(methodName => {
       const old = window.history[methodName]
       window.history[methodName] = (...args) => {
-        triggerLocationChange()
+        setTimeout(() => triggerLocationChange(window.location), 0)
         return old.apply(window.history, args)
       }
     })
