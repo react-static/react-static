@@ -2,9 +2,11 @@ import React from 'react'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 
 export default () => ({
-  webpack: config => {
+  webpack: (config, { stage }) => {
     // Make sure the stylesheet instance is the same across the node instance
-    config.externals.push('styled-components')
+    if (stage === 'node') {
+      config.externals.push('styled-components')
+    }
     return config
   },
   // Use beforeRenderToHtml to extract the styles into the page meta

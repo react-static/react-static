@@ -18,7 +18,7 @@
     "@babel/preset-env": "^7.1.5"
   },
   "dependencies": {
-    "preact": "^8.2.9",
+    "preact": "^8.4.2",
     "preact-compat": "^3.18.0"
   },
   "gitHead": "350700130b7501622eac16aa139107c684b62b01"

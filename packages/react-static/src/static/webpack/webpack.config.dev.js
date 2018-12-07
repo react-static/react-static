@@ -13,12 +13,6 @@ export default function({ config }) {
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
-  const reactStaticTemplatesPath = path.join(DIST, 'react-static-templates.js')
-  const reactStaticBrowserPluginsPath = path.join(
-    DIST,
-    'react-static-browser-plugins.js'
-  )
-
   return {
     mode: 'development',
     optimization: {
@@ -45,16 +39,14 @@ export default function({ config }) {
       strictExportPresence: true,
     },
     resolve: {
-      alias: {
-        'react-static/templates': reactStaticTemplatesPath,
-        'react-static/plugins': reactStaticBrowserPluginsPath,
-      },
       modules: [
-        SRC,
-        NODE_MODULES,
+        ...[
+          SRC,
+          NODE_MODULES,
+          path.resolve(__dirname, '../../../node_modules'),
+          DIST,
+        ].map(d => path.relative(process.cwd(), d)),
         'node_modules',
-        path.resolve(__dirname, '../../../node_modules'),
-        DIST,
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
     },

@@ -2,13 +2,12 @@ import autoprefixer from 'autoprefixer'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 
-function initCSSLoader(stage) {
+function initCSSLoader() {
   const cssLoader = [
     {
       loader: 'css-loader',
       options: {
         importLoaders: 1,
-        minimize: stage === 'prod',
         sourceMap: false,
       },
     },

@@ -10,7 +10,9 @@ export default async ({ config }) => {
   const id404 = route404.templateIndex
 
   const productionImports = `
-import universal, { setHasBabelPlugin } from 'react-universal-component'
+import universal, { setHasBabelPlugin } from '${
+    process.env.REACT_STATIC_UNIVERSAL_PATH
+  }'
   `
   const developmentImports = ''
 

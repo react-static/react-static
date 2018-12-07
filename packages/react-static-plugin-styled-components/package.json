@@ -12,6 +12,9 @@
     "watch": "babel src --out-dir . -w",
     "preversion": "yarn build"
   },
+  "peerDependencies": {
+    "styled-components": "^4.1.2"
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.5",
