@@ -85,7 +85,7 @@ export default (async function exportRoute({
   // reactContext under the hood to pass down
   // the exportContext, since react's new context
   // api doesn't survive across bundling.
-  Comp = Comp(embeddedRouteInfo)
+  Comp = config.disableRuntime ? Comp : Comp(embeddedRouteInfo)
 
   if (route.redirect) {
     FinalComp = () => <Redirect fromPath={route.path} to={route.redirect} />

@@ -1,7 +1,6 @@
 import axios from 'axios'
 //
 import { createPool, getRoutePath, pathJoin } from './utils'
-import onMutation from './utils/Mutation'
 import onVisible from './utils/Visibility'
 
 // RouteInfo / RouteData
@@ -72,15 +71,19 @@ function init() {
 
 function startPreloader() {
   if (typeof document !== 'undefined') {
-    // When the dom mutates, check it for a tags
-    onMutation(() => {
-      const els = [].slice.call(document.querySelectorAll('a[href]'))
+    const run = () => {
+      const els = [].slice.call(document.getElementsByTagName('a'))
       els.forEach(el => {
-        onVisible(el, () => {
-          prefetch(el.getAttribute('href'))
-        })
+        const href = el.getAttribute('href')
+        if (href) {
+          onVisible(el, () => {
+            prefetch(href)
+          })
+        }
       })
-    })
+    }
+
+    setInterval(run, Number(process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL))
   }
 }
 

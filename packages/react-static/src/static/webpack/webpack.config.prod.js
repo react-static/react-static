@@ -72,10 +72,12 @@ function common(config) {
   return {
     mode: 'production',
     context: path.resolve(__dirname, '../../../node_modules'),
-    entry: [
-      require.resolve('../../bootstrapTemplates'),
-      require.resolve('../../bootstrapApp'),
-    ],
+    entry: config.disableRuntime
+      ? path.resolve(ROOT, config.entry)
+      : [
+          require.resolve('../../bootstrapTemplates'),
+          require.resolve('../../bootstrapApp'),
+        ],
     output: {
       filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
       chunkFilename: 'templates/[name].[chunkHash:8].js',

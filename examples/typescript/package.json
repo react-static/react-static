@@ -1,0 +1,35 @@
+{
+  "name": "react-static-example-typescript",
+  "version": "6.0.0-beta.28",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-static start",
+    "stage": "react-static build --staging",
+    "build": "react-static build",
+    "serve": "serve dist -p 3000"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "react-static": "next"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.6",
+    "@types/react": "^16.7.3",
+    "@types/react-dom": "^16.0.9",
+    "@types/react-hot-loader": "^4.1.0",
+    "@types/react-router": "^4.4.1",
+    "@types/webpack-env": "^1.13.5",
+    "convert-tsconfig-paths-to-webpack-aliases": "^0.9.2",
+    "eslint-config-react-tools": "1.1.6",
+    "serve": "^10.1.1",
+    "ts-loader": "^5.3.0",
+    "typescript": "^3.1.6"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "gitHead": "350700130b7501622eac16aa139107c684b62b01"
+}

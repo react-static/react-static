@@ -108,6 +108,8 @@ export const buildConfig = async (config = {}) => {
     getRoutes: async () => DEFAULT_ROUTES,
     minLoadTime: 200,
     disablePreload: false,
+    disableRuntime: false,
+    preloadPollInterval: 300,
     // Config Overrides
     ...config,
     // Materialized Overrides
@@ -127,6 +129,8 @@ export const buildConfig = async (config = {}) => {
   process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING =
     config.disableRoutePrefixing
   process.env.REACT_STATIC_DISABLE_PRELOAD = config.disablePreload
+  process.env.REACT_STATIC_DISABLE_RUNTIME = config.disableRuntime
+  process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollInterval
 
   const resolvePlugin = location => {
     let options = {}

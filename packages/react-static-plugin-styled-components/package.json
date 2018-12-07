@@ -12,14 +12,10 @@
     "watch": "babel src --out-dir . -w",
     "preversion": "yarn build"
   },
-  "peerDependencies": {
-    "react": "^16.4.1",
-    "styled-components": "^3.3.3"
-  },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0"
   },
   "gitHead": "350700130b7501622eac16aa139107c684b62b01"

@@ -8,7 +8,7 @@
     "buildDocs": "cd www && yarn && yarn build",
     "serveDocs": "serve www/dist -p 3000",
     "test": "yarn prettier && lerna run test",
-    "prettier": "prettier --config .prettierrc.js {scripts,www/src/,packages/*/{src,node}}/**/*.js --write",
+    "prettier": "prettier {scripts,www/src/,packages/*/{src,node}}/**/*.js --write",
     "ci": "yarn build && yarn test"
   },
   "husky": {

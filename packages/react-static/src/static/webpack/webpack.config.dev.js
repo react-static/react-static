@@ -29,9 +29,11 @@ export default function({ config }) {
     entry: [
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
-      require.resolve('../../bootstrapTemplates'),
+      config.disableRuntime
+        ? null
+        : require.resolve('../../bootstrapTemplates'),
       path.resolve(ROOT, config.entry),
-    ],
+    ].filter(Boolean),
     output: {
       filename: '[name].js', // never hash dev code
       chunkFilename: 'templates/[name].js',

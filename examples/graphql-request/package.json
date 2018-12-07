@@ -1,0 +1,22 @@
+{
+  "name": "react-static-example-graphql-request",
+  "version": "6.0.0-beta.30",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-static start",
+    "stage": "react-static build --staging",
+    "build": "react-static build",
+    "serve": "serve dist -p 3000"
+  },
+  "dependencies": {
+    "graphql-request": "^1.4.0",
+    "react-markdown": "^4.0.3",
+    "react-static": "^6.0.0-beta.30"
+  },
+  "devDependencies": {
+    "eslint-config-react-tools": "^1.0.10",
+    "serve": "^10.1.1"
+  },
+  "gitHead": "350700130b7501622eac16aa139107c684b62b01"
+}

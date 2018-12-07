@@ -13,14 +13,14 @@
     "preversion": "yarn build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.53",
-    "@babel/core": "^7.0.0-beta.53",
-    "@babel/preset-env": "^7.0.0-beta.53"
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/preset-env": "^7.1.5"
   },
   "dependencies": {
-    "emotion": "^9.2.5",
-    "emotion-server": "^9.2.5",
-    "react-emotion": "^9.2.5"
+    "emotion": "^10.0.4",
+    "emotion-server": "^10.0.4",
+    "react-emotion": "^10.0.0"
   },
   "gitHead": "350700130b7501622eac16aa139107c684b62b01"
 }
