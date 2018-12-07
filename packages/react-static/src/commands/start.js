@@ -13,7 +13,7 @@ import { createIndexFilePlaceholder } from '../utils'
 let cleaned
 let indexCreated
 
-export default (async function start({ configPath, debug } = {}) {
+export default (async function start({ config: configPath, debug } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined') {
     process.env.NODE_ENV = 'development'
