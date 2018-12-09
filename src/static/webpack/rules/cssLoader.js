@@ -6,7 +6,7 @@ import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 export default function ({ config, stage, isNode }) {
   let cssLoader = [
     {
-      loader: 'css-loader',
+      loader: isNode ? 'css-loader/locals' : 'css-loader',
       options: {
         importLoaders: 1,
         minimize: stage === 'prod',
@@ -38,11 +38,8 @@ export default function ({ config, stage, isNode }) {
 
   if (stage === 'dev') {
     cssLoader = ['style-loader'].concat(cssLoader)
-  } else if(isNode) {
-      cssLoader = {
-        loader: 'css-loader/locals',
-      }
-    } else {
+  }
+  else if (!isNode) {
     cssLoader = (config.extractCssChunks
       ? ExtractCssChunks
       : ExtractTextPlugin
