@@ -38,7 +38,11 @@ export default function ({ config, stage, isNode }) {
 
   if (stage === 'dev') {
     cssLoader = ['style-loader'].concat(cssLoader)
-  } else {
+  } else if(isNode) {
+      cssLoader = {
+        loader: 'css-loader/locals',
+      }
+    } else {
     cssLoader = (config.extractCssChunks
       ? ExtractCssChunks
       : ExtractTextPlugin
