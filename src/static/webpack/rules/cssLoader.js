@@ -38,7 +38,7 @@ export default function ({ config, stage, isNode }) {
 
   if (stage === 'dev') {
     cssLoader = ['style-loader'].concat(cssLoader)
-  } else if (!isNode) {
+  } else {
     cssLoader = (config.extractCssChunks
       ? ExtractCssChunks
       : ExtractTextPlugin
