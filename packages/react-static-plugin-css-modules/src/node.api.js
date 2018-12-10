@@ -1,16 +1,16 @@
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 
-export default ({ includePaths = [], ...rest }) => ({
+export default (options = {}) => ({
   webpack: (config, { stage }) => {
     let loaders = []
 
     const styleLoader = { loader: 'style-loader' }
     const cssLoader = {
       loader: 'css-loader',
-      options: {
+      options: Object.assign({
         modules: true,
         importLoaders: 1,
-      },
+      }, options),
     }
 
     if (stage === 'dev') {
