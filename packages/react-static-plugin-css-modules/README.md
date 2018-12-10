@@ -26,9 +26,10 @@ export default {
     [
       "react-static-plugin-css-modules",
       {
-        includePaths: ["..."] // always includes `src/`
-        // other options for the sass-loader
-      }
+         modules: true, // set true by default
+         localIdentName: '[path][name]__[local]--[hash:base64:5]', // just an example
+         // any other options you wish from css-loader
+       }
     ]
   ]
 };
