@@ -32,7 +32,7 @@ async function init() {
 //           __dirname,
 //           '../../../examples/',
 //           file
-//         )} && yarn add react@latest react-dom@latest`
+//         )} && yarn add babel-preset-react-static`
 //       )
 //     })
 // }

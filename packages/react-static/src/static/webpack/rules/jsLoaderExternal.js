@@ -1,4 +1,4 @@
-import babelPreset from '../../../../babel-preset-external'
+import babelPreset from 'babel-preset-react-static'
 
 export default function() {
   return {
@@ -12,7 +12,7 @@ export default function() {
           babelrc: false,
           configFile: false,
           compact: false,
-          presets: [[babelPreset, { helpers: true }]],
+          presets: [[babelPreset, { external: true, helpers: true }]],
           cacheDirectory: true,
           sourceMaps: false,
         },
