@@ -10,14 +10,14 @@ async function init() {
   fs.copy(examples, libExamples, {
     filter: file => {
       return ![
-        'tmp',
-        'dist',
         '.DS_Store',
-        'yarn.lock',
+        '.history',
         '.log',
         '.tgz',
+        'dist',
         'node_modules',
-        '.history',
+        'tmp',
+        'yarn.lock',
       ].some(d => file.includes(d))
     },
   })

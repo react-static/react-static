@@ -17,6 +17,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 [![Sponsored By GraphCMS](https://github.com/nozzle/react-static/raw/master/media/graphcms.svg?sanitize=true)](http://graphcms.com/?ref=tlinsley)
 
 ## Features
+
 - ⚛️ 100% React (and friends!)
 - 🚀 [Blazing](https://twitter.com/acdlite/status/974390255393505280) fast builds and performance.
 - 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
@@ -124,33 +125,9 @@ Once you've installed and test driven, you may want to:
 
 ## Examples and Templates
 
-All of the following examples can be used as a template at project creation.
+React Static ships with a ton of examples to reference and each of them can even be used as a starting template when using `react-static create`!
 
-- [Basic](https://github.com/nozzle/react-static/tree/master/examples/basic)
-- [Blank (Create-React-App)](https://github.com/nozzle/react-static/tree/master/examples/blank)
-- [Preact](https://github.com/nozzle/react-static/tree/master/examples/preact)
-- [Animated Routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes)
-- [Custom Routing](https://github.com/nozzle/react-static/tree/master/examples/custom-routing)
-- [Dynamic Imports (code-splitting)](https://github.com/nozzle/react-static/tree/master/examples/dynamic-imports)
-- [Emotion](https://github.com/nozzle/react-static/tree/master/examples/emotion)
-- [Styled-Components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
-- [LESS & Antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
-- [Firebase Auth](https://github.com/nozzle/react-static/tree/master/examples/firebase-auth)
-- [Redux](https://github.com/nozzle/react-static/tree/master/examples/redux)
-- [Apollo GraphQL](https://github.com/nozzle/react-static/tree/master/examples/apollo)
-- [Apollo & Redux](https://github.com/nozzle/react-static/tree/master/examples/apollo-redux)
-- [TypeScript](https://github.com/nozzle/react-static/tree/master/examples/typescript)
-- [Cordova (Hybrid App)](https://github.com/nozzle/react-static/tree/master/examples/cordova)
-- [Basic Prismic (Headless CMS)](https://github.com/nozzle/react-static/tree/master/examples/basic-prismic)
-- [GraphCMS](https://github.com/nozzle/react-static/tree/master/examples/graphql-request)
-- [Sass](https://github.com/nozzle/react-static/tree/master/examples/sass)
-- [Tailwind CSS](https://github.com/nozzle/react-static/tree/master/examples/tailwindcss)
-- [Algolia](https://github.com/nozzle/react-static/tree/master/examples/algolia)
-- [Styled-JSX](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
-- [Netlify CMS](https://github.com/nozzle/react-static/tree/master/examples/netlifycms)
-- [Gentics Mesh CMS](https://github.com/nozzle/react-static/tree/master/examples/gentics-mesh)
-- [Markdown](https://github.com/nozzle/react-static/tree/master/examples/markdown)
-- [Documentation](https://github.com/nozzle/react-static/tree/master/examples/documentation)
+[**See all Templates and Examples**](https://github.com/nozzle/react-static/tree/master/examples/)
 
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 

@@ -29,7 +29,7 @@ export default (async function exportRoute({
   clientStats,
 }) {
   const {
-    sharedPropsHashes,
+    sharedDataHashes,
     templateIndex,
     localProps,
     allProps,
@@ -56,7 +56,7 @@ export default (async function exportRoute({
   // localProps and hashes to construct all of the props later.
   const routeInfo = {
     templateIndex,
-    sharedPropsHashes,
+    sharedDataHashes,
     localProps,
     path: routePath,
   }

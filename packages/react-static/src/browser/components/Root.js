@@ -38,14 +38,14 @@ const Root = withStaticInfo(
       super()
       const { staticInfo } = props
       if (process.env.REACT_STATIC_ENV === 'production' && staticInfo) {
-        const { path, allProps, sharedPropsHashes, templateIndex } = staticInfo
+        const { path, allProps, sharedDataHashes, templateIndex } = staticInfo
 
         // Hydrate routeInfoByPath with the embedded routeInfo
         routeInfoByPath[path] = staticInfo
 
         // Injest and cache the embedded routeInfo in the page if possible
-        Object.keys(sharedPropsHashes).forEach(propKey => {
-          propsByHash[sharedPropsHashes[propKey]] = allProps[propKey]
+        Object.keys(sharedDataHashes).forEach(propKey => {
+          propsByHash[sharedDataHashes[propKey]] = allProps[propKey]
         })
 
         // In SRR and production, synchronously register the templateIndex for the

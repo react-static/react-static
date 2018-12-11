@@ -3,20 +3,20 @@ import fs from 'fs-extra'
 import path from 'path'
 import { progress, time, timeEnd, poolAll } from '../utils'
 
-export default (async function exportSharedRouteData(config, sharedProps) {
+export default (async function exportSharedRouteData(config, sharedData) {
   // Write all shared props to file
-  const sharedPropsArr = Array.from(sharedProps)
+  const sharedDataArr = Array.from(sharedData)
 
-  if (sharedPropsArr.length) {
+  if (sharedDataArr.length) {
     console.log('=> Exporting Shared Route Data...')
-    const jsonProgress = progress(sharedPropsArr.length)
+    const jsonProgress = progress(sharedDataArr.length)
     time(chalk.green('=> [\u2713] Shared Route Data Exported'))
 
     await poolAll(
-      sharedPropsArr.map(cachedProp => async () => {
+      sharedDataArr.map(cachedProp => async () => {
         await fs.outputFile(
           path.join(config.paths.STATIC_DATA, `${cachedProp[1].hash}.json`),
-          cachedProp[1].jsonString || '{}'
+          JSON.stringify(cachedProp[1].data)
         )
         jsonProgress.tick()
       }),
