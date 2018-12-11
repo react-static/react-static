@@ -12,8 +12,6 @@ Version 6 is a massive upgrade to the underlying tools that power react-static a
 - Multi-threaded Export
 - Plugin System
 - Pages directory support
-- Hooks Support
-- Release automation
 
 ## V7
 
