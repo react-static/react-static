@@ -95,7 +95,7 @@ Each CSS-in-JS library is different so please consult the server-side rendering 
 
 # Code, Data, and Prop Splitting
 
-React Static also has a very unique and amazing way of requesting the least amount of data to display any given page at just the right moment. React splits code and data based on these factors:
+React Static also has a very unique and amazing way of requesting the least amount of data to display any given page at just the right moment. React Static splits code and data based on these factors:
 
 * **Routes** - Under the hood, React Static is automatically handling route splitting for you. Other than listing your routes in your `static.config.js`, you don't have to do anything!
 * **Route Data & Shared Data** - Each route's `getData` function results in a separate data file for each route being stored (usually). While exporting this data however, each individual key of every data object is checked against each other for `===` equality. When a data key is found to be used in more than one route, it is promoted to a _shared data fragment_ and stored in its own file.
