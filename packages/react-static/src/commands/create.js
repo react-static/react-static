@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 import path from 'path'
 import git from 'git-promise'
-import { execSync, exec } from 'child_process'
+import { execSync } from 'child_process'
 import inquirer from 'inquirer'
 import autoCompletePrompt from 'inquirer-autocomplete-prompt'
 import matchSorter from 'match-sorter'
@@ -16,7 +16,6 @@ inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 const typeLocal = 'Local Directory...'
 const typeGit = 'GIT Repository...'
 const typeExample = 'React Static Example'
-const tempDest = '.temp'
 
 const examplesDir = path.resolve(__dirname, '../../libExamples')
 
@@ -155,7 +154,7 @@ export default (async function create({ name, template, isCLI } = {}) {
       }
     } catch (err) {
       console.log(
-        chalk.red(`Copying React Static template: ${registryLocation} failed!`)
+        chalk.red(`Copying React Static template: ${template} failed!`)
       )
       throw err
     }

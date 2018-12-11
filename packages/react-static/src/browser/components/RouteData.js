@@ -9,7 +9,6 @@ import {
 import { isSSR } from '../utils'
 import Spinner from './Spinner'
 import { withStaticInfo } from './StaticInfo'
-import onLocationChange from '../utils/Location'
 
 let instances = []
 

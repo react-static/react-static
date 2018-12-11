@@ -1,6 +1,6 @@
 import fs from 'fs-extra'
 import path from 'path'
-import { exec } from 'child_process'
+// import { exec } from 'child_process'
 
 const examples = path.resolve(__dirname, '../../../examples/')
 const libExamples = path.resolve(__dirname, '../libExamples/')
@@ -8,8 +8,8 @@ const libExamples = path.resolve(__dirname, '../libExamples/')
 async function init() {
   await fs.remove(libExamples)
   fs.copy(examples, libExamples, {
-    filter: file => {
-      return ![
+    filter: file =>
+      ![
         '.DS_Store',
         '.history',
         '.log',
@@ -18,8 +18,7 @@ async function init() {
         'node_modules',
         'tmp',
         'yarn.lock',
-      ].some(d => file.includes(d))
-    },
+      ].some(d => file.includes(d)),
   })
 }
 
