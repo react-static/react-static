@@ -29,35 +29,35 @@ export default (async function fetchRoutes(config) {
       // Loop through the props to find shared props between routes
       // TODO: Make this smarter and/or expose knobs to tweak these settings / perform them manually,
       // or simply just turn them off.
-      Object.keys(route.allProps)
-        .map(k => route.allProps[k])
-        .forEach(prop => {
-          // Don't split small strings
-          if (typeof prop === 'string' && prop.length < 100) {
+      const propKeys = Object.keys(route.allProps)
+      for (let i = 0; i < propKeys.length; i++) {
+        const prop = route.allProps[propKeys[i]]
+        // Don't split small strings
+        if (typeof prop === 'string' && prop.length < 100) {
+          return
+        }
+        // Don't split booleans or undefineds
+        if (['boolean', 'number', 'undefined'].includes(typeof prop)) {
+          return
+        }
+        // Should be an array or object at this point
+        // Have we seen this prop before?
+        if (seenProps.get(prop)) {
+          // Only cache each shared prop once
+          if (sharedProps.get(prop)) {
             return
           }
-          // Don't split booleans or undefineds
-          if (['boolean', 'number', 'undefined'].includes(typeof prop)) {
-            return
-          }
-          // Should be an array or object at this point
-          // Have we seen this prop before?
-          if (seenProps.get(prop)) {
-            // Only cache each shared prop once
-            if (sharedProps.get(prop)) {
-              return
-            }
-            // Cache the prop
-            const jsonString = JSON.stringify(prop)
-            sharedProps.set(prop, {
-              jsonString,
-              hash: shorthash.unique(jsonString),
-            })
-          } else {
-            // Mark the prop as seen
-            seenProps.set(prop, true)
-          }
-        })
+          // Cache the prop
+          const jsonString = JSON.stringify(prop)
+          sharedProps.set(prop, {
+            jsonString,
+            hash: shorthash.unique(jsonString),
+          })
+        } else {
+          // Mark the prop as seen
+          seenProps.set(prop, true)
+        }
+      }
       dataProgress.tick()
     })
   }
@@ -87,6 +87,7 @@ export default (async function fetchRoutes(config) {
       dataWriteProgress.tick()
     })
   }
+  console.log('hello')
   await poolAll(writeTasks, Number(config.outputFileRate))
   timeEnd(chalk.green('=> [\u2713] Route Data Exported'))
 

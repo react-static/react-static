@@ -12,3 +12,7 @@ export const withStaticInfo = Comp => props => (
     {staticInfo => <Comp {...props} staticInfo={staticInfo} />}
   </context.Consumer>
 )
+
+export function useStaticInfo() {
+  return React.useContext(context)
+}

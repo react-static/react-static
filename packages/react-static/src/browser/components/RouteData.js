@@ -28,18 +28,17 @@ const RouteData = withStaticInfo(
     }
     componentDidMount() {
       instances.push(this)
-      this.offLocationChange = onLocationChange(() => this.forceUpdate())
     }
     componentWillUnmount() {
-      if (this.offLocationChange) this.offLocationChange()
       instances = instances.filter(d => d !== this)
-      this.unmounting = true
+      this.unmounted = true
     }
-    // reloadRouteData = () =>
-    //   (async () => {
-    //     await this.loadRouteData()
-    //     this.forceUpdate()
-    //   })()
+    safeForceUpdate = () => {
+      if (this.unmounted) {
+        return
+      }
+      this.forceUpdate()
+    }
     render() {
       const { children, Loader, staticInfo } = this.props
       const routePath = isSSR() ? staticInfo.path : getCurrentRoutePath()
@@ -62,7 +61,7 @@ const RouteData = withStaticInfo(
               setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
             ),
           ])
-          this.forceUpdate()
+          this.safeForceUpdate()
         })()
         return <Loader />
       }

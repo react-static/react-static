@@ -12,6 +12,9 @@
     "axios": "^0.18.0",
     "material-ui": "^1.0.0-beta.37",
     "material-ui-icons": "^1.0.0-beta.36",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-hot-loader": "^4.3.12",
     "react-static": "^5.9.12"
   },
   "devDependencies": {

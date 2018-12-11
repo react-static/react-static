@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-hot-loader": "^4.3.12",
     "react-static": "^6.0.0-beta.30",
     "tailwindcss": "^0.7.2"
   },
