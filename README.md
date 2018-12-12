@@ -6,6 +6,8 @@
 <br>
 <br>
 
+> You are viewing the docs for v6 of React Static. You can browse all historical version via Github branches!
+
 # React Static
 
 A **progressive static-site generator** for React.
