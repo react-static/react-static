@@ -1,9 +1,12 @@
 import babelPreset from 'babel-preset-react-static'
 
-export default function() {
+export default function({ config }) {
   return {
     test: /\.(js|jsx|mjs)$/,
-    exclude: /@babel(?:\/|\\{1,2})runtime/,
+    exclude: [
+      /@babel(?:\/|\\{1,2})runtime/,
+      ...config.babelExcludes || []
+    ],
     use: [
       // 'thread-loader',
       {
