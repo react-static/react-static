@@ -123,7 +123,7 @@ Once you've installed and test driven, you may want to:
   - [react-static-plugin-sass](https://github.com/nozzle/react-static-plugin-sass) - Adds SSR and general support for SASS
 - React Alternatives
   - [react-static-plugin-preact](https://github.com/nozzle/react-static-plugin-preact) - Adds preact support
-  - Don't see a plugin? [Help us build it!](/docs/plugins.md)
+- Don't see a plugin? [Help us build it!](/docs/plugins.md)
 
 ## Examples and Templates
 
