@@ -40,8 +40,6 @@
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.1.5",
     "@reach/router": "^1.2.1",
-    "@types/react": "^16.7.3",
-    "@types/react-helmet": "^5.0.7",
     "autoprefixer": "^9.3.1",
     "axios": "^0.18.0",
     "babel-core": "7.0.0-bridge.0",
