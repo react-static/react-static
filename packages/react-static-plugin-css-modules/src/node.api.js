@@ -7,10 +7,11 @@ export default (options = {}) => ({
     const styleLoader = { loader: 'style-loader' }
     const cssLoader = {
       loader: 'css-loader',
-      options: Object.assign({
+      options: {
         modules: true,
         importLoaders: 1,
-      }, options),
+        ...options
+      }
     };
 
     if (stage === 'dev') {
