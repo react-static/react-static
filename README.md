@@ -41,11 +41,13 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 ## Sites Built with React-Static
 
-- [React-Static.js.org](https://react-static.js.org) ([source](https://github.com/nozzle/react-static/tree/master/www))
-- [React-Charts.js.org](https://react-charts.js.org) ([source](https://github.com/nozzle/react-charts/tree/master/www))
+<!-- - [React-Static.js.org](https://react-static.js.org) ([source](https://github.com/nozzle/react-static/tree/master/www)) -->
+<!-- - [React-Charts.js.org](https://react-charts.js.org) ([source](https://github.com/nozzle/react-charts/tree/master/www)) -->
+
+- [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
+- [StaticGen.com](https://staticgen.com) ([source](https://github.com/netlify/staticgen))
 - [Nozzle.io](https://nozzle.io) ([source](https://github.com/nozzle/nozzle.io))
 - [Timber.io](https://timber.io)
-- [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
 - [Manta.life](https://manta.life) ([source](https://github.com/MantaApp/Website))
 - [Manticore Games](http://manticoregames.com)
 - [BlackSandSolutions.co](https://www.blacksandsolutions.co)
