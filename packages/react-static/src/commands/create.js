@@ -21,7 +21,7 @@ const examplesDir = path.resolve(__dirname, '../../libExamples')
 
 const examplesList = fs.readdirSync(examplesDir).filter(d => !d.startsWith('.'))
 
-export default (async function create({ name, template, isCLI } = {}) {
+export default (async function create({ name, template, isCLI }) {
   const isYarn = shouldUseYarn()
 
   const prompts = []

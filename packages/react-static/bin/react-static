@@ -1,27 +1,189 @@
 #!/usr/bin/env node
 
-const chalk = require('chalk')
-const commander = require('commander')
 const pkg = require('../package.json')
 
-commander
-  .version(pkg.version)
-  .description(pkg.description)
-  .command('create', 'create a new project')
-  .command('start', 'start the development server')
-  .command('build', 'build (bundle/export) site for production')
-  .command('bundle', 'bundle webpack assets')
-  .command('export', 'export html from bundled assets')
-  .on('--help', () => {
-    console.log('')
-    console.log(`  ${chalk.green('Examples:')}`)
-    console.log('')
-    console.log('    $ react-static create')
-    console.log('    $ react-static start')
-    console.log('    $ react-static build')
-    console.log('')
-    console.log('    $ react-static create -n my-static-app --t user/repo')
+init()
 
-    console.log('')
-  })
-  .parse(process.argv)
+function init() {
+  const argv = require('minimist')(process.argv.slice(2))
+
+  const commands = argv._
+  const help = argv.help || argv.h || argv.H
+  const options = {
+    version: argv.version || argv.v || argv.V,
+    config: argv.config || argv.c || argv.C,
+    name: argv.name || argv.n || argv.N,
+    template: argv.template || argv.t || argv.T,
+    staging: argv.staging || argv.s || argv.S,
+    debug: argv.debug || argv.d || argv.D,
+    isCLI: true,
+  }
+
+  if (options.version) {
+    console.log(pkg.version)
+    return
+  }
+
+  if (commands[0] === 'create') {
+    return create(options, help)
+  }
+
+  if (commands[0] === 'start') {
+    return start(options, help)
+  }
+
+  if (commands[0] === 'export') {
+    return exportFn(options, help)
+  }
+  if (commands[0] === 'bundle') {
+    return bundle(options, help)
+  }
+
+  if (commands[0] === 'build') {
+    return build(options, help)
+  }
+
+  console.log(`
+React Static - ${pkg.description}
+Version: ${pkg.name}@${pkg.version}
+
+Usage: react-static [options] [command]
+
+Options:
+  -V, --version  output the version number
+  -h, --help     output usage information for any given command
+
+Commands:
+  create         create a new project
+  start          start the development server
+  build          build (bundle + export) site for production
+  bundle         bundle webpack assets
+  export         export html from bundled assets
+  help [cmd]     display help for [cmd]
+
+Examples:
+
+  $ react-static -v
+  $ react-static create
+  $ react-static start
+  $ react-static build
+  $ react-static bundle
+  $ react-static export
+
+  `)
+}
+
+function create(options, help) {
+  if (help) {
+    console.log(`
+Description: Creates a new React Static project
+  
+Options:
+  -n, --name <name>                 The name of your new project
+  -t, --template <template-name>    The react-static template for your project
+
+Examples:
+  react-static create
+  react-static create --name= my-static-site
+  react-static create -n my-static-site
+  react-static create -n my-static-site --template styled-components
+`)
+    return
+  }
+  require('../lib/utils/binHelper')
+  return require('../lib/commands/create').default(options)
+}
+
+function start(options, help) {
+  if (help) {
+    console.log(`
+Description: Starts the local development server for a React Static project
+  
+Options:
+  -c, --config <path>   The path to a custom static.config.js
+  -d, --debug           Turn on debug mode
+
+Examples:
+  react-static start
+  react-static start --config=path/to/my/static.config.js
+  react-static start -c path/to/my/static.config.js
+  react-static start --debug
+  react-static start -d
+`)
+    return
+  }
+  require('../lib/utils/binHelper')
+  return require('../lib/commands/start').default(options)
+}
+
+function exportFn(options, help) {
+  if (help) {
+    console.log(`
+Description: Exports a pre-bundled React Static project to a static site.
+  
+Options:
+  -c, --config <path>   The path to a custom static.config.js
+  -s, --staging         Turn on staging mode
+  -d, --debug           Turn on debug mode
+
+Examples:
+  react-static export
+  react-static export --config=path/to/my/static.config.js
+  react-static export -c path/to/my/static.config.js
+  react-static export --debug
+  react-static export -d
+`)
+    return
+  }
+  require('../lib/utils/binHelper')
+  return require('../lib/commands/export').default(options)
+}
+
+function bundle(options, help) {
+  if (help) {
+    console.log(`
+Description: Bundles a React Static project and prepares it for export
+
+Options:
+  -c, --config <path>   The path to a custom static.config.js
+  -s, --staging         Turn on staging mode
+  -d, --debug           Turn on debug mode
+
+Examples:
+  react-static bundle
+  react-static bundle --config=path/to/my/static.config.js
+  react-static bundle -c path/to/my/static.config.js
+  react-static bundle --debug
+  react-static bundle -d
+`)
+    return
+  }
+
+  require('../lib/utils/binHelper')
+  return require('../lib/commands/bundle').default(options)
+}
+
+function build(options, help) {
+  if (help) {
+    console.log(`
+Description:
+  - Bundles a React Static project
+  - Exports the bundled React Static project to a static site.
+  
+Options:
+  -c, --config <path>   The path to a custom static.config.js
+  -s, --staging         Turn on staging mode
+  -d, --debug           Turn on debug mode
+
+Examples:
+  react-static build
+  react-static build --config=path/to/my/static.config.js
+  react-static build -c path/to/my/static.config.js
+  react-static build --debug
+  react-static build -d
+`)
+    return
+  }
+  require('../lib/utils/binHelper')
+  return require('../lib/commands/build').default(options)
+}
