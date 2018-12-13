@@ -6,13 +6,11 @@
 <br>
 <br>
 
-> You are viewing the docs for v6 of React Static. You can browse all historical version via Github branches!
+> You are viewing the docs for v6 of React Static. You can browse all historical versions via Github branches!
 
 # React Static
 
 A **progressive static-site generator** for React.
-
-[**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
 
 React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of static-site **performance, and user/developer experience**.
 
@@ -33,19 +31,25 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - 🔥 Hot Reloadable out-of-the-box. Edit React components & styles in real-time.
 - 📲 LAN accessible dev environment for testing on other devices like phones and tablets.
 
-## Videos & Tutorials
+## Articles, Videos & Tutorials
 
-- [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
-- [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
-- [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
+- Articles
+  - [Introduction and Motivations behind React Static](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
+  - [React Static v6!](https://medium.com/@tannerlinsley/react-static-v6-8dbe9fd202d4)
+- Videos & Tuturials
+  - [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
+  - [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
+  - [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
 
 ## Sites Built with React-Static
 
-- [React-Static.js.org](https://react-static.js.org) ([source](https://github.com/nozzle/react-static/tree/master/www))
-- [React-Charts.js.org](https://react-charts.js.org) ([source](https://github.com/nozzle/react-charts/tree/master/www))
+<!-- - [React-Static.js.org](https://react-static.js.org) ([source](https://github.com/nozzle/react-static/tree/master/www)) -->
+<!-- - [React-Charts.js.org](https://react-charts.js.org) ([source](https://github.com/nozzle/react-charts/tree/master/www)) -->
+
+- [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
+- [StaticGen.com](https://staticgen.com) ([source](https://github.com/netlify/staticgen))
 - [Nozzle.io](https://nozzle.io) ([source](https://github.com/nozzle/nozzle.io))
 - [Timber.io](https://timber.io)
-- [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
 - [Manta.life](https://manta.life) ([source](https://github.com/MantaApp/Website))
 - [Manticore Games](http://manticoregames.com)
 - [BlackSandSolutions.co](https://www.blacksandsolutions.co)
@@ -136,18 +140,24 @@ Can't find an example? We invite you to write one! Simply copy the `basic` or `b
 ## Documentation
 
 - [Core Concepts](/docs/concepts.md)
-- [API Reference](/docs/config.md)
-- [Changelog](https://github.com/nozzle/react-static/blob/master/CHANGELOG.md)
-- [Contributing Guide](https://github.com/nozzle/react-static/blob/master/CONTRIBUTING.md)
+- API
+  - [Configuration](/docs/config.md)
+  - [CLI](/docs/cli.md)
+  - [Components](/docs/components.md)
+  - [Browser](/docs/browser.md)
+  - [Node API](/docs/node-api.md)
+  - [Plugins](/docs/plugins.md)
+- [Changelog](/CHANGELOG.md)
+- [Contributing Guide](/CONTRIBUTING.md)
 
-## Chat with us on the React Static Spectrum community!
+## Support, Community & Chat
 
 Need some help? Have a quick question? [Click here to sign up for the React-Tools spectrum community](https://spectrum.chat/react-static)! We are constantly answering questions, discussing features and helping each other out!
 
-## Contributing
+## Contributing, Issues & Bugs
 
-We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have an issue, feature request, or pull request, let us know!
+We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have [found a bug, or have a feature request](https://github.com/nozzle/react-static/issues/new) let us know!
 
 ## License
 
-React Static uses the MIT license. For more information on this license, [click here](https://github.com/nozzle/react-static/blob/master/LICENSE).
+React Static uses the MIT license. For more information on this license, [click here](/LICENSE).

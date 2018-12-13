@@ -21,10 +21,9 @@ const examplesDir = path.resolve(__dirname, '../../libExamples')
 
 const examplesList = fs.readdirSync(examplesDir).filter(d => !d.startsWith('.'))
 
-export default (async function create({ name, template, isCLI } = {}) {
+export default (async function create({ name, template, isCLI }) {
   const isYarn = shouldUseYarn()
 
-  const prompts = []
   console.log('')
 
   const firstExamples = ['basic', 'blank']
@@ -41,41 +40,39 @@ export default (async function create({ name, template, isCLI } = {}) {
   //   unless it's assigned as an argument from the CLI, we can't simply just
   //   check for it's existence. if it's not been set by the CLI, we properly
   //   set it to null for later conditional checks.
-  if (typeof name !== 'string') {
-    name = null
-    prompts.push({
+  if (isCLI && !name) {
+    const answers = await inquirer.prompt({
       type: 'input',
       name: 'name',
       message: 'What should we name this project?',
       default: 'my-static-site',
     })
-  }
-
-  // prompt if --template argument is not passed from CLI
-  if (!template) {
-    prompts.push({
-      type: 'autocomplete',
-      name: 'template',
-      message: 'Select a template below...',
-      source: async (answersSoFar, input) =>
-        !input ? exampleChoices : matchSorter(exampleChoices, input),
-    })
-  }
-
-  const shouldPrompt = isCLI && (!name || !template)
-  const answers = shouldPrompt ? await inquirer.prompt(prompts) : {}
-
-  if (answers.name) {
     name = answers.name
-  }
-  if (answers.template) {
-    template = answers.template
   }
 
   if (!name) {
     throw new Error(
       'A project name is required. Please use options.name to define one.'
     )
+  }
+
+  const dest = path.resolve(process.cwd(), name)
+
+  if (fs.existsSync(dest)) {
+    throw new Error(
+      `Could not create project. Directory already exists at ${dest}!`
+    )
+  }
+
+  if (isCLI && !template) {
+    const answers = await inquirer.prompt({
+      type: 'autocomplete',
+      name: 'template',
+      message: 'Select a template below...',
+      source: async (answersSoFar, input) =>
+        !input ? exampleChoices : matchSorter(exampleChoices, input),
+    })
+    template = answers.template
   }
 
   if (!template) {
@@ -86,7 +83,6 @@ export default (async function create({ name, template, isCLI } = {}) {
 
   time(chalk.green(`=> [\u2713] Project "${name}" created`))
   console.log('=> Creating new react-static project...')
-  const dest = path.resolve(process.cwd(), name)
 
   if (template === typeLocal) {
     templateType = typeLocal
@@ -140,18 +136,10 @@ export default (async function create({ name, template, isCLI } = {}) {
     // React Static examples
     console.log(chalk.green(`Using React Static template: ${template}`))
     try {
-      try {
-        // Move the untarred `package` directory to the root of the destination
-        await fs.copy(
-          path.resolve(examplesDir, template),
-          path.resolve(process.cwd(), dest)
-        )
-      } catch (err) {
-        console.log(
-          chalk.red(`Directory already exists at ${(process.cwd(), dest)}!`)
-        )
-        throw err
-      }
+      await fs.copy(
+        path.resolve(examplesDir, template),
+        path.resolve(process.cwd(), dest)
+      )
     } catch (err) {
       console.log(
         chalk.red(`Copying React Static template: ${template} failed!`)

@@ -1,3 +1,9 @@
+# 6.0.1
+
+#### Fixes & Optimizations
+
+- The CLI now uses `minimist` instead of `commander`. Along with this change, there is now only a single binary for all of react-static. This should cut down on inconsistencies between `npm` and `yarn` and how they treat multi-binary projects.
+
 # 6.0.0
 
 #### New Features

@@ -1,4 +1,4 @@
-# Methods
+# Browser
 
 In addition to components, React-Static exports a some simple functions to help you in programmatic use cases:
 

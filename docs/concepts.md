@@ -104,41 +104,7 @@ React Static also has a very unique and amazing way of requesting the least amou
 
 **Most projects don't need shared route data**. There are edge cases where it won't make sense to put the same piece of data in every route if it doesn't change, but at the same time that data isn't needed on every page. To solve this issue, you can use the shared route data api to share a single piece of data between many routes with only a single JSON file.
 
-**Example**
-
-Consider a large and heavy menu structure that is present only on the blog portion of your site. In this case, the menu data should only be loaded on the pages that use it, and only once per session (cached), instead of on every page individually. First we would use the `createSharedData` function and pass the data we want to share between our routes. Then in each route, we can pass the result of our `createSharedData` call as a prop to the route's `sharedData` property. The shared data props will then be stored, served and cached only once per session and merged into the result of the routes `getData` result at runtime!
-
-```javascript
-import axios from 'axios'
-
-export default {
-  getRoutes: async () => {
-    const blogMenu = getMyDynamicMenu()
-    return [
-      {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      {
-        path: '/blog',
-        component: 'src/containers/Docs',
-        sharedData: {
-          blogMenu, // `blogMenu` will now be available to this route via
-          // RouteData but will only be loaded once per session!
-        },
-      },
-      {
-        path: '/help',
-        component: 'src/containers/Help',
-        sharedData: {
-          blogMenu, // `blogMenu` will now be available to this route via
-          // RouteData but will only be loaded once per session!
-        },
-      },
-    ]
-  },
-}
-```
+[See an example](../node-api.md#createSharedData)
 
 # Writing universal, "node-safe" code
 
