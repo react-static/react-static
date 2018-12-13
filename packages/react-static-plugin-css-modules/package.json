@@ -1,10 +1,10 @@
 {
   "name": "react-static-plugin-css-modules",
-  "version": "6.0.0-beta.31",
+  "version": "6.0.0",
   "description": "A React-Static plugin that adds SSR support for css modules",
   "main": "node.api.js",
   "repository": "https://github.com/nozzle/react-static.git",
-  "author": "Zack Jackson <zack@scriptedAlchemy.com>",
+  "author": "Zack Jackson <zack@scriptedAlchemy.com> (https://github.com/ScriptedAlchemy)",
   "license": "MIT",
   "private": false,
   "scripts": {
