@@ -138,18 +138,24 @@ Can't find an example? We invite you to write one! Simply copy the `basic` or `b
 ## Documentation
 
 - [Core Concepts](/docs/concepts.md)
-- [API Reference](/docs/config.md)
-- [Changelog](https://github.com/nozzle/react-static/blob/master/CHANGELOG.md)
-- [Contributing Guide](https://github.com/nozzle/react-static/blob/master/CONTRIBUTING.md)
+- API
+  - [Configuration](/docs/config.md)
+  - [CLI](/docs/cli.md)
+  - [Components](/docs/components.md)
+  - [Browser](/docs/browser.md)
+  - [Node API](/docs/node-api.md)
+  - [Plugins](/docs/plugins.md)
+- [Changelog](/CHANGELOG.md)
+- [Contributing Guide](/CONTRIBUTING.md)
 
-## Chat with us on the React Static Spectrum community!
+## Support, Community & Chat
 
 Need some help? Have a quick question? [Click here to sign up for the React-Tools spectrum community](https://spectrum.chat/react-static)! We are constantly answering questions, discussing features and helping each other out!
 
-## Contributing
+## Contributing, Issues & Bugs
 
-We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have an issue, feature request, or pull request, let us know!
+We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have [found a bug, or have a feature request](https://github.com/nozzle/react-static/issues/new) let us know!
 
 ## License
 
-React Static uses the MIT license. For more information on this license, [click here](https://github.com/nozzle/react-static/blob/master/LICENSE).
+React Static uses the MIT license. For more information on this license, [click here](/LICENSE).
