@@ -26,7 +26,7 @@ export default (options = {}) => ({
     }
 
     config.module.rules[0].oneOf.unshift({
-      test: /\.s(a|c)ss$/,
+      test: /\.css$/,
       use: loaders,
     })
 
