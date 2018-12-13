@@ -9,6 +9,7 @@ The following exports are available via the `react-static/node` module:
 - [build](#build)
 - [reloadRoutes](#reloadRoutes)
 - [makePageRoutes](#makePageRoutes)
+- [createSharedData](#createSharedData)
 
 We recommended using the latest ES6 import syntax:
 
@@ -74,7 +75,7 @@ setInterval(reloadRoutes, 10 * 1000)
 export default {
   getRoutes: () => {
     // This will run each time `reloadRoutes` is called
-  }
+  },
 }
 ```
 
@@ -137,5 +138,47 @@ export default {
       }),
     ]
   }
+}
+```
+
+### `createSharedData`
+
+Each route's `getData` function results in a separate data file for each route being stored as JSON next to the routes HTML on export. This covers the 90% use case for data splitting, but if you want even more control and want to optimize repeated data across routes, you can use this function to create shared data fragments for use in your routes.
+
+These shared data fragments can be placed in any route's `sharedData` object. At runtime, the shared data will only be requested once per session and automatically merged into the route data, which you can consume normally through the `RouteData` or `withRouteData` component/HOC pair.
+
+**Example**
+
+Consider a large and heavy menu structure that is present only on the blog portion of your site. In this case, the menu data should only be loaded on the pages that use it, and only once per session (cached), instead of on every page individually. First we would use the `createSharedData` function and pass the data we want to share between our routes. Then in each route, we can pass the result of our `createSharedData` call as a prop to the route's `sharedData` property. The shared data props will then be stored, served and cached only once per session and merged into the result of the routes `getData` result at runtime!
+
+```javascript
+import axios from 'axios'
+
+export default {
+  getRoutes: async () => {
+    const blogMenu = getMyDynamicMenu()
+    return [
+      {
+        path: '/',
+        component: 'src/containers/Home',
+      },
+      {
+        path: '/blog',
+        component: 'src/containers/Docs',
+        sharedData: {
+          blogMenu, // `blogMenu` will now be available to this route via
+          // RouteData but will only be loaded once per session!
+        },
+      },
+      {
+        path: '/help',
+        component: 'src/containers/Help',
+        sharedData: {
+          blogMenu, // `blogMenu` will now be available to this route via
+          // RouteData but will only be loaded once per session!
+        },
+      },
+    ]
+  },
 }
 ```
