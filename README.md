@@ -12,8 +12,6 @@
 
 A **progressive static-site generator** for React.
 
-[**Read the introduction article on Medium**](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
-
 React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of static-site **performance, and user/developer experience**.
 
 [![Sponsored By GraphCMS](https://github.com/nozzle/react-static/raw/master/media/graphcms.svg?sanitize=true)](http://graphcms.com/?ref=tlinsley)
@@ -33,11 +31,15 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - 🔥 Hot Reloadable out-of-the-box. Edit React components & styles in real-time.
 - 📲 LAN accessible dev environment for testing on other devices like phones and tablets.
 
-## Videos & Tutorials
+## Articles, Videos & Tutorials
 
-- [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
-- [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
-- [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
+- Articles
+  - [Introduction and Motivations behind React Static](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
+  - [React Static v6!](https://medium.com/@tannerlinsley/react-static-v6-8dbe9fd202d4)
+- Videos & Tuturials
+  - [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
+  - [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
+  - [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
 
 ## Sites Built with React-Static
 
