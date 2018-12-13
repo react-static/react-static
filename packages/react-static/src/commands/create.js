@@ -24,7 +24,6 @@ const examplesList = fs.readdirSync(examplesDir).filter(d => !d.startsWith('.'))
 export default (async function create({ name, template, isCLI }) {
   const isYarn = shouldUseYarn()
 
-  const prompts = []
   console.log('')
 
   const firstExamples = ['basic', 'blank']
