@@ -84,9 +84,16 @@ export default (async function create({ name, template, isCLI }) {
     )
   }
 
+  const dest = path.resolve(process.cwd(), name)
+
+  if (fs.existsSync(dest)) {
+    throw new Error(
+      `Could not create project. Directory already exists at ${dest}!`
+    )
+  }
+
   time(chalk.green(`=> [\u2713] Project "${name}" created`))
   console.log('=> Creating new react-static project...')
-  const dest = path.resolve(process.cwd(), name)
 
   if (template === typeLocal) {
     templateType = typeLocal
@@ -140,18 +147,10 @@ export default (async function create({ name, template, isCLI }) {
     // React Static examples
     console.log(chalk.green(`Using React Static template: ${template}`))
     try {
-      try {
-        // Move the untarred `package` directory to the root of the destination
-        await fs.copy(
-          path.resolve(examplesDir, template),
-          path.resolve(process.cwd(), dest)
-        )
-      } catch (err) {
-        console.log(
-          chalk.red(`Directory already exists at ${(process.cwd(), dest)}!`)
-        )
-        throw err
-      }
+      await fs.copy(
+        path.resolve(examplesDir, template),
+        path.resolve(process.cwd(), dest)
+      )
     } catch (err) {
       console.log(
         chalk.red(`Copying React Static template: ${template} failed!`)
