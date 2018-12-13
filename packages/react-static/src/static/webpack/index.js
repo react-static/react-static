@@ -65,17 +65,13 @@ export async function webpackConfig({ config, stage }) {
   return webpackConfig
 }
 
-export async function buildCompiler({ config, stage }) {
-  return webpack(await webpackConfig({ config, stage }))
-}
-
 // Starts the development server
 export async function startDevServer({ config }) {
   if (devServer) {
     return devServer
   }
 
-  const devCompiler = await buildCompiler({ config, stage: 'dev' })
+  const devCompiler = webpack(await webpackConfig({ config, stage: 'dev' }))
 
   // Default to localhost:3000, or use a custom combo if defined in static.config.js
   // or environment variables

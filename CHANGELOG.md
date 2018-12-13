@@ -33,6 +33,8 @@
 - `Router` has been deprecated and replaced by the `Root` component. The `Root` component implements the `HashScroller` component, an `ErrorBoundary` and a very simple and non-invasive route context using `@reach/router` (the recommended router). The base router is customizable or replaceable if the user wishes to use a different router.
 - The `Root` component renders a `div` under the hood (from reach/router). This may affect layouts during migration.
 - `config.disableRouteInfoWarning` has been depracated. Do not use `RouteInfo` on non-static pages!
+- Shared route data is no longer calculated automatically for performance reasons. This was previously done on every key of every prop sent to a route, which was very expensive for little benefit.
+- Shared route data is still supported via the `createSharedData` utility and the `sharedData` property on a route. See the docs for information on usage.
 
 #### Fixes & Optimizations
 

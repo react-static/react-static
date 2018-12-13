@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { makePageRoutes } from 'react-static/node'
+import { createSharedData, makePageRoutes } from 'react-static/node'
 
 //
 
-const routeSize = 100000
+const routeSize = 1000
 
 if (!process.env.REACT_STATIC_SLAVE) {
   console.log()
@@ -24,6 +24,10 @@ export default {
 
     const allPosts = []
 
+    const sidebarInfo = createSharedData({
+      foo: 'bar',
+    })
+
     let i = 0
     while (i < routeSize) {
       i++
@@ -43,6 +47,9 @@ export default {
               getData: () => ({
                 posts: allPosts,
               }),
+              sharedData: {
+                sidebarInfo,
+              },
             },
           ]
         : makePageRoutes({
@@ -61,6 +68,9 @@ export default {
                 currentPage: i,
                 totalPages,
               }),
+              sharedData: {
+                sidebarInfo,
+              },
             }),
           })),
       // Make the routes for each blog post
@@ -70,6 +80,9 @@ export default {
         getData: () => ({
           post,
         }),
+        sharedData: {
+          sidebarInfo,
+        },
       })),
     ]
   },

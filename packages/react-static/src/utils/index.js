@@ -82,12 +82,20 @@ export function time(message) {
 }
 export function timeEnd(message) {
   if (times[message]) {
-    console.log(
-      `${message} (${Math.round(
-        (performance.now() / 1000 - times[message]) * 10
-      ) / 10}s)`
-    )
+    let seconds = (performance.now() / 1000 - times[message]) * 10
     times[message] = null
+
+    if (seconds < 0.1) {
+      console.log(`${message}`)
+      return
+    }
+
+    if (seconds < 1) {
+      seconds = Math.round(seconds * 10) / 10
+    } else {
+      seconds = Math.round(seconds) / 10
+    }
+    console.log(`${message} (${seconds}s)`)
   }
 }
 

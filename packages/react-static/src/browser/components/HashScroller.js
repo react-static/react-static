@@ -65,7 +65,6 @@ export default class RouterScroller extends React.Component {
     }
   }
   render() {
-    console.log(this.props.location)
     return this.props.children
   }
 }

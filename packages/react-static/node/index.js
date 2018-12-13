@@ -6,6 +6,7 @@ const { default: exporter } = require('../lib/commands/export')
 const { reloadRoutes } = require('../lib/static/webpack')
 const { default: makePageRoutes } = require('../lib/node/makePageRoutes')
 const { normalizeRoutes } = require('../lib/static/getConfig')
+const { default: createSharedData } = require('../lib/static/createSharedData')
 
 module.exports = {
   create,
@@ -16,4 +17,5 @@ module.exports = {
   reloadRoutes,
   makePageRoutes,
   normalizeRoutes,
+  createSharedData,
 }

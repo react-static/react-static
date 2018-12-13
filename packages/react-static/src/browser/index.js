@@ -195,10 +195,10 @@ export async function prefetchData(path, { priority } = {}) {
     ...(routeInfo.localProps || {}),
   }
 
-  // Request the template and loop over the routeInfo.sharedPropsHashes, requesting each prop
+  // Request the template and loop over the routeInfo.sharedDataHashes, requesting each prop
   await Promise.all(
-    Object.keys(routeInfo.sharedPropsHashes).map(async key => {
-      const hash = routeInfo.sharedPropsHashes[key]
+    Object.keys(routeInfo.sharedDataHashes).map(async key => {
+      const hash = routeInfo.sharedDataHashes[key]
 
       // Check the propsByHash first
       if (!propsByHash[hash]) {

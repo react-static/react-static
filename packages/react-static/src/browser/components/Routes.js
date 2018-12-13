@@ -18,11 +18,18 @@ export default withStaticInfo(
       Loader: Spinner,
     }
     componentDidMount() {
-      templateUpdated.cb = () => this.forceUpdate()
-      this.offLocationChange = onLocation(() => this.forceUpdate())
+      templateUpdated.cb = () => this.safeForceUpdate()
+      this.offLocationChange = onLocation(() => this.safeForceUpdate())
     }
     componentWillUnmount() {
+      this.unmounted = true
       if (this.offLocationChange) this.offLocationChange()
+    }
+    safeForceUpdate = () => {
+      if (this.unmounted) {
+        return
+      }
+      this.forceUpdate()
     }
     render() {
       const { children, Loader, staticInfo } = this.props
@@ -55,7 +62,7 @@ export default withStaticInfo(
                 setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
               ),
             ])
-            this.forceUpdate()
+            this.safeForceUpdate()
           })()
           return Loader
         }

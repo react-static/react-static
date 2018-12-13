@@ -100,7 +100,7 @@ export const buildConfig = async (config = {}) => {
     getSiteData: () => ({}),
     renderToElement: Comp => <Comp />,
     renderToHtml: (render, comp) => render(comp),
-    prefetchRate: 3,
+    prefetchRate: 5,
     maxThreads: Infinity,
     disableRoutePrefixing: false,
     outputFileRate: 100,
@@ -115,6 +115,7 @@ export const buildConfig = async (config = {}) => {
     // Materialized Overrides
     plugins,
     paths,
+    babelExcludes: config.babelExcludes || [],
     siteRoot,
     basePath,
     publicPath,

@@ -28,7 +28,13 @@ const SiteData = withStaticInfo(
       this.fetchSiteData()
     }
     componentWillUnmount() {
-      this.unmounting = true
+      this.unmounted = true
+    }
+    safeSetState = (...args) => {
+      if (this.unmounted) {
+        return
+      }
+      this.setState(...args)
     }
     fetchSiteData = async () => {
       // We only fetch siteData in development. Normally
@@ -43,12 +49,7 @@ const SiteData = withStaticInfo(
           siteDataPromise = axios.get('/__react-static__/siteData')
           return siteDataPromise
         })()
-        if (this.unmounting) {
-          return
-        }
-        this.setState({
-          siteData,
-        })
+        this.safeSetState({ siteData })
       }
     }
     render() {

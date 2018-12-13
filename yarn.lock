@@ -1496,10 +1496,18 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.7.3":
+"@types/react@*":
   version "16.7.13"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.13.tgz#d2369ae78377356d42fb54275d30218e84f2247a"
   integrity sha512-WhqrQLAE9z65hfcvWqZfR6qUtIazFRyb8LXqHo8440R53dAQqNkt2OlVJ3FXwqOwAXXg4nfYxt0qgBvE18o5XA==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@^16.4.11":
+  version "16.7.14"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.14.tgz#61230ee74370ca8e5a728e4db2fc57a4cf2e2281"
+  integrity sha512-OH4/w2NQn984tzKCbf1OEewdKwzEVXQcZ0O2A5NsEVUKB9usGLudoJUCCsrGIxTShnOSsWPsw+BSudt/C/OE9A==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -2325,6 +2333,15 @@ babel-preset-jest@^23.2.0:
   dependencies:
     babel-plugin-jest-hoist "^23.2.0"
     babel-plugin-syntax-object-rest-spread "^6.13.0"
+
+babel-preset-react-static@^6.0.0-beta.31:
+  version "6.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/babel-preset-react-static/-/babel-preset-react-static-6.0.0-beta.31.tgz#964271ecaa75084347512fc8aba0f334c998dd66"
+  integrity sha512-AmPBcfJ8l21H9EXN7n3pxB9ZicDn70xJhrUvUrJDqzKCydqdBxqEv3nbBxYVIkc0A6yMPjLyMGfk3qB9Q/nFLQ==
+  dependencies:
+    emotion "^10.0.4"
+    emotion-server "^10.0.4"
+    react-emotion "^10.0.0"
 
 babel-register@^6.26.0:
   version "6.26.0"

@@ -2,7 +2,7 @@
 
 - [Overview](#overview)
 - [CSS and CSS-in-JS](#css-and-css-in-js)
-- [Code, Data, and Prop Splitting](#code-data-and-prop-splitting)
+- [Code and Data Splitting](#code-and-data-splitting)
 - [Writing universal, "node-safe" code](#writing-universal-node-safe-code)
 - [Environment Variables](#environment-variables)
 - [Building your site for production](#building-your-site-for-production)
@@ -20,24 +20,22 @@
 
 # Overview
 
-React-Static is different from most React-based static-site generators. It follows a very natural flow from data all the way to static files, then finally a progressively enhanced react-app. Not only does this provide a safe separation of concern, but by keeping the data pipelining and react templating as separate as possible, your site can be visualized and built in a single pass as a "function of state" from the data you pass it.
+React-Static is different from most React-based static-site generators. It follows a very natural flow from data all the way to static files, then finally a progressively enhanced react-app. Not only does this provide a handy separation of concern between data and templates, but by keeping the two as separate as possible, your site can be visualized and built in a single pass as a "function of state" from the data you pass it, just like React!
 
 ### Dev Stage
 
 1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMS's, graphql endpoints, etc.
-2.  Using your data, you define or generate **every static route** for your site and supply the appropriate data to each one.
+2.  Using your data, you define or generate **static route** for your site and supply the appropriate data to each one.
 3.  Simultaneously, you provide each route with the component that should be used to render it.
-4.  Using React-Static's components like `RouteProps` and `SiteProps` you can access the data for each route and use it to render your site!
+4.  Using React-Static's components like `RouteProps` and `SiteProps` you can access the data for each route and use it to render your site! You can also use HOC versions of those components if you wish.
 5.  React-Static can then export every page in your site with tenacious speed and accuracy.
-    preview
 
 ### Client Stage
 
-1.  On first page load, only the bare minimum of assets are downloaded to show the content as quickly as possible. This includes the page specific HTML and CSS that were exported at build time.
-2.  Simultaneously, only the necessary bootstrap code, template code and data needed to mount react for that particular route are **pushed** to the browser.
-3.  React invisibly mounts over the rendered HTML
-4.  The rest of the website is optimistically pre-cached
-5.  All further navigation is seemingly instantaneous!
+1.  On a fresh page load of a React Static site, only the bare minimum of assets are downloaded to show the content as quickly as possible. This includes the page specific HTML and any extracted CSS that were exported at build time.
+2.  Any data that was required synchronously for the route is extracted out of the HTML.
+3.  React invisibly mounts your app onto the existing HTML.
+4.  The rest of the website is optimistically **preloaded** and cached as navigation happens, making each navigation event seemingly instantaneous.
 
 ![Flow Chart](https://github.com/nozzle/react-static/raw/master/media/flow.png)
 
@@ -87,98 +85,58 @@ export default {
       <Head>{renderMeta.styleTags}</Head>
       <Body>{children}</Body>
     </Html>
-  )
+  ),
 }
 ```
 
 Each CSS-in-JS library is different so please consult the server-side rendering instructions of your specific library for more information.
 
-# Code, Data, and Prop Splitting
+# Code and Data Splitting
 
 React Static also has a very unique and amazing way of requesting the least amount of data to display any given page at just the right moment. React splits code and data based on these factors:
 
-- **Routes** - Under the hood, React Static is automatically handling route splitting for you. Other than listing your routes in your `static.config.js`, you don't have to do anything!
-- **Route Data & Shared Data** - Each route's `getData` function results in a separate data file for each route being stored (usually). While exporting this data however, each individual key of every data object is checked against each other for `===` equality. When a data key is found to be used in more than one route, it is promoted to a _shared data fragment_ and stored in its own file.
+- **Route Templates** - Under the hood, React Static automatically code splits your route templates for you. Other than listing your routes in your `static.config.js`, you don't have to do anything else! Magic!
+- **Route Data** - Each route's `getData` function results in a separate data file for each route being stored as JSON next to the routes HTML on export. This covers the 90% use case for data splitting, but if you want even more control and want to optimize repeated data across routes, you can use the `sharedData` and `createSharedData` api explained below.
+- **Site Data** - For data that is needed in every (or most) routes, you can pass it in the `config.getSiteData` function and make it accessible to any page in your entire site!.
 - **Manual Code Splitting with Universal** - React Static comes built in with support for [`react-universal-component`](https://github.com/faceyspacey/react-universal-component). This means aside from the automatic code splitting that React Static offers, you can also manually code split very large components if you choose to do so. See the ["About" page in the dynamic-imports example](https://github.com/nozzle/react-static/blob/master/examples/dynamic-imports/src/containers/About.js) to see how it works and how easy it is!
 
-#### Why is all of this cool?
+#### Shared Route Data (Advanced)
 
-By bundling page templates and data into separate optimized files, your site avoids wastefully loading duplicate assets for pages that share some or all of their assets with others. This decreases the overall bandwidth your site uses and also considerably speeds up your site's ability to serve content as fast as possible!
+**Most projects don't need shared route data**. There are edge cases where it won't make sense to put the same piece of data in every route if it doesn't change, but at the same time that data isn't needed on every page. To solve this issue, you can use the shared route data api to share a single piece of data between many routes with only a single JSON file.
 
-#### Shared Route Data Example
+**Example**
 
-Shared Route Data can be difficult to understand without an example. So, consider a dynamic menu structure that is present only on some of your pages, but not all of them. In this case, the menu data should only be loaded on the pages that use it, and only once per session (cached), instead of on every page individually.
+Consider a large and heavy menu structure that is present only on the blog portion of your site. In this case, the menu data should only be loaded on the pages that use it, and only once per session (cached), instead of on every page individually. First we would use the `createSharedData` function and pass the data we want to share between our routes. Then in each route, we can pass the result of our `createSharedData` call as a prop to the route's `sharedData` property. The shared data props will then be stored, served and cached only once per session and merged into the result of the routes `getData` result at runtime!
 
 ```javascript
 import axios from 'axios'
 
 export default {
   getRoutes: async () => {
-    const supportMenu = getMyDynamicMenu()
+    const blogMenu = getMyDynamicMenu()
     return [
       {
         path: '/',
         component: 'src/containers/Home',
       },
       {
-        path: '/docs',
+        path: '/blog',
         component: 'src/containers/Docs',
-        getData: async () => ({
-          supportMenu // Used once here
-        })
+        sharedData: {
+          blogMenu, // `blogMenu` will now be available to this route via
+          // RouteData but will only be loaded once per session!
+        },
       },
       {
         path: '/help',
         component: 'src/containers/Help',
-        getData: async () => ({
-          supportMenu, // Used again here! Since this `supportMenu` is equal `===` to the
-          // `supportMenu` used in the docs route, both instances will be promoted to
-          // a shared prop and only loaded once per session!
-          helpStuff: {...} // All other props that are unique to the route are
-          // still stored in their own JSON file.
-        })
+        sharedData: {
+          blogMenu, // `blogMenu` will now be available to this route via
+          // RouteData but will only be loaded once per session!
+        },
       },
     ]
   },
-}
-```
-
-#### Important Notes
-
-Automatic data and prop splitting is based on identity comparison `===`. If you break this referential integrity, React Static cannot detect that two props are the same.
-
-**An example of what not to do**
-<br/>
-
-```javascript
-import axios from 'axios'
-
-export default {
-  getRoutes: async () => {
-    const supportMenu = getMyDynamicMenuFromMyCMS()
-    return [
-      {
-        path: '/',
-        component: 'src/containers/Home'
-      },
-      {
-        path: '/docs',
-        component: 'src/containers/Docs',
-        getData: async () => ({
-          supportMenu
-        })
-      },
-      {
-        path: '/help',
-        component: 'src/containers/Help',
-        getData: async () => ({
-          supportMenu: { ...supportMenu } // Even though this supportMenu object
-          // is exactly the same as the original, it is not the actual original.
-          // This would not work!
-        })
-      }
-    ]
-  }
 }
 ```
 
@@ -298,7 +256,7 @@ Who wouldn't want to make their JS bundle as small as possible? Simply set `prea
 ```javascript
 // static.config.js
 export default {
-  preact: true
+  preact: true,
 }
 ```
 
@@ -322,7 +280,7 @@ export default {
     return [
       {
         path: '/',
-        component: 'src/containers/Home'
+        component: 'src/containers/Home',
       },
       ...makePageRoutes({
         items: posts,
@@ -330,16 +288,16 @@ export default {
         pageToken: 'page',
         route: {
           path: '/blog',
-          component: 'src/containers/Blog'
+          component: 'src/containers/Blog',
         },
         decorate: items => ({
           getData: () => ({
-            posts: items
-          })
-        })
-      })
+            posts: items,
+          }),
+        }),
+      }),
     ]
-  }
+  },
 }
 
 function makePageRoutes({
@@ -347,7 +305,7 @@ function makePageRoutes({
   pageSize,
   pageToken = 'page',
   route,
-  decorate
+  decorate,
 }) {
   const itemsCopy = [...items] // Make a copy of the items
   const pages = [] // Make an array for all of the different pages
@@ -363,14 +321,14 @@ function makePageRoutes({
   const routes = [
     {
       ...route,
-      ...decorate(firstPage) // and only pass the first page as data
+      ...decorate(firstPage), // and only pass the first page as data
     },
     // map over each page to create an array of page routes, and spread it!
     ...pages.map((page, i) => ({
       ...route, // route defaults
       path: `${route.path}/${pageToken}/${i + 2}`,
-      ...decorate(page)
-    }))
+      ...decorate(page),
+    })),
   ]
 
   return routes
@@ -408,21 +366,21 @@ webpack: (config, { stage }) => {
 
 You can run **React-Static** in **AWS-Lambda** without any modifications.
 
-As the Filesystem is *readonly* in Serverless Environments we just have to configure the `paths` to write to `/tmp`.
+As the Filesystem is _readonly_ in Serverless Environments we just have to configure the `paths` to write to `/tmp`.
 
 ```javascript
 //static.config.js
-const isBuild = process.env.NODE_ENV === "production";
+const isBuild = process.env.NODE_ENV === 'production'
 
-let pathConfig = {};
+let pathConfig = {}
 
 if (isBuild) {
   pathConfig = {
-    temp: os.tmpdir() + "/tmp",
-    dist: os.tmpdir() + "/dist",
-    devDist: os.tmpdir() + "/dev-server",
-    assets: os.tmpdir() + "/dist"
-  };
+    temp: os.tmpdir() + '/tmp',
+    dist: os.tmpdir() + '/dist',
+    devDist: os.tmpdir() + '/dev-server',
+    assets: os.tmpdir() + '/dist',
+  }
 }
 
 export default {
@@ -436,15 +394,14 @@ You also need to set the Babel Cache Variable `BABEL_CACHE_PATH` to (e.g.) `/tmp
 The most simple lambda function would look like this:
 
 ```javascript
-
 //set the BABEL_CACHE_PATH as early as possible
-process.env.BABEL_CACHE_PATH="/tmp/babel-cache.json"
+process.env.BABEL_CACHE_PATH = '/tmp/babel-cache.json'
 
-const rs = require("react-static/lib/commands/build").default;
+const rs = require('react-static/lib/commands/build').default
 
 const handler = async (event, context) => {
-  await rs();
+  await rs()
 
   // upload "paths.dist" (/tmp/dist) to some S3 Bucket here
-};
+}
 ```

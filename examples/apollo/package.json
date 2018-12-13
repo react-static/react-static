@@ -17,7 +17,10 @@
     "graphql": "^14.0.2",
     "graphql-tag": "^2.5.0",
     "json-loader": "^0.5.7",
+    "react": "^16.6.3",
     "react-apollo": "^2.0.0",
+    "react-dom": "^16.6.3",
+    "react-hot-loader": "^4.3.12",
     "react-static": "^6.0.0-beta.30"
   },
   "devDependencies": {

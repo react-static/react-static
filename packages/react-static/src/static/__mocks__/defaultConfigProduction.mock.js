@@ -2,7 +2,7 @@ export default {
   siteRoot: '',
   basePath: '',
   assetsPath: '',
-  prefetchRate: 3,
+  prefetchRate: 5,
   inlineCss: false,
   outputFileRate: 100,
   extractCssChunks: false,

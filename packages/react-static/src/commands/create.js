@@ -2,26 +2,24 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 import path from 'path'
 import git from 'git-promise'
-import { execSync, exec } from 'child_process'
+import { execSync } from 'child_process'
 import inquirer from 'inquirer'
 import autoCompletePrompt from 'inquirer-autocomplete-prompt'
 import matchSorter from 'match-sorter'
 import downloadGitRepo from 'download-git-repo'
 import { promisify } from 'util'
-import tarfs from 'tar-fs'
-import gunzip from 'gunzip-maybe'
 //
 import { ChalkColor, time, timeEnd } from '../utils'
-import { version } from '../../package.json'
-import exampleList from '../exampleList.json'
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt)
 
 const typeLocal = 'Local Directory...'
 const typeGit = 'GIT Repository...'
-const typeNpm = 'NPM package...'
 const typeExample = 'React Static Example'
-const tempDest = '.temp'
+
+const examplesDir = path.resolve(__dirname, '../../libExamples')
+
+const examplesList = fs.readdirSync(examplesDir).filter(d => !d.startsWith('.'))
 
 export default (async function create({ name, template, isCLI } = {}) {
   const isYarn = shouldUseYarn()
@@ -30,11 +28,11 @@ export default (async function create({ name, template, isCLI } = {}) {
   console.log('')
 
   const firstExamples = ['basic', 'blank']
-  const npmExamples = [
+  const examples = [
     ...firstExamples,
-    ...exampleList.filter(d => !firstExamples.includes(d)),
+    ...examplesList.filter(d => !firstExamples.includes(d)),
   ]
-  const exampleChoices = [...npmExamples, typeLocal, typeGit, typeNpm]
+  const exampleChoices = [...examples, typeLocal, typeGit]
 
   let templateType = typeExample
 
@@ -102,18 +100,6 @@ export default (async function create({ name, template, isCLI } = {}) {
     template = localDirectory
   }
 
-  if (template === typeNpm) {
-    templateType = typeNpm
-    const { npmRepoName } = await inquirer.prompt([
-      {
-        type: 'input',
-        name: 'npmRepoName',
-        message: 'Enter an NPM package name (my-npm-package)',
-      },
-    ])
-    template = npmRepoName
-  }
-
   if (template === typeGit) {
     templateType = typeGit
     const { githubRepoName } = await inquirer.prompt([
@@ -150,47 +136,14 @@ export default (async function create({ name, template, isCLI } = {}) {
         throw err
       }
     }
-  } else if (templateType === typeExample || templateType === typeNpm) {
-    // NPM packages
-    const prefix = templateType === typeExample ? 'react-static-example-' : ''
-    const npmVersion = templateType === typeExample ? version : 'latest'
-    const packageName = `${prefix}${template}@${npmVersion}`
-    let tarName
-    console.log(chalk.green(`Downloading NPM template: ${packageName}`))
+  } else if (templateType === typeExample) {
+    // React Static examples
+    console.log(chalk.green(`Using React Static template: ${template}`))
     try {
-      tarName = (await new Promise((resolve, reject) => {
-        exec(
-          `${isYarn ? `yarn` : `npm`} pack ${packageName}`,
-          (error, stdout, stderr) => {
-            if (error) {
-              console.log(error)
-              reject(stderr)
-              return
-            }
-            console.log(stdout)
-            resolve(stdout)
-          }
-        )
-      })).replace(/\n/gm, '')
-
-      // return a promise and resolve when download finishes
-      await new Promise((resolve, reject) => {
-        // Stream the tarball through gunzip-maybe and then untar it to the destination
-
-        const writeStream = tarfs.extract(path.resolve(process.cwd(), tempDest))
-
-        fs.createReadStream(path.resolve(process.cwd(), tarName))
-          .pipe(gunzip())
-          .pipe(writeStream)
-
-        writeStream.on('finish', resolve)
-        writeStream.on('error', reject)
-      })
-
       try {
         // Move the untarred `package` directory to the root of the destination
-        await fs.renameSync(
-          path.resolve(process.cwd(), tempDest, 'package'),
+        await fs.copy(
+          path.resolve(examplesDir, template),
           path.resolve(process.cwd(), dest)
         )
       } catch (err) {
@@ -200,11 +153,10 @@ export default (async function create({ name, template, isCLI } = {}) {
         throw err
       }
     } catch (err) {
-      console.log(chalk.red(`Downloading NPM template: ${packageName} failed!`))
+      console.log(
+        chalk.red(`Copying React Static template: ${template} failed!`)
+      )
       throw err
-    } finally {
-      await fs.remove(path.resolve(process.cwd(), tarName))
-      await fs.remove(path.resolve(process.cwd(), tempDest))
     }
   } else {
     // Local templates

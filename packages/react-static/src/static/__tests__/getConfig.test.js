@@ -54,7 +54,7 @@ describe('buildConfig', () => {
 
     await buildConfig()
 
-    expect(process.env.REACT_STATIC_PREFETCH_RATE).toBe('3')
+    expect(process.env.REACT_STATIC_PREFETCH_RATE).toBe('5')
   })
 
   test('REACT_STATIC_PREFETCH_RATE is set by the prefetchRate (from config)', async () => {

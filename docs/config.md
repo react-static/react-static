@@ -24,6 +24,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [prefetchRate](#prefetchrate)
 - [disableDuplicateRoutesWarning](#disableDuplicateRoutesWarning)
 - [disableRoutePrefixing](#disablerouteprefixing)
+- [babelExcludes](#babelExcludes)
 
 ### `getRoutes`
 
@@ -550,5 +551,18 @@ Set this boolean to `true` to disable all preloading. This is mostly meant for d
 // static.config.js
 export default {
   disablePreload: true
+}
+```
+
+### `babelExcludes`
+
+We are running Babel seperatly for your own sources and externals. The Babel configuration for your own sources can be manipulated the normal way. The one for `node_modules` can not, since its a bit special. We try to compile them with a bare minimum, but sometimes some modules gives you trouble (e.g. [mapbox-gl](https://github.com/mapbox/mapbox-gl-js/issues/3422))
+This option gives you the ability to exclude some modules from babelifying.
+See https://webpack.js.org/configuration/module/#condition for more details. To exclude e.g. `mapboxgl` simply pass the following
+
+```javascript
+// static.config.js
+export default {
+  babelExcludes: [/mapbox-gl/]
 }
 ```
