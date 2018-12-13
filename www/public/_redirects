@@ -1,1 +1,2 @@
-/*  https://github.com/nozzle/react-static/tree/master/:splat
+/docs/:doc/*  https://github.com/nozzle/react-static/tree/master/docs/:doc.md/:splat
+/*            https://github.com/nozzle/react-static/tree/master/:splat
