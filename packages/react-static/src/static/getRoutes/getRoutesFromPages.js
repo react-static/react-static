@@ -51,7 +51,7 @@ export default (async function getRoutesFromPages(
           if (!['add', 'unlink'].includes(type)) {
             return
           }
-          const filename = path.basename(file)
+          const filename = nodePath.basename(file)
           if (filename.startsWith('.')) {
             return
           }
