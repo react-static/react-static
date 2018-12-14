@@ -12,6 +12,14 @@ import { getRoutePath, isSSR } from '../utils'
 import onLocation from '../utils/Location'
 import Spinner from './Spinner'
 
+const RoutePathContext = React.createContext()
+
+export const withRoutePathContext = Comp => props => (
+  <RoutePathContext.Consumer>
+    {routePath => <Comp {...props} routePath={routePath} />}
+  </RoutePathContext.Consumer>
+)
+
 export default withStaticInfo(
   class Routes extends Component {
     static defaultProps = {
@@ -34,7 +42,7 @@ export default withStaticInfo(
     render() {
       const { children, Loader, staticInfo } = this.props
 
-      const currentRoutePath = isSSR() ? staticInfo.path : getCurrentRoutePath()
+      const routePath = isSSR() ? staticInfo.path : getCurrentRoutePath()
 
       const getComponentForPath = routePath => {
         // Clean the path
@@ -79,8 +87,12 @@ export default withStaticInfo(
         })
       }
 
-      const Comp = getComponentForPath(currentRoutePath)
-      return <Comp />
+      const Comp = getComponentForPath(routePath)
+      return (
+        <RoutePathContext.Provider value={routePath}>
+          <Comp />
+        </RoutePathContext.Provider>
+      )
     }
   }
 )
