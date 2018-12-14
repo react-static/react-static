@@ -1,5 +1,5 @@
 const path = require('path');
-const escapeRegExp = require('lodash/escapeRegExp');
+const { escapeRegExp } = require('./')
 
 let ignorePath
 
