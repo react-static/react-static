@@ -1,5 +1,6 @@
 const path = require('path');
 const escapeRegExp = require('lodash/escapeRegExp');
+
 let ignorePath
 
 // Allow as much stack tracing as possible
