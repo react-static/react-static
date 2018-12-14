@@ -3,17 +3,7 @@ let ignorePath
 // Allow as much stack tracing as possible
 Error.stackTraceLimit = Infinity
 
-require('@babel/register')({
-  ignore: [
-    function babelIgnore(filename) {
-      // true if should ignore
-      return (
-        /\/node_modules\//.test(filename) ||
-        (ignorePath && ignorePath.test(filename))
-      )
-    },
-  ],
-})
+require('@babel/register')({})
 
 const updateNotifier = require('update-notifier')
 const PrettyError = require('pretty-error')
