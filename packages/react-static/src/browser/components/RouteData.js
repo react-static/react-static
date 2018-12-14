@@ -12,13 +12,9 @@ import { withStaticInfo } from './StaticInfo'
 
 let instances = []
 
-// TODO:v6 Do we need this anymore? It's for when data changes in
-// dev mode and we need the RouteData components to rerender...
-// I think we still need it.
-
-// global.reloadAll = () => {
-//   instances.forEach(instance => instance.reloadRouteData())
-// }
+global.reloadAll = () => {
+  instances.forEach(instance => instance.safeForceUpdate())
+}
 
 const RouteData = withStaticInfo(
   class RouteData extends React.Component {
