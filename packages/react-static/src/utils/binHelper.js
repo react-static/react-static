@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 const { escapeRegExp } = require('./')
 
 let ignorePath
@@ -11,12 +11,14 @@ require('@babel/register')({
     function babelIgnore(filename) {
       // true if should ignore
       return (
-        new RegExp(escapeRegExp(`${path.sep}node_modules${path.sep}`)).test(filename) ||
+        new RegExp(escapeRegExp(`${path.sep}node_modules${path.sep}`)).test(
+          filename
+        ) ||
         (ignorePath && ignorePath.test(filename))
       )
     },
   ],
-});
+})
 
 const updateNotifier = require('update-notifier')
 const PrettyError = require('pretty-error')
