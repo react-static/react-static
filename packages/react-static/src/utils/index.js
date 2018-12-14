@@ -112,3 +112,8 @@ export function debounce(func, wait, immediate) {
     if (callNow) func(...args)
   }
 }
+
+const escapeReg = /[\\^$.*+?()[\]{}|]/g
+export function escapeRegExp(str) {
+  return str.replace(escapeReg, '\\$&')
+}
