@@ -1,3 +1,6 @@
+const path = require('path');
+const { escapeRegExp } = require('./')
+
 let ignorePath
 
 // Allow as much stack tracing as possible
@@ -8,12 +11,12 @@ require('@babel/register')({
     function babelIgnore(filename) {
       // true if should ignore
       return (
-        /\/node_modules\//.test(filename) ||
+        new RegExp(escapeRegExp(`${path.sep}node_modules${path.sep}`)).test(filename) ||
         (ignorePath && ignorePath.test(filename))
       )
     },
   ],
-})
+});
 
 const updateNotifier = require('update-notifier')
 const PrettyError = require('pretty-error')
@@ -63,6 +66,6 @@ process.on('unhandledRejection', r => {
 
 module.exports = {
   setIgnorePath(path) {
-    ignorePath = path ? new RegExp(path) : undefined
+    ignorePath = path ? new RegExp(escapeRegExp(path)) : undefined
   },
 }
