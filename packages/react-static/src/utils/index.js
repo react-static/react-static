@@ -1,7 +1,7 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger */
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import OpenPort from 'openport'
+import PortFinder from 'portfinder'
 import fs from 'fs-extra'
 import nodeGlob from 'glob'
 import { performance } from 'perf_hooks'
@@ -17,22 +17,11 @@ export const ChalkColor = {
   npm: '#cb3837',
 }
 
-export const findAvailablePort = (start, avoid = []) =>
-  new Promise((resolve, reject) =>
-    OpenPort.find(
-      {
-        startingPort: start,
-        endingPort: start + 1000,
-        avoid,
-      },
-      (err, port) => {
-        if (err) {
-          return reject(err)
-        }
-        resolve(port)
-      }
-    )
-  )
+export const findAvailablePort = start =>
+  PortFinder.getPortPromise({
+    port: start,
+    stopPort: start + 1000,
+  })
 
 export function copyPublicFolder(config) {
   fs.ensureDirSync(config.paths.PUBLIC)
