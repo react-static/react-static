@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-static'
+import { Link } from '@reach/router'
 import { Hits, InstantSearch, SearchBox } from 'react-instantsearch/dom'
 
 const Post = props => {

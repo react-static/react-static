@@ -1,5 +1,6 @@
 import React from 'react'
-import { withRouteData, Switch, Route, Link } from 'react-static'
+import { withRouteData } from 'react-static'
+import { Switch, Route, Link } from 'react-router'
 //
 import Post from './Post'
 

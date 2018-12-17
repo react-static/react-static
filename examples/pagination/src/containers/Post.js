@@ -1,5 +1,6 @@
 import React from 'react'
-import { RouteData, Link, Head } from 'react-static'
+import { RouteData, Head } from 'react-static'
+import { Link } from '@reach/router'
 //
 
 export default () => (

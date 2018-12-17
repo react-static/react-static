@@ -1,5 +1,6 @@
 import React from 'react'
-import { Root, Routes, Link, Route, Switch } from 'react-static'
+import { Root, Routes } from 'react-static'
+import { Link, Route, Switch } from 'react-router'
 import universal from 'react-universal-component'
 
 //
@@ -13,7 +14,7 @@ const App = () => (
   <Root>
     <div>
       <nav>
-        <Link exact to="/">
+        <Link to="/">
           Home
         </Link>
         <Link to="/non-static">Non-Static Route</Link>

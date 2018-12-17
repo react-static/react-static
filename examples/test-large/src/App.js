@@ -7,7 +7,7 @@ import './app.css'
 const App = () => (
   <Root>
     <nav>
-      <Link exact to="/">
+      <Link to="/">
         Home
       </Link>
       <Link to="/about">About</Link>

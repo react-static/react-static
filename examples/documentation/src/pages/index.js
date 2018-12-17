@@ -1,5 +1,6 @@
 import React from 'react'
-import { SiteData, Link, Head } from 'react-static'
+import { SiteData, Head } from 'react-static'
+import { Link } from '@reach/router'
 import styled from 'styled-components'
 //
 import logoImg from '../logo.png'

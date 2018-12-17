@@ -1,5 +1,6 @@
 import React from 'react'
-import { Root, Route, Switch, Link } from 'react-static'
+import { Root } from 'react-static'
+import { Route, Switch, Link } from 'react-router'
 
 //
 import Home from 'containers/Home'
@@ -13,9 +14,7 @@ const App = () => (
   <Root>
     <div>
       <nav>
-        <Link exact to="/">
-          Home
-        </Link>
+        <Link to="/">Home</Link>
         <Link to="/about/">About</Link>
         <Link to="/blog/">Blog</Link>
       </nav>

@@ -2,11 +2,11 @@
 
 React-Static is packed with awesome components to help you be productive. Some are required for React-Static to work properly, others are available merely for your convenience:
 
-* [Routes](#routes)
-* [RouteData](#routedata)
-* [SiteData](#sitedata)
-* [Head](#head)
-* [Prefetch](#prefetch)
+- [Routes](#routes)
+- [RouteData](#routedata)
+- [SiteData](#sitedata)
+- [Head](#head)
+- [Prefetch](#prefetch)
 
 ### `Routes`
 
@@ -33,7 +33,7 @@ Occasionally, you may need to render the automatic `<Routes>` component in a cus
 import { Root, Routes } from 'react-static'
 
 // This is the default renderer for `<Routes>`
-const RenderRoutes = 
+const RenderRoutes =
 
 export default () => (
   <Root>
@@ -51,7 +51,7 @@ export default () => (
 
 **Render Props** - These special props are sent to your rendered component or render function
 
-* `getComponentForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no component is found.
+- `getComponentForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no component is found.
 
 ### `RouteData`
 
@@ -59,14 +59,14 @@ export default () => (
 
 Props
 
-* `component: ReactComponent`
-* `render: Function`
-* `children: Function`
+- `component: ReactComponent`
+- `render: Function`
+- `children: Function`
 
 Render Props
 
-* Any props that you passed in it's corresponding route's `getData` method.
-* `is404: boolean` - Will be set to `true` if the page requests results in a 404. This is useful for runtime 404's where the url of the page may remain what the user requested, but the route is not found.
+- Any props that you passed in it's corresponding route's `getData` method.
+- `is404: boolean` - Will be set to `true` if the page requests results in a 404. This is useful for runtime 404's where the url of the page may remain what the user requested, but the route is not found.
 
 Here is a an example show all of the different syntaxes you can use:
 
@@ -78,17 +78,17 @@ module.exports = {
     {
       path: '/top-100-songs',
       getData: async () => ({
-        songs: await SpotifyAPI.getTopSongs(100)
-      })
-    }
-  ]
+        songs: await SpotifyAPI.getTopSongs(100),
+      }),
+    },
+  ],
 }
 ```
 
 **TopSongs.js**
 
 ```javascript
-import { RouteData} from 'react-static'
+import { RouteData } from 'react-static'
 
 export default () => (
   <RouteData>
@@ -96,7 +96,9 @@ export default () => (
       <div>
         <h1>Top 100 Spotify Songs</h1>
         <ul>
-          {songs.map(song => <li key={song.id}>{song.title}</li>)}
+          {songs.map(song => (
+            <li key={song.id}>{song.title}</li>
+          ))}
         </ul>
       </div>
     )}
@@ -111,7 +113,9 @@ export default withRouteData(({ songs }) => (
   <div>
     <h1>Top 100 Spotify Songs</h1>
     <ul>
-      {songs.map(song => <li key={song.id}>{song.title}</li>)}
+      {songs.map(song => (
+        <li key={song.id}>{song.title}</li>
+      ))}
     </ul>
   </div>
 ))
@@ -127,8 +131,8 @@ export default withRouteData(({ songs }) => (
 module.exports = {
   getSiteData: () => ({
     siteTitle: 'React Static',
-    metaDescription: 'A progressive static-site framework for React'
-  })
+    metaDescription: 'A progressive static-site framework for React',
+  }),
 }
 ```
 
@@ -140,7 +144,9 @@ import { SiteData } from 'react-static'
 export default () => (
   <SiteData>
     {({ siteTitle, metaDescription }) => (
-      <div>Welcome to {siteTitle}! {metaDescription}</div>
+      <div>
+        Welcome to {siteTitle}! {metaDescription}
+      </div>
     )}
   </SiteData>
 )
@@ -150,7 +156,9 @@ export default () => (
 import { SiteData, withSiteData } from 'react-static'
 
 export default withSiteData(({ siteTitle, metaDescription }) => (
-  <div>Welcome to {siteTitle}! {metaDescription}</div>
+  <div>
+    Welcome to {siteTitle}! {metaDescription}
+  </div>
 ))
 ```
 
@@ -158,13 +166,13 @@ export default withSiteData(({ siteTitle, metaDescription }) => (
 
 To create links and navigate around your site, React Static provides you with a `<Link>` component that is a super-powered version of `react-router`'s' `Link` and `NavLink` components.
 
-* Props
-  * `to: String || Object` - The path or path object to the desired page.
-  * `activeClassName: String` - The class to add to the link when it is active.
-  * `activeStyle: String` - The style to add to the link when it is active.
-  * `prefetch: Boolean || String` - Whether or not to automatically prefetch this link's page. Defaults to `true`. Can also be set to `data` or `template` to only preload that specific resource
-  * `scrollToTop: Boolean` - Set this to `false` if you do not want the page to scroll-to-top automatically after navigation. Defaults to `true`
-  * Any other prop set to the link will be forwarded to `<a />` or react-router's `<Link>` component, depending on their destination
+- Props
+  - `to: String || Object` - The path or path object to the desired page.
+  - `activeClassName: String` - The class to add to the link when it is active.
+  - `activeStyle: String` - The style to add to the link when it is active.
+  - `prefetch: Boolean || String` - Whether or not to automatically prefetch this link's page. Defaults to `true`. Can also be set to `data` or `template` to only preload that specific resource
+  - `scrollToTop: Boolean` - Set this to `false` if you do not want the page to scroll-to-top automatically after navigation. Defaults to `true`
+  - Any other prop set to the link will be forwarded to `<a />` or react-router's `<Link>` component, depending on their destination
 
 Please familiarize yourself with [React-Router's Link and Navlink](https://reacttraining.com/react-router/web/api/) component to take full advantage of this component!
 
@@ -172,7 +180,7 @@ Usage:
 
 ```javascript
 import React from 'react'
-import { Link } from 'react-static'
+import { Link } from '@reach/router'
 
 <Link to='/blog/post/1'>
   Go to Blog Post 1
@@ -204,9 +212,9 @@ import { Link } from 'react-static'
 
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
-* It can be used anywhere in your app.
-* It can be used in multiple places at the same time.
-* For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that React Static uses to accomplish this.
+- It can be used anywhere in your app.
+- It can be used in multiple places at the same time.
+- For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that React Static uses to accomplish this.
 
 Example:
 
@@ -232,20 +240,21 @@ Prefetch is a react component that can prefetch the assets for a given route whe
 
 Props:
 
-* `path: String` **Required** - The path you want to prefetch.
-* `force: Boolean` - Force the prefetch even if the element is not visible in the viewport
+- `path: String` **Required** - The path you want to prefetch.
+- `force: Boolean` - Force the prefetch even if the element is not visible in the viewport
 
 Notes:
 
-* If the path doesn't match a valid static route, nothing will happen.
-* If the route has already been loaded in the session, nothing will happen.
-* If multiple instances of the same `path` are prefetched at the same time, only a single request will be made for all instances.
-* If abused, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
+- If the path doesn't match a valid static route, nothing will happen.
+- If the route has already been loaded in the session, nothing will happen.
+- If multiple instances of the same `path` are prefetched at the same time, only a single request will be made for all instances.
+- If abused, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
 
 Example:
 
 ```javascript
-import { Prefetch, Link } from 'react-static'
+import { Prefetch } from 'react-static'
+import { Link } from '@reach/router'
 
 // Standalone
 <Prefetch path='/blog' />

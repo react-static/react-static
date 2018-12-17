@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-static'
+import { Link } from '@reach/router'
 import SignInForm from '../components/SignInForm'
 
 export default () => (

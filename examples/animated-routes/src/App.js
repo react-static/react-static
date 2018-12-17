@@ -1,8 +1,9 @@
 import React from 'react'
-import { Root, Routes, Route, Link, getRoutePath } from 'react-static'
+import { Root, Routes, getRoutePath } from 'react-static'
 import { easeQuadOut } from 'd3-ease'
 import { NodeGroup } from 'react-move'
 import { withContext, getContext } from 'recompose'
+import { Route, Link } from 'react-router'
 import PropTypes from 'prop-types'
 
 //
@@ -113,7 +114,7 @@ const App = () => (
   <Root>
     <div>
       <nav>
-        <Link exact to="/">
+        <Link to="/">
           Home
         </Link>
         <Link to="/about">About</Link>
