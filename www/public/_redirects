@@ -1,5 +1,0 @@
-/docs/contributing*  https://github.com/nozzle/react-static/tree/master/CONTRIBUTING.md:splat
-/docs/changelog*  https://github.com/nozzle/react-static/tree/master/CHANGELOG.md:splat
-/docs/methods*  https://github.com/nozzle/react-static/tree/master/docs/browser.md:splat
-/docs/:doc/*  https://github.com/nozzle/react-static/tree/master/docs/:doc.md/:splat
-/*            https://github.com/nozzle/react-static/tree/master/:splat

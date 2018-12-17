@@ -1,3 +1,10 @@
+# 6.0.6
+
+#### Fixes & Optimizations
+
+- Removed old website code
+- Fixed examples to import Link from external router modules
+
 # 6.0.1
 
 #### Fixes & Optimizations

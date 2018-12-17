@@ -1,5 +1,6 @@
 import React from 'react'
-import { Root, Link, Routes } from 'react-static'
+import { Root, Routes } from 'react-static'
+import { Link } from '@reach/router'
 import styled, { injectGlobal } from 'styled-components'
 
 //

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Link } from 'react-static'
+import { Link } from '@reach/router'
 import { Markdown as Smackdown } from 'react-smackdown'
 import styled from 'styled-components'
 //

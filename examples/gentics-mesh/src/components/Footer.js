@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link, RouteData } from 'react-static'
+import { RouteData } from 'react-static'
+import { Link } from '@reach/router'
 import { Container } from 'reactstrap'
 
 const Footer = () => (

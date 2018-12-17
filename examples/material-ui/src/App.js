@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
-import { Root, Routes, Link } from 'react-static'
+import { Root, Routes } from 'react-static'
+import { Link } from '@reach/router'
 
 //
 

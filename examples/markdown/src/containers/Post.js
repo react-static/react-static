@@ -1,5 +1,6 @@
 import React from 'react'
-import { withRouteData, Link } from 'react-static'
+import { withRouteData } from 'react-static'
+import { Link } from '@reach/router'
 import convert from 'htmr'
 //
 

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Link } from 'react-static'
+import { Link } from '@reach/router'
 import { Jumbotron, Button, Container, Row, Col } from 'reactstrap'
 
 import logoSvg from '../gentics-mesh-logo.svg'

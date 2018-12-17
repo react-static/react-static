@@ -1,5 +1,6 @@
 import React from 'react'
-import { withRouteData, Link } from 'react-static'
+import { withRouteData } from 'react-static'
+import { Link } from '@reach/router'
 import Moment from 'react-moment'
 import Markdown from 'react-markdown'
 //

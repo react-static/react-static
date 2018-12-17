@@ -16,6 +16,7 @@
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",
     "react-move": "^2.6.0",
+    "react-router": "^4.3.1",
     "react-static": "^6.0.0-beta.30",
     "recompose": "^0.30.0"
   },

@@ -1,6 +1,6 @@
 import React from 'react'
 import * as PropTypes from 'prop-types'
-import { Link } from 'react-static'
+import { Link } from '@reach/router'
 import {
   Card,
   CardImg,

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { SiteData, Link } from 'react-static'
+import { SiteData } from 'react-static'
+import { Link } from '@reach/router'
 //
 import ClickOutside from 'components/ClickOutside'
 

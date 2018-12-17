@@ -1,5 +1,6 @@
 import React from 'react'
-import { Root, Routes, Link } from 'react-static'
+import { Root, Routes } from 'react-static'
+import { Link } from '@reach/router'
 
 //
 
@@ -12,9 +13,7 @@ const App = withAuthentication(() => (
   <Root>
     <div>
       <nav>
-        <Link exact to="/">
-          Home
-        </Link>
+        <Link to="/">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/blog">Blog</Link>
       </nav>

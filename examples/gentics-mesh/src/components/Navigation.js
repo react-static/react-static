@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-static'
+import { Link } from '@reach/router'
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap'
 
 export default () => (
