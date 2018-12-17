@@ -43,7 +43,6 @@ const RouteData = withStaticInfo(
         // If we haven't requested the routeInfo yet, or it's loading
         // Show a spinner and prefetch the data
         // TODO:suspense - This will become a suspense resource
-        console.log(routeInfoByPath, routePath)
         if (
           !routeInfoByPath[routePath] ||
           !routeInfoByPath[routePath].allProps
