@@ -1,6 +1,11 @@
 import axios from 'axios'
 //
-import { createPool, getRoutePath, pathJoin } from './utils'
+import {
+  createPool,
+  getRoutePath,
+  pathJoin,
+  isPrefetchableRoute,
+} from './utils'
 import onVisible from './utils/Visibility'
 
 // RouteInfo / RouteData
@@ -112,6 +117,11 @@ export function reloadRouteData() {
 
 export async function getRouteInfo(path, { priority } = {}) {
   path = getRoutePath(path)
+
+  // Check if we should fetch RouteData for this url et all.
+  if (!isPrefetchableRoute(path)) {
+    return
+  }
 
   // Check the cache first
   if (routeInfoByPath[path]) {
