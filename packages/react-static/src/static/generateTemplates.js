@@ -9,11 +9,13 @@ export default async ({ config }) => {
   const route404 = routes.find(route => route.path === '404')
   const id404 = route404.templateIndex
 
-  const productionImports = `
-import universal, { setHasBabelPlugin } from '${
-    process.env.REACT_STATIC_UNIVERSAL_PATH
-  }'
-  `
+  // convert Windows-style path separators to the Unix style to ensure sure the
+  // string literal is valid and doesn't contain escaped characters
+  const reactStaticUniversalPath = process.env.REACT_STATIC_UNIVERSAL_PATH.split(
+    '\\'
+  ).join('/')
+
+  const productionImports = `import universal, { setHasBabelPlugin } from '${reactStaticUniversalPath}'`
   const developmentImports = ''
 
   const productionTemplates = `
