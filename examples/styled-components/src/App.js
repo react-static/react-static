@@ -1,10 +1,12 @@
 import React from 'react'
-import { Root, Routes, Link } from 'react-static'
-import styled, { injectGlobal } from 'styled-components'
+import { Root, Routes } from 'react-static'
+import { Link } from '@reach/router'
+
+import styled, { createGlobalStyle } from 'styled-components'
 
 //
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
       'Lucida Grande', sans-serif;
@@ -45,6 +47,7 @@ const AppStyles = styled.div`
 const App = () => (
   <Root>
     <AppStyles>
+      <GlobalStyle />
       <nav>
         <Link exact to="/">
           Home
