@@ -1,5 +1,5 @@
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
-import semver from 'semver';
+import semver from 'semver'
 
 export default ({ includePaths = [], ...rest }) => ({
   webpack: (config, { stage }) => {
@@ -32,9 +32,9 @@ export default ({ includePaths = [], ...rest }) => ({
 
       // for legacy css-loader version (<2.0) we need to add "minimize" to minify css code
       // for >2.0 it is handled with https://github.com/NMFR/optimize-css-assets-webpack-plugin
-      const cssLoaderVersion = require('css-loader/package.json').version;
+      const cssLoaderVersion = require('css-loader/package.json').version
       if (semver.satisfies(cssLoaderVersion, '<2') === true) {
-        cssLoader.options.minimize = true;
+        cssLoader.options.minimize = true
       }
 
       loaders = [ExtractCssChunks.loader, cssLoader, sassLoader]
