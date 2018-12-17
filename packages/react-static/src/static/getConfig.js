@@ -91,7 +91,7 @@ export const buildConfig = async (config = {}) => {
 
   // Add the project root as a plugin. This allows the dev
   // to use the plugin api directory in their project if they want
-  const plugins = [paths.ROOT, ...(config.plugins || [])]
+  const plugins = [...(config.plugins || []), paths.ROOT]
 
   // Defaults
   config = {

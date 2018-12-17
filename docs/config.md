@@ -33,7 +33,7 @@ An asynchronous function that should resolve an array of [**route**](#route) obj
 ```javascript
 // static.config.js
 export default {
-  getRoutes: async ({ dev }) => [...routes]
+  getRoutes: async ({ dev }) => [...routes],
 }
 ```
 
@@ -68,7 +68,7 @@ export default {
     // A simple route
     {
       path: 'about',
-      component: 'src/containers/About'
+      component: 'src/containers/About',
     },
 
     // A route with data
@@ -76,8 +76,8 @@ export default {
       path: 'portfolio',
       component: 'src/containers/Portfolio',
       getData: async () => ({
-        portfolio
-      })
+        portfolio,
+      }),
     },
 
     // A route with data and dynamically generated child routes
@@ -85,23 +85,23 @@ export default {
       path: 'blog',
       component: 'src/containers/Blog',
       getData: async () => ({
-        posts
+        posts,
       }),
       children: posts.map(post => ({
         path: `post/${post.slug}`,
         component: 'src/containers/BlogPost',
         getData: async () => ({
-          post
-        })
-      }))
+          post,
+        }),
+      })),
     },
 
     // A 404 component
     {
       path: '404',
-      component: 'src/containers/NotFound'
-    }
-  ]
+      component: 'src/containers/NotFound',
+    },
+  ],
 }
 ```
 
@@ -116,8 +116,8 @@ Example:
 export default {
   getSiteData: async ({ dev }) => ({
     title: 'My Awesome Website',
-    lastBuilt: Date.now()
-  })
+    lastBuilt: Date.now(),
+  }),
 }
 ```
 
@@ -134,7 +134,7 @@ Example:
 ```javascript
 // static.config.js
 export default {
-  siteRoot: 'https://mysite.com'
+  siteRoot: 'https://mysite.com',
 }
 ```
 
@@ -152,7 +152,7 @@ Example:
 ```javascript
 // static.config.js
 export default {
-  basePath: 'blog'
+  basePath: 'blog',
 }
 ```
 
@@ -207,150 +207,13 @@ export default {
       </Head>
       <Body>{children}</Body>
     </Html>
-  )
+  ),
 }
 ```
 
 ### `webpack`
 
-An optional function or array of functions to transform the default React-Static webpack config. Each function will receive the previous webpack config, and expect a modified or new config to be returned. You may also return a "falsey" or `undefined` value if you do not want to modify the config at all.
-
-**Function Signature**
-
-```javascript
-webpack: []Function(
-  previousConfig,
-  args: {
-    stage,
-    defaultLoaders: {
-      jsLoader,
-      jsLoaderExternal,
-      cssLoader,
-      fileLoader
-    }
-  }
-) => {
-  return newConfig // or a falsey value to cancel transformation
-}
-```
-
-- The `webpack` property's value can be an **array of functions** or a **single function**.
-- Each function will receive the previous webpack config, and can return a modified or new config.
-- Return any falsey value to cancel the transformation
-- `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
-- `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
-  - `jsLoader` - The default loader for all `.js` files located in your project's `src` directory
-  - `jsLoaderExternal` - The default loader for all other `.js` files not located in your project's `src` directory.
-  - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
-  - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
-
-When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
-
-By default, React Static's webpack toolchain compiles `.js` and `.css` files. Any other file that is not a `.js` `.json` or `.html` file is also processed with the `fileLoader` (images, fonts, etc.) and will move to `./dist` directory on build. The source for all default loaders can be found in [react-static/lib/webpack/rules/](https://github.com/nozzle/react-static/blob/master/src/webpack/rules).
-
-Our default loaders are organized like so:
-
-```javascript
-const webpackConfig = {
-  ...
-  module: {
-    rules: [{
-      oneOf: [
-        jsLoader, // Compiles all project .js files with babel
-        jsLoaderExternal, // Compiles all external .js files with babel
-        cssLoader, // Supports basic css imports and css modules
-        fileLoader // Catch-all url-loader/file-loader for anything else
-    }]
-  }
-  ...
-}
-```
-
-**Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
-
-**Replacing all rules**
-
-```javascript
-// static.config.js
-export default {
-  webpack: config => {
-    config.module.rules = [
-      // Your own rules here...
-    ]
-    return config
-  }
-}
-```
-
-**Replacing a default loader for a different one**
-
-```javascript
-// static.config.js
-export default {
-  webpack: (config, { defaultLoaders }) => {
-    config.module.rules = [{
-      oneOf: [
-        defaultLoaders.jsLoader,
-        defaultLoaders.jsLoaderExternal,
-        {
-          // Use this special loader
-          // instead of the cssLoader
-        }
-        defaultLoaders.fileLoader,
-      ]
-    }]
-    return config
-  }
-}
-```
-
-**Adding a plugin**
-
-```javascript
-// static.config.js
-import AwesomeWebpackPlugin from 'awesome-webpack-plugin'
-
-export default {
-  webpack: config => {
-    config.plugins.push(new AwesomeWebpackPlugin())
-    return config
-  }
-}
-```
-
-**Using multiple transformers**
-
-```javascript
-// static.config.js
-export default {
-  webpack: [
-    (config, { defaultLoaders }) => {
-      config.module.rules = [
-        {
-          oneOf: [
-            defaultLoaders.jsLoader,
-            defaultLoaders.jsLoaderExternal,
-            defaultLoaders.cssLoader,
-            {
-              loader: 'file-loader',
-              test: /\.(fancyFileExtension)$/,
-              query: {
-                limit: 10000,
-                name: 'static/[name].[hash:8].[ext]'
-              }
-            },
-            defaultLoaders.fileLoader
-          ]
-        }
-      ]
-      return config
-    },
-    config => {
-      console.log(config.module.rules) // Log out the final set of rules
-    }
-  ]
-}
-```
+To configure webpack, extend the build system, or make modifications, see the [Plugin API section](#plugin-api)
 
 ### `devServer`
 
@@ -364,14 +227,14 @@ export default {
   // An optional object for customizing the options for the
   devServer: {
     port: 3000,
-    host: '127.0.0.1'
-  }
+    host: '127.0.0.1',
+  },
 }
 ```
 
 ### `renderToElement`
 
-An optional function that can be used to override the process of render the base app component via JSX
+An optional function that can be used to override the process of rendering the base app component to an element
 
 - Arguments
   - `App`: The final react-component for your app to be rendered
@@ -386,13 +249,13 @@ Default:
 export default {
   renderToElement: async (App, { meta, clientStats }) => {
     return <App />
-  }
+  },
 }
 ```
 
 ### `renderToHtml`
 
-An optional function that can be used to customize the static rendering logic.
+An optional function that can be used to customize the process of rendering your apps final react element to HTML.
 
 - Arguments
   - `render: Function`: A function that renders a react component to an html string
@@ -409,7 +272,7 @@ Default:
 export default {
   renderToHtml: async (render, app, { meta, clientStats }) => {
     return render(app)
-  }
+  },
 }
 ```
 
@@ -443,7 +306,7 @@ Example:
 export default {
   onStart: ({ devServerConfig }) => {
     console.log('The dev server is working!')
-  }
+  },
 }
 ```
 
@@ -458,7 +321,7 @@ Example:
 export default {
   onBuild: async () => {
     console.log('Everything is done building!')
-  }
+  },
 }
 ```
 
@@ -469,7 +332,7 @@ An optional `Boolean`. Set to true to serve the bundle analyzer on a production 
 ```javascript
 // static.config.js
 export default {
-  bundleAnalyzer: true
+  bundleAnalyzer: true,
 }
 ```
 
@@ -480,7 +343,7 @@ An optional `Int`. The maximum number of files that can be concurrently written 
 ```javascript
 // static.config.js
 export default {
-  outputFileRate: 100
+  outputFileRate: 100,
 }
 ```
 
@@ -491,7 +354,7 @@ An optional `Int`. The maximum number of inflight requests for preloading route 
 ```javascript
 // static.config.js
 export default {
-  prefetchRate: 10
+  prefetchRate: 10,
 }
 ```
 
@@ -502,7 +365,7 @@ An optional `Boolean`. Set to `true` to disable warnings of duplicate routes dur
 ```javascript
 // static.config.js
 export default {
-  disableDuplicateRoutesWarning: true
+  disableDuplicateRoutesWarning: true,
 }
 ```
 
@@ -514,7 +377,7 @@ Useful if you are using a variable basePath such as /country/language/basePath.
 ```javascript
 // static.config.js
 export default {
-  disableRoutePrefixing: true
+  disableRoutePrefixing: true,
 }
 ```
 
@@ -522,12 +385,12 @@ export default {
 
 An optional `Number` of maximum threads to use when exporting your site's pages. By default this is set to `Infinity` to use all available threads on the machine React Static is running on.
 
-NOTE: This only affects the process that are rendering your pages to html files, not the initial bundling process. 
+NOTE: This only affects the process that are rendering your pages to html files, not the initial bundling process.
 
 ```javascript
 // static.config.js
 export default {
-  maxThreads: 1 // Will only use one thread to export your site
+  maxThreads: 1, // Will only use one thread to export your site
 }
 ```
 
@@ -538,10 +401,9 @@ An optional `Number` of milliseconds to show the loading spinner when templates,
 ```javascript
 // static.config.js
 export default {
-  minLoadTime: 200
+  minLoadTime: 200,
 }
 ```
-
 
 ### `disablePreload`
 
@@ -550,7 +412,7 @@ Set this boolean to `true` to disable all preloading. This is mostly meant for d
 ```javascript
 // static.config.js
 export default {
-  disablePreload: true
+  disablePreload: true,
 }
 ```
 
@@ -563,6 +425,18 @@ See https://webpack.js.org/configuration/module/#condition for more details. To 
 ```javascript
 // static.config.js
 export default {
-  babelExcludes: [/mapbox-gl/]
+  babelExcludes: [/mapbox-gl/],
 }
 ```
+
+---
+
+## Plugin Api
+
+React Static has tons of other customization possibilities available through the Plugin system that are not possible through the configuration file. Some of thse include:
+
+- Webpack customizations
+- Rendering pipeline customizations and transformations for React components, elements, the Document wrapper, etc.
+- Head tag injection
+
+Every React Static project can utilize the plugin API locally without needing to create a plugin by creating either `node.api.js` or `browser.api.js` files in the root of your project. See the [Plugin Documentation](https://github.com/nozzle/react-static/blob/master/docs/plugins.md) for more information!
