@@ -1,3 +1,9 @@
+# 6.0.7
+
+#### Fixes & Optimizations
+
+- Fixed styled components example for V6 (#889)
+
 # 6.0.6
 
 #### Fixes & Optimizations
