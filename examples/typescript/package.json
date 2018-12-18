@@ -10,14 +10,16 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
+    "@reach/router": "^1.2.1",
     "axios": "^0.18.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",
-    "react-static": "next"
+    "react-static": "^6.0.6"
   },
   "devDependencies": {
     "@types/node": "^10.12.6",
+    "@types/reach__router": "^1.2.2",
     "@types/react": "^16.7.3",
     "@types/react-dom": "^16.0.9",
     "@types/react-hot-loader": "^4.1.0",

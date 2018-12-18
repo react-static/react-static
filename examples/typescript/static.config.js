@@ -1,9 +1,6 @@
 import axios from 'axios'
 import path from 'path'
 
-// Paths Aliases defined through tsconfig.json
-const typescriptWebpackPaths = require('./webpack.config.js')
-
 export default {
   plugins: ['react-static-plugin-typescript'],
   entry: path.join(__dirname, 'src', 'index.tsx'),
@@ -30,12 +27,5 @@ export default {
         })),
       },
     ]
-  },
-  // TODO:v6 This is deprecated, use config.hooks.webpack
-  webpack: config => {
-    // Add TypeScript Path Mappings (from tsconfig via webpack.config.js)
-    // to react-statics alias resolution
-    config.resolve.alias = typescriptWebpackPaths.resolve.alias
-    return config
   },
 }
