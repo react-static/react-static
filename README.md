@@ -131,11 +131,12 @@ Once you've installed and test driven, you may want to:
   - [react-static-plugin-preact](https://github.com/nozzle/react-static-plugin-preact) - Adds preact support
 - Don't see a plugin? [Help us build it!](/docs/plugins.md)
 
-## Examples and Templates
+## Templates and Guides
 
-React Static ships with a ton of examples to reference and each of them can even be used as a starting template when using `react-static create`!
+React Static ships with a few basic templates to you get you started quickly with `react-static create`, then provides in-depth guides for further enhancement. You can check them out here!
 
-[**See all Templates and Examples**](https://github.com/nozzle/react-static/tree/master/examples/)
+- [**Guides**](https://github.com/nozzle/react-static/tree/master/docs/guides/)
+- [**Templates**](https://github.com/nozzle/react-static/tree/master/src/templates/)
 
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 
