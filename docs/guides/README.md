@@ -6,9 +6,9 @@ The guides in the directory will help you implement common use cases for varying
 
 In an effort to decrease the use of React Static examples as boilerplates, we are slowly converting React Static's previously available examples to individual guides in this directory. If you don't see a guide here for a specific example, that propbably means we have not written the guide to replace it yet. The [archives/old-examples](/archives/old-examples) directory is where all of the old examples are stored for now for reference. If you would like to convert one of them to a guide please follow the guide instructions below:
 
-### Writing a Guide
+### Don't see the guide you need? Write it!
 
-Guides are meant to be extremely succinct. Please try to adhere to these tips when writing a guid:
+Guides are meant to be extremely succinct. Please try to adhere to these tips when writing a guide:
 
 - Do not write guides that combine technologies. If you need to, add integration instructions to the existing guides on how to combine them with each other.
 - Include only the necessary instructions on how to implement the simplest form of the technology
