@@ -5,17 +5,16 @@ import { unwrapArray } from '../utils'
 export default class ErrorBoundary extends React.Component {
   state = {
     error: false,
-    info: false,
   }
-  componentDidCatch(error, info) {
+  componentDidCatch(error) {
     if (typeof document === 'undefined') {
       throw error
     }
-    this.setState({ error, info })
+    this.setState({ error })
   }
   render() {
-    const { error, info } = this.state
-    if (this.state.error) {
+    const { error } = this.state
+    if (error) {
       return (
         <div
           style={{
@@ -26,24 +25,9 @@ export default class ErrorBoundary extends React.Component {
         >
           <h2>Oh-no! Something’s gone wrong!</h2>
           <br />
-          <button
-            size="s"
-            onClick={() =>
-              this.setState({
-                error: false,
-                info: false,
-              })
-            }
-          >
-            Reload Component
+          <button size="s" onClick={() => window.location.reload()}>
+            Reload
           </button>
-          <br />
-          <pre style={{ whiteSpace: 'normal', color: 'red' }}>
-            <code>{error && error.toString()}</code>
-          </pre>
-          <pre style={{ color: 'red', overflow: 'auto' }}>
-            <code>{info.componentStack}</code>
-          </pre>
         </div>
       )
     }

@@ -63,6 +63,11 @@ export default withStaticInfo(
         // Detect an unloaded template
         // TODO:suspense - This will become a suspense resource
         if (!Comp) {
+          if (is404) {
+            throw new Error(
+              'This page template could not be found and a 404 template could not be found to fall back on. This means something is terribly wrong and you should probably file an issue!'
+            )
+          }
           ;(async () => {
             await Promise.all([
               prefetch(routePath, { priority: true }),

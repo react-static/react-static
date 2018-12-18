@@ -1,10 +1,3 @@
-# React-Static - Basic Example
+# React-Static - Basic Template
 
-This example is the most basic version of react-static available. It includes:
-- Babel
-- CSS imports
-- Image imports
-- File imports
-
-
-To get started, run `react-static create` and use the `basic` template.
+To use this template, run `react-static create` and use the `basic` template.

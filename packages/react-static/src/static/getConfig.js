@@ -15,6 +15,7 @@ import {
 } from '../utils'
 
 // the default static.config.js location
+const defaultConfig = {}
 const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
   nodePath.join(process.cwd(), DEFAULT_NAME_FOR_STATIC_CONFIG_FILE)
@@ -229,15 +230,9 @@ export const buildConfig = async (config = {}) => {
 }
 
 const buildConfigFromPath = async configPath => {
-  const filename = nodePath.resolve(configPath)
-  delete require.cache[filename]
-  try {
-    const config = require(filename).default
-    return buildConfig(config)
-  } catch (err) {
-    console.error(err)
-    return {}
-  }
+  delete require.cache[configPath]
+  const config = require(configPath).default
+  return buildConfig(config)
 }
 
 // Retrieves the static.config.js from the current project directory
@@ -245,6 +240,20 @@ export default (async function getConfig(
   configPath = DEFAULT_PATH_FOR_STATIC_CONFIG,
   subscription
 ) {
+  configPath = nodePath.resolve(configPath)
+
+  const noConfig =
+    configPath === DEFAULT_PATH_FOR_STATIC_CONFIG && !fs.existsSync(configPath)
+
+  if (noConfig) {
+    if (subscription) {
+      return new Promise(async () => {
+        subscription(await buildConfig(defaultConfig))
+      })
+    }
+    return buildConfig(defaultConfig)
+  }
+
   const config = await buildConfigFromPath(configPath)
 
   if (subscription) {

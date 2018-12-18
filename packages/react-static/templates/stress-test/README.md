@@ -1,2 +1,5 @@
-This test generates a website with 10,000 routes. The purpose of this test is to prove that the exportRoutes,
-function can handle a large number of routes.
+# React Static - Stress Test Template
+
+To use this template, run `react-static create` and select the `stress-test` template.
+
+This template generates a website with a large number of fake routes for testing performance.
