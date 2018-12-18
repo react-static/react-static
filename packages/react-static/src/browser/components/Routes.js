@@ -81,16 +81,18 @@ export default withStaticInfo(
           ) : null
       }
 
-      if (children) {
-        return children({
-          getComponentForPath,
-        })
-      }
-
       const Comp = getComponentForPath(routePath)
+
       return (
         <RoutePathContext.Provider value={routePath}>
-          <Comp />
+          {children ? (
+            children({
+              routePath,
+              getComponentForPath,
+            })
+          ) : (
+            <Comp />
+          )}
         </RoutePathContext.Provider>
       )
     }
