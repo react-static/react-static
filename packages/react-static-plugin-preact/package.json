@@ -10,6 +10,8 @@
   "scripts": {
     "build": "babel src --out-dir .",
     "watch": "babel src --out-dir . -w",
+    "test": "yarn format",
+    "format": "prettier 'src/**/*.js' --write",
     "preversion": "yarn build"
   },
   "devDependencies": {

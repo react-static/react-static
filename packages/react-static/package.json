@@ -16,9 +16,9 @@
     "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' -s",
     "watch": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*' -s",
     "start": "yarn watch",
-    "test": "yarn lint && yarn unitTest",
+    "test": "yarn format && yarn lint && yarn unitTest",
     "lint": "eslint src",
-    "format": "prettier 'src/**/*.js' --write",
+    "format": "prettier '{src,templates}/**/*.js' --write",
     "unitTest": "NODE_ENV=test yarn jest ./src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
     "preversion": "yarn build && yarn test"

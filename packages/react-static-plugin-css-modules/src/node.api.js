@@ -10,17 +10,15 @@ export default (options = {}) => ({
       options: {
         modules: true,
         importLoaders: 1,
-        ...options
-      }
-    };
+        ...options,
+      },
+    }
 
     if (stage === 'dev') {
       // Dev
       loaders = [styleLoader, cssLoader]
     } else if (stage === 'node') {
-      loaders = [
-        { ...cssLoader, loader: 'css-loader/locals' },
-      ]
+      loaders = [{ ...cssLoader, loader: 'css-loader/locals' }]
     } else {
       // Prod
       loaders = [ExtractCssChunks.loader, cssLoader]

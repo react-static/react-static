@@ -202,35 +202,38 @@ export function getBasePath() {
 export function isPrefetchableRoute(path) {
   // when rendering static pages we dont need this et all
   if (isSSR()) {
-    return false;
+    return false
   }
 
   // script links
+  // eslint-disable-next-line
   if (path.indexOf('javascript:') === 0) {
-    return false;
+    return false
   }
 
-  const self = document.location;
-  let link;
+  const self = document.location
+  let link
 
   try {
-    link = new URL(path);
+    link = new URL(path)
   } catch (e) {
     // if a path is not parsable by URL its a local relative path
-    return true;
+    return true
   }
 
   // if the hostname/port/proto doesnt match its not a route link
-  if (self.hostname !== link.hostname || 
-    self.port !== link.port || 
-    self.protocol !== link.protocol) {
-    return false;
+  if (
+    self.hostname !== link.hostname ||
+    self.port !== link.port ||
+    self.protocol !== link.protocol
+  ) {
+    return false
   }
 
-  //deny all files with extension other than .html
+  // deny all files with extension other than .html
   if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
-    return false;
+    return false
   }
 
-  return true;
+  return true
 }
