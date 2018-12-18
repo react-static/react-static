@@ -1,3 +1,10 @@
+# 6.0.8
+
+#### Fixes & Optimizations
+
+- Added Guides to documentation. All example except for the three main templates (located in `packages/react-static/templates` will be converted over to guides eventually.
+- Examples have been deprecated and are no longer available as templates for `react-static create`. They have been moved to `archives/old-examples`.
+
 # 6.0.7
 
 #### Fixes & Optimizations
