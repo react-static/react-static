@@ -198,3 +198,39 @@ export function getBasePath() {
     ? ''
     : process.env.REACT_STATIC_BASE_PATH
 }
+
+export function isPrefetchableRoute(path) {
+  // when rendering static pages we dont need this et all
+  if (isSSR()) {
+    return false;
+  }
+
+  // script links
+  if (path.indexOf('javascript:') === 0) {
+    return false;
+  }
+
+  const self = document.location;
+  let link;
+
+  try {
+    link = new URL(path);
+  } catch (e) {
+    // if a path is not parsable by URL its a local relative path
+    return true;
+  }
+
+  // if the hostname/port/proto doesnt match its not a route link
+  if (self.hostname !== link.hostname || 
+    self.port !== link.port || 
+    self.protocol !== link.protocol) {
+    return false;
+  }
+
+  //deny all files with extension other than .html
+  if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
+    return false;
+  }
+
+  return true;
+}
