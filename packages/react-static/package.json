@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "6.0.7",
+  "version": "6.0.8",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
