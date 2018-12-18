@@ -20,16 +20,18 @@
 /examples/*/yarn.lock
 /src
 /test
-# cordova
-# Documentation
-# Media
-# misc
-# production
-# testing
 docs-dist/ 
 docs/
 node_modules
 npm-debug.log*
+templates/.DS_Store
+templates/.history
+templates/.log
+templates/.tgz
+templates/dist
+templates/node_modules
+templates/tmp
+templates/yarn.lock
 tmp/
 yarn-debug.log*
 yarn-error.log*

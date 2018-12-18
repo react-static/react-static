@@ -21,8 +21,6 @@
     "format": "prettier 'src/**/*.js' --write",
     "unitTest": "NODE_ENV=test yarn jest ./src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
-    "postbuild": "yarn copyExamples",
-    "copyExamples": "node lib/copyExamples.js",
     "preversion": "yarn build && yarn test"
   },
   "dependencies": {
