@@ -136,7 +136,7 @@ Once you've installed and test driven, you may want to:
 React Static ships with a few basic templates to you get you started quickly with `react-static create`, then provides in-depth guides for further enhancement. You can check them out here!
 
 - [**Guides**](https://github.com/nozzle/react-static/tree/master/docs/guides/)
-- [**Templates**](https://github.com/nozzle/react-static/tree/master/packages/react-static/src/templates/)
+- [**Templates**](https://github.com/nozzle/react-static/tree/master/packages/react-static/templates/)
 
 Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
 
