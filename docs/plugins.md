@@ -123,7 +123,7 @@ webpack: []Function(
     stage,
     defaultLoaders: {
       jsLoader,
-      jsLoaderExternal,
+      jsLoaderExt,
       cssLoader,
       fileLoader
     }
@@ -139,7 +139,7 @@ webpack: []Function(
 - `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
 - `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
   - `jsLoader` - The default loader for all `.js` files located in your project's `src` directory
-  - `jsLoaderExternal` - The default loader for all other `.js` files not located in your project's `src` directory.
+  - `jsLoaderExt` - The default loader for all other `.js` files not located in your project's `src` directory.
   - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
   - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
 
@@ -156,7 +156,7 @@ const webpackConfig = {
     rules: [{
       oneOf: [
         jsLoader, // Compiles all project .js files with babel
-        jsLoaderExternal, // Compiles all external .js files with babel
+        jsLoaderExt, // Compiles all external .js files with babel
         cssLoader, // Supports basic css imports and css modules
         fileLoader // Catch-all url-loader/file-loader for anything else
     }]
@@ -192,7 +192,7 @@ export default pluginOptions => ({
     config.module.rules = [{
       oneOf: [
         defaultLoaders.jsLoader,
-        defaultLoaders.jsLoaderExternal,
+        defaultLoaders.jsLoaderExt,
         {
           // Use this special loader
           // instead of the cssLoader
@@ -232,7 +232,7 @@ export default pluginOptions => ({
         {
           oneOf: [
             defaultLoaders.jsLoader,
-            defaultLoaders.jsLoaderExternal,
+            defaultLoaders.jsLoaderExt,
             defaultLoaders.cssLoader,
             {
               loader: 'file-loader',
