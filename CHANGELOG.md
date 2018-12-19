@@ -1,3 +1,9 @@
+# 6.0.9
+
+#### Fixes & Optimizations
+
+- Fixed an issue where helpers were not included in external node_modules imported through babel
+
 # 6.0.8
 
 #### Fixes & Optimizations
