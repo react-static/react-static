@@ -18,6 +18,7 @@
 /examples/*/dist
 /examples/*/package-lock.json
 /examples/*/yarn.lock
+/archives
 /src
 /test
 docs-dist/ 

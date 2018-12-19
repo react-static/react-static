@@ -1,3 +1,9 @@
+# 6.0.10
+
+#### Fixes & Optimizations
+
+- Reduced the size of npm installation by removing the `archives` directory from the npm tarball
+
 # 6.0.9
 
 #### Fixes & Optimizations
