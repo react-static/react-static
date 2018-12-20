@@ -2,8 +2,8 @@
 
 In addition to components, React-Static exports a some simple functions to help you in programmatic use cases:
 
-* [prefetch](/docs/methods/#prefetch)
-* [scrollTo](/docs/methods/#scrollto)
+- [prefetch](/docs/methods/#prefetch)
+- [scrollTo](/docs/methods/#scrollto)
 
 ### `prefetch`
 
@@ -24,13 +24,13 @@ const myFunc = async () => {
 
 This **async** method can be used to scroll to any given height or DOMElement you pass it.
 
-* Arguments
-  * `height: int || DOMElement` - The height from the top of the page or dom element you would like to scroll to.
-  * `options{}` - An optional settings object
-    * `duration: Int` - The duration of the animation in milliseconds
-    * `offset: Int` - The negative or positive offset in pixels
-    * `context: DOMElement` - The container element that will be scrolled. Defaults to `body` via `window.scrollTo`
-* Returns a `Promise` that is resolved when the scrolling stops
+- Arguments
+  - `height: int || DOMElement` - The height from the top of the page or dom element you would like to scroll to.
+  - `options{}` - An optional settings object
+    - `duration: Int` - The duration of the animation in milliseconds
+    - `offset: Int` - The negative or positive offset in pixels
+    - `context: DOMElement` - The container element that will be scrolled. Defaults to `body` via `window.scrollTo`
+- Returns a `Promise` that is resolved when the scrolling stops
 
 Example:
 
@@ -45,7 +45,7 @@ const scrollToElement = () => {
 const asyncScrollToHeight = async () => {
   await scrollTo(100, {
     offset: -10,
-    duration: 2000
+    duration: 2000,
   })
   console.log('Done scrolling!')
 }

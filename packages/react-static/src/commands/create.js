@@ -17,21 +17,16 @@ const typeLocal = 'Local Directory...'
 const typeGit = 'GIT Repository...'
 const typeExample = 'React Static Example'
 
-const examplesDir = path.resolve(__dirname, '../../libExamples')
+const templatesDir = path.resolve(__dirname, '../../templates')
 
-const examplesList = fs.readdirSync(examplesDir).filter(d => !d.startsWith('.'))
+const templates = fs.readdirSync(templatesDir).filter(d => !d.startsWith('.'))
 
 export default (async function create({ name, template, isCLI }) {
   const isYarn = shouldUseYarn()
 
   console.log('')
 
-  const firstExamples = ['basic', 'blank']
-  const examples = [
-    ...firstExamples,
-    ...examplesList.filter(d => !firstExamples.includes(d)),
-  ]
-  const exampleChoices = [...examples, typeLocal, typeGit]
+  const exampleChoices = [...templates, typeLocal, typeGit]
 
   let templateType = typeExample
 
@@ -133,11 +128,11 @@ export default (async function create({ name, template, isCLI }) {
       }
     }
   } else if (templateType === typeExample) {
-    // React Static examples
+    // React Static templates
     console.log(chalk.green(`Using React Static template: ${template}`))
     try {
       await fs.copy(
-        path.resolve(examplesDir, template),
+        path.resolve(templatesDir, template),
         path.resolve(process.cwd(), dest)
       )
     } catch (err) {

@@ -20,10 +20,14 @@ export default (async function getRoutesFromPages(
   const handle = pages => {
     // Turn each page into a route
     const routes = pages.map(page => {
+      // Glob path will always have unix style path, convert to windows if necessary
+      page = nodePath.resolve(page)
       // Get the component path relative to ROOT
       const component = nodePath.relative(config.paths.ROOT, page)
       // Make sure the path is relative to the root of the site
       let path = page.replace(`${config.paths.PAGES}`, '').replace(/\..*/, '')
+      // turn windows paths back to unix
+      path = path.split('\\').join('/')
       // Turn `/index` paths into roots`
       path = path.replace(/\/index$/, '/')
       // Return the route
@@ -47,7 +51,7 @@ export default (async function getRoutesFromPages(
           if (!['add', 'unlink'].includes(type)) {
             return
           }
-          const filename = file.split('/').reverse()[0]
+          const filename = nodePath.basename(file)
           if (filename.startsWith('.')) {
             return
           }

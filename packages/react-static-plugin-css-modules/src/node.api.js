@@ -10,9 +10,9 @@ export default (options = {}) => ({
       options: {
         modules: true,
         importLoaders: 1,
-        ...options
-      }
-    };
+        ...options,
+      },
+    }
 
     if (stage === 'dev') {
       // Dev

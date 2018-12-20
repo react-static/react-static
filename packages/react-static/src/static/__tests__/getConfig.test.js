@@ -87,10 +87,7 @@ describe('getConfig', () => {
       // default path is 'static.config.js'
       const configuration = await getConfig()
 
-      testConfiguration(configuration, {
-        ...defaultConfigProduction,
-        entry: 'path/to/entry/index.js',
-      })
+      testConfiguration(configuration, defaultConfigProduction)
     })
   })
 

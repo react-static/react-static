@@ -1,3 +1,35 @@
+# 6.0.10
+
+#### Fixes & Optimizations
+
+- Reduced the size of npm installation by removing the `archives` directory from the npm tarball
+
+# 6.0.9
+
+#### Fixes & Optimizations
+
+- Fixed an issue where helpers were not included in external node_modules imported through babel
+
+# 6.0.8
+
+#### Fixes & Optimizations
+
+- Added Guides to documentation. All example except for the three main templates (located in `packages/react-static/templates` will be converted over to guides eventually.
+- Examples have been deprecated and are no longer available as templates for `react-static create`. They have been moved to `archives/old-examples`.
+
+# 6.0.7
+
+#### Fixes & Optimizations
+
+- Fixed styled components example for V6 (#889)
+
+# 6.0.6
+
+#### Fixes & Optimizations
+
+- Removed old website code
+- Fixed examples to import Link from external router modules
+
 # 6.0.1
 
 #### Fixes & Optimizations
@@ -20,6 +52,7 @@
 #### Breaking Changes
 
 - Upgraded to Webpack 4 - Make sure your webpack modifications are compliant with its new API
+- The `config.webpack` option has been removed in favor of using the new plugin system. This should encourage the creation of plugins and also provide a single way of doing things with webpack.
 - Upgraded to Babel 7 - Make sure your babel plugins are compliant with this version.
 - `react-hot-loader`'s `hot(module)(Component)` syntax has been changed to now use the `<AppContainer>` approach. This is much easier than using the `hot(module)(Component)` in every module you create.
 - Removed the `is404` property from the 404 route. To designate a 404 route, you can now place a `404.js` file in your pages directory or create a route where the `path === '404'`

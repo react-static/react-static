@@ -43,7 +43,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 ## Sites Built with React-Static
 
-<!-- - [React-Static.js.org](https://react-static.js.org) ([source](https://github.com/nozzle/react-static/tree/master/www)) -->
+<!-- - [React-Static.js.org](https://react-static.js.org) ([source](www)) -->
 <!-- - [React-Charts.js.org](https://react-charts.js.org) ([source](https://github.com/nozzle/react-charts/tree/master/www)) -->
 
 - [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
@@ -70,6 +70,8 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [Luke Haas - Personal Website](https://lukehaas.me)
 - [KleineKoning.nl - Webshop](https://kleinekoning.nl)
 - [blue-frontend.com - Company Website](https://blue-frontend.com)
+- [mmxp.com.br - MadeiraMadeira Experience](https://www.mmxp.com.br/)
+- [Fullstack HQ: Web Design & Development Team in the Philippines](https://fullstackhq.com/)
 
 ## Quick Start
 
@@ -122,20 +124,21 @@ Once you've installed and test driven, you may want to:
 ### Plugins
 
 - CSS & Style Tooling
-  - [react-static-plugin-emotion](https://github.com/nozzle/react-static-plugin-emotion) - Adds SSR support for Emotion components.
-  - [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
-  - [react-static-plugin-sass](https://github.com/nozzle/react-static-plugin-sass) - Adds SSR and general support for SASS
+  - [react-static-plugin-emotion](/packages/react-static-plugin-emotion) - Adds SSR support for Emotion components.
+  - [react-static-plugin-styled-components](/packages/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
+  - [react-static-plugin-sass](/packages/react-static-plugin-sass) - Adds SSR and general support for SASS
 - React Alternatives
-  - [react-static-plugin-preact](https://github.com/nozzle/react-static-plugin-preact) - Adds preact support
+  - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
 - Don't see a plugin? [Help us build it!](/docs/plugins.md)
 
-## Examples and Templates
+## Templates and Guides
 
-React Static ships with a ton of examples to reference and each of them can even be used as a starting template when using `react-static create`!
+React Static ships with a few basic templates to you get you started quickly with `react-static create`, then provides in-depth guides for further enhancement. You can check them out here!
 
-[**See all Templates and Examples**](https://github.com/nozzle/react-static/tree/master/examples/)
+- [**Guides**](/docs/guides/)
+- [**Templates**](/packages/react-static/templates/)
 
-Can't find an example? We invite you to write one! Simply copy the `basic` or `blank` templates and make the necessary changes. Then submit a PR including your new example directory and a new item in the list above. When merged, your example will automatically become a template in the CLI. How magical!
+Can't find an guide? You should write one! [Here's how to get started.](/docs/guides/)
 
 ## Documentation
 
