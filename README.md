@@ -129,6 +129,8 @@ Once you've installed and test driven, you may want to:
   - [react-static-plugin-sass](/packages/react-static-plugin-sass) - Adds SSR and general support for SASS
 - React Alternatives
   - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
+- Type checking
+  - [react-static-plugin-typescript](https://www.npmjs.com/package/react-static-plugin-typescript) - Allows you to write your components in TypeScript
 - Don't see a plugin? [Help us build it!](/docs/plugins.md)
 
 ## Templates and Guides
