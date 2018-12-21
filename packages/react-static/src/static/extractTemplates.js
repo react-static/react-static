@@ -9,6 +9,7 @@ export default (async function extractTemplates(config) {
 
   // Dedupe all templates into an array
   const templates = []
+  let notFoundPending = true
 
   config.routes.forEach(route => {
     if (!route.component) {
@@ -18,16 +19,30 @@ export default (async function extractTemplates(config) {
     const index = templates.indexOf(route.component)
     if (index === -1) {
       // If it's new, add it
-      templates.push(route.component)
+      if (route.path === '404') {
+        templates.unshift(route.component)
+        notFoundPending = false
+      } else {
+        templates.push(route.component)
+      }
       // Assign the templateIndex
-      route.templateIndex = templates.length - 1
+      route.templateIndex = notFoundPending
+        ? templates.length
+        : templates.length - 1
     } else {
       // Assign the existing templateIndex
-      route.templateIndex = index
+      route.templateIndex = notFoundPending ? index + 1 : index
     }
   })
   timeEnd(chalk.green('=> [\u2713] Templates Built'))
 
+  if (notFoundPending) {
+    throw new Error(
+      'A 404 template was not found at template extractiont time. It should have been at least defaulted to one by now, so this is very bad. File an issue if you see this.'
+    )
+  }
+
+  // Make sure 404 template is the first one
   config.templates = templates
 
   await generateTemplates({

@@ -4,10 +4,7 @@ import fs from 'fs-extra'
 import { chunkNameFromFile } from '../utils/chunkBuilder'
 
 export default async ({ config }) => {
-  const { templates, routes, paths } = config
-
-  const route404 = routes.find(route => route.path === '404')
-  const id404 = route404.templateIndex
+  const { templates, paths } = config
 
   // convert Windows-style path separators to the Unix style to ensure sure the
   // string literal is valid and doesn't contain escaped characters
@@ -75,8 +72,6 @@ ${
       ? productionTemplates
       : developmentTemplates
   }
-
-export const template404ID = ${id404}
 
 // Template Map
 export default [

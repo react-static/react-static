@@ -25,10 +25,6 @@ export const plugins = []
 // Templates
 export const templates = []
 export const templateUpdated = { cb: () => {} }
-export const registerTemplates = tmps => {
-  templates.splice(0, Infinity, ...tmps)
-  templateUpdated.cb()
-}
 const templateIndexByPath = {
   '404': 0,
 }
@@ -36,6 +32,11 @@ export const templatesByPath = {
   '404': templates[0],
 }
 export const templateErrorByPath = {}
+export const registerTemplates = tmps => {
+  templates.splice(0, Infinity, ...tmps)
+  templatesByPath['404'] = templates[0]
+  templateUpdated.cb()
+}
 
 init()
 
@@ -181,7 +182,13 @@ export async function getRouteInfo(path, { priority } = {}) {
   if (!priority) {
     delete inflightRouteInfo[path]
   }
-  routeInfoByPath[path] = routeInfo
+  if (typeof routeInfo !== 'object' || !routeInfo.path) {
+    // routeInfo must have returned 200, but is not actually
+    // a routeInfo object. Mark it as an error and move on silently
+    routeErrorByPath[path] = true
+  } else {
+    routeInfoByPath[path] = routeInfo
+  }
   return routeInfoByPath[path]
 }
 

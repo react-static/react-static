@@ -9,7 +9,7 @@
     "build-pagination": "PAGINATION=true yarn build",
     "bundle": "react-static bundle",
     "export": "react-static export",
-    "serve": "serve dist -p 3000"
+    "serve": "serve dist -p 3000 -s"
   },
   "dependencies": {
     "@reach/router": "^1.2.1",
