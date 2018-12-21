@@ -1,5 +1,5 @@
 import fs from 'fs'
-import babelPreset from 'babel-preset-react-static'
+import babelPreset from '../../../../babel-preset'
 
 // we check which babel config file exists in the project root
 const readBabelConfig = root => {

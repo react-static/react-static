@@ -1,4 +1,4 @@
-import babelPreset from 'babel-preset-react-static'
+import babelPreset from '../../../../babel-preset'
 
 export default function({ config }) {
   return {

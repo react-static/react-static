@@ -1,4 +1,4 @@
 {
-  "presets": ["react-static/babelPreset.js"],
+  "presets": ["react-static/babel-preset.js"],
   "plugins": ["styled-jsx/babel"]
 }
