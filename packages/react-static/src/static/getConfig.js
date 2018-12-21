@@ -146,45 +146,73 @@ export const buildConfig = async (config = {}) => {
     'react-universal-component'
   )
 
-  const resolvePlugin = location => {
+  const resolvePlugin = originalLocation => {
     let options = {}
-    if (Array.isArray(location)) {
-      location = location[0]
-      options = location[1] || {}
+    if (Array.isArray(originalLocation)) {
+      originalLocation = originalLocation[0]
+      options = originalLocation[1] || {}
     }
 
-    let getHooks = () => ({})
-
-    const originalLocation = location
-
-    if (!fs.pathExistsSync(originalLocation)) {
-      // If not an absolute path try from the plugins directory
-      location = nodePath.resolve(paths.PLUGINS, originalLocation)
-      if (!fs.pathExistsSync(location)) {
-        // If not in the plugins directory, try from the currentworking directory
+    const location = [
+      () => {
+        // Absolute
+        if (fs.pathExistsSync(originalLocation)) {
+          return originalLocation
+        }
+      },
+      () => {
+        // Absolute require
         try {
-          location = resolveFrom(process.cwd(), originalLocation)
-          location = location.includes('.')
-            ? nodePath.resolve(location, '../')
-            : location
+          const found = require.resolve(originalLocation)
+          return found.includes('.') ? nodePath.resolve(found, '../') : found
         } catch (err) {
           //
         }
-        if (!fs.pathExistsSync(location)) {
-          location = null
+      },
+      () => {
+        // Plugins Dir
+        const found = nodePath.resolve(paths.PLUGINS, originalLocation)
+        if (fs.pathExistsSync(found)) {
+          return found
         }
-      }
-    }
+      },
+      () => {
+        // Plugins Dir require
+        try {
+          const found = resolveFrom(paths.PLUGINS, originalLocation)
+          return found.includes('.') ? nodePath.resolve(found, '../') : found
+        } catch (err) {
+          //
+        }
+      },
+      () => {
+        // CWD
+        const found = nodePath.resolve(process.cwd(), originalLocation)
+        if (fs.pathExistsSync(found)) {
+          return found
+        }
+      },
+      () => {
+        // CWD require
+        try {
+          const found = resolveFrom(process.cwd(), originalLocation)
+          return found.includes('.') ? nodePath.resolve(found, '../') : found
+        } catch (err) {
+          //
+        }
+      },
+    ].reduce((prev, curr) => prev || curr(), null)
 
     // TODO: We have to do this because we don't have a good mock for process.cwd() :(
     if (process.env.NODE_ENV !== 'test' && !location) {
       throw new Error(
-        `Oh crap! Could not find a plugin directory for the plugin: "${originalLocation}". We must bail!`
+        `Oh crap! Could not find a plugin directory for the plugin: "${location}". We must bail!`
       )
     }
 
     let nodeLocation = nodePath.join(location, 'node.api.js')
     let browserLocation = nodePath.join(location, 'browser.api.js')
+    let getHooks = () => ({})
 
     try {
       // Get the hooks for the node api
