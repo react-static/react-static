@@ -239,7 +239,7 @@ export default (async function exportRoute({
   // If the route is a 404 page, write it directly to 404.html, instead of
   // inside a directory.
   const htmlFilename =
-    route.path === '/404'
+    route.path === '404'
       ? nodePath.join(config.paths.DIST, '404.html')
       : nodePath.join(config.paths.DIST, route.path, 'index.html')
 

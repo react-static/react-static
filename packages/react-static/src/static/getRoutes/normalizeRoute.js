@@ -7,7 +7,7 @@ export default function normalizeRoute(route, parent = {}) {
   if (!route.path) {
     if (route.is404) {
       throw new Error(
-        `route.is404 has been deprecated. Use \`path: '/404'\` instead! Route: ${JSON.stringify(
+        `route.is404 has been deprecated. Use \`path: '404'\` instead! Route: ${JSON.stringify(
           route
         )}`
       )
