@@ -1,7 +1,7 @@
 # Dynamic Routes with Reach Router
 
 - [Install Reach Router](https://reach.tech/router)
-- Use Reach Router to handle dynamic routs, and fallback to displaying static routes
+- Use Reach Router to handle dynamic routes, and fallback to displaying static routes
 
 ```javascript
 import React from 'react'
