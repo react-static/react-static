@@ -4,11 +4,11 @@ React Static's documentation is currently located here on Github! We recommend y
 
 - [Core Concepts](/docs/concepts.md)
 - [Guides](/docs/guides)
-- [Configuration](/docs/config.md)
+- [Plugins](/docs/plugins.md)
 - [CLI](/docs/cli.md)
+- [Configuration](/docs/config.md)
 - [Components](/docs/components.md)
 - [Browser](/docs/browser.md)
 - [Node API](/docs/node-api.md)
-- [Plugins](/docs/plugins.md)
 - [Changelog](/CHANGELOG.md)
 - [Contributing Guide](/CONTRIBUTING.md)
