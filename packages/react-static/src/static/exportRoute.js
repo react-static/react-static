@@ -61,8 +61,6 @@ export default (async function exportRoute({
     path: routePath,
   }
 
-  console.log(routeInfo)
-
   // This embeddedRouteInfo will be inlined into the HTML for this route.
   // It should include all of the data, including shared data
   const embeddedRouteInfo = {

@@ -7,8 +7,6 @@ export default (async function exportSharedRouteData(config, sharedDataByHash) {
   // Write all shared props to file
   const sharedDataArr = Array.from(sharedDataByHash)
 
-  console.log(sharedDataArr)
-
   if (sharedDataArr.length) {
     console.log('=> Exporting Shared Route Data...')
     const jsonProgress = progress(sharedDataArr.length)
