@@ -17,3 +17,20 @@ export default {
   plugins: ['react-static-plugin-jss'],
 }
 ```
+
+- Configure it with options:
+
+```javascript
+export default {
+  plugins: [
+    [
+      'react-static-plugin-jss',
+      {
+        providerProps: {
+          // These props will be passed to the underlying `JssProvider` component instance
+        }
+      }
+    ]
+  ],
+}
+```

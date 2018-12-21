@@ -3,8 +3,7 @@
 To use Material-UI in React Static:
 
 - Install Material UI and its dependencies
-- Install the `react-static-plugin-jss` plugin
-- Configure `react-static-plugin-jss` to use a Material UI's `createGenerateClassName` instance
+- Install the [`react-static-plugin-jss`](/packages/react-static-plugin-jss) plugin and configure `react-static-plugin-jss` to use a Material UI's `createGenerateClassName` instance
 - Use Material-UI as normal
 
 ```javascript
