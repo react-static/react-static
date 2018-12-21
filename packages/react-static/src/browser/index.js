@@ -11,7 +11,7 @@ import onVisible from './utils/Visibility'
 // RouteInfo / RouteData
 export const routeInfoByPath = {}
 export const routeErrorByPath = {}
-export const propsByHash = {}
+export const sharedDataByHash = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
 
@@ -102,7 +102,7 @@ export function reloadRouteData() {
   // Delete all cached data
   ;[
     routeInfoByPath,
-    propsByHash,
+    sharedDataByHash,
     routeErrorByPath,
     inflightRouteInfo,
     inflightPropHashes,
@@ -196,22 +196,22 @@ export async function prefetchData(path, { priority } = {}) {
 
   // Defer to the cache first. In dev mode, this should already be available from
   // the call to getRouteInfo
-  if (routeInfo.allProps) {
-    return routeInfo.allProps
+  if (routeInfo.fullData) {
+    return routeInfo.fullData
   }
 
   // Request and build the props one by one
-  const allProps = {
-    ...(routeInfo.localProps || {}),
+  routeInfo.fullData = {
+    ...(routeInfo.data || {}),
   }
 
-  // Request the template and loop over the routeInfo.sharedDataHashes, requesting each prop
+  // Request the template and loop over the routeInfo.sharedHashesByProp, requesting each prop
   await Promise.all(
-    Object.keys(routeInfo.sharedDataHashes).map(async key => {
-      const hash = routeInfo.sharedDataHashes[key]
+    Object.keys(routeInfo.sharedHashesByProp).map(async key => {
+      const hash = routeInfo.sharedHashesByProp[key]
 
-      // Check the propsByHash first
-      if (!propsByHash[hash]) {
+      // Check the sharedDataByHash first
+      if (!sharedDataByHash[hash]) {
         // Reuse request for duplicate inflight requests
         try {
           // If priority, get it immediately
@@ -222,7 +222,7 @@ export async function prefetchData(path, { priority } = {}) {
                 `staticData/${hash}.json`
               )
             )
-            propsByHash[hash] = prop
+            sharedDataByHash[hash] = prop
           } else {
             // Non priority, share inflight requests and use pool
             if (!inflightPropHashes[hash]) {
@@ -237,7 +237,7 @@ export async function prefetchData(path, { priority } = {}) {
             }
             const { data: prop } = await inflightPropHashes[hash]
             // Place it in the cache
-            propsByHash[hash] = prop
+            sharedDataByHash[hash] = prop
           }
         } catch (err) {
           console.log(
@@ -252,15 +252,12 @@ export async function prefetchData(path, { priority } = {}) {
       }
 
       // Otherwise, just set it as the key
-      allProps[key] = propsByHash[hash]
+      routeInfo.fullData[key] = sharedDataByHash[hash]
     })
   )
 
-  // Cache allProps for the route
-  routeInfo.allProps = allProps
-
   // Return the props
-  return routeInfo.allProps
+  return routeInfo.fullData
 }
 
 export async function prefetchTemplate(path, { priority } = {}) {

@@ -29,10 +29,10 @@ export default (async function exportRoute({
   clientStats,
 }) {
   const {
-    sharedDataHashes,
+    sharedHashesByProp,
     templateIndex,
-    localProps,
-    allProps,
+    data,
+    sharedData,
     path: routePath,
   } = route
 
@@ -53,20 +53,21 @@ export default (async function exportRoute({
     ))
 
   // This routeInfo will be saved to disk. It should only include the
-  // localProps and hashes to construct all of the props later.
+  // data and hashes to construct all of the props later.
   const routeInfo = {
     templateIndex,
-    sharedDataHashes,
-    localProps,
+    sharedHashesByProp,
+    data,
     path: routePath,
   }
 
+  console.log(routeInfo)
+
   // This embeddedRouteInfo will be inlined into the HTML for this route.
-  // It should only include the full props, not the partials.
+  // It should include all of the data, including shared data
   const embeddedRouteInfo = {
     ...routeInfo,
-    localProps: null,
-    allProps,
+    sharedData,
     siteData,
   }
 

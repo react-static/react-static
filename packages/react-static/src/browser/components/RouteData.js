@@ -43,10 +43,7 @@ const RouteData = withStaticInfo(
         // If we haven't requested the routeInfo yet, or it's loading
         // Show a spinner and prefetch the data
         // TODO:suspense - This will become a suspense resource
-        if (
-          !routeInfoByPath[routePath] ||
-          !routeInfoByPath[routePath].allProps
-        ) {
+        if (!routeInfoByPath[routePath] || !routeInfoByPath[routePath].data) {
           ;(async () => {
             await Promise.all([
               prefetch(routePath, { priority: true }),
@@ -60,7 +57,7 @@ const RouteData = withStaticInfo(
         }
 
         // Otherwise, get it from the routeInfoByPath (subsequent client side)
-        return children(routeInfoByPath[routePath].allProps)
+        return children(routeInfoByPath[routePath].data)
       }
     }
   )

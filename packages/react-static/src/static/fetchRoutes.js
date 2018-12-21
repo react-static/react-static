@@ -4,7 +4,7 @@ import { progress, time, timeEnd, poolAll } from '../utils'
 
 export default (async function fetchRoutes(config) {
   // Set up some scaffolding for automatic data splitting
-  const sharedData = new Map()
+  const sharedDataByHash = new Map()
 
   console.log('=> Fetching Route Data...')
   const dataProgress = progress(config.routes.length)
@@ -16,21 +16,21 @@ export default (async function fetchRoutes(config) {
     const route = config.routes[i]
     /* eslint-disable no-loop-func */
     downloadTasks.push(async () => {
-      // Fetch allProps from each route
-      route.allProps =
+      // Fetch data from each route
+      route.data =
         !!route.getData && (await route.getData({ route, dev: false }))
-      // Default allProps (must be an object)
-      if (!route.allProps) {
-        route.allProps = {}
+      // Default data (must be an object)
+      if (!route.data) {
+        route.data = {}
       }
       // Extract any shared data
-      route.sharedDataHashes = {}
+      route.sharedHashesByProp = {}
       if (route.sharedData) {
-        Object.keys(route.sharedData).forEach(key => {
-          const sharedPiece = route.sharedData[key]
-          sharedData.set(sharedPiece.hash, sharedPiece)
-          route.sharedDataHashes[key] = sharedPiece.hash
-          route.allProps[key] = sharedPiece.data
+        Object.keys(route.sharedData).forEach(name => {
+          const sharedPiece = route.sharedData[name]
+          sharedDataByHash.set(sharedPiece.hash, sharedPiece)
+          route.sharedHashesByProp[name] = sharedPiece.hash
+          route.sharedData[name] = sharedPiece.data
         })
       }
       dataProgress.tick()
@@ -39,5 +39,5 @@ export default (async function fetchRoutes(config) {
   await poolAll(downloadTasks, Number(config.outputFileRate))
   timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
 
-  return exportSharedRouteData(config, sharedData)
+  return exportSharedRouteData(config, sharedDataByHash)
 })

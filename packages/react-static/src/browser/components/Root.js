@@ -2,7 +2,7 @@ import React from 'react'
 import { Router as ReachRouter } from '@reach/router'
 
 //
-import { routeInfoByPath, propsByHash, registerTemplateForPath } from '../'
+import { routeInfoByPath, sharedDataByHash, registerTemplateForPath } from '../'
 import { getBasePath } from '../utils'
 import ErrorBoundary from './ErrorBoundary'
 import HashScroller from './HashScroller'
@@ -38,14 +38,19 @@ const Root = withStaticInfo(
       super()
       const { staticInfo } = props
       if (process.env.REACT_STATIC_ENV === 'production' && staticInfo) {
-        const { path, allProps, sharedDataHashes, templateIndex } = staticInfo
+        const {
+          path,
+          sharedData,
+          sharedHashesByProp,
+          templateIndex,
+        } = staticInfo
 
         // Hydrate routeInfoByPath with the embedded routeInfo
         routeInfoByPath[path] = staticInfo
 
-        // Injest and cache the embedded routeInfo in the page if possible
-        Object.keys(sharedDataHashes).forEach(propKey => {
-          propsByHash[sharedDataHashes[propKey]] = allProps[propKey]
+        // Hydrate sharedDataByHash with the embedded routeInfo
+        Object.keys(sharedHashesByProp).forEach(propKey => {
+          sharedDataByHash[sharedHashesByProp[propKey]] = sharedData[propKey]
         })
 
         // In SRR and production, synchronously register the templateIndex for the

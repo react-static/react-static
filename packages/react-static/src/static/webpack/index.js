@@ -145,12 +145,12 @@ export async function startDevServer({ config }) {
                 if (!route) {
                   throw new Error('Route could not be found!')
                 }
-                const allProps = route.getData
+                const data = route.getData
                   ? await route.getData({ route, dev: true })
                   : {}
                 res.json({
                   ...route,
-                  allProps,
+                  data,
                 })
               } catch (err) {
                 res.status(500)

@@ -3,9 +3,11 @@ import fs from 'fs-extra'
 import path from 'path'
 import { progress, time, timeEnd, poolAll } from '../utils'
 
-export default (async function exportSharedRouteData(config, sharedData) {
+export default (async function exportSharedRouteData(config, sharedDataByHash) {
   // Write all shared props to file
-  const sharedDataArr = Array.from(sharedData)
+  const sharedDataArr = Array.from(sharedDataByHash)
+
+  console.log(sharedDataArr)
 
   if (sharedDataArr.length) {
     console.log('=> Exporting Shared Route Data...')

@@ -19,10 +19,10 @@ export default (options = {}) => ({
       loaders = [styleLoader, cssLoader]
     } else if (stage === 'node') {
       loaders = [
-        { 
+        {
           ...cssLoader,
           loader: 'css-loader',
-          options: { exportOnlyLocals: true }
+          options: { exportOnlyLocals: true },
         },
       ]
     } else {
