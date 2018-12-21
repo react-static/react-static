@@ -145,12 +145,27 @@ export async function startDevServer({ config }) {
                 if (!route) {
                   throw new Error('Route could not be found!')
                 }
+                // Fetch the data
                 const data = route.getData
                   ? await route.getData({ route, dev: true })
                   : {}
+
+                // Auto-include any shared data
+                const sharedData = {}
+                if (route.sharedData) {
+                  Object.keys(route.sharedData).forEach(key => {
+                    sharedData[key] = route.sharedData[key].data
+                  })
+                }
+
+                // Don't use any hashProp, just pass all the data in dev
                 res.json({
                   ...route,
-                  data,
+                  sharedHashesByProp: {},
+                  data: {
+                    ...data,
+                    ...sharedData,
+                  },
                 })
               } catch (err) {
                 res.status(500)
