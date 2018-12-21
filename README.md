@@ -121,17 +121,23 @@ Once you've installed and test driven, you may want to:
 - [Join the React Static Spectrum community!](https://spectrum.chat/react-static)
 - [Familiarize yourself with the API!](/docs/config.md)
 
-### Plugins
+## [Documentation](/docs/)
 
-- CSS & Style Tooling
-  - [react-static-plugin-emotion](/packages/react-static-plugin-emotion) - Adds SSR support for Emotion components.
-  - [react-static-plugin-styled-components](/packages/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
-  - [react-static-plugin-sass](/packages/react-static-plugin-sass) - Adds SSR and general support for SASS
-- React Alternatives
-  - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
-- Type checking
-  - [react-static-plugin-typescript](https://www.npmjs.com/package/react-static-plugin-typescript) - Allows you to write your components in TypeScript
-- Don't see a plugin? [Help us build it!](/docs/plugins.md)
+- [Overview](/docs/)
+- [Core Concepts](/docs/concepts.md)
+- [Guides](/docs/guides/)
+- [Configuration](/docs/config.md)
+- [CLI](/docs/cli.md)
+- [Components](/docs/components.md)
+- [Browser](/docs/browser.md)
+- [Node API](/docs/node-api.md)
+- [Plugins](/docs/plugins.md)
+- [Changelog](/CHANGELOG.md)
+- [Contributing Guide](/CONTRIBUTING.md)
+
+## Plugins
+
+For a list of supported plugins, [view the Plugin documentation](/docs/plugins/).
 
 ## Templates and Guides
 
@@ -141,19 +147,6 @@ React Static ships with a few basic templates to you get you started quickly wit
 - [**Templates**](/packages/react-static/templates/)
 
 Can't find an guide? You should write one! [Here's how to get started.](/docs/guides/)
-
-## Documentation
-
-- [Core Concepts](/docs/concepts.md)
-- API
-  - [Configuration](/docs/config.md)
-  - [CLI](/docs/cli.md)
-  - [Components](/docs/components.md)
-  - [Browser](/docs/browser.md)
-  - [Node API](/docs/node-api.md)
-  - [Plugins](/docs/plugins.md)
-- [Changelog](/CHANGELOG.md)
-- [Contributing Guide](/CONTRIBUTING.md)
 
 ## Support, Community & Chat
 
