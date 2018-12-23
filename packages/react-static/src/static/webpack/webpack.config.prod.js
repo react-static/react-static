@@ -102,7 +102,11 @@ function common(config) {
           NODE_MODULES,
           path.resolve(__dirname, '../../../node_modules'),
           DIST,
-        ].map(d => path.relative(process.cwd(), d)),
+        ].map(d =>
+          DIST.startsWith(ROOT)
+            ? path.relative(process.cwd(), d)
+            : path.resolve(d)
+        ),
         'node_modules',
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],

@@ -15,7 +15,7 @@ export default (async function buildHTML({
   time(chalk.green('=> [\u2713] HTML Exported'))
 
   // in case of an absolute path for DIST we must tell node to load the modules from our project root
-  if (config.paths.DIST.indexOf(config.paths.ROOT) !== 0) {
+  if (!config.paths.DIST.startsWith(config.paths.ROOT)) {
     process.env.NODE_PATH = config.paths.NODE_MODULES
     require('module').Module._initPaths()
   }
