@@ -2,7 +2,7 @@
 
 Animated Routes can be achieved so many different ways. In this example, we'll stick to something simple and use the `react-spring` package.
 
-- Install the `react-sprint` module using npm or yarn
+- Install the `react-spring` module using npm or yarn
 - Use the `Routes` component's child-as-a-function api to animate between routes:
 
 ```javascript
