@@ -21,7 +21,7 @@ There are 3 ways to install plugins and use the plugin API:
 
 - **NPM**. You can install any react-static compatible plugin via `npm`. Once it is installed, it can be used by React Static.
 - **Locally via the `/plugins` directory** - If you have a custom plugin or are developing a plugin locally, you can place your plugin directory in the `/plugins` directory in your project root. It can then be used by React Static.
-- **Locally via the `/node.api.js` and `/browser.api.js` project files** - If you simply need the plugin API to customize something local to your project, you can create a `node.api.js` and/or `browser.api.js` file in the root of your project. These files are treated just like plugin's themselves, but do not receive plugin options and are executed last in the plugin cycle.
+- **Locally via the `/node.api.js` and `/browser.api.js` project files** - If you simply need the plugin API to customize something local to your project, you can create a `node.api.js` and/or `browser.api.js` file in the root of your project. These files are treated just like plugins themselves, but do not receive plugin options and are executed last in the plugin cycle.
 
 ## Using Plugins
 
@@ -83,10 +83,10 @@ We use separate entry points for node and browser context so as to not create co
 To use either API, the corresponding file must:
 
 - Provide a `function` as the `default export`
-- That function recieves **plugin options from the user (optional)**
+- That function receives **plugin options from the user (optional)**
 - **Return an `object`** providing any **API methods** to implement
 
-Here is an **pseudo** example of what a plugin typically looks like:
+Here is a **pseudo** example of what a plugin typically looks like:
 
 ```javascript
 // node.api.js or browser.api.js

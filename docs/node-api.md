@@ -22,7 +22,7 @@ import { create, start, build } from 'react-static/node'
 Creates a new react-static project.
 
 - Arguments
-  - `name: string` - The name of your new project (relative to the current-working directory), or the full path to the new directory you wish to create
+  - `name: string` - The name of your new project (relative to the current working directory), or the full path to the new directory you wish to create
   - `location: string`
     - The name of the template in the `examples` directory
     - The full URL of a public git repository

@@ -227,7 +227,7 @@ export default (async function exportRoute({
   )
   html = await beforeDocumentToFile(html, { meta: renderMeta })
 
-  // If the siteRoot is set and we're not in staging, prefix all absolute URL's
+  // If the siteRoot is set and we're not in staging, prefix all absolute URLs
   // with the siteRoot
   const publicPath = makePathAbsolute(process.env.REACT_STATIC_PUBLIC_PATH)
   if (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING !== 'true') {

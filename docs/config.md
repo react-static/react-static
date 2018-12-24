@@ -28,7 +28,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 
 ### `getRoutes`
 
-An asynchronous function that should resolve an array of [**route**](#route) objects. You'll probably want to use this function to request any dynamic data or information that is needed to build all of the routes for your site. It is also passed an object containing a `dev` boolean indicating whether its being run in a production build or not.
+An asynchronous function that should resolve an array of [**route**](#route) objects. You'll probably want to use this function to request any dynamic data or information that is needed to build all of the routes for your site. It is also passed an object containing a `dev` boolean indicating whether it's being run in a production build or not.
 
 ```javascript
 // static.config.js
@@ -396,7 +396,7 @@ export default {
 
 ### `minLoadTime`
 
-An optional `Number` of milliseconds to show the loading spinner when templates, siteData or routeData are not immediately available. If you are preloading aggressively, you shouldn't see a loader at all, but if a loader is shown, 's a good user experience to make is as un-flashy as possible.
+An optional `Number` of milliseconds to show the loading spinner when templates, siteData or routeData are not immediately available. If you are preloading aggressively, you shouldn't see a loader at all, but if a loader is shown, it's a good user experience to make is as un-flashy as possible.
 
 ```javascript
 // static.config.js
@@ -418,7 +418,7 @@ export default {
 
 ### `babelExcludes`
 
-We are running Babel seperatly for your own sources and externals. The Babel configuration for your own sources can be manipulated the normal way. The one for `node_modules` can not, since its a bit special. We try to compile them with a bare minimum, but sometimes some modules gives you trouble (e.g. [mapbox-gl](https://github.com/mapbox/mapbox-gl-js/issues/3422))
+We are running Babel seperately for your own sources and externals. The Babel configuration for your own sources can be manipulated the normal way. The one for `node_modules` can not, since it's a bit special. We try to compile them with a bare minimum, but sometimes some modules gives you trouble (e.g. [mapbox-gl](https://github.com/mapbox/mapbox-gl-js/issues/3422))
 This option gives you the ability to exclude some modules from babelifying.
 See https://webpack.js.org/configuration/module/#condition for more details. To exclude e.g. `mapboxgl` simply pass the following
 
@@ -433,7 +433,7 @@ export default {
 
 ## Plugin Api
 
-React Static has tons of other customization possibilities available through the Plugin system that are not possible through the configuration file. Some of thse include:
+React Static has tons of other customization possibilities available through the Plugin system that are not possible through the configuration file. Some of these include:
 
 - Webpack customizations
 - Rendering pipeline customizations and transformations for React components, elements, the Document wrapper, etc.
