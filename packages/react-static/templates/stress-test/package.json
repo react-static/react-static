@@ -20,9 +20,9 @@
     "react-dom": "^16.6.3",
     "react-emotion": "^9.2.4",
     "react-hot-loader": "^4.3.12",
-    "react-static": "^6.0.0-beta.30",
-    "react-static-plugin-emotion": "^6.0.0-beta.27",
-    "react-static-plugin-styled-components": "^6.0.0-beta.27",
+    "react-static": "^6.0.18",
+    "react-static-plugin-emotion": "^6.0.8",
+    "react-static-plugin-styled-components": "^6.0.8",
     "styled-components": "^4.1.1"
   },
   "devDependencies": {
