@@ -33,7 +33,7 @@ export default (async function create({ name, template, isCLI }) {
   // prompt if --name argument is not passed from CLI
   // warning: since name will be set as a function by commander by default
   //   unless it's assigned as an argument from the CLI, we can't simply just
-  //   check for it's existence. if it's not been set by the CLI, we properly
+  //   check for its existence. if it has not been set by the CLI, we properly
   //   set it to null for later conditional checks.
   if (isCLI && !name) {
     const answers = await inquirer.prompt({

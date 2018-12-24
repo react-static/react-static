@@ -24,7 +24,7 @@ React-Static is different from most React-based static-site generators. It follo
 
 ### Dev Stage
 
-1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMS's, graphql endpoints, etc.
+1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMSs, graphql endpoints, etc.
 2.  Using your data, you define or generate **static route** for your site and supply the appropriate data to each one.
 3.  Simultaneously, you provide each route with the component that should be used to render it.
 4.  Using React-Static's components like `RouteProps` and `SiteProps` you can access the data for each route and use it to render your site! You can also use HOC versions of those components if you wish.
@@ -47,7 +47,7 @@ React-Static is different from most React-based static-site generators. It follo
 
 ### Existing Templates
 
-The following templates contain the bare-minimum for each css approach to function properly with server-side rendering. You can start with these templates using the `react-static create` CLI command, or transfer the logic to an existin project (pay close attention to the `static.config.js` file if that is the case).
+The following templates contain the bare-minimum for each css approach to function properly with server-side rendering. You can start with these templates using the `react-static create` CLI command, or transfer the logic to an existing project (pay close attention to the `static.config.js` file if that is the case).
 
 - [emotion](https://github.com/nozzle/react-static/tree/master/examples/emotion)
 - [styled-components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
@@ -166,7 +166,7 @@ A content management system (CMS) can greatly increase your ability to organize 
 
 # Rebuilding your site with Webhooks
 
-If you choose to use a CMS, you're probably going to ask yourself, "How will my site rebuild when content in my CMS changes?" The answer is **webhooks**! Most if not all modern CMS's provide webhooks. These are simply URL's that get pinged when something changes in the CMS. These could be any URL, but are used most productively when they are hooked up to a continuous integration or hosting service to achieve automatic rebuilds when anything in your CMS changes.
+If you choose to use a CMS, you're probably going to ask yourself, "How will my site rebuild when content in my CMS changes?" The answer is **webhooks**! Most if not all modern CMSs provide webhooks. These are simply URLs that get pinged when something changes in the CMS. These could be any URL, but are used most productively when they are hooked up to a continuous integration or hosting service to achieve automatic rebuilds when anything in your CMS changes.
 
 Examples:
 
@@ -176,7 +176,7 @@ Examples:
 
 # 404 Handling
 
-Making a 404 page in React Static **is required** and extremely simple. Either (1) place a `404.js` file in the `pages` directory, or (2) define a route where `pathL '404'` and a `component` path to render that route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found. Most static-site servers also default to use the `/404.html` page when a static route cannot be found.
+Making a 404 page in React Static **is required** and extremely simple. Either (1) place a `404.js` file in the `pages` directory, or (2) define a route where `path: '404'` and a `component` path to render that route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found. Most static-site servers also default to use the `/404.html` page when a static route cannot be found.
 
 # Non-Static Routing
 
@@ -301,7 +301,7 @@ function makePageRoutes({
 }
 ```
 
-To explain what is happening above, we are making an array of `10` posts for every page, including the first page of the blog. Each of these array's will be fed to the same `src/containers/Blog` component, but will be given a `.../page/2` or whatever number corresponds to that page of data. Since only the posts needed for that page are passed, we avoid duplicated data per page!
+To explain what is happening above, we are making an array of `10` posts for every page, including the first page of the blog. Each of these arrays will be fed to the same `src/containers/Blog` component, but will be given a `.../page/2` or whatever number corresponds to that page of data. Since only the posts needed for that page are passed, we avoid duplicated data per page!
 
 Of course, you're free to build your pagination routes however you'd like! This is just one possible solution.
 
