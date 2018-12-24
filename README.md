@@ -131,7 +131,7 @@ Once you've installed and test driven, you may want to:
 - [Components](/docs/components.md)
 - [Browser](/docs/browser.md)
 - [Node API](/docs/node-api.md)
-- [Plugins](/docs/plugins.md)
+- [Plugins](/docs/plugins/)
 - [Changelog](/CHANGELOG.md)
 - [Contributing Guide](/CONTRIBUTING.md)
 
