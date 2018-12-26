@@ -72,6 +72,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [blue-frontend.com - Company Website](https://blue-frontend.com)
 - [mmxp.com.br - MadeiraMadeira Experience](https://www.mmxp.com.br/)
 - [Fullstack HQ: Web Design & Development Team in the Philippines](https://fullstackhq.com/)
+- [Be Clever: Games for kids and parents](https://beclever.cc)
 
 ## Quick Start
 
