@@ -23,7 +23,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
 - ✂️ Automatic code and data splitting!
 - 💥 Instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
-- ☔️ Progressive Enchancement + Graceful Fallbacks
+- ☔️ Progressive Enhancement + Graceful Fallbacks
 - 🎯 **SEO** Friendly.
 - 🥇 React-first developer experience.
 - 😌 Painless project setup & migration.
@@ -131,7 +131,7 @@ Once you've installed and test driven, you may want to:
 - [Components](/docs/components.md)
 - [Browser](/docs/browser.md)
 - [Node API](/docs/node-api.md)
-- [Plugins](/docs/plugins.md)
+- [Plugins](/docs/plugins/)
 - [Changelog](/CHANGELOG.md)
 - [Contributing Guide](/CONTRIBUTING.md)
 

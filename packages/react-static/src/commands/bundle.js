@@ -41,7 +41,7 @@ export default (async function bundle({
 
   if (!config.siteRoot) {
     console.log(
-      "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute url's and a sitemap.xml to be automatically generated."
+      "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute urls and a sitemap.xml to be automatically generated."
     )
     console.log('')
   }

@@ -55,7 +55,7 @@ export default () => (
 
 ### `RouteData`
 
-`RouteData` and it's companion HOC `withRouteData` are what provide a component with the results of the currently matched route's `getData` function as defined in your `static.config.js`.
+`RouteData` and its companion HOC `withRouteData` are what provide a component with the results of the currently matched route's `getData` function as defined in your `static.config.js`.
 
 Props
 
@@ -65,8 +65,8 @@ Props
 
 Render Props
 
-- Any props that you passed in it's corresponding route's `getData` method.
-- `is404: boolean` - Will be set to `true` if the page requests results in a 404. This is useful for runtime 404's where the url of the page may remain what the user requested, but the route is not found.
+- Any props that you passed in its corresponding route's `getData` method.
+- `is404: boolean` - Will be set to `true` if the page requests results in a 404. This is useful for runtime 404s where the url of the page may remain what the user requested, but the route is not found.
 
 Here is a an example show all of the different syntaxes you can use:
 
@@ -123,7 +123,7 @@ export default withRouteData(({ songs }) => (
 
 ### `SiteData`
 
-`SiteData` and it's companion HOC `withSiteData` are what provide a component with the results of the `getSiteData` function as defined in your `static.config.js`.
+`SiteData` and its companion HOC `withSiteData` are what provide a component with the results of the `getSiteData` function as defined in your `static.config.js`.
 
 **static.config.js**
 
@@ -236,7 +236,7 @@ export () => (
 
 ### `Prefetch`
 
-Prefetch is a react component that can prefetch the assets for a given route when visibly rendered in the viewport. When it's content or element are visible in the viewport, the template and data required to render the path in the `path` prop will be prefetched. This increases the chance that if the user then navigates to that route, they will not have to wait for the required data to load. You can also force the prefetch to happen even if the element is outside the viewport via the `force` prop.
+Prefetch is a react component that can prefetch the assets for a given route when visibly rendered in the viewport. When its content or element are visible in the viewport, the template and data required to render the path in the `path` prop will be prefetched. This increases the chance that if the user then navigates to that route, they will not have to wait for the required data to load. You can also force the prefetch to happen even if the element is outside the viewport via the `force` prop.
 
 Props:
 

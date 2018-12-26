@@ -16,6 +16,16 @@ declare module 'react-static' {
   // Generated Routes
   export class Routes extends React.Component {}
 
+  export type RootProps = {
+    disableScroller?: boolean,
+    autoScrollToTop?: boolean,
+    autoScrollToHash?: boolean,
+    scrollToTopDuration?: number,
+    scrollToHashDuration?: number,
+    scrollToHashOffset?: number,
+  }
+  export class Root extends React.Component<RootProps> {}
+
   export function withRouteData(comp: any): any
   export function withSiteData(comp: any): any
   export const RouteData: React.Component
