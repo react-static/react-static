@@ -1,7 +1,6 @@
 # Core Concepts
 
 - [Overview](#overview)
-- [CSS and CSS-in-JS](#css-and-css-in-js)
 - [Code and Data Splitting](#code-and-data-splitting)
 - [Writing universal, "node-safe" code](#writing-universal-node-safe-code)
 - [Environment Variables](#environment-variables)
@@ -11,12 +10,10 @@
 - [Using a CMS](#using-a-cms)
 - [Rebuilding your site with Webhooks](#rebuilding-your-site-with-webhooks)
 - [404 Handling](#404-handling)
-- [Non-Static Routing](#non-static-routing)
+- [Dynamic Routing](#dynamic-routing)
 - [Webpack Customization and Plugins](#webpack-customization-and-plugins)
-- [Using Preact in Production](#using-preact-in-production)
 - [Pagination](#pagination)
 - [Browser Support](#browser-support)
-- [Using React-Static in AWS Lambda](#using-react-static-in-aws-lambda)
 
 # Overview
 
@@ -110,7 +107,7 @@ Deploying a static site has never been easier on today's internet! There are so 
 
 # Using a CMS
 
-A content management system (CMS) can greatly increase your ability to organize and contribute. At React Static, we love using [Contentful](https://contentful.com) and [GraphCMS](https://graphcms.com), but you can always visit [https://headlesscms.org/](https://headlesscms.org/) for help on picking the best one for you!
+A content management system (CMS) can greatly increase your ability to organize and contribute. At React Static, we love using [GraphCMS](https://graphcms.com), [Contentful](https://contentful.com) and [Netlify CMS](https://www.netlifycms.org/), but you can always visit [https://headlesscms.org/](https://headlesscms.org/) (built with React Static 😉) for help on picking the best one for you!
 
 # Rebuilding your site with Webhooks
 
@@ -141,7 +138,7 @@ Making a 404 page in React Static is extremely simple, but depending on your ser
 - Your 404 component is exported to a root level `404.html` file at build time. Most servers will automatically use this for routes that don't exist.
 - If the `<Routes />` component is rendered on a route with no matching static route or template, the 404 component will be displayed.
 
-# Non-Static Routing
+# Dynamic Routing
 
 Sometimes you may want to handle routes (including sub-routes) that should not be statically rendered. In that case, you can treat `Routes` like any other component and only render if when no dynamic routes are matched. This can be seen in the [Dynamic Routes with Reach Router Guide](/docs/guides/dynamic-routes-reach-router), but should be possible with just about any client side react router.
 
@@ -151,77 +148,7 @@ React-Static ships with a wonderful default webpack config, carefully tailored f
 
 # Pagination
 
-Pagination in react-static is no different than any other route, it's just a matter of how you get there. When exporting your routes, you are expected to create a separate route for each page if needed, and only pass data to that route for the items on it.
-
-Here is a very simple proof of concept function that demonstrates how to do this:
-
-```javascript
-export default {
-  getRoutes: async () => {
-    const { data: posts } = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
-    )
-    return [
-      {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      ...makePageRoutes({
-        items: posts,
-        pageSize: 10,
-        pageToken: 'page',
-        route: {
-          path: '/blog',
-          component: 'src/containers/Blog',
-        },
-        decorate: items => ({
-          getData: () => ({
-            posts: items,
-          }),
-        }),
-      }),
-    ]
-  },
-}
-
-function makePageRoutes({
-  items,
-  pageSize,
-  pageToken = 'page',
-  route,
-  decorate,
-}) {
-  const itemsCopy = [...items] // Make a copy of the items
-  const pages = [] // Make an array for all of the different pages
-
-  while (itemsCopy.length) {
-    // Splice out all of the items into separate pages using a set pageSize
-    pages.push(itemsCopy.splice(0, pageSize))
-  }
-
-  // Move the first page out of pagination. This is so page one doesn't require a page number.
-  const firstPage = pages.shift()
-
-  const routes = [
-    {
-      ...route,
-      ...decorate(firstPage), // and only pass the first page as data
-    },
-    // map over each page to create an array of page routes, and spread it!
-    ...pages.map((page, i) => ({
-      ...route, // route defaults
-      path: `${route.path}/${pageToken}/${i + 2}`,
-      ...decorate(page),
-    })),
-  ]
-
-  return routes
-}
-```
-
-To explain what is happening above, we are making an array of `10` posts for every page, including the first page of the blog. Each of these arrays will be fed to the same `src/containers/Blog` component, but will be given a `.../page/2` or whatever number corresponds to that page of data. Since only the posts needed for that page are passed, we avoid duplicated data per page!
-
-Of course, you're free to build your pagination routes however you'd like! This is just one possible solution.
+Please see our [Pagination Guide](/docs/guides/pagination)!
 
 # Browser Support
 
@@ -244,48 +171,4 @@ webpack: (config, { stage }) => {
   }
   return config
 },
-```
-
-# Using React-Static in AWS Lambda
-
-You can run **React-Static** in **AWS-Lambda** without any modifications.
-
-As the Filesystem is _readonly_ in Serverless Environments we just have to configure the `paths` to write to `/tmp`.
-
-```javascript
-//static.config.js
-const isBuild = process.env.NODE_ENV === 'production'
-
-let pathConfig = {}
-
-if (isBuild) {
-  pathConfig = {
-    temp: os.tmpdir() + '/tmp',
-    dist: os.tmpdir() + '/dist',
-    devDist: os.tmpdir() + '/dev-server',
-    assets: os.tmpdir() + '/dist',
-  }
-}
-
-export default {
-  paths: pathConfig,
-  //...
-}
-```
-
-You also need to set the Babel Cache Variable `BABEL_CACHE_PATH` to (e.g.) `/tmp/babel-cache.json`.
-
-The most simple lambda function would look like this:
-
-```javascript
-//set the BABEL_CACHE_PATH as early as possible
-process.env.BABEL_CACHE_PATH = '/tmp/babel-cache.json'
-
-const rs = require('react-static/lib/commands/build').default
-
-const handler = async (event, context) => {
-  await rs()
-
-  // upload "paths.dist" (/tmp/dist) to some S3 Bucket here
-}
 ```
