@@ -39,58 +39,6 @@ React-Static is different from most React-based static-site generators. It follo
 
 ![Flow Chart](https://github.com/nozzle/react-static/raw/master/media/flow.png)
 
-# CSS and CSS-in-JS
-
-**React-Static ships with a built-in css style-loader,** frequently found in most webpack configurations. You can easily import `css` files and they will be automatically appended to the head of the document when that route is visited.
-
-**React-Static supports all CSS-in-JS libraries.** Each library and solution usually requires a slightly different approach to server-side rendering, so we have provided ample hooks for you to integrate into.
-
-### Existing Templates
-
-The following templates contain the bare-minimum for each css approach to function properly with server-side rendering. You can start with these templates using the `react-static create` CLI command, or transfer the logic to an existin project (pay close attention to the `static.config.js` file if that is the case).
-
-- [emotion](https://github.com/nozzle/react-static/tree/master/examples/emotion)
-- [styled-components](https://github.com/nozzle/react-static/tree/master/examples/styled-components)
-- [sass](https://github.com/nozzle/react-static/tree/master/examples/sass)
-- [styled-jsx](https://github.com/nozzle/react-static/tree/master/examples/styled-jsx)
-- [material-ui](https://github.com/nozzle/react-static/tree/master/examples/material-ui)
-- [less-antdesign](https://github.com/nozzle/react-static/tree/master/examples/less-antdesign)
-- [tailwind-css](https://github.com/nozzle/react-static/tree/master/examples/tailwind-css)
-
-### Integrating New CSS-in-JS Libraries
-
-Most, if not all, CSS-in-JS libraries require that you to **extract** the styles used in your app during the usage of `ReactDOMServer.renderToString` or `ReactDOMServer.renderToStaticMarkup`, then inject them into the head of your `index.html`.
-
-React-Static allows you to decorate its HTML and Document rendering processes by using the static.config.js [`renderToHtml`](/docs/config/#rendertohtml) and [`Document`](/docs/config/#document) properties. Below are the relevant pieces used in the existing styled-components template:
-
-```javascript
-// examples/styled-components/static.config.js
-
-import { ServerStyleSheet } from 'styled-components'
-
-export default {
-  renderToHtml: (render, Comp, meta) => {
-    const sheet = new ServerStyleSheet()
-    // The styles are collected from each page component
-    const html = render(sheet.collectStyles(<Comp />))
-    // The collected page styles are stored in `meta`
-    meta.styleTags = sheet.getStyleElement()
-    // Return the html string for the page
-    return html
-  },
-  Document: ({ Html, Head, Body, children, renderMeta }) => (
-    // `renderMeta.styleTags` contains the styles we need to inject
-    // into the head of each page.
-    <Html>
-      <Head>{renderMeta.styleTags}</Head>
-      <Body>{children}</Body>
-    </Html>
-  ),
-}
-```
-
-Each CSS-in-JS library is different so please consult the server-side rendering instructions of your specific library for more information.
-
 # Code and Data Splitting
 
 React Static also has a very unique and amazing way of requesting the least amount of data to display any given page at just the right moment. React splits code and data based on these factors:
@@ -176,60 +124,30 @@ Examples:
 
 # 404 Handling
 
-Making a 404 page in React Static **is required** and extremely simple. Either (1) place a `404.js` file in the `pages` directory, or (2) define a route where `pathL '404'` and a `component` path to render that route. At both build-time and runtime, the rendered result of this `component` will be used for any routes that are not found. Most static-site servers also default to use the `/404.html` page when a static route cannot be found.
+Making a 404 page in React Static is extremely simple, but depending on your server can be served a few different ways:
+
+- Place a `404.js` react component in the `pages` directory. No configuratio necessary!
+- Define a route with the following:
+
+```javascript
+{
+  path: '404',
+  component: 'path/to/your/404/component.js'
+}
+```
+
+**How is the 404 component used?**
+
+- Your 404 component is exported to a root level `404.html` file at build time. Most servers will automatically use this for routes that don't exist.
+- If the `<Routes />` component is rendered on a route with no matching static route or template, the 404 component will be displayed.
 
 # Non-Static Routing
 
-Sometimes you may want to handle routes (including sub-routes) that should not be statically rendered. In that case, you can treat `Routes` like any other `react-router` route and use any of the routing components you normally use with `react-router`. You can see this concept in action in the [`non-static-routing` example](https://github.com/nozzle/react-static/blob/master/examples/non-static-routing)
-
-**Important Notes**
-
-- React-Router components are available via the `react-static` import. There is no need to import them via `react-router`!
-- Any custom React-Router components must be placed before `<Routes>` if you want them to match. The `<Routes>` component is a catch all `<Route path='*' />` handler, so anything below it will result in a 404!
-- The `Routes` component is in fact a `react-router` `Route` component, so it can be placed and used normally within components like `<Switch>`!
-- No `html` file is exported for non-static routes, which means the server won't have a file to serve and will most-likely default to serving the `404.html` file of your site. If this is the case (and it normally is), you should make your 404 route only render after mount. An example of this is shown in the [`non-static-routing` example](https://github.com/nozzle/react-static/blob/master/examples/non-static-routing/src/containers/NonStatic.js)
-
-Example - Handling a non-static admin route:
-
-```javascript
-// App.js
-import { Root, Routes, Route, Switch } from 'react-static'
-
-import Admin from 'containers/Admin'
-
-export default () => (
-  <Root>
-    <Switch>
-      <Route path="/admin" component={Admin} /> // If /admin path is matched
-      <Routes /> // Otherwise, fall back to static route handlers
-    </Switch>
-  </Root>
-)
-```
-
-To learn more about how `react-router` components work, visit [React-Router's Documentation](https://reacttraining.com/react-router/web/guides/philosophy)
+Sometimes you may want to handle routes (including sub-routes) that should not be statically rendered. In that case, you can treat `Routes` like any other component and only render if when no dynamic routes are matched. This can be seen in the [Dynamic Routes with Reach Router Guide](/docs/guides/dynamic-routes-reach-router), but should be possible with just about any client side react router.
 
 # Webpack Customization and Plugins
 
 React-Static ships with a wonderful default webpack config, carefully tailored for react development. It should support a majority of use-cases on its own. But, in the case you do need to modify the webpack configuration, you can create a `node.api.js` file in your project and use the handy [webpack API](/docs/config.md/#webpack) to extend it!
-
-# Using Preact in Production
-
-Who wouldn't want to make their JS bundle as small as possible? Simply set `preact: true` in your `static.config.js` and React-Static will ship preact with your site instead of React. This can significantly reduce the size of your app and load times!
-
-**Example**
-
-```javascript
-// static.config.js
-export default {
-  preact: true,
-}
-```
-
-**Note**: If updating a project not originally based on the `preact` template, you will need to update the render method of your app to always use `ReactDOM.render` and not `ReactDOM.hydrate`. [See the preact template for an example of this](https://github.com/nozzle/react-static/blob/master/examples/preact/src/index.js#L14)
-
-**Important**
-Due to the complexity of maintaining a fully tooled development experience, React is still used in development mode if `preact` is set to `true`. This ensures that stable hot-reloading tooling, dev tools, etc. are used. This is by no means permanent though! If you know what it takes to emulate React Static's development environment using Preact tooling, please submit a PR!
 
 # Pagination
 
