@@ -1,3 +1,26 @@
+// Usually imports should go first, but mocks should precede imports:
+/* eslint-disable import/first */
+const mockPlugin = jest.fn()
+// When it can't find the plugin file and NODE_ENV === 'test',
+// the plugin directory will be set to `mock-plugin`
+jest.mock('mock-plugin/node.api.js', () => ({ default: mockPlugin }), {
+  virtual: true,
+})
+jest.mock('fs-extra', () => {
+  const fsExtra = require.requireActual('fs-extra')
+  return Object.assign({}, fsExtra, {
+    pathExistsSync: path => {
+      // We've mocked this plug-in, so even though it does not exist according to `fs-extra`,
+      // it can be require()d. Thus, make fs-extra say that it does exist:
+      if (path === 'mock-plugin/node.api.js') {
+        return true
+      }
+
+      return fsExtra.pathExistsSync(path)
+    },
+  })
+})
+
 import getConfig, { buildConfig } from '../getConfig'
 import defaultConfigDevelopment from '../__mocks__/defaultConfigDevelopment.mock'
 import defaultConfigProduction from '../__mocks__/defaultConfigProduction.mock'
@@ -93,13 +116,21 @@ describe('getConfig', () => {
 
   describe('when provided a path to configuration', () => {
     it('should return a configuration using file provided', async () => {
-      // mapped by the moduleNameMapper in package.js -> src/static/__mocks__/static.config.js
+      // mapped by the moduleNameMapper in package.json -> src/static/__mocks__/static.config.js
       const configuration = await getConfig('./path/to/static.config.js')
 
       testConfiguration(configuration, {
         ...defaultConfigProduction,
         entry: 'path/to/entry/index.js',
       })
+    })
+
+    it('should pass on plugin options to those plugins', async () => {
+      mockPlugin.mockReset()
+      // mapped by the moduleNameMapper in package.json -> src/static/__mocks__/configWithPluginWithOptions.mock.js
+      await getConfig('./path/to/configWithPluginWithOptions.mock.js')
+
+      expect(mockPlugin.mock.calls[0]).toEqual([{ mockOption: 'some-option' }])
     })
   })
 
