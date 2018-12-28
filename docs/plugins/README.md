@@ -8,6 +8,7 @@ React Static ships with a simple plugin API that allows both plugin creators and
   - [react-static-plugin-emotion](/packages/react-static-plugin-emotion) - Adds SSR support for Emotion components.
   - [react-static-plugin-styled-components](/packages/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
   - [react-static-plugin-sass](/packages/react-static-plugin-sass) - Adds SSR and general support for SASS
+  - [react-static-plugin-less](/packages/react-static-plugin-less) - Adds SSR and general support for LESS
   - [react-static-plugin-jss](/packages/react-static-plugin-jss) - Adds SSR support for JSS
 - React Alternatives
   - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
