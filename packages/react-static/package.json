@@ -130,7 +130,8 @@
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
     "moduleNameMapper": {
       "static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
-      "./path/to/static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js"
+      "./path/to/static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
+      "./path/to/configWithPluginWithOptions.mock.js": "<rootDir>/src/static/__mocks__/configWithPluginWithOptions.mock.js"
     },
     "setupFiles": [
       "<rootDir>/setupTests.js"
