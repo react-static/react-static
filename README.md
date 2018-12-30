@@ -72,6 +72,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [blue-frontend.com - Company Website](https://blue-frontend.com)
 - [mmxp.com.br - MadeiraMadeira Experience](https://www.mmxp.com.br/)
 - [Fullstack HQ: Web Design & Development Team in the Philippines](https://fullstackhq.com/)
+- [Be Clever: Games for kids and parents](https://beclever.cc)
 
 ## Quick Start
 
@@ -89,7 +90,7 @@ $ npm install -g react-static
 $ react-static create
 ```
 
-3.  Pick a template! [See the full list of templates](#examples-and-templates)
+3.  Pick a template! [See the full list of templates](#templates-and-guides)
 4.  Navigate to your new project:
 
 ```bash

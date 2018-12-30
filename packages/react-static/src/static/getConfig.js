@@ -149,8 +149,8 @@ export const buildConfig = async (config = {}) => {
   const resolvePlugin = originalLocation => {
     let options = {}
     if (Array.isArray(originalLocation)) {
-      originalLocation = originalLocation[0]
       options = originalLocation[1] || {}
+      originalLocation = originalLocation[0]
     }
 
     const location = [
@@ -201,10 +201,16 @@ export const buildConfig = async (config = {}) => {
           //
         }
       },
+      () => {
+        if (process.env.NODE_ENV === 'test') {
+          // Allow plugins to be mocked
+          return 'mock-plugin'
+        }
+      },
     ].reduce((prev, curr) => prev || curr(), null)
 
     // TODO: We have to do this because we don't have a good mock for process.cwd() :(
-    if (process.env.NODE_ENV !== 'test' && !location) {
+    if (!location) {
       throw new Error(
         `Oh crap! Could not find a plugin directory for the plugin: "${location}". We must bail!`
       )
