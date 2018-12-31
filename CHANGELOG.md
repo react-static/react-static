@@ -57,8 +57,7 @@
 - `react-hot-loader`'s `hot(module)(Component)` syntax has been changed to now use the `<AppContainer>` approach. This is much easier than using the `hot(module)(Component)` in every module you create.
 - Removed the `is404` property from the 404 route. To designate a 404 route, you can now place a `404.js` file in your pages directory or create a route where the `path === '404'`
 - `static.config.js` will now be imported and run multiple times depending on how many threads your build environment supports. If this is a problem, you can use the `process.env.REACT_STATIC_SLAVE === 'true'` condition to detect if the instance is a threaded export slave or not.
-- `config.renderToHtml` behaves differently now. It is now ONLY responsible for taking your apps react element and converting it to HTML eg. `(reactElement, render) => render(reactElement)`. The process of rendering your apps component to an element is now done in `config.renderToElement`.
-- `config.renderToElement` is a new hook that is ONLY responsible for rendering the main app component from JSX eg. `Comp => <Comp />`.
+- `config.renderToHtml` has been deprecated in favor of using the `beforeRenderToElement` hook.
 - `config.usePreact` is no longer an option in the `static.config.js` file. Use the `react-static-plugin-preact` plugin.
 - A new loader for external JS files is now used after the normal `jsLoader` called `jsLoaderExternal`. It is responsible for handling all javascript files that are not located in your projects source.
 - The Routes (and `react-static-routes`) import has been replaced by simply doing `import { Routes } from 'react-static'`. Under the hood, this uses a webpack alias to point to the generated `dist/react-static-routes.js` file, and thus won't confuse linters or IDEs like codesandbox :).
