@@ -15,8 +15,6 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [Document](#document)
 - [webpack](#webpack)
 - [devServer](#devserver)
-- [renderToElement](#rendertoelement)
-- [renderToHtml](#rendertohtml)
 - [paths](#paths)
 - [onStart](#onstart)
 - [onBuild](#onbuild)
@@ -195,7 +193,7 @@ Props
 - `children: ReactComponent` - **Required** - The main content of your site, including layout, routes, etc.
 - `routeInfo: Object` - All of the current route's information, including any `routeData`.
 - `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
-- `renderMeta: Object` - Any data optionally provided via the `renderToHtml` function in this config file.
+- `renderMeta: Object` - Any data optionally set via hooks or transformers during the render process.
 
 ```javascript
 // static.config.js
@@ -235,51 +233,11 @@ export default {
 
 ### `renderToElement`
 
-**Warning:** This option will be removed in a future version. Please use the [Node hook API](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertoelement-function) instead.
-
-An optional function that can be used to override the process of rendering the base app component to an element
-
-- Arguments
-  - `App`: The final react-component for your app to be rendered
-  - options{}: an options object
-    - meta: The render meta for this page.
-- Returns a JSX element, eg. `return <App />`
-
-Default:
-
-```javascript
-// static.config.js
-export default {
-  renderToElement: async (App, { meta, clientStats }) => {
-    return <App />
-  },
-}
-```
+**Warning:** This option has been deprecated. Please use the [Node API hook - beforeRenderToElement](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertoelement-function) instead.
 
 ### `renderToHtml`
 
-**Warning:** This option will be removed in a future version. Please use the [Node hook API](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertohtml-function) instead
-
-An optional function that can be used to customize the process of rendering your app's final react element to HTML.
-
-- Arguments
-  - `render: Function`: A function that renders a react component to an html string
-  - `JSXElement`: the final react element (that has [already been rendered](#rendertoelement) via `<Comp />`) for your site that needs to be rendered to an HTML
-  - options{}: an options object
-    - `meta`, a **mutable** object that is exposed to the optional Document component as a prop
-    - `clientStats`, the webpack client stats generated from the "prod" stage
-- Returns an HTML string to be rendered into your `Document` component provided in your config (or the default one).
-
-Default:
-
-```javascript
-// static.config.js
-export default {
-  renderToHtml: async (render, app, { meta, clientStats }) => {
-    return render(app)
-  },
-}
-```
+**Warning:** This option will be removed in a future version. Please use the [Node API hook - beforeRenderToHtml](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertohtml-function) instead
 
 ### `paths`
 

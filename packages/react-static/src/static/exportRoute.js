@@ -148,11 +148,13 @@ export default (async function exportRoute({
       meta: renderMeta,
     })
 
-    // Run the configs renderToElement function
-    let RenderedComp = await config.renderToElement(FinalComp, {
-      meta: renderMeta,
-      clientStats,
-    })
+    if (config.renderToElement) {
+      throw new Error(
+        `config.renderToElement has been deprecated in favor of the 'beforeRenderToElement' or 'beforeRenderToHtml' hooks instead.`
+      )
+    }
+
+    let RenderedComp = <FinalComp />
 
     // Run the beforeRenderToHtml hook
     // Rum the Html hook
@@ -165,15 +167,13 @@ export default (async function exportRoute({
       meta: renderMeta,
     })
 
-    // Run the configs renderToHtml function
-    appHtml = await config.renderToHtml(
-      renderToStringAndExtract,
-      RenderedComp,
-      {
-        meta: renderMeta,
-        clientStats,
-      }
-    )
+    if (config.renderToHtml) {
+      throw new Error(
+        `config.renderToHtml has been deprecated in favor of the 'beforeRenderToHtml' or 'beforeHtmlToDocument' hooks instead.`
+      )
+    }
+
+    appHtml = renderToStringAndExtract(RenderedComp)
 
     // Rum the beforeHtmlToDocument hook
     const beforeHtmlToDocument = makeHookReducer(

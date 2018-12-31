@@ -1,6 +1,5 @@
 /* eslint-disable import/no-dynamic-require */
 
-import React from 'react'
 import nodePath from 'path'
 import chokidar from 'chokidar'
 import resolveFrom from 'resolve-from'
@@ -99,8 +98,6 @@ export const buildConfig = async (config = {}) => {
     // Defaults
     entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
     getSiteData: () => ({}),
-    renderToElement: Comp => <Comp />,
-    renderToHtml: (render, comp) => render(comp),
     prefetchRate: 5,
     maxThreads: Infinity,
     disableRoutePrefixing: false,
