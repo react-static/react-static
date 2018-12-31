@@ -15,6 +15,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [Document](#document)
 - [webpack](#webpack)
 - [devServer](#devserver)
+- [renderToElement](#rendertoelement)
 - [renderToHtml](#rendertohtml)
 - [paths](#paths)
 - [onStart](#onstart)
@@ -234,6 +235,8 @@ export default {
 
 ### `renderToElement`
 
+**Warning:** This option will be removed in a future version. Please use the [Node hook API](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertoelement-function) instead.
+
 An optional function that can be used to override the process of rendering the base app component to an element
 
 - Arguments
@@ -255,11 +258,13 @@ export default {
 
 ### `renderToHtml`
 
-An optional function that can be used to customize the process of rendering your apps final react element to HTML.
+**Warning:** This option will be removed in a future version. Please use the [Node hook API](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertohtml-function) instead
+
+An optional function that can be used to customize the process of rendering your app's final react element to HTML.
 
 - Arguments
   - `render: Function`: A function that renders a react component to an html string
-  - `JSXElement`: the final react element (that has already been rendered via `<Comp />`) for your site that needs to be rendered to an HTML
+  - `JSXElement`: the final react element (that has [already been rendered](#rendertoelement) via `<Comp />`) for your site that needs to be rendered to an HTML
   - options{}: an options object
     - `meta`, a **mutable** object that is exposed to the optional Document component as a prop
     - `clientStats`, the webpack client stats generated from the "prod" stage
