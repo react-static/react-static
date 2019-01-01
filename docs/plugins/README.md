@@ -13,6 +13,8 @@ React Static ships with a simple plugin API that allows both plugin creators and
   - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
 - Type checking
   - [react-static-plugin-typescript](https://www.npmjs.com/package/react-static-plugin-typescript) - Allows you to write your components in TypeScript
+- Assets
+  - [react-static-plugin-favicons](https://www.npmjs.com/package/react-static-plugin-favicons) - Generate (fav)icons in many different sizes for many different platforms, and add them to your site's metadata
 - Don't see a plugin? Help us build it! All the info you need can be found below :)
 
 ## Installing A Plugin
