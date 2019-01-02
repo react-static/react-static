@@ -22,7 +22,10 @@ export default (options = {}) => ({
         {
           ...cssLoader,
           loader: 'css-loader',
-          options: { exportOnlyLocals: true },
+          options: {
+            exportOnlyLocals: true,
+            ...options
+          },
         },
       ]
     } else {
