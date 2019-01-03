@@ -69,6 +69,7 @@ function common(config) {
     entry: config.disableRuntime
       ? path.resolve(ROOT, config.entry)
       : [
+          require.resolve('../../bootstrapPlugins'),
           require.resolve('../../bootstrapTemplates'),
           require.resolve('../../bootstrapApp'),
         ],

@@ -129,11 +129,7 @@ export function makePathAbsolute(path) {
   return `/${trimLeadingSlashes(path)}`
 }
 
-export function makeHookReducer(
-  plugins = [],
-  hook,
-  compare = (prev, next) => (typeof next !== 'undefined' ? next : prev)
-) {
+export function makeHookReducer(plugins = [], hook, { sync } = {}) {
   const hooks = flattenHooks(plugins, hook)
   // Returns a runner that takes a value (and opts) and
   // reduces the value through each hook, returning the
@@ -142,11 +138,20 @@ export function makeHookReducer(
   // the prev and next value and decide which to use.
   // By default, if undefined is returned from a reducer, the prev value
   // is retained
+
+  if (sync) {
+    return (value, opts) =>
+      hooks.reduce((prev, hook) => {
+        const next = hook(prev, opts)
+        return typeof next !== 'undefined' ? next : prev
+      }, value)
+  }
+
   return async (value, opts) => {
     value = await hooks.reduce(async (prevPromise, hook) => {
       const prev = await prevPromise
       const next = await hook(prev, opts)
-      return compare(prev, next)
+      return typeof next !== 'undefined' ? next : prev
     }, Promise.resolve(value))
     return value
   }

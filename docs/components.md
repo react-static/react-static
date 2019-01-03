@@ -2,13 +2,51 @@
 
 React-Static is packed with awesome components to help you be productive. Some are required for React-Static to work properly, others are available merely for your convenience:
 
+- [Root](#root)
 - [Routes](#routes)
 - [RouteData](#routedata)
 - [SiteData](#sitedata)
 - [Head](#head)
 - [Prefetch](#prefetch)
 
-### `Routes`
+## `Root`
+
+For React Static to work, you must place the `Root` component at the top of your app. In addition to providing context for React Static components, it also:
+
+- Automatically smooth-scrolls to hash links
+- Automatically scrolls to the top of the page on route changes
+- Adds a top level `@reach/router` `Router` component so `Link` components work correctly without any configuration
+- Provides render props to support other routers like `react-router`.
+
+#### Props
+
+| Prop                   | type   | Default | description                                                       |
+| ---------------------- | ------ | ------- | ----------------------------------------------------------------- |
+| `disableScroller`      | `bool` | false   | Toggles all scrolling behavior                                    |
+| `autoScrollToTop`      | `bool` | true    | Toggles scroll-to-top behavior                                    |
+| `autoScrollToHash`     | `bool` | true    | Toggles scroll-to-hash behavior                                   |
+| `scrollToTopDuration`  | `bool` | 0       | The duration in ms for the scroll-to-top animation                |
+| `scrollToHashDuration` | `bool` | 800     | The duration in ms for the scroll-to-hash animation               |
+| `scrollToHashOffset`   | `bool` | 0       | The vertical offset of the top of the window from the hash target |
+
+#### Example
+
+```javascript
+// App.js
+import { Root, Routes } from 'react-static'
+
+export default () => (
+  <Root disableScroller>
+    <Routes />
+  </Root>
+)
+```
+
+#### Custom Router
+
+Out of the box, React Static ships with a very unopinionated configuation of `@reach/router`, but you can also use your own router if you'd like. To do this, you'll need to utilize the [browser plugin API](/docs/plugins/browser-api.md) An example of this can be found in the [react-static-plugin-react-router](/packages/react-static-plugin-react-router) plugin.
+
+## `Routes`
 
 React Static handles all of your routing for you using `react-router` under the hood. All you need to do is import `Routes` and specify where you want to render them:
 
@@ -53,7 +91,7 @@ export default () => (
 
 - `getComponentForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no component is found.
 
-### `RouteData`
+## `RouteData`
 
 `RouteData` and its companion HOC `withRouteData` are what provide a component with the results of the currently matched route's `getData` function as defined in your `static.config.js`.
 
@@ -121,7 +159,7 @@ export default withRouteData(({ songs }) => (
 ))
 ```
 
-### `SiteData`
+## `SiteData`
 
 `SiteData` and its companion HOC `withSiteData` are what provide a component with the results of the `getSiteData` function as defined in your `static.config.js`.
 
@@ -162,7 +200,7 @@ export default withSiteData(({ siteTitle, metaDescription }) => (
 ))
 ```
 
-### `Link`
+## `Link`
 
 To create links and navigate around your site, React Static provides you with a `<Link>` component that is a super-powered version of `react-router`'s' `Link` and `NavLink` components.
 
@@ -208,7 +246,7 @@ import { Link } from '@reach/router'
 </Link>
 ```
 
-### `Head`
+## `Head`
 
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
 
@@ -234,7 +272,7 @@ export () => (
 )
 ```
 
-### `Prefetch`
+## `Prefetch`
 
 Prefetch is a react component that can prefetch the assets for a given route when visibly rendered in the viewport. When its content or element are visible in the viewport, the template and data required to render the path in the `path` prop will be prefetched. This increases the chance that if the user then navigates to that route, they will not have to wait for the required data to load. You can also force the prefetch to happen even if the element is outside the viewport via the `force` prop.
 

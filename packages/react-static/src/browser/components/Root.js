@@ -2,30 +2,30 @@ import React from 'react'
 import { Router as ReachRouter } from '@reach/router'
 
 //
-import { routeInfoByPath, sharedDataByHash, registerTemplateForPath } from '../'
-import { getBasePath } from '../utils'
+import {
+  routeInfoByPath,
+  sharedDataByHash,
+  registerTemplateForPath,
+  plugins,
+} from '../'
+import { getBasePath, makeHookReducer } from '../utils'
 import ErrorBoundary from './ErrorBoundary'
 import HashScroller from './HashScroller'
 import { withStaticInfo } from './StaticInfo'
 
-// If we're in SSR, set the ServerLocation
-// if (isSSR()) {
-//   routePath = getCurrentRoutePath()
-//   Wrapper = ({ children }) => (
-//     <ServerLocation url={routePath}>{children}</ServerLocation>
-//   )
-// }
-
 const DefaultPath = ({ render }) => render
 
-const DefaultRouter = ({ children, ...rest }) => (
-  <ReachRouter {...rest}>
+const DefaultRouter = ({ children, basepath }) => (
+  <ReachRouter basepath={basepath}>
     <DefaultPath default render={children} />
   </ReachRouter>
 )
 
+const RouterHook = makeHookReducer(plugins, 'Router', { sync: true })
+const ResolvedRouter = RouterHook(DefaultRouter)
+
 const Root = withStaticInfo(
-  class Router extends React.Component {
+  class Root extends React.Component {
     static defaultProps = {
       disableScroller: false, // TODO:v6 document this!
       autoScrollToTop: true,
@@ -68,7 +68,6 @@ const Root = withStaticInfo(
         scrollToHashDuration,
         scrollToHashOffset,
         staticInfo,
-        ...rest
       } = this.props
 
       const scrollerProps = {
@@ -90,26 +89,13 @@ const Root = withStaticInfo(
         )
       }
 
-      // TODO:v6 Document how to replace the root router (and apply basepath)
-      // I'm not sure why you would want to do this, but it's general
-      // inversion of control and I feel safer exposing it rather than
-      // making it non-configurable
-      const renderProps = {
-        basepath,
-        ...rest,
-      }
-
-      // Either use the child as a function, or our default router with children
-      const renderedChildren =
-        typeof children === 'function' ? (
-          children(renderProps)
-        ) : (
-          <DefaultRouter {...renderProps}>{children}</DefaultRouter>
-        )
-
       return (
         <ErrorBoundary>
-          <Wrapper>{renderedChildren}</Wrapper>
+          <Wrapper>
+            <ResolvedRouter basepath={basepath} staticInfo={staticInfo}>
+              {children}
+            </ResolvedRouter>
+          </Wrapper>
         </ErrorBoundary>
       )
     }

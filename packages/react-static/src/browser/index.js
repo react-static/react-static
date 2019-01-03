@@ -21,6 +21,9 @@ const requestPool = createPool({
 
 // Plugins
 export const plugins = []
+export const registerPlugins = newPlugins => {
+  plugins.splice(0, Infinity, ...newPlugins)
+}
 
 // Templates
 export const templates = []
