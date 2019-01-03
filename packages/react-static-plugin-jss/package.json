@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-jss",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "A React-Static plugin that adds CSS-in-JS/SSR support for jss",
   "main": "node.api.js",
   "repository": "https://github.com/nozzle/react-static.git",
