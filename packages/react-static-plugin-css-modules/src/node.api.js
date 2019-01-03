@@ -24,7 +24,7 @@ export default (options = {}) => ({
           loader: 'css-loader',
           options: {
             exportOnlyLocals: true,
-            ...options
+            ...options,
           },
         },
       ]

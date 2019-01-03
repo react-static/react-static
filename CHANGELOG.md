@@ -1,3 +1,21 @@
+# 6.1.0
+
+#### New Features
+
+- Official browser plugin support
+- Added the `Router` browser plugin hook
+- Added the `react-static-plugin-react-router` plugin and guide
+
+#### Fixes & Optimizations
+
+- Various css-loader issues have been fixed in plugins for more stability with the latest features
+
+# 6.0.20
+
+#### Deprecations
+
+- Silently deprecated both `config.renderToHtml` and `config.renderToElement` in favor of using the plugin API. Hope this doesn't annoy anyone too much. Better to do it now that later!
+
 # 6.0.10
 
 #### Fixes & Optimizations
