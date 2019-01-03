@@ -23,5 +23,6 @@
     "less-loader": "^4.1.0",
     "postcss-flexbugs-fixes": "^4.1.0",
     "semver": "^5.6.0"
-  }
+  },
+  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }
