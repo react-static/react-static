@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-css-modules",
-  "version": "6.0.12",
+  "version": "6.1.0",
   "description": "A React-Static plugin that adds SSR support for css modules",
   "main": "node.api.js",
   "repository": "https://github.com/nozzle/react-static.git",
