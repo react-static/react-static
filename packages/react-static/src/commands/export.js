@@ -7,6 +7,7 @@ export default async ({
   staging,
   debug,
   isBuild,
+  incremental,
 } = {}) => {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
@@ -24,6 +25,10 @@ export default async ({
     process.env.REACT_STATIC_DEBUG = 'true'
   }
 
+  if (incremental) {
+    process.env.REACT_STATIC_INCREMENTAL = 'true'
+  }
+
   let config
 
   // Allow config location to be overriden
@@ -39,7 +44,7 @@ export default async ({
         process.env[key] = bundledEnv[key]
       }
     })
-    config = await prepareRoutes({ config, opts: { dev: false } })
+    config = await prepareRoutes({ config, opts: { dev: false, incremental } })
   } else {
     config = originalConfig
   }

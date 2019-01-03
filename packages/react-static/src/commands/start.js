@@ -7,6 +7,7 @@ import {
   reloadRoutes,
   getConfig,
 } from '../static'
+import extractTemplates from '../static/extractTemplates'
 import { createIndexFilePlaceholder } from '../utils'
 //
 
@@ -51,6 +52,7 @@ export default (async function start({ config: configPath, debug } = {}) {
     config = await preparePlugins({ config })
 
     await prepareRoutes({ config, opts: { dev: true } }, async config => {
+      await extractTemplates(config)
       reloadRoutes()
 
       // Build the JS bundle

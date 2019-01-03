@@ -8,6 +8,8 @@ import {
   getConfig,
 } from '../static'
 
+import extractTemplates from '../static/extractTemplates'
+
 import { copyPublicFolder, time, timeEnd } from '../utils'
 
 export default (async function bundle({
@@ -62,6 +64,7 @@ export default (async function bundle({
 
   config = await preparePlugins({ config })
   config = await prepareRoutes({ config, opts: { dev: false } })
+  extractTemplates(config)
 
   console.log('=> Copying public directory...')
   time(chalk.green('=> [\u2713] Public directory copied'))

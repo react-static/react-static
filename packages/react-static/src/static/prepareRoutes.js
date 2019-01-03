@@ -1,7 +1,6 @@
 import path from 'path'
 import chalk from 'chalk'
 
-import extractTemplates from './extractTemplates'
 import getRoutes from './getRoutes'
 import buildXML from './buildXML'
 import { makeHookReducer, time, timeEnd } from '../utils'
@@ -34,7 +33,6 @@ export default (async function prepareRoutes(
     async routes => {
       if (!silent) timeEnd(chalk.green('=> [\u2713] Routes Built'))
       config.routes = routes
-      config.templates = extractTemplates(config)
       return cb(config)
     }
   )

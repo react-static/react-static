@@ -10,6 +10,10 @@ export default (async function getRoutesFromPages(
   { config, opts = {} },
   subscription
 ) {
+  if (opts.incremental) {
+    return subscription([])
+  }
+
   // Make a glob extension to get all pages with the set extensions from the pages directory
   const globExtensions = config.extensions
     .map(ext => `${ext.slice(1)}`)

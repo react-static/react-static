@@ -19,13 +19,13 @@ export default function getRoutes({ config, opts }, subscription = d => d) {
       has404,
     } = normalizeAllRoutes(allRoutes, config)
     // If no Index page was found, throw an error. This is required
-    if (!hasIndex) {
+    if (!hasIndex && !opts.incremental) {
       throw new Error(
         'Could not find a route for the "index" page of your site! This is required. Please create a page or specify a route and template for this page.'
       )
     }
     // If no 404 page was found, add one. This is required.
-    if (!has404) {
+    if (!has404 && !opts.incremental) {
       allNormalizedRoutes.unshift({
         path: '404',
         component: path.relative(
