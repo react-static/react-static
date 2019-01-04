@@ -1,13 +1,10 @@
 # Plugins
 
-React Static ships with a simple plugin API that allows both plugin creators and site developers to extend React-Static's core functionality.
+React Static ships with a plugin API to extend React Static's functionality.
 
 ## Installing Plugins
 
 #### Official Plugins via NPM
-
-You can install any react-static compatible plugin via `npm`. Once it is installed, it can be used by React Static.
-
 - CSS & Style Tooling
   - [react-static-plugin-emotion](/packages/react-static-plugin-emotion) - Adds SSR support for Emotion components.
   - [react-static-plugin-styled-components](/packages/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
@@ -20,7 +17,6 @@ You can install any react-static compatible plugin via `npm`. Once it is install
   - [react-static-plugin-typescript](https://www.npmjs.com/package/react-static-plugin-typescript) - Allows you to write your components in TypeScript
 - Assets
   - [react-static-plugin-favicons](https://www.npmjs.com/package/react-static-plugin-favicons) - Generate (fav)icons in many different sizes for many different platforms, and add them to your site's metadata
-- Don't see a plugin? Help us build it! All the info you need can be found below :)
 
 #### Local Plugins via the `/plugins` directory
 
@@ -32,19 +28,19 @@ If you simply need direct access to the the plugin API for a project, you can cr
 
 ## Using & Configuring Plugins
 
-Once a plugin is installed, you can use and configure it by adding it to the `plugins` array in your `static.config.js`:
+After installation, configure it by adding it to the `plugins` array in `static.config.js`:
 
 ```javascript
 // static.config.js
-
 export default {
   plugins: ['react-static-plugin-emotion', 'my-custom-plugin'],
 }
 ```
 
-#### Plugin Execution and Order
-
-**ORDER IS IMPORTANT!!!** Plugins are executed in the order that they are defined in the `plugins: []` array in the `static.config.js`. Also, any `node.api.js` and `browser.api.js` files found in the project root will be performed last.
+#### Plugin Execution and Order (IMPORTANT)
+Order of execution:
+1. Plugins in `plugins: []`, starting from the first element of array.
+2. Any `node.api.js` and `browser.api.js` files at the project root.
 
 #### Plugin Resolution
 
@@ -77,39 +73,42 @@ export default {
 ```
 
 ## Plugin API
-
-Plugins at the end of the day, are just files (or a `directory` that contains the files):
-
+All plugins contains at least one of:
 - `node.api.js` - Exposes the [Node Plugin API](/docs/plugins/node-api.md)
 - `browser.api.js` - Exposes the [Browser Plugin API](/docs/plugins/browser-api.md)
 
-## Why separate node and browser entry points for plugins?
+## Why use separate node and browser entry points for plugins?
 
-We use separate entry points for node and browser context so as to not create conflict with imports that may not be supported in both environments.
+Separating plugin entrypoints avoids creating conflict with imported modules that may not be supported in both environments.
 
-To use either API, the corresponding API file must:
+## How to write the `node.api.js` and `browser.api.js` files when creating plugins?
+The file (for either environment) must:
 
 - Provide a `function` as the `default export`
-- That function receives **plugin options from the user (optional)**
+- That function receives an optional **user plugin options** argument
 - **Return an `object`** providing any **API methods** to implement
 
-Here is a **pseudo** example of what a plugin typically looks like:
-
+Basic plugin example:
 ```javascript
-// node.api.js or browser.api.js
-
 export default pluginOptions => ({
-  reducerMethod: (Item, Options) => {
-    // Do something amazing!
-    return Item
-  },
-  mappedMethod: Options => {
-    // Do something amazing!
-    return true
-  },
+  myCustomAPIMethod: options => {
+    console.log('hello world');
+  }
 })
+
 ```
 
-#### Plugins must be compiled if installed via node_modules
+## What can plugins do?
+- [Modify your `static.config.js`](/docs/plugins/node-api.md#config-function)
+- [Transform your webpack config](/docs/plugins/node-api.md#webpack-functionfunction)
+- [Append JSX to the Head of the app](/docs/plugins/node-api.md#head-componentfunction)
+- [Customize your App's router](/docs/plugins/browser-api.md#router)
+- and more! 
 
-If a plugin is installed via any method other than the `plugins` directory, it will not be transformed by react-static's `.babelrc` runtime, so you **must compile your plugin to be ES5 compatible if you distribute it**. This can be done via `@babel/core` and the babel-cli. The [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components) plugin does this and is a prime example to follow.
+View the [browser API docs](/docs/plugins/browser-api.md) and the [node API docs](/docs/plugins/node-api.md) for full list of API methods that can be implemented.
+
+#### Plugins must be compiled if installed via node_modules
+Only the `plugins` directory will be transformed by react-static's babel runtime.
+
+Hence, when distributing your plugin, your plugin **must be ES5 compatible**.
+- An example of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components).
