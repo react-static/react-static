@@ -1,6 +1,6 @@
 # Plugins
 
-React Static ships with a plugin API to extend React-Static's functionality.
+React Static ships with a plugin API to extend React Static's functionality.
 
 ## Installing Plugins
 
@@ -39,8 +39,8 @@ export default {
 
 #### Plugin Execution and Order (IMPORTANT)
 Order of execution:
-1. Plugins in `plugins: []`, starting from first element of array.
-2. Any `node.api.js` and `browser.api.js` files at project root.
+1. Plugins in `plugins: []`, starting from the first element of array.
+2. Any `node.api.js` and `browser.api.js` files at the project root.
 
 #### Plugin Resolution
 
@@ -73,7 +73,7 @@ export default {
 ```
 
 ## Plugin API
-All plugins contains two at least files:
+All plugins contains at least one of:
 - `node.api.js` - Exposes the [Node Plugin API](/docs/plugins/node-api.md)
 - `browser.api.js` - Exposes the [Browser Plugin API](/docs/plugins/browser-api.md)
 
@@ -88,29 +88,14 @@ The file (for either environment) must:
 - That function receives an optional **user plugin options** argument
 - **Return an `object`** providing any **API methods** to implement
 
-E.g. of basic plugin:
+Basic plugin example:
 ```javascript
 export default pluginOptions => ({
-  myMethod: options => {
+  myCustomAPIMethod: options => {
     console.log('hello world');
   }
 })
 
-```
-E.g. of more complex plugin
-```javascript
-// node.api.js or browser.api.js
-
-export default pluginOptions => ({
-  reducerMethod: (Item, Options) => {
-    // Do something amazing!
-    return Item
-  },
-  mappedMethod: Options => {
-    // Do something amazing!
-    return true
-  },
-})
 ```
 
 ## What can plugins do?
@@ -120,10 +105,10 @@ export default pluginOptions => ({
 - [Customize your App's router](/docs/plugins/browser-api.md#router)
 - and more! 
 
-View the [browser api docs](/docs/plugins/browser-api.md) and the [node api docs](/docs/plugins/node-api.md) for full list of features.
+View the [browser API docs](/docs/plugins/browser-api.md) and the [node API docs](/docs/plugins/node-api.md) for full list of API methods that can be implemented.
 
 #### Plugins must be compiled if installed via node_modules
 Only the `plugins` directory will be transformed by react-static's babel runtime.
 
 Hence, when distributing your plugin, your plugin **must be ES5 compatible**.
-- E.g. of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components).
+- An example of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components).
