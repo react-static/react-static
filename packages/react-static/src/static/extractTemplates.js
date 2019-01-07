@@ -22,13 +22,13 @@ export default (async function extractTemplates(config) {
       if (route.path === '404') {
         templates.unshift(route.component)
         notFoundPending = false
+        route.templateIndex = 0
       } else {
         templates.push(route.component)
+        route.templateIndex = notFoundPending
+          ? templates.length
+          : templates.length - 1
       }
-      // Assign the templateIndex
-      route.templateIndex = notFoundPending
-        ? templates.length
-        : templates.length - 1
     } else {
       // Assign the existing templateIndex
       route.templateIndex = notFoundPending ? index + 1 : index
