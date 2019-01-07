@@ -20,14 +20,14 @@ For React Static to work, you must place the `Root` component at the top of your
 
 #### Props
 
-| Prop                   | type   | Default | description                                                       |
-| ---------------------- | ------ | ------- | ----------------------------------------------------------------- |
-| `disableScroller`      | `bool` | false   | Toggles all scrolling behavior                                    |
-| `autoScrollToTop`      | `bool` | true    | Toggles scroll-to-top behavior                                    |
-| `autoScrollToHash`     | `bool` | true    | Toggles scroll-to-hash behavior                                   |
-| `scrollToTopDuration`  | `bool` | 0       | The duration in ms for the scroll-to-top animation                |
-| `scrollToHashDuration` | `bool` | 800     | The duration in ms for the scroll-to-hash animation               |
-| `scrollToHashOffset`   | `bool` | 0       | The vertical offset of the top of the window from the hash target |
+| Prop                   | type      | Default | description                                                       |
+| ---------------------- | --------- | ------- | ----------------------------------------------------------------- |
+| `disableScroller`      | `bool`    | false   | Toggles all scrolling behavior                                    |
+| `autoScrollToTop`      | `bool`    | true    | Toggles scroll-to-top behavior                                    |
+| `autoScrollToHash`     | `bool`    | true    | Toggles scroll-to-hash behavior                                   |
+| `scrollToTopDuration`  | `integer` | 0       | The duration in ms for the scroll-to-top animation                |
+| `scrollToHashDuration` | `integer` | 800     | The duration in ms for the scroll-to-hash animation               |
+| `scrollToHashOffset`   | `integer` | 0       | The vertical offset of the top of the window from the hash target |
 
 #### Example
 

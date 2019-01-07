@@ -9,7 +9,7 @@ Animated Routes can be achieved so many different ways. In this example, we'll s
 import React from 'react'
 import { Root, Routes } from 'react-static'
 import { Link } from '@reach/router'
-import { Transition } from 'react-spring'
+import { Transition, animated } from 'react-spring'
 
 const App = () => (
   <Root>
@@ -22,17 +22,22 @@ const App = () => (
       <Routes>
         {({ routePath, getComponentForPath }) => {
           // Using the routePath as the key, both routes will render at the same time for the transition
-          const Comp = getComponentForPath(routePath)
-          // Get the
           return (
             <Transition
               native
-              keys={routePath}
+              items={routePath}
               from={{ transform: 'translateY(100px)', opacity: 0 }}
               enter={{ transform: 'translateY(0px)', opacity: 1 }}
               leave={{ transform: 'translateY(100px)', opacity: 0 }}
             >
-              {style => <Comp style={style} />}
+              {item => props => {
+                const Comp = getComponentForPath(item)
+                return (
+                  <animated.div style={props}>
+                    <Comp />
+                  </animated.div>
+                )
+              }}
             </Transition>
           )
         }}
