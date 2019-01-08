@@ -12,7 +12,7 @@ Incremental builds allow you to:
 
 If you are using either **source control** or **a hosting service that idempotently or deterministically updates your site** (eg. Netlify, or any other non-imperative file-upload service):
 
-- You must commit your projects `dist` directory. Not only do you need to store your site as a cache, but these directories also contain build artifacts that are necessary for incremental builds to function correctly (eg. app bundles, environments, templates, plugins, etc)
+- You must commit your projects `dist` directory. Not only do you need to store your site as a cache, but these directories also contain build artifacts that are necessary for incremental builds to function correctly (eg. app bundles, templates, plugins, etc)
 
 To perform an incremental build:
 
