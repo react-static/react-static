@@ -12,6 +12,7 @@ describe('normalizeRoute', () => {
       const route = normalizeRoute({ path: '/path/' })
 
       expect(route).toEqual({
+        fromConfig: true,
         hasGetProps: false,
         noindex: undefined,
         originalPath: 'path',
@@ -89,6 +90,7 @@ describe('normalizeRoute', () => {
         const route = normalizeRoute({ path: '/to/' }, { path: '/path/' })
 
         expect(route).toEqual({
+          fromConfig: true,
           hasGetProps: false,
           noindex: undefined,
           originalPath: 'to',
