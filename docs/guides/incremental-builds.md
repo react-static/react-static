@@ -1,6 +1,6 @@
 # Incremental Builds
 
-Incremental builds for extremely large sites can be very valuable. They allow you to update only a portion of your site that has changed, remove content, and even switch route templates around (as long as the templates were previously bundled in the app)
+Incremental builds for extremely large sites cant be very valuable. They allow you to update only a portion of your site that has changed, remove content, and even switch route templates around (as long as the templates were previously bundled in the app)
 
 Incremental builds allow you to:
 
@@ -10,7 +10,7 @@ Incremental builds allow you to:
 
 ### Requirements
 
-If you are using either **source control** or ** a hosting service that idempotently or deterministically updates your site** (eg. Netlify, or any other non-imperative file-upload service):
+If you are using either **source control** or **a hosting service that idempotently or deterministically updates your site** (eg. Netlify, or any other non-imperative file-upload service):
 
 - You must commit your projects `dist` directory. Not only do you need to store your site as a cache, but these directories also contain build artifacts that are necessary for incremental builds to function correctly (eg. app bundles, environments, templates, plugins, etc)
 
@@ -29,10 +29,13 @@ react-static export --incremental
 Below is a basic example that:
 
 - Updates the `blog` route to not have any `posts` data (and updates the exported html)
+- Adds a new blog post at `blog/post/boom`
 - Removes the `blog/post/3` route
 
 ```javascript
 import axios from 'axios'
+
+const boomPost = {...}
 
 export default {
   getSiteData: () => ({
@@ -48,6 +51,13 @@ export default {
             posts: [], // Update the posts data
           }),
           children: [
+            {
+              path: '/post/boom'
+              component: 'src/containers/Post',
+              getData: () => ({
+                post: boomPost,
+              }),
+            }
             {
               path: '/post/3',
               remove: true, // Flag for removal
