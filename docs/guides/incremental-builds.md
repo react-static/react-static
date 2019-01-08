@@ -1,4 +1,4 @@
-# Incremental Builds Experimental API
+# Incremental Builds
 
 Incremental builds for extremely large sites cant be very valuable. They allow you to update only a portion of your site that has changed, remove content, and even switch route templates around (as long as the templates were previously bundled in the app)
 
