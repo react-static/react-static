@@ -3,7 +3,11 @@ import fetchRoutes from './fetchRoutes'
 import buildHTML from './buildHTML'
 
 // Exporting route HTML and JSON happens here. It's a big one.
-export default (async function exportRoutes({ config, clientStats }) {
+export default (async function exportRoutes({
+  config,
+  clientStats,
+  incremental,
+}) {
   // we modify config in fetchSiteData
   const siteData = await fetchSiteData(config)
   // we modify config in fetchRoutes
@@ -13,5 +17,6 @@ export default (async function exportRoutes({ config, clientStats }) {
     config,
     siteData,
     clientStats,
+    incremental,
   })
 })

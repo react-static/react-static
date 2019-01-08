@@ -1,6 +1,11 @@
-import fs from 'fs-extra'
-//
-import { exportRoutes, buildXML, prepareRoutes, getConfig } from '../static'
+import {
+  exportRoutes,
+  buildXML,
+  prepareRoutes,
+  getConfig,
+  importClientStats,
+  extractTemplates,
+} from '../static'
 
 export default async ({
   config: originalConfig,
@@ -35,22 +40,14 @@ export default async ({
   if (!isBuild) {
     config = await getConfig(originalConfig)
     config.originalConfig = originalConfig
-    // Restore the process environment variables that were present during the build
-    const bundledEnv = await fs.readJson(
-      `${config.paths.TEMP}/bundle-environment.json`
-    )
-    Object.keys(bundledEnv).forEach(key => {
-      if (typeof process.env[key] === 'undefined') {
-        process.env[key] = bundledEnv[key]
-      }
-    })
-    config = await prepareRoutes({ config, opts: { dev: false, incremental } })
+    config = await prepareRoutes(config, { incremental })
+    await extractTemplates(config, { incremental })
   } else {
     config = originalConfig
   }
 
   if (!config.routes) {
-    await prepareRoutes(config, { dev: false })
+    await prepareRoutes(config)
   }
 
   if (debug) {
@@ -58,18 +55,13 @@ export default async ({
     console.log(config)
   }
 
-  const clientStats = await fs.readJson(
-    `${config.paths.TEMP}/client-stats.json`
-  )
-
-  if (!clientStats) {
-    throw new Error('No Client Stats Found')
-  }
+  const clientStats = await importClientStats(config)
 
   try {
     await exportRoutes({
       config,
       clientStats,
+      incremental,
     })
   } catch (e) {
     const PrettyError = require('pretty-error')

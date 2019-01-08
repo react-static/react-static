@@ -12,7 +12,7 @@ import exportRoute from './exportRoute'
 
 process.on('message', async payload => {
   try {
-    const { config: oldConfig, routes } = payload
+    const { config: oldConfig, routes, incremental } = payload
     // Get config again
     const config = await getConfig(oldConfig.originalConfig)
 
@@ -35,6 +35,7 @@ process.on('message', async payload => {
           route,
           Comp,
           DocumentTemplate,
+          incremental,
         })
         if (process.connected) {
           process.send({ type: 'tick' })

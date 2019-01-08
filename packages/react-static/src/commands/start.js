@@ -2,12 +2,13 @@ import fs from 'fs-extra'
 //
 import {
   prepareRoutes,
-  preparePlugins,
+  prepareBrowserPlugins,
   startDevServer,
   reloadRoutes,
   getConfig,
+  extractTemplates,
+  generateTemplates,
 } from '../static'
-import extractTemplates from '../static/extractTemplates'
 import { createIndexFilePlaceholder } from '../utils'
 //
 
@@ -49,10 +50,11 @@ export default (async function start({ config: configPath, debug } = {}) {
       })
     }
 
-    config = await preparePlugins({ config })
+    config = await prepareBrowserPlugins(config)
 
-    await prepareRoutes({ config, opts: { dev: true } }, async config => {
-      await extractTemplates(config)
+    await prepareRoutes(config, { dev: true }, async config => {
+      await extractTemplates(config, { dev: true })
+      await generateTemplates(config)
       reloadRoutes()
 
       // Build the JS bundle

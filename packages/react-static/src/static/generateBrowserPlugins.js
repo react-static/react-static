@@ -3,8 +3,6 @@ import slash from 'slash'
 import fs from 'fs-extra'
 
 export default async ({ config }) => {
-  const { paths } = config
-
   // A deduped list of pluginImports
   const pluginImports = []
 
@@ -27,7 +25,7 @@ export default async ({ config }) => {
 
         // IIF to return the final plugin
         return `{
-  location: "${location}",
+  location: "${slash(location)}",
   plugins: ${recurse(plugins || [])},
   hooks: ${
     browserLocation ? `plugin${pluginIndex}(${JSON.stringify(options)})` : `{}`
@@ -54,7 +52,7 @@ const plugins = ${pluginsText}
 // Export em!
 export default plugins`
 
-  const targetPath = path.join(paths.DIST, 'react-static-browser-plugins.js')
+  const targetPath = path.join(process.env.REACT_STATIC_PLUGINS_PATH)
   await fs.remove(targetPath)
   await fs.outputFile(targetPath, file)
 }

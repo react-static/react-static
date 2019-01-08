@@ -9,7 +9,13 @@ import { DefaultDocument } from './RootComponents'
 import { poolAll, progress } from '../utils'
 import exportRoute from './exportRoute'
 
-export default async ({ config, routes, siteData, clientStats }) => {
+export default async ({
+  config,
+  routes,
+  siteData,
+  clientStats,
+  incremental,
+}) => {
   const htmlProgress = progress(routes.length)
   // Use the node version of the app created with webpack
 
@@ -33,6 +39,7 @@ export default async ({ config, routes, siteData, clientStats }) => {
         route,
         siteData,
         clientStats,
+        incremental,
       })
       htmlProgress.tick()
     })

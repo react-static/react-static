@@ -1,7 +1,7 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger */
 
 export { default as extractTemplates } from './extractTemplates'
-export { default as preparePlugins } from './preparePlugins'
+export { default as prepareBrowserPlugins } from './prepareBrowserPlugins'
 export { default as prepareRoutes } from './prepareRoutes'
 export { default as fetchSiteData } from './fetchSiteData'
 export { default as exportSharedRouteData } from './exportSharedRouteData'
@@ -14,4 +14,6 @@ export { default as exporter } from './exporter'
 export { default as buildXML } from './buildXML'
 export { default as exportRoutes } from './exportRoutes'
 export { default as getConfig } from './getConfig'
+export { outputBuildInfo, importBuildInfo } from './buildInfo'
+export { outputClientStats, importClientStats } from './clientStats'
 export { reloadRoutes, startDevServer, buildProductionBundles } from './webpack'

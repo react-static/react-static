@@ -1,3 +1,14 @@
+# 6.2.0
+
+#### New Features
+
+- Added support for incremental builds
+
+#### Fixes & Optimizations
+
+- Fixed a security issue where `process.env` variables could be exported and distributed by accident.
+- Remove update-notifier. It was never that reliable and was presenting problems with multi-threading.
+
 # 6.1.0
 
 #### New Features

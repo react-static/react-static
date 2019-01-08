@@ -26,19 +26,23 @@ export const registerPlugins = newPlugins => {
 }
 
 // Templates
-export const templates = []
-export const templateUpdated = { cb: () => {} }
-const templateIndexByPath = {
-  '404': 0,
-}
-export const templatesByPath = {
-  '404': templates[0],
-}
+export const templates = {}
+export const templatesByPath = {}
 export const templateErrorByPath = {}
-export const registerTemplates = tmps => {
-  templates.splice(0, Infinity, ...tmps)
-  templatesByPath['404'] = templates[0]
+export const templateUpdated = { cb: () => {} }
+export const registerTemplates = (tmps, notFoundKey) => {
+  Object.keys(templates).forEach(key => {
+    delete templates[key]
+  })
+  Object.keys(tmps).forEach(key => {
+    templates[key] = tmps[key]
+  })
+  templatesByPath['404'] = templates[notFoundKey]
   templateUpdated.cb()
+}
+export const registerTemplateForPath = (path, template) => {
+  path = getRoutePath(path)
+  templatesByPath[path] = templates[template]
 }
 
 init()
@@ -94,12 +98,6 @@ function startPreloader() {
 
     setInterval(run, Number(process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL))
   }
-}
-
-export function registerTemplateForPath(path, index) {
-  path = getRoutePath(path)
-  templateIndexByPath[path] = index
-  templatesByPath[path] = templates[index]
 }
 
 export function reloadRouteData() {
@@ -277,7 +275,7 @@ export async function prefetchTemplate(path, { priority } = {}) {
   const routeInfo = await getRouteInfo(path, { priority })
 
   if (routeInfo) {
-    registerTemplateForPath(path, routeInfo.templateIndex)
+    registerTemplateForPath(path, routeInfo.template)
   }
 
   // Preload the template if available

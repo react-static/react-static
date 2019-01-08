@@ -27,14 +27,28 @@ export default (async function exportRoute({
   route,
   siteData,
   clientStats,
+  incremental,
 }) {
   const {
     sharedHashesByProp,
-    templateIndex,
+    template,
     data,
     sharedData,
     path: routePath,
+    remove,
   } = route
+
+  if (incremental && remove) {
+    if (route.path === '404' || route.path === '/') {
+      throw new Error(
+        `You are attempting to incrementally remove the ${
+          route.path === '404' ? '404' : 'index'
+        } route from your export. This is currently not supported (or recommended) by React Static.`
+      )
+    }
+    const removeLocation = nodePath.join(config.paths.DIST, route.path)
+    return fs.remove(removeLocation)
+  }
 
   const basePath = cachedBasePath || (cachedBasePath = config.basePath)
 
@@ -55,7 +69,7 @@ export default (async function exportRoute({
   // This routeInfo will be saved to disk. It should only include the
   // data and hashes to construct all of the props later.
   const routeInfo = {
-    templateIndex,
+    template,
     sharedHashesByProp,
     data,
     path: routePath,

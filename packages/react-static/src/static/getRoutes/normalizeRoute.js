@@ -33,6 +33,7 @@ export default function normalizeRoute(route, parent = {}) {
     noindex:
       typeof route.noindex !== 'undefined' ? route.noindex : parent.noindex,
     hasGetProps: !!route.getData,
+    fromConfig: !route.isPage,
   }
 
   return normalizedRoute

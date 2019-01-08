@@ -1,9 +1,8 @@
 import path from 'path'
-import slash from 'slash'
 import fs from 'fs-extra'
 import { chunkNameFromFile } from '../utils/chunkBuilder'
 
-export default async ({ config }) => {
+export default async config => {
   const { templates, paths } = config
 
   // convert Windows-style path separators to the Unix style to ensure sure the
@@ -28,36 +27,21 @@ const universalOptions = {
 
 ${templates
     .map((template, index) => {
-      let templatePath = path.relative(
-        paths.DIST,
-        path.resolve(paths.ROOT, template)
-      )
-
       let chunkName = ''
 
       // relative resolving produces the wrong path, a "../" is missing
       // as the files looks equal, we simple use an absolute path then
       if (!paths.DIST.startsWith(paths.ROOT)) {
-        templatePath = path.resolve(paths.ROOT, template)
-
         chunkName = `/* webpackChunkName: "${chunkNameFromFile(template)}" */`
       }
 
-      return `const t_${index} = universal(import('${slash(
-        templatePath
-      )}'${chunkName}), universalOptions)`
+      return `const t_${index} = universal(import('${template}'${chunkName}), universalOptions)`
     })
     .join('\n')}
 `
 
   const developmentTemplates = templates
-    .map((template, index) => {
-      const templatePath = path.relative(
-        paths.DIST,
-        path.resolve(paths.ROOT, template)
-      )
-      return `import t_${index} from '${slash(templatePath)}'`
-    })
+    .map((template, index) => `import t_${index} from '${template}'`)
     .join('\n')
 
   const file = `
@@ -74,12 +58,14 @@ ${
   }
 
 // Template Map
-export default [
-  ${templates.map((template, index) => `t_${index}`).join(',\n')}
-]
+export default {
+  ${templates.map((template, index) => `'${template}': t_${index}`).join(',\n')}
+}
+
+export const notFoundTemplate = ${JSON.stringify(templates[0])}
 `
 
-  const dynamicRoutesPath = path.join(paths.DIST, 'react-static-templates.js')
+  const dynamicRoutesPath = path.join(process.env.REACT_STATIC_TEMPLATES_PATH)
   await fs.remove(dynamicRoutesPath)
   await fs.outputFile(dynamicRoutesPath, file)
 }

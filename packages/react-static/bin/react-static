@@ -125,6 +125,7 @@ Description: Exports a pre-bundled React Static project to a static site.
 Options:
   -c, --config <path>   The path to a custom static.config.js
   -s, --staging         Turn on staging mode
+  -i, --incremental     Turn on incremental build mode
   -d, --debug           Turn on debug mode
 
 Examples:
@@ -132,6 +133,8 @@ Examples:
   react-static export --config=path/to/my/static.config.js
   react-static export -c path/to/my/static.config.js
   react-static export --incremental
+  react-static export -i
+  react-static export --debug
   react-static export -d
 `)
     return

@@ -3,12 +3,13 @@ import chalk from 'chalk'
 //
 import {
   prepareRoutes,
-  preparePlugins,
+  prepareBrowserPlugins,
   buildProductionBundles,
   getConfig,
+  extractTemplates,
+  generateTemplates,
+  outputBuildInfo,
 } from '../static'
-
-import extractTemplates from '../static/extractTemplates'
 
 import { copyPublicFolder, time, timeEnd } from '../utils'
 
@@ -43,7 +44,7 @@ export default (async function bundle({
 
   if (!config.siteRoot) {
     console.log(
-      "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute urls and a sitemap.xml to be automatically generated."
+      "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute urls and also required to automatically generate a sitemap.xml."
     )
     console.log('')
   }
@@ -62,9 +63,10 @@ export default (async function bundle({
     timeEnd(chalk.green('=> [\u2713] Assets cleaned'))
   }
 
-  config = await preparePlugins({ config })
-  config = await prepareRoutes({ config, opts: { dev: false } })
-  extractTemplates(config)
+  config = await prepareBrowserPlugins(config)
+  config = await prepareRoutes(config)
+  await extractTemplates(config)
+  await generateTemplates(config)
 
   console.log('=> Copying public directory...')
   time(chalk.green('=> [\u2713] Public directory copied'))
@@ -76,6 +78,8 @@ export default (async function bundle({
   time(chalk.green('=> [\u2713] App Bundled'))
   await buildProductionBundles({ config })
   timeEnd(chalk.green('=> [\u2713] App Bundled'))
+
+  await outputBuildInfo(config)
 
   if (config.bundleAnalyzer) {
     await new Promise(() => {})

@@ -94,7 +94,6 @@
     "thread-loader": "^1.2.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "upath": "^1.1.0",
-    "update-notifier": "^2.5.0",
     "url-loader": "^1.1.2",
     "webpack": "^4.25.1",
     "webpack-bundle-analyzer": "^3.0.3",

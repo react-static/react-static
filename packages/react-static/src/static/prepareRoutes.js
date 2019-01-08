@@ -7,31 +7,28 @@ import { makeHookReducer, time, timeEnd } from '../utils'
 
 export { buildXML }
 
-export default (async function prepareRoutes(
-  { config, opts, silent },
-  cb = d => d
-) {
+export default (async function prepareRoutes(config, opts = {}, cb = d => d) {
   const beforePrepareRoutes = makeHookReducer(
     config.plugins,
     'beforePrepareRoutes'
   )
   config = await beforePrepareRoutes(config)
 
-  if (!silent) console.log('=> Building Routes...')
+  if (!opts.silent) console.log('=> Building Routes...')
   // set the static routes
   process.env.REACT_STATIC_ROUTES_PATH = path.join(
     config.paths.DIST,
     'react-static-templates.js'
   )
 
-  if (!silent) time(chalk.green('=> [\u2713] Routes Built'))
+  if (!opts.silent) time(chalk.green('=> [\u2713] Routes Built'))
   await getRoutes(
     {
       config,
       opts,
     },
     async routes => {
-      if (!silent) timeEnd(chalk.green('=> [\u2713] Routes Built'))
+      if (!opts.silent) timeEnd(chalk.green('=> [\u2713] Routes Built'))
       config.routes = routes
       return cb(config)
     }

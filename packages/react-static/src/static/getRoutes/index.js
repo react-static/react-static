@@ -17,7 +17,7 @@ export default function getRoutes({ config, opts }, subscription = d => d) {
       routes: allNormalizedRoutes,
       hasIndex,
       has404,
-    } = normalizeAllRoutes(allRoutes, config)
+    } = normalizeAllRoutes(allRoutes, config, opts)
     // If no Index page was found, throw an error. This is required
     if (!hasIndex && !opts.incremental) {
       throw new Error(
