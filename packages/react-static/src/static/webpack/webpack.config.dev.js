@@ -23,9 +23,12 @@ export default function({ config }) {
     entry: [
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
-      config.disableRuntime
-        ? null
-        : require.resolve('../../bootstrapTemplates'),
+      ...(config.disableRuntime
+        ? []
+        : [
+            require.resolve('../../bootstrapPlugins'),
+            require.resolve('../../bootstrapTemplates'),
+          ]),
       path.resolve(ROOT, config.entry),
     ].filter(Boolean),
     output: {

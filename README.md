@@ -90,7 +90,7 @@ $ npm install -g react-static
 $ react-static create
 ```
 
-3.  Pick a template! [See the full list of templates](#examples-and-templates)
+3.  Pick a template! [See the full list of templates](#templates-and-guides)
 4.  Navigate to your new project:
 
 ```bash

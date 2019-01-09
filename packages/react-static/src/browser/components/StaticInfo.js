@@ -7,10 +7,15 @@ if (typeof document !== 'undefined') {
 }
 
 export default context
+
+const StaticInfo = ({ children }) => (
+  <context.Consumer>{children}</context.Consumer>
+)
+
 export const withStaticInfo = Comp => props => (
-  <context.Consumer>
+  <StaticInfo>
     {staticInfo => <Comp {...props} staticInfo={staticInfo} />}
-  </context.Consumer>
+  </StaticInfo>
 )
 
 export function useStaticInfo() {

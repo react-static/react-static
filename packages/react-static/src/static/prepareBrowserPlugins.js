@@ -2,12 +2,9 @@ import generateBrowserPlugins from './generateBrowserPlugins'
 import buildXML from './buildXML'
 import { makeHookReducer } from '../utils'
 
-export { default as extractTemplates } from './extractTemplates'
-export { default as prepareRoutes } from './prepareRoutes'
-
 export { buildXML }
 
-export default (async function preparePlugins({ config }) {
+export default (async function prepareBrowserPlugins(config) {
   const beforePrepareBrowserPlugins = makeHookReducer(
     config.plugins,
     'beforePrepareBrowserPlugins'

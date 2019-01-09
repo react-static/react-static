@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'fs-extra'
 import babelPreset from '../../../../babel-preset'
 
 // we check which babel config file exists in the project root

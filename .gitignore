@@ -35,3 +35,4 @@ templates/yarn.lock
 tmp
 yarn-debug.log*
 yarn-error.log*
+packages/react-static/templates/basic/yarn.lock

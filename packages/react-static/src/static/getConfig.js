@@ -1,6 +1,5 @@
 /* eslint-disable import/no-dynamic-require */
 
-import React from 'react'
 import nodePath from 'path'
 import chokidar from 'chokidar'
 import resolveFrom from 'resolve-from'
@@ -99,8 +98,6 @@ export const buildConfig = async (config = {}) => {
     // Defaults
     entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
     getSiteData: () => ({}),
-    renderToElement: Comp => <Comp />,
-    renderToHtml: (render, comp) => render(comp),
     prefetchRate: 5,
     maxThreads: Infinity,
     disableRoutePrefixing: false,
@@ -149,8 +146,8 @@ export const buildConfig = async (config = {}) => {
   const resolvePlugin = originalLocation => {
     let options = {}
     if (Array.isArray(originalLocation)) {
-      originalLocation = originalLocation[0]
       options = originalLocation[1] || {}
+      originalLocation = originalLocation[0]
     }
 
     const location = [
@@ -201,10 +198,16 @@ export const buildConfig = async (config = {}) => {
           //
         }
       },
+      () => {
+        if (process.env.NODE_ENV === 'test') {
+          // Allow plugins to be mocked
+          return 'mock-plugin'
+        }
+      },
     ].reduce((prev, curr) => prev || curr(), null)
 
     // TODO: We have to do this because we don't have a good mock for process.cwd() :(
-    if (process.env.NODE_ENV !== 'test' && !location) {
+    if (!location) {
       throw new Error(
         `Oh crap! Could not find a plugin directory for the plugin: "${location}". We must bail!`
       )

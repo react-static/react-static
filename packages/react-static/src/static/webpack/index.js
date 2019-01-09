@@ -1,15 +1,12 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger, import/no-mutable-exports */
 import webpack from 'webpack'
-import path from 'path'
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
 import chalk from 'chalk'
 import WebpackDevServer from 'webpack-dev-server'
 import io from 'socket.io'
-import fs from 'fs-extra'
-// import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import { prepareRoutes } from '../'
+import { prepareRoutes, outputClientStats } from '../'
 import {
   getRoutePath,
   makeHookReducer,
@@ -252,17 +249,14 @@ export async function startDevServer({ config }) {
   const socket = io()
 
   resolvedReloadRoutes = async paths => {
-    await prepareRoutes(
-      { config, opts: { dev: true }, silent: true },
-      async config => {
-        if (!paths) {
-          paths = config.routes.map(route => route.path)
-        }
-        paths = paths.map(getRoutePath)
-        reloadWebpackRoutes(config)
-        socket.emit('message', { type: 'reloadRoutes', paths })
+    await prepareRoutes(config, { dev: true, silent: true }, async config => {
+      if (!paths) {
+        paths = config.routes.map(route => route.path)
       }
-    )
+      paths = paths.map(getRoutePath)
+      reloadWebpackRoutes(config)
+      socket.emit('message', { type: 'reloadRoutes', paths })
+    })
   }
 
   await new Promise((resolve, reject) => {
@@ -288,7 +282,7 @@ export async function buildProductionBundles({ config }) {
     await webpackConfig({ config, stage: 'node' }),
   ]
   return new Promise(async (resolve, reject) => {
-    webpack(allWebpackConfigs).run((err, stats) => {
+    webpack(allWebpackConfigs).run(async (err, stats) => {
       if (err) {
         console.log(chalk.red(err.stack || err))
         if (err.details) {
@@ -340,15 +334,7 @@ export async function buildProductionBundles({ config }) {
 
       const prodStatsJson = prodStats.toJson()
 
-      fs.outputFileSync(
-        path.join(config.paths.TEMP, 'client-stats.json'),
-        JSON.stringify(prodStatsJson, null, 2)
-      )
-
-      fs.outputFileSync(
-        path.join(config.paths.TEMP, 'bundle-environment.json'),
-        JSON.stringify(process.env, null, 2)
-      )
+      await outputClientStats(config, prodStatsJson)
 
       resolve(prodStatsJson)
     })

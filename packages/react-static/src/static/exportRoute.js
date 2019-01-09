@@ -27,14 +27,28 @@ export default (async function exportRoute({
   route,
   siteData,
   clientStats,
+  incremental,
 }) {
   const {
     sharedHashesByProp,
-    templateIndex,
+    template,
     data,
     sharedData,
     path: routePath,
+    remove,
   } = route
+
+  if (incremental && remove) {
+    if (route.path === '404' || route.path === '/') {
+      throw new Error(
+        `You are attempting to incrementally remove the ${
+          route.path === '404' ? '404' : 'index'
+        } route from your export. This is currently not supported (or recommended) by React Static.`
+      )
+    }
+    const removeLocation = nodePath.join(config.paths.DIST, route.path)
+    return fs.remove(removeLocation)
+  }
 
   const basePath = cachedBasePath || (cachedBasePath = config.basePath)
 
@@ -55,7 +69,7 @@ export default (async function exportRoute({
   // This routeInfo will be saved to disk. It should only include the
   // data and hashes to construct all of the props later.
   const routeInfo = {
-    templateIndex,
+    template,
     sharedHashesByProp,
     data,
     path: routePath,
@@ -148,11 +162,13 @@ export default (async function exportRoute({
       meta: renderMeta,
     })
 
-    // Run the configs renderToElement function
-    let RenderedComp = await config.renderToElement(FinalComp, {
-      meta: renderMeta,
-      clientStats,
-    })
+    if (config.renderToElement) {
+      throw new Error(
+        `config.renderToElement has been deprecated in favor of the 'beforeRenderToElement' or 'beforeRenderToHtml' hooks instead.`
+      )
+    }
+
+    let RenderedComp = <FinalComp />
 
     // Run the beforeRenderToHtml hook
     // Rum the Html hook
@@ -165,15 +181,13 @@ export default (async function exportRoute({
       meta: renderMeta,
     })
 
-    // Run the configs renderToHtml function
-    appHtml = await config.renderToHtml(
-      renderToStringAndExtract,
-      RenderedComp,
-      {
-        meta: renderMeta,
-        clientStats,
-      }
-    )
+    if (config.renderToHtml) {
+      throw new Error(
+        `config.renderToHtml has been deprecated in favor of the 'beforeRenderToHtml' or 'beforeHtmlToDocument' hooks instead.`
+      )
+    }
+
+    appHtml = renderToStringAndExtract(RenderedComp)
 
     // Rum the beforeHtmlToDocument hook
     const beforeHtmlToDocument = makeHookReducer(

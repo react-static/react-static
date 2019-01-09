@@ -140,7 +140,7 @@ Making a 404 page in React Static is extremely simple, but depending on your ser
 
 # Dynamic Routing
 
-Sometimes you may want to handle routes (including sub-routes) that should not be statically rendered. In that case, you can treat `Routes` like any other component and only render if when no dynamic routes are matched. This can be seen in the [Dynamic Routes with Reach Router Guide](/docs/guides/dynamic-routes-reach-router), but should be possible with just about any client side react router.
+Sometimes you may want to handle routes (including sub-routes) that should not be statically rendered. In that case, you can treat `Routes` like any other component and only render if when no dynamic routes are matched. This can be seen in the [Dynamic Routes with Reach Router Guide](/docs/guides/dynamic-routes-reach-router.md), but should be possible with just about any client side react router.
 
 # Webpack Customization and Plugins
 
@@ -148,7 +148,7 @@ React-Static ships with a wonderful default webpack config, carefully tailored f
 
 # Pagination
 
-Please see our [Pagination Guide](/docs/guides/pagination)!
+Please see our [Pagination Guide](/docs/guides/pagination.md)!
 
 # Browser Support
 

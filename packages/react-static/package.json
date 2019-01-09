@@ -1,7 +1,7 @@
 {
   "name": "react-static",
   "description": "A progressive static site generator for React",
-  "version": "6.0.18",
+  "version": "6.2.0",
   "license": "MIT",
   "repository": "https://github.com/nozzle/react-static",
   "main": "lib/index.js",
@@ -94,7 +94,6 @@
     "thread-loader": "^1.2.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "upath": "^1.1.0",
-    "update-notifier": "^2.5.0",
     "url-loader": "^1.1.2",
     "webpack": "^4.25.1",
     "webpack-bundle-analyzer": "^3.0.3",
@@ -130,7 +129,8 @@
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
     "moduleNameMapper": {
       "static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
-      "./path/to/static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js"
+      "./path/to/static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
+      "./path/to/configWithPluginWithOptions.mock.js": "<rootDir>/src/static/__mocks__/configWithPluginWithOptions.mock.js"
     },
     "setupFiles": [
       "<rootDir>/setupTests.js"
@@ -139,5 +139,5 @@
       "enzyme-to-json/serializer"
     ]
   },
-  "gitHead": "350700130b7501622eac16aa139107c684b62b01"
+  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

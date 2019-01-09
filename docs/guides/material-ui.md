@@ -9,7 +9,6 @@ To use Material-UI in React Static:
 ```javascript
 // static.config.js
 import {
-  createMuiTheme,
   createGenerateClassName,
 } from '@material-ui/core/styles'
 

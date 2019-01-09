@@ -5,7 +5,7 @@ import normalizeRoute from './normalizeRoute'
 // Original routes array [{ path: 'path', children: { path: 'to' } }]
 // These can be returned as flat routes eg. [{ path: 'path' }, { path: 'path/to' }]
 // Or they can be returned nested routes eg. [{ path: 'path', children: { path: 'path/to' } }]
-export default function normalizeAllRoutes(routes = [], config) {
+export default function normalizeAllRoutes(routes = [], config, opts = {}) {
   const existingRoutes = {}
   let hasIndex
   let has404
@@ -21,9 +21,9 @@ export default function normalizeAllRoutes(routes = [], config) {
     const existingRoute = existingRoutes[normalizedRoute.path]
 
     if (normalizedRoute.children) {
-      normalizedRoute.children = normalizedRoute.children.map(childRoute =>
-        recurseRoute(childRoute, normalizedRoute)
-      )
+      normalizedRoute.children = normalizedRoute.children
+        .map(childRoute => recurseRoute(childRoute, normalizedRoute))
+        .filter(Boolean)
     }
 
     let isPageExtension
@@ -71,7 +71,12 @@ export default function normalizeAllRoutes(routes = [], config) {
   if (!config.tree) {
     const flatRoutes = []
     const recurseRoute = route => {
-      flatRoutes.push(route)
+      if (
+        !opts.incremental ||
+        (opts.incremental && (route.remove || route.fromConfig))
+      ) {
+        flatRoutes.push(route)
+      }
       if (route.children) {
         route.children.forEach(recurseRoute)
       }

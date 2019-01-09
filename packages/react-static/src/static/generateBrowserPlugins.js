@@ -3,47 +3,48 @@ import slash from 'slash'
 import fs from 'fs-extra'
 
 export default async ({ config }) => {
-  const { paths } = config
-
-  // A deduped list of imports
-  const imports = []
+  // A deduped list of pluginImports
+  const pluginImports = []
 
   const recurse = plugins =>
     // Return an array of plugins
     `[${plugins
       .map(plugin => {
-        const { browserResolver } = plugin
+        const { browserLocation } = plugin
 
-        // Add the plugin to the list of imports
-        let impIndex = browserResolver ? imports.indexOf(browserResolver) : -1
-        if (impIndex === -1 && browserResolver) {
-          imports.push(slash(browserResolver))
-          impIndex = imports.length - 1
+        // Add the plugin to the list of pluginImports
+        let pluginIndex = browserLocation
+          ? pluginImports.indexOf(browserLocation)
+          : -1
+        if (pluginIndex === -1 && browserLocation) {
+          pluginImports.push(slash(browserLocation))
+          pluginIndex = pluginImports.length - 1
         }
 
+        const { location, plugins, options } = plugin
+
         // IIF to return the final plugin
-        return `(() => {
-  const plugin = ${JSON.stringify(plugin)}
-  return {
-    ...plugin,
-    plugins: ${recurse(plugin.plugins || [])},
-    hooks: ${browserResolver ? `imp${impIndex}(plugins.options)` : `{}`}
+        return `{
+  location: "${slash(location)}",
+  plugins: ${recurse(plugins || [])},
+  hooks: ${
+    browserLocation ? `plugin${pluginIndex}(${JSON.stringify(options)})` : `{}`
   }
-})()`
+}`
       })
       .join(',\n')}]`
 
   // Create the pluginsText
   const pluginsText = recurse(config.plugins || [])
 
-  // Create the importsText
-  const importsText = imports
-    .map((imp, index) => `import imp${index} from '${imp}'`)
+  // Create the pluginImportsText
+  const pluginImportsText = pluginImports
+    .map((imp, index) => `import plugin${index} from '${imp}'`)
     .join('\n')
 
   // Create the file text
   const file = `// Imports
-${importsText}
+${pluginImportsText}
 
 // Plugins
 const plugins = ${pluginsText}
@@ -51,7 +52,7 @@ const plugins = ${pluginsText}
 // Export em!
 export default plugins`
 
-  const targetPath = path.join(paths.DIST, 'react-static-browser-plugins.js')
+  const targetPath = path.join(process.env.REACT_STATIC_PLUGINS_PATH)
   await fs.remove(targetPath)
   await fs.outputFile(targetPath, file)
 }

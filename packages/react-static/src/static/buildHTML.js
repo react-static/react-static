@@ -10,6 +10,7 @@ export default (async function buildHTML({
   config: oldConfig,
   siteData,
   clientStats,
+  incremental,
 }) {
   const { routes, ...config } = oldConfig
   time(chalk.green('=> [\u2713] HTML Exported'))
@@ -28,6 +29,7 @@ export default (async function buildHTML({
       routes,
       siteData,
       clientStats,
+      incremental,
     })
   } else {
     // Multi-threaded export
@@ -63,6 +65,7 @@ export default (async function buildHTML({
             routes,
             siteData,
             clientStats,
+            incremental,
           })
           exporter.on('message', ({ type, payload }) => {
             if (type === 'error') {
