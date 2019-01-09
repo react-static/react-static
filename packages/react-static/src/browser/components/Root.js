@@ -1,6 +1,5 @@
 import React from 'react'
-import { Router as ReachRouter } from '@reach/router'
-
+import { Router as ReachRouter, ServerLocation } from '@reach/router'
 //
 import {
   routeInfoByPath,
@@ -8,17 +7,25 @@ import {
   registerTemplateForPath,
   plugins,
 } from '../'
-import { getBasePath, makeHookReducer } from '../utils'
+import { getBasePath, makePathAbsolute, makeHookReducer } from '../utils'
 import ErrorBoundary from './ErrorBoundary'
 import HashScroller from './HashScroller'
 import { withStaticInfo } from './StaticInfo'
 
+const LocationWrapper = ({ children, staticInfo }) => (typeof document === 'undefined') ? (
+  <ServerLocation url={makePathAbsolute(staticInfo.path)}>
+    {children}
+  </ServerLocation>
+) : children
+
 const DefaultPath = ({ render }) => render
 
-const DefaultRouter = ({ children, basepath }) => (
-  <ReachRouter basepath={basepath}>
-    <DefaultPath default render={children} />
-  </ReachRouter>
+const DefaultRouter = ({ children, basepath, staticInfo }) => (
+  <LocationWrapper staticInfo={staticInfo}>
+    <ReachRouter basepath={basepath}>
+      <DefaultPath default render={children} />
+    </ReachRouter>
+  </LocationWrapper>
 )
 
 const RouterHook = makeHookReducer(plugins, 'Router', { sync: true })
