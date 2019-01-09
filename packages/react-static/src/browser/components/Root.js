@@ -20,10 +20,12 @@ const LocationWrapper = ({ children, staticInfo }) => (typeof document === 'unde
 
 const DefaultPath = ({ render }) => render
 
-const DefaultRouter = ({ children, basepath }) => (
-  <ReachRouter basepath={basepath}>
-    <DefaultPath default render={children} />
-  </ReachRouter>
+const DefaultRouter = ({ children, basepath, staticInfo }) => (
+  <LocationWrapper staticInfo={staticInfo}>
+    <ReachRouter basepath={basepath}>
+      <DefaultPath default render={children} />
+    </ReachRouter>
+  </LocationWrapper>
 )
 
 const RouterHook = makeHookReducer(plugins, 'Router', { sync: true })
