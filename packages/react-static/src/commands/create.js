@@ -177,7 +177,7 @@ export default (async function create({ name, template, isCLI }) {
       }...`
     )
     // We install react-static separately to ensure we always have the latest stable release
-    execSync(`cd ${name} && ${isYarn ? 'yarn' : 'npm install'}`)
+    execSync(`cd "${name}" && ${isYarn ? 'yarn' : 'npm install'}`)
     console.log('')
   }
 
@@ -186,7 +186,7 @@ export default (async function create({ name, template, isCLI }) {
   console.log(`
   ${chalk.green('=> To get started:')}
 
-    cd ${name} ${
+    cd "${name}" ${
     !isCLI
       ? `&& ${
           isYarn
