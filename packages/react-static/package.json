@@ -78,7 +78,7 @@
     "raw-loader": "^1.0.0",
     "react": "^16.7.0-alpha.2",
     "react-dev-utils": "^6.1.1",
-    "react-dom": "^16.6.3",
+    "react-dom": "^16.7.0-alpha.2",
     "react-helmet": "^5.2.0",
     "react-hot-loader": "^4.6.1",
     "react-universal-component": "^3.0.2",
