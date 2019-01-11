@@ -100,11 +100,11 @@ If your static site has static content that is changing often, you may want to s
 Deploying a static site has never been easier on today's internet! There are so many solutions where you can host static files for very cheap, sometimes even for free. This is, in fact, one of the great benefits to hosting a static site: there is no server to maintain and scalability is less of a problem. Here is a list of static-site hosting solutions we recommend:
 
 - [Netlify](https://netlify.com) (Our favorite!)
+- [Zeit now](https://zeit.co/now)
 - [Github Pages](https://pages.github.com/)
 - [Heroku](http://blog.teamtreehouse.com/deploy-static-site-heroku)
 - [AWS (S3 + Cloudfront)](https://aws.amazon.com/getting-started/projects/host-static-website/)
 - [Google Cloud Platform (GCS)](https://cloud.google.com/storage/docs/hosting-static-website)
-- [Zeit now](https://zeit.co/now)
 
 # Using a CMS
 
