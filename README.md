@@ -90,6 +90,12 @@ $ npm install -g react-static
 $ react-static create
 ```
 
+Or use `npx` to create an app without global installing the CLI
+
+```bash
+npx react-static create
+```
+
 3.  Pick a template! [See the full list of templates](#templates-and-guides)
 4.  Navigate to your new project:
 
