@@ -104,6 +104,7 @@ Deploying a static site has never been easier on today's internet! There are so 
 - [Heroku](http://blog.teamtreehouse.com/deploy-static-site-heroku)
 - [AWS (S3 + Cloudfront)](https://aws.amazon.com/getting-started/projects/host-static-website/)
 - [Google Cloud Platform (GCS)](https://cloud.google.com/storage/docs/hosting-static-website)
+- [Zeit now](https://zeit.co/now)
 
 # Using a CMS
 
