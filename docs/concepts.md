@@ -21,9 +21,9 @@ React-Static is different from most React-based static-site generators. It follo
 
 ### Dev Stage
 
-1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMSs, graphql endpoints, etc.
-2.  Using your data, you define or generate **static route** for your site and supply the appropriate data to each one.
-3.  Simultaneously, you provide each route with the component that should be used to render it.
+1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMSs, graphql endpoints, etc. The data is compiled during the build stage.
+2.  Pages are defined by files that export a single React component that is rendered when required. Any files in the `pages` folder will **automatically routed**.
+3.  You can also provide a **static route** for your data and specify the file containing the page Component.
 4.  Using React-Static's components like `RouteProps` and `SiteProps` you can access the data for each route and use it to render your site! You can also use HOC versions of those components if you wish.
 5.  React-Static can then export every page in your site with tenacious speed and accuracy.
 
