@@ -1,3 +1,3 @@
-# React-Static - Basic Template
+# React-Static - TypeScript Template
 
-To use this template, run `react-static create` and use the `basic` template.
+To use this template, run `react-static create` and use the `typescript` template.
