@@ -93,7 +93,7 @@ $ react-static create
 Or use `npx` to create an app without global installing the CLI
 
 ```bash
-npx react-static create
+npx react-static create --name=my-app
 ```
 
 3.  Pick a template! [See the full list of templates](#templates-and-guides)
