@@ -4,7 +4,6 @@ import path from 'path'
 export default {
   plugins: ['react-static-plugin-typescript'],
   entry: path.join(__dirname, 'src', 'index.tsx'),
-  extensions: ['.js', '.jsx', '.ts', '.tsx'],
   getSiteData: () => ({
     title: 'React Static',
   }),
