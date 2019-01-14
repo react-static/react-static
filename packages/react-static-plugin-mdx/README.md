@@ -18,6 +18,8 @@ export default {
 };
 ```
 
+You can now import `.md` or `.mdx` files in your pages.
+
 ## With Options
 
 ```javascript
@@ -31,4 +33,11 @@ export default {
     ]
   ]
 };
+```
+
+## Automatically generate routes
+If you want React Static to generate routes for every `.md` or `.mdx` file in your `/pages` directory, you can add the extensions to the configuration:
+
+```javascript
+extensions: ['.js', '.jsx', '.md', '.mdx'],
 ```

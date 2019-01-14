@@ -4,7 +4,7 @@ export default ({ includePaths = [], ...rest }) => ({
 
     webpackConfig.module.rules[0].oneOf.unshift({
       test: /.mdx?$/,
-      include: [ defaultLoaders.jsLoader.include, ...includePaths ],
+      include: [defaultLoaders.jsLoader.include, ...includePaths],
       use: [defaultLoaders.jsLoader.use[0], mdxLoaderPath],
     })
 
