@@ -1,14 +1,13 @@
 export default ({ includePaths = [], ...rest }) => ({
-  webpack: (config, { stage }) => {
-    const babelLoaderPath = require.resolve('babel-loader')
+  webpack: (webpackConfig, { stage, defaultLoaders }) => {
     const mdxLoaderPath = require.resolve('@mdx-js/loader')
 
-    config.module.rules[0].oneOf.unshift({
-      test: /.mdx$/,
-      include: ['src/pages/', ...includePaths],
-      use: [babelLoaderPath, mdxLoaderPath],
+    webpackConfig.module.rules[0].oneOf.unshift({
+      test: /.mdx?$/,
+      include: [ defaultLoaders.jsLoader.include, ...includePaths ],
+      use: [defaultLoaders.jsLoader.use[0], mdxLoaderPath],
     })
 
-    return config
+    return webpackConfig
   },
-}) 
+})
