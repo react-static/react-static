@@ -18,7 +18,6 @@
     "paths": {
       "@components/*": ["src/components/*"]
     },
-    "typeRoots": ["./node_modules/@types"],
     "lib": ["dom", "es2015", "es2016"]
   },
   "exclude": ["dist/**/*", "public/**/*", "node_modules"]

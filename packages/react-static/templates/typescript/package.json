@@ -15,8 +15,7 @@
     "react": "^16.8.0-alpha.0",
     "react-dom": "^16.8.0-alpha.0",
     "react-hot-loader": "^4.3.12",
-    "react-static": "^6.0.18",
-    "react-static-plugin-typescript": "^3.0.1"
+    "react-static": "^6.0.18"
   },
   "devDependencies": {
     "@types/node": "^10.12.18",
@@ -25,10 +24,8 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-hot-loader": "^4.1.0",
     "@types/webpack-env": "^1.13.6",
-    "convert-tsconfig-paths-to-webpack-aliases": "^0.9.2",
-    "ts-loader": "^5.3.3",
     "serve": "10.1.1",
-    "typescript": "^3.2.2"
+    "react-static-plugin-typescript": "^3.0.1-1-support-aliases-6c3b8d266d4951b32199d75ea5ac7fe27dd622dc"
   },
   "prettier": {
     "semi": false,
