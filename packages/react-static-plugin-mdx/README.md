@@ -4,13 +4,13 @@ A [React-Static](https://react-static.js.org) plugin that adds loader support fo
 
 ## Installation
 
-In an existing react-static site run:
+- In an existing react-static site run:
 
 ```bash
 $ yarn add react-static-plugin-mdx
 ```
 
-Then add the plugin to your `static.config.js`:
+- Then add the plugin to your `static.config.js`:
 
 ```javascript
 export default {
@@ -18,7 +18,7 @@ export default {
 };
 ```
 
-You can now import `.md` or `.mdx` files in your pages.
+- You can now use `.md` or `.mdx` files in your `/pages` directory and route components.
 
 ## With Options
 
@@ -28,16 +28,10 @@ export default {
     [
       "react-static-plugin-mdx",
       {
-        includePaths: ["..."] // always includes `src/pages`
+        includePaths: ["..."], // Additional include paths on top of the default jsLoader paths
+        extensions: ['.md', '.mdx'] // NOTE: these are the default extensions
       }
     ]
   ]
 };
-```
-
-## Automatically generate routes
-If you want React Static to generate routes for every `.md` or `.mdx` file in your `/pages` directory, you can add the extensions to the configuration:
-
-```javascript
-extensions: ['.js', '.jsx', '.md', '.mdx'],
 ```
