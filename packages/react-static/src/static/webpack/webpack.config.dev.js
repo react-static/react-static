@@ -43,13 +43,8 @@ export default function({ config }) {
     },
     resolve: {
       modules: [
-        ...[
-          SRC,
-          NODE_MODULES,
-          path.resolve(__dirname, '../../../node_modules'),
-          DIST,
-        ].map(d => path.relative(process.cwd(), d)),
         'node_modules',
+        ...[NODE_MODULES, SRC, DIST].map(d => path.relative(process.cwd(), d)),
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
     },
