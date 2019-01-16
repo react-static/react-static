@@ -1,4 +1,10 @@
-export default ({ includePaths = [], ...rest }) => ({
+export default ({
+  includePaths = [],
+  extensions = ['.md', '.mdx']
+}) => ({
+  config: config => {
+    config.extensions = [...config.extensions, ...extensions]
+  },
   webpack: (webpackConfig, { stage, defaultLoaders }) => {
     const mdxLoaderPath = require.resolve('@mdx-js/loader')
 
