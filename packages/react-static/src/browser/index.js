@@ -88,7 +88,8 @@ function startPreloader() {
       const els = [].slice.call(document.getElementsByTagName('a'))
       els.forEach(el => {
         const href = el.getAttribute('href')
-        if (href) {
+        const shouldPrefetch = !(el.getAttribute('prefetch') === 'false')
+        if (href && shouldPrefetch) {
           onVisible(el, () => {
             prefetch(href)
           })
