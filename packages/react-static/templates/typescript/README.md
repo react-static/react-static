@@ -29,7 +29,7 @@ export default pluginOptions => ({
 
 Now this works:
 
-```
+```js
 // tsconfig.json
 {
   // ...
