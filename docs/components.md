@@ -200,52 +200,6 @@ export default withSiteData(({ siteTitle, metaDescription }) => (
 ))
 ```
 
-## `Link`
-
-To create links and navigate around your site, React Static provides you with a `<Link>` component that is a super-powered version of `react-router`'s' `Link` and `NavLink` components.
-
-- Props
-  - `to: String || Object` - The path or path object to the desired page.
-  - `activeClassName: String` - The class to add to the link when it is active.
-  - `activeStyle: String` - The style to add to the link when it is active.
-  - `prefetch: Boolean || String` - Whether or not to automatically prefetch this link's page. Defaults to `true`. Can also be set to `data` or `template` to only preload that specific resource
-  - `scrollToTop: Boolean` - Set this to `false` if you do not want the page to scroll-to-top automatically after navigation. Defaults to `true`
-  - Any other prop set to the link will be forwarded to `<a />` or react-router's `<Link>` component, depending on their destination
-
-Please familiarize yourself with [React-Router's Link and Navlink](https://reacttraining.com/react-router/web/api/) component to take full advantage of this component!
-
-Usage:
-
-```javascript
-import React from 'react'
-import { Link } from '@reach/router'
-
-<Link to='/blog/post/1'>
-  Go to Blog Post 1
-</Link>
-
-<Link to={{
-  pathname: '/blog/post/1', // or path: '/blog/post/1'
-  search: '?sort=name',
-  hash: '#the-hash',
-  state: { fromDashboard: true }
-}}>
-  Go to Blog Post 1
-</Link>
-
-<Link to='/blog/post/1' prefetch={false}> // Don't prefetch this route
-  Go to Blog Post 1
-</Link>
-
-<Link to='/blog/post/1' prefetch='data'> // Only prefetch the data for this route
-  Go to Blog Post 1
-</Link>
-
-<Link to='/blog/post/1' prefetch='template'> // Only prefetch the template for this route
-  Go to Blog Post 1
-</Link>
-```
-
 ## `Head`
 
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
