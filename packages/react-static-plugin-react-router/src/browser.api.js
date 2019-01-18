@@ -15,6 +15,7 @@ export default ({ RouterProps: userRouterProps = {} }) => ({
     } else {
       Router = StaticRouter
       routerProps.location = staticInfo.path // Required
+      routerProps.context = {} // Required
     }
     return (
       <Router {...routerProps} {...userRouterProps}>

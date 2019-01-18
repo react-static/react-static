@@ -98,17 +98,12 @@ function common(config) {
     },
     resolve: {
       modules: [
-        ...[
-          SRC,
-          NODE_MODULES,
-          path.resolve(__dirname, '../../../node_modules'),
-          DIST,
-        ].map(d =>
+        'node_modules',
+        ...[NODE_MODULES, SRC, DIST].map(d =>
           DIST.startsWith(ROOT)
             ? path.relative(process.cwd(), d)
             : path.resolve(d)
         ),
-        'node_modules',
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
     },

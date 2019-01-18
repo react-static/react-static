@@ -14,8 +14,6 @@ A **progressive static-site generator** for React.
 
 React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of static-site **performance, and user/developer experience**.
 
-[![Sponsored By GraphCMS](https://github.com/nozzle/react-static/raw/master/media/graphcms.svg?sanitize=true)](http://graphcms.com/?ref=tlinsley)
-
 ## Features
 
 - ⚛️ 100% React (and friends!)
@@ -36,7 +34,7 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - Articles
   - [Introduction and Motivations behind React Static](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
   - [React Static v6!](https://medium.com/@tannerlinsley/react-static-v6-8dbe9fd202d4)
-- Videos & Tuturials
+- Videos & Tutorials
   - [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
   - [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
   - [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
@@ -88,6 +86,12 @@ $ npm install -g react-static
 
 ```bash
 $ react-static create
+```
+
+Or use `npx` to create an app without global installing the CLI
+
+```bash
+npx react-static create --name=my-app
 ```
 
 3.  Pick a template! [See the full list of templates](#templates-and-guides)
@@ -144,8 +148,8 @@ For a list of supported plugins, [view the Plugin documentation](/docs/plugins/)
 
 React Static ships with a few basic templates to you get you started quickly with `react-static create`, then provides in-depth guides for further enhancement. You can check them out here!
 
-- [**Guides**](/docs/guides/)
 - [**Templates**](/packages/react-static/templates/)
+- [**Guides**](/docs/guides/)
 
 Can't find an guide? You should write one! [Here's how to get started.](/docs/guides/)
 

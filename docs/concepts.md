@@ -21,9 +21,9 @@ React-Static is different from most React-based static-site generators. It follo
 
 ### Dev Stage
 
-1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMSs, graphql endpoints, etc.
-2.  Using your data, you define or generate **static route** for your site and supply the appropriate data to each one.
-3.  Simultaneously, you provide each route with the component that should be used to render it.
+1.  **All of the data your site needs to render** is gathered up-front in your `static.config.js` by any means you want. This data can come from markdown files, headless CMSs, graphql endpoints, etc. The data is compiled during the build stage.
+2.  Pages are defined by files that export a single React component that is rendered when required. Any files in the `pages` folder will **automatically routed**.
+3.  You can also provide a **static route** for your data and specify the file containing the page Component.
 4.  Using React-Static's components like `RouteProps` and `SiteProps` you can access the data for each route and use it to render your site! You can also use HOC versions of those components if you wish.
 5.  React-Static can then export every page in your site with tenacious speed and accuracy.
 
@@ -53,7 +53,7 @@ React Static also has a very unique and amazing way of requesting the least amou
 
 # Writing universal, "node-safe" code
 
-Because React-Static code is both used in the browser and node (during build), it's very, very important that your code be "universal" or in other words "node safe". Most of us are used to writing javascript from the browser's perspective, so there are some things to watch out for:
+Because React-Static code is both used in the browser and node (during build), it's very, very important that **ALL** your code be "universal" or in other words "node safe". Most of us are used to writing javascript from the browser's perspective, so there are some things to watch out for:
 
 - Check before using `window`, `document` or browser only APIs. Since these objects do not technically exist in the node environment, make sure you check that they exist before attempting to use them. The easiest way to do this is to keep code that relies on them in `componentDidMount` or inside a condition, eg.
 
@@ -100,6 +100,7 @@ If your static site has static content that is changing often, you may want to s
 Deploying a static site has never been easier on today's internet! There are so many solutions where you can host static files for very cheap, sometimes even for free. This is, in fact, one of the great benefits to hosting a static site: there is no server to maintain and scalability is less of a problem. Here is a list of static-site hosting solutions we recommend:
 
 - [Netlify](https://netlify.com) (Our favorite!)
+- [Zeit now](https://zeit.co/now)
 - [Github Pages](https://pages.github.com/)
 - [Heroku](http://blog.teamtreehouse.com/deploy-static-site-heroku)
 - [AWS (S3 + Cloudfront)](https://aws.amazon.com/getting-started/projects/host-static-website/)

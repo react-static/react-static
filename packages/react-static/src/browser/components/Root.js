@@ -12,21 +12,22 @@ import ErrorBoundary from './ErrorBoundary'
 import HashScroller from './HashScroller'
 import { withStaticInfo } from './StaticInfo'
 
-const LocationWrapper = ({ children, staticInfo }) => (typeof document === 'undefined') ? (
-  <ServerLocation url={makePathAbsolute(staticInfo.path)}>
-    {children}
-  </ServerLocation>
-) : children
-
 const DefaultPath = ({ render }) => render
 
-const DefaultRouter = ({ children, basepath, staticInfo }) => (
-  <LocationWrapper staticInfo={staticInfo}>
+const DefaultRouter = ({ children, basepath, staticInfo }) => {
+  children = (
     <ReachRouter basepath={basepath}>
       <DefaultPath default render={children} />
     </ReachRouter>
-  </LocationWrapper>
-)
+  )
+  return typeof document === 'undefined' ? (
+    <ServerLocation url={makePathAbsolute(staticInfo.path)}>
+      {children}
+    </ServerLocation>
+  ) : (
+    children
+  )
+}
 
 const RouterHook = makeHookReducer(plugins, 'Router', { sync: true })
 const ResolvedRouter = RouterHook(DefaultRouter)

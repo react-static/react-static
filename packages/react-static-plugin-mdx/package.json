@@ -1,10 +1,10 @@
 {
-  "name": "react-static-plugin-jss",
-  "version": "6.3.0",
-  "description": "A React-Static plugin that adds CSS-in-JS/SSR support for jss",
+  "name": "react-static-plugin-mdx",
+  "version": "6.3.1",
+  "description": "A plugin for React Static to transform MDX files (Markdown + React components).",
   "main": "node.api.js",
   "repository": "https://github.com/nozzle/react-static.git",
-  "author": "Tanner Linsley <tannerlinsley@gmail.com>",
+  "author": "Matteo Frana <f2@f2.net>",
   "license": "MIT",
   "private": false,
   "scripts": {
@@ -14,14 +14,12 @@
     "format": "prettier 'src/**/*.js' --write",
     "preversion": "yarn build"
   },
-  "peerDependencies": {
-    "react-jss": "^8.6.1"
-  },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.1.5",
-    "@babel/preset-react": "^7.0.0"
+    "@babel/preset-env": "^7.1.5"
   },
-  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
+  "dependencies": {
+    "@mdx-js/loader": "^0.16.6"
+  }
 }
