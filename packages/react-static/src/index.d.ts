@@ -8,6 +8,10 @@
 
 declare module 'react-static' {
   import * as React from 'react'
+  import { ComponentType, ReactNodeArray } from "react";
+  import { Configuration as WebpackDevServerConfig } from "webpack-dev-server";
+
+  type AnyReactComponent = ComponentType<Record<string, any>>;
 
   // Passing on helmet typings as "Head"
   import { Helmet } from 'react-helmet'
@@ -42,4 +46,78 @@ declare module 'react-static' {
   ): Promise<any>
 
   export const Prefetch: React.Component
+
+  /**
+   * @see https://github.com/nozzle/react-static/blob/master/docs/config.md
+   */
+  export interface ReactStaticConfig {
+    siteRoot?: string;
+    stagingSiteRoot?: string;
+    basePath?: string;
+    stagingBasePath?: string;
+    devBasePath?: string;
+    assetsPath?: string;
+    extractCssChunks?: boolean;
+    inlineCss?: boolean;
+    disablePreload?: boolean;
+    bundleAnalyzer?: boolean;
+    disableDuplicateRoutesWarning?: boolean;
+    outputFileRate?: number;
+    prefetchRate?: number;
+    maxThreads?: number;
+    minLoadTime?: number;
+    disableRoutePrefixing?: boolean;
+    paths?: PathsConfig;
+    babelExcludes?: RegExp[];
+    devServer?: WebpackDevServerConfig;
+    plugins?: Array<string | [string, object]>;
+    Document?: AnyReactComponent;
+    getRoutes?(flags: RouteFlags): Route[];
+    getSiteData?(flags: RouteFlags): any;
+    onStart?(args: OnStartArgs): void;
+    onBuild?(): void;
+  }
+
+  export interface PathsConfig {
+    root?: string;
+    src?: string;
+    temp?: string;
+    dist?: string;
+    devDist?: string;
+    public?: string;
+    assets?: string;
+    pages?: string;
+    plugins?: string;
+    nodeModules?: string;
+  }
+
+  export interface RouteFlags {
+    dev: boolean;
+  }
+
+  export interface Route {
+    path: string;
+    component?: string;
+    redirect?: string;
+    noindex?: boolean;
+    permalink?: string;
+    lastModified?: string;
+    priority?: number;
+    children?: Route[];
+    getData?(resolvedRoute: Route, flags: RouteFlags): any;
+  }
+
+  export interface DocumentProps {
+    Html: AnyReactComponent,
+    Head: AnyReactComponent,
+    Body: AnyReactComponent,
+    children: ReactNodeArray,
+    routeInfo: object;
+    stieData: object;
+    renderMeta: object;
+  }
+
+  export interface OnStartArgs {
+    devServerConfig: Readonly<WebpackDevServerConfig>;
+  }
 }
