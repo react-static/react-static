@@ -124,6 +124,14 @@ describe('getConfig', () => {
       })
     })
 
+    it('should find the configuration file using any supported extension', async () => {
+      // mapped by the moduleNameMapper in package.json -> src/static/__mocks__/static.config.jsx
+      const configuration = await getConfig('./path/to/static.config')
+
+      testConfiguration(configuration, defaultConfigProduction)
+      expect(configuration.Document).toBeInstanceOf(Function) // React component
+    })
+
     it('should pass on plugin options to those plugins', async () => {
       mockPlugin.mockReset()
       // mapped by the moduleNameMapper in package.json -> src/static/__mocks__/configWithPluginWithOptions.mock.js

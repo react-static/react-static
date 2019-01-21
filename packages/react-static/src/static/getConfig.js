@@ -15,12 +15,13 @@ import {
 
 // the default static.config.js location
 const defaultConfig = {}
-const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
+const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config'
 const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
   nodePath.join(process.cwd(), DEFAULT_NAME_FOR_STATIC_CONFIG_FILE)
 )
 const DEFAULT_ROUTES = [{ path: '/' }]
-const DEFAULT_ENTRY = 'index.js'
+const DEFAULT_ENTRY = 'index'
+const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 
 export const buildConfig = async (config = {}) => {
   // path defaults
@@ -93,16 +94,19 @@ export const buildConfig = async (config = {}) => {
   // to use the plugin api directory in their project if they want
   const plugins = [...(config.plugins || []), paths.ROOT]
 
+  const DEFAULT_ENTRY_PATH = nodePath.join(paths.SRC, DEFAULT_ENTRY)
+
   // Defaults
   config = {
     // Defaults
-    entry: nodePath.join(paths.SRC, DEFAULT_ENTRY),
+    entry:
+      resolveModule(DEFAULT_ENTRY_PATH, config) || `${DEFAULT_ENTRY_PATH}.js`,
     getSiteData: () => ({}),
     prefetchRate: 5,
     maxThreads: Infinity,
     disableRoutePrefixing: false,
     outputFileRate: 100,
-    extensions: ['.js', '.jsx'],
+    extensions: DEFAULT_EXTENSIONS,
     getRoutes: async () => DEFAULT_ROUTES,
     minLoadTime: 200,
     disablePreload: false,
@@ -213,22 +217,21 @@ export const buildConfig = async (config = {}) => {
       )
     }
 
-    let nodeLocation = nodePath.join(location, 'node.api.js')
-    let browserLocation = nodePath.join(location, 'browser.api.js')
+    const nodeLocation = resolveModule(
+      nodePath.join(location, 'node.api'),
+      config
+    )
+    const browserLocation = resolveModule(
+      nodePath.join(location, 'browser.api'),
+      config
+    )
     let getHooks = () => ({})
 
     try {
       // Get the hooks for the node api
-      if (fs.pathExistsSync(nodeLocation)) {
+      if (nodeLocation) {
         getHooks = require(nodeLocation).default
-      } else {
-        nodeLocation = null
       }
-
-      // Detect if the browser plugin entry exists, and provide the nodeResolver to it
-      browserLocation = fs.pathExistsSync(browserLocation)
-        ? browserLocation
-        : null
 
       const resolvedPlugin = {
         location,
@@ -271,10 +274,10 @@ export default (async function getConfig(
   configPath = DEFAULT_PATH_FOR_STATIC_CONFIG,
   subscription
 ) {
-  configPath = nodePath.resolve(configPath)
+  const resolvedPath = resolveModule(configPath)
 
   const noConfig =
-    configPath === DEFAULT_PATH_FOR_STATIC_CONFIG && !fs.existsSync(configPath)
+    configPath === DEFAULT_PATH_FOR_STATIC_CONFIG && !resolvedPath
 
   if (noConfig) {
     if (subscription) {
@@ -285,16 +288,28 @@ export default (async function getConfig(
     return buildConfig(defaultConfig)
   }
 
-  const config = await buildConfigFromPath(configPath)
+  const config = await buildConfigFromPath(resolvedPath || configPath)
 
   if (subscription) {
     // If subscribing, return a never ending promise
     return new Promise(() => {
-      chokidar.watch(configPath).on('all', async () => {
-        subscription(await buildConfigFromPath(configPath))
+      chokidar.watch(resolvedPath).on('all', async () => {
+        subscription(await buildConfigFromPath(resolvedPath))
       })
     })
   }
 
   return config
 })
+
+function resolveModule(path, config) {
+  try {
+    // Load any module extension that is supported by Node (.js, .mjs, .node, etc),
+    // or that have been registered via Node require hooks (.jsx, .ts, etc)
+    return require.resolve(path)
+  } catch {
+    // Fallback to the extensions that have been registered with Babel
+    const extensions = (config && config.extensions) || DEFAULT_EXTENSIONS
+    return extensions.map(ext => path + ext).find(fs.pathExistsSync)
+  }
+}
