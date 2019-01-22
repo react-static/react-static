@@ -24,10 +24,13 @@ export default withStaticInfo(
   class Routes extends Component {
     static defaultProps = {
       Loader: Spinner,
+      disableUpdateOnLocationChange: false,
     }
     componentDidMount() {
       templateUpdated.cb = () => this.safeForceUpdate()
-      this.offLocationChange = onLocation(() => this.safeForceUpdate())
+      if (!this.props.disableUpdateOnLocationChange) {
+        this.offLocationChange = onLocation(() => this.safeForceUpdate())
+      }
     }
     componentWillUnmount() {
       this.unmounted = true
