@@ -63,6 +63,12 @@ export default () => (
 
 The routes that will be rendered are the **routes** returned by the `getRoutes` function of this config.
 
+#### Props
+
+| Prop                   | type      | Default | description                                                       |
+| ---------------------- | --------- | ------- | ----------------------------------------------------------------- |
+| `disableUpdateOnLocationChange`      | `bool`    | false   | Toggles location changes from updating the component tree                                    |
+
 ##### Custom `Routes` Rendering
 
 Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize a render prop:
