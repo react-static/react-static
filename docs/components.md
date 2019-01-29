@@ -44,7 +44,7 @@ export default () => (
 
 #### Custom Router
 
-Out of the box, React Static ships with a very unopinionated configuation of `@reach/router`, but you can also use your own router if you'd like. To do this, you'll need to utilize the [browser plugin API](/docs/plugins/browser-api.md) An example of this can be found in the [react-static-plugin-react-router](/packages/react-static-plugin-react-router) plugin.
+Out of the box, React Static ships with a very unopinionated configuration of `@reach/router`, but you can also use your own router if you'd like. To do this, you'll need to utilize the [browser plugin API](/docs/plugins/browser-api.md). An example of this can be found in the [react-static-plugin-react-router](/packages/react-static-plugin-react-router) plugin.
 
 ## `Routes`
 
@@ -87,7 +87,7 @@ export default () => (
 )
 ```
 
-**Render Props** - These special props are sent to your rendered component or render function
+**Render Props** - These special props are sent to your rendered component or render function:
 
 - `getComponentForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no component is found.
 
@@ -95,18 +95,19 @@ export default () => (
 
 `RouteData` and its companion HOC `withRouteData` are what provide a component with the results of the currently matched route's `getData` function as defined in your `static.config.js`.
 
-Props
+**Props**
 
 - `component: ReactComponent`
 - `render: Function`
 - `children: Function`
 
-Render Props
+**Render Props**
 
 - Any props that you passed in its corresponding route's `getData` method.
 - `is404: boolean` - Will be set to `true` if the page requests results in a 404. This is useful for runtime 404s where the url of the page may remain what the user requested, but the route is not found.
 
-Here is a an example show all of the different syntaxes you can use:
+#### Examples
+These examples show all of the different syntaxes you can use.
 
 **static.config.js**
 
@@ -208,7 +209,7 @@ export default withSiteData(({ siteTitle, metaDescription }) => (
 - It can be used in multiple places at the same time.
 - For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that React Static uses to accomplish this.
 
-Example:
+#### Example
 
 ```javascript
 import { Head } from 'react-static'
@@ -230,19 +231,19 @@ export () => (
 
 Prefetch is a react component that can prefetch the assets for a given route when visibly rendered in the viewport. When its content or element are visible in the viewport, the template and data required to render the path in the `path` prop will be prefetched. This increases the chance that if the user then navigates to that route, they will not have to wait for the required data to load. You can also force the prefetch to happen even if the element is outside the viewport via the `force` prop.
 
-Props:
+**Props**
 
 - `path: String` **Required** - The path you want to prefetch.
 - `force: Boolean` - Force the prefetch even if the element is not visible in the viewport
 
-Notes:
+**Notes**
 
 - If the path doesn't match a valid static route, nothing will happen.
 - If the route has already been loaded in the session, nothing will happen.
 - If multiple instances of the same `path` are prefetched at the same time, only a single request will be made for all instances.
 - If abused, this component could result in fetching a lot of unused data. Be smart about what you prefetch.
 
-Example:
+#### Example
 
 ```javascript
 import { Prefetch } from 'react-static'
