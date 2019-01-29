@@ -33,11 +33,15 @@ If you answered "No":
 
 ### Environment
 
-1.  `react-static -V`:
-2.  `node -v`:
-3.  `npm -v`:
-4.  Operating system:
-5.  Browser and version (if relevant):
+Run `npx envinfo --system --npmPackages react* --binaries --npmGlobalPackages react* --browsers` and copy it here:
+
+```
+
+YOUR ENV INFO HERE FOR DEBUGGING
+
+```
+
+of course if you have other packages you're using feel free to include those versions too
 
 ### Steps to Reproduce the problem
 
