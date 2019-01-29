@@ -13,6 +13,8 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-jss](/packages/react-static-plugin-jss) - Adds SSR support for JSS
 - React Alternatives
   - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
+- React Router
+  - [react-static-plugin-react-router](/packages/react-static-plugin-react-router) - Adds react-router support
 - Type checking
   - [react-static-plugin-typescript](https://www.npmjs.com/package/react-static-plugin-typescript) - Allows you to write your components in TypeScript
 - Assets
@@ -103,7 +105,7 @@ export default pluginOptions => ({
 - [Transform your webpack config](/docs/plugins/node-api.md#webpack-functionfunction)
 - [Append JSX to the Head of the app](/docs/plugins/node-api.md#head-componentfunction)
 - [Customize your App's router](/docs/plugins/browser-api.md#router)
-- and more! 
+- and more!
 
 View the [browser API docs](/docs/plugins/browser-api.md) and the [node API docs](/docs/plugins/node-api.md) for full list of API methods that can be implemented.
 
