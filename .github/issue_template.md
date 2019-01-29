@@ -33,7 +33,11 @@ If you answered "No":
 
 ### Environment
 
-Run `npx envinfo --system --npmPackages react* --binaries --npmGlobalPackages react* --browsers` and copy it here:
+Run and copy the result of:
+
+`npx envinfo --system --npmPackages react* --binaries --npmGlobalPackages react* --browsers` 
+
+here:
 
 ```
 
@@ -41,7 +45,7 @@ YOUR ENV INFO HERE FOR DEBUGGING
 
 ```
 
-of course if you have other packages you're using feel free to include those versions too
+of course include any other package versions here if relevant. 
 
 ### Steps to Reproduce the problem
 
