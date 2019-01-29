@@ -40,7 +40,7 @@ const RouteData = withStaticInfo(
 
         // If there was an error reported for this path, throw an error
         // unless there is data for the 404 page
-        if (routeError && !routeInfo) {
+        if (routeError && (!routeInfo || !routeInfo.data)) {
           throw new Error(
             `React-Static: <RouteData> could not find any data for this route: ${routePath}. If this is a dynamic route, please remove any reliance on RouteData or withRouteData from this routes components`
           )
