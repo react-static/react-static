@@ -79,7 +79,7 @@ export default pluginOptions => ({
     ]
     return config
   },
-}
+})
 ```
 
 **Replacing a default loader for a different one**
