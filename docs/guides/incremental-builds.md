@@ -1,6 +1,6 @@
 # Incremental Builds
 
-Incremental builds for extremely large sites cant be very valuable. They allow you to update only a portion of your site that has changed, remove content, and even switch route templates around (as long as the templates were previously bundled in the app)
+Incremental builds for extremely large sites can be very valuable. They allow you to update only a portion of your site that has changed, remove content, and even switch route templates around (as long as the templates were previously bundled in the app)
 
 Incremental builds allow you to:
 
@@ -17,8 +17,8 @@ If you are using either **source control** or **a hosting service that idempoten
 To perform an incremental build:
 
 - Ensure your `dist` directory and any other build artifacts are up to date with the latest version of your site
-- Detect the incremental build in your config and only return the routes you woud like to add, update, or remove.
-- Peform an export with the `incremental` flag:
+- Detect the incremental build in your config and only return the routes you would like to add, update, or remove.
+- Perform an export with the `incremental` flag:
 
 ```sh
 react-static export --incremental
