@@ -107,6 +107,7 @@ export default () => (
 - `is404: boolean` - Will be set to `true` if the page requests results in a 404. This is useful for runtime 404s where the url of the page may remain what the user requested, but the route is not found.
 
 #### Examples
+
 These examples show all of the different syntaxes you can use.
 
 **static.config.js**
