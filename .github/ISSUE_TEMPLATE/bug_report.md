@@ -1,7 +1,7 @@
 ---
 name: Bug Report
 about: report a bug with React-Static
-title: "[Bug]"
+title: "[Bug] TODO_CHANGE_BUG_TITLE"
 labels: Bug Report
 assignees: ''
 ---
