@@ -5,31 +5,11 @@ If so, then STOP right there! We have a dedicated [Spectrum Community](https://s
 IF YOU OPEN AN ISSUE AS A QUESTION ABOUT IMPLEMENTATION, IT WILL BE CLOSED IMMEDIATELY AND YOU WILL BE DIRECTED TO JOIN THE [SPECTRUM COMMUNITY](https://spectrum.chat/react-static)
 -->
 
-### Are you reporting a bug?
-
-<!--
-If you answered "Yes":
+### Reporting a bug?
 
   Provide as much information as you can to reproduce the issue.
   **If the issue is not reproducible, it can't be fixed!**
 
-If you answere "No":
-
-  Remove this section.
--->
-
-### Is this a feature request?
-
-<!--
-If you answered "Yes":
-  Describe why you need the feature, not what it will do.
-  Implementation details will come later. Explain your use case
-  as well as you can.
-
-If you answered "No":
-
-  Remove this section
--->
 
 ### Environment
 
