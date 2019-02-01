@@ -402,4 +402,5 @@ React Static has tons of other customization possibilities available through the
 - Rendering pipeline customizations and transformations for React components, elements, the Document wrapper, etc.
 - Head tag injection
 
-Every React Static project can utilize the plugin API locally without needing to create a plugin by creating either `node.api.js` or `browser.api.js` files in the root of your project. See the [Plugin Documentation](https://github.com/nozzle/react-static/blob/master/docs/plugins/README.md) for more information!
+
+Every React Static project can utilize the plugin API locally without needing to create a plugin by creating either `node.api.js` or `browser.api.js` files in the root of your project. See the [Plugin Documentation](https://github.com/nozzle/react-static/tree/master/docs/plugins) for more information!
