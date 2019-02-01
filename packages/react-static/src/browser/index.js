@@ -179,6 +179,9 @@ export async function getRouteInfo(path, { priority } = {}) {
   } catch (err) {
     // If there was an error, mark the path as errored
     routeErrorByPath[path] = true
+    // Unless we already failed to find info for the 404 page,
+    // try to load info for the 404 page
+    if (path !== '404') return getRouteInfo('404', { priority })
     return
   }
   if (!priority) {

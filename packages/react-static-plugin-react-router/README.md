@@ -18,7 +18,7 @@ export default {
 }
 ```
 
-- Follow the [Dynamic Routes with React Router guide](/docs/guides/dynamic-routes-react-router) to configure your routes for both dynamic and static rendering
+- Follow the [Dynamic Routes with React Router guide](/docs/guides/dynamic-routes-react-router.md) to configure your routes for both dynamic and static rendering
 
 - (Optional) Configure the plugin:
 

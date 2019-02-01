@@ -33,8 +33,14 @@ const RouteData = withStaticInfo(
       render() {
         const { children, Loader, routePath } = this.props
 
+        const routeError = routeErrorByPath[routePath]
+        const routeInfo = routeError
+          ? routeInfoByPath['404']
+          : routeInfoByPath[routePath]
+
         // If there was an error reported for this path, throw an error
-        if (routeErrorByPath[routePath]) {
+        // unless there is data for the 404 page
+        if (routeError && (!routeInfo || !routeInfo.data)) {
           throw new Error(
             `React-Static: <RouteData> could not find any data for this route: ${routePath}. If this is a dynamic route, please remove any reliance on RouteData or withRouteData from this routes components`
           )
@@ -43,7 +49,7 @@ const RouteData = withStaticInfo(
         // If we haven't requested the routeInfo yet, or it's loading
         // Show a spinner and prefetch the data
         // TODO:suspense - This will become a suspense resource
-        if (!routeInfoByPath[routePath] || !routeInfoByPath[routePath].data) {
+        if (!routeInfo || !routeInfo.data) {
           ;(async () => {
             await Promise.all([
               prefetch(routePath, { priority: true }),
@@ -57,7 +63,7 @@ const RouteData = withStaticInfo(
         }
 
         // Otherwise, get it from the routeInfoByPath (subsequent client side)
-        return children(routeInfoByPath[routePath].data)
+        return children(routeInfo.data)
       }
     }
   )
