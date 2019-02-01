@@ -127,6 +127,7 @@ export default (async function exportRoute({
     const appHtml = renderToString(comp)
     const { scripts, stylesheets, css } = flushChunks(clientStats, {
       chunkNames,
+      outputPath: config.paths.DIST,
     })
 
     clientScripts = scripts
