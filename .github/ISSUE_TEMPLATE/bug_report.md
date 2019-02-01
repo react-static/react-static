@@ -1,3 +1,11 @@
+---
+name: Bug Report
+about: report a bug with React-Static
+title: "[Bug]"
+labels: Bug Report
+assignees: ''
+---
+
 <!--
 ARE YOU LOOKING FOR HELP OR HAVE A QUESTION ABOUT IMPLEMENTATION?
 If so, then STOP right there! We have a dedicated [Spectrum Community](https://spectrum.chat/react-static) where you can ask all the questions you want.
