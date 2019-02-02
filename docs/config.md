@@ -210,6 +210,8 @@ export default {
 }
 ```
 
+Since JSX is now being used in this static.config.js file, you need to import React at the top of the file; add this: `import React from 'react'`
+
 ### `webpack`
 
 To configure webpack, extend the build system, or make modifications, see the [Plugin API section](#plugin-api)
