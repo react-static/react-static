@@ -1,4 +1,0 @@
-{
-  "extends": "react-static/.babelrc",
-  "plugins": ["styled-jsx/babel"]
-}

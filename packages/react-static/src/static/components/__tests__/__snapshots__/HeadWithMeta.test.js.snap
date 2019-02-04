@@ -1,0 +1,243 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeadWithMeta when route has inline CSS 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <title
+      key="title"
+    >
+      Helmet Title
+    </title>
+    <link
+      as="script"
+      href="/assets/path/main.js"
+      key="clientScript_main.js"
+      rel="preload"
+    />
+    <link
+      as="script"
+      href="/assets/path/bootstrap.js"
+      key="clientScript_bootstrap.js"
+      rel="preload"
+    />
+    <InlineStyle
+      clientCss={
+        <style>
+          
+      body {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    
+        </style>
+      }
+    >
+      <style
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "[object Object]",
+          }
+        }
+        key="clientCss"
+        type="text/css"
+      />
+    </InlineStyle>
+    <meta
+      content="Helmet application"
+      key=".0"
+      name="description"
+    />
+  </head>
+</Component>
+`;
+
+exports[`HeadWithMeta when route has no helmet title 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <link
+      as="script"
+      href="/assets/path/main.js"
+      key="clientScript_main.js"
+      rel="preload"
+    />
+    <link
+      as="script"
+      href="/assets/path/bootstrap.js"
+      key="clientScript_bootstrap.js"
+      rel="preload"
+    />
+    <link
+      as="style"
+      href="/assets/path/main.css"
+      key="clientStyleSheetPreload_main.css"
+      rel="preload"
+    />
+    <link
+      href="/assets/path/main.css"
+      key="clientStyleSheet_main.css"
+      rel="stylesheet"
+    />
+    <link
+      as="style"
+      href="/assets/path/bootstrap.css"
+      key="clientStyleSheetPreload_bootstrap.css"
+      rel="preload"
+    />
+    <link
+      href="/assets/path/bootstrap.css"
+      key="clientStyleSheet_bootstrap.css"
+      rel="stylesheet"
+    />
+    <title
+      key=".0"
+    >
+      Document Title
+    </title>
+    <meta
+      content="Helmet application"
+      key=".1"
+      name="description"
+    />
+  </head>
+</Component>
+`;
+
+exports[`HeadWithMeta when route has title as child 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <title
+      key="title"
+    >
+      Helmet Title
+    </title>
+    <link
+      as="script"
+      href="/assets/path/main.js"
+      key="clientScript_main.js"
+      rel="preload"
+    />
+    <link
+      as="script"
+      href="/assets/path/bootstrap.js"
+      key="clientScript_bootstrap.js"
+      rel="preload"
+    />
+    <link
+      as="style"
+      href="/assets/path/main.css"
+      key="clientStyleSheetPreload_main.css"
+      rel="preload"
+    />
+    <link
+      href="/assets/path/main.css"
+      key="clientStyleSheet_main.css"
+      rel="stylesheet"
+    />
+    <link
+      as="style"
+      href="/assets/path/bootstrap.css"
+      key="clientStyleSheetPreload_bootstrap.css"
+      rel="preload"
+    />
+    <link
+      href="/assets/path/bootstrap.css"
+      key="clientStyleSheet_bootstrap.css"
+      rel="stylesheet"
+    />
+    <meta
+      content="Helmet application"
+      key=".1"
+      name="description"
+    />
+  </head>
+</Component>
+`;
+
+exports[`HeadWithMeta when route is a redirect route 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <title
+      key="title"
+    >
+      Helmet Title
+    </title>
+    <meta
+      content="Helmet application"
+      key=".0"
+      name="description"
+    />
+  </head>
+</Component>
+`;
+
+exports[`HeadWithMeta when route is a static route 1`] = `
+<Component
+  className="body"
+>
+  <head
+    className="body"
+  >
+    <title
+      key="title"
+    >
+      Helmet Title
+    </title>
+    <link
+      as="script"
+      href="/assets/path/main.js"
+      key="clientScript_main.js"
+      rel="preload"
+    />
+    <link
+      as="script"
+      href="/assets/path/bootstrap.js"
+      key="clientScript_bootstrap.js"
+      rel="preload"
+    />
+    <link
+      as="style"
+      href="/assets/path/main.css"
+      key="clientStyleSheetPreload_main.css"
+      rel="preload"
+    />
+    <link
+      href="/assets/path/main.css"
+      key="clientStyleSheet_main.css"
+      rel="stylesheet"
+    />
+    <link
+      as="style"
+      href="/assets/path/bootstrap.css"
+      key="clientStyleSheetPreload_bootstrap.css"
+      rel="preload"
+    />
+    <link
+      href="/assets/path/bootstrap.css"
+      key="clientStyleSheet_bootstrap.css"
+      rel="stylesheet"
+    />
+    <meta
+      content="Helmet application"
+      key=".0"
+      name="description"
+    />
+  </head>
+</Component>
+`;

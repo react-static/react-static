@@ -1,3 +1,70 @@
+# 6.2.0
+
+#### New Features
+
+- Added support for incremental builds
+
+#### Fixes & Optimizations
+
+- Fixed a security issue where `process.env` variables could be exported and distributed by accident.
+- Remove update-notifier. It was never that reliable and was presenting problems with multi-threading.
+
+# 6.1.0
+
+#### New Features
+
+- Official browser plugin support
+- Added the `Router` browser plugin hook
+- Added the `react-static-plugin-react-router` plugin and guide
+
+#### Fixes & Optimizations
+
+- Various css-loader issues have been fixed in plugins for more stability with the latest features
+
+# 6.0.20
+
+#### Deprecations
+
+- Silently deprecated both `config.renderToHtml` and `config.renderToElement` in favor of using the plugin API. Hope this doesn't annoy anyone too much. Better to do it now that later!
+
+# 6.0.10
+
+#### Fixes & Optimizations
+
+- Reduced the size of npm installation by removing the `archives` directory from the npm tarball
+
+# 6.0.9
+
+#### Fixes & Optimizations
+
+- Fixed an issue where helpers were not included in external node_modules imported through babel
+
+# 6.0.8
+
+#### Fixes & Optimizations
+
+- Added Guides to documentation. All example except for the three main templates (located in `packages/react-static/templates` will be converted over to guides eventually.
+- Examples have been deprecated and are no longer available as templates for `react-static create`. They have been moved to `archives/old-examples`.
+
+# 6.0.7
+
+#### Fixes & Optimizations
+
+- Fixed styled components example for V6 (#889)
+
+# 6.0.6
+
+#### Fixes & Optimizations
+
+- Removed old website code
+- Fixed examples to import Link from external router modules
+
+# 6.0.1
+
+#### Fixes & Optimizations
+
+- The CLI now uses `minimist` instead of `commander`. Along with this change, there is now only a single binary for all of react-static. This should cut down on inconsistencies between `npm` and `yarn` and how they treat multi-binary projects.
+
 # 6.0.0
 
 #### New Features
@@ -8,20 +75,37 @@
 - Created `react-static-plugin-emotion`
 - Created `react-static-plugin-styled-components`
 - Updated eslint and prettier and configured both to run on the pre-commit git hook
+- `config.maxThreads` now lets you specify how many maximum threads to use to export your html files.
+- `config.disablePreload` lets you disabled automatic preloading for debugging worst case scenarios.
 
 #### Breaking Changes
 
 - Upgraded to Webpack 4 - Make sure your webpack modifications are compliant with its new API
+- The `config.webpack` option has been removed in favor of using the new plugin system. This should encourage the creation of plugins and also provide a single way of doing things with webpack.
 - Upgraded to Babel 7 - Make sure your babel plugins are compliant with this version.
 - `react-hot-loader`'s `hot(module)(Component)` syntax has been changed to now use the `<AppContainer>` approach. This is much easier than using the `hot(module)(Component)` in every module you create.
 - Removed the `is404` property from the 404 route. To designate a 404 route, you can now place a `404.js` file in your pages directory or create a route where the `path === '404'`
 - `static.config.js` will now be imported and run multiple times depending on how many threads your build environment supports. If this is a problem, you can use the `process.env.REACT_STATIC_SLAVE === 'true'` condition to detect if the instance is a threaded export slave or not.
-- `config.renderToHtml` is now deprecated and has been replaced by two separate functions called `renderToComponent` and `renderToHtml`. `renderToComponent` is responsible for actually rendering the main app component via JSX eg. `Comp => <Comp />`, and `renderToHtml` is responsible for taking the rendered react-component and converting it to HTML eg. `(comp, render) => render(comp)`.
-- `config.usePreact` is no longer an option in the `static.config.js` file. Use the react-static-plugin-preact plugin.
+- `config.renderToHtml` has been deprecated in favor of using the `beforeRenderToElement` hook.
+- `config.usePreact` is no longer an option in the `static.config.js` file. Use the `react-static-plugin-preact` plugin.
+- A new loader for external JS files is now used after the normal `jsLoader` called `jsLoaderExternal`. It is responsible for handling all javascript files that are not located in your projects source.
+- The Routes (and `react-static-routes`) import has been replaced by simply doing `import { Routes } from 'react-static'`. Under the hood, this uses a webpack alias to point to the generated `dist/react-static-routes.js` file, and thus won't confuse linters or IDEs like codesandbox :).
+- Passing an object as the config to react-static is no longer supported. You must pass a location of the root of the project.
+- All `render` and `component` props are now deprecated in favor of using `child-as-a-function` rendering. Anywhere you are using these props must be migrated to use a child as a function.
+- The `Loading` component has been removed. If you wish to show loading states in your app, you can use the `Loading` props for any components that support them. This is in preparation for React...Suspense!
+- React-Static no longer ships with any routing-related functionality. It functions independently of your routing paradigm. Thus, it no longer exports anything from `react-router`.
+- The `PrefetchWhenSeen` component has been deprecated in favor of only using the `Prefetch` component
+- The `Prefetch` component is now smart like `PrefetchWhenSeen` was.
+- The client-side `Redirect` component has been deprecated. Redirects should be done in the `static.config.js`. If the user needs to do any redirects for dynamic/runtime routes, they can use their favorite router's redirect solution.
+- `Router` has been deprecated and replaced by the `Root` component. The `Root` component implements the `HashScroller` component, an `ErrorBoundary` and a very simple and non-invasive route context using `@reach/router` (the recommended router). The base router is customizable or replaceable if the user wishes to use a different router.
+- The `Root` component renders a `div` under the hood (from reach/router). This may affect layouts during migration.
+- `config.disableRouteInfoWarning` has been depracated. Do not use `RouteInfo` on non-static pages!
+- Shared route data is no longer calculated automatically for performance reasons. This was previously done on every key of every prop sent to a route, which was very expensive for little benefit.
+- Shared route data is still supported via the `createSharedData` utility and the `sharedData` property on a route. See the docs for information on usage.
 
 #### Fixes & Optimizations
 
-- React-Hot-Loader should not work out of the box for all projects. If it doesn't, please report it immediately!
+- React-Hot-Loader should now work out of the box for all projects. If it doesn't, please report it immediately!
 - Much better performance when building routes for large sites via general performance improvements and also multi-threading HTML exporting
 - Fixed an issue where XML sitemaps contained invalid characters
 - Refactored many files to be more easily testable
@@ -127,7 +211,7 @@
 
 #### Fixes & Optimizations
 
-- Improved `getPath` and `cleanPath` methods, and added some simple tests for them.
+- Improved `getPath` and `getRoutePath` methods, and added some simple tests for them.
 
 # 5.8.0
 
@@ -558,7 +642,7 @@
 - Allow customization of dev server PORT and HOST via those environment variables. (Thanks [@rywils21](https://github.com/rywils21)!)
 - `config.getRoutes` is no longer required and will default to exporting a single root path.
 - Webpack configurations can now be exported and used externally. (Thanks [@crubier](https://github.com/crubier)!)
-- `<Router>` component now supports a `type` prop that can be: `browser`, `hash`, or `memory`, which defines which type of `history` object to create and use internally. Useful for non-web environments or situations where your app will be accessed in a filesystem or nested domain as opposed to a web server.
+- `<Root>` component now supports a `type` prop that can be: `browser`, `hash`, or `memory`, which defines which type of `history` object to create and use internally. Useful for non-web environments or situations where your app will be accessed in a filesystem or nested domain as opposed to a web server.
 - Added Redux example (Thanks [@crubier](https://github.com/crubier)!)
 - Added Apollo GraphQL example (Thanks [@crubier](https://github.com/crubier)!)
 - Added Redux + Apollo example (Thanks [@crubier](https://github.com/crubier)!)

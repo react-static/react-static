@@ -1,0 +1,32 @@
+{
+  "name": "react-static-test-site-large",
+  "private": true,
+  "scripts": {
+    "start": "react-static start",
+    "build": "rm -rf dist && react-static build",
+    "build-styled": "STYLE_SYSTEM=styled yarn build",
+    "build-emotion": "STYLE_SYSTEM=emotion yarn build",
+    "build-pagination": "PAGINATION=true yarn build",
+    "bundle": "react-static bundle",
+    "export": "react-static export",
+    "serve": "serve dist -p 3000 -s"
+  },
+  "dependencies": {
+    "@reach/router": "^1.2.1",
+    "axios": "^0.18.0",
+    "emotion": "^9.2.4",
+    "emotion-server": "^9.2.4",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-emotion": "^9.2.4",
+    "react-hot-loader": "^4.3.12",
+    "react-static": "^6.0.18",
+    "react-static-plugin-emotion": "^6.0.8",
+    "react-static-plugin-styled-components": "^6.0.8",
+    "styled-components": "^4.1.1"
+  },
+  "devDependencies": {
+    "eslint-config-react-tools": "1.x.x",
+    "serve": "^10.1.1"
+  }
+}
