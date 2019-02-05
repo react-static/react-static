@@ -10,6 +10,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [basePath](#basepath)
 - [stagingBasePath](#stagingbasepath)
 - [devBasePath](#devbasepath)
+- [assetsPath](#assetsPath)
 - [extractCssChunks](#extractcsschunks)
 - [inlineCss](#inlinecss)
 - [Document](#document)
