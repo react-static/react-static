@@ -2,7 +2,7 @@ import webpack from 'webpack'
 import path from 'path'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
@@ -83,10 +83,20 @@ function common(config) {
       sideEffects: true,
       minimize: true,
       minimizer: [
-        new UglifyJsPlugin({
+        new TerserPlugin({
           cache: true,
           parallel: true,
-          sourceMap: true, // set to true if you want JS source maps
+          exclude: /\.min\.js/,
+          sourceMap: true,
+          terserOptions: {
+            ie8: false,
+            mangle: { safari10: true },
+            parse: { ecma: 8 },
+            compress: { ecma: 5 },
+            output: { ecma: 5 },
+            // consider passing terser options here in future
+          },
+          // consider passing more options here in future
         }),
         new OptimizeCSSAssetsPlugin({}),
       ],
