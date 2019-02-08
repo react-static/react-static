@@ -208,14 +208,12 @@ export async function prefetchData(path, { priority } = {}) {
 
   // Defer to the cache first. In dev mode, this should already be available from
   // the call to getRouteInfo
-  if (routeInfo.fullData) {
-    return routeInfo.fullData
+  if (routeInfo.sharedData) {
+    return
   }
 
   // Request and build the props one by one
-  routeInfo.fullData = {
-    ...(routeInfo.data || {}),
-  }
+  routeInfo.sharedData = {}
 
   // Request the template and loop over the routeInfo.sharedHashesByProp, requesting each prop
   await Promise.all(
@@ -264,12 +262,9 @@ export async function prefetchData(path, { priority } = {}) {
       }
 
       // Otherwise, just set it as the key
-      routeInfo.fullData[key] = sharedDataByHash[hash]
+      routeInfo.sharedData[key] = sharedDataByHash[hash]
     })
   )
-
-  // Return the props
-  return routeInfo.fullData
 }
 
 export async function prefetchTemplate(path, { priority } = {}) {
@@ -311,13 +306,12 @@ export async function prefetch(path, options = {}) {
     requestPool.stop()
   }
 
-  let data
   if (type === 'data') {
-    data = await prefetchData(path, options)
+    await prefetchData(path, options)
   } else if (type === 'template') {
     await prefetchTemplate(path, options)
   } else {
-    ;[data] = await Promise.all([
+    await Promise.all([
       prefetchData(path, options),
       prefetchTemplate(path, options),
     ])
@@ -327,8 +321,6 @@ export async function prefetch(path, options = {}) {
   if (options.priority) {
     requestPool.start()
   }
-
-  return data
 }
 
 export function getCurrentRoutePath() {

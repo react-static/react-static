@@ -46,10 +46,10 @@ const RouteData = withStaticInfo(
           )
         }
 
-        // If we haven't requested the routeInfo yet, or it's loading
+        // If we haven't requested the routeInfo and its shared data yet, or it's loading
         // Show a spinner and prefetch the data
         // TODO:suspense - This will become a suspense resource
-        if (!routeInfo || !routeInfo.data) {
+        if (shouldLoadData(routeInfo)) {
           ;(async () => {
             await Promise.all([
               prefetch(routePath, { priority: true }),
@@ -63,11 +63,36 @@ const RouteData = withStaticInfo(
         }
 
         // Otherwise, get it from the routeInfoByPath (subsequent client side)
-        return children(routeInfo.data)
+        // and merge it with the shared data
+        const fullData = {
+          ...routeInfo.data,
+          ...routeInfo.sharedData,
+        }
+
+        return children(fullData)
       }
     }
   )
 )
+
+function shouldLoadData(routeInfo) {
+  if (!routeInfo || !routeInfo.data) {
+    return true
+  }
+
+  return shouldLoadSharedData(routeInfo)
+}
+
+function shouldLoadSharedData(routeInfo) {
+  return hasPropHashes(routeInfo) && !routeInfo.sharedData
+}
+
+function hasPropHashes(routeInfo) {
+  return (
+    routeInfo.sharedHashesByProp &&
+    Object.keys(routeInfo.sharedHashesByProp).length > 0
+  )
+}
 
 export default RouteData
 
