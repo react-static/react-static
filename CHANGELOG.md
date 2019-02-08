@@ -1,3 +1,14 @@
+# 6.3.5
+
+#### New Features
+
+- MDX plugin
+- Typscript Template
+- Non-js extensions
+- Use Terser instead of uglifyJS
+- Fix Shared-Data loading
+- Uprade to React 16.8
+
 # 6.2.0
 
 #### New Features
