@@ -17,7 +17,7 @@ export default (async function extractTemplates(config, opts = {}) {
     }
     route.template = slash(
       path.relative(
-        config.paths.DIST,
+        config.paths.BUILD_ARTIFACTS,
         path.resolve(config.paths.ROOT, route.component)
       )
     )

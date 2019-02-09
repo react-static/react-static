@@ -17,7 +17,7 @@ export default (async function prepareRoutes(config, opts = {}, cb = d => d) {
   if (!opts.silent) console.log('=> Building Routes...')
   // set the static routes
   process.env.REACT_STATIC_ROUTES_PATH = path.join(
-    config.paths.DIST,
+    config.paths.BUILD_ARTIFACTS,
     'react-static-templates.js'
   )
 
