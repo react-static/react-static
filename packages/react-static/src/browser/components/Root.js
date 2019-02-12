@@ -6,6 +6,9 @@ import {
   sharedDataByHash,
   registerTemplateForPath,
   plugins,
+  getCurrentRoutePath,
+  routeErrorByPath,
+  templateErrorByPath,
 } from '../'
 import { getBasePath, makePathAbsolute, makeHookReducer } from '../utils'
 import ErrorBoundary from './ErrorBoundary'
@@ -59,6 +62,16 @@ const Root = withStaticInfo(
         // In SRR and production, synchronously register the template for the
         // initial path
         registerTemplateForPath(path, template)
+
+        // For a 404 route we will register the current route as invalid
+        if (path === '404') {
+          const currentPath = getCurrentRoutePath()
+          // As long as we didn't navigate to the 404.html page directly
+          if (currentPath !== '404') {
+            routeErrorByPath[currentPath] = true
+            templateErrorByPath[currentPath] = true
+          }
+        }
       }
     }
     render() {
