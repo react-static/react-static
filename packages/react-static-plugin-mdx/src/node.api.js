@@ -1,7 +1,4 @@
-export default ({
-  includePaths = [],
-  extensions = ['.md', '.mdx']
-}) => ({
+export default ({ includePaths = [], extensions = ['.md', '.mdx'] }) => ({
   config: config => {
     config.extensions = [...config.extensions, ...extensions]
   },
