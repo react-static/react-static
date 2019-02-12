@@ -1,5 +1,6 @@
 node_modules
 dist
+artifacts
 .history
 .DS_store
 yarn-error.log

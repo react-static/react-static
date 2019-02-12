@@ -55,6 +55,12 @@ export default (async function bundle({
   await fs.remove(config.paths.DIST)
   timeEnd(chalk.green('=> [\u2713] Dist cleaned'))
 
+  // Remove the ARTIFACTS folder
+  console.log('=> Cleaning artifacts...')
+  time(chalk.green('=> [\u2713] Artifacts cleaned'))
+  await fs.remove(config.paths.BUILD_ARTIFACTS)
+  timeEnd(chalk.green('=> [\u2713] Artifacts cleaned'))
+
   // Empty ASSETS folder
   if (config.paths.ASSETS && config.paths.ASSETS !== config.paths.DIST) {
     console.log('=> Cleaning assets...')

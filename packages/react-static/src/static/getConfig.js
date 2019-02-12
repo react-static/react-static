@@ -30,6 +30,7 @@ export const buildConfig = async (config = {}) => {
     src: 'src',
     dist: 'dist',
     temp: 'tmp',
+    buildArtifacts: 'artifacts',
     devDist: 'tmp/dev-server',
     public: 'public',
     plugins: 'plugins',
@@ -60,6 +61,7 @@ export const buildConfig = async (config = {}) => {
     ASSETS,
     PLUGINS: resolvePath(config.paths.plugins),
     TEMP: resolvePath(config.paths.temp),
+    BUILD_ARTIFACTS: resolvePath(config.paths.buildArtifacts),
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath(config.paths.nodeModules),
     EXCLUDE_MODULES:
@@ -136,11 +138,11 @@ export const buildConfig = async (config = {}) => {
   process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollInterval
 
   process.env.REACT_STATIC_TEMPLATES_PATH = nodePath.join(
-    DIST,
+    paths.BUILD_ARTIFACTS,
     'react-static-templates.js'
   )
   process.env.REACT_STATIC_PLUGINS_PATH = nodePath.join(
-    DIST,
+    paths.BUILD_ARTIFACTS,
     'react-static-browser-plugins.js'
   )
   process.env.REACT_STATIC_UNIVERSAL_PATH = require.resolve(
