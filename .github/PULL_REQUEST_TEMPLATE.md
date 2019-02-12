@@ -24,5 +24,5 @@
 ## Checklist:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 - [ ] My change requires a change to the documentation.
-  - [ ] I have updated the documentation accordingly.
+- [ ] I have updated the documentation accordingly.
 - [ ] My changes have tests around them
