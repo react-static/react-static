@@ -179,9 +179,12 @@ export async function getRouteInfo(path, { priority } = {}) {
   } catch (err) {
     // If there was an error, mark the path as errored
     routeErrorByPath[path] = true
-    // Unless we already failed to find info for the 404 page,
+    // Unless we already fetched the 404 page,
     // try to load info for the 404 page
-    if (path !== '404') return getRouteInfo('404', { priority })
+    if (!routeInfoByPath['404'] && !routeErrorByPath['404']) {
+      return getRouteInfo('404', { priority })
+    }
+
     return
   }
   if (!priority) {
@@ -274,7 +277,9 @@ export async function prefetchTemplate(path, { priority } = {}) {
   const routeInfo = await getRouteInfo(path, { priority })
 
   if (routeInfo) {
-    registerTemplateForPath(path, routeInfo.template)
+    // Make sure to use the path as defined in the routeInfo object here.
+    // This will make sure 404 route info returned from getRouteInfo is handled correctly.
+    registerTemplateForPath(routeInfo.path, routeInfo.template)
   }
 
   // Preload the template if available
@@ -284,6 +289,12 @@ export async function prefetchTemplate(path, { priority } = {}) {
     templateErrorByPath[path] = true
     return
   }
+
+  // If we didn't no route info was return, there is nothing more to do here
+  if (!routeInfo) {
+    return
+  }
+
   if (routeInfo && !routeInfo.templateLoaded && Template.preload) {
     if (priority) {
       await Template.preload()
