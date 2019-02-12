@@ -285,7 +285,7 @@ export async function prefetchTemplate(path, { priority } = {}) {
     templateErrorByPath[path] = true
     return
   }
-  if (!routeInfo.templateLoaded && Template.preload) {
+  if (routeInfo && !routeInfo.templateLoaded && Template.preload) {
     if (priority) {
       await Template.preload()
     } else {
