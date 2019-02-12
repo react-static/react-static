@@ -20,6 +20,21 @@ export const withRoutePathContext = Comp => props => (
   </RoutePathContext.Consumer>
 )
 
+const componentCache = new WeakMap()
+function with404Prop(Component) {
+  // If the wrapped Component is currently in cached, return it from cache.
+  if (componentCache.has(Component)) {
+    return componentCache.get(Component)
+  }
+
+  // Otherwise, create a new wrapped Component...
+  const WrappedComponent = props => <Component is404 {...props} />
+
+  // ...and cache it
+  componentCache.set(Component, WrappedComponent)
+  return WrappedComponent
+}
+
 export default withStaticInfo(
   class Routes extends Component {
     static defaultProps = {
@@ -39,61 +54,59 @@ export default withStaticInfo(
       }
       this.forceUpdate()
     }
-    render() {
-      const { children, Loader, staticInfo } = this.props
+    getComponentForPath = routePath => {
+      const { Loader } = this.props
 
-      const routePath = isSSR() ? staticInfo.path : getCurrentRoutePath()
+      // Clean the path
+      routePath = getRoutePath(routePath)
 
-      const getComponentForPath = routePath => {
-        // Clean the path
-        routePath = getRoutePath(routePath)
+      // Try and get the component
+      let Comp = templatesByPath[routePath]
 
-        // Try and get the component
-        let Comp = templatesByPath[routePath]
+      // Detect a 404
+      let is404 = routePath === '404'
 
-        // Detect a 404
-        let is404 = routePath === '404'
-
-        // Detect a failed template
-        if (templateErrorByPath[routePath]) {
-          is404 = true
-          Comp = templatesByPath['404']
-        }
-
-        // Detect an unloaded template
-        // TODO:suspense - This will become a suspense resource
-        if (!Comp) {
-          if (is404) {
-            throw new Error(
-              'This page template could not be found and a 404 template could not be found to fall back on. This means something is terribly wrong and you should probably file an issue!'
-            )
-          }
-          ;(async () => {
-            await Promise.all([
-              prefetch(routePath, { priority: true }),
-              new Promise(resolve =>
-                setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
-              ),
-            ])
-            this.safeForceUpdate()
-          })()
-          return Loader
-        }
-
-        return (newProps = {}) =>
-          Comp ? (
-            <Comp {...newProps} {...(is404 ? { is404: true } : {})} />
-          ) : null
+      // Detect a failed template
+      if (templateErrorByPath[routePath]) {
+        is404 = true
+        Comp = templatesByPath['404']
       }
 
-      const Comp = getComponentForPath(routePath)
+      // Detect an unloaded template
+      // TODO:suspense - This will become a suspense resource
+      if (!Comp) {
+        if (is404) {
+          throw new Error(
+            'This page template could not be found and a 404 template could not be found to fall back on. This means something is terribly wrong and you should probably file an issue!'
+          )
+        }
+        ;(async () => {
+          await Promise.all([
+            prefetch(routePath, { priority: true }),
+            new Promise(resolve =>
+              setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
+            ),
+          ])
+          this.safeForceUpdate()
+        })()
+        return Loader
+      }
+
+      return is404 ? with404Prop(Comp) : Comp
+    }
+
+    render() {
+      const { children, staticInfo } = this.props
+
+      const routePath = isSSR() ? staticInfo.path : getCurrentRoutePath()
+      const Comp = this.getComponentForPath(routePath)
 
       return (
         <RoutePathContext.Provider value={routePath}>
           {children ? (
             children({
               routePath,
-              getComponentForPath,
+              getComponentForPath: this.getComponentForPath,
             })
           ) : (
             <Comp />
