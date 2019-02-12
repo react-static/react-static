@@ -227,25 +227,20 @@ export async function prefetchData(path, { priority } = {}) {
       if (!sharedDataByHash[hash]) {
         // Reuse request for duplicate inflight requests
         try {
+          const staticDataPath = pathJoin(
+            process.env.REACT_STATIC_ASSETS_PATH,
+            `staticData/${hash}.json`
+          )
+
           // If priority, get it immediately
           if (priority) {
-            const { data: prop } = await axios.get(
-              pathJoin(
-                process.env.REACT_STATIC_ASSETS_PATH,
-                `staticData/${hash}.json`
-              )
-            )
+            const { data: prop } = await axios.get(`/${staticDataPath}`)
             sharedDataByHash[hash] = prop
           } else {
             // Non priority, share inflight requests and use pool
             if (!inflightPropHashes[hash]) {
               inflightPropHashes[hash] = requestPool.add(() =>
-                axios.get(
-                  pathJoin(
-                    process.env.REACT_STATIC_ASSETS_PATH,
-                    `staticData/${hash}.json`
-                  )
-                )
+                axios.get(`/${staticDataPath}`)
               )
             }
             const { data: prop } = await inflightPropHashes[hash]
