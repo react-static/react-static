@@ -159,10 +159,8 @@ export async function startDevServer({ config }) {
                 res.json({
                   ...route,
                   sharedHashesByProp: {},
-                  data: {
-                    ...data,
-                    ...sharedData,
-                  },
+                  data,
+                  sharedData,
                 })
               } catch (err) {
                 res.status(500)
