@@ -1,18 +1,14 @@
 ## Browser Plugin API
 
-## `Router`
+## `Root`
 
-Replace or decorate the Router component used in React Static's `Root` component.
-
-- Must be a react or functional component that returns its contents wrapped in a `<React.Fragment>`.
+Replace or decorate the Root component used in React Static.
 
 #### Props
 
-| Prop                 | Description                                                                                            | Required |
-| -------------------- | ------------------------------------------------------------------------------------------------------ | -------- |
-| children             | The children to be rendered in the router                                                              | true     |
-| basepath             | The resolved basepath for the app as set in static.config.js                                           | true     |
-| staticInfo: { path } | The static info for the route currently being exported. This is only available during the `node` stage | true     |
+| Prop     | Description                         | Required |
+| -------- | ----------------------------------- | -------- |
+| children | The main app content to be rendered | true     |
 
 #### Example
 
@@ -22,10 +18,40 @@ For a more detailed example, see the [react-static-plugin-react-router](/package
 // browser.api.js
 
 export default pluginOptions => ({
-  Router: PreviousRouter => ({ children, basepath, staticInfo }) => (
-    <MyCustomRouter basepath={basepath} location={staticInfo.path}>
-      {children}
-    </MyCustomRouter>
-  ),
+  Root: PreviousRoot => ({ children, ...rest }) => {
+    return (
+      // A wrapper div around the app Root!
+      <div {...rest}>
+        <PreviousRoot>{children}</PreviousRoot>
+      </div>
+    )
+  },
+})
+```
+
+## `Routes`
+
+Replace or decorate the Routes component used in React Static.
+
+#### Props
+
+| Prop     | Description                              | Required |
+| -------- | ---------------------------------------- | -------- |
+| children | The current route content to be rendered | true     |
+
+#### Example
+
+```javascript
+// browser.api.js
+
+export default pluginOptions => ({
+  Routes: PreviousRoutes => ({ children, ...rest }) => {
+    return (
+      // A wrapper div around Routes!
+      <div {...rest}>
+        <PreviousRoutes>{children}</PreviousRoutes>
+      </div>
+    )
+  },
 })
 ```

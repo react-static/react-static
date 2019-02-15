@@ -1,31 +1,19 @@
-import { removal } from './browser/utils'
-
 // Helmet
 export { Helmet as Head } from 'react-helmet'
 
 // React-Static
+export { Root } from './browser/components/Root'
+export { Routes } from './browser/components/Routes'
+export { useRouteData } from './browser/hooks/useRouteData'
+export { useSiteData } from './browser/hooks/useSiteData'
+export { usePrefetch } from './browser/hooks/usePrefetch'
+export { useScroller } from './browser/hooks/useScroller'
+export { useRoutePath } from './browser/hooks/useRoutePath'
+export { useStaticInfo } from './browser/hooks/useStaticInfo'
+export { useLocation } from './browser/hooks/useLocation'
+export { useBasepath } from './browser/hooks/useBasepath'
 export * from './browser/'
-export { default as scrollTo } from './browser/utils/scrollTo'
-export { removal, getRoutePath, getBasePath } from './browser/utils'
-export {
-  default as RouteData,
-  withRouteData,
-} from './browser/components/RouteData'
-export {
-  default as SiteData,
-  withSiteData,
-} from './browser/components/SiteData'
-export { default as Prefetch } from './browser/components/Prefetch'
-export { default as Routes } from './browser/components/Routes'
-export { default as Root } from './browser/components/Root'
 
-// Migration Hints
-export const Loading = () => {
-  removal('Loading')
-}
-export const withLoading = () => {
-  removal('withLoading')
-}
-export const onLoading = () => {
-  removal('onLoading')
-}
+// Utils
+export { getRoutePath } from './browser/utils'
+export { default as scrollTo } from './browser/utils/scrollTo'

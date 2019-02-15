@@ -90,9 +90,7 @@ function startPreloader() {
         const href = el.getAttribute('href')
         const shouldPrefetch = !(el.getAttribute('prefetch') === 'false')
         if (href && shouldPrefetch) {
-          onVisible(el, () => {
-            prefetch(href)
-          })
+          onVisible(el, () => prefetch(href))
         }
       })
     }
@@ -331,12 +329,5 @@ export async function prefetch(path, options = {}) {
   // If it was priority, start the queue again
   if (options.priority) {
     requestPool.start()
-  }
-}
-
-export function getCurrentRoutePath() {
-  // If in the browser, use the window
-  if (typeof document !== 'undefined') {
-    return getRoutePath(decodeURIComponent(window.location.href))
   }
 }

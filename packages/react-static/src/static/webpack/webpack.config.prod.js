@@ -116,6 +116,9 @@ function common(config) {
         ),
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
+      alias: {
+        react: path.resolve('./node_modules/react'),
+      },
     },
     externals: [],
     target: undefined,

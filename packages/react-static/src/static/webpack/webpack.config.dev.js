@@ -47,6 +47,9 @@ export default function({ config }) {
         ...[NODE_MODULES, SRC, DIST].map(d => path.relative(process.cwd(), d)),
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
+      alias: {
+        react: path.resolve('./node_modules/react'),
+      },
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),

@@ -194,19 +194,9 @@ function flattenHooks(plugins, hook) {
   return hooks.filter(Boolean)
 }
 
-export function isSSR() {
-  return typeof document === 'undefined'
-}
-
-export function getBasePath() {
-  return process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
-    ? ''
-    : process.env.REACT_STATIC_BASE_PATH
-}
-
 export function isPrefetchableRoute(path) {
-  // when rendering static pages we dont need this et all
-  if (isSSR()) {
+  // when rendering static pages we dont need this at all
+  if (typeof document === 'undefined') {
     return false
   }
 

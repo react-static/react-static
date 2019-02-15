@@ -1,9 +1,13 @@
 import React from 'react'
+import { useBasepath, useStaticInfo } from 'react-static'
 import { BrowserRouter, StaticRouter } from 'react-router-dom'
 
 export default ({ RouterProps: userRouterProps = {} }) => ({
-  Router: () => ({ children, basepath, staticInfo }) => {
+  Root: PreviousRoot => ({ children }) => {
     let Router
+    const basepath = useBasepath()
+    const staticInfo = useStaticInfo()
+
     const routerProps = {
       basepath, // Required
     }
@@ -18,9 +22,11 @@ export default ({ RouterProps: userRouterProps = {} }) => ({
       routerProps.context = {} // Required
     }
     return (
-      <Router {...routerProps} {...userRouterProps}>
-        <React.Fragment>{children}</React.Fragment>
-      </Router>
+      <PreviousRoot>
+        <Router {...routerProps} {...userRouterProps}>
+          <React.Fragment>{children}</React.Fragment>
+        </Router>
+      </PreviousRoot>
     )
   },
 })
