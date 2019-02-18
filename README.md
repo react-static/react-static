@@ -46,6 +46,8 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 - [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
 - [StaticGen.com](https://staticgen.com) ([source](https://github.com/netlify/staticgen))
+- [Starbucks: Careers Hub](https://www.starbucks.com/careers/)([source](https://twitter.com/codehitchhiker/status/1097558315020832774))
+- [Intuit Turbo](http://turbo.com)
 - [Nozzle.io](https://nozzle.io) ([source](https://github.com/nozzle/nozzle.io))
 - [Timber.io](https://timber.io)
 - [TannerLinsley.com](https://tannerlinsley.com) ([source](https://github.com/tannerlinsley/tannerlinsley.com))
@@ -61,7 +63,6 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 - [NYC Vintage Map](https://nycvintagemap.com)
 - [Eldar Labs - Utilities and Productivity Tools](https://eldarlabs.com)
 - [Dan Webb - Personal Website](https://danwebb.co) ([source](https://github.com/DanWebb/danwebb.co))
-- [Intuit Turbo](http://turbo.com)
 - [Messenger Corp. client asset ordering](http://chartwells.messengercorp.com/)
 - [Digital Neighborhood watch service](https://neighborhoodwatch.io/)
 - [Carmen Marcos Art - Artist Portfolio](http://carmen-marcos.art/) ([source](https://github.com/rafacm/carmen-marcos-art-portfolio))
