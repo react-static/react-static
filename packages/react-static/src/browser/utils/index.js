@@ -210,23 +210,18 @@ export function isPrefetchableRoute(path) {
     return false
   }
 
-  // script links
-  // eslint-disable-next-line
-  if (path.indexOf('javascript:') === 0) {
-    return false
-  }
-
   const self = document.location
   let link
 
   try {
-    link = new URL(path)
+    const baseURL = `${self.protocol}//${self.hostname + self.pathname}`
+    link = new URL(path, baseURL)
   } catch (e) {
-    // if a path is not parsable by URL its a local relative path
-    return true
+    // Return false on invalid URLs
+    return false
   }
 
-  // if the hostname/port/proto doesnt match its not a route link
+  // if the hostname/port/proto doesn't match its not a route link
   if (
     self.hostname !== link.hostname ||
     self.port !== link.port ||
