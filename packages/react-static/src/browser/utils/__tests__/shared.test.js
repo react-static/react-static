@@ -8,6 +8,7 @@ import {
   trimTrailingSlashes,
   trimDoubleSlashes,
   makePathAbsolute,
+  getFullRouteData,
   isSSR,
   isPrefetchableRoute,
 } from '../'
@@ -138,6 +139,31 @@ describe('browser/utils', () => {
     })
     it('should make path absolute', () => {
       expect(makePathAbsolute('foo/bar')).toEqual('/foo/bar')
+    })
+  })
+  describe('getFullRouteData', () => {
+    it('should return the data merged with the shared data', () => {
+      const routeInfo = {
+        data: { foo: 'foo' },
+        sharedData: { bar: 'bar' },
+      }
+      const expected = { foo: 'foo', bar: 'bar' }
+      expect(getFullRouteData(routeInfo)).toEqual(expected)
+    })
+    it('should return the data when no shared data was available', () => {
+      const routeInfo = {
+        data: { foo: 'foo' },
+      }
+      const expected = { foo: 'foo' }
+      expect(getFullRouteData(routeInfo)).toEqual(expected)
+    })
+    it('should override the shared data with the route data for duplicate keys', () => {
+      const routeInfo = {
+        data: { foo: 'foo' },
+        sharedData: { foo: 'bar', bar: 'bar' },
+      }
+      const expected = { foo: 'foo', bar: 'bar' }
+      expect(getFullRouteData(routeInfo)).toEqual(expected)
     })
   })
   describe('isPrefetchableRoute', () => {

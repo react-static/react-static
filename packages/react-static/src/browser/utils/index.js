@@ -237,3 +237,10 @@ export function isPrefetchableRoute(path) {
 
   return true
 }
+
+export function getFullRouteData(routeInfo) {
+  return {
+    ...(routeInfo.sharedData ? routeInfo.sharedData : {}),
+    ...routeInfo.data,
+  }
+}
