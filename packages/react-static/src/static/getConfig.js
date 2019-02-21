@@ -23,7 +23,7 @@ const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index'
 const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 
-export const buildConfig = async (config = {}) => {
+export const buildConfig = (config = {}) => {
   // path defaults
   config.paths = {
     root: nodePath.resolve(process.cwd()),
@@ -259,20 +259,18 @@ export const buildConfig = async (config = {}) => {
 
   config.plugins = config.plugins.map(resolvePlugin)
 
-  const configHook = makeHookReducer(config.plugins, 'config')
-  config = await configHook(config)
-
-  return config
+  const configHook = makeHookReducer(config.plugins, 'config', { sync: true })
+  return configHook(config)
 }
 
-const buildConfigFromPath = async configPath => {
+const buildConfigFromPath = configPath => {
   delete require.cache[configPath]
   const config = require(configPath).default
   return buildConfig(config)
 }
 
 // Retrieves the static.config.js from the current project directory
-export default (async function getConfig(
+export default (function getConfig(
   configPath = DEFAULT_PATH_FOR_STATIC_CONFIG,
   subscription
 ) {
@@ -284,19 +282,19 @@ export default (async function getConfig(
   if (noConfig) {
     if (subscription) {
       return new Promise(async () => {
-        subscription(await buildConfig(defaultConfig))
+        subscription(buildConfig(defaultConfig))
       })
     }
     return buildConfig(defaultConfig)
   }
 
-  const config = await buildConfigFromPath(resolvedPath || configPath)
+  const config = buildConfigFromPath(resolvedPath || configPath)
 
   if (subscription) {
     // If subscribing, return a never ending promise
     return new Promise(() => {
       chokidar.watch(resolvedPath).on('all', async () => {
-        subscription(await buildConfigFromPath(resolvedPath))
+        subscription(buildConfigFromPath(resolvedPath))
       })
     })
   }
