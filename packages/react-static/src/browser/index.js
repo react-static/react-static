@@ -5,6 +5,7 @@ import {
   getRoutePath,
   pathJoin,
   isPrefetchableRoute,
+  makePathAbsolute,
 } from './utils'
 import onVisible from './utils/Visibility'
 
@@ -231,16 +232,17 @@ export async function prefetchData(path, { priority } = {}) {
             process.env.REACT_STATIC_ASSETS_PATH,
             `staticData/${hash}.json`
           )
+          const absoluteStaticDataPath = makePathAbsolute(staticDataPath);
 
           // If priority, get it immediately
           if (priority) {
-            const { data: prop } = await axios.get(`/${staticDataPath}`)
+            const { data: prop } = await axios.get(absoluteStaticDataPath)
             sharedDataByHash[hash] = prop
           } else {
             // Non priority, share inflight requests and use pool
             if (!inflightPropHashes[hash]) {
               inflightPropHashes[hash] = requestPool.add(() =>
-                axios.get(`/${staticDataPath}`)
+                axios.get(absoluteStaticDataPath)
               )
             }
             const { data: prop } = await inflightPropHashes[hash]
