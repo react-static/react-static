@@ -140,5 +140,8 @@
       "enzyme-to-json/serializer"
     ]
   },
-  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
+  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4",
+  "peerDependencies": {
+    "react-hot-loader": "^4.3.12"
+  }
 }
