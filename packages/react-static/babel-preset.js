@@ -4,6 +4,8 @@ module.exports = (api, { external, modules, helpers } = {}) => {
   const { NODE_ENV, BABEL_ENV } = process.env
 
   const PRODUCTION = (BABEL_ENV || NODE_ENV) === 'production'
+  
+  api.cache(true)
 
   return {
     ...(external

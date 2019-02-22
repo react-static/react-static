@@ -4,6 +4,7 @@ import { prefetch, routeInfoByPath, routeErrorByPath } from '../'
 import Spinner from './Spinner'
 import { withStaticInfo } from './StaticInfo'
 import { withRoutePathContext } from './Routes'
+import { getFullRouteData } from '../utils'
 
 let instances = []
 
@@ -64,12 +65,9 @@ const RouteData = withStaticInfo(
 
         // Otherwise, get it from the routeInfoByPath (subsequent client side)
         // and merge it with the shared data
-        const fullData = {
-          ...routeInfo.data,
-          ...routeInfo.sharedData,
-        }
+        const routeData = getFullRouteData(routeInfo)
 
-        return children(fullData)
+        return children(routeData)
       }
     }
   )
