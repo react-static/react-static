@@ -20,7 +20,7 @@ process.on('message', async payload => {
 
     // Use the node version of the app created with webpack
     const Comp = require(glob.sync(
-      path.resolve(config.paths.ASSETS, 'static.*.js')
+      path.resolve(config.paths.BUILD_ARTIFACTS, 'static-app.js')
     )[0]).default
     // Retrieve the document template
     const DocumentTemplate = config.Document || DefaultDocument

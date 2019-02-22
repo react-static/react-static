@@ -1,4 +1,11 @@
-export default function() {
+export default function({ stage, isNode }) {
+  if (stage === 'node' || isNode) {
+    return {
+      loader: 'url-loader',
+      exclude: [/\.js$/, /\.html$/, /\.json$/],
+      // Don't generate extra files during node build
+    }
+  }
   return {
     loader: 'url-loader',
     exclude: [/\.js$/, /\.html$/, /\.json$/],
