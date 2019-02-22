@@ -15,7 +15,7 @@ import { createIndexFilePlaceholder } from '../utils'
 let cleaned
 let indexCreated
 
-export default (async function start({ config: configPath, debug } = {}) {
+export default (async function start({ config: configPath, debug, data } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined') {
     process.env.NODE_ENV = 'development'
@@ -52,7 +52,7 @@ export default (async function start({ config: configPath, debug } = {}) {
 
     config = await prepareBrowserPlugins(config)
 
-    await prepareRoutes(config, { dev: true }, async config => {
+    await prepareRoutes(config, { dev: true, data }, async config => {
       await extractTemplates(config, { dev: true })
       await generateTemplates(config)
       reloadRoutes()

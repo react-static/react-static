@@ -17,6 +17,7 @@ export default (async function bundle({
   config: originalConfig,
   staging,
   debug,
+  data,
 } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
@@ -70,7 +71,7 @@ export default (async function bundle({
   }
 
   config = await prepareBrowserPlugins(config)
-  config = await prepareRoutes(config)
+  config = await prepareRoutes(config, { data })
   await extractTemplates(config)
   await generateTemplates(config)
 
