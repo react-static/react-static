@@ -246,14 +246,15 @@ export async function startDevServer({ config }) {
   // Start the messages socket
   const socket = io()
 
-  resolvedReloadRoutes = async (paths, data) => prepareRoutes(config, { dev: true, silent: true, data }, async config => {
-    if (!paths) {
-      paths = config.routes.map(route => route.path)
-    }
-    paths = paths.map(getRoutePath)
-    reloadWebpackRoutes(config)
-    socket.emit('message', { type: 'reloadRoutes', paths })
-  })
+  resolvedReloadRoutes = async (paths, data) =>
+    prepareRoutes(config, { dev: true, silent: true, data }, async config => {
+      if (!paths) {
+        paths = config.routes.map(route => route.path)
+      }
+      paths = paths.map(getRoutePath)
+      reloadWebpackRoutes(config)
+      socket.emit('message', { type: 'reloadRoutes', paths })
+    })
 
   await new Promise((resolve, reject) => {
     devServer.listen(port, null, err => {
