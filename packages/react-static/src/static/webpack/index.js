@@ -246,7 +246,7 @@ export async function startDevServer({ config }) {
   // Start the messages socket
   const socket = io()
 
-  resolvedReloadRoutes = async (paths, data) =>
+  resolvedReloadRoutes = async (paths, { data } = {}) =>
     prepareRoutes(config, { dev: true, silent: true, data }, async config => {
       if (!paths) {
         paths = config.routes.map(route => route.path)
