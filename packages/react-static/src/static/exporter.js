@@ -22,7 +22,7 @@ export default async ({
   setIgnorePath(config.paths.DIST)
 
   const Comp = require(glob.sync(
-    path.resolve(config.paths.ASSETS, 'static.*.js')
+    path.resolve(config.paths.BUILD_ARTIFACTS, 'static-app.js')
   )[0]).default
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument

@@ -134,11 +134,13 @@ export default function({ config, isNode }) {
   if (!isNode) return result
 
   // Node only!!!
-  result.output.filename = 'static.[chunkHash:8].js'
+  result.output.filename = 'static-app.js'
+  result.output.path = config.paths.BUILD_ARTIFACTS
   result.output.libraryTarget = 'umd'
   result.optimization.minimize = false
   result.optimization.minimizer = []
   result.target = 'node'
+  result.devtool = false
   result.externals = [
     nodeExternals({
       whitelist: [

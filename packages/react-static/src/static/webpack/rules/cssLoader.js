@@ -37,7 +37,7 @@ function initCSSLoader() {
 }
 
 export default function({ stage, isNode }) {
-  let cssLoader = initCSSLoader(stage)
+  let cssLoader = initCSSLoader()
   if (stage === 'node' || isNode) {
     return {
       test: /\.css$/,
