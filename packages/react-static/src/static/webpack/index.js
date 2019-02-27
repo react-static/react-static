@@ -25,7 +25,7 @@ const reloadRoutes = (...args) => {
     // Not ready yet, so just wait
     return
   }
-  resolvedReloadRoutes(...args)
+  return resolvedReloadRoutes(...args)
 }
 
 export { reloadRoutes }
@@ -247,7 +247,7 @@ export async function startDevServer({ config }) {
   const socket = io()
 
   resolvedReloadRoutes = async paths => {
-    await prepareRoutes(config, { dev: true, silent: true }, async config => {
+    return prepareRoutes(config, { dev: true, silent: true }, async config => {
       if (!paths) {
         paths = config.routes.map(route => route.path)
       }
