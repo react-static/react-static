@@ -215,7 +215,7 @@ export const buildConfig = async (config = {}) => {
     // TODO: We have to do this because we don't have a good mock for process.cwd() :(
     if (!location) {
       throw new Error(
-        `Oh crap! Could not find a plugin directory for the plugin: "${location}". We must bail!`
+        `Oh crap! Could not find a plugin directory for the plugin: "${originalLocation}". We must bail!`
       )
     }
 
