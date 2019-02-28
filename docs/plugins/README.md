@@ -48,8 +48,8 @@ Order of execution:
 
 Plugins are resolved in this order:
 
-1.  Plugins with an absolute path. Eg. `~/path/to/my/plugin.js` would resolve to that path.
-2.  Plugins found in the `/plugins` directory of your project root. Eg. `myPlugin` would resolve to `/plugins/myPlugins.js`.
+1.  Plugins with an absolute path. Eg. `~/path/to/my/my-plugin` would resolve to that path.
+2.  Plugins found in the `/plugins` directory of your project root. Eg. `my-plugin` would resolve to `/plugins/my-plugin`.
 3.  Plugins found in `node_modules`. Eg. `react-static-plugin-emotion` would resolve to `node_modules/react-static-plugin-emotion`.
 
 ## Plugin Options
