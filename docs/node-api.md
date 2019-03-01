@@ -34,7 +34,7 @@ Creates a new react-static project.
 Starts the development server.
 
 - Arguments
-  - `config: object || string` - The config object to use, or the path of the `static.config.js` file you wish to use.
+  - `config: string` - The path of the `static.config.js` file you wish to use.
 - Returns a `Promise` that will **never resolve**. The process must be exited by the user to stop the server.
 
 ### `build`
@@ -42,7 +42,7 @@ Starts the development server.
 Builds your site for production. Outputs to a `dist` directory in your project.
 
 - Arguments
-  - `config: object || string` - The config object to use, or the path of the `static.config.js` file you wish to use.
+  - `config: string` - The path of the `static.config.js` file you wish to use.
   - `staging` - When `true`, no siteRoot replacement or absolute URL optimizations are performed, allowing a production build of your site to function on localhost more easily. Use this argument to test a production build locally.
   - `debug` - When `true`, your build will **not** be `uglified` allowing you to debug production errors (as long as they are unrelated to minification or uglification)
 - Returns a `Promise`

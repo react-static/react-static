@@ -2,7 +2,6 @@
 
 const { setIgnorePath } = require('../utils/binHelper')
 
-import glob from 'glob'
 import path from 'path'
 
 import { DefaultDocument } from './RootComponents'
@@ -19,11 +18,12 @@ export default async ({
   const htmlProgress = progress(routes.length)
   // Use the node version of the app created with webpack
 
-  setIgnorePath(config.paths.DIST)
+  setIgnorePath(config.paths.BUILD_ARTIFACTS)
 
-  const Comp = require(glob.sync(
-    path.resolve(config.paths.BUILD_ARTIFACTS, 'static-app.js')
-  )[0]).default
+  const Comp = require(path.resolve(
+    config.paths.BUILD_ARTIFACTS,
+    'static-app.js'
+  )).default
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
 
