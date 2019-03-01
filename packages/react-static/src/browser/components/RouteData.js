@@ -8,8 +8,10 @@ import { getFullRouteData } from '../utils'
 
 let instances = []
 
-global.reloadAll = () => {
-  instances.forEach(instance => instance.safeForceUpdate())
+if (process.env.REACT_STATIC_ENV === 'development') {
+  global.reloadAll = () => {
+    instances.forEach(instance => instance.safeForceUpdate())
+  }
 }
 
 const RouteData = withStaticInfo(
