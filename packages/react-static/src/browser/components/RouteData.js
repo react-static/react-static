@@ -53,9 +53,11 @@ const RouteData = withStaticInfo(
         // Show a spinner and prefetch the data
         // TODO:suspense - This will become a suspense resource
         if (shouldLoadData(routeInfo)) {
+          // To make sure route info will be fetched for 404 pages we should use the returned route info path (if any) instead of the original path
+          const targetRouteInfoPath = routeInfo ? routeInfo.path : routePath
           ;(async () => {
             await Promise.all([
-              prefetch(routeInfo.path, { priority: true }),
+              prefetch(targetRouteInfoPath, { priority: true }),
               new Promise(resolve =>
                 setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
               ),
