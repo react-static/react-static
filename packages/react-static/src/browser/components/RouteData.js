@@ -55,7 +55,7 @@ const RouteData = withStaticInfo(
         if (shouldLoadData(routeInfo)) {
           ;(async () => {
             await Promise.all([
-              prefetch(routePath, { priority: true }),
+              prefetch(routeInfo.path, { priority: true }),
               new Promise(resolve =>
                 setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
               ),
