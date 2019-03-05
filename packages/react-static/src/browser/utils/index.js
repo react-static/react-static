@@ -204,17 +204,22 @@ export function getBasePath() {
     : process.env.REACT_STATIC_BASE_PATH
 }
 
+function buildBaseURL (baseLocation) {
+  const portPostfix = baseLocation.port ? `:${ baseLocation.port }` : ''
+  return `${baseLocation.protocol}//${baseLocation.hostname}${portPostfix}${baseLocation.pathname}`
+}
+
 export function isPrefetchableRoute(path) {
   // when rendering static pages we dont need this et all
   if (isSSR()) {
     return false
   }
 
-  const self = document.location
+  const baseLocation = document.location
   let link
 
   try {
-    const baseURL = `${self.protocol}//${self.hostname + self.pathname}`
+    const baseURL = buildBaseURL(baseLocation)
     link = new URL(path, baseURL)
   } catch (e) {
     // Return false on invalid URLs
@@ -223,9 +228,9 @@ export function isPrefetchableRoute(path) {
 
   // if the hostname/port/proto doesn't match its not a route link
   if (
-    self.hostname !== link.hostname ||
-    self.port !== link.port ||
-    self.protocol !== link.protocol
+    baseLocation.hostname !== link.hostname ||
+    baseLocation.port !== link.port ||
+    baseLocation.protocol !== link.protocol
   ) {
     return false
   }
