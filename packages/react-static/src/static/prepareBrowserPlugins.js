@@ -1,8 +1,5 @@
 import generateBrowserPlugins from './generateBrowserPlugins'
-import buildXML from './buildXML'
 import { makeHookReducer } from '../utils'
-
-export { buildXML }
 
 export default (async function prepareBrowserPlugins(config) {
   const beforePrepareBrowserPlugins = makeHookReducer(

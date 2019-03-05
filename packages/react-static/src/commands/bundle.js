@@ -42,13 +42,6 @@ export default (async function bundle({
   }
   console.log('')
 
-  if (!config.siteRoot) {
-    console.log(
-      "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute urls and also required to automatically generate a sitemap.xml."
-    )
-    console.log('')
-  }
-
   // Remove the DIST folder
   console.log('=> Cleaning dist...')
   time(chalk.green('=> [\u2713] Dist cleaned'))

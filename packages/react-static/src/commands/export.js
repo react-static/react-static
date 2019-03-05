@@ -1,11 +1,12 @@
 import {
   exportRoutes,
-  buildXML,
   prepareRoutes,
   getConfig,
   importClientStats,
   extractTemplates,
 } from '../static'
+
+import { makeHookMapper } from '../utils'
 
 export default async ({
   config: originalConfig,
@@ -69,9 +70,10 @@ export default async ({
     process.exit(1)
   }
 
-  await buildXML({ config })
+  const afterExport = makeHookMapper(config.plugins, 'afterExport')
 
-  if (config.onBuild) {
-    await config.onBuild({ config })
-  }
+  await afterExport({
+    config,
+    clientStats,
+  })
 }

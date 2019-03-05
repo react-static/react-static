@@ -2,10 +2,7 @@ import path from 'path'
 import chalk from 'chalk'
 
 import getRoutes from './getRoutes'
-import buildXML from './buildXML'
 import { makeHookReducer, time, timeEnd } from '../utils'
-
-export { buildXML }
 
 export default (async function prepareRoutes(config, opts = {}, cb = d => d) {
   const beforePrepareRoutes = makeHookReducer(

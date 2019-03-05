@@ -256,6 +256,25 @@ export default pluginOptions => ({
 })
 ```
 
+## `afterExport: Function`
+
+After a completed build and export, run any asynchronous function.
+
+- Arguments:
+  - `options{}`
+    - `config` - The user's final `config` object
+    - `clientStats` - The client stats from the build
+
+```javascript
+// node.api.js
+
+export default pluginOptions => ({
+  afterExport: async ({ config, clientStats }) => {
+    // Do stuff!
+  },
+})
+```
+
 ## `plugins: Array(plugin)`
 
 An array of plugins that this plugin depends on. Follows the same format as `static.config.js` does for importing plugins and options.

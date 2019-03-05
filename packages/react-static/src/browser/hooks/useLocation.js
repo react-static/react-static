@@ -3,12 +3,12 @@ import onLocationChange from '../utils/onLocationChange'
 
 export const useLocation = () => {
   const [location, setLocation] = useState()
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
   useEffect(
     () =>
       onLocationChange(location => {
         setLocation(location)
-        setCount(old => old + 1)
+        // setCount(old => old + 1)
       }),
     []
   )

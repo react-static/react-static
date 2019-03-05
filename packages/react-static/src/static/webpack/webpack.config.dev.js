@@ -1,4 +1,5 @@
 import webpack from 'webpack'
+import resolveFrom from 'resolve-from'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
@@ -48,7 +49,8 @@ export default function({ config }) {
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
-        react: path.resolve('./node_modules/react'),
+        react: resolveFrom(process.cwd(), 'react'),
+        'react-dom': resolveFrom(process.cwd(), 'react-dom'),
       },
     },
     plugins: [

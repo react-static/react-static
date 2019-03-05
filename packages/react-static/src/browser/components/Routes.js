@@ -12,6 +12,7 @@ import {
 } from '../'
 import { makeHookReducer } from '../utils'
 import { useStaticInfo } from '../hooks/useStaticInfo'
+import { useLocation } from '../hooks/useLocation'
 import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
 
 const RoutesHook = makeHookReducer(plugins, 'Routes', { sync: true })
@@ -71,9 +72,11 @@ export const Routes = ({ routePath }) => {
     is404 = true
     Comp = templatesByPath['404']
     // Mark the route as errored
-    routeErrorByPath[routePath] = true
-    templateErrorByPath[routePath] = true
+    // routeErrorByPath[routePath] = true
+    // templateErrorByPath[routePath] = true
   }
+
+  console.log({ Comp, routePath, is404, templateErrorByPath })
 
   if (!Comp) {
     if (is404) {

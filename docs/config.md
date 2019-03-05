@@ -18,7 +18,6 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [devServer](#devserver)
 - [paths](#paths)
 - [onStart](#onstart)
-- [onBuild](#onbuild)
 - [bundleAnalyzer](#bundleanalyzer)
 - [outputFileRate](#outputfilerate)
 - [prefetchRate](#prefetchrate)
@@ -272,21 +271,6 @@ Example:
 export default {
   onStart: ({ devServerConfig }) => {
     console.log('The dev server is working!')
-  },
-}
-```
-
-### `onBuild`
-
-A utility function that runs when the a build completes successfully.
-
-Example:
-
-```javascript
-// static.config.js
-export default {
-  onBuild: async () => {
-    console.log('Everything is done building!')
   },
 }
 ```
