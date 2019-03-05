@@ -35,7 +35,7 @@ export default (async function buildHTML({
     // Multi-threaded export
     const threads = Math.min(cores, config.maxThreads)
     const htmlProgress = progress(routes.length)
-    console.log(`=> Exporting HTML across ${cores} threads...`)
+    console.log(`=> Exporting HTML across ${threads} threads...`)
 
     const exporters = []
     for (let i = 0; i < threads; i++) {

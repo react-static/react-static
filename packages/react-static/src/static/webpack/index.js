@@ -25,7 +25,7 @@ const reloadRoutes = (...args) => {
     // Not ready yet, so just wait
     return
   }
-  resolvedReloadRoutes(...args)
+  return resolvedReloadRoutes(...args)
 }
 
 export { reloadRoutes }
@@ -246,8 +246,8 @@ export async function startDevServer({ config }) {
   // Start the messages socket
   const socket = io()
 
-  resolvedReloadRoutes = async paths => {
-    await prepareRoutes(config, { dev: true, silent: true }, async config => {
+  resolvedReloadRoutes = async paths =>
+    prepareRoutes(config, { dev: true, silent: true }, async config => {
       if (!paths) {
         paths = config.routes.map(route => route.path)
       }
@@ -255,7 +255,6 @@ export async function startDevServer({ config }) {
       reloadWebpackRoutes(config)
       socket.emit('message', { type: 'reloadRoutes', paths })
     })
-  }
 
   await new Promise((resolve, reject) => {
     devServer.listen(port, null, err => {

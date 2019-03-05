@@ -8,6 +8,9 @@ import {
   trimTrailingSlashes,
   trimDoubleSlashes,
   makePathAbsolute,
+  getFullRouteData,
+  isSSR,
+  isPrefetchableRoute,
 } from '../'
 
 describe('browser/utils', () => {
@@ -136,6 +139,70 @@ describe('browser/utils', () => {
     })
     it('should make path absolute', () => {
       expect(makePathAbsolute('foo/bar')).toEqual('/foo/bar')
+    })
+  })
+  describe('getFullRouteData', () => {
+    it('should return the data merged with the shared data', () => {
+      const routeInfo = {
+        data: { foo: 'foo' },
+        sharedData: { bar: 'bar' },
+      }
+      const expected = { foo: 'foo', bar: 'bar' }
+      expect(getFullRouteData(routeInfo)).toEqual(expected)
+    })
+    it('should return the data when no shared data was available', () => {
+      const routeInfo = {
+        data: { foo: 'foo' },
+      }
+      const expected = { foo: 'foo' }
+      expect(getFullRouteData(routeInfo)).toEqual(expected)
+    })
+    it('should override the shared data with the route data for duplicate keys', () => {
+      const routeInfo = {
+        data: { foo: 'foo' },
+        sharedData: { foo: 'bar', bar: 'bar' },
+      }
+      const expected = { foo: 'foo', bar: 'bar' }
+      expect(getFullRouteData(routeInfo)).toEqual(expected)
+    })
+  })
+  describe('isPrefetchableRoute', () => {
+    it('should return false during SSR', () => {
+      const originalDocument = Object.getOwnPropertyDescriptor(
+        global,
+        'document'
+      )
+      Object.defineProperty(global, 'document', {})
+
+      expect(isSSR()).toBe(true)
+      expect(isPrefetchableRoute('/foo')).toBe(false)
+
+      Object.defineProperty(global, 'document', originalDocument)
+    })
+    it('should return false for script links', () => {
+      // eslint-disable-next-line no-script-url
+      expect(isPrefetchableRoute('javascript:foo')).toBe(false)
+    })
+    it('should return false for links with a different protocol', () => {
+      expect(isPrefetchableRoute('mailto:foo')).toBe(false)
+    })
+    it('should return false for links with a different port', () => {
+      expect(isPrefetchableRoute('http://foo:1337/bar')).toBe(false)
+    })
+    it('should return true for relative paths', () => {
+      expect(isPrefetchableRoute('foo')).toBe(true)
+    })
+    it('should return true for relative paths on the current level', () => {
+      expect(isPrefetchableRoute('./foo')).toBe(true)
+    })
+    it('should return true for relative paths one level up', () => {
+      expect(isPrefetchableRoute('../foo')).toBe(true)
+    })
+    it('should return true for absolute paths', () => {
+      expect(isPrefetchableRoute('/foo')).toBe(true)
+    })
+    it('should return false for absolute URLs without protocol', () => {
+      expect(isPrefetchableRoute('//www.example.com')).toBe(false)
     })
   })
 })

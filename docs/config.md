@@ -214,6 +214,8 @@ Since JSX is now being used in this static.config.js file, you need to import Re
 
 ### `webpack`
 
+> ⚠️Warning - this field in `static.config.js` may be outdated - [use `node.api.js` instead](https://github.com/nozzle/react-static/blob/master/docs/plugins/node-api.md#webpack-functionfunction).
+
 To configure webpack, extend the build system, or make modifications, see the [Plugin API section](#plugin-api)
 
 ### `devServer`
@@ -256,6 +258,7 @@ export default {
     devDist: 'tmp/dev-server', // The development scratch directory.
     public: 'public', // The public directory (files copied to dist during build)
     assets: 'dist', // The output directory for bundled JS and CSS
+    buildArtifacts: 'artifacts', // The output directory for generated (internal) resources
   },
 }
 ```

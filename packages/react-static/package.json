@@ -52,7 +52,6 @@
     "cors": "^2.8.5",
     "css-loader": "^2.0.1",
     "download-git-repo": "^1.1.0",
-    "eslint-config-react-tools": "^1.0.0",
     "extract-css-chunks-webpack-plugin": "^3.2.1",
     "file-loader": "2.0.0",
     "fs-extra": "^7.0.1",
@@ -109,6 +108,7 @@
     "enzyme-to-json": "^3.3.4",
     "eslint": "^5.10.0",
     "eslint-config-prettier": "^3.3.0",
+    "eslint-config-react-tools": "^1.0.0",
     "eslint-plugin-babel": "^5.1.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
@@ -139,5 +139,8 @@
       "enzyme-to-json/serializer"
     ]
   },
-  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
+  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4",
+  "peerDependencies": {
+    "react-hot-loader": "^4.3.12"
+  }
 }
