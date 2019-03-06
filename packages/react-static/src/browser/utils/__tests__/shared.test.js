@@ -167,41 +167,123 @@ describe('browser/utils', () => {
     })
   })
   describe('isPrefetchableRoute', () => {
-    it('should return false during SSR', () => {
-      const originalDocument = Object.getOwnPropertyDescriptor(
+    let originalDocumentDescriptor
+    let getDocumentMock
+
+    beforeEach(() => {
+      originalDocumentDescriptor = Object.getOwnPropertyDescriptor(
         global,
         'document'
       )
-      Object.defineProperty(global, 'document', {})
+
+      getDocumentMock = jest.fn()
+
+      Object.defineProperty(global, 'document', {
+        get: getDocumentMock,
+      })
+    })
+
+    afterEach(() => {
+      Object.defineProperty(global, 'document', originalDocumentDescriptor)
+    })
+
+    it('should return false during SSR', () => {
+      getDocumentMock.mockReturnValue(undefined)
 
       expect(isSSR()).toBe(true)
       expect(isPrefetchableRoute('/foo')).toBe(false)
-
-      Object.defineProperty(global, 'document', originalDocument)
     })
     it('should return false for script links', () => {
+      getDocumentMock.mockReturnValue({ location: {} })
+
+      expect(isSSR()).toBe(false)
       // eslint-disable-next-line no-script-url
       expect(isPrefetchableRoute('javascript:foo')).toBe(false)
     })
     it('should return false for links with a different protocol', () => {
+      getDocumentMock.mockReturnValue({ location: {} })
+
+      expect(isSSR()).toBe(false)
       expect(isPrefetchableRoute('mailto:foo')).toBe(false)
     })
     it('should return false for links with a different port', () => {
+      getDocumentMock.mockReturnValue({
+        location: {
+          href: 'http://foo:1337/foo',
+          host: 'foo',
+          protocol: 'http:',
+        },
+      })
+
+      expect(isSSR()).toBe(false)
       expect(isPrefetchableRoute('http://foo:1337/bar')).toBe(false)
     })
+    it('should return false for links with the same port', () => {
+      getDocumentMock.mockReturnValue({
+        location: {
+          href: 'http://foo:1337/foo',
+          host: 'foo:1337',
+          protocol: 'http:',
+        },
+      })
+
+      expect(isSSR()).toBe(false)
+      expect(isPrefetchableRoute('http://foo:1337/bar')).toBe(true)
+    })
     it('should return true for relative paths', () => {
+      getDocumentMock.mockReturnValue({
+        location: {
+          href: 'http://foo',
+          host: 'foo',
+          protocol: 'http:',
+        },
+      })
+
       expect(isPrefetchableRoute('foo')).toBe(true)
     })
     it('should return true for relative paths on the current level', () => {
+      getDocumentMock.mockReturnValue({
+        location: {
+          href: 'http://foo',
+          host: 'foo',
+          protocol: 'http:',
+        },
+      })
+
       expect(isPrefetchableRoute('./foo')).toBe(true)
     })
     it('should return true for relative paths one level up', () => {
+      getDocumentMock.mockReturnValue({
+        location: {
+          href: 'http://foo',
+          host: 'foo',
+          protocol: 'http:',
+        },
+      })
+
       expect(isPrefetchableRoute('../foo')).toBe(true)
     })
     it('should return true for absolute paths', () => {
+      getDocumentMock.mockReturnValue({
+        location: {
+          href: 'http://foo',
+          host: 'foo',
+          protocol: 'http:',
+        },
+      })
+
       expect(isPrefetchableRoute('/foo')).toBe(true)
     })
     it('should return false for absolute URLs without protocol', () => {
+      getDocumentMock.mockReturnValue({
+        location: {
+          href: 'http://foo',
+          host: 'foo',
+          protocol: 'http:',
+        },
+      })
+
+      expect(isSSR()).toBe(false)
       expect(isPrefetchableRoute('//www.example.com')).toBe(false)
     })
   })
