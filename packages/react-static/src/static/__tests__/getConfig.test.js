@@ -100,6 +100,7 @@ describe('getConfig', () => {
   let spyProcess
 
   beforeEach(() => {
+    mockPlugin.mockReset()
     spyProcess = jest.spyOn(process, 'cwd').mockImplementation(() => './root/')
   })
 
@@ -133,11 +134,43 @@ describe('getConfig', () => {
     })
 
     it('should pass on plugin options to those plugins', async () => {
-      mockPlugin.mockReset()
       // mapped by the moduleNameMapper in package.json -> src/static/__mocks__/configWithPluginWithOptions.mock.js
       await getConfig('./path/to/configWithPluginWithOptions.mock.js')
 
       expect(mockPlugin.mock.calls[0]).toEqual([{ mockOption: 'some-option' }])
+    })
+  })
+
+  describe('when called synchronously', () => {
+    it('should return after executing plugin hooks sync', () => {
+      mockPlugin.mockImplementation(() => ({
+        config: config => Object.assign(config, { syncPlugin: true }),
+      }))
+
+      const config = getConfig(undefined, undefined, { sync: true })
+      expect(config.syncPlugin).toBe(true)
+    })
+
+    it('should throw if plugin hooks execute async', () => {
+      mockPlugin.mockImplementation(() => ({
+        config: config => Promise.resolve(config),
+      }))
+
+      expect(() => getConfig(undefined, undefined, { sync: true })).toThrow(
+        'Cannot run async hooks in sync mode'
+      )
+    })
+  })
+
+  describe('when called asynchronously', () => {
+    it('should resolve after executing plugin hooks async', async () => {
+      mockPlugin.mockImplementation(() => ({
+        config: config =>
+          Promise.resolve(Object.assign(config, { syncPlugin: true })),
+      }))
+
+      const config = await getConfig()
+      expect(config.syncPlugin).toBe(true)
     })
   })
 

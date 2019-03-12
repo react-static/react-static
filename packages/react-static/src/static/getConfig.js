@@ -23,7 +23,7 @@ const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index'
 const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 
-export const buildConfig = async (config = {}) => {
+export const buildConfig = (config = {}, { sync } = {}) => {
   // path defaults
   config.paths = {
     root: nodePath.resolve(process.cwd()),
@@ -259,49 +259,44 @@ export const buildConfig = async (config = {}) => {
 
   config.plugins = config.plugins.map(resolvePlugin)
 
-  const configHook = makeHookReducer(config.plugins, 'config')
-  config = await configHook(config)
-
-  return config
+  const configHook = makeHookReducer(config.plugins, 'config', { sync })
+  return configHook(config)
 }
 
-const buildConfigFromPath = async configPath => {
+const buildConfigFromPath = (configPath, options) => {
   delete require.cache[configPath]
   const config = require(configPath).default
-  return buildConfig(config)
+  return buildConfig(config, options)
 }
-
 // Retrieves the static.config.js from the current project directory
-export default (async function getConfig(
+export default (function getConfig(
   configPath = DEFAULT_PATH_FOR_STATIC_CONFIG,
-  subscription
+  subscription,
+  options = {}
 ) {
   const resolvedPath = resolveModule(configPath)
 
   const noConfig =
     configPath === DEFAULT_PATH_FOR_STATIC_CONFIG && !resolvedPath
 
-  if (noConfig) {
-    if (subscription) {
-      return new Promise(async () => {
-        subscription(await buildConfig(defaultConfig))
-      })
-    }
-    return buildConfig(defaultConfig)
+  const executeBuildConfig = () =>
+    noConfig
+      ? buildConfig(defaultConfig, options)
+      : buildConfigFromPath(resolvedPath || configPath, options)
+
+  if (!subscription) {
+    return executeBuildConfig()
   }
 
-  const config = await buildConfigFromPath(resolvedPath || configPath)
-
-  if (subscription) {
-    // If subscribing, return a never ending promise
-    return new Promise(() => {
-      chokidar.watch(resolvedPath).on('all', async () => {
-        subscription(await buildConfigFromPath(resolvedPath))
-      })
-    })
-  }
-
-  return config
+  // If subscribing, return a never ending promise
+  // Note: All subscriptions will be handled async
+  return new Promise(async () =>
+    noConfig
+      ? subscription(await executeBuildConfig())
+      : chokidar
+          .watch(resolvedPath)
+          .on('all', async () => subscription(await executeBuildConfig()))
+  )
 })
 
 function resolveModule(path, config) {
