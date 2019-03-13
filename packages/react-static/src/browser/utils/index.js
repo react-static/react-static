@@ -200,19 +200,18 @@ export function isPrefetchableRoute(path) {
     return false
   }
 
-  const self = document.location
+  const { location } = document
   let link
 
   try {
-    const baseURL = `${self.protocol}//${self.hostname + self.pathname}`
-    link = new URL(path, baseURL)
+    link = new URL(path, location.href)
   } catch (e) {
     // Return false on invalid URLs
     return false
   }
 
-  // if the hostname/proto doesn't match its not a route link
-  if (self.hostname !== link.hostname || self.protocol !== link.protocol) {
+  // if the hostname/port/protocol doesn't match its not a route link
+  if (location.host !== link.host || location.protocol !== link.protocol) {
     return false
   }
 

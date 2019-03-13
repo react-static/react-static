@@ -1,5 +1,6 @@
 import { prefetch, routeInfoByPath, routeErrorByPath } from '../'
 import { useRoutePath } from '../hooks/useRoutePath'
+import { getFullRouteData } from '../utils'
 
 export const useRouteData = () => {
   const routePath = useRoutePath()
@@ -17,21 +18,20 @@ export const useRouteData = () => {
     )
   }
 
+  const targetRouteInfoPath = routeInfo ? routeInfo.path : routePath
+
   // If we need to load data, suspend while it's requested
   if (shouldLoadData(routeInfo)) {
     throw Promise.all([
       new Promise(resolve =>
         setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
       ),
-      prefetch(routePath, { priority: true }),
+      prefetch(targetRouteInfoPath, { priority: true }),
     ])
   }
 
   // Otherwise, return all of the data
-  return {
-    ...routeInfo.data,
-    ...routeInfo.sharedData,
-  }
+  return getFullRouteData(routeInfo)
 }
 
 function shouldLoadData(routeInfo) {
