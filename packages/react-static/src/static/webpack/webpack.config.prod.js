@@ -125,7 +125,7 @@ function common(config) {
       new CaseSensitivePathsPlugin(),
       config.bundleAnalyzer && new BundleAnalyzerPlugin(),
     ].filter(d => d),
-    devtool: undefined,
+    devtool: false,
   }
 }
 
