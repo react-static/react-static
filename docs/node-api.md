@@ -157,7 +157,7 @@ Consider a large and heavy menu structure that is present only on the blog porti
 
 ```javascript
 // static.config.js
-import { makePageRoutes } from 'react-static/node'
+import { createSharedData } from 'react-static/node'
 
 export default {
   getRoutes: async () => {
