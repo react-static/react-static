@@ -19,7 +19,9 @@ const typeExample = 'React Static Example'
 
 const templatesDir = path.resolve(__dirname, '../../templates')
 
-const templates = fs.readdirSync(templatesDir).filter(d => !d.startsWith('.'))
+const templates = fs
+  .readdirSync(templatesDir)
+  .filter(d => !d.startsWith('.') && !d.startsWith('README'))
 
 export default (async function create({ name, template, isCLI }) {
   const isYarn = shouldUseYarn()
