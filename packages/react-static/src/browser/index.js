@@ -116,8 +116,6 @@ export function reloadRouteData() {
       delete part[key]
     })
   })
-  // Force each RouteData component to reload
-  global.reloadAll()
 }
 
 export async function getRouteInfo(path, { priority } = {}) {
