@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 //
 import {
   templatesByPath,
   templateErrorByPath,
-  routeErrorByPath,
   routeInfoByPath,
   sharedDataByHash,
   registerTemplateForPath,
@@ -12,15 +11,9 @@ import {
 } from '../'
 import { makeHookReducer } from '../utils'
 import { useStaticInfo } from '../hooks/useStaticInfo'
-import { useLocation } from '../hooks/useLocation'
 import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
 
-const RoutesHook = makeHookReducer(plugins, 'Routes', { sync: true })
-
-let RoutesWrapper = ({ children }) => children
-RoutesWrapper = RoutesHook(RoutesWrapper)
-
-export const Routes = ({ routePath }) => {
+const RoutesInner = ({ routePath }) => {
   // Let the user specify a manual routePath.
   // This is useful for animations where multiple routes
   // might be rendered simultaneously
@@ -61,7 +54,7 @@ export const Routes = ({ routePath }) => {
 
   routePath = useRoutePath(routePath)
 
-  // Try and get the component
+  // Try and get the template
   let Comp = templatesByPath[routePath]
 
   // Detect a 404
@@ -71,12 +64,7 @@ export const Routes = ({ routePath }) => {
   if (templateErrorByPath[routePath]) {
     is404 = true
     Comp = templatesByPath['404']
-    // Mark the route as errored
-    // routeErrorByPath[routePath] = true
-    // templateErrorByPath[routePath] = true
   }
-
-  console.log({ Comp, routePath, is404, templateErrorByPath })
 
   if (!Comp) {
     if (is404) {
@@ -85,17 +73,32 @@ export const Routes = ({ routePath }) => {
       )
     }
     // Suspend while we fetch the resource
-    throw prefetch(routePath, { priority: true })
+    throw Promise.all([
+      new Promise(resolve => setTimeout(resolve, 500)),
+      prefetch(routePath, { priority: true }),
+    ])
   }
 
   return (
-    // Once a routePath goes into the Routes component,
-    // useRoutePath must ALWAYS return the routePath used
-    // in its parent, so we pass it down as context
     <routePathContext.Provider value={routePath}>
-      <RoutesWrapper is404={is404}>
-        <Comp is404={is404} />
-      </RoutesWrapper>
+      <Comp is404={is404} />
     </routePathContext.Provider>
   )
+}
+
+export const Routes = ({ routePath }) => {
+  // Once a routePath goes into the Routes component,
+  // useRoutePath must ALWAYS return the routePath used
+  // in its parent, so we pass it down as context
+
+  // Get the Routes hook
+  const CompWrapper = useMemo(
+    () => {
+      const RoutesHook = makeHookReducer(plugins, 'Routes', { sync: true })
+      return RoutesHook(props => <RoutesInner {...props} />)
+    },
+    [plugins]
+  )
+
+  return <CompWrapper routePath={routePath} />
 }

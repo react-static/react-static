@@ -211,12 +211,8 @@ export function isPrefetchableRoute(path) {
     return false
   }
 
-  // if the hostname/port/proto doesn't match its not a route link
-  if (
-    self.hostname !== link.hostname ||
-    self.port !== link.port ||
-    self.protocol !== link.protocol
-  ) {
+  // if the hostname/proto doesn't match its not a route link
+  if (self.hostname !== link.hostname || self.protocol !== link.protocol) {
     return false
   }
 

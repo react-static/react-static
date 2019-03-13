@@ -1,3 +1,22 @@
+# 7.0.0
+
+- Suspense is now used for data fetching state instead of a Loader component. You can now control the loading state at any level of your app by using the Suspense component, eg. `<React.Suspense fallback={<span>Loading...</span>}>`.
+- Route objects returned in `getRoutes` now the property `template` instead of `component`.
+- The `Root` component now has a browser-side plugin interface.
+- The `Routes` component now has a browser-side plugin interface.
+- `withRouteData`, `RouteData`, `withSiteData`, and `SiteData` HOC's and components have been removed in favor of the `useRouteData` and `useSiteData` hooks.
+- `useLocation`, `useBasepath` `useRoutePath` and `useStaticInfo` have been added as utility hooks for both users and plugins.
+- The `Prefetch` component has been deprecated in favor of the `usePrefetch` hook.
+- Hash and top-of-the-page scrolling has been abstracted into a new `useScroller` hook.
+- Generic `ErrorBoundary` and `Spinner` components are now provided for use in your applications.
+- Plugin loading order has been changed to:
+  - Absolute Path
+  - `plugins/` relative path
+  - Require.resolve
+  - Require.resolve (from Plugins directory)
+  - CWD relative path
+  - Require.resolve (from Root directory)
+
 # 6.3.6
 
 #### Fixes & Optimizations
@@ -106,7 +125,7 @@
 - Upgraded to Babel 7 - Make sure your babel plugins are compliant with this version.
 - `react-hot-loader`'s `hot(module)(Component)` syntax has been changed to now use the `<AppContainer>` approach. This is much easier than using the `hot(module)(Component)` in every module you create.
 - Removed the `is404` property from the 404 route. To designate a 404 route, you can now place a `404.js` file in your pages directory or create a route where the `path === '404'`
-- `static.config.js` will now be imported and run multiple times depending on how many threads your build environment supports. If this is a problem, you can use the `process.env.REACT_STATIC_SLAVE === 'true'` condition to detect if the instance is a threaded export slave or not.
+- `static.config.js` will now be imported and run multiple times depending on how many threads your build environment supports. If this is a problem, you can use the `process.env.REACT_STATIC_THREAD === 'true'` condition to detect if the instance is a threaded export slave or not.
 - `config.renderToHtml` has been deprecated in favor of using the `beforeRenderToElement` hook.
 - `config.usePreact` is no longer an option in the `static.config.js` file. Use the `react-static-plugin-preact` plugin.
 - A new loader for external JS files is now used after the normal `jsLoader` called `jsLoaderExternal`. It is responsible for handling all javascript files that are not located in your projects source.

@@ -43,7 +43,7 @@ export default (async function buildHTML({
         fork(require.resolve('./exporter.threaded'), [], {
           env: {
             ...process.env,
-            REACT_STATIC_SLAVE: 'true',
+            REACT_STATIC_THREAD: 'true',
           },
           stdio: 'inherit',
         })

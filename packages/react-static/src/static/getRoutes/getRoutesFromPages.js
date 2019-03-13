@@ -23,7 +23,7 @@ export default (async function getRoutesFromPages(
       // Glob path will always have unix style path, convert to windows if necessary
       page = nodePath.resolve(page)
       // Get the component path relative to ROOT
-      const component = nodePath.relative(config.paths.ROOT, page)
+      const template = nodePath.relative(config.paths.ROOT, page)
       // Make sure the path is relative to the root of the site
       let path = page.replace(`${config.paths.PAGES}`, '').replace(/\..*/, '')
       // turn windows paths back to unix
@@ -33,7 +33,7 @@ export default (async function getRoutesFromPages(
       // Return the route
       return {
         path,
-        component,
+        template,
         isPage: true, // tag it with isPage, so we know its origin
       }
     })

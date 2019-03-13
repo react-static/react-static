@@ -164,19 +164,19 @@ export const buildConfig = async (config = {}) => {
         }
       },
       () => {
+        // Plugins Dir
+        const found = nodePath.resolve(paths.PLUGINS, originalLocation)
+        if (fs.pathExistsSync(found)) {
+          return found
+        }
+      },
+      () => {
         // Absolute require
         try {
           const found = require.resolve(originalLocation)
           return found.includes('.') ? nodePath.resolve(found, '../') : found
         } catch (err) {
           //
-        }
-      },
-      () => {
-        // Plugins Dir
-        const found = nodePath.resolve(paths.PLUGINS, originalLocation)
-        if (fs.pathExistsSync(found)) {
-          return found
         }
       },
       () => {
@@ -215,7 +215,7 @@ export const buildConfig = async (config = {}) => {
     // TODO: We have to do this because we don't have a good mock for process.cwd() :(
     if (!location) {
       throw new Error(
-        `Oh crap! Could not find a plugin directory for the plugin: "${originalLocation}". We must bail!`
+        `Could not find a plugin directory for the plugin: "${originalLocation}". We must bail!`
       )
     }
 
@@ -233,6 +233,10 @@ export const buildConfig = async (config = {}) => {
       // Get the hooks for the node api
       if (nodeLocation) {
         getHooks = require(nodeLocation).default
+      } else if (originalLocation !== paths.ROOT && !browserLocation) {
+        throw new Error(
+          `Could not find a valid node.api.js or browser.api.js plugin file in "${location}"`
+        )
       }
 
       const resolvedPlugin = {
@@ -251,7 +255,7 @@ export const buildConfig = async (config = {}) => {
       return resolvedPlugin
     } catch (err) {
       console.error(
-        `The following error occurred in the plugin located at "${nodeLocation}"`
+        `The following error occurred in the plugin: "${originalLocation}"`
       )
       throw err
     }

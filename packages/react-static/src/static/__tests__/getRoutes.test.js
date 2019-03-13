@@ -69,7 +69,7 @@ describe('normalizeRoute', () => {
 
     describe('when path is not defined', () => {
       it('should throw an error', () => {
-        const route = { component: '/no/path/', noIndex: true }
+        const route = { template: '/no/path/', noIndex: true }
 
         expect(() => normalizeRoute(route)).toThrow(
           `No path defined for route: ${JSON.stringify(route)}`
@@ -79,7 +79,7 @@ describe('normalizeRoute', () => {
       describe('when route is 404', () => {
         it('should not throw an error', () => {
           expect(() =>
-            normalizeRoute({ component: '/no/path/', path: '404' })
+            normalizeRoute({ template: '/no/path/', path: '404' })
           ).not.toThrow()
         })
       })

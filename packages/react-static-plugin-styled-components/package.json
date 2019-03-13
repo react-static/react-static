@@ -9,7 +9,7 @@
   "private": false,
   "scripts": {
     "build": "babel src --out-dir .",
-    "watch": "babel src --out-dir . -w",
+    "watch": "yarn build --watch",
     "test": "yarn format",
     "format": "prettier 'src/**/*.js' --write",
     "preversion": "yarn build"

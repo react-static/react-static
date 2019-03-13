@@ -28,7 +28,7 @@ export default function getRoutes({ config, opts }, subscription = d => d) {
     if (!has404 && !opts.incremental) {
       allNormalizedRoutes.unshift({
         path: '404',
-        component: path.relative(
+        template: path.relative(
           config.paths.ROOT,
           path.resolve(__dirname, '../../browser/components/Default404')
         ),

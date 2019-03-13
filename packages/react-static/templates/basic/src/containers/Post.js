@@ -1,6 +1,7 @@
 import React from 'react'
 import { useRouteData } from 'react-static'
-import { Link } from '@reach/router'
+//
+import { Link } from 'components/Router'
 
 export default function Post() {
   const { post } = useRouteData()

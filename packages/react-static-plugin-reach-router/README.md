@@ -26,7 +26,7 @@ export default {
 export default {
   plugins: [
     [
-      'react-static-plugin-react-router',
+      'react-static-plugin-reach-router',
       {
         RouterProps: {
           // These props will be passed to the underlying `Router` component

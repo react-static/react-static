@@ -199,12 +199,15 @@ import { useRef } from 'react'
 import { usePrefetch } from 'react-static'
 
 export default () => {
-  const elRef = useRef()
+  // Use it to create a ref
+  const myRef = usePrefetch('/blog')
 
-  usePrefetch(elRef, '/blog')
+  // or pass your own ref
+  const myRef = useRef()
+  usePrefetch('./blog', myRef)
 
   return (
-    <Link to="/blog" ref={elRef}>
+    <Link to="/blog" ref={myRef}>
       Go to blog
     </Link>
   )

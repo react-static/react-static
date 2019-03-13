@@ -1,7 +1,10 @@
 import axios from 'axios'
 
 export default {
-  plugins: ['react-static-plugin-reach-router'],
+  plugins: [
+    'react-static-plugin-react-location',
+    // 'react-static-plugin-reach-router'
+  ],
   getRoutes: async () => {
     const { data: posts } = await axios.get(
       'https://jsonplaceholder.typicode.com/posts'
@@ -14,7 +17,7 @@ export default {
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
-          component: 'src/containers/Post',
+          template: 'src/containers/Post',
           getData: () => ({
             post,
           }),

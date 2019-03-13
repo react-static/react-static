@@ -97,7 +97,7 @@ declare module 'react-static' {
 
   export interface Route {
     path: string
-    component?: string
+    template?: string
     redirect?: string
     noindex?: boolean
     permalink?: string

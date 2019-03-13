@@ -12,13 +12,13 @@ export default (async function extractTemplates(config, opts = {}) {
   let notFoundPending = true
 
   config.routes.forEach(route => {
-    if (!route.component) {
+    if (!route.template) {
       return
     }
     route.template = slash(
       path.relative(
         config.paths.BUILD_ARTIFACTS,
-        path.resolve(config.paths.ROOT, route.component)
+        path.resolve(config.paths.ROOT, route.template)
       )
     )
     // Check if the template has already been added

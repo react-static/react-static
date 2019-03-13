@@ -81,7 +81,9 @@ function init() {
     run()
   }
 
-  if (process.env.REACT_STATIC_DISABLE_PRELOAD === 'false') startPreloader()
+  if (process.env.REACT_STATIC_DISABLE_PRELOAD === 'false') {
+    startPreloader()
+  }
 }
 
 function startPreloader() {
@@ -155,13 +157,8 @@ export async function getRouteInfo(path, { priority } = {}) {
         (process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
           ? process.env.REACT_STATIC_SITE_ROOT
           : process.env.REACT_STATIC_PUBLIC_PATH) || '/'
-      const cacheBuster = process.env.REACT_STATIC_CACHE_BUST
-        ? `?${process.env.REACT_STATIC_CACHE_BUST}`
-        : ''
-      const getPath = `${routeInfoRoot}${pathJoin(
-        path,
-        'routeInfo.json'
-      )}${cacheBuster}`
+
+      const getPath = `${routeInfoRoot}${pathJoin(path, 'routeInfo.json')}`
 
       // If this is a priority call bypass the queue
       if (priority) {

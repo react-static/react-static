@@ -34,7 +34,7 @@ export default function normalizeAllRoutes(routes = [], config, opts = {}) {
         isPageExtension = true
         Object.assign(existingRoute, {
           ...normalizedRoute,
-          component: existingRoute.component,
+          template: existingRoute.template,
         })
         normalizedRoute = existingRoute
       } else if (!config.disableDuplicateRoutesWarning) {

@@ -5,7 +5,7 @@ import { createSharedData, makePageRoutes } from 'react-static/node'
 
 const routeSize = 1000
 
-if (!process.env.REACT_STATIC_SLAVE) {
+if (!process.env.REACT_STATIC_THREAD) {
   console.log()
   console.log(`Testing ${routeSize} routes`)
 }
