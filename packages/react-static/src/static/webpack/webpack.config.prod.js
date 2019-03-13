@@ -87,7 +87,7 @@ function common(config) {
           cache: true,
           parallel: true,
           exclude: /\.min\.js/,
-          sourceMap: true,
+          sourceMap: false,
           terserOptions: {
             ie8: false,
             mangle: { safari10: true },
@@ -125,7 +125,7 @@ function common(config) {
       new CaseSensitivePathsPlugin(),
       config.bundleAnalyzer && new BundleAnalyzerPlugin(),
     ].filter(d => d),
-    devtool: 'source-map',
+    devtool: false,
   }
 }
 
