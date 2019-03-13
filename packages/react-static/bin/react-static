@@ -152,6 +152,7 @@ Options:
   -c, --config <path>   The path to a custom static.config.js
   -s, --staging         Turn on staging mode
   -d, --debug           Turn on debug mode
+  -a, --analyze         Turn on the bundle analyzer
 
 Examples:
   react-static bundle
@@ -159,6 +160,8 @@ Examples:
   react-static bundle -c path/to/my/static.config.js
   react-static bundle --debug
   react-static bundle -d
+  react-static build --analyze
+  react-static build -a
 `)
     return
   }
@@ -178,6 +181,7 @@ Options:
   -c, --config <path>   The path to a custom static.config.js
   -s, --staging         Turn on staging mode
   -d, --debug           Turn on debug mode
+  -a, --analyze         Turn on the bundle analyzer
 
 Examples:
   react-static build
@@ -185,6 +189,8 @@ Examples:
   react-static build -c path/to/my/static.config.js
   react-static build --debug
   react-static build -d
+  react-static build --analyze
+  react-static build -a
 `)
     return
   }

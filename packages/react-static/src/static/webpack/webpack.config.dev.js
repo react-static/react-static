@@ -44,13 +44,13 @@ export default function({ config }) {
     },
     resolve: {
       modules: [
+        ...[NODE_MODULES, SRC, DIST].map(d => path.relative(__dirname, d)),
         'node_modules',
-        ...[NODE_MODULES, SRC, DIST].map(d => path.relative(process.cwd(), d)),
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
-        react: resolveFrom(process.cwd(), 'react'),
-        'react-dom': resolveFrom(process.cwd(), 'react-dom'),
+        'react/': resolveFrom(config.paths.NODE_MODULES, 'react'),
+        'react-dom/': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
       },
     },
     plugins: [

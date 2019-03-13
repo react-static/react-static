@@ -17,6 +17,7 @@
   - CWD relative path
   - Require.resolve (from Root directory)
 - Production webpack bundles now have a default `performance.maxEntrypointSize` of `300000` bytes (300kb)
+- `config.bundleAnalyzer` is now deprecated in favor of the `build --analyze/-a` and `export --analyze/-a` option.
 
 # 6.3.6
 

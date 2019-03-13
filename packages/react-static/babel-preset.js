@@ -1,6 +1,6 @@
 const r = require.resolve
 
-module.exports = (api, { external, modules, helpers } = {}) => {
+module.exports = (api, { external, modules } = {}) => {
   const { NODE_ENV, BABEL_ENV } = process.env
   const PRODUCTION = (BABEL_ENV || NODE_ENV) === 'production'
 
@@ -27,8 +27,6 @@ module.exports = (api, { external, modules, helpers } = {}) => {
           r('@babel/plugin-transform-runtime'),
           {
             corejs: false,
-            helpers: !!helpers,
-            regenerator: true,
             useESModules: true,
           },
         ],
@@ -60,14 +58,10 @@ module.exports = (api, { external, modules, helpers } = {}) => {
         ? r('babel-plugin-universal-import')
         : r('react-hot-loader/babel'),
       r('@babel/plugin-transform-destructuring'),
-      [
-        r('@babel/plugin-transform-runtime'),
-        {
-          helpers: !!helpers,
-          regenerator: true,
-        },
-      ],
-      PRODUCTION && r('babel-plugin-transform-react-remove-prop-types'),
+      r('@babel/plugin-transform-runtime'),
+      ...(PRODUCTION
+        ? [r('babel-plugin-transform-react-remove-prop-types')]
+        : []),
       r('@babel/plugin-syntax-dynamic-import'),
       r('@babel/plugin-proposal-class-properties'),
       r('@babel/plugin-proposal-optional-chaining'),

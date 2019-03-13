@@ -20,6 +20,6 @@
     "@babel/preset-env": "^7.1.5"
   },
   "dependencies": {
-    "@mdx-js/loader": "^0.16.6"
+    "@mdx-js/loader": "^0.20.3"
   }
 }

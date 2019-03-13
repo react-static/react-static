@@ -278,17 +278,6 @@ export default {
 }
 ```
 
-### `bundleAnalyzer`
-
-An optional `Boolean`. Set to true to serve the bundle analyzer on a production build.
-
-```javascript
-// static.config.js
-export default {
-  bundleAnalyzer: true,
-}
-```
-
 ### `outputFileRate`
 
 An optional `Int`. The maximum number of files that can be concurrently written to disk during the build process.

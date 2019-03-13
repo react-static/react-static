@@ -1,10 +1,7 @@
 import axios from 'axios'
 
 export default {
-  plugins: [
-    'react-static-plugin-react-location',
-    // 'react-static-plugin-reach-router'
-  ],
+  plugins: ['react-static-plugin-react-location'],
   getRoutes: async () => {
     const { data: posts } = await axios.get(
       'https://jsonplaceholder.typicode.com/posts'

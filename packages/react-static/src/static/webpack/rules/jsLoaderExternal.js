@@ -12,7 +12,7 @@ export default function({ config }) {
           babelrc: false,
           configFile: false,
           compact: false,
-          presets: [[babelPreset, { external: true, helpers: true }]],
+          presets: [[babelPreset, { external: true }]],
           cacheDirectory: true,
           sourceMaps: false,
         },

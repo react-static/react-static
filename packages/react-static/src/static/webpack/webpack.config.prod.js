@@ -111,16 +111,15 @@ function common(config) {
     },
     resolve: {
       modules: [
-        'node_modules',
         ...[NODE_MODULES, SRC, DIST].map(d =>
-          DIST.startsWith(ROOT)
-            ? path.relative(process.cwd(), d)
-            : path.resolve(d)
+          DIST.startsWith(ROOT) ? path.relative(__dirname, d) : path.resolve(d)
         ),
+        'node_modules',
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
-        react: path.resolve('./node_modules/react'),
+        'react/': resolveFrom(config.paths.NODE_MODULES, 'react'),
+        'react-dom/': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
       },
     },
     externals: [],
@@ -129,7 +128,7 @@ function common(config) {
       new webpack.EnvironmentPlugin(process.env),
       extrackCSSChunks,
       new CaseSensitivePathsPlugin(),
-      config.bundleAnalyzer && new BundleAnalyzerPlugin(),
+      process.env.REACT_STATIC_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
     ].filter(d => d),
     devtool: 'source-map',
   }

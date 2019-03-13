@@ -17,6 +17,7 @@ export default (async function bundle({
   config: originalConfig,
   staging,
   debug,
+  analyze,
 } = {}) {
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
@@ -30,6 +31,9 @@ export default (async function bundle({
   }
   if (debug) {
     process.env.REACT_STATIC_DEBUG = 'true'
+  }
+  if (analyze) {
+    process.env.REACT_STATIC_ANALYZE = 'true'
   }
 
   // Allow config location to be overriden
@@ -80,7 +84,7 @@ export default (async function bundle({
 
   await outputBuildInfo(config)
 
-  if (config.bundleAnalyzer) {
+  if (analyze) {
     await new Promise(() => {})
   }
 

@@ -61,7 +61,6 @@ declare module 'react-static' {
     extractCssChunks?: boolean
     inlineCss?: boolean
     disablePreload?: boolean
-    bundleAnalyzer?: boolean
     disableDuplicateRoutesWarning?: boolean
     outputFileRate?: number
     prefetchRate?: number
