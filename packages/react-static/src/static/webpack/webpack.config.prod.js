@@ -102,6 +102,9 @@ function common(config) {
       ],
       splitChunks,
     },
+    performance: {
+      maxEntrypointSize: 300000,
+    },
     module: {
       rules: rules({ config, stage: 'prod', isNode: false }),
       strictExportPresence: true,

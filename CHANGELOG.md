@@ -16,6 +16,7 @@
   - Require.resolve (from Plugins directory)
   - CWD relative path
   - Require.resolve (from Root directory)
+- Production webpack bundles now have a default `performance.maxEntrypointSize` of `300000` bytes (300kb)
 
 # 6.3.6
 
