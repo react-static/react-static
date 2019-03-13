@@ -156,7 +156,8 @@ These shared data fragments can be placed in any route's `sharedData` object. At
 Consider a large and heavy menu structure that is present only on the blog portion of your site. In this case, the menu data should only be loaded on the pages that use it, and only once per session (cached), instead of on every page individually. First we would use the `createSharedData` function and pass the data we want to share between our routes. Then in each route, we can pass the result of our `createSharedData` call as a prop to the route's `sharedData` property. The shared data props will then be stored, served and cached only once per session and merged into the result of the routes `getData` result at runtime!
 
 ```javascript
-import { createSharedData } from 'react-static'
+// static.config.js
+import { createSharedData } from 'react-static/node'
 
 export default {
   getRoutes: async () => {
