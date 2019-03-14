@@ -3,7 +3,8 @@ import onLocationChange from '../utils/onLocationChange'
 
 export const useLocation = () => {
   const [location, setLocation] = useState()
-  const [count, setCount] = useState(0)
+  // eslint-disable-next-line
+  const [_, setCount] = useState(0)
   useEffect(
     () =>
       onLocationChange(location => {

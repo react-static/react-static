@@ -6,6 +6,8 @@ import TerserPlugin from 'terser-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import resolveFrom from 'resolve-from'
+//
 import rules from './rules'
 
 function common(config) {

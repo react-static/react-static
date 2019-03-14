@@ -9,7 +9,6 @@ import {
   trimDoubleSlashes,
   makePathAbsolute,
   getFullRouteData,
-  isSSR,
   isPrefetchableRoute,
 } from '../'
 
@@ -190,20 +189,17 @@ describe('browser/utils', () => {
     it('should return false during SSR', () => {
       getDocumentMock.mockReturnValue(undefined)
 
-      expect(isSSR()).toBe(true)
       expect(isPrefetchableRoute('/foo')).toBe(false)
     })
     it('should return false for script links', () => {
       getDocumentMock.mockReturnValue({ location: {} })
 
-      expect(isSSR()).toBe(false)
       // eslint-disable-next-line no-script-url
       expect(isPrefetchableRoute('javascript:foo')).toBe(false)
     })
     it('should return false for links with a different protocol', () => {
       getDocumentMock.mockReturnValue({ location: {} })
 
-      expect(isSSR()).toBe(false)
       expect(isPrefetchableRoute('mailto:foo')).toBe(false)
     })
     it('should return false for links with a different port', () => {
@@ -215,7 +211,6 @@ describe('browser/utils', () => {
         },
       })
 
-      expect(isSSR()).toBe(false)
       expect(isPrefetchableRoute('http://foo:1337/bar')).toBe(false)
     })
     it('should return false for links with the same port', () => {
@@ -227,7 +222,6 @@ describe('browser/utils', () => {
         },
       })
 
-      expect(isSSR()).toBe(false)
       expect(isPrefetchableRoute('http://foo:1337/bar')).toBe(true)
     })
     it('should return true for relative paths', () => {
@@ -283,7 +277,6 @@ describe('browser/utils', () => {
         },
       })
 
-      expect(isSSR()).toBe(false)
       expect(isPrefetchableRoute('//www.example.com')).toBe(false)
     })
   })
