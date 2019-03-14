@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "releaseNext": "lerna publish prerelease --preid beta --npm-tag next",
+    "releaseNext": "lerna publish prerelease --preid beta --dist-tag next",
     "release": "lerna publish",
     "releaseForce": "lerna publish --force-publish react-static",
     "build": "lerna run 'build'",
