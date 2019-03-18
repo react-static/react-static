@@ -35,6 +35,7 @@ export default function({ config, stage }) {
   return {
     test: /\.(js|jsx|mjs)$/,
     include: [
+      config.paths.PLUGINS,
       config.paths.SRC,
       /react-static-templates\.js/,
       /react-static-browser-plugins\.js/,

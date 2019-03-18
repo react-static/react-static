@@ -6,7 +6,8 @@ import WebpackDevServer from 'webpack-dev-server'
 import io from 'socket.io'
 //
 import { getStagedRules } from './rules'
-import { prepareRoutes, outputClientStats } from '../'
+import prepareRoutes from '../prepareRoutes'
+import { outputClientStats } from '../clientStats'
 import {
   getRoutePath,
   makeHookReducer,
@@ -176,6 +177,8 @@ export async function startDevServer({ config }) {
       if (config.devServer && config.devServer.before) {
         config.devServer.before(app)
       }
+
+      return app
     },
     port,
     host,
@@ -241,6 +244,7 @@ export async function startDevServer({ config }) {
   )
 
   // Start the webpack dev server
+  console.log(devServerConfig)
   devServer = new WebpackDevServer(devCompiler, devServerConfig)
 
   // Start the messages socket

@@ -1,11 +1,8 @@
-import {
-  exportRoutes,
-  prepareRoutes,
-  getConfig,
-  importClientStats,
-  extractTemplates,
-} from '../static'
-
+import exportRoutesRunner from '../static/exportRoutesRunner'
+import prepareRoutes from '../static/prepareRoutes'
+import getConfig from '../static/getConfig'
+import extractTemplates from '../static/extractTemplates'
+import { importClientStats } from '../static/clientStats'
 import { makeHookMapper } from '../utils'
 
 export default async ({
@@ -59,7 +56,7 @@ export default async ({
   const clientStats = await importClientStats(config)
 
   try {
-    await exportRoutes({
+    await exportRoutesRunner({
       config,
       clientStats,
       incremental,

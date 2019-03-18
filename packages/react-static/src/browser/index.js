@@ -33,6 +33,7 @@ export const templatesByPath = {}
 export const templateErrorByPath = {}
 export const templateUpdated = { cb: () => {} }
 export const registerTemplates = (tmps, notFoundKey) => {
+  console.log(tmps)
   Object.keys(templates).forEach(key => {
     delete templates[key]
   })

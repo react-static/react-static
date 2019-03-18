@@ -120,8 +120,8 @@ function common(config) {
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
-        'react/': resolveFrom(config.paths.NODE_MODULES, 'react'),
-        'react-dom/': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
+        react: resolveFrom(config.paths.NODE_MODULES, 'react'),
+        'react-dom': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
       },
     },
     externals: [],
@@ -149,11 +149,27 @@ export default function({ config, isNode }) {
   result.target = 'node'
   result.devtool = false
   result.externals = [
+    new RegExp(`${config.paths.PLUGINS}`),
+    (context, request, callback) => {
+      const resolved = path.resolve(context, request)
+      if (
+        [
+          /react-static\/lib\/browser/,
+          // /react-universal-component/,
+          /webpack-flush-chunks/,
+        ].some(d => d.test(resolved))
+      ) {
+        return callback(null, `commonjs ${resolved}`)
+      }
+      callback()
+    },
     nodeExternals({
       whitelist: [
-        'react-universal-component',
-        'webpack-flush-chunks',
-        'react-static',
+        // 'react',
+        // 'react-dom',
+        // 'react-universal-component',
+        // 'webpack-flush-chunks',
+        // 'react-static',
       ],
     }),
   ]

@@ -15,7 +15,6 @@ export default {
     ASSETS: './root/tmp/dev-server',
     STATIC_DATA: './root/tmp/dev-server/staticData',
     HTML_TEMPLATE: './root/tmp/dev-server/index.html',
-    LOCAL_NODE_MODULES: './dirname/../../node_modules',
     NODE_MODULES: './root/node_modules',
   },
 }

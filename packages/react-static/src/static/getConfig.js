@@ -5,7 +5,6 @@ import chokidar from 'chokidar'
 import resolveFrom from 'resolve-from'
 import fs from 'fs-extra'
 
-import getDirname from '../utils/getDirname'
 import {
   cleanSlashes,
   cutPathToRoot,
@@ -54,7 +53,6 @@ export const buildConfig = async (config = {}) => {
 
   const paths = {
     ROOT: config.paths.root,
-    LOCAL_NODE_MODULES: nodePath.resolve(getDirname(), '../../node_modules'),
     SRC: resolvePath(config.paths.src),
     PAGES: resolvePath(config.paths.pages),
     DIST,

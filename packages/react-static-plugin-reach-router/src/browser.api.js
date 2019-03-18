@@ -14,11 +14,7 @@ export default ({ RouterProps: userRouterProps = {} }) => ({
       <Router {...(basepath ? { basepath } : {})} {...userRouterProps}>
         <Render
           path="/*"
-          render={location =>
-            console.log({ location }) || (
-              <PreviousRoot {...rest}>{children}</PreviousRoot>
-            )
-          }
+          render={location => <PreviousRoot {...rest}>{children}</PreviousRoot>}
         />
       </Router>
     )

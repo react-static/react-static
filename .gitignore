@@ -10,6 +10,7 @@
 .vscode
 *.log
 *.tgz
+.yalc
 */cordova/platforms
 */cordova/plugins
 */cordova/www
@@ -35,4 +36,5 @@ templates/yarn.lock
 tmp
 yarn-debug.log*
 yarn-error.log*
+yalc.lock
 packages/react-static/templates/basic/yarn.lock

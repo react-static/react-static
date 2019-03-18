@@ -1,12 +1,41 @@
 const path = require('path')
 const { escapeRegExp } = require('./')
+const PrettyError = require('pretty-error')
+const resolveFrom = require('resolve-from')
+const Module = require('module')
+
+// Allow as much stack tracing as possible
+Error.stackTraceLimit = 10000
 
 let ignorePath
 
-// Allow as much stack tracing as possible
-Error.stackTraceLimit = Infinity
+const originalRequire = Module.prototype.require
+
+// eslint-disable-next-line
+Module.prototype.require = function(modulePath) {
+  if (!modulePath.startsWith('.') && !modulePath.startsWith('/')) {
+    try {
+      modulePath = resolveFrom(
+        path.resolve(process.cwd(), 'node_modules'),
+        modulePath
+      )
+    } catch (err) {
+      //
+    }
+  }
+  return originalRequire.call(this, modulePath)
+}
 
 require('@babel/register')({
+  babelrc: false,
+  presets: [
+    [
+      path.resolve(__dirname, '../../babel-preset.js'),
+      {
+        node: true,
+      },
+    ],
+  ],
   ignore: [
     function babelIgnore(filename) {
       // true if should ignore
@@ -19,8 +48,6 @@ require('@babel/register')({
     },
   ],
 })
-
-const PrettyError = require('pretty-error')
 
 // necesarry at any entry point of the cli to ensure that Babel-register
 // does not attempt to transform non JavaScript files.
@@ -51,8 +78,20 @@ ignoredExtensions.forEach(ext => {
   require.extensions[`.${ext}`] = () => {}
 })
 
-console.error = (err, ...rest) =>
+console.error = (err, ...rest) => {
+  // console.log(
+  //   Object.keys(Module._cache)
+  //     .map(d => Module._cache[d])
+  //     .filter(d => d.filename.includes('/react/'))
+  //     .map(
+  //       d => `${d.id}
+  // => ${d.parent.id}
+  //   => ${d.parent.parent.id}`
+  //     )
+  //     .join('\n\n')
+  // )
   console.log(new PrettyError().render(err), ...rest)
+}
 
 // Be sure to log useful information about unhandled exceptions. This should seriously
 // be a default: https://github.com/nodejs/node/issues/9523#issuecomment-259303079

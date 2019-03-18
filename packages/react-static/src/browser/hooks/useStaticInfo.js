@@ -1,12 +1,6 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
+import staticInfoContext from '../context/staticInfoContext'
 
-// eslint-disable-next-line
-let context = React.createContext({})
+export { staticInfoContext }
 
-if (typeof document !== 'undefined') {
-  context = React.createContext(window.__routeInfo)
-}
-
-export const staticInfoContext = context
-
-export const useStaticInfo = () => useContext(context)
+export const useStaticInfo = () => useContext(staticInfoContext)

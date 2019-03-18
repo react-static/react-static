@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
+import routePathContext from '../context/routePathContext'
 import { getRoutePath } from '../utils'
 
-export const routePathContext = React.createContext()
+export { routePathContext }
 
 export const useRoutePath = routePath => {
   const routePathContextValue = useContext(routePathContext)

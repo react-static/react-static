@@ -31,8 +31,6 @@ jest.mock('path', () => ({
   dirname: () => 'root/',
 }))
 
-jest.mock('../../utils/getDirname', () => () => './dirname/')
-
 const testConfiguration = (configuration, configurationMock) => {
   expect(configuration).toMatchObject(configurationMock)
   expect(configuration.getSiteData).toBeInstanceOf(Function)

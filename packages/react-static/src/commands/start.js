@@ -1,15 +1,12 @@
 import fs from 'fs-extra'
 //
-import {
-  prepareRoutes,
-  prepareBrowserPlugins,
-  startDevServer,
-  reloadRoutes,
-  getConfig,
-  extractTemplates,
-  generateTemplates,
-} from '../static'
-import { createIndexFilePlaceholder } from '../utils'
+import prepareRoutes from '../static/prepareRoutes'
+import prepareBrowserPlugins from '../static/prepareBrowserPlugins'
+import { startDevServer, reloadRoutes } from '../static/webpack'
+import getConfig from '../static/getConfig'
+import extractTemplates from '../static/extractTemplates'
+import generateTemplates from '../static/generateTemplates'
+import createIndexPlaceholder from '../utils/createIndexPlaceholder'
 //
 
 let cleaned
@@ -45,7 +42,7 @@ export default (async function start({ config: configPath, debug } = {}) {
     // Render an index.html placeholder
     if (!indexCreated) {
       indexCreated = true
-      await createIndexFilePlaceholder({
+      await createIndexPlaceholder({
         config,
       })
     }

@@ -197,8 +197,12 @@ export default (async function exportRoute({
     )
     appHtml = await beforeHtmlToDocument(appHtml, { config, meta: renderMeta })
   } catch (error) {
+    if (error.then) {
+      error.message =
+        'Components are not allowed to suspend during static export. Please make its data available synchronously and try again!'
+    }
     error.message = `Failed exporting HTML for URL ${route.path} (${
-      route.component
+      route.template
     }): ${error.message}`
     throw error
   }

@@ -1,12 +1,33 @@
 import OS from 'os'
 import { fork } from 'child_process'
 import chalk from 'chalk'
+
 import { progress, time, timeEnd } from '../utils'
-import exporter from './exporter'
+import fetchSiteData from './fetchSiteData'
+import fetchRoutes from './fetchRoutes'
 
 const cores = Math.max(OS.cpus().length, 1)
 
-export default (async function buildHTML({
+// Exporting route HTML and JSON happens here. It's a big one.
+export default (async function exportRoutesRunner({
+  config,
+  clientStats,
+  incremental,
+}) {
+  // we modify config in fetchSiteData
+  const siteData = await fetchSiteData(config)
+  // we modify config in fetchRoutes
+  await fetchRoutes(config)
+
+  await buildHTML({
+    config,
+    siteData,
+    clientStats,
+    incremental,
+  })
+})
+
+async function buildHTML({
   config: oldConfig,
   siteData,
   clientStats,
@@ -24,7 +45,7 @@ export default (async function buildHTML({
   // Single threaded export
   if (config.maxThreads <= 1) {
     console.log('=> Exporting HTML...')
-    await exporter({
+    await require('./exportRoutes.sync').default({
       config,
       routes,
       siteData,
@@ -40,7 +61,7 @@ export default (async function buildHTML({
     const exporters = []
     for (let i = 0; i < threads; i++) {
       exporters.push(
-        fork(require.resolve('./exporter.threaded'), [], {
+        fork(require.resolve('./exportRoutes.threaded'), [], {
           env: {
             ...process.env,
             REACT_STATIC_THREAD: 'true',
@@ -87,4 +108,4 @@ export default (async function buildHTML({
   }
 
   timeEnd(chalk.green('=> [\u2713] HTML Exported'))
-})
+}

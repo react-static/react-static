@@ -1,5 +1,5 @@
 import React from 'react'
-import { Root, Routes, ErrorBoundary } from 'react-static'
+import { Root, Routes, ErrorBoundary, Suspense } from 'react-static'
 //
 import { Link } from 'components/Router'
 
@@ -16,9 +16,9 @@ function App() {
           <Link to="/test">Test</Link>
         </nav>
         <div className="content">
-          <React.Suspense fallback={<em>Loading...</em>}>
+          <Suspense fallback={<em>Loading...</em>}>
             <Routes />
-          </React.Suspense>
+          </Suspense>
         </div>
       </Root>
     </ErrorBoundary>

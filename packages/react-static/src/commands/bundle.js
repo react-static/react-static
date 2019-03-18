@@ -1,16 +1,13 @@
 import fs from 'fs-extra'
 import chalk from 'chalk'
 //
-import {
-  prepareRoutes,
-  prepareBrowserPlugins,
-  buildProductionBundles,
-  getConfig,
-  extractTemplates,
-  generateTemplates,
-  outputBuildInfo,
-} from '../static'
-
+import prepareRoutes from '../static/prepareRoutes'
+import prepareBrowserPlugins from '../static/prepareBrowserPlugins'
+import { buildProductionBundles } from '../static/webpack'
+import getConfig from '../static/getConfig'
+import extractTemplates from '../static/extractTemplates'
+import generateTemplates from '../static/generateTemplates'
+import { outputBuildInfo } from '../static/buildInfo'
 import { copyPublicFolder, time, timeEnd } from '../utils'
 
 export default (async function bundle({

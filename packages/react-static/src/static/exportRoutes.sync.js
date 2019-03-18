@@ -4,7 +4,7 @@ const { setIgnorePath } = require('../utils/binHelper')
 
 import path from 'path'
 
-import { DefaultDocument } from './RootComponents'
+import { DefaultDocument } from './components/RootComponents'
 import { poolAll, progress } from '../utils'
 import exportRoute from './exportRoute'
 

@@ -1,6 +1,6 @@
 const r = require.resolve
 
-module.exports = (api, { external, modules } = {}) => {
+module.exports = (api, { external, hot, node, modules } = {}) => {
   const { NODE_ENV, BABEL_ENV } = process.env
   const PRODUCTION = (BABEL_ENV || NODE_ENV) === 'production'
 
@@ -11,17 +11,7 @@ module.exports = (api, { external, modules } = {}) => {
   if (external) {
     return {
       sourceType: 'unambiguous',
-      presets: [
-        r('@babel/preset-env'),
-        {
-          targets: {
-            ie: 9,
-          },
-          ignoreBrowserslistConfig: true,
-          useBuiltIns: false,
-          modules: false,
-        },
-      ],
+      presets: [r('@babel/preset-env')],
       plugins: [
         [
           r('@babel/plugin-transform-runtime'),
@@ -35,33 +25,42 @@ module.exports = (api, { external, modules } = {}) => {
     }
   }
 
+  if (node) {
+    return {
+      presets: [
+        r('@babel/preset-env'),
+        [r('@babel/preset-react'), { development: false }],
+      ],
+      plugins: [
+        r('babel-plugin-macros'),
+        r('@babel/plugin-syntax-dynamic-import'),
+        r('@babel/plugin-transform-destructuring'),
+        r('@babel/plugin-transform-runtime'),
+        r('@babel/plugin-proposal-class-properties'),
+        r('@babel/plugin-proposal-optional-chaining'),
+        r('@babel/plugin-proposal-export-default-from'),
+      ],
+    }
+  }
+
   // This preset is for react-static and user code
   return {
     presets: [
-      [
-        r('@babel/preset-env'),
-        {
-          targets: {
-            browsers: PRODUCTION
-              ? ['last 4 versions', 'safari >= 7', 'ie >= 9']
-              : ['last 2 versions', 'not ie <= 11', 'not android 4.4.3'],
-          },
-          useBuiltIns: 'entry',
-          modules,
-        },
-      ],
+      r('@babel/preset-env'),
       [r('@babel/preset-react'), { development: !PRODUCTION }],
     ],
     plugins: [
-      r('babel-plugin-macros'),
-      PRODUCTION
-        ? r('babel-plugin-universal-import')
-        : r('react-hot-loader/babel'),
-      r('@babel/plugin-transform-destructuring'),
-      r('@babel/plugin-transform-runtime'),
+      ...(modules ? [r('@babel/plugin-transform-modules-commonjs')] : []),
       ...(PRODUCTION
-        ? [r('babel-plugin-transform-react-remove-prop-types')]
+        ? [
+            r('babel-plugin-universal-import'),
+            r('babel-plugin-transform-react-remove-prop-types'),
+          ]
         : []),
+      // ...(hot ? [r('react-hot-loader/babel')] : []),
+      r('@babel/plugin-transform-runtime'),
+      r('babel-plugin-macros'),
+      r('@babel/plugin-transform-destructuring'),
       r('@babel/plugin-syntax-dynamic-import'),
       r('@babel/plugin-proposal-class-properties'),
       r('@babel/plugin-proposal-optional-chaining'),

@@ -23,21 +23,25 @@ const universalOptions = {
     console.error(props.error);
     return <div>An error occurred loading this page's template. More information is available in the console.</div>;
   },
+  ignoreBabelRename: true
 }
 
 ${templates
-    .map((template, index) => {
-      let chunkName = ''
+  .map((template, index) => {
+    let chunkName = ''
 
-      // relative resolving produces the wrong path, a "../" is missing
-      // as the files looks equal, we simple use an absolute path then
-      if (!paths.DIST.startsWith(paths.ROOT)) {
-        chunkName = `/* webpackChunkName: "${chunkNameFromFile(template)}" */`
-      }
+    // relative resolving produces the wrong path, a "../" is missing
+    // as the files looks equal, we simple use an absolute path then
 
-      return `const t_${index} = universal(import('${template}'${chunkName}), universalOptions)`
-    })
-    .join('\n')}
+    if (!paths.DIST.startsWith(paths.ROOT)) {
+      chunkName = `/* webpackChunkName: "${chunkNameFromFile(template)}" */`
+    }
+
+    return `const t_${index} = universal(import('${template}'${chunkName}), universalOptions)
+      t_${index}.template = '${template}'
+      `
+  })
+  .join('\n')}
 `
 
   const developmentTemplates = templates
@@ -46,16 +50,14 @@ ${templates
 
   const file = `
 ${
-    process.env.NODE_ENV === 'production'
-      ? productionImports
-      : developmentImports
-  }
+  process.env.NODE_ENV === 'production' ? productionImports : developmentImports
+}
 
 ${
-    process.env.NODE_ENV === 'production'
-      ? productionTemplates
-      : developmentTemplates
-  }
+  process.env.NODE_ENV === 'production'
+    ? productionTemplates
+    : developmentTemplates
+}
 
 // Template Map
 export default {

@@ -1,14 +1,11 @@
 /* eslint-disable import/first, import/no-dynamic-require */
 
 const { setIgnorePath } = require('../utils/binHelper')
-
-import glob from 'glob'
-import path from 'path'
-
-import getConfig from './getConfig'
-import { DefaultDocument } from './RootComponents'
-import { poolAll } from '../utils'
-import exportRoute from './exportRoute'
+const path = require('path')
+const getConfig = require('./getConfig').default
+const { DefaultDocument } = require('./components/RootComponents')
+const { poolAll } = require('../utils')
+const exportRoute = require('./exportRoute').default
 
 process.on('message', async payload => {
   try {
@@ -16,12 +13,13 @@ process.on('message', async payload => {
     // Get config again
     const config = await getConfig(oldConfig.originalConfig)
 
-    setIgnorePath(config.paths.DIST)
+    setIgnorePath(config.paths.BUILD_ARTIFACTS)
 
     // Use the node version of the app created with webpack
-    const Comp = require(glob.sync(
-      path.resolve(config.paths.BUILD_ARTIFACTS, 'static-app.js')
-    )[0]).default
+    const Comp = require(path.resolve(
+      config.paths.BUILD_ARTIFACTS,
+      'static-app.js'
+    )).default
     // Retrieve the document template
     const DocumentTemplate = config.Document || DefaultDocument
 

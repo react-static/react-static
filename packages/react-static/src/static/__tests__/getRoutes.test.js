@@ -4,8 +4,6 @@
 // import getRoutes, { normalizeRoute } from '../getRoutes'
 import normalizeRoute from '../getRoutes/normalizeRoute'
 
-jest.mock('../../utils/getDirname', () => () => './dirname/')
-
 describe('normalizeRoute', () => {
   describe('when working route is provided', () => {
     it('should return a normalized route', async () => {

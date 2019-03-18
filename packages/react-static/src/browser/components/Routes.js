@@ -79,6 +79,8 @@ const RoutesInner = ({ routePath }) => {
     ])
   }
 
+  console.log(templatesByPath, routePath, <Comp />)
+
   return (
     <routePathContext.Provider value={routePath}>
       <Comp is404={is404} />
@@ -92,13 +94,10 @@ export const Routes = ({ routePath }) => {
   // in its parent, so we pass it down as context
 
   // Get the Routes hook
-  const CompWrapper = useMemo(
-    () => {
-      const RoutesHook = makeHookReducer(plugins, 'Routes', { sync: true })
-      return RoutesHook(props => <RoutesInner {...props} />)
-    },
-    [plugins]
-  )
+  const CompWrapper = useMemo(() => {
+    const RoutesHook = makeHookReducer(plugins, 'Routes', { sync: true })
+    return RoutesHook(props => <RoutesInner {...props} />)
+  }, [plugins])
 
   return <CompWrapper routePath={routePath} />
 }

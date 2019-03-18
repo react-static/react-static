@@ -3,11 +3,12 @@
   "private": true,
   "scripts": {
     "start": "react-static start",
+    "setup": "yarn && yalc link react-static",
     "stage": "react-static build --staging",
     "build": "react-static build",
     "bundle": "react-static bundle",
     "export": "react-static export",
-    "serve": "serve dist -p 3000 -s"
+    "serve": "serve dist -p 3000"
   },
   "dependencies": {
     "@reach/router": "^1.2.1",
@@ -20,6 +21,6 @@
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
-    "serve": "10.1.1"
+    "serve": "10.1.2"
   }
 }
