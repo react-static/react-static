@@ -85,7 +85,7 @@
     "react-hot-loader": "^4",
     "react-router-dom": "^4.2.2",
     "react-universal-component": "^2.8.1",
-    "serve": "^6.4.10",
+    "serve": "^10.1.1",
     "shorthash": "^0.0.2",
     "shortid": "^2.2.13",
     "slash": "^1.0.0",
