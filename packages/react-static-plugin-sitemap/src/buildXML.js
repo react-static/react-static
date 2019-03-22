@@ -15,11 +15,14 @@ const defaultGetUrlAttributes = (route, { prefixPath }) => {
 
 export default async function main(state, options) {
   const {
-    config: { paths = {}, disableRoutePrefixing, siteRoot },
+    config: {
+      paths: { DIST },
+      disableRoutePrefixing,
+      siteRoot,
+    },
     staging,
   } = state
 
-  const { DIST } = paths
   const prefixPath = disableRoutePrefixing
     ? siteRoot
     : process.env.REACT_STATIC_PUBLIC_PATH

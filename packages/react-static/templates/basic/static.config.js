@@ -2,8 +2,6 @@ import path from 'path'
 import axios from 'axios'
 
 export default {
-  siteRoot: 'https://tannerlinsley.com',
-  // maxThreads: 1,
   getRoutes: async () => {
     const { data: posts } = await axios.get(
       'https://jsonplaceholder.typicode.com/posts'

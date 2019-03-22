@@ -137,5 +137,9 @@ export function normalizeRoute(route, parent = {}, pluginNormalizeRoute) {
 
   route.path = getRoutePath(routePath)
 
-  return pluginNormalizeRoute({ route, parent })
+  route.parent = parent
+  route = pluginNormalizeRoute(route)
+  delete route.parent
+
+  return route
 }

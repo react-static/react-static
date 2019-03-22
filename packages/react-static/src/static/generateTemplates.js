@@ -26,7 +26,7 @@ const universalOptions = {
     console.error(props.error);
     return <div>An error occurred loading this page's template. More information is available in the console.</div>;
   },
-  ignoreBabelRename: true
+  // ignoreBabelRename: true
 }
 
 ${templates
