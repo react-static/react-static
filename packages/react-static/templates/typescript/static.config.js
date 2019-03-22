@@ -26,5 +26,13 @@ export default {
       },
     ]
   },
-  plugins: ['react-static-plugin-typescript'],
+  plugins: [
+    require.resolve('react-static-plugin-typescript'),
+    [
+      require.resolve('react-static-plugins-source-directory'),
+      {
+        location: path.resolve('./src/pages'),
+      },
+    ],
+  ],
 }

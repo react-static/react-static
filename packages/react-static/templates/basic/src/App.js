@@ -1,6 +1,6 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
-import { Root, Routes, ErrorBoundary, Suspense } from 'react-static'
+import { Root, Routes, ErrorBoundary } from 'react-static'
 //
 import { Link } from 'components/Router'
 
@@ -17,9 +17,9 @@ function App() {
           <Link to="/test">Test</Link>
         </nav>
         <div className="content">
-          <Suspense fallback={<em>Loading...</em>}>
+          <React.Suspense fallback={<em>Loading...</em>}>
             <Routes />
-          </Suspense>
+          </React.Suspense>
         </div>
       </Root>
     </ErrorBoundary>

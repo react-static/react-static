@@ -1,6 +1,20 @@
 /* eslint-disable import/no-dynamic-require */
-import React from 'react'
+import * as React from 'react'
 import { staticInfoContext } from './browser/hooks/useStaticInfo'
+
+const OriginalSuspense = React.Suspense
+
+function Suspense(props) {
+  return typeof document !== 'undefined' ? (
+    <OriginalSuspense {...props} />
+  ) : (
+    <React.Fragment {...props} />
+  )
+}
+
+// Override the suspense module to be our own
+React.Suspense = Suspense
+React.default.Suspense = Suspense
 
 const App = require(`${process.env.REACT_STATIC_ENTRY_PATH}`).default
 
