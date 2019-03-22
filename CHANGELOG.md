@@ -32,6 +32,7 @@
 - The entire internal state of React Static is now available via the `state` prop in the `Document` component
 - The `renderMeta` prop available on the `Document` component hass been renamed to `meta` and is now only available on the `state` prop of the document component
 - The `beforeDocumentToFile` hook has been renamed to `beforeHtmlToFile`
+- The environment variable `process.env.REACT_STATIC_SLAVE` has been renamed to `process.env.REACT_STATIC_THREAD`.
 
 # 6.3.6
 

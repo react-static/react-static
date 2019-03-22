@@ -26,10 +26,10 @@ export default {
     ]
   },
   plugins: [
-    '../../../react-static-plugin-react-router',
-    '../../../react-static-plugin-sitemap',
+    require.resolve('react-static-plugin-react-router'),
+    require.resolve('react-static-plugin-sitemap'),
     [
-      'react-static-plugin-source-directory',
+      require.resolve('react-static-plugin-source-directory'),
       {
         location: path.resolve('./src/pages'),
       },

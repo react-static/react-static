@@ -1,3 +1,4 @@
+import path from 'path'
 import axios from 'axios'
 import { createSharedData, makePageRoutes } from 'react-static/node'
 
@@ -11,12 +12,6 @@ if (!process.env.REACT_STATIC_THREAD) {
 }
 
 export default {
-  plugins: [
-    '../../../react-static-plugin-reach-router',
-    process.env.STYLE_SYSTEM === 'emotion' && 'react-static-plugin-emotion',
-    process.env.STYLE_SYSTEM === 'styled-components' &&
-      'react-static-plugin-styled-components',
-  ].filter(Boolean),
   // maxThreads: 1,
   getRoutes: async () => {
     const { data: posts } = await axios.get(
@@ -87,4 +82,17 @@ export default {
       })),
     ]
   },
+  plugins: [
+    require.resolve('react-static-plugin-reach-router'),
+    process.env.STYLE_SYSTEM === 'emotion' &&
+      require.resolve('react-static-plugin-emotion'),
+    process.env.STYLE_SYSTEM === 'styled-components' &&
+      require.resolve('react-static-plugin-styled-components'),
+    [
+      require.resolve('react-static-plugin-source-directory'),
+      {
+        location: path.resolve('./src/pages'),
+      },
+    ],
+  ].filter(Boolean),
 }

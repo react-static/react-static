@@ -48,6 +48,10 @@ export default ({ location, pathPrefix, extensions = [] }) => ({
       return routes
     }
 
+    // TODO: Watch for file deletion and adding and
+    // trigger a `getRoutes` refetch on the dev server
+    // (The interface for that has yet to be implemented)
+
     // if (stage === 'dev' && !watcher) {
     //   watch(location, {
     //     ignoreInitial: true,
@@ -92,21 +96,21 @@ function glob(path, options = {}) {
   )
 }
 
-function debounce(fn, time) {
-  let timeout
-  return (...args) => {
-    if (timeout) {
-      clearTimeout(timeout)
-    }
-    setTimeout(() => fn(...args), time)
-  }
-}
+// function debounce(fn, time) {
+//   let timeout
+//   return (...args) => {
+//     if (timeout) {
+//       clearTimeout(timeout)
+//     }
+//     setTimeout(() => fn(...args), time)
+//   }
+// }
 
-function watch(...args) {
-  if (watcher) {
-    watcher.close()
-  }
-  watcher = chokidar.watch(...args)
+// function watch(...args) {
+//   if (watcher) {
+//     watcher.close()
+//   }
+//   watcher = chokidar.watch(...args)
 
-  return watcher
-}
+//   return watcher
+// }

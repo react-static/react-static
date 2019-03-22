@@ -64,6 +64,7 @@ export function generateXML(state, { getAttributes = () => ({}) }, prefixPath) {
           config,
           prefixPath,
         }),
+        noindex: undefined,
       }
       const attributesArr = []
       Object.keys(attributes).forEach(key => {
