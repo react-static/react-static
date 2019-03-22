@@ -17,11 +17,9 @@ declare module 'react-static' {
   import { Helmet } from 'react-helmet'
 
   export class Head extends Helmet {}
-
-  // Generated Routes
   export class Routes extends React.Component {}
-
   export class Root extends React.Component {}
+  export class ErrorBoundary extends React.Component {}
 
   export const useRouteData: object
   export const useSiteData: object
