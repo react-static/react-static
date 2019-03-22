@@ -5,57 +5,41 @@ import chalk from 'chalk'
 import { progress, time, timeEnd } from '../utils'
 import fetchSiteData from './fetchSiteData'
 import fetchRoutes from './fetchRoutes'
+import plugins from './plugins'
 
 const cores = Math.max(OS.cpus().length, 1)
 
-// Exporting route HTML and JSON happens here. It's a big one.
-export default (async function exportRoutesRunner({
-  config,
-  clientStats,
-  incremental,
-}) {
-  // we modify config in fetchSiteData
-  const siteData = await fetchSiteData(config)
-  // we modify config in fetchRoutes
-  await fetchRoutes(config)
-
-  await buildHTML({
-    config,
-    siteData,
-    clientStats,
-    incremental,
-  })
+export default (async function exportRoutes(state) {
+  state = await fetchSiteData(state)
+  state = await fetchRoutes(state)
+  state = await buildHTML(state)
+  state = await plugins.afterExport(state)
+  return state
 })
 
-async function buildHTML({
-  config: oldConfig,
-  siteData,
-  clientStats,
-  incremental,
-}) {
-  const { routes, ...config } = oldConfig
+async function buildHTML(state) {
+  const {
+    routes,
+    config: { paths, maxThreads },
+  } = state
+
   time(chalk.green('=> [\u2713] HTML Exported'))
 
   // in case of an absolute path for DIST we must tell node to load the modules from our project root
-  if (!config.paths.DIST.startsWith(config.paths.ROOT)) {
-    process.env.NODE_PATH = config.paths.NODE_MODULES
+  if (!paths.DIST.startsWith(paths.ROOT)) {
+    process.env.NODE_PATH = paths.NODE_MODULES
     require('module').Module._initPaths()
   }
 
   // Single threaded export
-  if (config.maxThreads <= 1) {
+  if (maxThreads <= 1) {
     console.log('=> Exporting HTML...')
-    await require('./exportRoutes.sync').default({
-      config,
-      routes,
-      siteData,
-      clientStats,
-      incremental,
-    })
+    await require('./exportRoutes.sync').default(state)
   } else {
     // Multi-threaded export
-    const threads = Math.min(cores, config.maxThreads)
+    const threads = Math.min(cores, maxThreads)
     const htmlProgress = progress(routes.length)
+
     console.log(`=> Exporting HTML across ${threads} threads...`)
 
     const exporters = []
@@ -82,11 +66,8 @@ async function buildHTML({
         const routes = exporterRoutes[i]
         return new Promise((resolve, reject) => {
           exporter.send({
-            config,
+            ...state,
             routes,
-            siteData,
-            clientStats,
-            incremental,
           })
           exporter.on('message', ({ type, payload }) => {
             if (type === 'error') {
@@ -108,4 +89,6 @@ async function buildHTML({
   }
 
   timeEnd(chalk.green('=> [\u2713] HTML Exported'))
+
+  return state
 }

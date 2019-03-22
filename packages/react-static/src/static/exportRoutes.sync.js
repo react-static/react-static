@@ -8,13 +8,9 @@ import { DefaultDocument } from './components/RootComponents'
 import { poolAll, progress } from '../utils'
 import exportRoute from './exportRoute'
 
-export default async ({
-  config,
-  routes,
-  siteData,
-  clientStats,
-  incremental,
-}) => {
+export default async state => {
+  const { config, routes } = state
+
   const htmlProgress = progress(routes.length)
   // Use the node version of the app created with webpack
 
@@ -31,13 +27,10 @@ export default async ({
     // eslint-disable-next-line
     tasks.push(async () => {
       await exportRoute({
-        config,
+        ...state,
         Comp,
         DocumentTemplate,
         route,
-        siteData,
-        clientStats,
-        incremental,
       })
       htmlProgress.tick()
     })

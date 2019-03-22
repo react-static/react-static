@@ -106,9 +106,7 @@ declare module 'react-static' {
     Head: AnyReactComponent
     Body: AnyReactComponent
     children: ReactNodeArray
-    routeInfo: object
-    stieData: object
-    renderMeta: object
+    state: any // TODO: This should be changed
   }
 
   export interface OnStartArgs {

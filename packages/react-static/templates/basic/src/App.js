@@ -1,4 +1,5 @@
 import React from 'react'
+import { hot } from 'react-hot-loader/root'
 import { Root, Routes, ErrorBoundary, Suspense } from 'react-static'
 //
 import { Link } from 'components/Router'
@@ -10,6 +11,8 @@ function App() {
     <ErrorBoundary>
       <Root>
         <nav>
+          <Link to="/">Home</Link>
+          <Link to="/">Home</Link>
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/blog">Blog</Link>
@@ -25,4 +28,4 @@ function App() {
   )
 }
 
-export default App
+export default hot(App)

@@ -10,18 +10,12 @@ import {
 
 export default async function createIndexPlaceholder(state) {
   const {
-    config: { Document, paths, siteData },
+    config: { Document, paths },
   } = state
   // Render the base document component to string with siteprops
   const Component = Document || DefaultDocument
   const DocumentHtml = renderToString(
-    <Component
-      renderMeta={{}}
-      Html={Html}
-      Head={Head}
-      Body={Body}
-      siteData={siteData}
-    >
+    <Component Html={Html} Head={Head} Body={Body} state={state}>
       <div id="root" />
     </Component>
   )

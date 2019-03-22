@@ -6,7 +6,6 @@ const Location = withRouter(({ children, location }) => children(location))
 
 export default ({ RouterProps: userRouterProps = {} }) => ({
   Root: PreviousRoot => ({ children }) => {
-    console.log('hello')
     let Router
     const basepath = useBasepath()
     const staticInfo = useStaticInfo()

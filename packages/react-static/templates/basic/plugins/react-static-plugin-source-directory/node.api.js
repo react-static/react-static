@@ -8,7 +8,7 @@ let routesCache
 
 export default ({ location, pathPrefix, extensions = [] }) => ({
   getRoutes: async (routes, state) => {
-    const { config, stage } = state
+    const { config, stage, debug } = state
     if (!location) {
       throw new Error(
         'react-static-plugin-source-directory: A valid `location` directory is required to use this plugin'
@@ -21,7 +21,11 @@ export default ({ location, pathPrefix, extensions = [] }) => ({
     const pagesGlob = `${location}/**/*.{${globExtensions}}`
     // Get the pages
 
-    console.log(`=> Importing routes directory: ${pagesGlob}`)
+    if (debug) {
+      console.log(`=> Importing directory routes from: ${pagesGlob}`)
+    } else {
+      console.log('=> Importing routes from directory...')
+    }
 
     const handle = pages => {
       // Turn each page into a route

@@ -33,4 +33,32 @@ export default {
     const hooks = getHooks(state.plugins, 'webpack')
     return reduceHooks(hooks, { sync: true })(config, state)
   },
+  afterExport: state => {
+    const hooks = getHooks(state.plugins, 'afterExport')
+    return reduceHooks(hooks)(state)
+  },
+  beforeRenderToElement: (Comp, state) => {
+    const hooks = getHooks(state.plugins, 'beforeRenderToElement')
+    return reduceHooks(hooks)(Comp, state)
+  },
+  beforeRenderToHtml: (element, state) => {
+    const hooks = getHooks(state.plugins, 'beforeRenderToHtml')
+    return reduceHooks(hooks)(element, state)
+  },
+  beforeHtmlToDocument: (html, state) => {
+    const hooks = getHooks(state.plugins, 'beforeHtmlToDocument')
+    return reduceHooks(hooks)(html, state)
+  },
+  htmlProps: (props, state) => {
+    const hooks = getHooks(state.plugins, 'htmlProps')
+    return reduceHooks(hooks)(props, state)
+  },
+  headElements: (elements, state) => {
+    const hooks = getHooks(state.plugins, 'headElements')
+    return reduceHooks(hooks)(elements, state)
+  },
+  beforeHtmlToFile: (html, state) => {
+    const hooks = getHooks(state.plugins, 'beforeHtmlToFile')
+    return reduceHooks(hooks)(html, state)
+  },
 }

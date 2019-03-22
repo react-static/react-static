@@ -18,10 +18,12 @@ export default () => ({
       </StyleSheetManager>
     )
   },
-  Head: ({ meta }) =>
+  headElements: (elements, { meta }) => [
     // The styles aren't fully extraced until the react component
     // has been rendered to an html string. So we wait until the head
     // to call the sheet's getStyleElement function
     // and then insert the tag into the Head
+    ...elements,
     meta.styledComponentsSheet.getStyleElement(),
+  ],
 })

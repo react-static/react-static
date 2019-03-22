@@ -28,6 +28,10 @@
 - `options and options.dev` in several locations has been deprecated (getRoutes, getData, etc.) and has been replaced with the internal state of React Static. You can still access `options.dev` by using `state.stage === 'dev'`.
 - The `getConfig` hook has been renamed to `afterGetConfig` and is now a reducer that accepts and returns the global state
 - The `reloadRoutes` function exported from `react-static/node` has been renamed to `reloadClientData`
+- The `Head` plugin hook in `node.api.js` has now been aptly renamed to `headElements` and is now a reducer, not a mapper.
+- The entire internal state of React Static is now available via the `state` prop in the `Document` component
+- The `renderMeta` prop available on the `Document` component hass been renamed to `meta` and is now only available on the `state` prop of the document component
+- The `beforeDocumentToFile` hook has been renamed to `beforeHtmlToFile`
 
 # 6.3.6
 

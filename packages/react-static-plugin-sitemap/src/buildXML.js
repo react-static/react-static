@@ -3,8 +3,6 @@ import nodePath from 'path'
 import { pathJoin } from 'react-static'
 import chalk from 'chalk'
 
-const isStaging = process.env.REACT_STATIC_STAGING === 'true'
-
 const REGEX_TO_GET_LAST_SLASH = /\/{1,}$/gm
 
 const defaultGetUrlAttributes = (route, { prefixPath }) => {
@@ -18,6 +16,7 @@ const defaultGetUrlAttributes = (route, { prefixPath }) => {
 export default async function main(state, options) {
   const {
     config: { paths = {}, disableRoutePrefixing, siteRoot },
+    staging,
   } = state
 
   const { DIST } = paths
@@ -30,7 +29,7 @@ export default async function main(state, options) {
   const xml = generateXML(state, options, prefixPath)
 
   await fs.writeFile(
-    nodePath.join(DIST, isStaging ? 'sitemap.staging.xml' : 'sitemap.xml'),
+    nodePath.join(DIST, staging ? 'sitemap.staging.xml' : 'sitemap.xml'),
     xml
   )
   console.log(chalk.green`=> [\u2713] sitemap.xml generated`)

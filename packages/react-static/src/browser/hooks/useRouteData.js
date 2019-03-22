@@ -1,9 +1,22 @@
-import { prefetch, routeInfoByPath, routeErrorByPath } from '../'
+import { useState, useEffect } from 'react'
+import {
+  prefetch,
+  routeInfoByPath,
+  routeErrorByPath,
+  onReloadClientData,
+} from '../'
 import { useRoutePath } from '../hooks/useRoutePath'
 import { getFullRouteData } from '../utils'
 
 export const useRouteData = () => {
   const routePath = useRoutePath()
+  const [_, setCount] = useState(0)
+
+  useEffect(() =>
+    onReloadClientData(() => {
+      setCount(old => old + 1)
+    })
+  )
 
   const routeError = routeErrorByPath[routePath]
   const routeInfo = routeError

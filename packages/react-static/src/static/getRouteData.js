@@ -1,7 +1,8 @@
-// Set up some scaffolding for automatic data splitting
-export const sharedDataByHash = new Map()
-
-export default async function getRouteData(route, state) {
+export default async function getRouteData(
+  route,
+  state,
+  sharedDataByHash = new Map()
+) {
   // Fetch data from each route
   let data = !!route.getData && (await route.getData({ ...state, route }))
   // Default data (must be an object)

@@ -8,7 +8,7 @@ import {
   registerTemplateForPath,
   prefetch,
   plugins,
-  onReloadClientData,
+  onReloadTemplates,
 } from '../'
 import { useStaticInfo } from '../hooks/useStaticInfo'
 import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
@@ -45,7 +45,7 @@ const RoutesInner = ({ routePath }) => {
   })
 
   useEffect(() =>
-    onReloadClientData(() => {
+    onReloadTemplates(() => {
       setCount(old => old + 1)
     })
   )

@@ -7,11 +7,12 @@ const { DefaultDocument } = require('./components/RootComponents')
 const { poolAll } = require('../utils')
 const exportRoute = require('./exportRoute').default
 
-process.on('message', async payload => {
+process.on('message', async state => {
   try {
-    const { config: oldConfig, routes, incremental } = payload
+    const { routes } = state
     // Get config again
-    const config = await getConfig(oldConfig.originalConfig)
+
+    const { config } = await getConfig(state)
 
     setIgnorePath(config.paths.ARTIFACTS)
 
@@ -24,14 +25,14 @@ process.on('message', async payload => {
     const tasks = []
     for (let i = 0; i < routes.length; i++) {
       const route = routes[i]
+      // eslint-disable-next-line
       tasks.push(async () => {
         await exportRoute({
-          ...payload,
+          ...state,
           config,
           route,
           Comp,
           DocumentTemplate,
-          incremental,
         })
         if (process.connected) {
           process.send({ type: 'tick' })

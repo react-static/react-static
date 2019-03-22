@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 //
+import { onReloadClientData } from '../'
 import { useStaticInfo } from './useStaticInfo'
 
 // This will likely become a react cache resource soon
@@ -8,6 +10,15 @@ let siteDataReady
 let siteData
 
 export const useSiteData = () => {
+  // When clientData reloads, rerender components
+  // that use this hook
+  const [_, setCount] = useState(0)
+  useEffect(() =>
+    onReloadClientData(() => {
+      setCount(old => old + 1)
+    })
+  )
+
   const staticInfo = useStaticInfo()
 
   if (staticInfo) {

@@ -1,8 +1,6 @@
 import PortFinder from 'portfinder'
-import fs from 'fs-extra'
 import { performance } from 'perf_hooks'
 //
-import { makeHookMapper } from '../browser/utils'
 
 // Export all shared utils
 export * from '../browser/utils'
@@ -18,15 +16,6 @@ export const findAvailablePort = start =>
     port: start,
     stopPort: start + 1000,
   })
-
-export function copyPublicFolder(config) {
-  fs.ensureDirSync(config.paths.PUBLIC)
-
-  fs.copySync(config.paths.PUBLIC, config.paths.DIST, {
-    dereference: true,
-    filter: file => file !== config.paths.INDEX,
-  })
-}
 
 const times = {}
 export function time(message) {

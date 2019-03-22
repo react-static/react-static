@@ -18,10 +18,11 @@ export default ({ providerProps = {} }) => ({
       </JssProvider>
     )
   },
-  Head: ({ meta }) => (
+  headElements: (elements, { meta }) => [
+    ...elements,
     <style
       id="jss-server-side"
       dangerouslySetInnerHTML={{ __html: meta.jssSheetsRegistry.toString() }}
-    />
-  ),
+    />,
+  ],
 })

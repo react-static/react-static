@@ -5,7 +5,7 @@ import { time, timeEnd } from '../utils'
 
 export default (async function extractTemplates(state) {
   const { config, routes, incremental } = state
-  console.log('=> Building Templates')
+  console.log('=> Building Templates...')
   time(chalk.green('=> [\u2713] Templates Built'))
 
   // Dedupe all templates into an array

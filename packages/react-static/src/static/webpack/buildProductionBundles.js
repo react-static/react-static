@@ -4,13 +4,19 @@ import chalk from 'chalk'
 //
 import getWebpackConfig from './getWebpackConfig'
 import { outputClientStats } from '../clientStats'
+import { time, timeEnd } from '../../utils'
 
-export async function buildProductionBundles(state) {
+export default async function buildProductionBundles(state) {
+  // Build static pages and JSON
+  console.log('=> Bundling App...')
+  time(chalk.green('=> [\u2713] App Bundled'))
+
   const allWebpackConfigs = [
     await getWebpackConfig(state),
     await getWebpackConfig({ ...state, stage: 'node' }), // Make sure we're building the node config
   ]
-  return new Promise(async (resolve, reject) => {
+
+  state = await new Promise(async (resolve, reject) => {
     webpack(allWebpackConfigs).run(async (err, stats) => {
       if (err) {
         console.log(chalk.red(err.stack || err))
@@ -61,9 +67,12 @@ export async function buildProductionBundles(state) {
         }
       }
 
-      state.prodStatsJson = prodStats.toJson()
-
-      await outputClientStats(state)
+      state = await outputClientStats(state, prodStats.toJson())
+      resolve(state)
     })
   })
+
+  timeEnd(chalk.green('=> [\u2713] App Bundled'))
+
+  return state
 }

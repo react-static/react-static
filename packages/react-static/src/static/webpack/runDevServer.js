@@ -10,6 +10,7 @@ import getRouteData from '../getRouteData'
 import { findAvailablePort, time, timeEnd } from '../../utils'
 
 let devServer
+let latestState
 let buildDevRoutes = () => {}
 let reloadClientData = () => {}
 
@@ -85,7 +86,9 @@ async function makeDevServer(state) {
       // Since routes may change during dev, this function can rebuild all of the config
       // routes. It also references the original config when possible, to make sure it
       // uses any up to date getData callback generated from new or replacement routes.
-      buildDevRoutes = latestState => {
+      buildDevRoutes = async newState => {
+        latestState = newState
+
         app.get('/__react-static__/siteData', async (req, res, next) => {
           try {
             res.send(latestState.siteData)
@@ -122,6 +125,7 @@ async function makeDevServer(state) {
             }
           )
         })
+        return new Promise(resolve => setTimeout(resolve, 1))
       }
 
       buildDevRoutes(state)
@@ -137,8 +141,8 @@ async function makeDevServer(state) {
   }
 
   let first = true
-  console.log('=> Building App Bundle...')
-  time(chalk.green('=> [\u2713] Build Complete'))
+  console.log('=> Bundling Application...')
+  time(chalk.green('=> [\u2713] Application Bundled'))
 
   devCompiler.hooks.invalid.tap(
     {
@@ -146,8 +150,8 @@ async function makeDevServer(state) {
     },
     file => {
       console.log('=> File changed:', file.replace(state.config.paths.ROOT, ''))
-      console.log('=> Updating build...')
-      time(chalk.green('=> [\u2713] Build Updated'))
+      console.log('=> Updating bundle...')
+      time(chalk.green('=> [\u2713] Bundle Updated'))
     }
   )
 
@@ -161,13 +165,13 @@ async function makeDevServer(state) {
 
       if (isSuccessful) {
         if (first) {
-          timeEnd(chalk.green('=> [\u2713] Build Complete'))
+          timeEnd(chalk.green('=> [\u2713] Application Bundled'))
           console.log(
             chalk.green('=> [\u2713] App serving at'),
             `${host}:${port}`
           )
         } else {
-          timeEnd(chalk.green('=> [\u2713] Build Updated'))
+          timeEnd(chalk.green('=> [\u2713] Bundle Updated'))
         }
         if (first && state.config.onStart) {
           // TODO: turn this into a hook
@@ -178,7 +182,9 @@ async function makeDevServer(state) {
       first = false
 
       if (messages.errors.length) {
-        console.log(chalk.red('Failed to build! Fix any errors and try again!'))
+        console.log(
+          chalk.red('Failed to bundle! Fix any errors and try again!')
+        )
         messages.errors.forEach(message => {
           console.log(message)
           console.log()

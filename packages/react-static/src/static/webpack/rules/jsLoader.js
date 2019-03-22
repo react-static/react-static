@@ -41,7 +41,6 @@ export default function({ config, stage }) {
       /react-static-browser-plugins\.js/,
     ],
     use: [
-      // 'thread-loader',
       {
         loader: 'babel-loader',
         options: {

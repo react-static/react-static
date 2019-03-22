@@ -93,7 +93,6 @@
     "swimmer": "^1.4.0",
     "tar-fs": "^1.16.3",
     "terser-webpack-plugin": "^1.2.2",
-    "thread-loader": "^1.2.0",
     "upath": "^1.1.0",
     "url-loader": "^1.1.2",
     "webpack": "^4.25.1",

@@ -33,8 +33,19 @@ export const registerPlugins = newPlugins => {
 export const templates = {}
 export const templatesByPath = {}
 export const templateErrorByPath = {}
-export const templateUpdated = { cb: () => {} }
-export const registerTemplates = (tmps, notFoundKey) => {
+let onReloadTemplatesListeners = []
+export const onReloadTemplates = fn => {
+  onReloadTemplatesListeners.push(fn)
+  return () => {
+    onReloadTemplatesListeners = onReloadTemplatesListeners.filter(
+      d => d !== fn
+    )
+  }
+}
+export const registerTemplates = async (tmps, notFoundKey) => {
+  Object.keys(templatesByPath).forEach(key => {
+    delete templatesByPath[key]
+  })
   Object.keys(templates).forEach(key => {
     delete templates[key]
   })
@@ -42,7 +53,12 @@ export const registerTemplates = (tmps, notFoundKey) => {
     templates[key] = tmps[key]
   })
   templatesByPath['404'] = templates[notFoundKey]
-  templateUpdated.cb()
+
+  if (process.env.NODE_ENV === 'development') {
+    await prefetch(window.location.pathname)
+  }
+
+  onReloadTemplatesListeners.forEach(fn => fn())
 }
 export const registerTemplateForPath = (path, template) => {
   path = getRoutePath(path)
@@ -117,7 +133,7 @@ function startPreloader() {
   }
 }
 
-function reloadClientData() {
+async function reloadClientData() {
   // Delete all cached data
   ;[
     routeInfoByPath,
@@ -130,6 +146,9 @@ function reloadClientData() {
       delete part[key]
     })
   })
+
+  // Prefetch the current route's data before you reload routes
+  await prefetch(window.location.pathname)
 
   onReloadClientDataListeners.forEach(fn => fn())
 }

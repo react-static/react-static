@@ -19,12 +19,7 @@ const DEFAULT_ENTRY = 'index'
 const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 
 // Retrieves the static.config.js from the current project directory
-export default (async function getConfig(state, callback) {
-  if (!callback) {
-    throw new Error(
-      `getConfig() requires a callback be passed as the second argument`
-    )
-  }
+export default (async function getConfig(state, callback = d => d) {
   const configPath = state.configPath || DEFAULT_PATH_FOR_STATIC_CONFIG
 
   state = {
@@ -40,16 +35,19 @@ export default (async function getConfig(state, callback) {
   if (noConfig) {
     // last
     state = await buildConfig(state, defaultConfig)
-    callback(state)
-    return
+    return callback(state)
   }
 
   state = await buildConfigFromPath(state, resolvedPath || configPath)
 
-  chokidar.watch(resolvedPath).on('all', async () => {
-    state = await buildConfigFromPath(state, resolvedPath)
-    callback(state)
-  })
+  if (state.stage === 'dev') {
+    chokidar.watch(resolvedPath).on('all', async () => {
+      state = await buildConfigFromPath(state, resolvedPath)
+      callback(state)
+    })
+  }
+
+  return callback(state)
 })
 
 async function buildConfigFromPath(state, configPath) {
@@ -110,7 +108,7 @@ export async function buildConfig(state, config = {}) {
 
   if (process.env.REACT_STATIC_ENV === 'development') {
     basePath = cleanSlashes(config.devBasePath)
-  } else if (process.env.REACT_STATIC_STAGING === 'true') {
+  } else if (state.staging) {
     siteRoot = cutPathToRoot(config.stagingSiteRoot || '/', '$1')
     basePath = cleanSlashes(config.stagingBasePath)
   } else {

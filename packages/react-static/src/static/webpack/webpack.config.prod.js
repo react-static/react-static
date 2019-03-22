@@ -10,7 +10,8 @@ import resolveFrom from 'resolve-from'
 //
 import rules from './rules'
 
-function common(config) {
+function common(state) {
+  const { analyze, config } = state
   const { ROOT, DIST, NODE_MODULES, SRC, ASSETS } = config.paths
 
   process.env.REACT_STATIC_ENTRY_PATH = path.resolve(ROOT, config.entry)
@@ -133,50 +134,45 @@ function common(config) {
       new webpack.EnvironmentPlugin(process.env),
       extrackCSSChunks,
       new CaseSensitivePathsPlugin(),
-      process.env.REACT_STATIC_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
+      analyze && new BundleAnalyzerPlugin(),
     ].filter(d => d),
     devtool: 'source-map',
   }
 }
 
-export default function({ config, stage }) {
-  const result = common(config)
+export default function(state) {
+  const {
+    stage,
+    config: { paths },
+  } = state
+
+  const result = common(state)
   if (stage !== 'node') return result
 
   // Node only!!!
   result.output.filename = 'static-app.js'
-  result.output.path = config.paths.ARTIFACTS
+  result.output.path = paths.ARTIFACTS
   result.output.libraryTarget = 'umd'
   result.optimization.minimize = false
   result.optimization.minimizer = []
   result.target = 'node'
   result.devtool = false
   result.externals = [
-    new RegExp(`${config.paths.PLUGINS}`),
+    new RegExp(`${paths.PLUGINS}`),
     (context, request, callback) => {
       const resolved = path.resolve(context, request)
       if (
-        [
-          /react-static\/lib\/browser/,
-          // /react-universal-component/,
-          /webpack-flush-chunks/,
-        ].some(d => d.test(resolved))
+        [/react-static\/lib\/browser/, /webpack-flush-chunks/].some(d =>
+          d.test(resolved)
+        )
       ) {
         return callback(null, `commonjs ${resolved}`)
       }
       callback()
     },
-    nodeExternals({
-      whitelist: [
-        // 'react',
-        // 'react-dom',
-        // 'react-universal-component',
-        // 'webpack-flush-chunks',
-        // 'react-static',
-      ],
-    }),
+    nodeExternals(),
   ]
-  result.module.rules = rules({ config, stage: 'prod', isNode: true })
+  result.module.rules = rules(state)
   result.plugins = [
     new webpack.EnvironmentPlugin(process.env),
     new CaseSensitivePathsPlugin(),

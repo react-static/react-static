@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { setConfig } from 'react-hot-loader'
 
 // Your top level component
 import App from './App'
@@ -21,7 +22,15 @@ if (typeof document !== 'undefined') {
   render(App)
 
   // Hot Module Replacement
-  if (module.hot) {
-    module.hot.accept('./App', () => render(require('./App').default))
+  if (module && module.hot) {
+    module.hot.accept('./App', () => {
+      render(require('./App').default)
+      console.log('Bundle Reloaded')
+    })
   }
+
+  setConfig({
+    ignoreSFC: true, // RHL will be __completely__ disabled for SFC
+    pureRender: true, // RHL will not change render method
+  })
 }

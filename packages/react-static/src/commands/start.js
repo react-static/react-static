@@ -14,15 +14,16 @@ export default (async function start(state = {}) {
   if (typeof process.env.NODE_ENV === 'undefined') {
     process.env.NODE_ENV = 'development'
   }
-  if (debug) {
-    process.env.REACT_STATIC_DEBUG = 'true'
-  }
+
   process.env.REACT_STATIC_ENV = 'development'
   process.env.BABEL_ENV = 'development'
 
   state.stage = 'dev'
 
+  console.log(`=> Starting Development Server...`)
+
   getConfig(state, async state => {
+    console.log('')
     if (debug) {
       console.log('DEBUG:')
       console.log(state)
