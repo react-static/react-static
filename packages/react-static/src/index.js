@@ -17,5 +17,5 @@ export { useBasepath } from './browser/hooks/useBasepath'
 export * from './browser/'
 
 // Utils
-export { getRoutePath, makePathAbsolute } from './browser/utils'
+export { getRoutePath, makePathAbsolute, pathJoin } from './browser/utils'
 export { default as scrollTo } from './browser/utils/scrollTo'

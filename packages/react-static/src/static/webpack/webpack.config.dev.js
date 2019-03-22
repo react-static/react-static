@@ -3,7 +3,7 @@ import resolveFrom from 'resolve-from'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
-import WebpackDashboard from 'webpack-dashboard/plugin'
+// import WebpackDashboard from 'webpack-dashboard/plugin'
 import path from 'path'
 
 import rules from './rules'
@@ -45,6 +45,9 @@ export default function({ config }) {
     },
     resolve: {
       modules: [
+        NODE_MODULES,
+        SRC,
+        DIST,
         ...[NODE_MODULES, SRC, DIST].map(d => path.relative(__dirname, d)),
         'node_modules',
       ],

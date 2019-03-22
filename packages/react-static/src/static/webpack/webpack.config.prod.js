@@ -113,6 +113,9 @@ function common(config) {
     },
     resolve: {
       modules: [
+        NODE_MODULES,
+        SRC,
+        DIST,
         ...[NODE_MODULES, SRC, DIST].map(d =>
           DIST.startsWith(ROOT) ? path.relative(__dirname, d) : path.resolve(d)
         ),
@@ -136,13 +139,13 @@ function common(config) {
   }
 }
 
-export default function({ config, isNode }) {
+export default function({ config, stage }) {
   const result = common(config)
-  if (!isNode) return result
+  if (stage !== 'node') return result
 
   // Node only!!!
   result.output.filename = 'static-app.js'
-  result.output.path = config.paths.BUILD_ARTIFACTS
+  result.output.path = config.paths.ARTIFACTS
   result.output.libraryTarget = 'umd'
   result.optimization.minimize = false
   result.optimization.minimizer = []

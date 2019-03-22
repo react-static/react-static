@@ -14,13 +14,15 @@ const originalRequire = Module.prototype.require
 // eslint-disable-next-line
 Module.prototype.require = function(modulePath) {
   if (!modulePath.startsWith('.') && !modulePath.startsWith('/')) {
-    try {
-      modulePath = resolveFrom(
-        path.resolve(process.cwd(), 'node_modules'),
-        modulePath
-      )
-    } catch (err) {
-      //
+    if (['react', 'react-dom'].some(d => modulePath.includes(d))) {
+      try {
+        modulePath = resolveFrom(
+          path.resolve(process.cwd(), 'node_modules'),
+          modulePath
+        )
+      } catch (err) {
+        //
+      }
     }
   }
   return originalRequire.call(this, modulePath)
@@ -79,17 +81,6 @@ ignoredExtensions.forEach(ext => {
 })
 
 console.error = (err, ...rest) => {
-  // console.log(
-  //   Object.keys(Module._cache)
-  //     .map(d => Module._cache[d])
-  //     .filter(d => d.filename.includes('/react/'))
-  //     .map(
-  //       d => `${d.id}
-  // => ${d.parent.id}
-  //   => ${d.parent.parent.id}`
-  //     )
-  //     .join('\n\n')
-  // )
   console.log(new PrettyError().render(err), ...rest)
 }
 

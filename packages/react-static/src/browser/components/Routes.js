@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 //
 import {
   templatesByPath,
@@ -8,8 +8,8 @@ import {
   registerTemplateForPath,
   prefetch,
   plugins,
+  onReloadClientData,
 } from '../'
-import { makeHookReducer } from '../utils'
 import { useStaticInfo } from '../hooks/useStaticInfo'
 import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
 
@@ -19,6 +19,7 @@ const RoutesInner = ({ routePath }) => {
   // might be rendered simultaneously
 
   const staticInfo = useStaticInfo()
+  const [_, setCount] = useState(0)
 
   // If in production, make sure the staticInfo is ingested into the
   // cache
@@ -42,6 +43,12 @@ const RoutesInner = ({ routePath }) => {
       registerTemplateForPath(path, template)
     }
   })
+
+  useEffect(() =>
+    onReloadClientData(() => {
+      setCount(old => old + 1)
+    })
+  )
 
   // If SSR, force the routePath to be the statically exported one
   if (typeof document === 'undefined') {
@@ -79,8 +86,6 @@ const RoutesInner = ({ routePath }) => {
     ])
   }
 
-  console.log(templatesByPath, routePath, <Comp />)
-
   return (
     <routePathContext.Provider value={routePath}>
       <Comp is404={is404} />
@@ -94,10 +99,10 @@ export const Routes = ({ routePath }) => {
   // in its parent, so we pass it down as context
 
   // Get the Routes hook
-  const CompWrapper = useMemo(() => {
-    const RoutesHook = makeHookReducer(plugins, 'Routes', { sync: true })
-    return RoutesHook(props => <RoutesInner {...props} />)
-  }, [plugins])
+  const CompWrapper = useMemo(
+    () => plugins.Routes(props => <RoutesInner {...props} />),
+    [plugins]
+  )
 
   return <CompWrapper routePath={routePath} />
 }

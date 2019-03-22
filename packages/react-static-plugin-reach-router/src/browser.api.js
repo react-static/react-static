@@ -1,21 +1,23 @@
 import React from 'react'
 import { useBasepath, useStaticInfo, makePathAbsolute } from 'react-static'
-import { Router, ServerLocation } from '@reach/router'
+import { Router, ServerLocation, Location } from '@reach/router'
 
 export default ({ RouterProps: userRouterProps = {} }) => ({
   Root: PreviousRoot => ({ children, ...rest }) => {
-    const Render = ({ render, ...rest }) => render(rest)
     const basepath = useBasepath()
     const staticInfo = useStaticInfo()
+
+    const RouteHandler = props => (
+      <PreviousRoot {...rest} {...props}>
+        {children}
+      </PreviousRoot>
+    )
 
     const renderedChildren = (
       // Place a top-level router inside the root
       // This will give proper context to Link and other reach components
       <Router {...(basepath ? { basepath } : {})} {...userRouterProps}>
-        <Render
-          path="/*"
-          render={location => <PreviousRoot {...rest}>{children}</PreviousRoot>}
-        />
+        <RouteHandler path="/*" />
       </Router>
     )
 
@@ -29,9 +31,9 @@ export default ({ RouterProps: userRouterProps = {} }) => ({
     )
   },
   Routes: PreviousRoutes => props => (
-    // Wrap Routes in a reach router
-    <Router>
-      <PreviousRoutes path="/*" {...props} />} />
-    </Router>
+    // Wrap Routes in location
+    <Location>
+      {location => <PreviousRoutes path="/*" {...props} location={location} />}
+    </Location>
   ),
 })

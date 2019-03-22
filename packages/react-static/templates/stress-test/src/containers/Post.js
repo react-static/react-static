@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouteData } from 'react-static'
+import { useRouteData } from 'react-static'
 import { Link } from '@reach/router'
 //
 
@@ -19,11 +19,14 @@ const Post = styled
     `
   : props => <div {...props} />
 
-export default withRouteData(({ post }) => (
-  <Post>
-    <Link to="/blog/">{'<'} Back</Link>
-    <br />
-    <h3>{post.title}</h3>
-    <p>{post.body}</p>
-  </Post>
-))
+export default () => {
+  const { post } = useRouteData()
+  return (
+    <Post>
+      <Link to="/blog/">{'<'} Back</Link>
+      <br />
+      <h3>{post.title}</h3>
+      <p>{post.body}</p>
+    </Post>
+  )
+}

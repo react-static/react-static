@@ -10,14 +10,24 @@
 - Hash and top-of-the-page scrolling has been abstracted into a new `useScroller` hook.
 - Generic `ErrorBoundary` and `Spinner` components are now provided for use in your applications.
 - Plugin loading order has been changed to:
+  - Absolute Require.resolve (will use package.json's `main` entry to resolve)
   - Absolute Path
   - `plugins/` relative path
-  - Require.resolve
   - Require.resolve (from Plugins directory)
   - CWD relative path
   - Require.resolve (from Root directory)
 - Production webpack bundles now have a default `performance.maxEntrypointSize` of `300000` bytes (300kb)
 - `config.bundleAnalyzer` is now deprecated in favor of the `build --analyze/-a` and `export --analyze/-a` option.
+- sitemap functionality has now been extracte into the `react-static-plugin-sitemap` plugin.
+  - route properties like `noindex`, `lastModified`, and `priority` are now meant to be set under a `route.sitemap` object and map directly to xml attributes now. eg. `route: { sitemap: { lastmod: '10/10/2010', priority: '0.5' } }`
+  - `noindex` is still an inherited attribute
+  - Please refer to the plugin documentation for more information
+- Functionality to include the `pages` directory has been moved to a plugin called `react-static-plugin-source-directory`. It ships by default with every template and has a default option to use the `src/pages` directory within the template.
+- `config.disableDuplicateRoutesWarning` has been depreacted. This is mainly because multiple hooks can now create routes for the same route and by default, they are merged together unless specified with the `replace: true` flag on the route creation.
+- Internally, all state is now being tracked and stored in a single global state variable. This global state is passed around everywhere, including `getRoutes`, most plugin hooks, and just about anywhere React Static calls into your own user code.
+- `options and options.dev` in several locations has been deprecated (getRoutes, getData, etc.) and has been replaced with the internal state of React Static. You can still access `options.dev` by using `state.stage === 'dev'`.
+- The `getConfig` hook has been renamed to `afterGetConfig` and is now a reducer that accepts and returns the global state
+- The `reloadRoutes` function exported from `react-static/node` has been renamed to `reloadClientData`
 
 # 6.3.6
 

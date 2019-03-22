@@ -1,8 +1,8 @@
 import PortFinder from 'portfinder'
 import fs from 'fs-extra'
-import nodeGlob from 'glob'
 import { performance } from 'perf_hooks'
 //
+import { makeHookMapper } from '../browser/utils'
 
 // Export all shared utils
 export * from '../browser/utils'
@@ -26,17 +26,6 @@ export function copyPublicFolder(config) {
     dereference: true,
     filter: file => file !== config.paths.INDEX,
   })
-}
-
-export function glob(path, options = {}) {
-  return new Promise((resolve, reject) =>
-    nodeGlob(path, options, (err, files) => {
-      if (err) {
-        return reject(err)
-      }
-      resolve(files)
-    })
-  )
 }
 
 const times = {}

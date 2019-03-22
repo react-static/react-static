@@ -61,7 +61,6 @@ declare module 'react-static' {
     extractCssChunks?: boolean
     inlineCss?: boolean
     disablePreload?: boolean
-    disableDuplicateRoutesWarning?: boolean
     outputFileRate?: number
     prefetchRate?: number
     maxThreads?: number
@@ -91,17 +90,13 @@ declare module 'react-static' {
   }
 
   export interface RouteFlags {
-    dev: boolean
+    stage: string
   }
 
   export interface Route {
     path: string
     template?: string
     redirect?: string
-    noindex?: boolean
-    permalink?: string
-    lastModified?: string
-    priority?: number
     children?: Route[]
     getData?(resolvedRoute: Route, flags: RouteFlags): any
   }

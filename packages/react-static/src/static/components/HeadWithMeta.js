@@ -1,5 +1,7 @@
 import React from 'react'
-import { pathJoin, makePathAbsolute, makeHookMapper } from '../../utils'
+//
+import { pathJoin, makePathAbsolute } from '../../utils'
+import plugins from '../plugins'
 // import packagejson from '../../../package.json'
 
 // const { version } = packagejson
@@ -25,8 +27,9 @@ export async function makeHeadWithMeta({
   clientCss,
   meta,
 }) {
-  const HeadHookMapper = makeHookMapper(config.plugins, 'Head')
-  const pluginHeads = await HeadHookMapper({ meta })
+  // const HeadHookMapper = makeHookMapper(config.plugins, 'Head')
+  // const pluginHeads = await HeadHookMapper({ meta })
+  const pluginHeads = await plugins.Head({ meta })
 
   return ({ children, ...rest }) => {
     const renderLinkCSS = !route.redirect && !config.inlineCss

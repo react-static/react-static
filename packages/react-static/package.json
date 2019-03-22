@@ -13,8 +13,8 @@
     "react-static": "./bin/react-static"
   },
   "scripts": {
-    "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' -s",
-    "watch": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*' -s",
+    "build": "rimraf lib && rimraf node_modules/react-static && babel src --out-dir lib --ignore '**/__tests__/*' --source-maps inline",
+    "watch": "rimraf lib && rimraf node_modules/react-static && babel -w src --out-dir lib --ignore '**/__tests__/*' --source-maps inline",
     "watch:link": "onchange './lib/**/*' -- yalc push --changed",
     "start": "yarn watch",
     "test": "yarn format && yarn lint && yarn unitTest",
@@ -56,7 +56,7 @@
     "css-loader": "^2.0.1",
     "download-git-repo": "^1.1.0",
     "extract-css-chunks-webpack-plugin": "^4.0.1",
-    "file-loader": "3.0.1",
+    "file-loader": "2.0.0",
     "fs-extra": "^7.0.1",
     "git-promise": "^0.3.1",
     "glob": "^7.1.2",
@@ -76,7 +76,7 @@
     "progress": "^2.0.1",
     "prop-types": "^15.6.1",
     "raf": "^3.4.1",
-    "raw-loader": "^2.0.0",
+    "raw-loader": "^1.0.0",
     "react": "^16.8.2",
     "react-dev-utils": "^8.0.0",
     "react-dom": "^16.8.2",
@@ -91,9 +91,9 @@
     "socket.io-client": "^2.1.1",
     "style-loader": "0.23.1",
     "swimmer": "^1.4.0",
-    "tar-fs": "^2.0.0",
+    "tar-fs": "^1.16.3",
     "terser-webpack-plugin": "^1.2.2",
-    "thread-loader": "^2.1.2",
+    "thread-loader": "^1.2.0",
     "upath": "^1.1.0",
     "url-loader": "^1.1.2",
     "webpack": "^4.25.1",
@@ -122,8 +122,7 @@
     "lerna": "^3.6.0",
     "onchange": "^5.2.0",
     "prettier": "1.16.4",
-    "rimraf": "^2.6.2",
-    "webpack-dashboard": "^3.0.0"
+    "rimraf": "^2.6.2"
   },
   "jest": {
     "verbose": true,

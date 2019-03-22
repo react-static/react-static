@@ -4,13 +4,9 @@ import nodePath from 'path'
 import chokidar from 'chokidar'
 import resolveFrom from 'resolve-from'
 import fs from 'fs-extra'
-
-import {
-  cleanSlashes,
-  cutPathToRoot,
-  isAbsoluteUrl,
-  makeHookReducer,
-} from '../utils'
+//
+import { cleanSlashes, cutPathToRoot, isAbsoluteUrl } from '../utils'
+import corePlugins from './plugins'
 
 // the default static.config.js location
 const defaultConfig = {}
@@ -22,7 +18,47 @@ const DEFAULT_ROUTES = [{ path: '/' }]
 const DEFAULT_ENTRY = 'index'
 const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 
-export const buildConfig = async (config = {}) => {
+// Retrieves the static.config.js from the current project directory
+export default (async function getConfig(state, callback) {
+  if (!callback) {
+    throw new Error(
+      `getConfig() requires a callback be passed as the second argument`
+    )
+  }
+  const configPath = state.configPath || DEFAULT_PATH_FOR_STATIC_CONFIG
+
+  state = {
+    ...state,
+    originalConfig: configPath,
+  }
+
+  const resolvedPath = resolveModule(configPath)
+
+  const noConfig =
+    configPath === DEFAULT_PATH_FOR_STATIC_CONFIG && !resolvedPath
+
+  if (noConfig) {
+    // last
+    state = await buildConfig(state, defaultConfig)
+    callback(state)
+    return
+  }
+
+  state = await buildConfigFromPath(state, resolvedPath || configPath)
+
+  chokidar.watch(resolvedPath).on('all', async () => {
+    state = await buildConfigFromPath(state, resolvedPath)
+    callback(state)
+  })
+})
+
+async function buildConfigFromPath(state, configPath) {
+  delete require.cache[configPath]
+  const config = require(configPath).default
+  return buildConfig(state, config)
+}
+
+export async function buildConfig(state, config = {}) {
   // path defaults
   config.paths = {
     root: nodePath.resolve(process.cwd()),
@@ -54,12 +90,11 @@ export const buildConfig = async (config = {}) => {
   const paths = {
     ROOT: config.paths.root,
     SRC: resolvePath(config.paths.src),
-    PAGES: resolvePath(config.paths.pages),
     DIST,
     ASSETS,
     PLUGINS: resolvePath(config.paths.plugins),
     TEMP: resolvePath(config.paths.temp),
-    BUILD_ARTIFACTS: resolvePath(config.paths.buildArtifacts),
+    ARTIFACTS: resolvePath(config.paths.buildArtifacts),
     PUBLIC: resolvePath(config.paths.public),
     NODE_MODULES: resolvePath(config.paths.nodeModules),
     EXCLUDE_MODULES:
@@ -76,7 +111,7 @@ export const buildConfig = async (config = {}) => {
   if (process.env.REACT_STATIC_ENV === 'development') {
     basePath = cleanSlashes(config.devBasePath)
   } else if (process.env.REACT_STATIC_STAGING === 'true') {
-    siteRoot = cutPathToRoot(config.stagingSiteRoot, '$1')
+    siteRoot = cutPathToRoot(config.stagingSiteRoot || '/', '$1')
     basePath = cleanSlashes(config.stagingBasePath)
   } else {
     siteRoot = cutPathToRoot(config.siteRoot, '$1')
@@ -136,11 +171,11 @@ export const buildConfig = async (config = {}) => {
   process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollInterval
 
   process.env.REACT_STATIC_TEMPLATES_PATH = nodePath.join(
-    paths.BUILD_ARTIFACTS,
+    paths.ARTIFACTS,
     'react-static-templates.js'
   )
   process.env.REACT_STATIC_PLUGINS_PATH = nodePath.join(
-    paths.BUILD_ARTIFACTS,
+    paths.ARTIFACTS,
     'react-static-browser-plugins.js'
   )
   process.env.REACT_STATIC_UNIVERSAL_PATH = require.resolve(
@@ -156,6 +191,15 @@ export const buildConfig = async (config = {}) => {
 
     const location = [
       () => {
+        // Absolute require
+        try {
+          const found = require.resolve(originalLocation)
+          return found.includes('.') ? nodePath.resolve(found, '../') : found
+        } catch (err) {
+          //
+        }
+      },
+      () => {
         // Absolute
         if (fs.pathExistsSync(originalLocation)) {
           return originalLocation
@@ -166,15 +210,6 @@ export const buildConfig = async (config = {}) => {
         const found = nodePath.resolve(paths.PLUGINS, originalLocation)
         if (fs.pathExistsSync(found)) {
           return found
-        }
-      },
-      () => {
-        // Absolute require
-        try {
-          const found = require.resolve(originalLocation)
-          return found.includes('.') ? nodePath.resolve(found, '../') : found
-        } catch (err) {
-          //
         }
       },
       () => {
@@ -225,12 +260,12 @@ export const buildConfig = async (config = {}) => {
       nodePath.join(location, 'browser.api'),
       config
     )
-    let getHooks = () => ({})
+    let buildPluginHooks = () => ({})
 
     try {
       // Get the hooks for the node api
       if (nodeLocation) {
-        getHooks = require(nodeLocation).default
+        buildPluginHooks = require(nodeLocation).default
       } else if (originalLocation !== paths.ROOT && !browserLocation) {
         throw new Error(
           `Could not find a valid node.api.js or browser.api.js plugin file in "${location}"`
@@ -242,7 +277,7 @@ export const buildConfig = async (config = {}) => {
         nodeLocation,
         browserLocation,
         options,
-        hooks: getHooks(options) || {},
+        hooks: buildPluginHooks(options) || {},
       }
 
       // Recursively resolve plugins
@@ -259,52 +294,14 @@ export const buildConfig = async (config = {}) => {
     }
   }
 
-  config.plugins = config.plugins.map(resolvePlugin)
-
-  const configHook = makeHookReducer(config.plugins, 'config')
-  config = await configHook(config)
-
-  return config
-}
-
-const buildConfigFromPath = async configPath => {
-  delete require.cache[configPath]
-  const config = require(configPath).default
-  return buildConfig(config)
-}
-
-// Retrieves the static.config.js from the current project directory
-export default (async function getConfig(
-  configPath = DEFAULT_PATH_FOR_STATIC_CONFIG,
-  subscription
-) {
-  const resolvedPath = resolveModule(configPath)
-
-  const noConfig =
-    configPath === DEFAULT_PATH_FOR_STATIC_CONFIG && !resolvedPath
-
-  if (noConfig) {
-    if (subscription) {
-      return new Promise(async () => {
-        subscription(await buildConfig(defaultConfig))
-      })
-    }
-    return buildConfig(defaultConfig)
+  state = {
+    ...state,
+    plugins: config.plugins.map(resolvePlugin),
+    config,
   }
 
-  const config = await buildConfigFromPath(resolvedPath || configPath)
-
-  if (subscription) {
-    // If subscribing, return a never ending promise
-    return new Promise(() => {
-      chokidar.watch(resolvedPath).on('all', async () => {
-        subscription(await buildConfigFromPath(resolvedPath))
-      })
-    })
-  }
-
-  return config
-})
+  return corePlugins.afterGetConfig(state)
+}
 
 function resolveModule(path, config) {
   try {

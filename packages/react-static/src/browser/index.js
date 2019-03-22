@@ -7,6 +7,8 @@ import {
   isPrefetchableRoute,
   getFullRouteData,
   makePathAbsolute,
+  getHooks,
+  reduceHooks,
 } from './utils'
 import onVisible from './utils/Visibility'
 
@@ -22,9 +24,9 @@ const requestPool = createPool({
 })
 
 // Plugins
-export const plugins = []
+export const pluginHooks = []
 export const registerPlugins = newPlugins => {
-  plugins.splice(0, Infinity, ...newPlugins)
+  pluginHooks.splice(0, Infinity, ...newPlugins)
 }
 
 // Templates
@@ -33,7 +35,6 @@ export const templatesByPath = {}
 export const templateErrorByPath = {}
 export const templateUpdated = { cb: () => {} }
 export const registerTemplates = (tmps, notFoundKey) => {
-  console.log(tmps)
   Object.keys(templates).forEach(key => {
     delete templates[key]
   })
@@ -48,7 +49,19 @@ export const registerTemplateForPath = (path, template) => {
   templatesByPath[path] = templates[template]
 }
 
-init()
+let onReloadClientDataListeners = []
+export const onReloadClientData = fn => {
+  onReloadClientDataListeners.push(fn)
+  return () => {
+    onReloadClientDataListeners = onReloadClientDataListeners.filter(
+      d => d !== fn
+    )
+  }
+}
+
+if (typeof document !== 'undefined') {
+  init()
+}
 
 // When in development, init a socket to listen for data changes
 // When the data changes, we invalidate and reload all of the route data
@@ -68,8 +81,8 @@ function init() {
           )
         })
         socket.on('message', ({ type }) => {
-          if (type === 'reloadRoutes') {
-            reloadRouteData()
+          if (type === 'reloadClientData') {
+            reloadClientData()
           }
         })
       } catch (err) {
@@ -104,7 +117,7 @@ function startPreloader() {
   }
 }
 
-export function reloadRouteData() {
+function reloadClientData() {
   // Delete all cached data
   ;[
     routeInfoByPath,
@@ -117,6 +130,8 @@ export function reloadRouteData() {
       delete part[key]
     })
   })
+
+  onReloadClientDataListeners.forEach(fn => fn())
 }
 
 export async function getRouteInfo(path, { priority } = {}) {
@@ -330,4 +345,15 @@ export async function prefetch(path, options = {}) {
   }
 
   return data
+}
+
+export const plugins = {
+  Root: Comp => {
+    const hooks = getHooks(pluginHooks, 'Root')
+    return reduceHooks(hooks, { sync: true })(Comp)
+  },
+  Routes: Comp => {
+    const hooks = getHooks(pluginHooks, 'Routes')
+    return reduceHooks(hooks, { sync: true })(Comp)
+  },
 }

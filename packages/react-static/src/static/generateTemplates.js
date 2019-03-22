@@ -2,8 +2,11 @@ import path from 'path'
 import fs from 'fs-extra'
 import { chunkNameFromFile } from '../utils/chunkBuilder'
 
-export default async config => {
-  const { templates, paths } = config
+export default async state => {
+  const {
+    config: { paths },
+    templates,
+  } = state
 
   // convert Windows-style path separators to the Unix style to ensure sure the
   // string literal is valid and doesn't contain escaped characters
@@ -70,4 +73,6 @@ export const notFoundTemplate = ${JSON.stringify(templates[0])}
   const dynamicRoutesPath = path.join(process.env.REACT_STATIC_TEMPLATES_PATH)
   await fs.remove(dynamicRoutesPath)
   await fs.outputFile(dynamicRoutesPath, file)
+
+  return state
 }

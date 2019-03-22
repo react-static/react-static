@@ -53,10 +53,7 @@ It supports the following properties:
     - `dev: Boolean` - Indicates whether you are running a development or production build.
 - `children: Array[Route]` - Routes can and should have nested routes when necessary. **Route paths are inherited as they are nested, so there is no need to repeat a path prefix in nested routes**.
 - `redirect: URL` - Setting this to a URL will perform the equivalent of a 301 redirect (as much as is possible within a static site) using `http-equiv` meta tags, canonicals, etc. **This will force the page to render only the bare minimum to perform the redirect and nothing else**.
-- `noindex: Boolean` - Set this to `true` if you do not want this route or its children indexed in your automatically generated sitemap.xml. Defaults to `false`.
-- `permalink: String` - You can optionally set this route to have a custom xml sitemap permalink by supplying it here.
-- `lastModified: String(YYYY-MM-DD)` - A string representing the date when this route was last modified in the format of `YYYY-MM-DD`.
-- `priority: Float` - An optional priority for the sitemap.xml. Defaults to `0.5`
+- Routes can also have other properties that may be used in plugins. Those properties will be listed in the plugin documentation.
 
 Example:
 

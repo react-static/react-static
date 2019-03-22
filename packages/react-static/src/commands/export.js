@@ -1,17 +1,12 @@
 import exportRoutesRunner from '../static/exportRoutesRunner'
-import prepareRoutes from '../static/prepareRoutes'
+import getRoutes from '../static/getRoutes'
 import getConfig from '../static/getConfig'
 import extractTemplates from '../static/extractTemplates'
 import { importClientStats } from '../static/clientStats'
-import { makeHookMapper } from '../utils'
+import plugins from '../static/plugins'
 
-export default async ({
-  config: originalConfig,
-  staging,
-  debug,
-  isBuild,
-  incremental,
-} = {}) => {
+export default async (state = {}) => {
+  const { config: originalConfig, staging, debug, isBuild, incremental } = state
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
@@ -32,45 +27,36 @@ export default async ({
     process.env.REACT_STATIC_INCREMENTAL = 'true'
   }
 
-  let config
+  state.stage = 'prod'
 
   // Allow config location to be overriden
   if (!isBuild) {
-    config = await getConfig(originalConfig)
-    config.originalConfig = originalConfig
-    config = await prepareRoutes(config, { incremental })
-    await extractTemplates(config, { incremental })
+    state.config = await getConfig(originalConfig)
+    state.config.originalConfig = originalConfig
+    state.config = await getRoutes(state)
+    await extractTemplates(state)
   } else {
-    config = originalConfig
+    state.config = originalConfig
   }
 
-  if (!config.routes) {
-    await prepareRoutes(config)
+  if (!state.routes) {
+    await getRoutes(state)
   }
 
   if (debug) {
     console.log('DEBUG - Resolved static.config.js:')
-    console.log(config)
+    console.log(state)
   }
 
-  const clientStats = await importClientStats(config)
+  await importClientStats(state)
 
   try {
-    await exportRoutesRunner({
-      config,
-      clientStats,
-      incremental,
-    })
+    await exportRoutesRunner(state)
   } catch (e) {
     const PrettyError = require('pretty-error')
     console.log(new PrettyError().render(e))
     process.exit(1)
   }
 
-  const afterExport = makeHookMapper(config.plugins, 'afterExport')
-
-  await afterExport({
-    config,
-    clientStats,
-  })
+  await plugins.afterExport(state)
 }

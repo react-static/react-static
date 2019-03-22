@@ -18,12 +18,10 @@ export default async ({
   const htmlProgress = progress(routes.length)
   // Use the node version of the app created with webpack
 
-  setIgnorePath(config.paths.BUILD_ARTIFACTS)
+  setIgnorePath(config.paths.ARTIFACTS)
 
-  const Comp = require(path.resolve(
-    config.paths.BUILD_ARTIFACTS,
-    'static-app.js'
-  )).default
+  const Comp = require(path.resolve(config.paths.ARTIFACTS, 'static-app.js'))
+    .default
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
 

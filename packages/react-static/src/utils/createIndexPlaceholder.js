@@ -8,9 +8,10 @@ import {
   Body,
 } from '../static/components/RootComponents'
 
-export default async function createIndexPlaceholder({
-  config: { Document, paths, siteData },
-}) {
+export default async function createIndexPlaceholder(state) {
+  const {
+    config: { Document, paths, siteData },
+  } = state
   // Render the base document component to string with siteprops
   const Component = Document || DefaultDocument
   const DocumentHtml = renderToString(
@@ -28,4 +29,6 @@ export default async function createIndexPlaceholder({
 
   // Write the Document to index.html
   await fs.outputFile(paths.HTML_TEMPLATE, html)
+
+  return state
 }
