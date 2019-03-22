@@ -5,17 +5,15 @@ import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
 import chokidar from 'chokidar'
 
-chokidar.watch('../docs').on('all', () => reloadRoutes())
-
-//
-
 const packageFile = 'package.json' // Point this to your package.json file
 const repoName = 'Blazing Awesome' // Change this
 const repo = 'nozzle/react-static' // Change this
 const repoURL = `https://github.com/${repo}`
 
+let watcher
+
 try {
-  // eslint-disable-next-line
+  // eslint-disable-next-line import/no-dynamic-require
   process.env.REPO_VERSION = require(path.resolve(packageFile)).version
 } catch (err) {
   //
@@ -65,7 +63,12 @@ export default {
       getData: () => ({
         markdown: fs.readFileSync(path.resolve(page.markdownSrc), 'utf8'),
         editPath:
-          repoURL + path.join('/blob/master/', __dirname.split('/').pop(), page.markdownSrc),
+          repoURL +
+          path.join(
+            '/blob/master/',
+            __dirname.split('/').pop(),
+            page.markdownSrc
+          ),
         title: page.title,
       }),
     })),
@@ -75,17 +78,26 @@ export default {
     meta.styleTags = sheet.getStyleElement()
     return html
   },
+  onStart: () => {
+    watcher = chokidar
+      .watch('docs', { ignoreInitial: true })
+      .on('all', () => reloadRoutes())
+  },
+  onBuild: () => {
+    if (watcher) watcher.close()
+  },
   Document: class CustomHtml extends Component {
-    render () {
-      const {
-        Html, Head, Body, children, renderMeta,
-      } = this.props
+    render() {
+      const { Html, Head, Body, children, renderMeta } = this.props
 
       return (
         <Html>
           <Head>
             <meta charSet="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
             <link
               href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i"
               rel="stylesheet"

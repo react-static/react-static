@@ -2,9 +2,17 @@ import { reloadRoutes } from 'react-static/node'
 import jdown from 'jdown'
 import chokidar from 'chokidar'
 
-chokidar.watch('content').on('all', () => reloadRoutes())
+let watcher
 
 export default {
+  onStart: () => {
+    watcher = chokidar
+      .watch('content', { ignoreInitial: true })
+      .on('all', () => reloadRoutes())
+  },
+  onBuild: () => {
+    if (watcher) watcher.close()
+  },
   getSiteData: () => ({
     title: 'React Static',
   }),

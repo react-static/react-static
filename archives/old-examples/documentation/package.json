@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "chokidar": "2.0.4",
+    "fs-extra": "^7.0.1",
     "react": "^16.6.3",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.6.3",

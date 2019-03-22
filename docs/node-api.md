@@ -65,8 +65,9 @@ import { reloadRoutes } from 'react-static/node'
 reloadRoutes()
 
 // Reload when files change
+// (Close the watcher with watcher.close() in your onBuild or the build will never terminate!)
 import chokidar from 'chokidar'
-chokidar.watch('./docs').on('all', () => reloadRoutes())
+const watcher = chokidar.watch('./docs').on('all', () => reloadRoutes())
 
 // Reload from API or CMS event
 YourFavoriteCMS.subscribe(reloadRoutes)
