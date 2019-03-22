@@ -1,14 +1,37 @@
 # 7.0.0
 
-- Suspense is now used for data fetching state instead of a Loader component. You can now control the loading state at any level of your app by using the Suspense component, eg. `<React.Suspense fallback={<span>Loading...</span>}>`.
-- Route objects returned in `getRoutes` now the property `template` instead of `component`.
-- The `Root` component now has a browser-side plugin interface.
+#### New
+
+- Suspense is now used internally for data fetching state instead of a Loader component **during runtime only**. You can control React Static's loading state at any level of your app by using the custom `Suspense` component exported from React Static, eg. `<Suspense fallback={<span>Loading...</span>}>`. **NOTE: This does not enable suspense for user code yet, since SSR is still not supported using React's current renderToString() API**
+- The `Root` component now has a browser-side plugin interface called `Root`.
 - The `Routes` component now has a browser-side plugin interface.
+- You can now use `useRouteData` and `useSiteData` hooks to fetch site and route data (related deprecations below)
+- You can now use the `usePrefetch` hook to prefetch routes (related deprecations below)
+- You can now use a `useScroller` hook to automate hash and top-of-page scrolling (related deprecations below)
+- `useLocation`, `useBasepath` `useRoutePath` and `useStaticInfo` have been added as utility hooks for both users and plugins.
+- `ErrorBoundary` and `Spinner` components are now provided for use in your application.
+- You can now use a `--analyze` CLI options to quickly profile your production webpack bundle (related deprecations below)
+- The new `react-static-plugin-sitemap` plugin allows you to build and customize a sitemap for your site from your routes.
+- The new `react-static-plugin-source-directory` plugin allows you to recursively import and create routes from any webpack compatible files in a directory!
+- New plugin APIs!
+
+#### Improved
+
+- Hot reloading is now more reliable
+- Hot data reloading is now more reliable
+- Changes to `static.config.js` during development are now more reliable
+- Plugin resolution is now more reliable
+- Production webpack bundles now have a default `performance.maxEntrypointSize` of `300000` bytes (300kb)
+- Immutable global state is now being used internally that offers massive stability improvements. This same global state is provided and reduced through the revamped plugin API
+- The plugin API has been revamped to offer more control over the state of the CLI and build processes.
+
+#### Breaking Changes
+
+- Route objects returned in `getRoutes` now use the property `template` instead of `component`.
 - `withRouteData`, `RouteData`, `withSiteData`, and `SiteData` HOC's and components have been removed in favor of the `useRouteData` and `useSiteData` hooks.
 - `useLocation`, `useBasepath` `useRoutePath` and `useStaticInfo` have been added as utility hooks for both users and plugins.
 - The `Prefetch` component has been deprecated in favor of the `usePrefetch` hook.
-- Hash and top-of-the-page scrolling has been abstracted into a new `useScroller` hook.
-- Generic `ErrorBoundary` and `Spinner` components are now provided for use in your applications.
+- All scroller props previously support on the `Root` component are now deprecated in favor of the `useScroller` hook.
 - Plugin loading order has been changed to:
   - Absolute Require.resolve (will use package.json's `main` entry to resolve)
   - Absolute Path
@@ -16,13 +39,11 @@
   - Require.resolve (from Plugins directory)
   - CWD relative path
   - Require.resolve (from Root directory)
-- Production webpack bundles now have a default `performance.maxEntrypointSize` of `300000` bytes (300kb)
 - `config.bundleAnalyzer` is now deprecated in favor of the `build --analyze/-a` and `export --analyze/-a` option.
 - sitemap functionality has now been extracte into the `react-static-plugin-sitemap` plugin.
   - route properties like `noindex`, `lastModified`, and `priority` are now meant to be set under a `route.sitemap` object and map directly to xml attributes now. eg. `route: { sitemap: { lastmod: '10/10/2010', priority: '0.5' } }`
   - `noindex` is still an inherited attribute
-  - Please refer to the plugin documentation for more information
-- Functionality to include the `pages` directory has been moved to a plugin called `react-static-plugin-source-directory`. It ships by default with every template and has a default option to use the `src/pages` directory within the template.
+- Functionality to include the `pages` directory has been moved to a plugin called `react-static-plugin-source-directory`. It ships by default with every template to use the `src/pages` directory within the template.
 - `config.disableDuplicateRoutesWarning` has been depreacted. This is mainly because multiple hooks can now create routes for the same route and by default, they are merged together unless specified with the `replace: true` flag on the route creation.
 - Internally, all state is now being tracked and stored in a single global state variable. This global state is passed around everywhere, including `getRoutes`, most plugin hooks, and just about anywhere React Static calls into your own user code.
 - `options and options.dev` in several locations has been deprecated (getRoutes, getData, etc.) and has been replaced with the internal state of React Static. You can still access `options.dev` by using `state.stage === 'dev'`.
