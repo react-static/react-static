@@ -21,20 +21,10 @@ declare module 'react-static' {
   // Generated Routes
   export class Routes extends React.Component {}
 
-  export type RootProps = {
-    disableScroller?: boolean
-    autoScrollToTop?: boolean
-    autoScrollToHash?: boolean
-    scrollToTopDuration?: number
-    scrollToHashDuration?: number
-    scrollToHashOffset?: number
-  }
-  export class Root extends React.Component<RootProps> {}
+  export class Root extends React.Component {}
 
-  export function withRouteData(comp: any): any
-  export function withSiteData(comp: any): any
-  export const RouteData: React.Component
-  export const SiteData: React.Component
+  export const useRouteData: object
+  export const useSiteData: object
 
   export function prefetch(path: any): Promise<any>
   export function scrollTo(
@@ -73,7 +63,6 @@ declare module 'react-static' {
     Document?: AnyReactComponent
     getRoutes?(flags: RouteFlags): Route[]
     getSiteData?(flags: RouteFlags): any
-    onStart?(args: OnStartArgs): void
   }
 
   export interface PathsConfig {
@@ -99,6 +88,7 @@ declare module 'react-static' {
     redirect?: string
     children?: Route[]
     getData?(resolvedRoute: Route, flags: RouteFlags): any
+    replace: boolean
   }
 
   export interface DocumentProps {

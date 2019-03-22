@@ -1,4 +1,5 @@
 import React from 'react'
+import { hot } from 'react-hot-loader'
 import { Root, Routes } from 'react-static'
 import { Link } from '@reach/router'
 import './app.css'
@@ -21,4 +22,4 @@ function App() {
   )
 }
 
-export default App
+export default hot(App)

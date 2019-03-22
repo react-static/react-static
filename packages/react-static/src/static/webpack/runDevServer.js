@@ -173,10 +173,6 @@ async function makeDevServer(state) {
         } else {
           timeEnd(chalk.green('=> [\u2713] Bundle Updated'))
         }
-        if (first && state.config.onStart) {
-          // TODO: turn this into a hook
-          state.config.onStart({ devServerConfig })
-        }
       }
 
       first = false
