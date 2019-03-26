@@ -25,6 +25,7 @@ module.exports = (api, { external, modules, helpers } = {}) => {
               },
               useBuiltIns: 'entry',
               modules,
+              corejs: 2
             },
           ]
         : [
