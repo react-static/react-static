@@ -74,10 +74,6 @@ $ npm i -g react-static
 $ yarn global add react-static
 ```
 
-```bash
-$ react-static create
-```
-
 - Start a new project!
 
 ```bash
