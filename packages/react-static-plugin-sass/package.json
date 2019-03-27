@@ -16,11 +16,11 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.1.5"
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2"
   },
   "dependencies": {
-    "extract-css-chunks-webpack-plugin": "^4.0.1",
+    "extract-css-chunks-webpack-plugin": "^4.0.2",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0"
   },

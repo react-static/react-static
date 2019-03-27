@@ -38,11 +38,6 @@ export default async (state = {}) => {
     state = await getRoutes(state)
   }
 
-  if (debug) {
-    console.log('DEBUG - Resolved static.config.js:')
-    console.log(state)
-  }
-
   state = await importClientStats(state)
   state = await exportRoutes(state)
   return state

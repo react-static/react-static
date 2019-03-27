@@ -3,7 +3,6 @@ import resolveFrom from 'resolve-from'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
-// import WebpackDashboard from 'webpack-dashboard/plugin'
 import path from 'path'
 
 import rules from './rules'
@@ -23,8 +22,10 @@ export default function({ config }) {
     },
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
-      require.resolve('react-dev-utils/webpackHotDevClient'),
-      require.resolve('webpack/hot/only-dev-server'),
+      `webpack-dev-server/client?${config.devServer.host}:${
+        config.devServer.port
+      }`,
+      'webpack/hot/only-dev-server',
       ...(config.disableRuntime
         ? []
         : [
@@ -54,7 +55,10 @@ export default function({ config }) {
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
         react: resolveFrom(config.paths.NODE_MODULES, 'react'),
-        'react-dom': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
+        'react-dom': resolveFrom(
+          config.paths.NODE_MODULES,
+          '@hot-loader/react-dom'
+        ),
       },
     },
     plugins: [
@@ -65,7 +69,6 @@ export default function({ config }) {
       }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
       new CaseSensitivePathsPlugin(),
       new ExtractCssChunks({ hot: true }),
       // new WebpackDashboard(),

@@ -211,35 +211,6 @@ export function getHooks(plugins, hook) {
   return hooks.filter(Boolean)
 }
 
-export function isPrefetchableRoute(path) {
-  // when rendering static pages we dont need this at all
-  if (typeof document === 'undefined') {
-    return false
-  }
-
-  const { location } = document
-  let link
-
-  try {
-    link = new URL(path, location.href)
-  } catch (e) {
-    // Return false on invalid URLs
-    return false
-  }
-
-  // if the hostname/port/protocol doesn't match its not a route link
-  if (location.host !== link.host || location.protocol !== link.protocol) {
-    return false
-  }
-
-  // deny all files with extension other than .html
-  if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
-    return false
-  }
-
-  return true
-}
-
 export function getFullRouteData(routeInfo) {
   return {
     ...(routeInfo.sharedData ? routeInfo.sharedData : {}),

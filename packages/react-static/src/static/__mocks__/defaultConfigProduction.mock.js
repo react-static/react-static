@@ -17,6 +17,5 @@ export default {
     PACKAGE: './root/package.json',
     NODE_MODULES: './root/node_modules',
     STATIC_DATA: './root/dist/staticData',
-    HTML_TEMPLATE: './root/dist/index.html',
   },
 }

@@ -9,11 +9,12 @@
 - You can now use the `usePrefetch` hook to prefetch routes (related deprecations below)
 - You can now use a `useScroller` hook to automate hash and top-of-page scrolling (related deprecations below)
 - `useLocation`, `useBasepath` `useRoutePath` and `useStaticInfo` have been added as utility hooks for both users and plugins.
-- `ErrorBoundary` and `Spinner` components are now provided for use in your application.
+- A `Spinner` component is now provided for use in your application.
 - You can now use a `--analyze` CLI options to quickly profile your production webpack bundle (related deprecations below)
 - The new `react-static-plugin-sitemap` plugin allows you to build and customize a sitemap for your site from your routes.
 - The new `react-static-plugin-source-directory` plugin allows you to recursively import and create routes from any webpack compatible files in a directory!
 - New plugin APIs!
+- Use the new `addPrefetchExcludes` method to exclude paths (like dynamic ones that would produce 404s) from every being prefetched! Yay!
 
 #### Improved
 
@@ -24,6 +25,7 @@
 - Production webpack bundles now have a default `performance.maxEntrypointSize` of `300000` bytes (300kb)
 - Immutable global state is now being used internally that offers massive stability improvements. This same global state is provided and reduced through the revamped plugin API
 - The plugin API has been revamped to offer more control over the state of the CLI and build processes.
+- The ErrorBoundary UI is only shown in production now. During development, the standard react-hot-loader error reporter will show again.
 
 #### Breaking Changes
 
@@ -52,8 +54,8 @@
 - The `Head` plugin hook in `node.api.js` has now been aptly renamed to `headElements` and is now a reducer, not a mapper.
 - The entire internal state of React Static is now available via the `state` prop in the `Document` component
 - The `renderMeta` prop available on the `Document` component hass been renamed to `meta` and is now only available on the `state` prop of the document component
-- The `beforeDocumentToFile` hook has been renamed to `beforeHtmlToFile`
 - The environment variable `process.env.REACT_STATIC_SLAVE` has been renamed to `process.env.REACT_STATIC_THREAD`.
+- Plugin methods like `webpack` must now explicityly return `undefined` if they wish to opt-out (previously you could return anything falsey)
 
 # 6.3.6
 

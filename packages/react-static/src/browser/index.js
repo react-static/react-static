@@ -4,7 +4,6 @@ import {
   createPool,
   getRoutePath,
   pathJoin,
-  isPrefetchableRoute,
   getFullRouteData,
   makePathAbsolute,
   getHooks,
@@ -18,6 +17,14 @@ export const routeErrorByPath = {}
 export const sharedDataByHash = {}
 const inflightRouteInfo = {}
 const inflightPropHashes = {}
+let prefetchExcludes = []
+
+export const addPrefetchExcludes = excludes => {
+  if (!Array.isArray(excludes)) {
+    throw new Error('Excludes must be an array of strings/regex!')
+  }
+  prefetchExcludes = [...prefetchExcludes, ...excludes]
+}
 
 const requestPool = createPool({
   concurrency: Number(process.env.REACT_STATIC_PREFETCH_RATE),
@@ -54,7 +61,10 @@ export const registerTemplates = async (tmps, notFoundKey) => {
   })
   templatesByPath['404'] = templates[notFoundKey]
 
-  if (process.env.NODE_ENV === 'development') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    typeof document !== 'undefined'
+  ) {
     await prefetch(window.location.pathname)
   }
 
@@ -92,9 +102,7 @@ function init() {
         } = await axios.get('/__react-static__/getMessagePort')
         const socket = io(`http://localhost:${port}`)
         socket.on('connect', () => {
-          console.log(
-            'React-Static data hot-loader websocket connected. Listening for data changes...'
-          )
+          // Do nothing
         })
         socket.on('message', ({ type }) => {
           if (type === 'reloadClientData') {
@@ -364,6 +372,49 @@ export async function prefetch(path, options = {}) {
   }
 
   return data
+}
+
+export function isPrefetchableRoute(path) {
+  // when rendering static pages we dont need this at all
+  if (typeof document === 'undefined') {
+    return false
+  }
+
+  if (
+    prefetchExcludes.some(exclude => {
+      if (typeof exclude === 'string' && path.includes(exclude)) {
+        return true
+      }
+      if (typeof exclude === 'object' && exclude.test(path)) {
+        return true
+      }
+      return false
+    })
+  ) {
+    return false
+  }
+
+  const { location } = document
+  let link
+
+  try {
+    link = new URL(path, location.href)
+  } catch (e) {
+    // Return false on invalid URLs
+    return false
+  }
+
+  // if the hostname/port/protocol doesn't match its not a route link
+  if (location.host !== link.host || location.protocol !== link.protocol) {
+    return false
+  }
+
+  // deny all files with extension other than .html
+  if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
+    return false
+  }
+
+  return true
 }
 
 export const plugins = {

@@ -23,6 +23,7 @@ export default (options = {}) => ({
       console.log(
         "=> Warning: react-static-plugin-sitemap - No 'siteRoot' is defined in 'static.config.js'. This is required to generate a sitemap.xml."
       )
+      return
     }
     return buildXML(state, options)
   },

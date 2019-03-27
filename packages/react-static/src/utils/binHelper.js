@@ -11,10 +11,16 @@ let ignorePath
 
 const originalRequire = Module.prototype.require
 
+// The following ensures that there is always only a single (and same)
+// copy of React in an app at any given moment.
 // eslint-disable-next-line
 Module.prototype.require = function(modulePath) {
   if (!modulePath.startsWith('.') && !modulePath.startsWith('/')) {
-    if (['react', 'react-dom'].some(d => modulePath.includes(d))) {
+    if (
+      ['react', 'react-dom', 'styled-components'].some(d =>
+        modulePath.includes(d)
+      )
+    ) {
       try {
         modulePath = resolveFrom(
           path.resolve(process.cwd(), 'node_modules'),

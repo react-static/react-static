@@ -14,10 +14,13 @@ export default async state => {
     '\\'
   ).join('/')
 
-  const productionImports = `import universal, { setHasBabelPlugin } from '${reactStaticUniversalPath}'`
-  const developmentImports = ''
+  const file = `
+${
+  process.env.NODE_ENV === 'production'
+    ? `
+import React from 'react'
+import universal, { setHasBabelPlugin } from '${reactStaticUniversalPath}'
 
-  const productionTemplates = `
 setHasBabelPlugin()
 
 const universalOptions = {
@@ -26,7 +29,7 @@ const universalOptions = {
     console.error(props.error);
     return <div>An error occurred loading this page's template. More information is available in the console.</div>;
   },
-  // ignoreBabelRename: true
+  ignoreBabelRename: true
 }
 
 ${templates
@@ -45,34 +48,35 @@ ${templates
       `
   })
   .join('\n')}
-`
-
-  const developmentTemplates = templates
-    .map((template, index) => `import t_${index} from '${template}'`)
-    .join('\n')
-
-  const file = `
-${
-  process.env.NODE_ENV === 'production' ? productionImports : developmentImports
-}
-
-${
-  process.env.NODE_ENV === 'production'
-    ? productionTemplates
-    : developmentTemplates
-}
 
 // Template Map
 export default {
   ${templates.map((template, index) => `'${template}': t_${index}`).join(',\n')}
 }
-
+// Not Found Template
 export const notFoundTemplate = ${JSON.stringify(templates[0])}
+`
+    : `
+  
+// Template Map
+export default {
+  ${templates
+    .map(template => `'${template}': require('${template}').default`)
+    .join(',\n')}
+}
+
+export const notFoundTemplate = '${templates[0]}'
+`
+}
 `
 
   const dynamicRoutesPath = path.join(process.env.REACT_STATIC_TEMPLATES_PATH)
   await fs.remove(dynamicRoutesPath)
   await fs.outputFile(dynamicRoutesPath, file)
+
+  // We have to wait here for a smidge, because webpack watcher is
+  // overly aggressive on first start
+  // await new Promise(resolve => setTimeout(resolve, 500))
 
   return state
 }

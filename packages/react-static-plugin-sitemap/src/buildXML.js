@@ -27,15 +27,14 @@ export default async function main(state, options) {
     ? siteRoot
     : process.env.REACT_STATIC_PUBLIC_PATH
 
-  console.log('=> Generating sitemap.xml...')
+  const filename = staging ? 'sitemap.staging.xml' : 'sitemap.xml'
+
+  console.log(`=> Generating ${filename}...`)
 
   const xml = generateXML(state, options, prefixPath)
+  await fs.writeFile(nodePath.join(DIST, filename), xml)
 
-  await fs.writeFile(
-    nodePath.join(DIST, staging ? 'sitemap.staging.xml' : 'sitemap.xml'),
-    xml
-  )
-  console.log(chalk.green`=> [\u2713] sitemap.xml generated`)
+  console.log(chalk.green(`=> [\u2713] ${filename} generated`))
 }
 
 export function generateXML(state, { getAttributes = () => ({}) }, prefixPath) {

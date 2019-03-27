@@ -19,7 +19,16 @@ const DEFAULT_ENTRY = 'index'
 const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 
 // Retrieves the static.config.js from the current project directory
-export default (async function getConfig(state, callback = d => d) {
+export default (async function getConfig(
+  state,
+  callback = config => {
+    if (state.debug) {
+      console.log('getConfig():')
+      console.log(state)
+    }
+    return config
+  }
+) {
   const configPath = state.configPath || DEFAULT_PATH_FOR_STATIC_CONFIG
 
   state = {
@@ -41,10 +50,16 @@ export default (async function getConfig(state, callback = d => d) {
   state = await buildConfigFromPath(state, resolvedPath || configPath)
 
   if (state.stage === 'dev') {
-    chokidar.watch(resolvedPath).on('all', async () => {
-      state = await buildConfigFromPath(state, resolvedPath)
-      callback(state)
-    })
+    chokidar
+      .watch(resolvedPath, {
+        ignoreInitial: true,
+      })
+      .on('all', async () => {
+        console.log('')
+        console.log(`=> Updating static.config.js`)
+        state = await buildConfigFromPath(state, resolvedPath)
+        callback(state)
+      })
   }
 
   return callback(state)
@@ -148,6 +163,11 @@ export async function buildConfig(state, config = {}) {
     // Config Overrides
     ...config,
     // Materialized Overrides
+    devServer: {
+      ...config.devServer,
+      host: 'http://localhost',
+      port: 3000,
+    },
     plugins,
     paths,
     babelExcludes: config.babelExcludes || [],
@@ -166,7 +186,7 @@ export async function buildConfig(state, config = {}) {
     config.disableRoutePrefixing
   process.env.REACT_STATIC_DISABLE_PRELOAD = config.disablePreload
   process.env.REACT_STATIC_DISABLE_RUNTIME = config.disableRuntime
-  process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollInterval
+  process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollIntervalw
 
   process.env.REACT_STATIC_TEMPLATES_PATH = nodePath.join(
     paths.ARTIFACTS,

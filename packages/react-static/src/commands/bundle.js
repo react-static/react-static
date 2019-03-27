@@ -25,12 +25,6 @@ export default (async function bundle(state = {}) {
   console.log('')
 
   state = await getConfig(state)
-
-  if (debug) {
-    console.log('DEBUG - Resolved static.config.js:')
-    console.log(state)
-  }
-
   state = await cleanProjectFiles(state)
   state = await generateBrowserPlugins(state)
   state = await getRoutes(state)

@@ -12,15 +12,17 @@ process.on('message', async state => {
     const { routes } = state
     // Get config again
 
-    const { config } = await getConfig(state)
+    state = await getConfig(state)
 
-    setIgnorePath(config.paths.ARTIFACTS)
+    setIgnorePath(state.config.paths.ARTIFACTS)
 
     // Use the node version of the app created with webpack
-    const Comp = require(path.resolve(config.paths.ARTIFACTS, 'static-app.js'))
-      .default
+    const Comp = require(path.resolve(
+      state.config.paths.ARTIFACTS,
+      'static-app.js'
+    )).default
     // Retrieve the document template
-    const DocumentTemplate = config.Document || DefaultDocument
+    const DocumentTemplate = state.config.Document || DefaultDocument
 
     const tasks = []
     for (let i = 0; i < routes.length; i++) {
@@ -29,7 +31,6 @@ process.on('message', async state => {
       tasks.push(async () => {
         await exportRoute({
           ...state,
-          config,
           route,
           Comp,
           DocumentTemplate,
@@ -39,7 +40,7 @@ process.on('message', async state => {
         }
       })
     }
-    await poolAll(tasks, Number(config.outputFileRate))
+    await poolAll(tasks, Number(state.config.outputFileRate))
     if (process.connected) {
       process.send({ type: 'done' })
     }

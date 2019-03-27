@@ -225,7 +225,7 @@ export default (async function exportRoute(state) {
   // Render the html for the page inside of the base document.
   let html = `<!DOCTYPE html>${DocumentHtml}`
 
-  html = await plugins.beforeHtmlToFile(html, state)
+  html = await plugins.beforeDocumentToFile(html, state)
 
   // If the siteRoot is set and we're not in staging, prefix all absolute URLs
   // with the siteRoot

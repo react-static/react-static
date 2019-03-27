@@ -5,6 +5,7 @@ React Static ships with a plugin API to extend React Static's functionality.
 ## Installing Plugins
 
 #### Official Plugins via NPM
+
 - CSS & Style Tooling
   - [react-static-plugin-emotion](/packages/react-static-plugin-emotion) - Adds SSR support for Emotion components.
   - [react-static-plugin-styled-components](/packages/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
@@ -13,7 +14,9 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-jss](/packages/react-static-plugin-jss) - Adds SSR support for JSS
 - React Alternatives
   - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
-- React Router
+- Routing
+  - [react-static-plugin-react-location](/packages/react-static-plugin-react-location) - Adds react-location support
+  - [react-static-plugin-reach-router](/packages/react-static-plugin-reach-router) - Adds @reach/router support
   - [react-static-plugin-react-router](/packages/react-static-plugin-react-router) - Adds react-router support
 - Type checking
   - [react-static-plugin-typescript](https://www.npmjs.com/package/react-static-plugin-typescript) - Allows you to write your components in TypeScript
@@ -40,7 +43,9 @@ export default {
 ```
 
 #### Plugin Execution and Order (IMPORTANT)
+
 Order of execution:
+
 1. Plugins in `plugins: []`, starting from the first element of array.
 2. Any `node.api.js` and `browser.api.js` files at the project root.
 
@@ -75,7 +80,9 @@ export default {
 ```
 
 ## Plugin API
+
 All plugins contains at least one of:
+
 - `node.api.js` - Exposes the [Node Plugin API](/docs/plugins/node-api.md)
 - `browser.api.js` - Exposes the [Browser Plugin API](/docs/plugins/browser-api.md)
 
@@ -84,6 +91,7 @@ All plugins contains at least one of:
 Separating plugin entrypoints avoids creating conflict with imported modules that may not be supported in both environments.
 
 ## How to write the `node.api.js` and `browser.api.js` files when creating plugins?
+
 The file (for either environment) must:
 
 - Provide a `function` as the `default export`
@@ -91,16 +99,17 @@ The file (for either environment) must:
 - **Return an `object`** providing any **API methods** to implement
 
 Basic plugin example:
+
 ```javascript
 export default pluginOptions => ({
   myCustomAPIMethod: options => {
-    console.log('hello world');
-  }
+    console.log('hello world')
+  },
 })
-
 ```
 
 ## What can plugins do?
+
 - [Modify your `static.config.js`](/docs/plugins/node-api.md#config-function)
 - [Transform your webpack config](/docs/plugins/node-api.md#webpack-functionfunction)
 - [Append JSX to the Head of the app](/docs/plugins/node-api.md#head-componentfunction)
@@ -110,7 +119,9 @@ export default pluginOptions => ({
 View the [browser API docs](/docs/plugins/browser-api.md) and the [node API docs](/docs/plugins/node-api.md) for full list of API methods that can be implemented.
 
 #### Plugins must be compiled if installed via node_modules
+
 Only the `plugins` directory will be transformed by react-static's babel runtime.
 
 Hence, when distributing your plugin, your plugin **must be ES5 compatible**.
+
 - An example of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components).

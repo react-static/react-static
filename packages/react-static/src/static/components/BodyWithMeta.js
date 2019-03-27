@@ -17,36 +17,30 @@ const generateRouteInformation = embeddedRouteInfo => ({
 export const makeBodyWithMeta = async state => {
   const { head, route, embeddedRouteInfo, clientScripts = [] } = state
 
-  return ({ children, ...rest }) => {
-    children = [
-      ...React.Children.toArray(children),
-      ...(!route.redirect
-        ? [
-            // This embeddedRouteInfo will be inlined into the HTML for this route.
-            // It should only include the full props, not the partials.
+  // This embeddedRouteInfo will be inlined into the HTML for this route.
+  // It should only include the full props, not the partials.
+
+  return ({ children, ...rest }) => (
+    <body {...head.bodyProps} {...rest}>
+      {children}
+      {!route.redirect ? (
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={generateRouteInformation(embeddedRouteInfo)}
+        />
+      ) : null}
+      {!route.redirect
+        ? clientScripts.map(script => (
             <script
+              key={script}
+              defer
               type="text/javascript"
-              dangerouslySetInnerHTML={generateRouteInformation(
-                embeddedRouteInfo
+              src={makePathAbsolute(
+                pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script)
               )}
-            />,
-            ...clientScripts.map(script => (
-              <script
-                key={script}
-                defer
-                type="text/javascript"
-                src={makePathAbsolute(
-                  pathJoin(process.env.REACT_STATIC_ASSETS_PATH, script)
-                )}
-              />
-            )),
-          ]
-        : null),
-    ]
-    return (
-      <body {...head.bodyProps} {...rest}>
-        {children}
-      </body>
-    )
-  }
+            />
+          ))
+        : null}
+    </body>
+  )
 }

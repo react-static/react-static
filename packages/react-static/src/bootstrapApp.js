@@ -4,11 +4,13 @@ import { staticInfoContext } from './browser/hooks/useStaticInfo'
 
 const OriginalSuspense = React.Suspense
 
-function Suspense(props) {
+function Suspense({ key, children, ...rest }) {
   return typeof document !== 'undefined' ? (
-    <OriginalSuspense {...props} />
+    <OriginalSuspense key={key} {...rest}>
+      {children}
+    </OriginalSuspense>
   ) : (
-    <React.Fragment {...props} />
+    <React.Fragment key={key}>{children}</React.Fragment>
   )
 }
 

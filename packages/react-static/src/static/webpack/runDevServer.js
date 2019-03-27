@@ -1,9 +1,8 @@
 /* eslint-disable import/no-dynamic-require, react/no-danger, import/no-mutable-exports */
 import webpack from 'webpack'
-import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
 import chalk from 'chalk'
-import WebpackDevServer from 'webpack-dev-server'
 import io from 'socket.io'
+import WebpackDevServer from 'webpack-dev-server'
 //
 import getWebpackConfig from './getWebpackConfig'
 import getRouteData from '../getRouteData'
@@ -28,26 +27,23 @@ export default async function runDevServer(state) {
     await buildDevRoutes(state)
     await reloadClientData()
   } else {
-    await makeDevServer(state)
+    state = await runExpressServer(state)
   }
 
   return state
 }
 
-async function makeDevServer(state) {
-  const devCompiler = webpack(getWebpackConfig(state))
-
+async function runExpressServer(state) {
   // Default to localhost:3000, or use a custom combo if defined in static.config.js
   // or environment variables
-  const intendedPort =
-    (state.config.devServer && state.config.devServer.port) ||
-    process.env.PORT ||
-    3000
-  const port = await findAvailablePort(Number(intendedPort))
+  const intendedPort = Number(state.config.devServer.port)
+  const port = await findAvailablePort(intendedPort)
+
   // Find an available port for messages, as long as it's not the devServer port
   const messagePort = await findAvailablePort(4000, [port])
+
   if (intendedPort !== port) {
-    time(
+    console.log(
       chalk.red(
         `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
           intendedPort
@@ -55,25 +51,41 @@ async function makeDevServer(state) {
       )
     )
   }
-  const host =
-    (state.config.devServer && state.config.devServer.host) ||
-    process.env.HOST ||
-    'http://localhost'
+
+  state = {
+    ...state,
+    config: {
+      ...state.config,
+      devServer: {
+        ...state.config.devServer,
+        port,
+      },
+    },
+  }
+
+  const devConfig = getWebpackConfig(state)
+  const devCompiler = webpack(devConfig)
 
   const devServerConfig = {
     hot: true,
-    disableHostCheck: true,
     contentBase: [state.config.paths.PUBLIC, state.config.paths.DIST],
     publicPath: '/',
     historyApiFallback: true,
     compress: false,
-    quiet: true,
+    clientLogLevel: 'warning',
+    overlay: true,
+    stats: 'errors-only',
+    noInfo: true,
     ...state.config.devServer,
     watchOptions: {
-      ignored: 'node_modules',
       ...(state.config.devServer
         ? state.config.devServer.watchOptions || {}
         : {}),
+      ignored: [
+        /node_modules/,
+
+        ...((state.config.devServer.watchOptions || {}).ignored || []),
+      ],
     },
     before: app => {
       // Serve the site data
@@ -82,7 +94,6 @@ async function makeDevServer(state) {
           port: messagePort,
         })
       })
-
       // Since routes may change during dev, this function can rebuild all of the config
       // routes. It also references the original config when possible, to make sure it
       // uses any up to date getData callback generated from new or replacement routes.
@@ -136,11 +147,12 @@ async function makeDevServer(state) {
 
       return app
     },
-    port,
-    host,
   }
 
   let first = true
+  const startedAt = Date.now()
+  let skipLog = false
+
   console.log('=> Bundling Application...')
   time(chalk.green('=> [\u2713] Application Bundled'))
 
@@ -148,10 +160,19 @@ async function makeDevServer(state) {
     {
       name: 'React-Static',
     },
-    file => {
-      console.log('=> File changed:', file.replace(state.config.paths.ROOT, ''))
-      console.log('=> Updating bundle...')
-      time(chalk.green('=> [\u2713] Bundle Updated'))
+    (file, changed) => {
+      // If a file is changed within the first two seconds of
+      // the server starting, we don't bark about it. Less
+      // noise is better!
+      skipLog = changed - startedAt < 2000
+      if (!skipLog) {
+        console.log(
+          '=> File changed:',
+          file.replace(state.config.paths.ROOT, '')
+        )
+        console.log('=> Updating bundle...')
+        time(chalk.green('=> [\u2713] Bundle Updated'))
+      }
     }
   )
 
@@ -160,15 +181,15 @@ async function makeDevServer(state) {
       name: 'React-Static',
     },
     stats => {
-      const messages = formatWebpackMessages(stats.toJson({}, true))
+      const messages = stats.toJson({}, true)
       const isSuccessful = !messages.errors.length && !messages.warnings.length
 
-      if (isSuccessful) {
+      if (isSuccessful && !skipLog) {
         if (first) {
           timeEnd(chalk.green('=> [\u2713] Application Bundled'))
           console.log(
             chalk.green('=> [\u2713] App serving at'),
-            `${host}:${port}`
+            `${state.config.devServer.host}:${state.config.devServer.port}`
           )
         } else {
           timeEnd(chalk.green('=> [\u2713] Bundle Updated'))
@@ -176,25 +197,6 @@ async function makeDevServer(state) {
       }
 
       first = false
-
-      if (messages.errors.length) {
-        console.log(
-          chalk.red('Failed to bundle! Fix any errors and try again!')
-        )
-        messages.errors.forEach(message => {
-          console.log(message)
-          console.log()
-        })
-      }
-
-      if (messages.warnings.length) {
-        console.log(chalk.yellow('Build complete with warnings.'))
-        console.log()
-        messages.warnings.forEach(message => {
-          console.log(message)
-          console.log()
-        })
-      }
     }
   )
 

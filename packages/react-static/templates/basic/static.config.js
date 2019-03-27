@@ -24,6 +24,7 @@ export default {
     ]
   },
   plugins: [
+    require.resolve('react-static-plugin-emotion'),
     require.resolve('react-static-plugin-react-router'),
     require.resolve('react-static-plugin-sitemap'),
     [

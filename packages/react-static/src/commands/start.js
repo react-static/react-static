@@ -9,7 +9,6 @@ import createIndexPlaceholder from '../utils/createIndexPlaceholder'
 //
 
 export default (async function start(state = {}) {
-  const { debug } = state
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined') {
     process.env.NODE_ENV = 'development'
@@ -22,13 +21,8 @@ export default (async function start(state = {}) {
 
   console.log(`=> Starting Development Server...`)
 
+  // Use a callback (a subscription)
   getConfig(state, async state => {
-    console.log('')
-    if (debug) {
-      console.log('DEBUG:')
-      console.log(state)
-    }
-
     state = await fetchSiteData(state)
     state = await createIndexPlaceholder(state)
     state = await generateBrowserPlugins(state)

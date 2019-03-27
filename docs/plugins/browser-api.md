@@ -2,7 +2,7 @@
 
 ## `Root`
 
-Replace or decorate the Root component used in React Static.
+Decorate the Root component used in React Static.
 
 #### Props
 
@@ -31,7 +31,7 @@ export default pluginOptions => ({
 
 ## `Routes`
 
-Replace or decorate the Routes component used in React Static.
+Decorate the Routes component used in React Static.
 
 #### Props
 

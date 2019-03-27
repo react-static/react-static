@@ -1,6 +1,7 @@
+import { sheet } from 'emotion'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { setConfig } from 'react-hot-loader'
+// import { AppContainer } from 'react-hot-loader'
 
 // Your top level component
 import App from './App'
@@ -10,12 +11,18 @@ export default App
 
 // Render your app
 if (typeof document !== 'undefined') {
-  const renderMethod = module.hot
-    ? ReactDOM.render
-    : ReactDOM.hydrate || ReactDOM.render
+  const target = document.getElementById('root')
+
+  if (!target.hasChildNodes()) {
+    sheet.speedy(false)
+  }
+
+  const renderMethod = target.hasChildNodes()
+    ? ReactDOM.hydrate
+    : ReactDOM.render
 
   const render = Comp => {
-    renderMethod(<Comp />, document.getElementById('root'))
+    renderMethod(<Comp />, target)
   }
 
   // Render!
@@ -24,13 +31,7 @@ if (typeof document !== 'undefined') {
   // Hot Module Replacement
   if (module && module.hot) {
     module.hot.accept('./App', () => {
-      render(require('./App').default)
-      console.log('Bundle Reloaded')
+      render(App)
     })
   }
-
-  setConfig({
-    ignoreSFC: true, // RHL will be __completely__ disabled for SFC
-    pureRender: true, // RHL will not change render method
-  })
 }
