@@ -20,8 +20,8 @@
 
 #### Improved
 
-- Hot reloading is now more reliable
-- Hot data reloading is now more reliable
+- Hot reloading is now MUCH more reliable
+- Hot data reloading is now MUCH more reliable
 - Changes to `static.config.js` during development are now more reliable
 - Plugin resolution is now more reliable
 - Production webpack bundles now have a default `performance.maxEntrypointSize` of `300000` bytes (300kb)
