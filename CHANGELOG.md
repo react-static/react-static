@@ -10,11 +10,25 @@
 - You can now use the `usePrefetch` hook to prefetch routes (related deprecations below)
 - You can now use a `useScroller` hook to automate hash and top-of-page scrolling (related deprecations below)
 - `useLocation`, `useBasepath` `useRoutePath` and `useStaticInfo` have been added as utility hooks for both users and plugins.
-- A `Spinner` component is now provided for use in your application.
 - You can now use a `--analyze` CLI options to quickly profile your production webpack bundle (related deprecations below)
 - The new `react-static-plugin-sitemap` plugin allows you to build and customize a sitemap for your site from your routes.
 - The new `react-static-plugin-source-filesystem` plugin allows you to recursively import and create routes from any webpack compatible files in a directory!
 - New plugin APIs!
+  - afterGetConfig
+  - beforePrepareBrowserPlugins
+  - afterPrepareBrowserPlugins
+  - beforePrepareRoutes
+  - getRoutes
+  - normalizeRoute
+  - afterPrepareRoutes
+  - webpack
+  - beforeRenderToElement
+  - beforeRenderToHtml
+  - htmlProps
+  - headElements
+  - beforeHtmlToDocument
+  - beforeDocumentToFile
+  - afterExport
 - Use the new `addPrefetchExcludes` method to exclude paths (like dynamic ones that would produce 404s) from every being prefetched! Yay!
 - You can now customize terser options via the `config.terser` object. This object is passed directly to the Webpack Terser plugin.
 
