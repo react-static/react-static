@@ -4,7 +4,7 @@ Plugins functions are executed throughout the lifecycle of a react-static build 
 
 ## `afterGetConfig`
 
-An **async** function to modify the resolved config object during build or export.
+A **synchronous** function to modify the resolved config object during build or export.
 
 - Arguments:
   - `config` - The `static.config.js`
@@ -27,7 +27,7 @@ An **async** function to modify the CLI state before browser plugins are prepare
 - Returns the new CLI `state`
 
 ```javascript
-beforePrepareBrowserPlugins: state => {
+beforePrepareBrowserPlugins: async state => {
   // Use or modify the CLI state
   return newState
 }
@@ -42,7 +42,7 @@ An **async** function to modify the CLI state after preparing browser plugins.
 - Returns the new CLI `state`
 
 ```javascript
-afterPrepareBrowserPlugins: state => {
+afterPrepareBrowserPlugins: async state => {
   // Use or modify the CLI state
   return newState
 }
@@ -57,7 +57,7 @@ An **async** function to modify the CLI state before preparing routes.
 - Returns the new CLI `state`
 
 ```javascript
-beforePrepareRoutes: state => {
+beforePrepareRoutes: async state => {
   // Use or modify the CLI state
   return newState
 }
@@ -90,7 +90,7 @@ An **async** function to modify the CLI state before preparing routes.
 - Returns the new CLI `state`
 
 ```javascript
-afterPrepareRoutes: state => {
+afterPrepareRoutes: async state => {
   // Use or modify the CLI state
   return newState
 }
@@ -230,7 +230,7 @@ export default pluginOptions => ({
 })
 ```
 
-## `beforeRenderToElement: Function`
+## `beforeRenderToElement`
 
 Modify the `App` **component** before it is rendered to an element via `<App />`.
 
@@ -243,7 +243,7 @@ Modify the `App` **component** before it is rendered to an element via `<App />`
 // node.api.js
 
 export default pluginOptions => ({
-  beforeRenderToElement: (App, state) => {
+  beforeRenderToElement: async (App, state) => {
     const NewApp => props => {
       return <App {...props} />
     }
@@ -254,7 +254,7 @@ export default pluginOptions => ({
 })
 ```
 
-## `beforeRenderToHtml: Function`
+## `beforeRenderToHtml`
 
 Modify the rendered `<App />` element before it is rendered to HTML.
 
@@ -267,7 +267,7 @@ Modify the rendered `<App />` element before it is rendered to HTML.
 // node.api.js
 
 export default pluginOptions => ({
-  beforeRenderToHtml: (element, state) => {
+  beforeRenderToHtml: async (element, state) => {
     // You must return an element (already rendered), not a component
     const newApp = <div>{element}</div>
     return newApp
@@ -275,7 +275,7 @@ export default pluginOptions => ({
 })
 ```
 
-## `htmlProps: Function`
+## `htmlProps`
 
 Modify the props that will passed to the Document's `<html>` element.
 
@@ -288,7 +288,7 @@ Modify the props that will passed to the Document's `<html>` element.
 // node.api.js
 
 export default pluginOptions => ({
-  htmlProps: (props, state) => {
+  htmlProps: async (props, state) => {
     return {
       ...props,
       myProp: 'hello',
@@ -297,7 +297,7 @@ export default pluginOptions => ({
 })
 ```
 
-## `headElements: Function`
+## `headElements`
 
 Add elements to the `<head>` of the statically generated page.
 
@@ -310,7 +310,7 @@ Add elements to the `<head>` of the statically generated page.
 // node.api.js
 
 export default pluginOptions => ({
-  headElements: (elements, state) => {
+  headElements: async (elements, state) => {
     return [
       ...elements,
       <link rel="stylesheet" href="..." />,
@@ -320,7 +320,7 @@ export default pluginOptions => ({
 })
 ```
 
-## `beforeHtmlToDocument: Function`
+## `beforeHtmlToDocument`
 
 Modify the app `html` string before it is injected into the `Document` component.
 
@@ -333,14 +333,14 @@ Modify the app `html` string before it is injected into the `Document` component
 // node.api.js
 
 export default pluginOptions => ({
-  beforeHtmlToDocument: (html, state) => {
+  beforeHtmlToDocument: async (html, state) => {
     // html is a string here. You can do whatever you like with it!
     return html
   },
 })
 ```
 
-## `beforeHtmlToFile: Function`
+## `beforeHtmlToFile`
 
 Modify the final `html` string before it is written to disk.
 
@@ -353,14 +353,14 @@ Modify the final `html` string before it is written to disk.
 // node.api.js
 
 export default pluginOptions => ({
-  beforeDocumentToFile: (html, state) => {
+  beforeDocumentToFile: async (html, state) => {
     // html is a string here. You can do whatever you like with it!
     return html
   },
 })
 ```
 
-## `afterExport: Function`
+## `afterExport`
 
 After a completed build and export, run any asynchronous function.
 

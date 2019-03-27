@@ -3,7 +3,7 @@ import { getHooks, reduceHooks } from '../utils'
 export default {
   afterGetConfig: state => {
     const hooks = getHooks(state.plugins, 'afterGetConfig')
-    return reduceHooks(hooks)(state)
+    return reduceHooks(hooks, { sync: true })(state)
   },
   beforePrepareBrowserPlugins: state => {
     const hooks = getHooks(state.plugins, 'beforePrepareBrowserPlugins')

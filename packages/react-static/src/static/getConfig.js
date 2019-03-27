@@ -19,7 +19,7 @@ const DEFAULT_ENTRY = 'index'
 const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 
 // Retrieves the static.config.js from the current project directory
-export default (async function getConfig(
+export default function getConfig(
   state,
   callback = config => {
     if (state.debug) {
@@ -43,11 +43,11 @@ export default (async function getConfig(
 
   if (noConfig) {
     // last
-    state = await buildConfig(state, defaultConfig)
+    state = buildConfig(state, defaultConfig)
     return callback(state)
   }
 
-  state = await buildConfigFromPath(state, resolvedPath || configPath)
+  state = buildConfigFromPath(state, resolvedPath || configPath)
 
   if (state.stage === 'dev') {
     chokidar
@@ -57,21 +57,21 @@ export default (async function getConfig(
       .on('all', async () => {
         console.log('')
         console.log(`=> Updating static.config.js`)
-        state = await buildConfigFromPath(state, resolvedPath)
+        state = buildConfigFromPath(state, resolvedPath)
         callback(state)
       })
   }
 
   return callback(state)
-})
+}
 
-async function buildConfigFromPath(state, configPath) {
+function buildConfigFromPath(state, configPath) {
   delete require.cache[configPath]
   const config = require(configPath).default
   return buildConfig(state, config)
 }
 
-export async function buildConfig(state, config = {}) {
+export function buildConfig(state, config = {}) {
   // path defaults
   config.paths = {
     root: nodePath.resolve(process.cwd()),
