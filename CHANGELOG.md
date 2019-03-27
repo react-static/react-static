@@ -2,6 +2,7 @@
 
 #### New
 
+- React-Static is now powered by hooks!
 - Suspense is now used internally for routes that are not loaded yet **during runtime only**. This means, you can handle the loading state at any level of your app by using React's Suspense component eg. `<React.Suspense fallback={<span>Loading...</span>}>`. **NOTE: SUSPENDING DURING SSR IS STILL NOT SUPPORTED. When `document === 'undefined', you MUST render a loading placeholder instead.**
 - The `Root` component now has a browser-side plugin interface called `Root`.
 - The `Routes` component now has a browser-side plugin interface.
