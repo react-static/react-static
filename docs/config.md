@@ -14,10 +14,8 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [extractCssChunks](#extractcsschunks)
 - [inlineCss](#inlinecss)
 - [Document](#document)
-- [webpack](#webpack)
 - [devServer](#devserver)
 - [paths](#paths)
-- [onStart](#onstart)
 - [bundleAnalyzer](#bundleanalyzer)
 - [outputFileRate](#outputfilerate)
 - [prefetchRate](#prefetchrate)
@@ -210,12 +208,6 @@ export default {
 
 Since JSX is now being used in this static.config.js file, you need to import React at the top of the file; add this: `import React from 'react'`
 
-### `webpack`
-
-> ⚠️Warning - this field in `static.config.js` may be outdated - [use `node.api.js` instead](https://github.com/nozzle/react-static/blob/master/docs/plugins/node-api.md#webpack-functionfunction).
-
-To configure webpack, extend the build system, or make modifications, see the [Plugin API section](#plugin-api)
-
 ### `devServer`
 
 An `Object` of options to be passed to the underlying `webpack-dev-server` instance used for development.
@@ -257,21 +249,6 @@ export default {
     public: 'public', // The public directory (files copied to dist during build)
     assets: 'dist', // The output directory for bundled JS and CSS
     buildArtifacts: 'artifacts', // The output directory for generated (internal) resources
-  },
-}
-```
-
-### `onStart`
-
-A utility function that runs when the dev server starts up successfully. It provides you with the final, **readonly** devServer config object for your convenience.
-
-Example:
-
-```javascript
-// static.config.js
-export default {
-  onStart: ({ devServerConfig }) => {
-    console.log('The dev server is working!')
   },
 }
 ```

@@ -230,9 +230,29 @@ export default pluginOptions => ({
 })
 ```
 
-## `beforeRenderToElement`
+## `afterDevServerStart`
 
 Modify the `App` **component** before it is rendered to an element via `<App />`.
+
+- Arguments:
+  - `App` - The `App` component (not yet rendered to an element via `<App />`)
+  - `state` - The current state of the CLI
+- Returns a new `App` component (not yet rendered to an element)
+
+```javascript
+// node.api.js
+
+export default pluginOptions => ({
+  afterDevServerStart: async state => {
+    // Use or modify the CLI state
+    return newState
+  },
+})
+```
+
+## `beforeRenderToElement`
+
+An **async** function to modify the CLI state after starting the development server.
 
 - Arguments:
   - `App` - The `App` component (not yet rendered to an element via `<App />`)

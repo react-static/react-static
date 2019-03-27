@@ -22,6 +22,7 @@
   - normalizeRoute
   - afterPrepareRoutes
   - webpack
+  - afterDevServerStart
   - beforeRenderToElement
   - beforeRenderToHtml
   - htmlProps
@@ -74,6 +75,7 @@
 - The environment variable `process.env.REACT_STATIC_SLAVE` has been renamed to `process.env.REACT_STATIC_THREAD`.
 - Plugin methods like `webpack` must now explicityly return `undefined` if they wish to opt-out (previously you could return anything falsey)
 - Source maps are no longer exported by default in production. This may break logging or reporting tools if you rely on production source maps. If you wish to still export them in production, turn them on via `config.productionSourceMaps: true`
+- Though still available, the `start`, `bundle` and `export` commands are being deprecated and have been removed from the documentation.
 
 # 6.3.6
 

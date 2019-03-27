@@ -33,6 +33,10 @@ export default {
     const hooks = getHooks(state.plugins, 'webpack')
     return reduceHooks(hooks, { sync: true })(config, state)
   },
+  afterDevServerStart: state => {
+    const hooks = getHooks(state.plugins, 'afterDevServerStart')
+    return reduceHooks(hooks)(state)
+  },
   beforeRenderToElement: (Comp, state) => {
     const hooks = getHooks(state.plugins, 'beforeRenderToElement')
     return reduceHooks(hooks)(Comp, state)

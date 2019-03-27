@@ -6,6 +6,7 @@ import WebpackDevServer from 'webpack-dev-server'
 //
 import getWebpackConfig from './getWebpackConfig'
 import getRouteData from '../getRouteData'
+import plugins from '../plugins'
 import { findAvailablePort, time, timeEnd } from '../../utils'
 
 let devServer
@@ -233,6 +234,8 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   // We do this mostly to appease codesandbox.io, since they autobind to the first
   // port that opens up for their preview window.
   socket.listen(messagePort)
+
+  state = await plugins.afterDevServerStart(state)
 
   return state
 }
