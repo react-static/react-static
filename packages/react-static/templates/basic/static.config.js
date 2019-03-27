@@ -24,14 +24,13 @@ export default {
     ]
   },
   plugins: [
-    require.resolve('react-static-plugin-emotion'),
-    require.resolve('react-static-plugin-react-router'),
-    require.resolve('react-static-plugin-sitemap'),
     [
-      require.resolve('react-static-plugin-source-directory'),
+      require.resolve('react-static-plugin-source-filesystem'),
       {
         location: path.resolve('./src/pages'),
       },
     ],
+    require.resolve('react-static-plugin-reach-router'),
+    require.resolve('react-static-plugin-sitemap'),
   ],
 }

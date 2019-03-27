@@ -1,4 +1,4 @@
-# react-static-plugin-preact
+# react-static-plugin-source-filesystem
 
 A [React-Static](https://react-static.js.org) plugin that adds support for recursively importing routes from a directory
 
@@ -7,7 +7,7 @@ A [React-Static](https://react-static.js.org) plugin that adds support for recur
 In an existing react-static site run:
 
 ```bash
-$ yarn add react-static-plugin-source-directory
+$ yarn add react-static-plugin-source-filesystem
 ```
 
 Then add the plugin to your `static.config.js` with a valid `location` directory in the options:
@@ -16,7 +16,7 @@ Then add the plugin to your `static.config.js` with a valid `location` directory
 export default {
   plugins: [
     [
-      'react-static-plugin-source-directory',
+      'react-static-plugin-source-filesystem',
       {
         location: path.resolve('./src/pages'),
       },

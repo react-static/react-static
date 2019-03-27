@@ -122,7 +122,17 @@ async function runExpressServer(state) {
               let route = latestState.routes.find(d => d.path === routePath)
               try {
                 if (!route) {
-                  throw new Error('Route could not be found!')
+                  const err = new Error(
+                    `Route could not be found for: ${routePath}
+                    
+If you removed this route, disregard this error.
+If this is a dynamic route, consider adding it to the prefetchExcludes list:
+
+  addPrefetchExcludes(['${routePath}'])
+`
+                  )
+                  delete err.stack
+                  throw err
                 }
 
                 route = await getRouteData(route, latestState)

@@ -26,10 +26,13 @@ export default (async function start(state = {}) {
     state = await fetchSiteData(state)
     state = await createIndexPlaceholder(state)
     state = await generateBrowserPlugins(state)
-    state = await getRoutes(state)
-    state = await extractTemplates(state)
-    state = await generateTemplates(state)
-    state = await runDevServer(state)
+
+    // Use a callback (a subscription)
+    await getRoutes(state, async state => {
+      state = await extractTemplates(state)
+      state = await generateTemplates(state)
+      state = await runDevServer(state)
+    })
   })
 
   await new Promise(() => {

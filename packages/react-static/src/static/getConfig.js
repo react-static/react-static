@@ -160,6 +160,7 @@ export async function buildConfig(state, config = {}) {
     disablePreload: false,
     disableRuntime: false,
     preloadPollInterval: 300,
+    productionSourceMaps: false,
     // Config Overrides
     ...config,
     // Materialized Overrides
@@ -178,6 +179,14 @@ export async function buildConfig(state, config = {}) {
     extractCssChunks: config.extractCssChunks || false,
     inlineCss: config.inlineCss || false,
   }
+
+  config.terser = config.terser || {}
+  config.terser.terserOptions = config.terser.terserOptions || {}
+  config.terser.terserOptions.mangle = config.terser.terserOptions.mangle || {}
+  config.terser.terserOptions.parse = config.terser.terserOptions.parse || {}
+  config.terser.terserOptions.compress =
+    config.terser.terserOptions.compress || {}
+  config.terser.terserOptions.output = config.terser.terserOptions.output || {}
 
   // Set env variables to be used client side
   process.env.REACT_STATIC_MIN_LOAD_TIME = config.minLoadTime

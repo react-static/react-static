@@ -40,18 +40,22 @@ export const registerPlugins = newPlugins => {
 export const templates = {}
 export const templatesByPath = {}
 export const templateErrorByPath = {}
-let onReloadTemplatesListeners = []
 export const onReloadTemplates = fn => {
-  onReloadTemplatesListeners.push(fn)
+  onReloadTemplates.listeners.push(fn)
   return () => {
-    onReloadTemplatesListeners = onReloadTemplatesListeners.filter(
+    onReloadTemplates.listeners = onReloadTemplates.listeners.filter(
       d => d !== fn
     )
   }
 }
+onReloadTemplates.listeners = []
+
 export const registerTemplates = async (tmps, notFoundKey) => {
   Object.keys(templatesByPath).forEach(key => {
     delete templatesByPath[key]
+  })
+  Object.keys(templateErrorByPath).forEach(key => {
+    delete templateErrorByPath[key]
   })
   Object.keys(templates).forEach(key => {
     delete templates[key]
@@ -68,22 +72,27 @@ export const registerTemplates = async (tmps, notFoundKey) => {
     await prefetch(window.location.pathname)
   }
 
-  onReloadTemplatesListeners.forEach(fn => fn())
+  onReloadTemplates.listeners.forEach(fn => fn())
+  console.log('React Static: Templates Reloaded')
 }
+
 export const registerTemplateForPath = (path, template) => {
   path = getRoutePath(path)
   templatesByPath[path] = templates[template]
 }
 
-let onReloadClientDataListeners = []
 export const onReloadClientData = fn => {
-  onReloadClientDataListeners.push(fn)
+  Object.keys(routeErrorByPath).forEach(key => {
+    delete routeErrorByPath[key]
+  })
+  onReloadClientData.listeners.push(fn)
   return () => {
-    onReloadClientDataListeners = onReloadClientDataListeners.filter(
+    onReloadClientData.listeners = onReloadClientData.listeners.filter(
       d => d !== fn
     )
   }
 }
+onReloadClientData.listeners = []
 
 if (typeof document !== 'undefined') {
   init()
@@ -142,6 +151,7 @@ function startPreloader() {
 }
 
 async function reloadClientData() {
+  console.log('React Static: Reloading Data...')
   // Delete all cached data
   ;[
     routeInfoByPath,
@@ -158,7 +168,7 @@ async function reloadClientData() {
   // Prefetch the current route's data before you reload routes
   await prefetch(window.location.pathname)
 
-  onReloadClientDataListeners.forEach(fn => fn())
+  onReloadClientData.listeners.forEach(fn => fn())
 }
 
 export async function getRouteInfo(path, { priority } = {}) {
@@ -380,9 +390,11 @@ export function isPrefetchableRoute(path) {
     return false
   }
 
+  console.log(path)
+
   if (
     prefetchExcludes.some(exclude => {
-      if (typeof exclude === 'string' && path.includes(exclude)) {
+      if (typeof exclude === 'string' && path.startsWith(exclude)) {
         return true
       }
       if (typeof exclude === 'object' && exclude.test(path)) {

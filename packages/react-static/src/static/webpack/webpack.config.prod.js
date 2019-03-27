@@ -90,16 +90,16 @@ function common(state) {
           cache: true,
           parallel: true,
           exclude: /\.min\.js/,
-          sourceMap: false,
+          ...config.terser,
+          sourceMap: config.productionSourceMaps || config.terser.sourceMap,
           terserOptions: {
             ie8: false,
-            mangle: { safari10: true },
-            parse: { ecma: 8 },
-            compress: { ecma: 5 },
-            output: { ecma: 5 },
-            // consider passing terser options here in future
+            ...config.terser.terserOptions,
+            mangle: { safari10: true, ...config.terser.terserOptions.mangle },
+            parse: { ecma: 8, ...config.terser.terserOptions.parse },
+            compress: { ecma: 5, ...config.terser.terserOptions.compress },
+            output: { ecma: 5, ...config.terser.terserOptions.output },
           },
-          // consider passing more options here in future
         }),
         new OptimizeCSSAssetsPlugin({}),
       ],
@@ -136,7 +136,7 @@ function common(state) {
       new CaseSensitivePathsPlugin(),
       analyze && new BundleAnalyzerPlugin(),
     ].filter(d => d),
-    devtool: false,
+    devtool: config.productionSourceMaps ? 'source-map' : false,
   }
 }
 

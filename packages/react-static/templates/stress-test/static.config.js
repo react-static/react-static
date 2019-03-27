@@ -89,7 +89,7 @@ export default {
     process.env.STYLE_SYSTEM === 'styled-components' &&
       require.resolve('react-static-plugin-styled-components'),
     [
-      require.resolve('react-static-plugin-source-directory'),
+      require.resolve('react-static-plugin-source-filesystem'),
       {
         location: path.resolve('./src/pages'),
       },

@@ -12,9 +12,10 @@
 - A `Spinner` component is now provided for use in your application.
 - You can now use a `--analyze` CLI options to quickly profile your production webpack bundle (related deprecations below)
 - The new `react-static-plugin-sitemap` plugin allows you to build and customize a sitemap for your site from your routes.
-- The new `react-static-plugin-source-directory` plugin allows you to recursively import and create routes from any webpack compatible files in a directory!
+- The new `react-static-plugin-source-filesystem` plugin allows you to recursively import and create routes from any webpack compatible files in a directory!
 - New plugin APIs!
 - Use the new `addPrefetchExcludes` method to exclude paths (like dynamic ones that would produce 404s) from every being prefetched! Yay!
+- You can now customize terser options via the `config.terser` object. This object is passed directly to the Webpack Terser plugin.
 
 #### Improved
 
@@ -26,6 +27,7 @@
 - Immutable global state is now being used internally that offers massive stability improvements. This same global state is provided and reduced through the revamped plugin API
 - The plugin API has been revamped to offer more control over the state of the CLI and build processes.
 - The ErrorBoundary UI is only shown in production now. During development, the standard react-hot-loader error reporter will show again.
+- Source maps are no longer exported by default in production. To export them in production, turn them on via `config.productionSourceMaps: true`
 
 #### Breaking Changes
 
@@ -45,7 +47,7 @@
 - sitemap functionality has now been extracte into the `react-static-plugin-sitemap` plugin.
   - route properties like `noindex`, `lastModified`, and `priority` are now meant to be set under a `route.sitemap` object and map directly to xml attributes now. eg. `route: { sitemap: { lastmod: '10/10/2010', priority: '0.5' } }`
   - `noindex` is still an inherited attribute
-- Functionality to include the `pages` directory has been moved to a plugin called `react-static-plugin-source-directory`. It ships by default with every template to use the `src/pages` directory within the template.
+- Functionality to include the `pages` directory has been moved to a plugin called `react-static-plugin-source-filesystem`. It ships by default with every template to use the `src/pages` directory within the template.
 - `config.disableDuplicateRoutesWarning` has been depreacted. This is mainly because multiple hooks can now create routes for the same route and by default, they are merged together unless specified with the `replace: true` flag on the route creation.
 - Internally, all state is now being tracked and stored in a single global state variable. This global state is passed around everywhere, including `getRoutes`, most plugin hooks, and just about anywhere React Static calls into your own user code.
 - `options and options.dev` in several locations has been deprecated (getRoutes, getData, etc.) and has been replaced with the internal state of React Static. You can still access `options.dev` by using `state.stage === 'dev'`.
@@ -56,6 +58,7 @@
 - The `renderMeta` prop available on the `Document` component hass been renamed to `meta` and is now only available on the `state` prop of the document component
 - The environment variable `process.env.REACT_STATIC_SLAVE` has been renamed to `process.env.REACT_STATIC_THREAD`.
 - Plugin methods like `webpack` must now explicityly return `undefined` if they wish to opt-out (previously you could return anything falsey)
+- Source maps are no longer exported by default in production. This may break logging or reporting tools if you rely on production source maps. If you wish to still export them in production, turn them on via `config.productionSourceMaps: true`
 
 # 6.3.6
 

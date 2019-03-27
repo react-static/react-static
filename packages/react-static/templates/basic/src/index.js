@@ -1,7 +1,5 @@
-import { sheet } from 'emotion'
 import React from 'react'
 import ReactDOM from 'react-dom'
-// import { AppContainer } from 'react-hot-loader'
 
 // Your top level component
 import App from './App'
@@ -12,10 +10,6 @@ export default App
 // Render your app
 if (typeof document !== 'undefined') {
   const target = document.getElementById('root')
-
-  if (!target.hasChildNodes()) {
-    sheet.speedy(false)
-  }
 
   const renderMethod = target.hasChildNodes()
     ? ReactDOM.hydrate

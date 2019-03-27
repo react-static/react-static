@@ -7,6 +7,7 @@ const { reloadClientData } = require('../lib/static/webpack/runDevServer')
 const { default: makePageRoutes } = require('../lib/node/makePageRoutes')
 const { normalizeRoutes } = require('../lib/static/getConfig')
 const { default: createSharedData } = require('../lib/static/createSharedData')
+const { rebuildRoutes } = require('../lib/static/getRoutes')
 
 module.exports = {
   create,
@@ -18,4 +19,5 @@ module.exports = {
   makePageRoutes,
   normalizeRoutes,
   createSharedData,
+  rebuildRoutes,
 }

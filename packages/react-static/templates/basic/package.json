@@ -11,8 +11,6 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.10",
-    "@emotion/styled": "^10.0.10",
     "@reach/router": "^1.2.1",
     "axios": "^0.18.0",
     "emotion": "^10.0.9",

@@ -24,6 +24,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [disableDuplicateRoutesWarning](#disableDuplicateRoutesWarning)
 - [disableRoutePrefixing](#disablerouteprefixing)
 - [babelExcludes](#babelExcludes)
+- [productionSourceMaps](#productionSourceMaps)
 
 ### `getRoutes`
 
@@ -365,6 +366,19 @@ See https://webpack.js.org/configuration/module/#condition for more details. To 
 // static.config.js
 export default {
   babelExcludes: [/mapbox-gl/],
+}
+```
+
+### `productionSourceMaps`
+
+Set this flag to `true` to include source maps in production.
+
+- Defaults to `false`
+
+```javascript
+// static.config.js
+export default {
+  productionSourceMaps: true,
 }
 ```
 

@@ -4,51 +4,64 @@ import chalk from 'chalk'
 import { pathJoin, getRoutePath, time, timeEnd } from '../utils'
 import plugins from './plugins'
 
-export default async function getRoutes(state) {
-  const { silent, incremental } = state
+export const rebuildRoutes = () => {
+  rebuildRoutes.current()
+}
 
-  if (!silent) console.log('=> Building Routes...')
-  if (!silent) time(chalk.green('=> [\u2713] Routes Built'))
+rebuildRoutes.current = () => {
+  throw new Error('Routes cannot be rebuilt yet!')
+}
 
-  state = await plugins.beforePrepareRoutes(state)
+export default async function getRoutes(state, callback = d => d) {
+  rebuildRoutes.current = async () => {
+    const { silent, incremental } = state
 
-  const pluginRoutes = await plugins.getRoutes([], state)
-  const userRoutes = await state.config.getRoutes(state)
+    if (!silent) console.log('=> Building Routes...')
+    if (!silent) time(chalk.green('=> [\u2713] Routes Built'))
 
-  const routes = [...pluginRoutes, ...userRoutes]
+    state = await plugins.beforePrepareRoutes(state)
 
-  // Flatten and normalize all of the routes
-  const { routes: allNormalizedRoutes, hasIndex, has404 } = normalizeAllRoutes(
-    routes,
-    state
-  )
+    const pluginRoutes = await plugins.getRoutes([], state)
+    const userRoutes = await state.config.getRoutes(state)
 
-  // If no Index page was found, throw an error. This is required
-  if (!hasIndex && !incremental) {
-    throw new Error(
-      'Could not find a route for the "index" page of your site! This is required. Please create a page or specify a route and template for this page.'
-    )
+    const routes = [...pluginRoutes, ...userRoutes]
+
+    // Flatten and normalize all of the routes
+    const {
+      routes: allNormalizedRoutes,
+      hasIndex,
+      has404,
+    } = normalizeAllRoutes(routes, state)
+
+    // If no Index page was found, throw an error. This is required
+    if (!hasIndex && !incremental) {
+      throw new Error(
+        'Could not find a route for the "index" page of your site! This is required. Please create a page or specify a route and template for this page.'
+      )
+    }
+
+    // If no 404 page was found, add one. This is required.
+    if (!has404 && !incremental) {
+      allNormalizedRoutes.unshift({
+        path: '404',
+        template: path.relative(
+          state.config.paths.ROOT,
+          path.resolve(__dirname, '../../browser/components/Default404')
+        ),
+      })
+    }
+
+    if (!silent) timeEnd(chalk.green('=> [\u2713] Routes Built'))
+
+    state = {
+      ...state,
+      routes: allNormalizedRoutes,
+    }
+
+    return callback(plugins.afterPrepareRoutes(state))
   }
 
-  // If no 404 page was found, add one. This is required.
-  if (!has404 && !incremental) {
-    allNormalizedRoutes.unshift({
-      path: '404',
-      template: path.relative(
-        state.config.paths.ROOT,
-        path.resolve(__dirname, '../../browser/components/Default404')
-      ),
-    })
-  }
-
-  if (!silent) timeEnd(chalk.green('=> [\u2713] Routes Built'))
-
-  state = {
-    ...state,
-    routes: allNormalizedRoutes,
-  }
-
-  return plugins.afterPrepareRoutes(state)
+  return rebuildRoutes.current()
 }
 
 // We recursively loop through the routes and their children and
