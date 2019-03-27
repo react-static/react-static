@@ -73,7 +73,10 @@ export const registerTemplates = async (tmps, notFoundKey) => {
   }
 
   onReloadTemplates.listeners.forEach(fn => fn())
-  console.log('React Static: Templates Reloaded')
+
+  if (typeof document !== 'undefined') {
+    console.log('React Static: Templates Reloaded')
+  }
 }
 
 export const registerTemplateForPath = (path, template) => {

@@ -6,6 +6,7 @@
     "setup": "yarn && yalc link react-static",
     "stage": "react-static build --staging",
     "build": "react-static build",
+    "analyze": "react-static build --analyze",
     "bundle": "react-static bundle",
     "export": "react-static export",
     "serve": "serve dist -p 3000"

@@ -17,6 +17,7 @@ function init() {
     staging: argv.staging || argv.s || argv.S,
     debug: argv.debug || argv.d || argv.D,
     incremental: argv.incremental || argv.i || argv.I,
+    analyze: argv.analyze || argv.a || argv.A,
     isCLI: true,
   }
 
