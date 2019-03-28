@@ -32,7 +32,7 @@ export { reloadRoutes }
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
-export async function webpackConfig({ config, stage }) {
+export function webpackConfig({ config, stage, sync }) {
   let webpackConfig
   if (stage === 'dev') {
     webpackConfig = require('./webpack.config.dev').default({ config })
@@ -51,15 +51,13 @@ export async function webpackConfig({ config, stage }) {
 
   const defaultLoaders = getStagedRules({ config, stage })
 
-  const webpackHook = makeHookReducer(config.plugins, 'webpack')
+  const webpackHook = makeHookReducer(config.plugins, 'webpack', { sync })
 
-  webpackConfig = await webpackHook(webpackConfig, {
+  return webpackHook(webpackConfig, {
     config,
     stage,
     defaultLoaders,
   })
-
-  return webpackConfig
 }
 
 // Starts the development server
