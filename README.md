@@ -92,13 +92,8 @@ $ react-static --help
 - [Core Concepts](/docs/concepts.md)
 - [Guides](/docs/guides/)
 - [Configuration](/docs/config.md)
-- [CLI](/docs/cli.md)
-- [Components](/docs/components.md)
-- [Browser](/docs/browser.md)
-- [Node API](/docs/node-api.md)
+- [API](/docs/api.md)
 - [Plugins](/docs/plugins/)
-- [Changelog](/CHANGELOG.md)
-- [Contributing Guide](/CONTRIBUTING.md)
 
 ### What is a progressive static site?
 
