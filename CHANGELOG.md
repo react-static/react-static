@@ -32,6 +32,7 @@
   - afterExport
 - Use the new `addPrefetchExcludes` method to exclude paths (like dynamic ones that would produce 404s) from every being prefetched! Yay!
 - You can now customize terser options via the `config.terser` object. This object is passed directly to the Webpack Terser plugin.
+- You can use the `getWebpackConfig(configPath, stage)` function from `react-static/node` to synchronously generate the webpack configuration for any static.config.js + state combination. This is especially useful for eslint plugins and other developer tools that rely on a webpack configuration during dev time.
 
 #### Improved
 
