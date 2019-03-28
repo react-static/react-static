@@ -11,10 +11,10 @@ import { parseConfigFileTextToJson, findConfigFile, sys } from 'typescript'
 
 export default options => ({
   afterGetConfig: getReactStaticConfigExtender(),
-  webpack: getWebpackConfigExtender(options),
+  webpack: webpack(options),
 })
 
-function getWebpackConfigExtender(options) {
+function webpack(options) {
   const tsconfigLocation = findConfigFile('./', sys.fileExists)
   const tsconfigPath = tsconfigLocation
     ? path.resolve(tsconfigLocation)

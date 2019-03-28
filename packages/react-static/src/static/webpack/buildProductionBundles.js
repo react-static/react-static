@@ -2,7 +2,7 @@
 import webpack from 'webpack'
 import chalk from 'chalk'
 //
-import getWebpackConfig from './getWebpackConfig'
+import makeWebpackConfig from './makeWebpackConfig'
 import { outputClientStats } from '../clientStats'
 import { time, timeEnd } from '../../utils'
 
@@ -12,8 +12,8 @@ export default async function buildProductionBundles(state) {
   time(chalk.green('=> [\u2713] App Bundled'))
 
   const allWebpackConfigs = [
-    await getWebpackConfig(state),
-    await getWebpackConfig({ ...state, stage: 'node' }), // Make sure we're building the node config
+    await makeWebpackConfig(state),
+    await makeWebpackConfig({ ...state, stage: 'node' }), // Make sure we're building the node config
   ]
 
   state = await new Promise(async (resolve, reject) => {

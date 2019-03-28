@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import io from 'socket.io'
 import WebpackDevServer from 'webpack-dev-server'
 //
-import getWebpackConfig from './getWebpackConfig'
+import makeWebpackConfig from './makeWebpackConfig'
 import getRouteData from '../getRouteData'
 import plugins from '../plugins'
 import { findAvailablePort, time, timeEnd } from '../../utils'
@@ -64,7 +64,7 @@ async function runExpressServer(state) {
     },
   }
 
-  const devConfig = getWebpackConfig(state)
+  const devConfig = makeWebpackConfig(state)
   const devCompiler = webpack(devConfig)
 
   const devServerConfig = {
