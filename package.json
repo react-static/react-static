@@ -11,7 +11,7 @@
     "buildDocs": "cd www && yarn && yarn build",
     "serveDocs": "serve www/dist -p 3000",
     "test": "yarn format && lerna run test",
-    "format": "prettier docs/** --write && lerna run format --parallel --stream",
+    "format": "prettier docs/** --write && lerna run format --stream",
     "precommit": "yarn format && git add",
     "ci": "yarn build && yarn test"
   },
