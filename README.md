@@ -109,6 +109,8 @@ Once a progressive static site page has loaded its React application it can then
 
 # How does it work?
 
+![Flow Chart](https://github.com/nozzle/react-static/raw/v7/media/flow.png)
+
 Using a CLI tool, React Static gathers your **data**, and **templates** together and intelligently splits them into bite-size files using webpack and javascript. Just like an HTML file, these bite-size files are static, but can be loaded piece-by-piece when needed to render a web page of your site. Once all of your data, and templates have been prepared, React Static uses them to render and export a list of **routes** that you provide into HTML files! After your site has been exported, these bite-sized **data**, **template**, and **html** files can be transfered to a static file server and browsed like a normal website!
 
 If we stopped there, you would have already shipped an awesomely fast and performant static website! But remember, a progressive static site is more than that.
@@ -116,8 +118,6 @@ If we stopped there, you would have already shipped an awesomely fast and perfor
 Little did you know that when React Static exported your site, it embedded links to **a tiny, optimized version of your original React application**! After one of these static pages loads, React **invisibly** mounts this application to the existing HTML that was loaded and... 🎉🎉🎉 You are now using the single page React application you originally built! This applicaiton is **special, too!** While you browse your website, it **automatically preloads pages that you might go to next, making them load instantly inside your single page React application!**.
 
 And that's just the beginning! With React Static, you can unleash your creativity and build anything you can imagine with speed and productivity. It even has **awesome plugins** that will help you on your journey!
-
-![Flow Chart](https://github.com/nozzle/react-static/raw/v7/media/flow.png)
 
 ## Articles, Videos & Tutorials
 
