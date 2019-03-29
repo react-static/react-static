@@ -95,7 +95,7 @@ $ react-static --help
 - [API](/docs/api.md)
 - [Plugins](/docs/plugins/)
 
-### What is a progressive static site?
+## What is a progressive static site?
 
 A progressive static site is a website where **every statically exported HTML page is an entry point to a fully-featured automatically-code-split React application**. Just like a normal static site, static progressive websites are capable of loading initial landing pages very quickly, but then extend the user experience by transforming invisibly into a single-page React application.
 
