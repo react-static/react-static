@@ -111,13 +111,17 @@ Once a progressive static site page has loaded its React application it can then
 
 ![Flow Chart](https://github.com/nozzle/react-static/raw/v7/media/flow.png)
 
-Using a CLI tool, React Static gathers your **data**, and **templates** together and intelligently splits them into bite-size files using webpack and javascript. Just like an HTML file, these bite-size files are static, but can be loaded piece-by-piece when needed to render a web page of your site. Once all of your data, and templates have been prepared, React Static uses them to render and export a list of **routes** that you provide into HTML files! After your site has been exported, these bite-sized **data**, **template**, and **html** files can be transfered to a static file server and browsed like a normal website!
+React Static gathers your **data**, and **templates** together and intelligently splits them into bite-size static files using webpack and javascript. Once these files have been generated, React Static uses them to render and export a list of **routes** that you provide it into HTML files! After your site has been exported, the resulting **data**, **template**, and **html** files can be transfered to a static file server and browsed as an awesomely fast and performant static website!
 
-If we stopped there, you would have already shipped an awesomely fast and performant static website! But remember, a progressive static site is more than that.
+But remember, a progressive static site is more than that...
 
-Little did you know that when React Static exported your site, it embedded links to **a tiny, optimized version of your original React application**! After one of these static pages loads, React **invisibly** mounts this application to the existing HTML that was loaded and... 🎉🎉🎉 You are now using the single page React application you originally built! This applicaiton is **special, too!** While you browse your website, it **automatically preloads pages that you might go to next, making them load instantly inside your single page React application!**.
+Little did you know that when React Static exported your site, it also generated **a tiny, optimized, and code-split version of your original React application for every page of your site**! After these pages have loaded, React **invisibly** mounts this application to the existing HTML on the page and... 🎉🎉🎉 You are now using the single page React application you originally built! **This application is special, though!** While you browse your website, **pages that you might go to next are automatically preloaded, making navigation to them instantaneous!**.
 
-And that's just the beginning! With React Static, you can unleash your creativity and build anything you can imagine with speed and productivity. It even has **awesome plugins** that will help you on your journey!
+That's just the beginning! With React Static, you can unleash your creativity and build anything you can imagine with speed and productivity. It even has **awesome plugins** that will help you on your journey!
+
+# Coming from Create React App?
+
+React Static is also a great replacement for the ever popular Create React App CLI. It provides a similar developer experience, zero-config environment, and features, but **without boxing you in.** If you ever need to customize your build system in React Static, there is no need to eject! You can use existing plugins or write your own to customize anything you'd like about the build system. Not building a static site? No worries there, React Static works as an SPA too, even if there is only a single `index.html` file.
 
 ## Articles, Videos & Tutorials
 
