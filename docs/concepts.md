@@ -14,8 +14,6 @@
 - [Pagination](#pagination)
 - [Browser Support](#browser-support)
 
-![Flow Chart](https://github.com/nozzle/react-static/raw/master/media/flow.png)
-
 # Code and Data Splitting
 
 React Static also has a very unique and amazing way of requesting the least amount of data to display any given page at just the right moment. React splits code and data based on these factors:
