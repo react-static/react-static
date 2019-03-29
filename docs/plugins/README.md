@@ -124,4 +124,4 @@ Only the `plugins` directory will be transformed by react-static's babel runtime
 
 Hence, when distributing your plugin, your plugin **must be ES5 compatible**.
 
-- An example of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/nozzle/react-static-plugin-styled-components).
+- An example of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/nozzle/react-static/tree/master/react-static-plugin-styled-components).

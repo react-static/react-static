@@ -3,7 +3,7 @@
   "version": "7.0.0-alpha.0",
   "description": "A React-Static plugin that adds support for preact",
   "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static-plugin-preact.git",
+  "repository": "https://github.com/nozzle/react-static.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,
