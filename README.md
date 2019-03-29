@@ -117,7 +117,7 @@ Little did you know that when React Static exported your site, it embedded links
 
 And that's just the beginning! With React Static, you can unleash your creativity and build anything you can imagine with speed and productivity. It even has **awesome plugins** that will help you on your journey!
 
-![Flow Chart](https://github.com/nozzle/react-static/raw/master/media/flow.png)
+![Flow Chart](https://github.com/nozzle/react-static/raw/v7/media/flow.png)
 
 ## Articles, Videos & Tutorials
 
