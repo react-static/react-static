@@ -11,7 +11,7 @@ import resolveFrom from 'resolve-from'
 import rules from './rules'
 
 function common(state) {
-  const { analyze, config } = state
+  const { analyze, config, debug } = state
   const { ROOT, DIST, NODE_MODULES, SRC, ASSETS } = config.paths
 
   process.env.REACT_STATIC_ENTRY_PATH = path.resolve(ROOT, config.entry)
@@ -91,7 +91,8 @@ function common(state) {
           parallel: true,
           exclude: /\.min\.js/,
           ...config.terser,
-          sourceMap: config.productionSourceMaps || config.terser.sourceMap,
+          sourceMap:
+            config.productionSourceMaps || config.terser.sourceMap || debug,
           terserOptions: {
             ie8: false,
             ...config.terser.terserOptions,
@@ -136,7 +137,7 @@ function common(state) {
       new CaseSensitivePathsPlugin(),
       analyze && new BundleAnalyzerPlugin(),
     ].filter(d => d),
-    devtool: config.productionSourceMaps ? 'source-map' : false,
+    devtool: debug || config.productionSourceMaps ? 'source-map' : false,
   }
 }
 

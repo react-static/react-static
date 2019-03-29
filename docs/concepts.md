@@ -25,13 +25,11 @@ React Static also has a very unique and amazing way of requesting the least amou
 
 #### Shared Route Data (Advanced)
 
-**Most projects don't need shared route data**. There are edge cases where it won't make sense to put the same piece of data in every route if it doesn't change, but at the same time that data isn't needed on every page. To solve this issue, you can use the shared route data api to share a single piece of data between many routes with only a single JSON file.
-
-[See an example](../node-api.md#createSharedData)
+**Most projects don't need shared route data**. There are cases where it won't make sense to place an individual copy of the same piece of data in every route's `getData` function, nor do you want to load that data into every page with `siteData`. To solve this issue, you can use the [**sharedData**](../node-api.md#createSharedData) api to share a single piece of data between many routes with only a single JSON file.
 
 # Writing universal, "node-safe" code
 
-Because React-Static code is both used in the browser and node (during build), it's very, very important that **ALL** your code be "universal" or in other words "node safe". Most of us are used to writing javascript from the browser's perspective, so there are some things to watch out for:
+Because React-Static code is both used in the browser during runtime and in node during build and export, it is very important that **ALL** your code be "universal" or in other words "node safe". Most of us are used to writing javascript from the browser's perspective, so there are some things to watch out for:
 
 - Check before using `window`, `document` or browser only APIs. Since these objects do not technically exist in the node environment, make sure you check that they exist before attempting to use them. The easiest way to do this is to keep code that relies on them in `componentDidMount` or inside a condition, eg.
 
@@ -52,22 +50,36 @@ if (typeof document !== 'undefined') {
 
 # Environment Variables
 
-During your adventures, you may need to access specific environment variables. The following environment variables are available across all of react-static, including your app:
+During your adventures, you may need to access specific React Static environment variables in your application. React Static uses the same `NODE_ENV` variable that other build systems use to determine what environment you are currently in. In addition, React Static also relies on the presence of `document` to determine whether production code is being executed in node or not.
 
-- `process.env.REACT_STATIC_ENV` can equal one of:
-  - `production` - the environment is being built via webpack for **production**
-  - `development` - the environment is being built via webpack for **development**
-  - `node` - the environment is being built via **node** for **SSR**
+#### Detecting `development` and `production` modes
+
+```javascript
+if (process.env.NODE_ENV === 'development') {
+  // Development mode (only executed in )
+} else {
+  // We are in production mode
+}
+```
+
+#### Detecting `browser` and `node` environments
+
+```javascript
+if (typeof document !== 'undefined') {
+  // We are in a browser context
+} else {
+  // We are in a node context
+}
+```
 
 # Building your site for production
 
 Before you deploy your site to production, we suggest doing a few things:
 
-- Enter a `siteRoot` in your `static.config.js`. A `siteRoot` allows React Static to optimize your assets and links for an absolute location. It also allows your site to function normally if you happen to host it in a non-root location like `https://mysite.com/my-static-site/`.
-- Test your build locally. To do this, you can run `react-static build --staging`. This will build a production version of your site that is still able to run normally on `localhost`.
-- If you find any bugs in production, you can turn off code uglification by also adding the `--debug` flag to your build command. This may help you track down any bugs.
+- Test your build locally. To do this, you can run `react-static build --staging`. This will build a production version of your site that is still able to be served normally on `localhost`.
+- If you find any bugs in production, you can also turn on debug mode adding the `--debug` flag to your build command. This will provide source-maps and better stack traces during testing.
 
-Once you're ready to build, run the `react-static build` command to kick off a production build. The production files will be located in the `dist` directory (or the custom `dist` directory you've defined). Simply upload the contents of this directory to your host!
+Once you're ready to build for distribution, run the `react-static build` command to run a build in production mode. The distributable production files will be located in the `dist` directory. Then, simply upload the contents of this directory to your host!
 
 # Continuous Integration
 
