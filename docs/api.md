@@ -37,7 +37,7 @@ export default () => (
 
 The routes that will be rendered are the **routes** returned by the `getRoutes` function of this config.
 
-##### Custom `Routes` Rendering
+### Custom `Routes` Rendering
 
 Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize a render prop:
 
@@ -142,7 +142,7 @@ export default () => {
 - Automatically smooth-scrolls to hash links
 - Automatically scrolls to the top of the page on route changes
 
-#### Options
+### Options
 
 | Property               | type         | Default       | description                                                       |
 | ---------------------- | ------------ | ------------- | ----------------------------------------------------------------- |
@@ -154,7 +154,7 @@ export default () => {
 | `scrollToHashDuration` | `integer`    | 800           | The duration in ms for the scroll-to-hash animation               |
 | `scrollToHashOffset`   | `integer`    | 0             | The vertical offset of the top of the window from the hash target |
 
-#### Example
+### Example
 
 ```javascript
 // App.js
@@ -179,7 +179,7 @@ export default () => {
 - It can be used in multiple places at the same time.
 - For more information, see the [React-Helmet library](https://github.com/nfl/react-helmet) that React Static uses to accomplish this.
 
-#### Example
+### Example
 
 ```javascript
 import { Head } from 'react-static'

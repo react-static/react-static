@@ -4,7 +4,7 @@ React Static ships with a plugin API to extend React Static's functionality.
 
 ## Installing Plugins
 
-#### Official Plugins via NPM
+### Official Plugins via NPM
 
 - CSS & Style Tooling
   - [react-static-plugin-emotion](/packages/react-static-plugin-emotion) - Adds SSR support for Emotion components.
@@ -23,11 +23,11 @@ React Static ships with a plugin API to extend React Static's functionality.
 - Assets
   - [react-static-plugin-favicons](https://www.npmjs.com/package/react-static-plugin-favicons) - Generate (fav)icons in many different sizes for many different platforms, and add them to your site's metadata
 
-#### Local Plugins via the `/plugins` directory
+### Local Plugins via the `/plugins` directory
 
 If you have a custom plugin or are developing a plugin locally, you can place your plugin directory in the `/plugins` directory in your project root. It can then be used by React Static.
 
-#### Local Plugin API via the `/node.api.js` and `/browser.api.js` project files
+### Local Plugin API via the `/node.api.js` and `/browser.api.js` project files
 
 If you simply need direct access to the the plugin API for a project, you can create a `node.api.js` and/or `browser.api.js` file in the root of your project. These files are treated just like plugins themselves, but do not receive plugin options and are executed very last in the plugin cycle.
 
@@ -42,14 +42,14 @@ export default {
 }
 ```
 
-#### Plugin Execution and Order (IMPORTANT)
+### Plugin Execution and Order (IMPORTANT)
 
 Order of execution:
 
 1. Plugins in `plugins: []`, starting from the first element of array.
 2. Any `node.api.js` and `browser.api.js` files at the project root.
 
-#### Plugin Resolution
+### Plugin Resolution
 
 Plugins are resolved in this order:
 
@@ -118,7 +118,7 @@ export default pluginOptions => ({
 
 View the [browser API docs](/docs/plugins/browser-api.md) and the [node API docs](/docs/plugins/node-api.md) for full list of API methods that can be implemented.
 
-#### Plugins must be compiled if installed via node_modules
+### Plugins must be compiled if installed via node_modules
 
 Only the `plugins` directory will be transformed by react-static's babel runtime.
 

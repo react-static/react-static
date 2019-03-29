@@ -4,13 +4,13 @@
 
 Decorate the Root component used in React Static.
 
-#### Props
+### Props
 
 | Prop     | Description                         | Required |
 | -------- | ----------------------------------- | -------- |
 | children | The main app content to be rendered | true     |
 
-#### Example
+### Example
 
 For a more detailed example, see the [react-static-plugin-react-router](/packages/react-static-plugin-react-router) plugin. Below is a summarized and contrived example to show the overall API of this hook
 
@@ -33,13 +33,13 @@ export default pluginOptions => ({
 
 Decorate the Routes component used in React Static.
 
-#### Props
+### Props
 
 | Prop     | Description                              | Required |
 | -------- | ---------------------------------------- | -------- |
 | children | The current route content to be rendered | true     |
 
-#### Example
+### Example
 
 ```javascript
 // browser.api.js

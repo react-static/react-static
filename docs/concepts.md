@@ -23,7 +23,7 @@ React Static also has a very unique and amazing way of requesting the least amou
 - **Site Data** - For data that is needed in every (or most) routes, you can pass it in the `config.getSiteData` function and make it accessible to any page in your entire site!.
 - **Manual Code Splitting with Universal** - React Static comes built in with support for [`react-universal-component`](https://github.com/faceyspacey/react-universal-component). This means aside from the automatic code splitting that React Static offers, you can also manually code split very large components if you choose to do so. See the ["About" page in the dynamic-imports example](https://github.com/nozzle/react-static/blob/master/examples/dynamic-imports/src/containers/About.js) to see how it works and how easy it is!
 
-#### Shared Route Data (Advanced)
+### Shared Route Data (Advanced)
 
 **Most projects don't need shared route data**. There are cases where it won't make sense to place an individual copy of the same piece of data in every route's `getData` function, nor do you want to load that data into every page with `siteData`. To solve this issue, you can use the [**sharedData**](../node-api.md#createSharedData) api to share a single piece of data between many routes with only a single JSON file.
 
@@ -52,7 +52,7 @@ if (typeof document !== 'undefined') {
 
 During your adventures, you may need to access specific React Static environment variables in your application. React Static uses the same `NODE_ENV` variable that other build systems use to determine what environment you are currently in. In addition, React Static also relies on the presence of `document` to determine whether production code is being executed in node or not.
 
-#### Detecting `development` and `production` modes
+### Detecting `development` and `production` modes
 
 ```javascript
 if (process.env.NODE_ENV === 'development') {
@@ -62,7 +62,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-#### Detecting `browser` and `node` environments
+### Detecting `browser` and `node` environments
 
 ```javascript
 if (typeof document !== 'undefined') {
