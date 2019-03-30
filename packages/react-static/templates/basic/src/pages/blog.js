@@ -8,6 +8,11 @@ export default function Blog() {
   return (
     <div>
       <h1>It's blog time.</h1>
+      <div>
+        <a href="#bottom" id="top">
+          Scroll to bottom!
+        </a>
+      </div>
       <br />
       All Posts:
       <ul>
@@ -17,6 +22,9 @@ export default function Blog() {
           </li>
         ))}
       </ul>
+      <a href="#top" id="bottom">
+        Scroll to top!
+      </a>
     </div>
   )
 }

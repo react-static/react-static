@@ -20,20 +20,9 @@ declare module 'react-static' {
   export class Routes extends React.Component {}
   export class Root extends React.Component {}
   export class ErrorBoundary extends React.Component {}
-
   export const useRouteData: object
   export const useSiteData: object
-
   export function prefetch(path: any): Promise<any>
-  export function scrollTo(
-    height: number | React.DOMElement<any, any>,
-    options?: {
-      duration?: number
-      offset?: number
-      context?: React.DOMElement<any, any>
-    }
-  ): Promise<any>
-
   export const Prefetch: React.Component
 
   /**

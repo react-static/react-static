@@ -393,8 +393,6 @@ export function isPrefetchableRoute(path) {
     return false
   }
 
-  console.log(path)
-
   if (
     prefetchExcludes.some(exclude => {
       if (typeof exclude === 'string' && path.startsWith(exclude)) {

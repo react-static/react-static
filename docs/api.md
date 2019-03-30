@@ -1,17 +1,15 @@
 # API
 
-React-Static is packed with awesome components and hooks to help you be productive. Some are required for React-Static to work properly, others are available merely for your convenience:
+React-Static is packed with awesome components, hooks, and functions to help you be productive. Exports located in the `react-static` package are meant to be used in the **browser** context, **in your application code** and in `browser.api.js`. Exports located in the `react-static/node` package are meant to be used in the **node** context like `static.config.js` and **api.node.js**)
 
 - `react-static`
   - [Routes](#routes)
   - [useRouteData](#useroutedata)
   - [useSiteData](#usesitedata)
-  - [useScroller](#usescroller)
   - [Head](#head)
   - [Prefetch](#prefetch)
   - [prefetch](#prefetch-)
-  - [scrollTo](#scrollto)
-- `react-static/node` (Node)
+- `react-static/node`
   - [reloadRoutes](#reloadRoutes)
   - [makePageRoutes](#makePageRoutes)
   - [createSharedData](#createSharedData)
@@ -67,9 +65,7 @@ export default () => (
 
 ## `useRouteData`
 
-Via suspense, the `useRouteData` hook asynchronously provides the results of a **routes's** `getData` function as defined in your `static.config.js`.
-
-These examples show all of the different syntaxes you can use.
+Via suspense, the `useRouteData` hook asynchronously provides the results of a **routes's** `getData` function as defined in your `static.config.js`. If you are unable to use a hook in your component, you may also use the `RouteData` component or `withRouteData` HOC to access routeData, though we suggest refactoring to hooks for future releases.
 
 **static.config.js**
 
@@ -110,6 +106,8 @@ export default () => {
 
 Via suspense, the `useSiteData` hook asynchronously provides the results of the `getSiteData` function as defined in your `static.config.js`.
 
+If you are unable to use a hook in your component, you may also use the `SiteData` component or `withSiteData` HOC to access siteData, though we suggest refactoring to hooks for future releases.
+
 **static.config.js**
 
 ```javascript
@@ -132,40 +130,6 @@ export default () => {
   return (
     <div>
       Welcome to {siteTitle}! {metaDescription}
-    </div>
-  )
-}
-```
-
-## `useScroller`
-
-- Automatically smooth-scrolls to hash links
-- Automatically scrolls to the top of the page on route changes
-
-### Options
-
-| Property               | type         | Default       | description                                                       |
-| ---------------------- | ------------ | ------------- | ----------------------------------------------------------------- |
-| `context`              | `DOMelement` | document.body | The dom element to scroll                                         |
-| `disabled`             | `bool`       | false         | Toggles all scrolling behavior                                    |
-| `autoScrollToTop`      | `bool`       | true          | Toggles scroll-to-top behavior                                    |
-| `autoScrollToHash`     | `bool`       | true          | Toggles scroll-to-hash behavior                                   |
-| `scrollToTopDuration`  | `integer`    | 0             | The duration in ms for the scroll-to-top animation                |
-| `scrollToHashDuration` | `integer`    | 800           | The duration in ms for the scroll-to-hash animation               |
-| `scrollToHashOffset`   | `integer`    | 0             | The vertical offset of the top of the window from the hash target |
-
-### Example
-
-```javascript
-// App.js
-import { useScroller, Routes } from 'react-static'
-
-export default () => {
-  useScroller()
-
-  return (
-    <div>
-      <Routes />
     </div>
   )
 }
@@ -237,37 +201,6 @@ import { prefetch } from 'react-static'
 const myFunc = async () => {
   const data = await prefetch('/blog')
   console.log('The preloaded data:', data)
-}
-```
-
-## `scrollTo`
-
-This **async** method can be used to scroll to any given height or DOMElement you pass it.
-
-- Arguments
-  - `height: int || DOMElement` - The height from the top of the page or dom element you would like to scroll to.
-  - `options{}` - An optional settings object
-    - `duration: Int` - The duration of the animation in milliseconds
-    - `offset: Int` - The negative or positive offset in pixels
-    - `context: DOMElement` - The container element that will be scrolled. Defaults to `body` via `window.scrollTo`
-- Returns a `Promise` that is resolved when the scrolling stops
-
-Example:
-
-```javascript
-import { scrollTo } from 'react-static'
-
-const scrollToElement = () => {
-  const element = document.getElementById('my-element')
-  scrollTo(element)
-}
-
-const asyncScrollToHeight = async () => {
-  await scrollTo(100, {
-    offset: -10,
-    duration: 2000,
-  })
-  console.log('Done scrolling!')
 }
 ```
 

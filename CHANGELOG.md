@@ -8,7 +8,6 @@
 - The `Routes` component now has a browser-side plugin interface.
 - You can now use `useRouteData` and `useSiteData` hooks to fetch site and route data (related deprecations below)
 - You can now use the `usePrefetch` hook to prefetch routes (related deprecations below)
-- You can now use a `useScroller` hook to automate hash and top-of-page scrolling (related deprecations below)
 - `useLocation`, `useBasepath` `useRoutePath` and `useStaticInfo` have been added as utility hooks for both users and plugins.
 - You can now use a `--analyze` CLI options to quickly profile your production webpack bundle (related deprecations below)
 - The new `react-static-plugin-sitemap` plugin allows you to build and customize a sitemap for your site from your routes.
@@ -48,11 +47,16 @@
 
 ### Breaking Changes
 
-- Route objects returned in `getRoutes` now use the property `template` instead of `component`.
-- `withRouteData`, `RouteData`, `withSiteData`, and `SiteData` HOC's and components have been removed in favor of the `useRouteData` and `useSiteData` hooks.
-- `useLocation`, `useBasepath` `useRoutePath` and `useStaticInfo` have been added as utility hooks for both users and plugins.
+Migration tips are listed as sub-items if applicable.
+
+- Upgraded to React 16.8.x
+  - You will need to upgrade `react` and `react-dom` to this version. You will also want to make sure all of your other react-related libraries are compatible with this upgrade.
+- Route objects returned in `getRoutes` now use the property `template` instead of `component`
+  - Replace all instances of `component` with `template` when defining a route both in static.config.js or plugins.
 - The `Prefetch` component has been deprecated in favor of the `usePrefetch` hook.
-- All scroller props previously support on the `Root` component are now deprecated in favor of the `useScroller` hook.
+  - You will need to refactor your usage of Prefetch to use this new hook or create your own Prefect component that utilizes the hook. Most applications don't use manual prefetching, so we don't foresee this being an big deal for most, if not all projects.
+- All scroller props previously supported on the `Root` component are now deprecated. Since you can bring your own router to React Static now, there is no reliable built-in way to ship auto hash scrolling without severly bloating the core of React Static. Please use a smooth scrolling library that supports the router you choose, or better yet, we recommend going with the _mostly_ supported `html { scroll-behavior: smooth; }` css property for decent support.
+  - Remove any and all props from the `Root` component that are related to scrolling.
 - Plugin loading order has been changed to:
   - Absolute Require.resolve (will use package.json's `main` entry to resolve)
   - Absolute Path
