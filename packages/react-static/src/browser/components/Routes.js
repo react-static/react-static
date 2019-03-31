@@ -19,6 +19,7 @@ const RoutesInner = ({ routePath }) => {
   // might be rendered simultaneously
 
   const staticInfo = useStaticInfo()
+  // eslint-disable-next-line
   const [_, setCount] = useState(0)
 
   // If in production, make sure the staticInfo is ingested into the

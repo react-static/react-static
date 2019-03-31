@@ -12,6 +12,7 @@ let siteData
 export const useSiteData = () => {
   // When clientData reloads, rerender components
   // that use this hook
+  // eslint-disable-next-line
   const [_, setCount] = useState(0)
   useEffect(() =>
     onReloadClientData(() => {

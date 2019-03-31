@@ -28,6 +28,7 @@ export default (async function start(state = {}) {
     state = await generateBrowserPlugins(state)
 
     // Use a callback (a subscription)
+    // eslint-disable-next-line
     await getRoutes(state, async state => {
       state = await extractTemplates(state)
       state = await generateTemplates(state)

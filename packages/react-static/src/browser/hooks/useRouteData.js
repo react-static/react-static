@@ -10,6 +10,7 @@ import { getFullRouteData } from '../utils'
 
 export const useRouteData = () => {
   const routePath = useRoutePath()
+  // eslint-disable-next-line
   const [_, setCount] = useState(0)
 
   useEffect(() =>
