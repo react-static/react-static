@@ -143,6 +143,9 @@ export function reduceHooks(hooks, { sync } = {}) {
     return (value, options) =>
       hooks.reduce((prev, hook) => {
         const next = hook(prev, options)
+        if (next instanceof Promise) {
+          throw new Error('Cannot run async hooks in sync mode.')
+        }
         return typeof next !== 'undefined' ? next : prev
       }, value)
   }
