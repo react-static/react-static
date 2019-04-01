@@ -113,7 +113,7 @@ Once a progressive static site page has loaded its React application it can then
 
 # How does it work?
 
-![Flow Chart](https://github.com/nozzle/react-static/raw/v7/media/flow.png)
+![Flow Chart](https://github.com/nozzle/react-static/raw/master/media/flow.png)
 
 React Static gathers your **data**, and **templates** together and intelligently splits them into bite-size static files using webpack and javascript. Once these files have been generated, React Static uses them to render and export a list of **routes** that you provide it into HTML files! After your site has been exported, the resulting **data**, **template**, and **html** files can be transfered to a static file server and browsed as an awesomely fast and performant static website!
 
