@@ -6,7 +6,7 @@
 <br>
 <br>
 
-> You are viewring the docs for v7 of React Static. You can browse all historical versions via Github banches!
+> You are viewing the docs for v7 of React Static. You can browse all historical versions via Github branches!
 
 # React Static
 
@@ -81,6 +81,7 @@ $ react-static create
 ```
 
 - Need some help?
+  <<<<<<< HEAD
 
 ```bash
 $ react-static --help
@@ -97,7 +98,21 @@ $ react-static --help
 
 ## Migration from a previous version?
 
-The [CHANGELOG](/CHANGELOG.md) contains information on breaking change for each major version. The latest breaking changes along with their migration tips are [located here](/CHANGELOG.md#700)
+# The [CHANGELOG](/CHANGELOG.md) contains information on breaking change for each major version. The latest breaking changes along with their migration tips are [located here](/CHANGELOG.md#700)
+
+```bash
+$ react-static --help
+```
+
+## Documentation
+
+- [Overview](/docs/)
+- [Core Concepts](/docs/concepts.md)
+- [Guides](/docs/guides/)
+- [Configuration](/docs/config.md)
+- [API](/docs/api.md)
+- [Plugins](/docs/plugins/)
+  > > > > > > > master
 
 ## What is a progressive static site?
 
