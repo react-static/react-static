@@ -37,7 +37,11 @@ export default async function main(state, options) {
   console.log(chalk.green(`=> [\u2713] ${filename} generated`))
 }
 
-export function generateXML(state, { getAttributes = () => ({}) }, prefixPath) {
+export function generateXML(
+  state,
+  { getAttributes = () => ({}) } = {},
+  prefixPath
+) {
   const { config, routes } = state
 
   if (!prefixPath) {

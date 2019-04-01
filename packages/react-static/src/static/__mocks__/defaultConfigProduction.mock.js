@@ -18,4 +18,7 @@ export default {
     NODE_MODULES: './root/node_modules',
     STATIC_DATA: './root/dist/staticData',
   },
+  terser: {
+    terserOptions: {},
+  },
 }

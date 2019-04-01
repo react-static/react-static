@@ -2,32 +2,34 @@
 
 // import getConfig from '../getConfig'
 // import getRoutes, { normalizeRoute } from '../getRoutes'
-import normalizeRoute from '../getRoutes/normalizeRoute'
+import { normalizeRoute } from '../getRoutes'
 
 describe('normalizeRoute', () => {
   describe('when working route is provided', () => {
-    it('should return a normalized route', async () => {
-      const route = normalizeRoute({ path: '/path/' })
+    it('should return a normalized route', () => {
+      const route = normalizeRoute({ path: '/path/' }, undefined, d => d)
 
       expect(route).toEqual({
-        hasGetProps: false,
-        originalPath: 'path',
         path: 'path',
       })
     })
 
     describe('when noindex is true, but a child route is noindex: false', () => {
       it('should return a normalized route with noindex as true', () => {
-        const route = normalizeRoute({
-          path: '/path/',
-          noindex: true,
-          children: [
-            {
-              path: 'child',
-              noindex: false,
-            },
-          ],
-        })
+        const route = normalizeRoute(
+          {
+            path: '/path/',
+            noindex: true,
+            children: [
+              {
+                path: 'child',
+                noindex: false,
+              },
+            ],
+          },
+          undefined,
+          d => d
+        )
 
         expect(route.noindex).toEqual(true)
         expect(route.children[0].noindex).toEqual(false)
@@ -42,7 +44,7 @@ describe('normalizeRoute', () => {
       })
 
       it('should warns the user to use noIndex', () => {
-        normalizeRoute({ path: '/path/', noIndex: true })
+        normalizeRoute({ path: '/path/', noIndex: true }, undefined, d => d)
 
         expect(spy).toHaveBeenCalled()
         expect(spy).toBeCalledWith(
@@ -59,7 +61,7 @@ describe('normalizeRoute', () => {
       it('should throw an error', () => {
         const route = { template: '/no/path/', noIndex: true }
 
-        expect(() => normalizeRoute(route)).toThrow(
+        expect(() => normalizeRoute(route, undefined, d => d)).toThrow(
           `No path defined for route: ${JSON.stringify(route)}`
         )
       })
@@ -67,7 +69,11 @@ describe('normalizeRoute', () => {
       describe('when route is 404', () => {
         it('should not throw an error', () => {
           expect(() =>
-            normalizeRoute({ template: '/no/path/', path: '404' })
+            normalizeRoute(
+              { template: '/no/path/', path: '404' },
+              undefined,
+              d => d
+            )
           ).not.toThrow()
         })
       })
@@ -75,24 +81,14 @@ describe('normalizeRoute', () => {
 
     describe('when parent route is provided', () => {
       it('should return a normalized route', () => {
-        const route = normalizeRoute({ path: '/to/' }, { path: '/path/' })
+        const route = normalizeRoute(
+          { path: '/to/' },
+          { path: '/path/' },
+          d => d
+        )
 
         expect(route).toEqual({
-          hasGetProps: false,
-          noindex: undefined,
-          originalPath: 'to',
           path: 'path/to',
-        })
-      })
-
-      describe('when parent noindex is true', () => {
-        it('should return a normalized route with noindex as true', () => {
-          const route = normalizeRoute(
-            { path: '/to/' },
-            { path: '/path/', noindex: true }
-          )
-
-          expect(route.noindex).toEqual(true)
         })
       })
     })

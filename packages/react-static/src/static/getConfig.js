@@ -6,7 +6,7 @@ import resolveFrom from 'resolve-from'
 import fs from 'fs-extra'
 //
 import { cleanSlashes, cutPathToRoot, isAbsoluteUrl } from '../utils'
-import corePlugins from './plugins'
+import corePlugins, { validatePlugin } from './plugins'
 
 // the default static.config.js location
 const defaultConfig = {}
@@ -306,6 +306,8 @@ export function buildConfig(state, config = {}) {
         options,
         hooks: buildPluginHooks(options) || {},
       }
+
+      validatePlugin(resolvedPlugin)
 
       // Recursively resolve plugins
       if (resolvedPlugin.plugins) {

@@ -144,7 +144,9 @@ export function reduceHooks(hooks, { sync } = {}) {
       hooks.reduce((prev, hook) => {
         const next = hook(prev, options)
         if (next instanceof Promise) {
-          throw new Error('Cannot run async hooks in sync mode.')
+          throw new Error(
+            'Expected hook to return a value, but received promise instead. A plugin is attempting to use a sync plugin with an async function!'
+          )
         }
         return typeof next !== 'undefined' ? next : prev
       }, value)

@@ -1,5 +1,36 @@
 import { getHooks, reduceHooks } from '../utils'
 
+const supportedHooks = [
+  'afterGetConfig',
+  'beforePrepareBrowserPlugins',
+  'afterPrepareBrowserPlugins',
+  'beforePrepareRoutes',
+  'getRoutes',
+  'normalizeRoute',
+  'afterPrepareRoutes',
+  'webpack',
+  'afterDevServerStart',
+  'beforeRenderToElement',
+  'beforeRenderToHtml',
+  'htmlProps',
+  'headElements',
+  'beforeHtmlToDocument',
+  'beforeDocumentToFile',
+  'afterExport',
+]
+
+export const validatePlugin = plugin => {
+  const hookKeys = Object.keys(plugin.hooks)
+  const badKeys = hookKeys.filter(key => !supportedHooks.includes(key))
+  if (badKeys.length) {
+    throw new Error(
+      `Unknown plugin hooks: "${badKeys.join(', ')}" found in plugin: ${
+        plugin.location
+      }`
+    )
+  }
+}
+
 export default {
   afterGetConfig: state => {
     const hooks = getHooks(state.plugins, 'afterGetConfig')

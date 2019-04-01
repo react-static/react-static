@@ -1,54 +1,42 @@
-import { webpackConfig } from '../webpack'
+import makeWebpackConfig from '../webpack/makeWebpackConfig'
 import staticConfig from '../__mocks__/defaultConfigDevelopment.mock'
 
-const createConfigWithWebpackHook = hook => {
-  const hooks = { webpack: hook }
-  return Object.assign({}, staticConfig, { plugins: [{ hooks }] })
-}
-
 describe('webpack', () => {
-  describe('when called synchronously', () => {
-    it('should return after executing plugin hooks sync', () => {
-      const config = createConfigWithWebpackHook(wpConfig =>
-        Object.assign(wpConfig, { mode: 'development' })
-      )
-
-      const myWebpackConfig = webpackConfig({
-        config,
-        stage: 'prod',
-        sync: true,
-      })
-
-      expect(myWebpackConfig.mode).toBe('development')
+  it('should return after executing plugin hooks synchronously', () => {
+    const myWebpackConfig = makeWebpackConfig({
+      config: staticConfig,
+      stage: 'prod',
+      plugins: [
+        {
+          hooks: {
+            webpack: wpConfig => ({
+              ...wpConfig,
+              mode: 'development',
+            }),
+          },
+        },
+      ],
     })
 
-    it('should throw if plugin hooks execute async', () => {
-      const config = createConfigWithWebpackHook(wpConfig =>
-        Promise.resolve(Object.assign(wpConfig, { mode: 'development' }))
-      )
-
-      expect(() =>
-        webpackConfig({
-          config,
-          stage: 'prod',
-          sync: true,
-        })
-      ).toThrow('Cannot run async hooks in sync mode')
-    })
+    expect(myWebpackConfig.mode).toBe('development')
   })
 
-  describe('when called asynchronously', () => {
-    it('should resolve after executing plugin hooks async', async () => {
-      const config = createConfigWithWebpackHook(wpConfig =>
-        Promise.resolve(Object.assign(wpConfig, { mode: 'development' }))
-      )
-
-      const myWebpackConfig = await webpackConfig({
-        config,
+  it('should throw if plugin hooks execute async', () => {
+    expect(() =>
+      makeWebpackConfig({
+        config: staticConfig,
         stage: 'prod',
+        plugins: [
+          {
+            hooks: {
+              webpack: wpConfig =>
+                Promise.resolve({ ...wpConfig, mode: 'development' }),
+            },
+          },
+        ],
       })
-
-      expect(myWebpackConfig.mode).toBe('development')
-    })
+    ).toThrow(
+      'Expected hook to return a value, but received promise instead. A plugin is attempting to use a sync plugin with an async function!'
+    )
   })
 })
