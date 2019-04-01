@@ -127,6 +127,10 @@ function common(state) {
       alias: {
         react: resolveFrom(config.paths.NODE_MODULES, 'react'),
         'react-dom': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
+        'react-universal-component': resolveFrom(
+          __dirname,
+          'react-universal-component'
+        ),
       },
     },
     externals: [],

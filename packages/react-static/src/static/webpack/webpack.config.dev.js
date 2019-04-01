@@ -55,10 +55,7 @@ export default function({ config }) {
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
         react: resolveFrom(config.paths.NODE_MODULES, 'react'),
-        'react-dom': resolveFrom(
-          config.paths.NODE_MODULES,
-          '@hot-loader/react-dom'
-        ),
+        'react-dom': resolveFrom(__dirname, '@hot-loader/react-dom'),
       },
     },
     plugins: [

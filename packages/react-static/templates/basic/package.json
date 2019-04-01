@@ -13,7 +13,6 @@
     "axios": "^0.18.0",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-hot-loader": "^4.3.12",
     "react-static": "^6.0.18",
     "react-static-plugin-reach-router": "^7.0.0-beta.0",
     "react-static-plugin-sitemap": "^7.0.0-beta.0",
