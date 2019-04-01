@@ -6,7 +6,7 @@
 <br>
 <br>
 
-> You are viewing the docs for v7 of React Static. You can browse all historical versions via Github branches!
+> You are viewring the docs for v7 of React Static. You can browse all historical versions via Github banches!
 
 # React Static
 
@@ -69,9 +69,9 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 - Install the CLI tool:
 
 ```bash
-$ npm i -g react-static
+$ npm i -g react-static@next
 # or
-$ yarn global add react-static
+$ yarn global add react-static@next
 ```
 
 - Start a new project!
