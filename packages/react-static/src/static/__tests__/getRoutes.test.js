@@ -48,7 +48,7 @@ describe('normalizeRoute', () => {
 
         expect(spy).toHaveBeenCalled()
         expect(spy).toBeCalledWith(
-          "=> Warning: Route /path/ is using 'noIndex'. Did you mean 'noindex'?"
+          "Warning: Route /path/ is using 'noIndex'. Did you mean 'noindex'?"
         )
       })
 

@@ -15,9 +15,9 @@ export default (async function exportSharedRouteData(state) {
   const sharedDataArr = Array.from(sharedDataByHash)
 
   if (sharedDataArr.length) {
-    console.log('=> Exporting Shared Route Data...')
+    console.log('Exporting Shared Route Data...')
     const jsonProgress = progress(sharedDataArr.length)
-    time(chalk.green('=> [\u2713] Shared Route Data Exported'))
+    time(chalk.green('[\u2713] Shared Route Data Exported'))
 
     await poolAll(
       sharedDataArr.map(cachedProp => async () => {
@@ -29,7 +29,7 @@ export default (async function exportSharedRouteData(state) {
       }),
       Number(outputFileRate)
     )
-    timeEnd(chalk.green('=> [\u2713] Shared Route Data Exported'))
+    timeEnd(chalk.green('[\u2713] Shared Route Data Exported'))
   }
 
   return state

@@ -24,7 +24,7 @@ export default async (state = {}) => {
 
   if (!isBuildCommand) {
     console.log(
-      `=> Exporting application for ${staging ? 'Staging' : 'Production'}...`
+      `Exporting application for ${staging ? 'Staging' : 'Production'}...`
     )
     console.log('')
   }

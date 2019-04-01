@@ -38,7 +38,7 @@ export default {
         route: {
           // Use this route as the base route
           path: 'blog',
-          component: 'src/pages/blog',
+          template: 'src/pages/blog',
         },
         decorate: (posts, i, totalPages) => ({
           // For each page, supply the posts, page and totalPages
@@ -52,7 +52,7 @@ export default {
       // Make the routes for each blog post
       ...posts.map(post => ({
         path: `/blog/post/${post.id}`,
-        component: 'src/containers/Post',
+        template: 'src/containers/Post',
         getData: () => ({
           post,
           user: users.find(user => user.id === post.userId),

@@ -5,8 +5,8 @@ import { time, timeEnd } from '../utils'
 
 export default (async function extractTemplates(state) {
   const { config, routes, incremental } = state
-  console.log('=> Building Templates...')
-  time(chalk.green('=> [\u2713] Templates Built'))
+  console.log('Building Templates...')
+  time(chalk.green('[\u2713] Templates Built'))
 
   // Dedupe all templates into an array
   const templates = []
@@ -31,7 +31,7 @@ export default (async function extractTemplates(state) {
       }
     }
   })
-  timeEnd(chalk.green('=> [\u2713] Templates Built'))
+  timeEnd(chalk.green('[\u2713] Templates Built'))
 
   if (!incremental && notFoundPending) {
     throw new Error(

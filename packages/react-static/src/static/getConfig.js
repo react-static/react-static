@@ -56,7 +56,7 @@ export default function getConfig(
       })
       .on('all', async () => {
         console.log('')
-        console.log(`=> Updating static.config.js`)
+        console.log(`Updating static.config.js`)
         state = buildConfigFromPath(state, resolvedPath)
         callback(state)
       })

@@ -21,7 +21,7 @@ export default (options = {}) => ({
   afterExport: state => {
     if (!state.config.siteRoot) {
       console.log(
-        "=> Warning: react-static-plugin-sitemap - No 'siteRoot' is defined in 'static.config.js'. This is required to generate a sitemap.xml."
+        "Warning: react-static-plugin-sitemap - No 'siteRoot' is defined in 'static.config.js'. This is required to generate a sitemap.xml."
       )
       return
     }

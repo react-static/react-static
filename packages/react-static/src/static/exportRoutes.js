@@ -23,7 +23,7 @@ async function buildHTML(state) {
     config: { paths, maxThreads },
   } = state
 
-  time(chalk.green('=> [\u2713] HTML Exported'))
+  time(chalk.green('[\u2713] HTML Exported'))
 
   // in case of an absolute path for DIST we must tell node to load the modules from our project root
   if (!paths.DIST.startsWith(paths.ROOT)) {
@@ -33,14 +33,14 @@ async function buildHTML(state) {
 
   // Single threaded export
   if (maxThreads <= 1) {
-    console.log('=> Exporting HTML...')
+    console.log('Exporting HTML...')
     await require('./exportRoutes.sync').default(state)
   } else {
     // Multi-threaded export
     const threads = Math.min(cores, maxThreads)
     const htmlProgress = progress(routes.length)
 
-    console.log(`=> Exporting HTML across ${threads} threads...`)
+    console.log(`Exporting HTML across ${threads} threads...`)
 
     const exporters = []
     for (let i = 0; i < threads; i++) {
@@ -88,7 +88,7 @@ async function buildHTML(state) {
     )
   }
 
-  timeEnd(chalk.green('=> [\u2713] HTML Exported'))
+  timeEnd(chalk.green('[\u2713] HTML Exported'))
 
   return state
 }

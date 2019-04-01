@@ -44,6 +44,7 @@
 - The plugin API has been revamped to offer more control over the state of the CLI and build processes.
 - The ErrorBoundary UI is only shown in production now. During development, the standard react-hot-loader error reporter will show again.
 - Source maps are no longer exported by default in production. To export them in production, turn them on via `config.productionSourceMaps: true`
+- Logging is now cleaner and more succinct (removed `=>` from all log lines)
 
 ### Breaking Changes
 

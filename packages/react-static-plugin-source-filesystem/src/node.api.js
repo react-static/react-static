@@ -25,9 +25,9 @@ export default ({
     // Get the pages
 
     if (debug) {
-      console.log(`=> Importing directory routes from: ${pagesGlob}`)
+      console.log(`Importing directory routes from: ${pagesGlob}`)
     } else {
-      console.log('=> Importing routes from directory...')
+      console.log('Importing routes from directory...')
     }
 
     const handle = pages =>
@@ -71,9 +71,7 @@ export default ({
           }
 
           console.log(
-            `=> File ${
-              type === 'add' ? 'Added' : 'Removed'
-            }: ${nodePath.relative(
+            `File ${type === 'add' ? 'Added' : 'Removed'}: ${nodePath.relative(
               config.paths.ROOT,
               nodePath.resolve(location, filename)
             )}`
