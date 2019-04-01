@@ -29,12 +29,12 @@ export default async function main(state, options) {
 
   const filename = staging ? 'sitemap.staging.xml' : 'sitemap.xml'
 
-  console.log(`=> Generating ${filename}...`)
+  console.log(`Generating ${filename}...`)
 
   const xml = generateXML(state, options, prefixPath)
   await fs.writeFile(nodePath.join(DIST, filename), xml)
 
-  console.log(chalk.green(`=> [\u2713] ${filename} generated`))
+  console.log(chalk.green(`[\u2713] ${filename} generated`))
 }
 
 export function generateXML(

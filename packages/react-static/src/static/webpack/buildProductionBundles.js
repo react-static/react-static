@@ -8,8 +8,8 @@ import { time, timeEnd } from '../../utils'
 
 export default async function buildProductionBundles(state) {
   // Build static pages and JSON
-  console.log('=> Bundling App...')
-  time(chalk.green('=> [\u2713] App Bundled'))
+  console.log('Bundling App...')
+  time(chalk.green('[\u2713] App Bundled'))
 
   const allWebpackConfigs = [
     await makeWebpackConfig(state),
@@ -72,7 +72,7 @@ export default async function buildProductionBundles(state) {
     })
   })
 
-  timeEnd(chalk.green('=> [\u2713] App Bundled'))
+  timeEnd(chalk.green('[\u2713] App Bundled'))
 
   return state
 }

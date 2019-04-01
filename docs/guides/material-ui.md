@@ -8,9 +8,7 @@ To use Material-UI in React Static:
 
 ```javascript
 // static.config.js
-import {
-  createGenerateClassName,
-} from '@material-ui/core/styles'
+import { createGenerateClassName } from '@material-ui/core/styles'
 
 const generateClassName = createGenerateClassName()
 

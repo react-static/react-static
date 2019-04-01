@@ -1,19 +1,20 @@
 # Apollo
 
 With React Static you may want to use Apollo:
+
 - For the static routes and pages generation at build time
 - To fetch fresh data on the client from your GraphQL API Server or make updates using GraphQL Mutations.
-
 
 ## Data fetching on the client
 
 Fetching data on the client with `react-static` is very similar to doing it from a simple React project or `create-react-app`.
 
-The only thing you need to be aware of is that you need to use the full `apollo-client` package and not `apollo-boost`, because you need to customize the Apollo client. 
+The only thing you need to be aware of is that you need to use the full `apollo-client` package and not `apollo-boost`, because you need to customize the Apollo client.
 
 In fact, you need to specify `node-fetch` as the fetch method of the `HttpLink`, because the query will be called from Node, too.
 
 First of all you have to install all the required packages:
+
 ```sh
 yarn add apollo-client apollo-cache-inmemory apollo-link-http react-apollo graphql-tag graphql node-fetch
 ```
@@ -29,7 +30,7 @@ import fetch from 'node-fetch'
 const client = new ApolloClient({
   link: new HttpLink({
     uri: 'https://your-api-server/graphql',
-    fetch
+    fetch,
   }),
   cache: new InMemoryCache(),
 })
@@ -68,10 +69,9 @@ function App() {
 export default App
 ```
 
-
 ## Build-time data fetching
 
-As for build-time data fetching, we can just use the same Apollo client as before in our `static.config.js`. 
+As for build-time data fetching, we can just use the same Apollo client as before in our `static.config.js`.
 
 For example, here I build the `/products` route giving it the `products` data prop and all the children routes `/products/:seoName` giving them the `product` data.
 
@@ -89,16 +89,17 @@ export default {
     } = await client.query({
       query: GET_PRODUCTS,
     })
+
     return [
       {
         path: '/products',
-        component: 'src/pages/Products',
+        template: 'src/pages/Products',
         getData: () => ({
           products,
         }),
         children: products.map(product => ({
           path: `/${product.seoName}`,
-          component: 'src/pages/Product',
+          template: 'src/pages/Product',
           getData: () => ({
             product,
           }),
@@ -112,6 +113,7 @@ export default {
 ## Mixing client-side and build-time data fetching
 
 Often it may be useful to both query data at build time and live on the client, for example you may want to:
+
 - Fetch the data for the static routes to have the SEO optimized pages and perceived performance gain, in particular for slow changing data (for an e-commerce, think at the product name, description, image...)
 - Query the APIs from the client to fetch fast changing data (for an e-commerce, think at the available stock) and to mutate data (for example, place an order).
 
@@ -123,29 +125,33 @@ import { withRouteData } from 'react-static'
 import { Query } from 'react-apollo'
 import GET_PRODUCT from '../graphql/getProduct'
 
-const Product = ({ product }) => (
-  <div>
-    {/* STATIC DATA FROM THE BUILD */}
-    <h1>{product.name}</h1>
-    <p>{product.shortDescription}</p>
-    <img src={product.imageUrl} alt={product.name} />
+export default function Product() {
+  {
+    /* STATIC DATA FROM THE BUILD */
+  }
+  const { product } = useRouteData()
 
-    <Query query={GET_PRODUCT} variables={{ seoName: product.seoName }}>
-      {({ loading, error, data }) => {
-        if (loading) return <p>Loading...</p>
-        if (error) return <p>Error :(</p>
+  return (
+    <div>
+      <h1>{product.name}</h1>
+      <p>{product.shortDescription}</p>
+      <img src={product.imageUrl} alt={product.name} />
 
-        return (
-          <div>
-            {/* LIVE DATA FROM THE QUERY */}
-            <p>Price: {data.product.price}</p>
-            <p>Stock: {data.product.stock}</p>
-          </div>
-        )
-      }}
-    </Query>
-  </div>
-)
+      <Query query={GET_PRODUCT} variables={{ seoName: product.seoName }}>
+        {({ loading, error, data }) => {
+          if (loading) return <p>Loading...</p>
+          if (error) return <p>Error :(</p>
 
-export default withRouteData(Product)
+          return (
+            <div>
+              {/* LIVE DATA FROM THE QUERY */}
+              <p>Price: {data.product.price}</p>
+              <p>Stock: {data.product.stock}</p>
+            </div>
+          )
+        }}
+      </Query>
+    </div>
+  )
+}
 ```

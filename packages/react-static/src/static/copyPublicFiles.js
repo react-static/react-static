@@ -10,8 +10,8 @@ export default async function copyPublicFolder(state) {
     },
   } = state
 
-  console.log('=> Copying public directory...')
-  time(chalk.green('=> [\u2713] Public directory copied'))
+  console.log('Copying public directory...')
+  time(chalk.green('[\u2713] Public directory copied'))
 
   await fs.ensureDir(PUBLIC)
 
@@ -20,7 +20,7 @@ export default async function copyPublicFolder(state) {
     filter: file => file !== INDEX,
   })
 
-  timeEnd(chalk.green('=> [\u2713] Public directory copied'))
+  timeEnd(chalk.green('[\u2713] Public directory copied'))
 
   return state
 }

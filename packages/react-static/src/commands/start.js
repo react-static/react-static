@@ -19,7 +19,7 @@ export default (async function start(state = {}) {
 
   state.stage = 'dev'
 
-  console.log(`=> Starting Development Server...`)
+  console.log(`Starting Development Server...`)
 
   // Use a callback (a subscription)
   getConfig(state, async state => {

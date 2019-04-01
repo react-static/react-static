@@ -16,8 +16,8 @@ export default async function getRoutes(state, callback = d => d) {
   rebuildRoutes.current = async () => {
     const { silent, incremental } = state
 
-    if (!silent) console.log('=> Building Routes...')
-    if (!silent) time(chalk.green('=> [\u2713] Routes Built'))
+    if (!silent) console.log('Building Routes...')
+    if (!silent) time(chalk.green('[\u2713] Routes Built'))
 
     state = await plugins.beforePrepareRoutes(state)
 
@@ -51,7 +51,7 @@ export default async function getRoutes(state, callback = d => d) {
       })
     }
 
-    if (!silent) timeEnd(chalk.green('=> [\u2713] Routes Built'))
+    if (!silent) timeEnd(chalk.green('[\u2713] Routes Built'))
 
     state = {
       ...state,
@@ -142,9 +142,7 @@ export function normalizeRoute(route, parent = {}, pluginNormalizeRoute) {
 
   if (typeof route.noIndex !== 'undefined') {
     console.warn(
-      `=> Warning: Route ${
-        route.path
-      } is using 'noIndex'. Did you mean 'noindex'?`
+      `Warning: Route ${route.path} is using 'noIndex'. Did you mean 'noindex'?`
     )
   }
 

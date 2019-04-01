@@ -46,7 +46,7 @@ async function runExpressServer(state) {
   if (intendedPort !== port) {
     console.log(
       chalk.red(
-        `=> Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
+        `Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
           intendedPort
         )} instead!`
       )
@@ -164,8 +164,8 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   const startedAt = Date.now()
   let skipLog = false
 
-  console.log('=> Bundling Application...')
-  time(chalk.green('=> [\u2713] Application Bundled'))
+  console.log('Bundling Application...')
+  time(chalk.green('[\u2713] Application Bundled'))
 
   devCompiler.hooks.invalid.tap(
     {
@@ -177,12 +177,9 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
       // noise is better!
       skipLog = changed - startedAt < 2000
       if (!skipLog) {
-        console.log(
-          '=> File changed:',
-          file.replace(state.config.paths.ROOT, '')
-        )
-        console.log('=> Updating bundle...')
-        time(chalk.green('=> [\u2713] Bundle Updated'))
+        console.log('File changed:', file.replace(state.config.paths.ROOT, ''))
+        console.log('Updating bundle...')
+        time(chalk.green('[\u2713] Bundle Updated'))
       }
     }
   )
@@ -197,13 +194,13 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
 
       if (isSuccessful && !skipLog) {
         if (first) {
-          timeEnd(chalk.green('=> [\u2713] Application Bundled'))
+          timeEnd(chalk.green('[\u2713] Application Bundled'))
           console.log(
-            chalk.green('=> [\u2713] App serving at'),
+            chalk.green('[\u2713] App serving at'),
             `${state.config.devServer.host}:${state.config.devServer.port}`
           )
         } else {
-          timeEnd(chalk.green('=> [\u2713] Bundle Updated'))
+          timeEnd(chalk.green('[\u2713] Bundle Updated'))
         }
       }
 

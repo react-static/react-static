@@ -53,7 +53,7 @@ export default {
           children: [
             {
               path: '/post/boom'
-              component: 'src/containers/Post',
+              template: 'src/containers/Post',
               getData: () => ({
                 post: boomPost,
               }),
@@ -79,7 +79,7 @@ export default {
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
-          component: 'src/containers/Post',
+          template: 'src/containers/Post',
           getData: () => ({
             post,
           }),

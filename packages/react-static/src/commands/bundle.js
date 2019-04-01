@@ -22,7 +22,7 @@ export default (async function bundle(state = {}) {
   state.stage = 'prod'
 
   console.log(
-    `=> Bundling application for ${staging ? 'Staging' : 'Production'}...`
+    `Bundling application for ${staging ? 'Staging' : 'Production'}...`
   )
   console.log('')
 

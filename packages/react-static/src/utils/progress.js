@@ -5,7 +5,7 @@ export default (total, label, options) => {
     options = {}
   }
   if (!options.format) {
-    options.format = `=> ${
+    options.format = `${
       label ? `${label} ` : ''
     }[:bar] :current/:total :percent :rate/s :etas `
   }

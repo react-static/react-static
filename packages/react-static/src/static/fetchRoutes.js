@@ -6,10 +6,10 @@ import { progress, time, timeEnd, poolAll } from '../utils'
 export default (async function fetchRoutes(state) {
   const { config, routes } = state
 
-  console.log('=> Fetching Route Data...')
+  console.log('Fetching Route Data...')
 
   const dataProgress = progress(routes.length)
-  time(chalk.green('=> [\u2713] Route Data Downloaded'))
+  time(chalk.green('[\u2713] Route Data Downloaded'))
 
   const sharedDataByHash = new Map()
 
@@ -31,7 +31,7 @@ export default (async function fetchRoutes(state) {
 
   await poolAll(downloadTasks, Number(config.outputFileRate))
 
-  timeEnd(chalk.green('=> [\u2713] Route Data Downloaded'))
+  timeEnd(chalk.green('[\u2713] Route Data Downloaded'))
 
   state = await exportSharedRouteData(state)
 
