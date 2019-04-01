@@ -18,7 +18,7 @@
     "start": "yarn watch",
     "test": "yarn format && yarn lint && yarn unitTest",
     "lint": "eslint src",
-    "format": "prettier '{src,templates}/**/*.js' --write",
+    "format": "prettier 'README.md' '{src,templates/*/src}/**/*.js' --write",
     "unitTest": "NODE_ENV=test yarn jest ./src",
     "unitTestWatch": "NODE_ENV=test yarn jest src --watch",
     "preversion": "yarn build && yarn test"

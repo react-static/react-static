@@ -1,3 +1,16 @@
+# 6.3.7
+
+#### Fixes & Optimizations
+
+- Shared Data is now fixed in dev mode
+- Improved pre-fetchable routes detection
+- Updated eslint-config-react-tools and moved it to devDependencies
+- Restore the prefetch value when using `prefectch`
+- Improved Docs
+- react-hot-loader is now a peer dependency
+- Added artifacts folder
+- Fix data problems in 404 templates
+
 # 6.3.6
 
 #### Fixes & Optimizations

@@ -26,18 +26,18 @@ const universalOptions = {
 }
 
 ${templates
-    .map((template, index) => {
-      let chunkName = ''
+  .map((template, index) => {
+    let chunkName = ''
 
-      // relative resolving produces the wrong path, a "../" is missing
-      // as the files looks equal, we simple use an absolute path then
-      if (!paths.DIST.startsWith(paths.ROOT)) {
-        chunkName = `/* webpackChunkName: "${chunkNameFromFile(template)}" */`
-      }
+    // relative resolving produces the wrong path, a "../" is missing
+    // as the files looks equal, we simple use an absolute path then
+    if (!paths.DIST.startsWith(paths.ROOT)) {
+      chunkName = `/* webpackChunkName: "${chunkNameFromFile(template)}" */`
+    }
 
-      return `const t_${index} = universal(import('${template}'${chunkName}), universalOptions)`
-    })
-    .join('\n')}
+    return `const t_${index} = universal(import('${template}'${chunkName}), universalOptions)`
+  })
+  .join('\n')}
 `
 
   const developmentTemplates = templates
@@ -46,16 +46,14 @@ ${templates
 
   const file = `
 ${
-    process.env.NODE_ENV === 'production'
-      ? productionImports
-      : developmentImports
-  }
+  process.env.NODE_ENV === 'production' ? productionImports : developmentImports
+}
 
 ${
-    process.env.NODE_ENV === 'production'
-      ? productionTemplates
-      : developmentTemplates
-  }
+  process.env.NODE_ENV === 'production'
+    ? productionTemplates
+    : developmentTemplates
+}
 
 // Template Map
 export default {
