@@ -81,7 +81,6 @@ $ react-static create
 ```
 
 - Need some help?
-  <<<<<<< HEAD
 
 ```bash
 $ react-static --help
@@ -112,7 +111,6 @@ $ react-static --help
 - [Configuration](/docs/config.md)
 - [API](/docs/api.md)
 - [Plugins](/docs/plugins/)
-  > > > > > > > master
 
 ## What is a progressive static site?
 
