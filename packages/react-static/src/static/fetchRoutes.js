@@ -13,8 +13,6 @@ export default (async function fetchRoutes(state) {
 
   const sharedDataByHash = new Map()
 
-  const sharedDataByHash = new Map()
-
   // Use a traditional for loop here for perf
   const downloadTasks = []
   for (let i = 0; i < routes.length; i++) {
