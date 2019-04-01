@@ -46,7 +46,7 @@ export default async function getRoutes(state, callback = d => d) {
         path: '404',
         template: path.relative(
           state.config.paths.ROOT,
-          path.resolve(__dirname, '../../browser/components/Default404')
+          path.resolve(__dirname, '../browser/components/Default404')
         ),
       })
     }

@@ -1,3 +1,5 @@
+import chalk from 'chalk'
+//
 import getRoutes from '../static/getRoutes'
 import generateBrowserPlugins from '../static/generateBrowserPlugins'
 import buildProductionBundles from '../static/webpack/buildProductionBundles'
@@ -9,7 +11,7 @@ import copyPublicFiles from '../static/copyPublicFiles'
 import { outputBuildState } from '../static/buildState'
 
 export default (async function bundle(state = {}) {
-  const { staging, debug, analyze } = state
+  const { staging, debug, analyze, isBuildCommand } = state
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
@@ -36,6 +38,19 @@ export default (async function bundle(state = {}) {
 
   if (analyze) {
     await new Promise(() => {})
+  }
+
+  if (!isBuildCommand) {
+    console.log(`
+Your app is now bundled! Here's what we suggest doing next:
+
+- Export your app in staging mode to test locally
+  - ${chalk.green('react-static export --stage')}
+- Export your app in production mode for distrubution
+  - ${chalk.green('react-static export')}
+- Analyze your app's webpack bundles
+  - ${chalk.green('react-static bundle --analyze')}
+`)
   }
 
   return state
