@@ -97,20 +97,7 @@ $ react-static --help
 
 ## Migration from a previous version?
 
-# The [CHANGELOG](/CHANGELOG.md) contains information on breaking change for each major version. The latest breaking changes along with their migration tips are [located here](/CHANGELOG.md#700)
-
-```bash
-$ react-static --help
-```
-
-## Documentation
-
-- [Overview](/docs/)
-- [Core Concepts](/docs/concepts.md)
-- [Guides](/docs/guides/)
-- [Configuration](/docs/config.md)
-- [API](/docs/api.md)
-- [Plugins](/docs/plugins/)
+The [CHANGELOG](/CHANGELOG.md) contains information on breaking change for each major version. The latest breaking changes along with their migration tips are [located here](/CHANGELOG.md#700)
 
 ## What is a progressive static site?
 
@@ -136,7 +123,7 @@ Little did you know that when React Static exported your site, it also generated
 
 That's just the beginning! With React Static, you can unleash your creativity and build anything you can imagine with speed and productivity. It even has **awesome plugins** that will help you on your journey!
 
-# Coming from Create React App?
+## Coming from Create React App?
 
 React Static is also a great replacement for the ever popular Create React App CLI. It provides a similar developer experience, zero-config environment, and features, but **without boxing you in.** If you ever need to customize your build system in React Static, there is no need to eject! You can use existing plugins or write your own to customize anything you'd like about the build system. Not building a static site? No worries there, React Static works as an SPA too, even if there is only a single `index.html` file.
 
