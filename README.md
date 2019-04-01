@@ -6,7 +6,7 @@
 <br>
 <br>
 
-> You are viewring the docs for v7 of React Static. You can browse all historical versions via Github banches!
+> You are viewing the docs for v7 of React Static. You can browse all historical versions via Github branches!
 
 # React Static
 
