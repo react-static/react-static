@@ -129,9 +129,8 @@ export function makePathAbsolute(path) {
   return `/${trimLeadingSlashes(path)}`
 }
 
-export function makeHookReducer(plugins = [], hook, { sync } = {}) {
-  const hooks = flattenHooks(plugins, hook)
-  // Returns a runner that takes a value (and opts) and
+export function reduceHooks(hooks, { sync } = {}) {
+  // These returns a runner that takes a value (and options) and
   // reduces the value through each hook, returning the
   // final value
   // compare is a function which is used to compare
@@ -139,44 +138,64 @@ export function makeHookReducer(plugins = [], hook, { sync } = {}) {
   // By default, if undefined is returned from a reducer, the prev value
   // is retained
 
+  // If synchronous, things are simple
   if (sync) {
-    return (value, opts) =>
+    return (value, options) =>
       hooks.reduce((prev, hook) => {
-        const next = hook(prev, opts)
+        const next = hook(prev, options)
         if (next instanceof Promise) {
-          throw new Error('Cannot run async hooks in sync mode.')
+          throw new Error(
+            'Expected hook to return a value, but received promise instead. A plugin is attempting to use a sync plugin with an async function!'
+          )
         }
         return typeof next !== 'undefined' ? next : prev
       }, value)
   }
 
-  return async (value, opts) => {
-    value = await hooks.reduce(async (prevPromise, hook) => {
-      const prev = await prevPromise
-      const next = await hook(prev, opts)
-      return typeof next !== 'undefined' ? next : prev
-    }, Promise.resolve(value))
-    return value
+  // We create a map of hook handlers that point to the next hook
+  // in line and reduce the value throughout (or return it if it's done)
+  return (startValue, options) => {
+    const hookList = hooks.map((hook, index) => async lastValue => {
+      let nextValue = await hook(lastValue, options)
+      nextValue = typeof nextValue !== 'undefined' ? nextValue : lastValue
+      if (hookList[index + 1]) {
+        return hookList[index + 1](nextValue)
+      }
+      return nextValue
+    })
+    return hookList.length ? hookList[0](startValue) : startValue
   }
 }
 
-export function makeHookMapper(plugins = [], hook) {
-  const hooks = flattenHooks(plugins, hook)
-  // Returns a runner that takes options and returns
+export function mapHooks(hooks, { sync } = {}) {
+  // Returns a function that takes state and returns
   // a flat array of values mapped from each hook
-  return async opts => {
-    const vals = []
-    await hooks.reduce(async (prevPromise, hook) => {
-      await prevPromise
-      const val = await hook(opts)
-      vals.push(val)
-    }, Promise.resolve())
+  if (sync) {
+    return state => {
+      const results = hooks.map(hook => hook(state))
+      return results.filter(d => typeof d !== 'undefined')
+    }
+  }
 
-    return vals.filter(d => typeof d !== 'undefined')
+  return state => {
+    const results = []
+    const hookList = hooks.map((hook, index) => async () => {
+      results[index] = await hook(state)
+
+      if (hookList[index + 1]) {
+        return hookList[index + 1]()
+      }
+
+      return results.filter(d => typeof d !== 'undefined')
+    })
+    return hookList.length ? hookList[0]() : []
   }
 }
 
-function flattenHooks(plugins, hook) {
+export function getHooks(plugins, hook) {
+  if (!hook) {
+    throw new Error('A hook ID is required!')
+  }
   // The flat hooks
   const hooks = []
 
@@ -195,45 +214,6 @@ function flattenHooks(plugins, hook) {
 
   // Filter out falsey entries
   return hooks.filter(Boolean)
-}
-
-export function isSSR() {
-  return typeof document === 'undefined'
-}
-
-export function getBasePath() {
-  return process.env.REACT_STATIC_DISABLE_ROUTE_PREFIXING === 'true'
-    ? ''
-    : process.env.REACT_STATIC_BASE_PATH
-}
-
-export function isPrefetchableRoute(path) {
-  // when rendering static pages we dont need this et all
-  if (isSSR()) {
-    return false
-  }
-
-  const { location } = document
-  let link
-
-  try {
-    link = new URL(path, location.href)
-  } catch (e) {
-    // Return false on invalid URLs
-    return false
-  }
-
-  // if the hostname/port/protocol doesn't match its not a route link
-  if (location.host !== link.host || location.protocol !== link.protocol) {
-    return false
-  }
-
-  // deny all files with extension other than .html
-  if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
-    return false
-  }
-
-  return true
 }
 
 export function getFullRouteData(routeInfo) {

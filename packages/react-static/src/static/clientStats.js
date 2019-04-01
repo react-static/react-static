@@ -1,19 +1,25 @@
 import path from 'path'
 import fs from 'fs-extra'
 
-export function outputClientStats(config, statsJSON) {
-  return fs.outputFileSync(
-    path.join(config.paths.BUILD_ARTIFACTS, 'client-stats.json'),
+export async function outputClientStats(state, statsJSON) {
+  await fs.outputFile(
+    path.join(state.config.paths.ARTIFACTS, 'client-stats.json'),
     JSON.stringify(statsJSON, null, 2)
   )
+  return state
 }
 
-export async function importClientStats(config) {
+export async function importClientStats(state) {
   const clientStats = await fs.readJson(
-    path.join(config.paths.BUILD_ARTIFACTS, 'client-stats.json')
+    path.join(state.config.paths.ARTIFACTS, 'client-stats.json')
   )
+
   if (!clientStats) {
     throw new Error('No Client Stats Found')
   }
-  return clientStats
+
+  return {
+    ...state,
+    clientStats,
+  }
 }

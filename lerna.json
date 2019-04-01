@@ -2,7 +2,7 @@
   "packages": [
     "packages/*"
   ],
-  "version": "6.3.6",
+  "version": "7.0.0-beta.4",
   "npmClient": "yarn",
   "registry": "https://registry.npmjs.org/",
   "useWorkspaces": true

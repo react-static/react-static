@@ -2,7 +2,6 @@ import axios from 'axios'
 import path from 'path'
 
 export default {
-  plugins: ['react-static-plugin-typescript'],
   entry: path.join(__dirname, 'src', 'index.tsx'),
   getSiteData: () => ({
     title: 'React Static',
@@ -19,7 +18,7 @@ export default {
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
-          component: 'src/containers/Post',
+          template: 'src/containers/Post',
           getData: () => ({
             post,
           }),
@@ -27,4 +26,13 @@ export default {
       },
     ]
   },
+  plugins: [
+    'react-static-plugin-typescript',
+    [
+      require.resolve('react-static-plugin-source-filesystem'),
+      {
+        location: path.resolve('./src/pages'),
+      },
+    ],
+  ],
 }

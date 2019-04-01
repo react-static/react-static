@@ -3,23 +3,21 @@ import slash from 'slash'
 import path from 'path'
 import { time, timeEnd } from '../utils'
 
-export default (async function extractTemplates(config, opts = {}) {
-  console.log('=> Building Templates')
+export default (async function extractTemplates(state) {
+  const { config, routes, incremental } = state
+  console.log('=> Building Templates...')
   time(chalk.green('=> [\u2713] Templates Built'))
 
   // Dedupe all templates into an array
   const templates = []
   let notFoundPending = true
 
-  config.routes.forEach(route => {
-    if (!route.component) {
+  routes.forEach(route => {
+    if (!route.template) {
       return
     }
     route.template = slash(
-      path.relative(
-        config.paths.BUILD_ARTIFACTS,
-        path.resolve(config.paths.ROOT, route.component)
-      )
+      path.relative(config.paths.ARTIFACTS, route.template)
     )
     // Check if the template has already been added
     const index = templates.indexOf(route.template)
@@ -35,12 +33,15 @@ export default (async function extractTemplates(config, opts = {}) {
   })
   timeEnd(chalk.green('=> [\u2713] Templates Built'))
 
-  if (!opts.incremental && notFoundPending) {
+  if (!incremental && notFoundPending) {
     throw new Error(
       'A 404 template was not found at template extraction time. It should have been at least defaulted to one by now, so this is very bad. File an issue if you see this.'
     )
   }
 
   // Make sure 404 template is the first one
-  config.templates = templates
+  return {
+    ...state,
+    templates,
+  }
 })

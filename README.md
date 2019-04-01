@@ -1,4 +1,4 @@
-![React Static Logo](https://github.com/nozzle/react-static/raw/master/media/logo.png)
+![React Static Logo](https://github.com/nozzle/react-static/raw/v7/media/react-static-logo-2x.png)
 
 [![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![David Dependancy Status](https://david-dm.org/nozzle/react-static.svg)](https://david-dm.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-static)
 [![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
@@ -6,47 +6,34 @@
 <br>
 <br>
 
-> You are viewing the docs for v6 of React Static. You can browse all historical versions via Github branches!
+> You are viewring the docs for v7 of React Static. You can browse all historical versions via Github banches!
 
 # React Static
 
 A **progressive static-site generator** for React.
 
-React-Static is a fast, lightweight, and powerful framework for building static-progressive React applications and websites. It's been carefully designed to meet the highest standards of static-site **performance, and user/developer experience**.
+React-Static is a fast, lightweight, and powerful progressive static site generator based on React and its ecosystem. It resembles the simplicity and developer experience your used to in tools like **Create React App** and has been carefully designed for **performance, flexibility, and user/developer experience**.
 
 ## Features
 
 - ⚛️ 100% React (and friends!)
 - 🚀 [Blazing](https://twitter.com/acdlite/status/974390255393505280) fast builds and performance.
-- 🚚 Data Agnostic. Supply your site with data from anywhere, **however you want**.
+- 🚚 Data Agnostic. Supply your site with data from anywhere, however you want!
 - ✂️ Automatic code and data splitting!
-- 💥 Instant page views via [PRPL](https://developers.google.com/web/fundamentals/performance/prpl-pattern/) pattern.
-- ☔️ Progressive Enhancement + Graceful Fallbacks
-- 🎯 **SEO** Friendly.
-- 🥇 React-first developer experience.
+- 💥 Instant navigation and page views
+- ☔️ Progressively Enhanced and mobile-ready
+- 🎯 SEO Friendly.
+- 🥇 React-centric developer experience.
 - 😌 Painless project setup & migration.
 - 💯 Supports 100% of the React ecosystem. Including CSS-in-JS libraries, custom Query layers like GraphQL, and even Redux.
-- 🔥 Hot Reloadable out-of-the-box. Edit React components & styles in real-time.
-- 📲 LAN accessible dev environment for testing on other devices like phones and tablets.
-
-## Articles, Videos & Tutorials
-
-- Articles
-  - [Introduction and Motivations behind React Static](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
-  - [React Static v6!](https://medium.com/@tannerlinsley/react-static-v6-8dbe9fd202d4)
-- Videos & Tutorials
-  - [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
-  - [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
-  - [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
+- 🔥 Hot Reloadable out-of-the-box. Edit React components, styles and even data in real-time.
 
 ## Sites Built with React-Static
-
-<!-- - [React-Static.js.org](https://react-static.js.org) ([source](www)) -->
-<!-- - [React-Charts.js.org](https://react-charts.js.org) ([source](https://github.com/nozzle/react-charts/tree/master/www)) -->
 
 - [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
 - [StaticGen.com](https://staticgen.com) ([source](https://github.com/netlify/staticgen))
 - [Starbucks: Careers Hub](https://www.starbucks.com/careers/)([source](https://twitter.com/codehitchhiker/status/1097558315020832774))
+- [Starbucks: Rewards](https://www.starbucks.com/rewards/comingsoon)([source](https://twitter.com/davidbrunelle/status/1108041167935922176))
 - [Intuit Turbo](http://turbo.com)
 - [Nozzle.io](https://nozzle.io) ([source](https://github.com/nozzle/nozzle.io))
 - [Timber.io](https://timber.io)
@@ -79,84 +66,72 @@ React-Static is a fast, lightweight, and powerful framework for building static-
 
 ## Quick Start
 
-1.  Install the CLI:
+- Install the CLI tool:
 
 ```bash
-$ yarn global add react-static
+$ npm i -g react-static@next
 # or
-$ npm install -g react-static
+$ yarn global add react-static@next
 ```
 
-2.  Create a new project:
+- Start a new project!
 
 ```bash
 $ react-static create
 ```
 
-Or use `npx` to create an app without global installing the CLI
+- Need some help?
 
 ```bash
-npx react-static create --name=my-app
+$ react-static --help
 ```
 
-3.  Pick a template! [See the full list of templates](#templates-and-guides)
-4.  Navigate to your new project:
-
-```bash
-$ cd my-static-site
-```
-
-5.  Start the dev server and edit some code!
-
-```bash
-$ yarn start # or react-static start
-```
-
-6.  Test a production build
-
-```bash
-$ yarn stage # or react-static build --staging
-$ yarn serve
-```
-
-6.  Build for production!
-
-```bash
-$ yarn build # or react-static build
-```
-
-Once you've installed and test driven, you may want to:
-
-- [Read about the core concepts of React Static](/docs/concepts.md)
-- [Join the React Static Spectrum community!](https://spectrum.chat/react-static)
-- [Familiarize yourself with the API!](/docs/config.md)
-
-## [Documentation](/docs/)
+## Documentation
 
 - [Overview](/docs/)
 - [Core Concepts](/docs/concepts.md)
 - [Guides](/docs/guides/)
 - [Configuration](/docs/config.md)
-- [CLI](/docs/cli.md)
-- [Components](/docs/components.md)
-- [Browser](/docs/browser.md)
-- [Node API](/docs/node-api.md)
+- [API](/docs/api.md)
 - [Plugins](/docs/plugins/)
-- [Changelog](/CHANGELOG.md)
-- [Contributing Guide](/CONTRIBUTING.md)
 
-## Plugins
+## What is a progressive static site?
 
-For a list of supported plugins, [view the Plugin documentation](/docs/plugins/).
+A progressive static site is a website where **every statically exported HTML page is an entry point to a fully-featured automatically-code-split React application**. Just like a normal static site, static progressive websites are capable of loading initial landing pages very quickly, but then extend the user experience by transforming invisibly into a single-page React application.
 
-## Templates and Guides
+Once a progressive static site page has loaded its React application it can then do amazing things!
 
-React Static ships with a few basic templates to you get you started quickly with `react-static create`, then provides in-depth guides for further enhancement. You can check them out here!
+- Prefetch page assets
+- Instantly navigate between pages
+- Provide interactivity not possible in normal static sites
+- Subscribe to and display real-time and dynamic data
+- Anything you can imagine within a React application!
 
-- [**Templates**](/packages/react-static/templates/)
-- [**Guides**](/docs/guides/)
+# How does it work?
 
-Can't find an guide? You should write one! [Here's how to get started.](/docs/guides/)
+![Flow Chart](https://github.com/nozzle/react-static/raw/v7/media/flow.png)
+
+React Static gathers your **data**, and **templates** together and intelligently splits them into bite-size static files using webpack and javascript. Once these files have been generated, React Static uses them to render and export a list of **routes** that you provide it into HTML files! After your site has been exported, the resulting **data**, **template**, and **html** files can be transfered to a static file server and browsed as an awesomely fast and performant static website!
+
+But remember, a progressive static site is more than that...
+
+Little did you know that when React Static exported your site, it also generated **a tiny, optimized, and code-split version of your original React application for every page of your site**! After these pages have loaded, React **invisibly** mounts this application to the existing HTML on the page and... 🎉🎉🎉 You are now using the single page React application you originally built! **This application is special, though!** While you browse your website, **pages that you might go to next are automatically preloaded, making navigation to them instantaneous!**.
+
+That's just the beginning! With React Static, you can unleash your creativity and build anything you can imagine with speed and productivity. It even has **awesome plugins** that will help you on your journey!
+
+# Coming from Create React App?
+
+React Static is also a great replacement for the ever popular Create React App CLI. It provides a similar developer experience, zero-config environment, and features, but **without boxing you in.** If you ever need to customize your build system in React Static, there is no need to eject! You can use existing plugins or write your own to customize anything you'd like about the build system. Not building a static site? No worries there, React Static works as an SPA too, even if there is only a single `index.html` file.
+
+## Articles, Videos & Tutorials
+
+- Articles
+  - [Introduction and Motivations behind React Static](https://medium.com/@tannerlinsley/%EF%B8%8F-introducing-react-static-a-progressive-static-site-framework-for-react-3470d2a51ebc)
+  - [React Static v6!](https://medium.com/@tannerlinsley/react-static-v6-8dbe9fd202d4)
+- Videos & Tutorials
+  - [Quick Start with Styled Components](https://www.youtube.com/watch?v=KvlTVZPlmgs) (20 min)
+  - [Introducing React-Static! How it works and why we built it!](https://www.youtube.com/watch?v=OqbJ5swVpDQ) (80 min)
+  - [Using React-Static to replace create-react-app](https://youtu.be/1pBzh7IM1s8) (5 min)
 
 ## Support, Community & Chat
 

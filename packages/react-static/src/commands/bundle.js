@@ -1,23 +1,17 @@
-import fs from 'fs-extra'
 import chalk from 'chalk'
 //
-import {
-  prepareRoutes,
-  prepareBrowserPlugins,
-  buildProductionBundles,
-  getConfig,
-  extractTemplates,
-  generateTemplates,
-  outputBuildInfo,
-} from '../static'
+import getRoutes from '../static/getRoutes'
+import generateBrowserPlugins from '../static/generateBrowserPlugins'
+import buildProductionBundles from '../static/webpack/buildProductionBundles'
+import getConfig from '../static/getConfig'
+import extractTemplates from '../static/extractTemplates'
+import generateTemplates from '../static/generateTemplates'
+import cleanProjectFiles from '../static/cleanProjectFiles'
+import copyPublicFiles from '../static/copyPublicFiles'
+import { outputBuildState } from '../static/buildState'
 
-import { copyPublicFolder, time, timeEnd } from '../utils'
-
-export default (async function bundle({
-  config: originalConfig,
-  staging,
-  debug,
-} = {}) {
+export default (async function bundle(state = {}) {
+  const { staging, debug, analyze, isBuildCommand } = state
   // ensure ENV variables are set
   if (typeof process.env.NODE_ENV === 'undefined' && !debug) {
     process.env.NODE_ENV = 'production'
@@ -25,71 +19,39 @@ export default (async function bundle({
   process.env.REACT_STATIC_ENV = 'production'
   process.env.BABEL_ENV = 'production'
 
-  if (staging) {
-    process.env.REACT_STATIC_STAGING = 'true'
-  }
-  if (debug) {
-    process.env.REACT_STATIC_DEBUG = 'true'
-  }
+  state.stage = 'prod'
 
-  // Allow config location to be overriden
-  let config = await getConfig(originalConfig)
-  config.originalConfig = originalConfig
-
-  if (debug) {
-    console.log('DEBUG - Resolved static.config.js:')
-    console.log(config)
-  }
+  console.log(
+    `=> Bundling application for ${staging ? 'Staging' : 'Production'}...`
+  )
   console.log('')
 
-  if (!config.siteRoot) {
-    console.log(
-      "=> Info: No 'siteRoot' is defined in 'static.config.js'. This is suggested for absolute urls and also required to automatically generate a sitemap.xml."
-    )
-    console.log('')
-  }
+  state = await getConfig(state)
+  state = await cleanProjectFiles(state)
+  state = await generateBrowserPlugins(state)
+  state = await getRoutes(state)
+  state = await extractTemplates(state)
+  state = await generateTemplates(state)
+  state = await copyPublicFiles(state)
+  state = await buildProductionBundles(state)
+  state = await outputBuildState(state)
 
-  // Remove the DIST folder
-  console.log('=> Cleaning dist...')
-  time(chalk.green('=> [\u2713] Dist cleaned'))
-  await fs.remove(config.paths.DIST)
-  timeEnd(chalk.green('=> [\u2713] Dist cleaned'))
-
-  // Remove the ARTIFACTS folder
-  console.log('=> Cleaning artifacts...')
-  time(chalk.green('=> [\u2713] Artifacts cleaned'))
-  await fs.remove(config.paths.BUILD_ARTIFACTS)
-  timeEnd(chalk.green('=> [\u2713] Artifacts cleaned'))
-
-  // Empty ASSETS folder
-  if (config.paths.ASSETS && config.paths.ASSETS !== config.paths.DIST) {
-    console.log('=> Cleaning assets...')
-    time(chalk.green('=> [\u2713] Assets cleaned'))
-    await fs.emptyDir(config.paths.ASSETS)
-    timeEnd(chalk.green('=> [\u2713] Assets cleaned'))
-  }
-
-  config = await prepareBrowserPlugins(config)
-  config = await prepareRoutes(config)
-  await extractTemplates(config)
-  await generateTemplates(config)
-
-  console.log('=> Copying public directory...')
-  time(chalk.green('=> [\u2713] Public directory copied'))
-  copyPublicFolder(config)
-  timeEnd(chalk.green('=> [\u2713] Public directory copied'))
-
-  // Build static pages and JSON
-  console.log('=> Bundling App...')
-  time(chalk.green('=> [\u2713] App Bundled'))
-  await buildProductionBundles({ config })
-  timeEnd(chalk.green('=> [\u2713] App Bundled'))
-
-  await outputBuildInfo(config)
-
-  if (config.bundleAnalyzer) {
+  if (analyze) {
     await new Promise(() => {})
   }
 
-  return config
+  if (!isBuildCommand) {
+    console.log(`
+Your app is now bundled! Here's what we suggest doing next:
+
+- Export your app in staging mode to test locally
+  - ${chalk.green('react-static export --stage')}
+- Export your app in production mode for distrubution
+  - ${chalk.green('react-static export')}
+- Analyze your app's webpack bundles
+  - ${chalk.green('react-static bundle --analyze')}
+`)
+  }
+
+  return state
 })

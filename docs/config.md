@@ -14,17 +14,15 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [extractCssChunks](#extractcsschunks)
 - [inlineCss](#inlinecss)
 - [Document](#document)
-- [webpack](#webpack)
 - [devServer](#devserver)
 - [paths](#paths)
-- [onStart](#onstart)
-- [onBuild](#onbuild)
 - [bundleAnalyzer](#bundleanalyzer)
 - [outputFileRate](#outputfilerate)
 - [prefetchRate](#prefetchrate)
 - [disableDuplicateRoutesWarning](#disableDuplicateRoutesWarning)
 - [disableRoutePrefixing](#disablerouteprefixing)
 - [babelExcludes](#babelExcludes)
+- [productionSourceMaps](#productionSourceMaps)
 
 ### `getRoutes`
 
@@ -54,10 +52,7 @@ It supports the following properties:
     - `dev: Boolean` - Indicates whether you are running a development or production build.
 - `children: Array[Route]` - Routes can and should have nested routes when necessary. **Route paths are inherited as they are nested, so there is no need to repeat a path prefix in nested routes**.
 - `redirect: URL` - Setting this to a URL will perform the equivalent of a 301 redirect (as much as is possible within a static site) using `http-equiv` meta tags, canonicals, etc. **This will force the page to render only the bare minimum to perform the redirect and nothing else**.
-- `noindex: Boolean` - Set this to `true` if you do not want this route or its children indexed in your automatically generated sitemap.xml. Defaults to `false`.
-- `permalink: String` - You can optionally set this route to have a custom xml sitemap permalink by supplying it here.
-- `lastModified: String(YYYY-MM-DD)` - A string representing the date when this route was last modified in the format of `YYYY-MM-DD`.
-- `priority: Float` - An optional priority for the sitemap.xml. Defaults to `0.5`
+- Routes can also have other properties that may be used in plugins. Those properties will be listed in the plugin documentation.
 
 Example:
 
@@ -213,12 +208,6 @@ export default {
 
 Since JSX is now being used in this static.config.js file, you need to import React at the top of the file; add this: `import React from 'react'`
 
-### `webpack`
-
-> ⚠️Warning - this field in `static.config.js` may be outdated - [use `node.api.js` instead](https://github.com/nozzle/react-static/blob/master/docs/plugins/node-api.md#webpack-functionfunction).
-
-To configure webpack, extend the build system, or make modifications, see the [Plugin API section](#plugin-api)
-
 ### `devServer`
 
 An `Object` of options to be passed to the underlying `webpack-dev-server` instance used for development.
@@ -261,47 +250,6 @@ export default {
     assets: 'dist', // The output directory for bundled JS and CSS
     buildArtifacts: 'artifacts', // The output directory for generated (internal) resources
   },
-}
-```
-
-### `onStart`
-
-A utility function that runs when the dev server starts up successfully. It provides you with the final, **readonly** devServer config object for your convenience.
-
-Example:
-
-```javascript
-// static.config.js
-export default {
-  onStart: ({ devServerConfig }) => {
-    console.log('The dev server is working!')
-  },
-}
-```
-
-### `onBuild`
-
-A utility function that runs when the a build completes successfully.
-
-Example:
-
-```javascript
-// static.config.js
-export default {
-  onBuild: async () => {
-    console.log('Everything is done building!')
-  },
-}
-```
-
-### `bundleAnalyzer`
-
-An optional `Boolean`. Set to true to serve the bundle analyzer on a production build.
-
-```javascript
-// static.config.js
-export default {
-  bundleAnalyzer: true,
 }
 ```
 
@@ -395,6 +343,19 @@ See https://webpack.js.org/configuration/module/#condition for more details. To 
 // static.config.js
 export default {
   babelExcludes: [/mapbox-gl/],
+}
+```
+
+### `productionSourceMaps`
+
+Set this flag to `true` to include source maps in production.
+
+- Defaults to `false`
+
+```javascript
+// static.config.js
+export default {
+  productionSourceMaps: true,
 }
 ```
 

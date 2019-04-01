@@ -1,13 +1,12 @@
+import path from 'path'
 import axios from 'axios'
 
 export default {
-  getSiteData: () => ({
-    title: 'React Static',
-  }),
   getRoutes: async () => {
     const { data: posts } = await axios.get(
       'https://jsonplaceholder.typicode.com/posts'
     )
+
     return [
       {
         path: '/blog',
@@ -16,7 +15,7 @@ export default {
         }),
         children: posts.map(post => ({
           path: `/post/${post.id}`,
-          component: 'src/containers/Post',
+          template: 'src/containers/Post',
           getData: () => ({
             post,
           }),
@@ -24,4 +23,14 @@ export default {
       },
     ]
   },
+  plugins: [
+    [
+      require.resolve('react-static-plugin-source-filesystem'),
+      {
+        location: path.resolve('./src/pages'),
+      },
+    ],
+    require.resolve('react-static-plugin-reach-router'),
+    require.resolve('react-static-plugin-sitemap'),
+  ],
 }

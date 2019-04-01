@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateXML should return an xml string 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+    <urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+    <url>
+<loc>/blog/path/to/somewhere/</loc>
+</url>
+    </urlset>
+    </xml>"
+`;
+
+exports[`generateXML should use encoding for XML-values 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+    <urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+    <url>
+<loc>/this-&amp;-that/&quot;官话&quot;-is-chinese-&apos;ру́сский язы́к&apos;-is-russian/</loc>
+</url>
+    </urlset>
+    </xml>"
+`;
+
+exports[`generateXML should utilize custom sitemap properties 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+    <urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+    <url>
+<loc>/blog/path/to/somewhere/</loc>
+<lastmod>10/10/2010</lastmod>
+<priority>0.5</priority>
+</url>
+    </urlset>
+    </xml>"
+`;

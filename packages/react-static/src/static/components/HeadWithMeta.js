@@ -1,5 +1,7 @@
 import React from 'react'
-import { pathJoin, makePathAbsolute, makeHookMapper } from '../../utils'
+//
+import { pathJoin, makePathAbsolute } from '../../utils'
+import plugins from '../plugins'
 // import packagejson from '../../../package.json'
 
 // const { version } = packagejson
@@ -16,23 +18,26 @@ export const InlineStyle = ({ clientCss }) => (
   />
 )
 
-export async function makeHeadWithMeta({
-  head,
-  route,
-  clientScripts,
-  config,
-  clientStyleSheets,
-  clientCss,
-  meta,
-}) {
-  const HeadHookMapper = makeHookMapper(config.plugins, 'Head')
-  const pluginHeads = await HeadHookMapper({ meta })
+export async function makeHeadWithMeta(state) {
+  const {
+    head,
+    route,
+    clientScripts,
+    config,
+    clientStyleSheets,
+    clientCss,
+  } = state
+
+  const pluginHeads = await plugins.headElements([], state)
 
   return ({ children, ...rest }) => {
     const renderLinkCSS = !route.redirect && !config.inlineCss
+
     const useHelmetTitle =
       head.title && head.title[0] && head.title[0].props.children !== ''
+
     let childrenArray = React.Children.toArray(children)
+
     if (useHelmetTitle) {
       head.title[0] = React.cloneElement(head.title[0], { key: 'title' })
       childrenArray = childrenArray.filter(child => {
@@ -44,6 +49,7 @@ export async function makeHeadWithMeta({
         return true
       })
     }
+
     const childrenCSS = childrenArray.filter(child => {
       if (
         child.type === 'link' &&
@@ -56,6 +62,7 @@ export async function makeHeadWithMeta({
       }
       return false
     })
+
     const childrenJS = childrenArray.filter(child => child.type === 'script')
     childrenArray = childrenArray.filter(child => {
       if (
@@ -74,9 +81,7 @@ export async function makeHeadWithMeta({
 
     return (
       <head {...rest}>
-        {/* {process.env.NODE_ENV !== 'testing' ? (
-          <meta name="generator" content={`React Static ${version}`} />
-        ) : null} */}
+        <meta name="generator" content="React Static" />
         {head.base}
         {useHelmetTitle && head.title}
         {head.meta}

@@ -12,7 +12,9 @@ const App = () => (
       <Link to="/blog">Blog</Link>
     </nav>
     <div className="content">
-      <Routes />
+      <React.Suspense fallback="Loading...">
+        <Routes />
+      </React.Suspense>
     </div>
   </Root>
 )

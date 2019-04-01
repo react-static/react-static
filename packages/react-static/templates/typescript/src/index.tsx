@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { setConfig } from 'react-hot-loader'
 
 // Your top level component
 import App from './App'
@@ -24,4 +25,9 @@ if (typeof document !== 'undefined') {
   if (module.hot) {
     module.hot.accept('./App', () => render(require('./App').default))
   }
+
+  setConfig({
+    ignoreSFC: true, // RHL will be __completely__ disabled for SFC
+    pureRender: true, // RHL will not change render method
+  })
 }

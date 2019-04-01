@@ -1,21 +1,17 @@
+import path from 'path'
 import axios from 'axios'
 import { createSharedData, makePageRoutes } from 'react-static/node'
 
 //
 
-const routeSize = 1000
+const routeSize = Number(process.env.REACT_STATIC_TEST_SIZE || 100000)
 
-if (!process.env.REACT_STATIC_SLAVE) {
+if (!process.env.REACT_STATIC_THREAD) {
   console.log()
   console.log(`Testing ${routeSize} routes`)
 }
 
 export default {
-  plugins: [
-    process.env.STYLE_SYSTEM === 'emotion' && 'react-static-plugin-emotion',
-    process.env.STYLE_SYSTEM === 'styled-components' &&
-      'react-static-plugin-styled-components',
-  ].filter(Boolean),
   // maxThreads: 1,
   getRoutes: async () => {
     const { data: posts } = await axios.get(
@@ -59,7 +55,7 @@ export default {
             route: {
               // Use this route as the base route
               path: 'blog',
-              component: 'src/pages/blog', // component is required, since we are technically generating routes
+              template: 'src/pages/blog', // template is required, since we are technically generating routes
             },
             decorate: (posts, i, totalPages) => ({
               // For each page, supply the posts, page and totalPages
@@ -76,7 +72,7 @@ export default {
       // Make the routes for each blog post
       ...allPosts.map(post => ({
         path: `blog/post/${post.id}`,
-        component: 'src/containers/Post',
+        template: 'src/containers/Post',
         getData: () => ({
           post,
         }),
@@ -86,4 +82,17 @@ export default {
       })),
     ]
   },
+  plugins: [
+    require.resolve('react-static-plugin-reach-router'),
+    process.env.STYLE_SYSTEM === 'emotion' &&
+      require.resolve('react-static-plugin-emotion'),
+    process.env.STYLE_SYSTEM === 'styled-components' &&
+      require.resolve('react-static-plugin-styled-components'),
+    [
+      require.resolve('react-static-plugin-source-filesystem'),
+      {
+        location: path.resolve('./src/pages'),
+      },
+    ],
+  ].filter(Boolean),
 }

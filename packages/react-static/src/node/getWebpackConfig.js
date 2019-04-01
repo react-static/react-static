@@ -1,13 +1,16 @@
-import getConfig from '../static/getConfig'
-import { webpackConfig } from '../static/webpack'
-
-// Required so handle static.config.js defined as es module
+// Require the binHelper first
 require('../utils/binHelper')
 
-export default (function getWebpackConfig(configPath, stage = 'dev') {
-  return new Promise(resolve =>
-    getConfig(configPath, staticConfig =>
-      resolve(webpackConfig({ config: staticConfig, stage }))
-    )
-  )
-})
+const getConfig = require('../static/getConfig')
+const makeWebpackConfig = require('../static/webpack/makeWebpackConfig')
+
+// Required so handle static.config.js defined as es module
+
+export default function getWebpackConfig(configPath, stage = 'dev') {
+  let state = {
+    configPath,
+    stage,
+  }
+  state = getConfig(state)
+  return makeWebpackConfig(state)
+}

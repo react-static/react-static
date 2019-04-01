@@ -1,118 +1,109 @@
-import React, { Component } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 //
 import {
   templatesByPath,
   templateErrorByPath,
-  templateUpdated,
+  routeInfoByPath,
+  sharedDataByHash,
+  registerTemplateForPath,
   prefetch,
-  getCurrentRoutePath,
+  plugins,
+  onReloadTemplates,
 } from '../'
-import { withStaticInfo } from './StaticInfo'
-import { getRoutePath, isSSR } from '../utils'
-import onLocation from '../utils/Location'
-import Spinner from './Spinner'
+import { useStaticInfo } from '../hooks/useStaticInfo'
+import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
 
-const RoutePathContext = React.createContext()
+const RoutesInner = ({ routePath }) => {
+  // Let the user specify a manual routePath.
+  // This is useful for animations where multiple routes
+  // might be rendered simultaneously
 
-export const withRoutePathContext = Comp => props => (
-  <RoutePathContext.Consumer>
-    {routePath => <Comp {...props} routePath={routePath} />}
-  </RoutePathContext.Consumer>
-)
+  const staticInfo = useStaticInfo()
+  // eslint-disable-next-line
+  const [_, setCount] = useState(0)
 
-const componentCache = new WeakMap()
-function with404Prop(Component) {
-  // If the wrapped Component is currently in cached, return it from cache.
-  if (componentCache.has(Component)) {
-    return componentCache.get(Component)
+  // If in production, make sure the staticInfo is ingested into the
+  // cache
+  useState(() => {
+    // useState's initializer will only fire once per component instance,
+    // and it will fire during the first render (unlike an effect, which
+    // only fires after the first render). Think of it like a constructor call.
+    if (process.env.REACT_STATIC_ENV === 'production' && staticInfo) {
+      const { path, sharedData, sharedHashesByProp, template } = staticInfo
+
+      // Hydrate routeInfoByPath with the embedded routeInfo
+      routeInfoByPath[path] = staticInfo
+
+      // Hydrate sharedDataByHash with the embedded routeInfo
+      Object.keys(sharedHashesByProp).forEach(propKey => {
+        sharedDataByHash[sharedHashesByProp[propKey]] = sharedData[propKey]
+      })
+
+      // In SRR and production, synchronously register the template for the
+      // initial path
+      registerTemplateForPath(path, template)
+    }
+  })
+
+  useEffect(() =>
+    onReloadTemplates(() => {
+      setCount(old => old + 1)
+    })
+  )
+
+  // If SSR, force the routePath to be the statically exported one
+  if (typeof document === 'undefined') {
+    routePath = staticInfo.path
+  } else if (!routePath) {
+    // If a routePath is still not defined in the browser,
+    // use the window location as the defualt
+    routePath = decodeURIComponent(window.location.href)
   }
 
-  // Otherwise, create a new wrapped Component...
-  const WrappedComponent = props => <Component is404 {...props} />
+  routePath = useRoutePath(routePath)
 
-  // ...and cache it
-  componentCache.set(Component, WrappedComponent)
-  return WrappedComponent
-}
+  // Try and get the template
+  let Comp = templatesByPath[routePath]
 
-export default withStaticInfo(
-  class Routes extends Component {
-    static defaultProps = {
-      Loader: Spinner,
-    }
-    componentDidMount() {
-      templateUpdated.cb = () => this.safeForceUpdate()
-      this.offLocationChange = onLocation(() => this.safeForceUpdate())
-    }
-    componentWillUnmount() {
-      this.unmounted = true
-      if (this.offLocationChange) this.offLocationChange()
-    }
-    safeForceUpdate = () => {
-      if (this.unmounted) {
-        return
-      }
-      this.forceUpdate()
-    }
-    getComponentForPath = routePath => {
-      const { Loader } = this.props
+  // Detect a 404
+  let is404 = routePath === '404'
 
-      // Clean the path
-      routePath = getRoutePath(routePath)
+  // Detect a failed template
+  if (templateErrorByPath[routePath]) {
+    is404 = true
+    Comp = templatesByPath['404']
+  }
 
-      // Try and get the component
-      let Comp = templatesByPath[routePath]
-
-      // Detect a 404
-      let is404 = routePath === '404'
-
-      // Detect a failed template
-      if (templateErrorByPath[routePath]) {
-        is404 = true
-        Comp = templatesByPath['404']
-      }
-
-      // Detect an unloaded template
-      // TODO:suspense - This will become a suspense resource
-      if (!Comp) {
-        if (is404) {
-          throw new Error(
-            'This page template could not be found and a 404 template could not be found to fall back on. This means something is terribly wrong and you should probably file an issue!'
-          )
-        }
-        ;(async () => {
-          await Promise.all([
-            prefetch(routePath, { priority: true }),
-            new Promise(resolve =>
-              setTimeout(resolve, process.env.REACT_STATIC_MIN_LOAD_TIME)
-            ),
-          ])
-          this.safeForceUpdate()
-        })()
-        return Loader
-      }
-
-      return is404 ? with404Prop(Comp) : Comp
-    }
-
-    render() {
-      const { children, staticInfo } = this.props
-
-      const routePath = isSSR() ? staticInfo.path : getCurrentRoutePath()
-      const Comp = this.getComponentForPath(routePath)
-
-      return (
-        <RoutePathContext.Provider value={routePath}>
-          {children ? (
-            children({
-              routePath,
-              getComponentForPath: this.getComponentForPath,
-            })
-          ) : (
-            <Comp />
-          )}
-        </RoutePathContext.Provider>
+  if (!Comp) {
+    if (is404) {
+      throw new Error(
+        'Neither the page template or 404 template could be found. This means something is terribly wrong. Please, file an issue!'
       )
     }
+    // Suspend while we fetch the resource
+    throw Promise.all([
+      new Promise(resolve => setTimeout(resolve, 500)),
+      prefetch(routePath, { priority: true }),
+    ])
   }
-)
+
+  return (
+    <routePathContext.Provider value={routePath}>
+      <Comp is404={is404} />
+    </routePathContext.Provider>
+  )
+}
+
+export const Routes = ({ routePath }) => {
+  // Once a routePath goes into the Routes component,
+  // useRoutePath must ALWAYS return the routePath used
+  // in its parent, so we pass it down as context
+
+  // Get the Routes hook
+  const CompWrapper = useMemo(
+    () => plugins.Routes(props => <RoutesInner {...props} />),
+    [plugins]
+  )
+
+  return <CompWrapper routePath={routePath} />
+}

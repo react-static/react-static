@@ -1,51 +1,124 @@
 # Node Plugin API
 
-Plugins methods are executed throughout the lifecycle of a react-static build in the order below:
+Plugins functions are executed throughout the lifecycle of a react-static build in the order below:
 
-## `config: Function`
+## `afterGetConfig`
 
-A method to modify the final `static.config.js` for React Static.
+A **synchronous** function to modify the resolved config object during build or export.
 
 - Arguments:
-  - `config{}` - The `static.config.js`
-- Returns a new or modified `config{}` object
-
-## `webpack: Function|Function[]`
-
-An optional function or array of functions to transform the default React-Static webpack config. Each function will receive the previous webpack config, and expect a modified or new config to be returned. You may also return a "falsey" or `undefined` value if you do not want to modify the config at all.
-
-**Function Signature**
+  - `config` - The `static.config.js`
+  - `state` - The current state of the cli
+- Returns a new or modified `config` object
 
 ```javascript
-webpack: []Function(
-  previousConfig,
-  args: {
-    stage,
-    defaultLoaders: {
-      jsLoader,
-      jsLoaderExt,
-      cssLoader,
-      fileLoader
-    }
-  }
-) => {
-  return newConfig // or a falsey value to cancel transformation
+afterGetConfig: (previousConfig, state) => {
+  // Return a new config
+  return newConfig
 }
 ```
 
-- The `webpack` property's value can be an **array of functions** or a **single function**.
-- Each function will receive the previous webpack config, and can return a modified or new config.
-- Return any falsey value to cancel the transformation
-- `args.stage` is a string of either `prod`, `dev` or `node`, denoting which stage react-static is building for.
-- `args.defaultLoaders` - A convenience object containing the default react-static webpack rule functions:
-  - `jsLoader` - The default loader for all `.js` files located in your project's `src` directory
-  - `jsLoaderExt` - The default loader for all other `.js` files not located in your project's `src` directory.
-  - `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
-  - `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
+## `beforePrepareBrowserPlugins`
 
-When `webpack` is passed an array of functions, they are applied in order from top to bottom and are each expected to return a new or modified config to use. They can also return a falsey value to opt out of the transformation and defer to the next function.
+An **async** function to modify the CLI state before browser plugins are prepared.
 
-By default, React Static's webpack toolchain compiles `.js` and `.css` files. Any other file that is not a `.js` `.json` or `.html` file is also processed with the `fileLoader` (images, fonts, etc.) and will move to `./dist` directory on build. The source for all default loaders can be found in [webpack/rules/ directory](https://github.com/nozzle/react-static/tree/master/packages/react-static/src/static/webpack/rules).
+- Arguments:
+  - `state` - The current state of the cli
+- Returns the new CLI `state`
+
+```javascript
+beforePrepareBrowserPlugins: async state => {
+  // Use or modify the CLI state
+  return newState
+}
+```
+
+## `afterPrepareBrowserPlugins`
+
+An **async** function to modify the CLI state after preparing browser plugins.
+
+- Arguments:
+  - `state` - The current state of the cli
+- Returns the new CLI `state`
+
+```javascript
+afterPrepareBrowserPlugins: async state => {
+  // Use or modify the CLI state
+  return newState
+}
+```
+
+## `beforePrepareRoutes`
+
+An **async** function to modify the CLI state before preparing routes.
+
+- Arguments:
+  - `state` - The current state of the cli
+- Returns the new CLI `state`
+
+```javascript
+beforePrepareRoutes: async state => {
+  // Use or modify the CLI state
+  return newState
+}
+```
+
+## `normalizeRoute`
+
+A **synchronous** function to modify the route after it has been normalized.
+
+- Arguments:
+  - `info{}`
+    - `route` - The normalized route after it has been normalized
+    - `parent` - The parent route
+  - `state` - The current state of the cli
+- Returns the new `normalizedRoute`
+
+```javascript
+normalizeRoute: ({ route, parent }, state) => {
+  // Modify the route
+  return route
+}
+```
+
+## `afterPrepareRoutes`
+
+An **async** function to modify the CLI state before preparing routes.
+
+- Arguments:
+  - `state` - The current state of the cli
+- Returns the new CLI `state`
+
+```javascript
+afterPrepareRoutes: async state => {
+  // Use or modify the CLI state
+  return newState
+}
+```
+
+## `webpack`
+
+A **synchronous** function to modify the webpack config.
+
+- Arguments:
+  - `currentWebpackConfig` - The current webpack configuration object
+  - `state` - The current state of the CLI
+- Returns a new webpack configuration object
+
+```javascript
+webpack: (currentWebpackConfig, state) => {
+  // Return a new config
+  return newConfig
+}
+```
+
+**Loaders**
+The default loaders for React Static are available as a convenience object at `state.defaultLoaders`:
+
+- `jsLoader` - The default loader for all `.js` files located in your project's `src` directory
+- `jsLoaderExt` - The default loader for all other `.js` files not located in your project's `src` directory.
+- `cssLoader` - The default style loader that supports importing `.css` files and usage of css modules.
+- `fileLoader` - The default catch-all loader for any other file that isn't a `.js` `.json` or `.html` file. Uses `url-loader` and `file-loader`
 
 Our default loaders are organized like so:
 
@@ -55,8 +128,8 @@ const webpackConfig = {
   module: {
     rules: [{
       oneOf: [
-        jsLoader, // Compiles all project .js files with babel
-        jsLoaderExt, // Compiles all external .js files with babel
+        jsLoader, // Compiles all project javascript files with babel
+        jsLoaderExt, // Compiles all external (node_modules) javascript files with babel
         cssLoader, // Supports basic css imports and css modules
         fileLoader // Catch-all url-loader/file-loader for anything else
     }]
@@ -65,7 +138,9 @@ const webpackConfig = {
 }
 ```
 
-**Note:** Usage of the `oneOf` rule is not required, but recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
+The source for all default loaders can be found in [webpack/rules/ directory](https://github.com/nozzle/react-static/tree/master/packages/react-static/src/static/webpack/rules).
+
+**Note:** Usage of the `oneOf` rule is recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
 
 **Replacing all rules**
 
@@ -155,103 +230,171 @@ export default pluginOptions => ({
 })
 ```
 
-## `Head: Component|Function`
+## `afterDevServerStart`
 
-Append arbitrary JSX to the Head component of the application.
-
-- Must be a react or functional component that returns its contents wrapped in a `<React.Fragment>`.
-- Provides the user `meta` object as a prop.
-- Example:
-
-```javascript
-// node.api.js
-
-export default pluginOptions => ({
-  Head: ({ meta }) => (
-    <React.Fragment>
-      <link rel="stylesheet" href="..." />
-      <link rel="stylesheet" href="..." />
-    </React.Fragment>
-  ),
-})
-```
-
-## `beforeRenderToElement: Function`
-
-Intercept and proxy the `App` component before it is rendered to an element via `<App />`.
+Modify the `App` **component** before it is rendered to an element via `<App />`.
 
 - Arguments:
   - `App` - The `App` component (not yet rendered to an element via `<App />`)
-  - `options{}`
-    - `meta` - The user `meta` object
+  - `state` - The current state of the CLI
 - Returns a new `App` component (not yet rendered to an element)
 
 ```javascript
 // node.api.js
 
 export default pluginOptions => ({
-  beforeRenderToElement: (App, { meta }) => {
-    return App
+  afterDevServerStart: async state => {
+    // Use or modify the CLI state
+    return newState
   },
 })
 ```
 
-## `beforeRenderToHtml: Function`
+## `beforeRenderToElement`
 
-Intercept and proxy the rendered `<App />` element before it is rendered to HTML.
+An **async** function to modify the CLI state after starting the development server.
+
+- Arguments:
+  - `App` - The `App` component (not yet rendered to an element via `<App />`)
+  - `state` - The current state of the CLI
+- Returns a new `App` component (not yet rendered to an element)
+
+```javascript
+// node.api.js
+
+export default pluginOptions => ({
+  beforeRenderToElement: async (App, state) => {
+    const NewApp => props => {
+      return <App {...props} />
+    }
+
+    // You must return the component, not the rendered element!
+    return NewApp
+  },
+})
+```
+
+## `beforeRenderToHtml`
+
+Modify the rendered `<App />` element before it is rendered to HTML.
 
 - Arguments:
   - `app` - The `app` element (has already been rendered via `<App />`)
-  - `options{}`
-    - `meta` - The user `meta` object
+  - `state` - The current state of the CLI
 - Returns a new react element for the App
 
 ```javascript
 // node.api.js
 
 export default pluginOptions => ({
-  beforeRenderToHtml: (element, { meta }) => {
-    return element
+  beforeRenderToHtml: async (element, state) => {
+    // You must return an element (already rendered), not a component
+    const newApp = <div>{element}</div>
+    return newApp
   },
 })
 ```
 
-## `beforeHtmlToDocument: Function`
+## `htmlProps`
 
-Intercept and proxy the app `html` string before it is injected into the `Document` component.
+Modify the props that will passed to the Document's `<html>` element.
+
+- Arguments:
+  - `props` - The current props object
+  - `state` - The current state of the CLI
+- Returns a new props object
+
+```javascript
+// node.api.js
+
+export default pluginOptions => ({
+  htmlProps: async (props, state) => {
+    return {
+      ...props,
+      myProp: 'hello',
+    }
+  },
+})
+```
+
+## `headElements`
+
+Add elements to the `<head>` of the statically generated page.
+
+- Arguments:
+  - `elements` - The current array of elements that will be rendered into the head of the document.
+  - `state` - The current state of the CLI
+- Returns a new array of elements
+
+```javascript
+// node.api.js
+
+export default pluginOptions => ({
+  headElements: async (elements, state) => {
+    return [
+      ...elements,
+      <link rel="stylesheet" href="..." />,
+      <link rel="stylesheet" href="..." />,
+    ]
+  },
+})
+```
+
+## `beforeHtmlToDocument`
+
+Modify the app `html` string before it is injected into the `Document` component.
 
 - Arguments:
   - `html` - The app `html` string to be injected into the Document component
-  - `options{}`
-    - `meta` - The user `meta` object
+  - `state` - The current state of the CLI
 - Returns a new `html` string to be injected into the `Document` component
 
 ```javascript
 // node.api.js
 
 export default pluginOptions => ({
-  beforeHtmlToDocument: (html, { meta }) => {
+  beforeHtmlToDocument: async (html, state) => {
+    // html is a string here. You can do whatever you like with it!
     return html
   },
 })
 ```
 
-## `beforeDocumentToFile: Function`
+## `beforeHtmlToFile`
 
-Intercept and proxy the final `html` string before it is written to disk.
+Modify the final `html` string before it is written to disk.
 
 - Arguments:
   - `html` - The final `html` string before it is written to disk
-  - `options{}`
-    - `meta` - The user `meta` object
+  - `state` - The current state of the CLI
 - Returns a new final `html` string to be written to disk.
 
 ```javascript
 // node.api.js
 
 export default pluginOptions => ({
-  beforeDocumentToFile: (html, { meta }) => {
+  beforeDocumentToFile: async (html, state) => {
+    // html is a string here. You can do whatever you like with it!
     return html
+  },
+})
+```
+
+## `afterExport`
+
+After a completed build and export, run any asynchronous function.
+
+- Arguments:
+  - `state` - The current state of the CLI
+- Returns a new `state` object
+
+```javascript
+// node.api.js
+
+export default pluginOptions => ({
+  afterExport: async state => {
+    // Use or alter the state of the CLI
+    return state
   },
 })
 ```

@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-mdx",
-  "version": "6.3.1",
+  "version": "7.0.0-beta.0",
   "description": "A plugin for React Static to transform MDX files (Markdown + React components).",
   "main": "node.api.js",
   "repository": "https://github.com/nozzle/react-static.git",
@@ -9,17 +9,17 @@
   "private": false,
   "scripts": {
     "build": "babel src --out-dir .",
-    "watch": "babel src --out-dir . -w",
+    "watch": "yarn build --watch",
     "test": "yarn format",
     "format": "prettier 'src/**/*.js' --write",
     "preversion": "yarn build"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.1.5"
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2"
   },
   "dependencies": {
-    "@mdx-js/loader": "^0.16.6"
+    "@mdx-js/loader": "^0.20.3"
   }
 }

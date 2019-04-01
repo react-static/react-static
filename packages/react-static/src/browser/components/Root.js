@@ -1,121 +1,69 @@
 import React from 'react'
-import { Router as ReachRouter, ServerLocation } from '@reach/router'
 //
-import {
-  routeInfoByPath,
-  sharedDataByHash,
-  registerTemplateForPath,
-  plugins,
-  getCurrentRoutePath,
-  routeErrorByPath,
-  templateErrorByPath,
-} from '../'
-import { getBasePath, makePathAbsolute, makeHookReducer } from '../utils'
-import ErrorBoundary from './ErrorBoundary'
-import HashScroller from './HashScroller'
-import { withStaticInfo } from './StaticInfo'
+import { plugins } from '../'
 
-const DefaultPath = ({ render }) => render
-
-const DefaultRouter = ({ children, basepath, staticInfo }) => {
-  children = (
-    <ReachRouter basepath={basepath}>
-      <DefaultPath default render={children} />
-    </ReachRouter>
+export function Root({ children }) {
+  const ResolvedRoot = React.useMemo(
+    () => plugins.Root(({ children }) => children),
+    [plugins]
   )
-  return typeof document === 'undefined' ? (
-    <ServerLocation url={makePathAbsolute(staticInfo.path)}>
-      {children}
-    </ServerLocation>
-  ) : (
-    children
+
+  const [error, setError] = React.useState(null)
+
+  React.useEffect(() => {
+    if (module && module.hot) {
+      const hotReloadHandler = status => {
+        if (status === 'idle') {
+          setError(null)
+        }
+      }
+      module.hot.addStatusHandler(hotReloadHandler)
+      return () => {
+        module.hot.removeStatusHandler(hotReloadHandler)
+      }
+    }
+  })
+
+  return (
+    <Catch onCatch={setError}>
+      {error ? (
+        <pre
+          style={{
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            background: '#222',
+            color: 'white',
+            margin: 0,
+            padding: '1rem',
+            overflow: 'scroll',
+            fontSize: '14px',
+          }}
+        >
+          {`An internal error occured!
+
+${
+  process.env.NODE_ENV === 'production'
+    ? 'Please see the console for more details.'
+    : error.stack
+}
+          `}
+        </pre>
+      ) : (
+        <ResolvedRoot>{children}</ResolvedRoot>
+      )}
+    </Catch>
   )
 }
 
-const RouterHook = makeHookReducer(plugins, 'Router', { sync: true })
-const ResolvedRouter = RouterHook(DefaultRouter)
-
-const Root = withStaticInfo(
-  class Root extends React.Component {
-    static defaultProps = {
-      disableScroller: false, // TODO:v6 document this!
-      autoScrollToTop: true,
-      autoScrollToHash: true,
-      scrollToTopDuration: 0,
-      scrollToHashDuration: 800,
-      scrollToHashOffset: 0,
-    }
-    constructor(props) {
-      super()
-      const { staticInfo } = props
-      if (process.env.REACT_STATIC_ENV === 'production' && staticInfo) {
-        const { path, sharedData, sharedHashesByProp, template } = staticInfo
-
-        // Hydrate routeInfoByPath with the embedded routeInfo
-        routeInfoByPath[path] = staticInfo
-
-        // Hydrate sharedDataByHash with the embedded routeInfo
-        Object.keys(sharedHashesByProp).forEach(propKey => {
-          sharedDataByHash[sharedHashesByProp[propKey]] = sharedData[propKey]
-        })
-
-        // In SRR and production, synchronously register the template for the
-        // initial path
-        registerTemplateForPath(path, template)
-
-        // For a 404 route we will register the current route as invalid
-        if (path === '404') {
-          const currentPath = getCurrentRoutePath()
-          // As long as we didn't navigate to the 404.html page directly
-          if (currentPath !== '404') {
-            routeErrorByPath[currentPath] = true
-            templateErrorByPath[currentPath] = true
-          }
-        }
-      }
-    }
-    render() {
-      const {
-        children,
-        disableScroller,
-        autoScrollToTop,
-        autoScrollToHash,
-        scrollToTopDuration,
-        scrollToHashDuration,
-        scrollToHashOffset,
-        staticInfo,
-      } = this.props
-
-      const scrollerProps = {
-        autoScrollToTop,
-        autoScrollToHash,
-        scrollToTopDuration,
-        scrollToHashDuration,
-        scrollToHashOffset,
-      }
-
-      let Wrapper = ({ children }) => children
-
-      const basepath = getBasePath()
-
-      // Add the scroller if not disabled
-      if (!disableScroller) {
-        Wrapper = ({ children }) => (
-          <HashScroller {...scrollerProps}>{children}</HashScroller>
-        )
-      }
-
-      return (
-        <ErrorBoundary>
-          <Wrapper>
-            <ResolvedRouter basepath={basepath} staticInfo={staticInfo}>
-              {children}
-            </ResolvedRouter>
-          </Wrapper>
-        </ErrorBoundary>
-      )
-    }
+class Catch extends React.Component {
+  componentDidCatch(error) {
+    this.props.onCatch(error)
   }
-)
-
-export default Root
+  render() {
+    return this.props.children
+  }
+}

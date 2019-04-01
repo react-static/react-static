@@ -3,15 +3,16 @@ import { mount } from 'enzyme'
 import { makeBodyWithMeta } from '../BodyWithMeta'
 
 describe('BodyWithMeta', () => {
-  test('when route is a static route', () => {
+  test('when route is a static route', async () => {
     process.env.REACT_STATIC_ASSETS_PATH = 'assets/path'
-    const BodyWithMeta = makeBodyWithMeta({
+    const BodyWithMeta = await makeBodyWithMeta({
       head: { bodyProps: { lang: 'en' } },
       route: { redirect: false },
       embeddedRouteInfo: {
         routeDate: 'here',
       },
       clientScripts: ['main.js', 'bootstrap.js'],
+      plugins: [],
     })
 
     const bodyWithMeta = mount(
@@ -23,8 +24,8 @@ describe('BodyWithMeta', () => {
     expect(bodyWithMeta).toMatchSnapshot()
   })
 
-  test('when route is a redirect route', () => {
-    const BodyWithMeta = makeBodyWithMeta({
+  test('when route is a redirect route', async () => {
+    const BodyWithMeta = await makeBodyWithMeta({
       head: { bodyProps: { lang: 'en' } },
       route: { redirect: true },
       embeddedRouteInfo: {
@@ -32,6 +33,7 @@ describe('BodyWithMeta', () => {
       },
       clientScripts: ['main.js', 'bootstrap.js'],
       config: {},
+      plugins: [],
     })
 
     const bodyWithMeta = mount(

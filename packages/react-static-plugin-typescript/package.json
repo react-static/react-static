@@ -1,0 +1,32 @@
+{
+  "name": "react-static-plugin-typescript",
+  "version": "7.0.0-beta.0",
+  "description": "A React-Static plugin that adds support for typescript",
+  "main": "node.api.js",
+  "repository": "https://github.com/nozzle/react-static.git",
+  "author": "Tanner Linsley <tannerlinsley@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "babel src --out-dir .",
+    "watch": "yarn build --watch",
+    "test": "yarn format",
+    "format": "prettier 'src/**/*.js' --write",
+    "preversion": "yarn build"
+  },
+  "dependencies": {
+    "@babel/preset-typescript": "^7.3.3",
+    "convert-tsconfig-paths-to-webpack-aliases": "^0.9.2",
+    "fork-ts-checker-webpack-plugin": "^1.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^4.1.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0"
+  },
+  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
+}

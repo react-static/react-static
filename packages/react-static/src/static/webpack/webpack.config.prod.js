@@ -6,9 +6,12 @@ import TerserPlugin from 'terser-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import resolveFrom from 'resolve-from'
+//
 import rules from './rules'
 
-function common(config) {
+function common(state) {
+  const { analyze, config, debug } = state
   const { ROOT, DIST, NODE_MODULES, SRC, ASSETS } = config.paths
 
   process.env.REACT_STATIC_ENTRY_PATH = path.resolve(ROOT, config.entry)
@@ -87,20 +90,24 @@ function common(config) {
           cache: true,
           parallel: true,
           exclude: /\.min\.js/,
-          sourceMap: false,
+          ...config.terser,
+          sourceMap:
+            config.productionSourceMaps || config.terser.sourceMap || debug,
           terserOptions: {
             ie8: false,
-            mangle: { safari10: true },
-            parse: { ecma: 8 },
-            compress: { ecma: 5 },
-            output: { ecma: 5 },
-            // consider passing terser options here in future
+            ...config.terser.terserOptions,
+            mangle: { safari10: true, ...config.terser.terserOptions.mangle },
+            parse: { ecma: 8, ...config.terser.terserOptions.parse },
+            compress: { ecma: 5, ...config.terser.terserOptions.compress },
+            output: { ecma: 5, ...config.terser.terserOptions.output },
           },
-          // consider passing more options here in future
         }),
         new OptimizeCSSAssetsPlugin({}),
       ],
       splitChunks,
+    },
+    performance: {
+      maxEntrypointSize: 300000,
     },
     module: {
       rules: rules({ config, stage: 'prod', isNode: false }),
@@ -108,14 +115,23 @@ function common(config) {
     },
     resolve: {
       modules: [
-        'node_modules',
+        NODE_MODULES,
+        SRC,
+        DIST,
         ...[NODE_MODULES, SRC, DIST].map(d =>
-          DIST.startsWith(ROOT)
-            ? path.relative(process.cwd(), d)
-            : path.resolve(d)
+          DIST.startsWith(ROOT) ? path.relative(__dirname, d) : path.resolve(d)
         ),
+        'node_modules',
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
+      alias: {
+        react: resolveFrom(config.paths.NODE_MODULES, 'react'),
+        'react-dom': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
+        'react-universal-component': resolveFrom(
+          __dirname,
+          'react-universal-component'
+        ),
+      },
     },
     externals: [],
     target: undefined,
@@ -123,34 +139,45 @@ function common(config) {
       new webpack.EnvironmentPlugin(process.env),
       extrackCSSChunks,
       new CaseSensitivePathsPlugin(),
-      config.bundleAnalyzer && new BundleAnalyzerPlugin(),
+      analyze && new BundleAnalyzerPlugin(),
     ].filter(d => d),
-    devtool: false,
+    devtool: debug || config.productionSourceMaps ? 'source-map' : false,
   }
 }
 
-export default function({ config, isNode }) {
-  const result = common(config)
-  if (!isNode) return result
+export default function(state) {
+  const {
+    stage,
+    config: { paths },
+  } = state
+
+  const result = common(state)
+  if (stage !== 'node') return result
 
   // Node only!!!
   result.output.filename = 'static-app.js'
-  result.output.path = config.paths.BUILD_ARTIFACTS
+  result.output.path = paths.ARTIFACTS
   result.output.libraryTarget = 'umd'
   result.optimization.minimize = false
   result.optimization.minimizer = []
   result.target = 'node'
   result.devtool = false
   result.externals = [
-    nodeExternals({
-      whitelist: [
-        'react-universal-component',
-        'webpack-flush-chunks',
-        'react-static',
-      ],
-    }),
+    new RegExp(`${paths.PLUGINS}`),
+    (context, request, callback) => {
+      const resolved = path.resolve(context, request)
+      if (
+        [/react-static\/lib\/browser/, /webpack-flush-chunks/].some(d =>
+          d.test(resolved)
+        )
+      ) {
+        return callback(null, `commonjs ${resolved}`)
+      }
+      callback()
+    },
+    nodeExternals(),
   ]
-  result.module.rules = rules({ config, stage: 'prod', isNode: true })
+  result.module.rules = rules(state)
   result.plugins = [
     new webpack.EnvironmentPlugin(process.env),
     new CaseSensitivePathsPlugin(),

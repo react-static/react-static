@@ -7,6 +7,10 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static"
+      name="generator"
+    />
     <title
       key="title"
     >
@@ -63,6 +67,10 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static"
+      name="generator"
+    />
     <link
       as="script"
       href="/assets/path/main.js"
@@ -118,6 +126,10 @@ exports[`HeadWithMeta when route has title as child 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static"
+      name="generator"
+    />
     <title
       key="title"
     >
@@ -173,6 +185,10 @@ exports[`HeadWithMeta when route is a redirect route 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static"
+      name="generator"
+    />
     <title
       key="title"
     >
@@ -194,6 +210,10 @@ exports[`HeadWithMeta when route is a static route 1`] = `
   <head
     className="body"
   >
+    <meta
+      content="React Static"
+      name="generator"
+    />
     <title
       key="title"
     >

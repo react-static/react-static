@@ -33,6 +33,7 @@ describe('HeadWithMeta', () => {
       config: {
         inlineCss: false,
       },
+      plugins: [],
     }
   })
 

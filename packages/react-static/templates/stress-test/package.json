@@ -12,18 +12,21 @@
     "serve": "serve dist -p 3000 -s"
   },
   "dependencies": {
-    "@reach/router": "^1.2.1",
-    "axios": "^0.18.0",
     "emotion": "^9.2.4",
     "emotion-server": "^9.2.4",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
     "react-emotion": "^9.2.4",
     "react-hot-loader": "^4.3.12",
-    "react-static": "^6.0.18",
     "react-static-plugin-emotion": "^6.0.8",
     "react-static-plugin-styled-components": "^6.0.8",
-    "styled-components": "^4.1.1"
+    "styled-components": "^4.1.1",
+    "@reach/router": "^1.2.1",
+    "axios": "^0.18.0",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
+    "react-static": "^7.0.0-beta.0",
+    "react-static-plugin-reach-router": "^7.0.0-beta.0",
+    "react-static-plugin-sitemap": "^7.0.0-beta.0",
+    "react-static-plugin-source-filesystem": "^7.0.0-beta.0"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",

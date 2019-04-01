@@ -1,12 +1,6 @@
-/* eslint-disable import/no-dynamic-require, react/no-danger */
-import React from 'react'
-import { renderToString } from 'react-dom/server'
 import PortFinder from 'portfinder'
-import fs from 'fs-extra'
-import nodeGlob from 'glob'
 import { performance } from 'perf_hooks'
 //
-import { DefaultDocument, Html, Head, Body } from '../static/RootComponents'
 
 // Export all shared utils
 export * from '../browser/utils'
@@ -22,48 +16,6 @@ export const findAvailablePort = start =>
     port: start,
     stopPort: start + 1000,
   })
-
-export function copyPublicFolder(config) {
-  fs.ensureDirSync(config.paths.PUBLIC)
-
-  fs.copySync(config.paths.PUBLIC, config.paths.DIST, {
-    dereference: true,
-    filter: file => file !== config.paths.INDEX,
-  })
-}
-
-export async function createIndexFilePlaceholder({
-  config: { Document, paths, siteData },
-}) {
-  // Render the base document component to string with siteprops
-  const Component = Document || DefaultDocument
-  const DocumentHtml = renderToString(
-    <Component
-      renderMeta={{}}
-      Html={Html}
-      Head={Head}
-      Body={Body}
-      siteData={siteData}
-    >
-      <div id="root" />
-    </Component>
-  )
-  const html = `<!DOCTYPE html>${DocumentHtml}`
-
-  // Write the Document to index.html
-  await fs.outputFile(paths.HTML_TEMPLATE, html)
-}
-
-export function glob(path, options = {}) {
-  return new Promise((resolve, reject) =>
-    nodeGlob(path, options, (err, files) => {
-      if (err) {
-        return reject(err)
-      }
-      resolve(files)
-    })
-  )
-}
 
 const times = {}
 export function time(message) {
