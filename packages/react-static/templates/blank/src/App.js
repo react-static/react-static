@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
-//
-import './App.css'
+import './app.css'
 import logo from './logo.png'
 
 class App extends Component {
