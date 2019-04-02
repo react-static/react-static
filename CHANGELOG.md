@@ -1,3 +1,10 @@
+# 7.0.1
+
+### Improved
+
+- Updated dependencies of templates to use 7.0.0
+- Updated Readme to remove @next reference
+
 # 7.0.0
 
 ### New

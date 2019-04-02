@@ -23,10 +23,10 @@
     "axios": "^0.18.0",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-static": "^7.0.0-beta.0",
-    "react-static-plugin-reach-router": "^7.0.0-beta.0",
-    "react-static-plugin-sitemap": "^7.0.0-beta.0",
-    "react-static-plugin-source-filesystem": "^7.0.0-beta.0"
+    "react-static": "^7.0.0",
+    "react-static-plugin-reach-router": "^7.0.0",
+    "react-static-plugin-sitemap": "^7.0.0",
+    "react-static-plugin-source-filesystem": "^7.0.0"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.x.x",
