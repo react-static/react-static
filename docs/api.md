@@ -9,6 +9,7 @@ React-Static is packed with awesome components, hooks, and functions to help you
   - [Head](#head)
   - [Prefetch](#prefetch)
   - [prefetch](#prefetch-)
+  - [addPrefetchExcludes](#addprefetchexcludes)
 - `react-static/node`
   - [reloadRoutes](#reloadRoutes)
   - [makePageRoutes](#makePageRoutes)
@@ -202,6 +203,28 @@ const myFunc = async () => {
   const data = await prefetch('/blog')
   console.log('The preloaded data:', data)
 }
+```
+
+## `addPrefetchExcludes`
+
+`addPrefetchExcludes` allows you to register dynamic route exclusions at runtime, so as to not produce 404 errors when attempting to preload static data / templates that link to these routes.
+
+- Arguments
+  - `excludes: Array[string | RegExp]` - An array of strings and/or RegExp objects
+    - `string` - Any routes **starting with this string** will be excluded
+    - `RegExp` - Any routes **matching this regular expression** will be excluded
+- Returns nothing
+
+Example:
+
+```javascript
+import { addPrefetchExcludes } from 'react-static'
+
+// Run this before your app code
+addPrefetchExcludes(['dynamic', /admin/i])
+
+// Your app code
+// ...
 ```
 
 # `react-static/node`
