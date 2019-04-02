@@ -1,3 +1,10 @@
+# 7.0.2
+
+### Improved
+
+- `blank` template now properly imports `app.css`
+- Updated pull request template to include CHANGELOG checkbox
+
 # 7.0.1
 
 ### Improved
