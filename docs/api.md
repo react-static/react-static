@@ -136,7 +136,7 @@ export default () => {
 }
 ```
 
-Note: Make sure to wrap components using `useSiteDate()` with react's `<Suspense fallback="..."></Suspense>`. More information on the subject is available [here](https://reactjs.org/docs/react-api.html#reactsuspense).
+Note: Make sure to wrap components using `useSiteData()` with React's `<Suspense fallback="..."></Suspense>`. More information on the subject is available [here](https://reactjs.org/docs/react-api.html#reactsuspense).
 
 ## `Head`
 
