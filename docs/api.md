@@ -136,6 +136,8 @@ export default () => {
 }
 ```
 
+Note: Make sure to wrap components using `useSiteDate()` with react's `<Suspense fallback="..."></Suspense>`. More information on the subject is available [here](https://reactjs.org/docs/react-api.html#reactsuspense).
+
 ## `Head`
 
 `Head` is a react component for managing tags in the document's `head`. Use it to update meta tags, title tags, etc.
