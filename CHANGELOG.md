@@ -1,3 +1,9 @@
+# 6.3.8/9
+
+#### Fixes & Optimizations
+
+- Build files are no longer ignored in npm pack
+
 # 6.3.7
 
 #### Fixes & Optimizations
