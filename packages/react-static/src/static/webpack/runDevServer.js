@@ -8,11 +8,17 @@ import makeWebpackConfig from './makeWebpackConfig'
 import getRouteData from '../getRouteData'
 import plugins from '../plugins'
 import { findAvailablePort, time, timeEnd } from '../../utils'
+import fetchSiteData from '../fetchSiteData'
 
 let devServer
 let latestState
 let buildDevRoutes = () => {}
-let reloadClientData = () => {}
+let _reloadClientData = null
+function reloadClientData() {
+  if (_reloadClientData) {
+    return _reloadClientData()
+  }
+}
 
 export { reloadClientData }
 
@@ -214,7 +220,8 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   // Start the messages socket
   const socket = io()
 
-  reloadClientData = () => {
+  _reloadClientData = async () => {
+    latestState = await fetchSiteData(latestState)
     socket.emit('message', { type: 'reloadClientData' })
   }
 

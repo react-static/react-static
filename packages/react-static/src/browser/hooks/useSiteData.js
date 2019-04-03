@@ -16,6 +16,8 @@ export const useSiteData = () => {
   const [_, setCount] = useState(0)
   useEffect(() =>
     onReloadClientData(() => {
+      siteDataPromise = null
+      siteDataReady = false
       setCount(old => old + 1)
     })
   )
