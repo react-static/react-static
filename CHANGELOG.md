@@ -1,3 +1,9 @@
+# 7.0.4
+
+### Improved
+
+- You can now override the default `host` and `port` of the webpack dev server via `config.devServer`.
+
 # 7.0.3
 
 ### Improved

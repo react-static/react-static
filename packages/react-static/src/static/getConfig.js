@@ -165,9 +165,9 @@ export function buildConfig(state, config = {}) {
     ...config,
     // Materialized Overrides
     devServer: {
-      ...config.devServer,
       host: 'http://localhost',
       port: 3000,
+      ...config.devServer,
     },
     plugins,
     paths,
