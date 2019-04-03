@@ -1,3 +1,9 @@
+# 7.0.3
+
+### Improved
+
+- `siteData` is now properly invalidated and refetched when `reloadClientData` is called and/or the `static.config.js` is updated.
+
 # 7.0.2
 
 ### Improved

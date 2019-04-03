@@ -13,14 +13,12 @@ import fetchSiteData from '../fetchSiteData'
 let devServer
 let latestState
 let buildDevRoutes = () => {}
-let _reloadClientData = null
-function reloadClientData() {
-  if (_reloadClientData) {
-    return _reloadClientData()
+
+export const reloadClientData = () => {
+  if (reloadClientData.current) {
+    reloadClientData.current()
   }
 }
-
-export { reloadClientData }
 
 // Starts the development server
 export default async function runDevServer(state) {
@@ -105,7 +103,7 @@ async function runExpressServer(state) {
       // routes. It also references the original config when possible, to make sure it
       // uses any up to date getData callback generated from new or replacement routes.
       buildDevRoutes = async newState => {
-        latestState = newState
+        latestState = await fetchSiteData(newState)
 
         app.get('/__react-static__/siteData', async (req, res, next) => {
           try {
@@ -220,8 +218,7 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   // Start the messages socket
   const socket = io()
 
-  _reloadClientData = async () => {
-    latestState = await fetchSiteData(latestState)
+  reloadClientData.current = async () => {
     socket.emit('message', { type: 'reloadClientData' })
   }
 
