@@ -1,3 +1,9 @@
+# 7.0.5
+
+### Improved
+
+- Fix bug where default `config.devServer` is not an object.
+
 # 7.0.4
 
 ### Improved

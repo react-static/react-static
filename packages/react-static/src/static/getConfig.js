@@ -167,7 +167,7 @@ export function buildConfig(state, config = {}) {
     devServer: {
       host: 'http://localhost',
       port: 3000,
-      ...config.devServer,
+      ...(config.devServer || {}),
     },
     plugins,
     paths,
