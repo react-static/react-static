@@ -46,10 +46,10 @@ export function Root({ children }) {
           {`An internal error occured!
 
 ${
-            process.env.NODE_ENV === 'production'
-              ? 'Please see the console for more details.'
-              : error.stack
-          }
+  process.env.NODE_ENV === 'production'
+    ? 'Please see the console for more details.'
+    : error.stack
+}
           `}
         </pre>
       ) : (
