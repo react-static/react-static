@@ -1,8 +1,9 @@
-// Type definitions for react-static 5.1.7
+// Type definitions for react-static 7.0.0
 // Project: https://github.com/nozzle/react-static
 // Definitions for 4.0.1 by: D1no <https://github.com/D1no>
 // Updated to 5.1.7 by: Balvajs <https://github.com/Balvajs>
-// TypeScript Version: 2.6
+// TypeScript Version: 3.4
+// VERY lightly maintained, we need all the help we can get
 
 // / <reference types="react" />
 
@@ -17,12 +18,12 @@ declare module 'react-static' {
   import { Helmet } from 'react-helmet'
 
   export class Head extends Helmet {}
-  export class Routes extends React.Component {}
+  export class Routes extends React.Component<{ path: String }> {}
   export class Root extends React.Component {}
-  export class ErrorBoundary extends React.Component {}
-  export const useRouteData: object
+  export function useRouteData<T = any>(): T
   export const useSiteData: object
   export function prefetch(path: any): Promise<any>
+  export function addPrefetchExcludes(arg: String[]): void
   export const Prefetch: React.Component
 
   /**

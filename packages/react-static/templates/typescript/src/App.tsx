@@ -1,29 +1,34 @@
 import React from 'react'
-import { hot } from 'react-hot-loader'
-import { Root, Routes, ErrorBoundary } from 'react-static'
-import { Link } from '@reach/router'
+import { Root, Routes, addPrefetchExcludes } from 'react-static'
+import { Link, Router } from 'components/Router'
+import FancyDiv from 'components/FancyDiv'
+import Dynamic from 'containers/Dynamic'
 import './app.css'
-import FancyDiv from '@components/FancyDiv'
+
+// Any routes that start with 'dynamic' will be treated as non-static routes
+addPrefetchExcludes(['dynamic'])
 
 function App() {
   return (
-    <ErrorBoundary>
-      <Root>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/blog">Blog</Link>
-        </nav>
-        <div className="content">
-          <React.Suspense fallback="Loading...">
-            <FancyDiv>
-              <Routes />
-            </FancyDiv>
+    <Root>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/blog">Blog</Link>
+        <Link to="/dynamic">Dynamic</Link>
+      </nav>
+      <div className="content">
+        <FancyDiv>
+          <React.Suspense fallback={<em>Loading...</em>}>
+            <Router>
+              <Dynamic path="dynamic" />
+              <Routes path="*" />
+            </Router>
           </React.Suspense>
-        </div>
-      </Root>
-    </ErrorBoundary>
+        </FancyDiv>
+      </div>
+    </Root>
   )
 }
 
-export default hot(App)
+export default App

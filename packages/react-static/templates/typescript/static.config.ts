@@ -1,14 +1,13 @@
 import axios from 'axios'
 import path from 'path'
+import { Post } from './types'
 
 export default {
+  // SWYX: temporarily not working, need to fix
   entry: path.join(__dirname, 'src', 'index.tsx'),
-  getSiteData: () => ({
-    title: 'React Static',
-  }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts',
+    const { data: posts }: { data: Post[] } = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts'
     )
     return [
       {
@@ -16,7 +15,7 @@ export default {
         getData: () => ({
           posts,
         }),
-        children: posts.map(post => ({
+        children: posts.map((post: Post) => ({
           path: `/post/${post.id}`,
           template: 'src/containers/Post',
           getData: () => ({
@@ -34,5 +33,7 @@ export default {
         location: path.resolve('./src/pages'),
       },
     ],
+    require.resolve('react-static-plugin-reach-router'),
+    require.resolve('react-static-plugin-sitemap'),
   ],
 }

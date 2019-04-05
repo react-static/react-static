@@ -27,6 +27,7 @@
     "@types/react-hot-loader": "^4.1.0",
     "@types/webpack-env": "^1.13.6",
     "react-static-plugin-typescript": "^3.1.0",
-    "serve": "10.1.1"
+    "serve": "10.1.1",
+    "typescript": "^3.4.1"
   }
 }

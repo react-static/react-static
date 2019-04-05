@@ -4,7 +4,7 @@
     "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
-    "allowJs": true,
+    "allowJs": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
@@ -14,9 +14,12 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "skipLibCheck": true,
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"]
+      "components/*": ["src/components/*"],
+      "containers/*": ["src/containers/*"],
+      "types/*": ["types/*"]
     },
     "lib": ["dom", "es2015", "es2016"]
   },
