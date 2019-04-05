@@ -4,12 +4,15 @@ import { prefetch } from '../'
 import onVisible from '../utils/Visibility'
 
 export const usePrefetch = (path, ref = useRef()) => {
-  useEffect(() => {
-    if (!ref.current) {
-      return
-    }
-    onVisible(ref.current, () => prefetch(getRoutePath(path)))
-  }, [ref.current, path])
+  useEffect(
+    () => {
+      if (!ref.current) {
+        return
+      }
+      onVisible(ref.current, () => prefetch(getRoutePath(path)))
+    },
+    [ref.current, path]
+  )
 
   return ref
 }

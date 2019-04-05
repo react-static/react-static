@@ -16,8 +16,8 @@ export default async state => {
 
   const file = `
 ${
-  process.env.NODE_ENV === 'production'
-    ? `
+    process.env.NODE_ENV === 'production'
+      ? `
 import React from 'react'
 import universal, { setHasBabelPlugin } from '${reactStaticUniversalPath}'
 
@@ -33,21 +33,23 @@ const universalOptions = {
 }
 
 ${templates
-  .map((template, index) => {
-    let chunkName = ''
+          .map((template, index) => {
+            let chunkName = ''
 
-    // relative resolving produces the wrong path, a "../" is missing
-    // as the files looks equal, we simple use an absolute path then
+            // relative resolving produces the wrong path, a "../" is missing
+            // as the files looks equal, we simple use an absolute path then
 
-    if (!paths.DIST.startsWith(paths.ROOT)) {
-      chunkName = `/* webpackChunkName: "${chunkNameFromFile(template)}" */`
-    }
+            if (!paths.DIST.startsWith(paths.ROOT)) {
+              chunkName = `/* webpackChunkName: "${chunkNameFromFile(
+                template
+              )}" */`
+            }
 
-    return `const t_${index} = universal(import('${template}'${chunkName}), universalOptions)
+            return `const t_${index} = universal(import('${template}'${chunkName}), universalOptions)
       t_${index}.template = '${template}'
       `
-  })
-  .join('\n')}
+          })
+          .join('\n')}
 
 // Template Map
 export default {
@@ -56,7 +58,7 @@ export default {
 // Not Found Template
 export const notFoundTemplate = ${JSON.stringify(templates[0])}
 `
-    : `
+      : `
   
 // Template Map
 export default {
@@ -67,7 +69,7 @@ export default {
 
 export const notFoundTemplate = '${templates[0]}'
 `
-}
+  }
 `
 
   const dynamicRoutesPath = path.join(process.env.REACT_STATIC_TEMPLATES_PATH)
