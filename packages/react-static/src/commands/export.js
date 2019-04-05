@@ -46,16 +46,16 @@ export default async (state = {}) => {
   console.log(`
 Your app is now exported! Here's what we suggest doing next:
 ${
-    staging
-      ? `
+  staging
+    ? `
 - Test your app locally
   - ${chalk.green(
     'serve dist -p 3000'
   )} (or your preferred static server utility)`
-      : `
+    : `
 - Upload your 'dist' directory to your favorite static host! We recommend using Netlify:
   - ${chalk.green('npx netlify-cli deploy')}`
-  }
+}
 - Analyze your app's webpack bundles
   - ${chalk.green('react-static bundle --analyze')}
 `)
