@@ -1,10 +1,10 @@
 import React from 'react'
 import { useRouteData } from 'react-static'
 import { Link } from '@reach/router'
-import { Post } from '../types'
+import { Post } from '../../types'
 
 export default () => {
-  const { post: Post } = useRouteData()
+  const { post }: { post: Post } = useRouteData()
   return (
     <div>
       <Link to="/blog/">{'<'} Back</Link>
