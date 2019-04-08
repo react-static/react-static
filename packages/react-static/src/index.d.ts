@@ -15,9 +15,8 @@ declare module 'react-static' {
   type AnyReactComponent = ComponentType<Record<string, any>>
 
   // Passing on helmet typings as "Head"
-  import { Helmet } from 'react-helmet'
+  export { Helmet as Head } from 'react-helmet'
 
-  export class Head extends Helmet {}
   export class Routes extends React.Component<{ path: String }> {}
   export class Root extends React.Component {}
   export function useRouteData<T = any>(): T
