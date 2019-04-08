@@ -10,12 +10,12 @@ import corePlugins, { validatePlugin } from './plugins'
 
 // the default static.config.js location
 const defaultConfig = {}
-const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config'
+const DEFAULT_NAME_FOR_STATIC_CONFIG_FILE = 'static.config.js'
 const DEFAULT_PATH_FOR_STATIC_CONFIG = nodePath.resolve(
   nodePath.join(process.cwd(), DEFAULT_NAME_FOR_STATIC_CONFIG_FILE)
 )
 const DEFAULT_ROUTES = [{ path: '/' }]
-const DEFAULT_ENTRY = 'index'
+const DEFAULT_ENTRY = 'index.js'
 const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 
 // Retrieves the static.config.js from the current project directory
@@ -29,14 +29,17 @@ export default function getConfig(
     return config
   }
 ) {
-  const configPath = state.configPath || DEFAULT_PATH_FOR_STATIC_CONFIG
+  const configPath =
+    state.configPath ||
+    state.packageConfig.config ||
+    DEFAULT_PATH_FOR_STATIC_CONFIG
 
   state = {
     ...state,
     originalConfig: configPath,
   }
 
-  const resolvedPath = resolveModule(configPath)
+  const resolvedPath = nodePath.resolve(configPath)
 
   const noConfig =
     configPath === DEFAULT_PATH_FOR_STATIC_CONFIG && !resolvedPath
@@ -72,8 +75,8 @@ function buildConfigFromPath(state, configPath) {
 }
 
 export function buildConfig(state, config = {}) {
-  // path defaults
-  config.paths = {
+  // Default Paths
+  let paths = {
     root: nodePath.resolve(process.cwd()),
     src: 'src',
     dist: 'dist',
@@ -89,38 +92,35 @@ export function buildConfig(state, config = {}) {
   }
 
   // Use the root to resolve all other relative paths
-  const resolvePath = relativePath =>
-    nodePath.resolve(config.paths.root, relativePath)
+  const resolvePath = relativePath => nodePath.resolve(paths.root, relativePath)
 
-  // Resolve all paths
+  // Resolve and replace all pathss
   const DIST =
     process.env.REACT_STATIC_ENV === 'development'
-      ? resolvePath(config.paths.devDist || config.paths.dist)
-      : resolvePath(config.paths.dist)
+      ? resolvePath(paths.devDist || paths.dist)
+      : resolvePath(paths.dist)
+  const ASSETS = nodePath.resolve(DIST, paths.assets)
 
-  const ASSETS = nodePath.resolve(DIST, config.paths.assets)
-
-  const paths = {
-    ROOT: config.paths.root,
-    SRC: resolvePath(config.paths.src),
+  paths = {
+    ROOT: paths.root,
+    SRC: resolvePath(paths.src),
     DIST,
     ASSETS,
-    PLUGINS: resolvePath(config.paths.plugins),
-    TEMP: resolvePath(config.paths.temp),
-    ARTIFACTS: resolvePath(config.paths.buildArtifacts),
-    PUBLIC: resolvePath(config.paths.public),
-    NODE_MODULES: resolvePath(config.paths.nodeModules),
+    PLUGINS: resolvePath(paths.plugins),
+    TEMP: resolvePath(paths.temp),
+    ARTIFACTS: resolvePath(paths.buildArtifacts),
+    PUBLIC: resolvePath(paths.public),
+    NODE_MODULES: resolvePath(paths.nodeModules),
     EXCLUDE_MODULES:
-      config.paths.excludeResolvedModules ||
-      resolvePath(config.paths.nodeModules),
+      paths.excludeResolvedModules || resolvePath(paths.nodeModules),
     PACKAGE: resolvePath('package.json'),
     HTML_TEMPLATE: nodePath.join(DIST, 'index.html'),
     STATIC_DATA: nodePath.join(ASSETS, 'staticData'),
   }
 
+  // siteRoot, basePath, publicPath, and assetPath resolution
   let siteRoot = ''
   let basePath = ''
-
   if (process.env.REACT_STATIC_ENV === 'development') {
     basePath = cleanSlashes(config.devBasePath)
   } else if (state.staging) {
@@ -130,9 +130,7 @@ export function buildConfig(state, config = {}) {
     siteRoot = cutPathToRoot(config.siteRoot, '$1')
     basePath = cleanSlashes(config.basePath)
   }
-
   const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`)}/`
-
   let assetsPath = cleanSlashes(config.assetsPath || paths.assets)
   if (assetsPath && !isAbsoluteUrl(assetsPath)) {
     assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
@@ -142,13 +140,17 @@ export function buildConfig(state, config = {}) {
   // to use the plugin api directory in their project if they want
   const plugins = [...(config.plugins || []), paths.ROOT]
 
-  const DEFAULT_ENTRY_PATH = nodePath.join(paths.SRC, DEFAULT_ENTRY)
+  // if (process.env.NODE_ENV !== 'test' && !entry) {
+  //   throw new Error(
+  //     `Could not resolve entry file from location: ${entry} using extensions: ${(
+  //       config.extensions || DEFAULT_EXTENSIONS
+  //     ).join(', ')}`
+  //   )
+  // }
 
   // Defaults
   config = {
     // Defaults
-    entry:
-      resolveModule(DEFAULT_ENTRY_PATH, config) || `${DEFAULT_ENTRY_PATH}.js`,
     getSiteData: () => ({}),
     prefetchRate: 5,
     maxThreads: Infinity,
@@ -161,23 +163,26 @@ export function buildConfig(state, config = {}) {
     disableRuntime: false,
     preloadPollInterval: 300,
     productionSourceMaps: false,
+    entry: DEFAULT_ENTRY,
+
     // Config Overrides
     ...config,
+
     // Materialized Overrides
-    devServer: {
-      host: 'http://localhost',
-      port: 3000,
-      ...(config.devServer || {}),
-    },
-    plugins,
     paths,
-    babelExcludes: config.babelExcludes || [],
+    plugins,
     siteRoot,
     basePath,
     publicPath,
     assetsPath,
     extractCssChunks: config.extractCssChunks || false,
     inlineCss: config.inlineCss || false,
+    babelExcludes: config.babelExcludes || [],
+    devServer: {
+      host: 'http://localhost',
+      port: 3000,
+      ...(config.devServer || {}),
+    },
   }
 
   config.terser = config.terser || {}
@@ -279,14 +284,17 @@ export function buildConfig(state, config = {}) {
       )
     }
 
-    const nodeLocation = resolveModule(
-      nodePath.join(location, 'node.api'),
-      config
-    )
-    const browserLocation = resolveModule(
-      nodePath.join(location, 'browser.api'),
-      config
-    )
+    let nodeLocation = nodePath.join(location, 'node.api.js')
+    let browserLocation = nodePath.join(location, 'browser.api.js')
+
+    // Detect if the node plugin entry exists, and provide the nodeResolver to it
+    nodeLocation = fs.pathExistsSync(nodeLocation) ? nodeLocation : null
+
+    // Detect if the browser plugin entry exists, and provide the nodeResolver to it
+    browserLocation = fs.pathExistsSync(browserLocation)
+      ? browserLocation
+      : null
+
     let buildPluginHooks = () => ({})
 
     try {
@@ -330,16 +338,4 @@ export function buildConfig(state, config = {}) {
   }
 
   return corePlugins.afterGetConfig(state)
-}
-
-function resolveModule(path, config) {
-  try {
-    // Load any module extension that is supported by Node (.js, .mjs, .node, etc),
-    // or that have been registered via Node require hooks (.jsx, .ts, etc)
-    return require.resolve(path)
-  } catch {
-    // Fallback to the extensions that have been registered with Babel
-    const extensions = (config && config.extensions) || DEFAULT_EXTENSIONS
-    return extensions.map(ext => path + ext).find(fs.pathExistsSync)
-  }
 }

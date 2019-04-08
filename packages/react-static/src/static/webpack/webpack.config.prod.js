@@ -14,7 +14,7 @@ function common(state) {
   const { analyze, config, debug } = state
   const { ROOT, DIST, NODE_MODULES, SRC, ASSETS } = config.paths
 
-  process.env.REACT_STATIC_ENTRY_PATH = path.resolve(ROOT, config.entry)
+  process.env.REACT_STATIC_ENTRY_PATH = config.entry
   process.env.REACT_STATIC_SITE_ROOT = config.siteRoot
   process.env.REACT_STATIC_BASE_PATH = config.basePath
   process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
@@ -70,7 +70,7 @@ function common(state) {
     mode: 'production',
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: config.disableRuntime
-      ? path.resolve(ROOT, config.entry)
+      ? config.entry
       : [
           require.resolve('../../bootstrapPlugins'),
           require.resolve('../../bootstrapTemplates'),

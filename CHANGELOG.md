@@ -1,3 +1,13 @@
+# 7.0.6
+
+### Improved
+
+- Typescript template now uses JS for static.config.js. It will use typescript in the future, but for now is not fully or reliably supported.
+- Config and plugin resolution is now more accurate.
+- App entry resolution is now more reliable.
+- config.paths are now more reliably detected and parsed
+- Typscript template is now more stable
+
 # 7.0.5
 
 ### Improved

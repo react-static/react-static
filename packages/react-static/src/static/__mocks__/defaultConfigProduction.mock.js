@@ -6,7 +6,7 @@ export default {
   inlineCss: false,
   outputFileRate: 100,
   extractCssChunks: false,
-  entry: './root/src/index.js',
+  entry: 'index.js',
   paths: {
     ROOT: './root/',
     TEMP: './root/tmp',

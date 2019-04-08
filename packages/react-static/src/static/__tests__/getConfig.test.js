@@ -37,6 +37,10 @@ const testConfiguration = (configuration, configurationMock) => {
   expect(configuration.getRoutes).toBeInstanceOf(Function)
 }
 
+const defualtConfig = {
+  packageConfig: {},
+}
+
 describe('buildConfig', () => {
   let reactStaticEnviroment
   let reactStaticPrefetchRate
@@ -106,23 +110,13 @@ describe('getConfig', () => {
     it('should return a configuration using default file', async () => {
       // mapped by the moduleNameMapper in package.js -> src/static/__mocks__/static.config.js
       // default path is 'static.config.js'
-      const state = getConfig({})
+      const state = getConfig(defualtConfig)
 
       testConfiguration(state.config, defaultConfigProduction)
     })
   })
 
   describe('when provided a path to configuration', () => {
-    it('should return a configuration using file provided', async () => {
-      // mapped by the moduleNameMapper in package.json -> src/static/__mocks__/static.config.js
-      const state = getConfig({ configPath: './path/to/static.config.js' })
-
-      testConfiguration(state.config, {
-        ...defaultConfigProduction,
-        entry: 'path/to/entry/index.js',
-      })
-    })
-
     it('should find the configuration file using any supported extension', async () => {
       // mapped by the moduleNameMapper in package.json -> src/static/__mocks__/static.config.jsx
       const state = getConfig({ configPath: './path/to/static.config' })
@@ -145,7 +139,7 @@ describe('getConfig', () => {
         afterGetConfig: config => Promise.resolve(config),
       }))
 
-      expect(() => getConfig({})).toThrow(
+      expect(() => getConfig(defualtConfig)).toThrow(
         'Expected hook to return a value, but received promise instead. A plugin is attempting to use a sync plugin with an async function!'
       )
     })

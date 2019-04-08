@@ -15,4 +15,4 @@ export default () => (
       <a href="https://twitter.com/swyx">Report issues with this template</a>
     </p>
   </div>
-))
+)

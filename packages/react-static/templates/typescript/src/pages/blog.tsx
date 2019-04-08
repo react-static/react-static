@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouteData } from 'react-static'
-import { Link } from 'components/router'
+import { Link } from '@reach/router'
 import { Post } from 'types'
 
 export default () => {

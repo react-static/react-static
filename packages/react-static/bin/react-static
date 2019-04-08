@@ -1,10 +1,18 @@
 #!/usr/bin/env node
-
-const pkg = require('../package.json')
+const path = require('path')
+//
 
 init()
 
 function init() {
+  const pkg = require('../package.json')
+  let packageConfig = {}
+  try {
+    packageConfig = require(path.resolve(process.cwd(), 'package.json'))
+    packageConfig = packageConfig['react-static'] || {}
+  } catch (err) {
+    //
+  }
   const argv = require('minimist')(process.argv.slice(2))
 
   const commands = argv._
@@ -19,6 +27,7 @@ function init() {
     incremental: argv.incremental || argv.i || argv.I,
     analyze: argv.analyze || argv.a || argv.A,
     isCLI: true,
+    packageConfig,
   }
 
   if (options.version) {
