@@ -1,5 +1,5 @@
 export default ({ includePaths = [], extensions = ['.md', '.mdx'] }) => ({
-  config: config => {
+  afterGetConfig: ({ config }) => {
     config.extensions = [...config.extensions, ...extensions]
   },
   webpack: (webpackConfig, { defaultLoaders }) => {

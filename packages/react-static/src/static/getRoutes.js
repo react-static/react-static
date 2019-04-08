@@ -58,7 +58,7 @@ export default async function getRoutes(state, callback = d => d) {
       routes: allNormalizedRoutes,
     }
 
-    return callback(plugins.afterPrepareRoutes(state))
+    return callback(await plugins.afterPrepareRoutes(state))
   }
 
   return rebuildRoutes.current()

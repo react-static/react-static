@@ -57,7 +57,7 @@
     "cors": "^2.8.5",
     "css-loader": "^2.0.1",
     "download-git-repo": "^1.1.0",
-    "extract-css-chunks-webpack-plugin": "^4.0.2",
+    "extract-css-chunks-webpack-plugin": "^4.3.0",
     "file-loader": "2.0.0",
     "fs-extra": "^7.0.1",
     "git-promise": "^0.3.1",
