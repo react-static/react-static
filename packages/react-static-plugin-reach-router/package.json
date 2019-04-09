@@ -15,7 +15,7 @@
     "preversion": "yarn build"
   },
   "peerDependencies": {
-    "@reach/router": "^0"
+    "@reach/router": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
