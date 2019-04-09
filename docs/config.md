@@ -173,11 +173,11 @@ By using `extractCssChunks` option and putting code splitting at appropriate pla
 
 ### `Document`
 
-It's never been easier to customize the root document of your website! `Document` is an optional (and again, recommended) react component responsible for rendering the root of your website.
+It's never been easier to customize the root document of your website! `Document` is an optional (and again, recommended) react component responsible for rendering the HTML shell of your website.
 
 Things you may want to place here:
 
-- Custom `head` and/or `meta` tags
+- Site-wide custom `head` and/or `meta` tags
 - Site-wide analytics scripts
 - Site-wide stylesheets
 
@@ -187,14 +187,22 @@ Props
 - `Head: ReactComponent` - **Required** - An enhanced version of the default `head` tag.
 - `Body: ReactComponent` - **Required** - An enhanced version of the default `body` tag.
 - `children: ReactComponent` - **Required** - The main content of your site, including layout, routes, etc.
-- `routeInfo: Object` - All of the current route's information, including any `routeData`.
-- `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
-- `renderMeta: Object` - Any data optionally set via hooks or transformers during the render process.
+- `state: Object` - The current state of the export.
+  - `routeInfo: Object` - All of the current route's information, including any `routeData`.
+  - `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
+  - `renderMeta: Object` - Any data optionally set via hooks or transformers during the render process.
+  - And much more!
 
 ```javascript
 // static.config.js
 export default {
-  Document: ({ Html, Head, Body, children, siteData, renderMeta }) => (
+  Document: ({
+    Html,
+    Head,
+    Body,
+    children,
+    state: { siteData, renderMeta },
+  }) => (
     <Html lang="en-US">
       <Head>
         <meta charSet="UTF-8" />

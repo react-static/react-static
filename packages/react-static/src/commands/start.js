@@ -4,7 +4,6 @@ import runDevServer from '../static/webpack/runDevServer'
 import getConfig from '../static/getConfig'
 import extractTemplates from '../static/extractTemplates'
 import generateTemplates from '../static/generateTemplates'
-import fetchSiteData from '../static/fetchSiteData'
 import createIndexPlaceholder from '../utils/createIndexPlaceholder'
 //
 
