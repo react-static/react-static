@@ -23,7 +23,6 @@ export default (async function start(state = {}) {
 
   // Use a callback (a subscription)
   getConfig(state, async state => {
-    state = await fetchSiteData(state)
     state = await createIndexPlaceholder(state)
     state = await generateBrowserPlugins(state)
 
