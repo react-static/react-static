@@ -6,7 +6,7 @@ import WebpackDevServer from 'webpack-dev-server'
 import io from 'socket.io'
 //
 import { getStagedRules } from './rules'
-import { prepareRoutes, outputClientStats } from '../'
+import { prepareRoutes, outputClientStats, extractTemplates } from '../'
 import {
   getRoutePath,
   makeHookReducer,
@@ -250,6 +250,7 @@ export async function startDevServer({ config }) {
         paths = config.routes.map(route => route.path)
       }
       paths = paths.map(getRoutePath)
+      await extractTemplates(config, { dev: true })
       reloadWebpackRoutes(config)
       socket.emit('message', { type: 'reloadRoutes', paths })
     })
