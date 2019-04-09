@@ -21,7 +21,7 @@ declare module 'react-static' {
   export class Routes extends React.Component<{ path: String }> {}
   export class Root extends React.Component {}
   export function useRouteData<T = any>(): T
-  export const useSiteData: object
+  export function useSiteData<T = any>(): T
   export function prefetch(path: any): Promise<any>
   export function addPrefetchExcludes(arg: String[]): void
   export const Prefetch: React.Component
