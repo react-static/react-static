@@ -1,3 +1,10 @@
+# 7.0.7
+
+### Improved
+
+- Fixed issues with siteData being fetched twice during dev mode
+- Updated typescript template to use latest depenencies
+
 # 7.0.6
 
 ### Improved
