@@ -17,7 +17,8 @@
     "react-static": "^7.0.0",
     "react-static-plugin-reach-router": "^7.0.0",
     "react-static-plugin-sitemap": "^7.0.0",
-    "react-static-plugin-source-filesystem": "^7.0.0"
+    "react-static-plugin-source-filesystem": "^7.0.0",
+    "react-static-plugin-typescript": "^7.0.0"
   },
   "devDependencies": {
     "@types/node": "^10.12.23",
@@ -26,7 +27,6 @@
     "@types/react-dom": "^16.8.0",
     "@types/react-hot-loader": "^4.1.0",
     "@types/webpack-env": "^1.13.6",
-    "react-static-plugin-typescript": "^3.1.0",
     "serve": "10.1.1",
     "typescript": "^3.4.1"
   }
