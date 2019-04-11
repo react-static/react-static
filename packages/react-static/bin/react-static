@@ -19,7 +19,7 @@ function init() {
   const help = argv.help || argv.h || argv.H
   const options = {
     version: argv.version || argv.v || argv.V,
-    config: argv.config || argv.c || argv.C,
+    configPath: argv.config || argv.c || argv.C,
     name: argv.name || argv.n || argv.N,
     template: argv.template || argv.t || argv.T,
     staging: argv.staging || argv.s || argv.S,
