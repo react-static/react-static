@@ -1,3 +1,9 @@
+# 7.0.8
+
+### Improved
+
+- Fixed issues with custom config specified using `-c` or `-config` is not loaded
+
 # 7.0.7
 
 ### Improved
