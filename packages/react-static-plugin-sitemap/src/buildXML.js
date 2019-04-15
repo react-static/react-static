@@ -84,15 +84,11 @@ export function generateXML(
           ({ key, value }) => `<${key}>${encode(value)}</${key}>`
         ),
         '</url>',
-      ].join('\n')
+      ].join('')
     })
-    .join('\n')
+    .join('')
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    ${xmlRoutes}
-    </urlset>
-    </xml>`
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${xmlRoutes}</urlset></xml>`
 }
 
 export function getPermaLink(path, prefixPath) {
