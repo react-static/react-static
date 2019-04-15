@@ -42,7 +42,7 @@ export function generateXML(
   { getAttributes = () => ({}) } = {},
   prefixPath
 ) {
-  const { config, routes } = state
+  const { config, routes, staging } = state
 
   if (!prefixPath) {
     throw new Error('The sitemap url prefix cannot be empty or undefined!')
@@ -84,9 +84,9 @@ export function generateXML(
           ({ key, value }) => `<${key}>${encode(value)}</${key}>`
         ),
         '</url>',
-      ].join('')
+      ].join(staging ? '/n' : '')
     })
-    .join('')
+    .join(staging ? '/n' : '')
 
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${xmlRoutes}</urlset></xml>`
 }
