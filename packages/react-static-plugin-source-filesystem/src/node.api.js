@@ -21,7 +21,7 @@ export default ({
     const globExtensions = [...config.extensions, ...extensions]
       .map(ext => `${ext.slice(1)}`) // cut off the period of the extension
       .join(',') // join them for the glob string
-    const pagesGlob = `${location}/**/*.{${globExtensions}}`
+    const pagesGlob = nodePath.join(location, '**', `*.{${globExtensions}}`)
     // Get the pages
 
     if (debug) {
@@ -37,12 +37,20 @@ export default ({
           const originalPath = page
           // Glob path will always have unix style path, convert to windows if necessary
           const template = nodePath.resolve(page)
-          // Make sure the path is relative to the root of the site
-          let path = page.replace(`${location}`, '').replace(/\..*/, '')
-          // turn windows paths back to unix
+          // Make sure the path is relative to the location root
+          let path = nodePath.relative(location, template)
+          // Cutoff the extension
+          path = nodePath.join(
+            nodePath.dirname(path),
+            nodePath.basename(path, nodePath.extname(path))
+          )
+          // Turn windows paths back to unix
           path = path.split('\\').join('/')
+          // Make sure it starts with a slash
+          path = path[0] === '/' ? path : `/${path}`
           // Turn `/index` paths into roots`
           path = path.replace(/\/index$/, '/')
+          // Add the path prefix
           path = pathPrefix ? pathJoin(pathPrefix, path) : path
           // Return the route
           return createRoute({
