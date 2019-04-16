@@ -8,15 +8,17 @@ const escapedPathSeps = escapeRegExp('\\/')
 
 export const chunkNameFromFile = filename =>
   // Remove the extension
-  path.join(path.dirname(filename), path.basename(filename, path.extname(filename)))
+  path
+    .join(
+      path.dirname(filename),
+      path.basename(filename, path.extname(filename))
+    )
     // Remove the drive letter or leading (back)slash
     .replace(/^(?:[A-Z]:)?(?:\\|\/)/, '')
     // Now turn it into a name
     .replace(new RegExp(`[${escapedPathSeps}]`, 'g'), '-')
 
-
 export const absoluteToRelativeChunkName = (ROOT, chunkName) => {
-
   const pathPrefix = chunkNameFromFile(ROOT)
 
   // inner components can simply be added aswell
