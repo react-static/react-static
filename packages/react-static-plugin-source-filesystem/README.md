@@ -10,7 +10,7 @@ In an existing react-static site run:
 $ yarn add react-static-plugin-source-filesystem
 ```
 
-Then add the plugin to your `static.config.js` with a valid `location` directory in the options:
+Then add the plugin to your `static.config.js` with a valid `location` directory in the options. Make sure to import the path at the top of the `static.config.js`, such as: `import path from 'path'`. The plugin code is:
 
 ```javascript
 export default {
