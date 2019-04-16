@@ -12,14 +12,23 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-sass](/packages/react-static-plugin-sass) - Adds SSR and general support for SASS
   - [react-static-plugin-less](/packages/react-static-plugin-less) - Adds SSR and general support for LESS
   - [react-static-plugin-jss](/packages/react-static-plugin-jss) - Adds SSR support for JSS
+  - [react-static-plugin-css-modules](/packages/react-static-plugin-css-modules) - Adds SSR support for CSS modules
 - React Alternatives
   - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
 - Routing
   - [react-static-plugin-react-location](/packages/react-static-plugin-react-location) - Adds react-location support
   - [react-static-plugin-reach-router](/packages/react-static-plugin-reach-router) - Adds @reach/router support
   - [react-static-plugin-react-router](/packages/react-static-plugin-react-router) - Adds react-router support
+- Content
+  - [react-static-plugin-source-filesystem](/packages/react-static-plugin-source-filesystem) - Creates routes from files in a directory
+  - [react-static-plugin-mdx](/packages/react-static-plugin-mdx) - Adds support for MDX
 - Type checking
-  - [react-static-plugin-typescript](https://www.npmjs.com/package/react-static-plugin-typescript) - Allows you to write your components in TypeScript
+  - [react-static-plugin-typescript](packages/react-static-plugin-typescript) - Allows you to write your components in TypeScript
+- Assets
+  - [react-static-plugin-sitemap](packages/react-static-plugin-sitemap) - Exports sitemap information as XML
+  
+### Unofficial Plugins via NPM
+
 - Assets
   - [react-static-plugin-favicons](https://www.npmjs.com/package/react-static-plugin-favicons) - Generate (fav)icons in many different sizes for many different platforms, and add them to your site's metadata
 
