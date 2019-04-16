@@ -20,7 +20,7 @@
     "start": "yarn watch",
     "test": "yarn format && yarn lint && yarn unitTest",
     "lint": "eslint src",
-    "format": "prettier 'README.md' '{src,templates/*/src}/**/*.js' --write",
+    "format": "prettier README.md {src,templates/*/src}/**/*.js --write",
     "unitTest": "cross-env NODE_ENV=test yarn jest ./src",
     "unitTestWatch": "cross-env NODE_ENV=test yarn jest src --watch",
     "preversion": "yarn build && yarn test",
