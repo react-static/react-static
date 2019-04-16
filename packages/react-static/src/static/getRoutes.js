@@ -37,8 +37,8 @@ export default async function getRoutes(state, callback = d => d) {
     if (!hasIndex && !incremental) {
       throw new Error(
         'Could not find a route for the "index" page of your site! This is ' +
-          'required. Please create a page or specify a route and template for ' +
-          'this page.'
+          'required. Please create a page or specify a route and template ' +
+          'for this page.'
       )
     }
 
