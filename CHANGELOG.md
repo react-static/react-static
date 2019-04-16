@@ -1,3 +1,10 @@
+# 7.0.9
+
+### Improved
+
+- `react-static`: Alternative dev server port is now accurate
+- `react-static`: Dev server location is now logged in blue for more visibility
+
 # 7.0.8
 
 ### Improved
@@ -142,6 +149,7 @@ Migration tips are listed as sub-items if applicable.
 - Plugin methods like `webpack` must now explicityly return `undefined` if they wish to opt-out (previously you could return anything falsey)
 - Source maps are no longer exported by default in production. This may break logging or reporting tools if you rely on production source maps. If you wish to still export them in production, turn them on via `config.productionSourceMaps: true`
 - Though still available, the `start`, `bundle` and `export` commands are being deprecated and have been removed from the documentation.
+- The child renderer and corresponding `getComponentForPath` utility previously provided via the `Routes` component has been deprecated.
 
 # 6.3.6
 
