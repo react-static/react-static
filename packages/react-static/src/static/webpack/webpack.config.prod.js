@@ -167,7 +167,7 @@ export default function(state) {
     (context, request, callback) => {
       const resolved = path.resolve(context, request)
       if (
-        [/react-static\/lib\/browser/, /webpack-flush-chunks/].some(d =>
+        [/react-static(\\|\/)lib(\\|\/)browser/, /webpack-flush-chunks/].some(d =>
           d.test(resolved)
         )
       ) {
