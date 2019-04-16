@@ -4,11 +4,13 @@ import { escapeRegExp } from './'
 
 // Instead of using path.sep, we always want to test for all of them. This makes
 // the tests consistent and means we can write tests with either separator
-const escapedPathSeps = escapeRegExp('\\/')
+const escapedPathSeps = escapeRegExp(`${path.win32.sep}${path.posix.sep}`)
 
-export const chunkNameFromFile = filename =>
+export const chunkNameFromFile = filename => {
+  // Normalize filename for path.join
+  filename = filename.replace(new RegExp(`[${escapedPathSeps}]`, 'g'), path.sep)
   // Remove the extension
-  path
+  return path
     .join(
       path.dirname(filename),
       path.basename(filename, path.extname(filename))
@@ -17,6 +19,7 @@ export const chunkNameFromFile = filename =>
     .replace(/^(?:[A-Z]:)?(?:\\|\/)/, '')
     // Now turn it into a name
     .replace(new RegExp(`[${escapedPathSeps}]`, 'g'), '-')
+}
 
 export const absoluteToRelativeChunkName = (ROOT, chunkName) => {
   const pathPrefix = chunkNameFromFile(ROOT)

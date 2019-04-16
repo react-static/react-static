@@ -44,8 +44,8 @@ export default ({
             nodePath.dirname(path),
             nodePath.basename(path, nodePath.extname(path))
           )
-          // Turn windows paths back to unix
-          path = path.split('\\').join('/')
+          // Ensure paths are unix
+          path = path.split(nodePath.sep).join(nodePath.posix.sep)
           // Make sure it starts with a slash
           path = path[0] === '/' ? path : `/${path}`
           // Turn `/index` paths into roots`
