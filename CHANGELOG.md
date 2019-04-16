@@ -6,6 +6,8 @@
 - `react-static-plugin-source-filesystem`: Fixed resolution on Windows
 - `react-static`: Fixed building chunks on Windows
 - `react-static`: Fixed production build on Windows
+- `react-static-plugin-sitemap`: Removed invalid closing `</xml>` tag
+- `react-static-plugin-sitemap`: Improved minification of generated sitemap XML in production
 
 # 7.0.7
 
