@@ -17,7 +17,9 @@ describe('utils/chunkBuilder', () => {
     })
 
     it('can generate chunkNames from absolute files on windows', () => {
-      expect(chunkNameFromFile('C:\\bar\\bazz\\component.jsx')).toBe('bar-bazz-component')
+      expect(chunkNameFromFile('C:\\bar\\bazz\\component.jsx')).toBe(
+        'bar-bazz-component'
+      )
     })
   })
 
@@ -47,9 +49,9 @@ describe('utils/chunkBuilder', () => {
     })
 
     it('leaves relative chunk names untouched on windows', () => {
-      expect(absoluteToRelativeChunkName('C:\\foo\\bar\\bazz\\', 'src-bar')).toBe(
-        'src-bar'
-      )
+      expect(
+        absoluteToRelativeChunkName('C:\\foo\\bar\\bazz\\', 'src-bar')
+      ).toBe('src-bar')
     })
   })
 })
