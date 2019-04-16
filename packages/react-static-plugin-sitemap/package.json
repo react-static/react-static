@@ -11,7 +11,8 @@
     "build": "babel src --out-dir ./dist --ignore src/**/*.spec.js,src/**/*.test.js",
     "watch": "yarn build --watch",
     "start": "yarn watch",
-    "test": "yarn format && jest",
+    "test": "yarn format && yarn unitTest",
+    "unitTest": "jest",
     "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
