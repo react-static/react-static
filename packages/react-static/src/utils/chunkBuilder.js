@@ -1,44 +1,30 @@
 import path from 'path'
 
-export const chunkNameFromFile = filename => {
-  const chunkName = filename
-    .replace(path.extname(filename), '') // extension
-    .replace(new RegExp(`[${path.sep}]`, 'g'), '-') // slash to -
+import { escapeRegExp } from './'
 
-  if (chunkName[0] === '-') {
-    return chunkName.substr(1)
-  }
+// Instead of using path.sep, we always want to test for all of them. This makes
+// the tests consistent and means we can write tests with either separator
+const escapedPathSeps = escapeRegExp('\\/')
 
-  return chunkName
-}
+export const chunkNameFromFile = filename =>
+  // Remove the extension
+  path.join(path.dirname(filename), path.basename(filename, path.extname(filename)))
+    // Remove the drive letter or leading (back)slash
+    .replace(/^(?:[A-Z]:)?(?:\\|\/)/, '')
+    // Now turn it into a name
+    .replace(new RegExp(`[${escapedPathSeps}]`, 'g'), '-')
+
 
 export const absoluteToRelativeChunkName = (ROOT, chunkName) => {
-  const pathPrefix = ROOT.replace(new RegExp(`[${path.sep}]`, 'g'), '-').substr(
-    1
-  )
+
+  const pathPrefix = chunkNameFromFile(ROOT)
 
   // inner components can simply be added aswell
   if (!chunkName.startsWith(pathPrefix)) {
     return chunkName
   }
 
-  // the templates starts with the absolute path, thats the ones we want to replace
-  let relativeChunkName = chunkName.replace(
-    new RegExp(`${pathPrefix}`, 'g'),
-    ''
-  )
-
-  if (relativeChunkName.startsWith('-')) {
-    relativeChunkName = relativeChunkName.substr(1)
-  }
-
-  // cut of the extension if any
-  if (relativeChunkName.indexOf('.')) {
-    relativeChunkName = relativeChunkName.substr(
-      0,
-      relativeChunkName.indexOf('.')
-    )
-  }
-
-  return relativeChunkName
+  // The templates starts with the absolute path, that's the one we want to
+  // replace. It's length + 1 because otherwise it would start with a hyphen
+  return chunkNameFromFile(chunkName).substring(pathPrefix.length + 1)
 }
