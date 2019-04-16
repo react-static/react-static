@@ -92,5 +92,13 @@ describe('normalizeRoute', () => {
         })
       })
     })
+
+    describe('when path is not normalised', () => {
+      it('should throw an error', () => {
+        const route = { template: 'windows\\path' }
+
+        expect(() => normalizeRoute(route, undefined, d => d)).toThrow(Error)
+      })
+    })
   })
 })

@@ -36,7 +36,9 @@ export default async function getRoutes(state, callback = d => d) {
     // If no Index page was found, throw an error. This is required
     if (!hasIndex && !incremental) {
       throw new Error(
-        'Could not find a route for the "index" page of your site! This is required. Please create a page or specify a route and template for this page.'
+        'Could not find a route for the "index" page of your site! This is ' +
+          'required. Please create a page or specify a route and template ' +
+          'for this page.'
       )
     }
 
@@ -46,7 +48,10 @@ export default async function getRoutes(state, callback = d => d) {
         path: '404',
         template: path.relative(
           state.config.paths.ROOT,
-          path.resolve(__dirname, '../browser/components/Default404')
+          path.resolve(
+            __dirname,
+            path.join('..', 'browser', 'components', 'Default404')
+          )
         ),
       })
     }
@@ -117,6 +122,13 @@ export function normalizeAllRoutes(routes, state) {
 
     if (normalizedRoute.path === '404') {
       has404 = true
+    }
+
+    if (normalizedRoute.path.indexOf('\\') !== -1) {
+      throw new Error(
+        'Plugins must return a normalized path for the `path` key of a route,' +
+          ' which is a path with / and not \\.'
+      )
     }
   }
 

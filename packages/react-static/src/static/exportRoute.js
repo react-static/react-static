@@ -103,11 +103,9 @@ export default (async function exportRoute(state) {
 
   let FinalComp
 
-  // Get the react component from the Comp and
-  // pass it the export context. This uses
-  // reactContext under the hood to pass down
-  // the exportContext, since react's new context
-  // api doesn't survive across bundling.
+  // Get the react component from the Comp and pass it the export context. This
+  // uses reactContext under the hood to pass down the exportContext, since
+  // react's new context api doesn't survive across bundling.
   Comp = config.disableRuntime ? Comp : Comp(embeddedRouteInfo)
 
   if (route.redirect) {
@@ -116,7 +114,9 @@ export default (async function exportRoute(state) {
     FinalComp = props => (
       <ReportChunks
         report={chunkName => {
-          // if we are building to a absolute path we must make the detected chunkName relative and matching to the one we set in generateTemplates
+          // if we are building to a absolute path we must make the detected
+          // chunkName relative and matching to the one we set in
+          // generateTemplates
           if (!config.paths.DIST.startsWith(config.paths.ROOT)) {
             chunkName = absoluteToRelativeChunkName(
               config.paths.ROOT,
@@ -173,7 +173,8 @@ export default (async function exportRoute(state) {
 
     if (config.renderToElement) {
       throw new Error(
-        `config.renderToElement has been deprecated in favor of the 'beforeRenderToElement' or 'beforeRenderToHtml' hooks instead.`
+        `config.renderToElement has been deprecated in favor of the ` +
+          `'beforeRenderToElement' or 'beforeRenderToHtml' hooks instead.`
       )
     }
 
@@ -185,9 +186,12 @@ export default (async function exportRoute(state) {
 
     if (config.renderToHtml) {
       throw new Error(
-        `config.renderToHtml has been deprecated in favor of the 'beforeRenderToHtml' or 'beforeHtmlToDocument' hooks instead.`
+        `config.renderToHtml has been deprecated in favor of the ` +
+          `'beforeRenderToHtml' or 'beforeHtmlToDocument' hooks instead.`
       )
     }
+
+    console.log('Time to render to string and extract', RenderedComp)
 
     appHtml = renderToStringAndExtract(RenderedComp)
 
@@ -195,7 +199,8 @@ export default (async function exportRoute(state) {
   } catch (error) {
     if (error.then) {
       error.message =
-        'Components are not allowed to suspend during static export. Please make its data available synchronously and try again!'
+        'Components are not allowed to suspend during static export. Please ' +
+        'make its data available synchronously and try again!'
     }
     error.message = `Failed exporting HTML for URL ${route.path} (${
       route.template

@@ -7,7 +7,7 @@
     "build": "babel src --out-dir .",
     "watch": "yarn build --watch",
     "test": "yarn format",
-    "format": "prettier 'src/**/*.js' --write",
+    "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
   "devDependencies": {

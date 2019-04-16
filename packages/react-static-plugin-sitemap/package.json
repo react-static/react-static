@@ -12,7 +12,7 @@
     "watch": "yarn build --watch",
     "start": "yarn watch",
     "test": "yarn format && jest",
-    "format": "prettier 'src/**/*.js' --write",
+    "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
   "devDependencies": {
