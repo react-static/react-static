@@ -13,6 +13,9 @@ $ yarn add react-static-plugin-source-filesystem
 Then add the plugin to your `static.config.js` with a valid `location` directory in the options:
 
 ```javascript
+...
+import path from 'path'
+...
 export default {
   plugins: [
     [
