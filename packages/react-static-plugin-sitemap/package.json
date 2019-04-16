@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-sitemap",
-  "version": "7.0.0",
+  "version": "7.0.8",
   "description": "A React-Static plugin for exporting sitemap information",
   "main": "dist/node.api.js",
   "repository": "https://github.com/nozzle/react-static.git",
