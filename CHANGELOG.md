@@ -3,6 +3,8 @@
 ### Improved
 
 - Fixed issues with custom config specified using `-c` or `-config` is not loaded
+- `react-static-plugin-source-filesystem`: Fixed resolution on Windows
+- `react-static`: Fixed building chunks on Windows
 
 # 7.0.7
 
