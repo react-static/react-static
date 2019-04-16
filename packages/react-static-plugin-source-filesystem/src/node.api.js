@@ -14,10 +14,19 @@ export default ({
     const { config, stage, debug } = state
     if (!location) {
       throw new Error(
-        'react-static-plugin-source-filesystem: A valid `location` directory is required to use this plugin'
+        'react-static-plugin-source-filesystem: A valid `location` directory ' +
+          'is required to use this plugin'
       )
     }
     // Make a glob extension to get all pages with the set extensions from the pages directory
+    // It should be a directory, not index.js inside that directory. This will
+    // happen when using .resolve in some instances
+    if (/index\.js$/.test(location)) {
+      location = nodePath.dirname(location)
+    }
+
+    // Make a glob extension to get all pages with the set extensions from the
+    // pages directory
     const globExtensions = [...config.extensions, ...extensions]
       .map(ext => `${ext.slice(1)}`) // cut off the period of the extension
       .join(',') // join them for the glob string
