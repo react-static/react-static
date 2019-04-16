@@ -10,15 +10,17 @@ export const chunkNameFromFile = filename => {
   // Normalize filename for path.join
   filename = filename.replace(new RegExp(`[${escapedPathSeps}]`, 'g'), path.sep)
   // Remove the extension
-  return path
-    .join(
-      path.dirname(filename),
-      path.basename(filename, path.extname(filename))
-    )
-    // Remove the drive letter or leading (back)slash
-    .replace(/^(?:[A-Z]:)?(?:\\|\/)/, '')
-    // Now turn it into a name
-    .replace(new RegExp(`[${escapedPathSeps}]`, 'g'), '-')
+  return (
+    path
+      .join(
+        path.dirname(filename),
+        path.basename(filename, path.extname(filename))
+      )
+      // Remove the drive letter or leading (back)slash
+      .replace(/^(?:[A-Z]:)?(?:\\|\/)/, '')
+      // Now turn it into a name
+      .replace(new RegExp(`[${escapedPathSeps}]`, 'g'), '-')
+  )
 }
 
 export const absoluteToRelativeChunkName = (ROOT, chunkName) => {
