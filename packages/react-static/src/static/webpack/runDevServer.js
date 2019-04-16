@@ -51,7 +51,7 @@ async function runExpressServer(state) {
     console.log(
       chalk.red(
         `Warning! Port ${intendedPort} is not available. Using port ${chalk.green(
-          intendedPort
+          port
         )} instead!`
       )
     )
@@ -200,8 +200,9 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
         if (first) {
           timeEnd(chalk.green('[\u2713] Application Bundled'))
           console.log(
-            chalk.green('[\u2713] App serving at'),
-            `${state.config.devServer.host}:${state.config.devServer.port}`
+            `${chalk.green('[\u2713] App serving at')} ${chalk.blue(
+              `${state.config.devServer.host}:${state.config.devServer.port}`
+            )}`
           )
         } else {
           timeEnd(chalk.green('[\u2713] Bundle Updated'))
