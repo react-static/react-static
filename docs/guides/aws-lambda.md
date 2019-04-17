@@ -6,6 +6,7 @@ As the Filesystem is _readonly_ in Serverless Environments we just have to confi
 
 ```javascript
 //static.config.js
+let os = require('os')
 const isBuild = process.env.NODE_ENV === 'production'
 
 let pathConfig = {}
@@ -16,6 +17,7 @@ if (isBuild) {
     dist: os.tmpdir() + '/dist',
     devDist: os.tmpdir() + '/dev-server',
     assets: os.tmpdir() + '/dist',
+    artifacts: os.tmpdir() + '/artifacts'
   }
 }
 
@@ -33,6 +35,7 @@ The most simple lambda function would look like this:
 //set the BABEL_CACHE_PATH as early as possible
 process.env.BABEL_CACHE_PATH = '/tmp/babel-cache.json'
 
+require('react-static/lib/utils/binHelper')
 const rs = require('react-static/lib/commands/build').default
 
 const handler = async (event, context) => {
