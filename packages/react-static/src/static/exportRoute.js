@@ -191,8 +191,6 @@ export default (async function exportRoute(state) {
       )
     }
 
-    console.log('Time to render to string and extract', RenderedComp)
-
     appHtml = renderToStringAndExtract(RenderedComp)
 
     appHtml = await plugins.beforeHtmlToDocument(appHtml, state)
