@@ -4,21 +4,16 @@ import Head from 'react-helmet'
 
 export default class Redirect extends React.Component {
   render() {
+    const basePath = process.env.REACT_STATIC_PUBLIC_PATH || ''
     const { to, fromPath } = this.props
     let resolvedTo = typeof to === 'object' ? to.pathname : to
     if (!resolvedTo.includes('//')) {
-      resolvedTo = `${process.env.REACT_STATIC_PUBLIC_PATH}${
-        resolvedTo === '/' ? '' : resolvedTo
-      }`
+      resolvedTo = `${basePath}${resolvedTo === '/' ? '' : resolvedTo}`
     }
     return (
       <Head>
         {fromPath && (
-          <title>
-            {`${process.env.REACT_STATIC_PUBLIC_PATH}${
-              fromPath === '/' ? '' : fromPath
-            }`}
-          </title>
+          <title>{`${basePath}${fromPath === '/' ? '' : fromPath}`}</title>
         )}
         <link rel="canonical" href={resolvedTo} />
         <meta name="robots" content="noindex" />
