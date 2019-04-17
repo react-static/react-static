@@ -12,12 +12,15 @@ const isBuild = process.env.NODE_ENV === 'production'
 let pathConfig = {}
 
 if (isBuild) {
+  // Lambda OS is UNIX, and tmpdir() is inside a symlink directory, we need the actual path,
+  // which is why we use realpathSync
+  const tmp = require('fs').realpathSync(os.tmpdir());
   pathConfig = {
-    temp: os.tmpdir() + '/tmp',
-    dist: os.tmpdir() + '/dist',
-    devDist: os.tmpdir() + '/dev-server',
-    assets: os.tmpdir() + '/dist',
-    artifacts: os.tmpdir() + '/artifacts'
+    dist: tmp + '/dist',
+    temp: tmp + '/tmp',
+    buildArtifacts: tmp + '/artifacts',
+    devDist: tmp + '/dev-dist',
+    assets: tmp + '/dist'
   }
 }
 
