@@ -22,9 +22,6 @@ export default function({ config }) {
     },
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
-      `webpack-dev-server/client?${config.devServer.host}:${
-        config.devServer.port
-      }`,
       'webpack/hot/only-dev-server',
       ...(config.disableRuntime
         ? []
