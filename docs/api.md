@@ -11,7 +11,7 @@ React-Static is packed with awesome components, hooks, and functions to help you
   - [prefetch](#prefetch-)
   - [addPrefetchExcludes](#addprefetchexcludes)
 - `react-static/node`
-  - [reloadRoutes](#reloadRoutes)
+  - [reloadClientData](#reloadClientData)
   - [makePageRoutes](#makePageRoutes)
   - [createSharedData](#createSharedData)
 
@@ -233,7 +233,7 @@ addPrefetchExcludes(['dynamic', /admin/i])
 
 The following functions are available as exports from the `react-static/node` module. They are a separate import so that they may be used **primarily** in your static.config.js and node.api.js plugin files.
 
-## `reloadRoutes`
+## `reloadClientData`
 
 Intended for use in your `static.config.js` during development. When called it will rebuild all of your routes and routeData by calling `config.getRoutes()` again. Any new routes or data returned will be hot-reloaded into your running development application. Its main use cases are very applicable if your routes or routeData are changing constantly during development and you do not want to restart the dev server. You can use this method to reload when local files are changed, update at a set timing interval, or even subscribe to an event stream from an API or CMS.
 
@@ -245,26 +245,26 @@ Example:
 
 ```javascript
 // static.config.js
-import { reloadRoutes } from 'react-static/node'
+import { reloadClientData } from 'react-static/node'
 
 // Reload Manually
-reloadRoutes()
+reloadClientData()
 
 // Reload when files change
 import chokidar from 'chokidar'
-chokidar.watch('./docs').on('all', () => reloadRoutes())
+chokidar.watch('./docs').on('all', () => reloadClientData())
 
 // Reload from API or CMS event
-YourFavoriteCMS.subscribe(reloadRoutes)
+YourFavoriteCMS.subscribe(reloadClientData)
 
 // Reload your routes every 10 seconds
-setInterval(reloadRoutes, 10 * 1000)
+setInterval(reloadClientData, 10 * 1000)
 
 // ETC!
 
 export default {
   getRoutes: () => {
-    // This will run each time `reloadRoutes` is called
+    // This will run each time `reloadClientData` is called
   },
 }
 ```
