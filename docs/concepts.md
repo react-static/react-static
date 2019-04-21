@@ -25,7 +25,7 @@ React Static also has a very unique and amazing way of requesting the least amou
 
 ### Shared Route Data (Advanced)
 
-**Most projects don't need shared route data**. There are cases where it won't make sense to place an individual copy of the same piece of data in every route's `getData` function, nor do you want to load that data into every page with `siteData`. To solve this issue, you can use the [**sharedData**](../node-api.md#createSharedData) api to share a single piece of data between many routes with only a single JSON file.
+**Most projects don't need shared route data**. There are cases where it won't make sense to place an individual copy of the same piece of data in every route's `getData` function, nor do you want to load that data into every page with `siteData`. To solve this issue, you can use the [**sharedData**](./api.md#createSharedData) api to share a single piece of data between many routes with only a single JSON file.
 
 # Writing universal, "node-safe" code
 
