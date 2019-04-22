@@ -15,12 +15,12 @@
     "preversion": "yarn build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.4.0",
-    "@babel/preset-env": "^7.4.2"
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3"
   },
   "dependencies": {
-    "extract-css-chunks-webpack-plugin": "^4.0.2",
+    "extract-css-chunks-webpack-plugin": "^4.3.2",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0"
   },

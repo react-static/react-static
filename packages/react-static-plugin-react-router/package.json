@@ -18,9 +18,9 @@
     "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.4.0",
-    "@babel/preset-env": "^7.4.2",
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
