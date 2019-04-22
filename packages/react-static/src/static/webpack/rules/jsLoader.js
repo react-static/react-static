@@ -52,6 +52,7 @@ export default function({ config, stage }) {
           highlightCode: true,
         },
       },
+      'react-hot-loader/webpack',
     ],
   }
 }

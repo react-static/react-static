@@ -72,7 +72,6 @@ async function runExpressServer(state) {
   const devCompiler = webpack(devConfig)
 
   const devServerConfig = {
-    hot: true,
     contentBase: [state.config.paths.PUBLIC, state.config.paths.DIST],
     publicPath: '/',
     historyApiFallback: true,
@@ -82,6 +81,7 @@ async function runExpressServer(state) {
     stats: 'errors-only',
     noInfo: true,
     ...state.config.devServer,
+    hot: true,
     watchOptions: {
       ...(state.config.devServer
         ? state.config.devServer.watchOptions || {}

@@ -73,7 +73,6 @@ module.exports = (api, { external, hot, node, modules } = {}) => {
         r('babel-plugin-transform-react-remove-prop-types'),
       ]) ||
         []),
-      ...((hot && [r('react-hot-loader/babel')]) || []),
       r('@babel/plugin-transform-runtime'),
       r('babel-plugin-macros'),
       r('@babel/plugin-transform-destructuring'),

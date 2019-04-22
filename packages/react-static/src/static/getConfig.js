@@ -179,7 +179,7 @@ export function buildConfig(state, config = {}) {
     inlineCss: config.inlineCss || false,
     babelExcludes: config.babelExcludes || [],
     devServer: {
-      host: 'http://localhost',
+      host: 'localhost',
       port: 3000,
       ...(config.devServer || {}),
     },

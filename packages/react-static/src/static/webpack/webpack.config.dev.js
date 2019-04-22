@@ -22,6 +22,7 @@ export default function({ config }) {
     },
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
+      'react-hot-loader/patch',
       'webpack/hot/only-dev-server',
       ...(config.disableRuntime
         ? []
@@ -52,7 +53,7 @@ export default function({ config }) {
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
         react: resolveFrom(config.paths.NODE_MODULES, 'react'),
-        'react-dom': resolveFrom(__dirname, '@hot-loader/react-dom'),
+        'react-dom': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
       },
     },
     plugins: [
@@ -65,7 +66,6 @@ export default function({ config }) {
       new webpack.NamedModulesPlugin(),
       new CaseSensitivePathsPlugin(),
       new ExtractCssChunks({ filename: '[name].css' }), // never hash dev code
-      // new WebpackDashboard(),
     ],
     devtool: 'cheap-module-source-map',
   }
