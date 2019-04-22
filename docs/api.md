@@ -279,7 +279,7 @@ A utility function to aid in splitting an array of items into separate pages for
     - `pageSize: Int` - **Required** - The number of items on each page
     - `route{}: Object` - **Required**
       - `path: String` - **Required** - The base path that all pages will share
-      - `component: String` - The base component that all pages will share
+      - `template: String` - The base component that all pages will share
     - `decorate: Function` - **Required**
       - Arguments:
         - `items: Array` - The items for the given page
@@ -307,7 +307,7 @@ export default {
         route: {
           // Use this route as the base route
           path: 'blog',
-          component: 'src/containers/Blog',
+          template: 'src/containers/Blog',
         },
         decorate: (items, pageIndex, totalPages) => ({
           // For each page, supply the posts, page and totalPages
@@ -319,7 +319,7 @@ export default {
           // Make the routes for each blog post
           children: items.map(post => ({
             path: `/blog/post/${post.id}`,
-            component: 'src/containers/Post',
+            template: 'src/containers/Post',
             getData: () => ({
               post,
             }),
@@ -351,11 +351,11 @@ export default {
     return [
       {
         path: '/',
-        component: 'src/containers/Home',
+        template: 'src/containers/Home',
       },
       {
         path: '/blog',
-        component: 'src/containers/Docs',
+        template: 'src/containers/Docs',
         sharedData: {
           blogMenu, // `blogMenu` will now be available to this route via
           // RouteData but will only be loaded once per session!
@@ -363,7 +363,7 @@ export default {
       },
       {
         path: '/help',
-        component: 'src/containers/Help',
+        template: 'src/containers/Help',
         sharedData: {
           blogMenu, // `blogMenu` will now be available to this route via
           // RouteData but will only be loaded once per session!
