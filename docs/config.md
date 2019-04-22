@@ -44,7 +44,7 @@ A route is an `object` that represents a unique location in your site and is the
 It supports the following properties:
 
 - `path: String` - The **path** of the URL to match for this route, **excluding search parameters and hash fragments, relative to your `siteRoot + basePath` (if this is a child route, also relative to this route's parent path)**
-- `component: String` - The path of the component to be used to render this route. (Relative to the root of your project)
+- `template: String` - The path of the component to be used to render this route. (Relative to the root of your project)
 - `getData: async Function(resolvedRoute, { dev }) => Object` - An async function that returns or resolves an object of any necessary data for this route to render.
   - Arguments
     - `resolvedRoute: Object` - This is the resolved route this function is handling.
@@ -63,13 +63,13 @@ export default {
     // A simple route
     {
       path: 'about',
-      component: 'src/containers/About',
+      template: 'src/containers/About',
     },
 
     // A route with data
     {
       path: 'portfolio',
-      component: 'src/containers/Portfolio',
+      template: 'src/containers/Portfolio',
       getData: async () => ({
         portfolio,
       }),
@@ -78,13 +78,13 @@ export default {
     // A route with data and dynamically generated child routes
     {
       path: 'blog',
-      component: 'src/containers/Blog',
+      template: 'src/containers/Blog',
       getData: async () => ({
         posts,
       }),
       children: posts.map(post => ({
         path: `post/${post.slug}`,
-        component: 'src/containers/BlogPost',
+        template: 'src/containers/BlogPost',
         getData: async () => ({
           post,
         }),
@@ -94,7 +94,7 @@ export default {
     // A 404 component
     {
       path: '404',
-      component: 'src/containers/NotFound',
+      template: 'src/containers/NotFound',
     },
   ],
 }

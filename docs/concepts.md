@@ -120,7 +120,7 @@ Making a 404 page in React Static is extremely simple, but depending on your ser
 ```javascript
 {
   path: '404',
-  component: 'path/to/your/404/component.js'
+  template: 'path/to/your/404/component.js'
 }
 ```
 
