@@ -8,6 +8,7 @@
 
 - `react-static`: Alternative dev server port is now accurate
 - `react-static`: Dev server location is now logged in blue for more visibility
+- `react-static`: Dev server is only required once
 
 # 7.0.8
 
