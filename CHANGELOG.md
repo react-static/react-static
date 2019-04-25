@@ -1,7 +1,7 @@
 ### Improved
 
 - `react-static-plugin-mdx`: Bump webpack loader version to v1
-- `react-static`: Dev server is only required once
+- `react-static`: HMR dev server client is only required once, and HMR emitter now resolves to a single instance
 - `react-static`: Hot reloading stability has been improved to better support hooks like React.useState and React.useEffect
 
 # 7.0.9
