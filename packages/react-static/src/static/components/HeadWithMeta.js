@@ -18,7 +18,7 @@ export const InlineStyle = ({ clientCss }) => (
   />
 )
 
-export async function makeHeadWithMeta(state) {
+export default async function makeHeadWithMeta(state) {
   const {
     head,
     route,
@@ -57,7 +57,7 @@ export async function makeHeadWithMeta(state) {
         child.props.rel === 'stylesheet'
       ) {
         return true
-      } else if (child.type === 'style') {
+      } if (child.type === 'style') {
         return true
       }
       return false
@@ -71,9 +71,9 @@ export async function makeHeadWithMeta(state) {
         child.props.rel === 'stylesheet'
       ) {
         return false
-      } else if (child.type === 'style') {
+      } if (child.type === 'style') {
         return false
-      } else if (child.type === 'script') {
+      } if (child.type === 'script') {
         return false
       }
       return true

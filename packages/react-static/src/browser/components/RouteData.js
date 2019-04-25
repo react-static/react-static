@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouteData } from '../hooks/useRouteData'
+import useRouteData from '../hooks/useRouteData'
 
 export function RouteData({ children }) {
   return children(useRouteData())

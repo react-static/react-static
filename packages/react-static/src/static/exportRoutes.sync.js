@@ -1,9 +1,8 @@
-/* eslint-disable import/first, import/no-dynamic-require */
-
+/* eslint-disable import/first, import/order */
 const { setIgnorePath } = require('../utils/binHelper')
 
 import path from 'path'
-
+//
 import { DefaultDocument } from './components/RootComponents'
 import { poolAll, progress } from '../utils'
 import exportRoute from './exportRoute'
@@ -16,8 +15,10 @@ export default async state => {
 
   setIgnorePath(config.paths.ARTIFACTS)
 
+  // eslint-disable-next-line
   const Comp = require(path.resolve(config.paths.ARTIFACTS, 'static-app.js'))
     .default
+
   // Retrieve the document template
   const DocumentTemplate = config.Document || DefaultDocument
 

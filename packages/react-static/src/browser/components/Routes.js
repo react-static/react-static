@@ -9,7 +9,7 @@ import {
   prefetch,
   plugins,
   onReloadTemplates,
-} from '../'
+} from ".."
 import { useStaticInfo } from '../hooks/useStaticInfo'
 import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
 
@@ -94,7 +94,7 @@ const RoutesInner = ({ routePath }) => {
   )
 }
 
-export const Routes = ({ routePath }) => {
+const Routes = ({ routePath }) => {
   // Once a routePath goes into the Routes component,
   // useRoutePath must ALWAYS return the routePath used
   // in its parent, so we pass it down as context
@@ -107,3 +107,5 @@ export const Routes = ({ routePath }) => {
 
   return <CompWrapper routePath={routePath} />
 }
+
+export default Routes

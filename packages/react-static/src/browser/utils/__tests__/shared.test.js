@@ -9,7 +9,7 @@ import {
   trimDoubleSlashes,
   makePathAbsolute,
   getFullRouteData,
-} from '../'
+} from ".."
 
 describe('browser/utils', () => {
   describe('pathJoin()', () => {

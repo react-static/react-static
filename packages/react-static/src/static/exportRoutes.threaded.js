@@ -1,6 +1,5 @@
-/* eslint-disable import/first, import/no-dynamic-require */
-
 const { setIgnorePath } = require('../utils/binHelper')
+// eslint-disable-next-line
 const path = require('path')
 const getConfig = require('./getConfig').default
 const { DefaultDocument } = require('./components/RootComponents')
@@ -17,6 +16,7 @@ process.on('message', async state => {
     setIgnorePath(state.config.paths.ARTIFACTS)
 
     // Use the node version of the app created with webpack
+    // eslint-disable-next-line
     const Comp = require(path.resolve(
       state.config.paths.ARTIFACTS,
       'static-app.js'

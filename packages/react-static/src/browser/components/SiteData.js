@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSiteData } from '../hooks/useSiteData'
+import useSiteData from '../hooks/useSiteData'
 
 export function SiteData({ children }) {
   return children(useSiteData())

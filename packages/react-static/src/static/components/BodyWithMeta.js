@@ -14,7 +14,7 @@ const generateRouteInformation = embeddedRouteInfo => ({
 // Not only do we pass react-helmet attributes and the app.js here, but
 // we also need to  hard code site props and route props into the page to
 // prevent flashing when react mounts onto the HTML.
-export const makeBodyWithMeta = async state => {
+const makeBodyWithMeta = async state => {
   const { head, route, embeddedRouteInfo, clientScripts = [] } = state
 
   // This embeddedRouteInfo will be inlined into the HTML for this route.
@@ -44,3 +44,5 @@ export const makeBodyWithMeta = async state => {
     </body>
   )
 }
+
+export default makeBodyWithMeta

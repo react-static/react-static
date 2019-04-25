@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { getRoutePath } from '../utils'
-import { prefetch } from '../'
+import { prefetch } from ".."
 import onVisible from '../utils/Visibility'
 
-export const usePrefetch = (path, ref = useRef()) => {
+const usePrefetch = (path, ref = useRef()) => {
   useEffect(() => {
     if (!ref.current) {
       return
@@ -13,3 +13,5 @@ export const usePrefetch = (path, ref = useRef()) => {
 
   return ref
 }
+
+export default usePrefetch

@@ -2,15 +2,15 @@
 export { Helmet as Head } from 'react-helmet'
 
 // React-Static
-export { Root } from './browser/components/Root'
-export { Routes } from './browser/components/Routes'
-export { useRouteData } from './browser/hooks/useRouteData'
-export { useSiteData } from './browser/hooks/useSiteData'
-export { usePrefetch } from './browser/hooks/usePrefetch'
-export { useRoutePath } from './browser/hooks/useRoutePath'
+export { default as Root } from './browser/components/Root'
+export { default as Routes } from './browser/components/Routes'
+export { default as useRouteData } from './browser/hooks/useRouteData'
+export { default as useSiteData } from './browser/hooks/useSiteData'
+export { default as usePrefetch } from './browser/hooks/usePrefetch'
+export { default as useLocation } from './browser/hooks/useLocation'
+export { default as useBasepath } from './browser/hooks/useBasepath'
 export { useStaticInfo } from './browser/hooks/useStaticInfo'
-export { useLocation } from './browser/hooks/useLocation'
-export { useBasepath } from './browser/hooks/useBasepath'
+export { useRoutePath } from './browser/hooks/useRoutePath'
 export { RouteData, withRouteData } from './browser/components/RouteData'
 export { SiteData, withSiteData } from './browser/components/SiteData'
 export {
@@ -33,7 +33,7 @@ export {
   templateErrorByPath,
   templates,
   templatesByPath,
-} from './browser/'
+} from './browser'
 
 // Utils
 export { getRoutePath, makePathAbsolute, pathJoin } from './browser/utils'

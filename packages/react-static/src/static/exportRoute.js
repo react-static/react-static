@@ -11,9 +11,9 @@ import plugins from './plugins'
 import { makePathAbsolute } from '../utils'
 import { absoluteToRelativeChunkName } from '../utils/chunkBuilder'
 
-import { makeHtmlWithMeta } from './components/HtmlWithMeta'
-import { makeHeadWithMeta } from './components/HeadWithMeta'
-import { makeBodyWithMeta } from './components/BodyWithMeta'
+import makeHtmlWithMeta from './components/HtmlWithMeta'
+import makeHeadWithMeta from './components/HeadWithMeta'
+import makeBodyWithMeta from './components/BodyWithMeta'
 
 //
 

@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { escapeRegExp } from './'
+import { escapeRegExp } from '.'
 
 // Instead of using path.sep, we always want to test for all of them. This makes
 // the tests consistent and means we can write tests with either separator

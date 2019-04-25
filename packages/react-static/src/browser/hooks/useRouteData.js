@@ -4,11 +4,11 @@ import {
   routeInfoByPath,
   routeErrorByPath,
   onReloadClientData,
-} from '../'
-import { useRoutePath } from '../hooks/useRoutePath'
+} from '..'
+import { useRoutePath } from './useRoutePath'
 import { getFullRouteData } from '../utils'
 
-export const useRouteData = () => {
+const useRouteData = () => {
   const routePath = useRoutePath()
   // eslint-disable-next-line
   const [_, setCount] = useState(0)
@@ -47,6 +47,8 @@ export const useRouteData = () => {
   // Otherwise, return all of the data
   return getFullRouteData(routeInfo)
 }
+
+export default useRouteData
 
 function shouldLoadData(routeInfo) {
   if (!routeInfo || !routeInfo.data) {

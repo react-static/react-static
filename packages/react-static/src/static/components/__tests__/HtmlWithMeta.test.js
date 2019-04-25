@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import { makeHtmlWithMeta } from '../HtmlWithMeta'
+import makeHtmlWithMeta from '../HtmlWithMeta'
 
 describe('HtmlWithMeta', () => {
   test('when route is a static route', async () => {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 //
-import { onReloadClientData } from '../'
+import { onReloadClientData } from '..'
 import { useStaticInfo } from './useStaticInfo'
 
 // This will likely become a react cache resource soon
@@ -9,7 +9,7 @@ let siteDataPromise
 let siteDataReady
 let siteData
 
-export const useSiteData = () => {
+const useSiteData = () => {
   // When clientData reloads, rerender components
   // that use this hook
   // eslint-disable-next-line
@@ -45,3 +45,5 @@ export const useSiteData = () => {
   // Throw the promise
   throw siteDataPromise
 }
+
+export default useSiteData

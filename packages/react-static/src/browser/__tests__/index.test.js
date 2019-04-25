@@ -1,4 +1,4 @@
-import { isPrefetchableRoute } from '../'
+import { isPrefetchableRoute } from ".."
 
 describe('browser', () => {
   describe('isPrefetchableRoute', () => {

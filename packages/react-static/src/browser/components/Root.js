@@ -1,8 +1,8 @@
 import React from 'react'
 //
-import { plugins } from '../'
+import { plugins } from '..'
 
-export function Root({ children }) {
+export default function Root({ children }) {
   const ResolvedRoot = React.useMemo(
     () => plugins.Root(({ children }) => children),
     [plugins]
@@ -63,6 +63,7 @@ class Catch extends React.Component {
   componentDidCatch(error) {
     this.props.onCatch(error)
   }
+
   render() {
     return this.props.children
   }

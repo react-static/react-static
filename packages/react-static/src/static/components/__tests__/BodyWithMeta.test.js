@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import { makeBodyWithMeta } from '../BodyWithMeta'
+import makeBodyWithMeta from '../BodyWithMeta'
 
 describe('BodyWithMeta', () => {
   test('when route is a static route', async () => {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import onLocationChange from '../utils/onLocationChange'
 
-export const useLocation = () => {
+const useLocation = () => {
   const [location, setLocation] = useState()
   // eslint-disable-next-line
   const [_, setCount] = useState(0)
@@ -15,3 +15,5 @@ export const useLocation = () => {
   )
   return location
 }
+
+export default useLocation

@@ -1,8 +1,9 @@
 const path = require('path')
-const { escapeRegExp } = require('./')
 const PrettyError = require('pretty-error')
 const resolveFrom = require('resolve-from')
 const Module = require('module')
+//
+const { escapeRegExp } = require('./')
 
 // Allow as much stack tracing as possible
 Error.stackTraceLimit = 10000
