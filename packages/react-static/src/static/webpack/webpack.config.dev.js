@@ -23,7 +23,6 @@ export default function({ config }) {
     context: path.resolve(__dirname, '../../../node_modules'),
     entry: [
       'react-hot-loader/patch',
-      'webpack/hot/only-dev-server',
       ...(config.disableRuntime
         ? []
         : [
@@ -52,8 +51,11 @@ export default function({ config }) {
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
-        react: resolveFrom(config.paths.NODE_MODULES, 'react'),
-        'react-dom': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
+        react: resolveFrom(NODE_MODULES, 'react'),
+        'react-dom': resolveFrom(NODE_MODULES, 'react-dom'),
+        // This is here so HMR modules use the same emitter instance.
+        // Likely this is only needed for locally linked dev on RS, but still...
+        'webpack/hot/emitter': resolveFrom(__dirname, 'webpack/hot/emitter'),
       },
     },
     plugins: [

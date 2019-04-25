@@ -81,7 +81,7 @@ async function runExpressServer(state) {
     stats: 'errors-only',
     noInfo: true,
     ...state.config.devServer,
-    hot: true,
+    hotOnly: true,
     watchOptions: {
       ...(state.config.devServer
         ? state.config.devServer.watchOptions || {}
