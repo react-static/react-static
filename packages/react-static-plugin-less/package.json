@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-less",
-  "version": "7.0.8",
+  "version": "7.0.10",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
