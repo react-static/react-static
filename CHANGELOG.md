@@ -1,3 +1,5 @@
+# 7.0.10
+
 ### Improved
 
 - `react-static-plugin-mdx`: Bump webpack loader version to v1
