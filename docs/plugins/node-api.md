@@ -230,6 +230,25 @@ export default pluginOptions => ({
 })
 ```
 
+## `afterBundle`
+
+After a completed bundle, run any asynchronous function.
+
+- Arguments:
+  - `state` - The current state of the CLI
+- Returns a new `state` object
+
+```javascript
+// node.api.js
+
+export default pluginOptions => ({
+  afterBundle: async state => {
+    // Use or alter the state of the CLI
+    return state
+  },
+})
+```
+
 ## `afterDevServerStart`
 
 Modify the `App` **component** before it is rendered to an element via `<App />`.

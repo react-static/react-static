@@ -9,6 +9,7 @@ const supportedHooks = [
   'normalizeRoute',
   'afterPrepareRoutes',
   'webpack',
+  'afterBundle',
   'afterDevServerStart',
   'beforeRenderToElement',
   'beforeRenderToHtml',
@@ -63,6 +64,10 @@ export default {
   webpack: (config, state) => {
     const hooks = getHooks(state.plugins, 'webpack')
     return reduceHooks(hooks, { sync: true })(config, state)
+  },
+  afterBundle: state => {
+    const hooks = getHooks(state.plugins, 'afterBundle')
+    return reduceHooks(hooks)(state)
   },
   afterDevServerStart: state => {
     const hooks = getHooks(state.plugins, 'afterDevServerStart')

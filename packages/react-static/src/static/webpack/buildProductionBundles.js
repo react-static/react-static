@@ -5,6 +5,7 @@ import chalk from 'chalk'
 import makeWebpackConfig from './makeWebpackConfig'
 import { outputClientStats } from '../clientStats'
 import { time, timeEnd } from '../../utils'
+import plugins from '../plugins'
 
 export default async function buildProductionBundles(state) {
   // Build static pages and JSON
@@ -73,6 +74,8 @@ export default async function buildProductionBundles(state) {
   })
 
   timeEnd(chalk.green('[\u2713] App Bundled'))
+
+  state = await plugins.afterBundle(state)
 
   return state
 }
