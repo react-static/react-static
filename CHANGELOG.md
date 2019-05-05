@@ -1,3 +1,9 @@
+# Unreleased
+
+### Improved
+
+- `react-static-plugin-source-filesystem`: You can now pass a new option `getRoutes` to create additional routes out of those found by the plugin. You can see an example in plugin's docs.
+
 # 7.0.10
 
 ### Improved

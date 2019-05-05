@@ -9,8 +9,10 @@ export default ({
   pathPrefix,
   createRoute = d => d,
   extensions = [],
+  createGetRoutes = () => async () => [],
 }) => ({
-  getRoutes: async (routes, state) => {
+  getRoutes: async (...getRoutesArgs) => {
+    const [routes, state] = getRoutesArgs
     const { config, stage, debug } = state
     if (!location) {
       throw new Error(
@@ -100,8 +102,10 @@ export default ({
 
     const pages = await glob(pagesGlob)
     const directoryRoutes = await handle(pages)
+    const getAdditionalRoutes = createGetRoutes(directoryRoutes)
+    const additionalRoutes = await getAdditionalRoutes(...getRoutesArgs)
 
-    return [...routes, ...directoryRoutes]
+    return [...routes, ...directoryRoutes, ...additionalRoutes]
   },
 })
 
