@@ -17,10 +17,12 @@ declare module 'react-static' {
   // Passing on helmet typings as "Head"
   export { Helmet as Head } from 'react-helmet'
 
-  export class Routes extends React.Component<{ path: String }> {}
+  export class Routes extends React.Component<{ path?: String, default?: boolean }> {}
   export class Root extends React.Component {}
   export function useRouteData<T = any>(): T
   export function useSiteData<T = any>(): T
+  export function withRouteData(comp: any): any
+  export function withSiteData(comp: any): any
   export function prefetch(path: any): Promise<any>
   export function addPrefetchExcludes(arg: String[]): void
   export const Prefetch: React.Component
