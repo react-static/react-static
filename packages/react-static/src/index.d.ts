@@ -11,7 +11,7 @@ import { RenderFn } from 'create-react-context';
 
 export { Helmet as Head } from 'react-helmet'
 
-interface StaticInfo<T extends unknown> {
+interface StaticInfo<T extends object> {
   path: string
   siteData: T
 }
@@ -20,11 +20,11 @@ interface RoutesRenderProp {
   getComponentForPath(pathname: string): React.ReactNode | false
 }
 
-interface RouteDataProps<T extends unknown> {
+interface RouteDataProps<T extends object> {
   children: (routeData: T) => React.ReactNode
 }
 
-interface SiteDataProps<T extends unknown> {
+interface SiteDataProps<T extends object> {
   children: (siteData: T) => React.ReactNode
 }
 
@@ -65,7 +65,7 @@ interface SiteDataProps<T extends unknown> {
  *
  * @returns {T} the route data
  */
-export function useRouteData<T extends unknown = any>(): T;
+export function useRouteData<T extends object = any>(): T;
 
 /**
  * Hook to get the Site Data
@@ -80,7 +80,7 @@ export function useRouteData<T extends unknown = any>(): T;
  * @template T the type of the site data
  * @returns {T} the side data
  */
-export function useSiteData<T extends unknown = any>(): T;
+export function useSiteData<T extends object = any>(): T;
 
 /**
  * Hook to prefetch a path as soon as the linked ref becomes visible.
@@ -110,7 +110,7 @@ export function useSiteData<T extends unknown = any>(): T;
  *   }
  *
  */
-export function usePrefetch<T extends unknown>(
+export function usePrefetch<T extends object = any>(
   path: string,
   ref?: React.MutableRefObject<T>
 ): React.MutableRefObject<T>;
@@ -139,7 +139,7 @@ export function useBasepath(): string;
  * @template T the siteData
  * @returns {(StaticInfo<T> | undefined)} the static info, if any
  */
-export function useStaticInfo<T = unknown>(): StaticInfo<T> | undefined;
+export function useStaticInfo<T extends object = any>(): StaticInfo<T> | undefined;
 
 /**
  * Hook to **clean** a route path. Returns the context value if inside a context
@@ -184,7 +184,7 @@ export const routePathContext: React.Context<string>;
  * @param {React.ComponentType<P>} Comp the component to wrap
  * @returns {(React.ComponentClass<P & { routeData: T }, S>)} tbe wrapped component
  */
-export function withRouteData<T extends unknown = any, P extends object = {}, S extends object = {}>(
+export function withRouteData<T extends object = any, P extends object = {}, S extends object = {}>(
   Comp: React.ComponentType<P>
 ):  React.ComponentClass<P & { routeData: T }, S>;
 
@@ -198,7 +198,7 @@ export function withRouteData<T extends unknown = any, P extends object = {}, S 
  * @param {{ children: (routeData: T) => React.ReactNode }} props
  * @returns {React.ReactNode}
  */
-export function RouteData<T extends unknown = any>(
+export function RouteData<T extends object = any>(
   props: RouteDataProps<T>
 ): React.ReactNode
 
@@ -214,7 +214,7 @@ export function RouteData<T extends unknown = any>(
  * @param {React.ComponentType<P>} Comp the component to wrap
  * @returns {(React.ComponentClass<P & { siteData: T }, S>)} tbe wrapped component
  */
-export function witeSiteData<T extends unknown = any, P extends object = {}, S extends object = {}>(
+export function witeSiteData<T extends object = any, P extends object = {}, S extends object = {}>(
   Comp: React.ComponentType<P>
 ):  React.ComponentClass<P & { routeData: T }, S>;
 
@@ -228,7 +228,7 @@ export function witeSiteData<T extends unknown = any, P extends object = {}, S e
  * @param {{ children: (siteData: T) => React.ReactNode }} props
  * @returns {React.ReactNode}
  */
-export function SiteData<T extends unknown = any>(
+export function SiteData<T extends object = any>(
   props: SiteDataProps<T>
 ): React.ReactNode
 
@@ -489,12 +489,14 @@ export interface ReactStaticConfig {
    * @param {RouteFlags} flags
    * @returns {Promise<T>} the promise that resolves the site data
    */
-  getSiteData?<T extends unknown = any>(flags: RouteFlags): Promise<T>
+  getSiteData?(flags: RouteFlags): Promise<object> | object
 
   plugins?: Array<PluginConfiguration>
+
+  entry?: string
 }
 
-export type PluginConfiguration = string | [string, object]
+export type PluginConfiguration = string | [string, object?]
 
 export interface RouteFlags {
   stage: 'dev' | 'prod'
@@ -544,9 +546,9 @@ export interface Route {
    * @template T type of the route data
    * @param {Route} resolvedRoute This is the resolved route this function is handling.
    * @param {RouteFlags} flags An object of flags and meta information about the build
-   * @returns {T} the route data
+   * @returns {T | Promise<T>} the route data
    */
-  getData?<T extends unknown = any>(resolvedRoute: Route, flags: RouteFlags): Promise<T>
+  getData?(resolvedRoute: Route, flags: RouteFlags): Promise<object> | object
 
   replace?: boolean
 }
@@ -573,9 +575,9 @@ export interface PathsConfig {
   nodeModules?: string
 }
 
-export type DocumentComponent<T extends unknown = any> = React.ComponentType<DocumentProps<T>>
+export type DocumentComponent<T extends object = any> = React.ComponentType<DocumentProps<T>>
 
-export interface DocumentProps<T extends unknown = any> {
+export interface DocumentProps<T extends object = any> {
   Html: JSX.IntrinsicElements['html']
   Head: JSX.IntrinsicElements['head']
   Body: JSX.IntrinsicElements['body']
