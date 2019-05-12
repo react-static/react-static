@@ -10,7 +10,7 @@ export { default as usePrefetch } from './browser/hooks/usePrefetch'
 export { default as useLocation } from './browser/hooks/useLocation'
 export { default as useBasepath } from './browser/hooks/useBasepath'
 export { useStaticInfo } from './browser/hooks/useStaticInfo'
-export { useRoutePath } from './browser/hooks/useRoutePath'
+export { useRoutePath, routePathContext } from './browser/hooks/useRoutePath'
 export { RouteData, withRouteData } from './browser/components/RouteData'
 export { SiteData, withSiteData } from './browser/components/SiteData'
 export {
