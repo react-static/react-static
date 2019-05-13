@@ -112,7 +112,11 @@ const RoutesInner = ({ routePath, render: renderFn }) => {
 
   return (
     <routePathContext.Provider value={routePath}>
-      {renderFn ? renderFn({ routePath, getComponentForPath }) : (<Comp is404={is404} />)}
+      {renderFn ? (
+        renderFn({ routePath, getComponentForPath })
+      ) : (
+        <Comp is404={is404} />
+      )}
     </routePathContext.Provider>
   )
 }
@@ -121,7 +125,7 @@ const Routes = ({ ...originalProps }) => {
   // Once a routePath goes into the Routes component,
   // useRoutePath must ALWAYS return the routePath used
   // in its parent, so we pass it down as context
-  console.log('routes plugin:', plugins.Routes)
+
   // Get the Routes hook
   const CompWrapper = useMemo(
     () => plugins.Routes(props => <RoutesInner {...props} />),
