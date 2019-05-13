@@ -17,6 +17,7 @@ interface StaticInfo<T extends object> {
 }
 
 interface RoutesRenderProp {
+  routePath: string
   getComponentForPath(pathname: string): React.ReactNode | false
 }
 
@@ -55,6 +56,12 @@ interface SiteDataProps<T extends object> {
  *   }
  *
  * @example Getting the route data _oustide_ the container / page / `Routes`
+ *
+ *   // This needs additional code to work properly in production, because there
+ *   // the useStaticInfo must be used to "hydrate" this data as Suspending is
+ *   // not allowed in production.
+ *
+ *   // You might just want to use `render` prop in `Routes` instead.
  *
  *   function Outside(): JSX.Element {
  *     const currentPath = getRoutePath(location.pathName)
@@ -261,9 +268,9 @@ export class Root extends React.Component {}
  *
  *   export default () => (<Root>
  *     <Routes>
- *       {({ getComponentForPath }) => {
+ *       {({ routePath, getComponentForPath }) => {
  *         // The pathname is used to retrieve the component for that path
- *         let Comp = getComponentForPath(window.location.href)
+ *         let Comp = getComponentForPath(routePath)
  *         // The component is rendered!
  *         return <Comp />
  *       }}
@@ -274,7 +281,7 @@ export class Root extends React.Component {}
 export class Routes extends React.Component<{
   path?: string,
   default?: boolean,
-  children?: (props: RoutesRenderProp) => React.ReactNode
+  render?: (props: RoutesRenderProp) => React.ReactNode
 }> {}
 
 // Export all from the browser types; since those are the only things typed
@@ -530,7 +537,7 @@ export interface Route {
    * canonicals, etc. This will force the page to render only the bare minimum
    * to perform the redirect and nothing else.
    */
-  redirect?: URL
+  redirect?: URL | string
 
   /**
    * Routes can and should have nested routes when necessary. Route paths are
