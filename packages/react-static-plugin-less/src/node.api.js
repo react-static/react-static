@@ -12,7 +12,6 @@ export default ({ includePaths = [], ...rest }) => ({
       loader: lessLoaderPath,
       options: { includePaths: ['src/', ...includePaths], ...rest },
     }
-    const styleLoader = { loader: 'style-loader' }
     const cssLoader = {
       loader: 'css-loader',
       options: {
@@ -44,7 +43,17 @@ export default ({ includePaths = [], ...rest }) => ({
 
     if (stage === 'dev') {
       // Dev
-      loaders = [styleLoader, cssLoader, postCssLoader, lessLoader]
+      loaders = [
+        {
+          loader: ExtractCssChunks.loader,
+          options: {
+            hot: true,
+          },
+        },
+        cssLoader,
+        postCssLoader,
+        lessLoader,
+      ]
     } else if (stage === 'node') {
       // Node
       // Don't extract css to file during node build process

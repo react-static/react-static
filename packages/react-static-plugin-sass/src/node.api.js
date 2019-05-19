@@ -11,7 +11,6 @@ export default ({ includePaths = [], ...rest }) => ({
       loader: sassLoaderPath,
       options: { includePaths: ['src/', ...includePaths], ...rest },
     }
-    const styleLoader = { loader: 'style-loader' }
     const cssLoader = {
       loader: 'css-loader',
       options: {
@@ -22,7 +21,16 @@ export default ({ includePaths = [], ...rest }) => ({
 
     if (stage === 'dev') {
       // Dev
-      loaders = [styleLoader, cssLoader, sassLoader]
+      loaders = [
+        {
+          loader: ExtractCssChunks.loader,
+          options: {
+            hot: true,
+          },
+        },
+        cssLoader,
+        sassLoader,
+      ]
     } else if (stage === 'node') {
       // Node
       // Don't extract css to file during node build process

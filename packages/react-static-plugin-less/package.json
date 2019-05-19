@@ -18,7 +18,7 @@
   "dependencies": {
     "autoprefixer": "^9.5.1",
     "css-loader": "^2.1.0",
-    "extract-css-chunks-webpack-plugin": "^4.3.2",
+    "extract-css-chunks-webpack-plugin": "^4.5.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "postcss-flexbugs-fixes": "^4.1.0",
