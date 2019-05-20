@@ -136,6 +136,11 @@ export function buildConfig(state, config = {}) {
     assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
   }
 
+  // add trailing slash only if assetsPath was supplied, but no trailing slash
+  if (assetsPath !== '' && !assetsPath.endsWith('/')) {
+    assetsPath = `${assetsPath}/`
+  }
+
   // Add the project root as a plugin. This allows the dev
   // to use the plugin api directory in their project if they want
   const plugins = [...(config.plugins || []), paths.ROOT]
