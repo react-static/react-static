@@ -153,7 +153,11 @@ function startPreloader() {
     els.forEach(el => {
       const href = el.getAttribute('href')
       const prefetchOption = el.getAttribute('data-prefetch')
-      const shouldPrefetch = !(!prefetchOption || prefetchOption === 'true' || prefetchOption === 'visible')
+      const shouldPrefetch = !(
+        !prefetchOption ||
+        prefetchOption === 'true' ||
+        prefetchOption === 'visible'
+      )
 
       if (href && shouldPrefetch) {
         onVisible(el, () => prefetch(href))
