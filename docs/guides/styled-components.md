@@ -11,6 +11,7 @@ The benefits are:
 Get the plugin and install it according to it's [documentation](https://github.com/nozzle/react-static/tree/master/packages/react-static-plugin-styled-components).
 
 ## Let's convert the basic example to use styled components
+The basic example can be found [here](https://github.com/nozzle/react-static/tree/280d7c0629c702e843039e9feaa68efa4058303e/packages/react-static/templates/basic).
 
 More detailed information on how to use styled components can be found [here](https://www.styled-components.com/docs/api).
 
@@ -28,13 +29,13 @@ Open `app.js` and remove the `import './app.css'` so we're not using that css an
 
 Import the global style function at the top.
 
-```
+```javascript
 import { createGlobalStyle } from "styled-components";
 ```
 
 Insert the css in the global style, this can be done inline or in a separate file.
 
-```
+```javascript
 const GlobalStyle = createGlobalStyle`
   * {
     scroll-behavior: smooth;
@@ -61,7 +62,7 @@ const GlobalStyle = createGlobalStyle`
 
 Now add the `GlobalStyle` tag inside our app.
 
-```
+```javascript
 function App() {
   return (
     <Root>
@@ -79,7 +80,7 @@ function App() {
 
 That takes care of the global styling, now we need to add the styling for the Nav and Content divs.
 
-```
+```javascript
 const Nav = styled.nav`
   width: 100%;
   background: #108db8;
@@ -97,7 +98,7 @@ const Content = styled.div`
 
 And replace the divs in the render function with their new styled replacements.
 
-```
+```javascript
 function App() {
   return (
     <Root>
