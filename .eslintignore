@@ -6,3 +6,5 @@ res
 plugins
 platforms
 tmp
+
+*.d.ts

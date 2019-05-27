@@ -9,11 +9,43 @@ import {
   prefetch,
   plugins,
   onReloadTemplates,
-} from ".."
+} from '..'
 import { useStaticInfo } from '../hooks/useStaticInfo'
 import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
 
-const RoutesInner = ({ routePath }) => {
+/**
+ *
+ * @param {string} path
+ * @returns {React.ComponentType<{}> | false}
+ */
+function getTemplateForPath(path) {
+  let is404 = path === '404'
+  let Comp = templatesByPath[path] || false
+
+  if (!Comp && templateErrorByPath[path]) {
+    is404 = true
+    Comp = templatesByPath['404'] || false
+  }
+
+  return { is404, Comp }
+}
+
+/**
+ *
+ *
+ * @param {string} path
+ * @returns {React.ReactNode | false}
+ */
+function getComponentForPath(path) {
+  const { Comp, is404 } = getTemplateForPath(path)
+  if (is404 || !Comp) {
+    return false
+  }
+
+  return React.createElement(Comp, { is404 })
+}
+
+const RoutesInner = ({ routePath, render: renderFn }) => {
   // Let the user specify a manual routePath.
   // This is useful for animations where multiple routes
   // might be rendered simultaneously
@@ -63,16 +95,7 @@ const RoutesInner = ({ routePath }) => {
   routePath = useRoutePath(routePath)
 
   // Try and get the template
-  let Comp = templatesByPath[routePath]
-
-  // Detect a 404
-  let is404 = routePath === '404'
-
-  // Detect a failed template
-  if (templateErrorByPath[routePath]) {
-    is404 = true
-    Comp = templatesByPath['404']
-  }
+  const { Comp, is404 } = getTemplateForPath(routePath)
 
   if (!Comp) {
     if (is404) {
@@ -89,12 +112,16 @@ const RoutesInner = ({ routePath }) => {
 
   return (
     <routePathContext.Provider value={routePath}>
-      <Comp is404={is404} />
+      {renderFn ? (
+        renderFn({ routePath, getComponentForPath })
+      ) : (
+        <Comp is404={is404} />
+      )}
     </routePathContext.Provider>
   )
 }
 
-const Routes = ({ routePath }) => {
+const Routes = ({ ...originalProps }) => {
   // Once a routePath goes into the Routes component,
   // useRoutePath must ALWAYS return the routePath used
   // in its parent, so we pass it down as context
@@ -105,7 +132,8 @@ const Routes = ({ routePath }) => {
     [plugins]
   )
 
-  return <CompWrapper routePath={routePath} />
+  // Pass all props so that plugins can use it
+  return <CompWrapper {...originalProps} />
 }
 
 export default Routes
