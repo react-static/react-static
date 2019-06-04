@@ -8,8 +8,6 @@ export default ({ cssLoaderOptions, ...rest }) => ({
     let loaders = []
     const stylusLoaderPath = require.resolve('stylus-loader')
 
-    console.log('cssLoaderOptions: ', cssLoaderOptions)
-
     const stylusLoader = {
       loader: stylusLoaderPath,
       options: {
