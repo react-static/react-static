@@ -35,7 +35,7 @@ export default function({ config }) {
       filename: '[name].js', // never hash dev code
       chunkFilename: 'templates/[name].js',
       path: DIST,
-      publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
+      publicPath: process.env.REACT_STATIC_PUBLIC_PATH || '/',
     },
     module: {
       rules: rules({ config, stage: 'dev' }),
