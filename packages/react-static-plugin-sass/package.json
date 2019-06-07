@@ -20,9 +20,13 @@
     "@babel/preset-env": "^7.4.3"
   },
   "dependencies": {
+    "autoprefixer": "^9.5.1",
+    "css-loader": "^2.1.0",
     "extract-css-chunks-webpack-plugin": "^4.3.2",
     "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0"
+    "sass-loader": "^7.1.0",
+    "postcss-flexbugs-fixes": "^4.1.0",
+    "semver": "^6.0.0"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

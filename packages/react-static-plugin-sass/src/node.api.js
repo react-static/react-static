@@ -1,4 +1,6 @@
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
+import autoprefixer from 'autoprefixer'
+import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 import semver from 'semver'
 
 export default ({ includePaths = [], ...rest }) => ({
@@ -19,14 +21,33 @@ export default ({ includePaths = [], ...rest }) => ({
         sourceMap: false,
       },
     }
+    const postCssLoader = {
+      loader: 'postcss-loader',
+      options: {
+        sourceMap: true,
+        ident: 'postcss',
+        plugins: () => [
+          postcssFlexbugsFixes,
+          autoprefixer({
+            browsers: [
+              '>1%',
+              'last 4 versions',
+              'Firefox ESR',
+              'not ie < 9', // React doesn't support IE8 anyway
+            ],
+            flexbox: 'no-2009',
+          }),
+        ],
+      },
+    }
 
     if (stage === 'dev') {
       // Dev
-      loaders = [styleLoader, cssLoader, sassLoader]
+      loaders = [styleLoader, cssLoader, postCssLoader, sassLoader]
     } else if (stage === 'node') {
       // Node
       // Don't extract css to file during node build process
-      loaders = [cssLoader, sassLoader]
+      loaders = [cssLoader, postCssLoader, sassLoader]
     } else {
       // Prod
 
@@ -37,7 +58,7 @@ export default ({ includePaths = [], ...rest }) => ({
         cssLoader.options.minimize = true
       }
 
-      loaders = [ExtractCssChunks.loader, cssLoader, sassLoader]
+      loaders = [ExtractCssChunks.loader, cssLoader, postCssLoader, sassLoader]
     }
 
     config.module.rules[0].oneOf.unshift({
