@@ -51,7 +51,7 @@ export default ({ includePaths = [], ...rest }) => ({
         },
         cssLoader,
         postCssLoader,
-        sassLoader
+        sassLoader,
       ]
     } else if (stage === 'node') {
       // Node
