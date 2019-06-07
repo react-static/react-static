@@ -12,6 +12,7 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-sass](/packages/react-static-plugin-sass) - Adds SSR and general support for SASS
   - [react-static-plugin-less](/packages/react-static-plugin-less) - Adds SSR and general support for LESS
   - [react-static-plugin-jss](/packages/react-static-plugin-jss) - Adds SSR support for JSS
+  - [react-static-plugin-evergreen](/packages/react-static-plugin-evergreen) - Adds SSR support for evergreen-ui
   - [react-static-plugin-css-modules](/packages/react-static-plugin-css-modules) - Adds SSR support for CSS modules
 - React Alternatives
   - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
@@ -26,7 +27,7 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-typescript](packages/react-static-plugin-typescript) - Allows you to write your components in TypeScript
 - Assets
   - [react-static-plugin-sitemap](packages/react-static-plugin-sitemap) - Exports sitemap information as XML
-  
+
 ### Unofficial Plugins via NPM
 
 - Assets

@@ -80,7 +80,7 @@
     "raw-loader": "^2.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-helmet": "^5.2.0",
+    "react-helmet": "^5.2.1",
     "react-hot-loader": "^4.8.4",
     "react-universal-component": "^4.0.0",
     "resolve-from": "^5.0.0",
