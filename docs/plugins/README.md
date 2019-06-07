@@ -11,6 +11,7 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-styled-components](/packages/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
   - [react-static-plugin-sass](/packages/react-static-plugin-sass) - Adds SSR and general support for SASS
   - [react-static-plugin-less](/packages/react-static-plugin-less) - Adds SSR and general support for LESS
+  - [react-static-plugin-stylus](/packages/react-static-plugin-stylus) - Adds SSR and general support for Stylus
   - [react-static-plugin-jss](/packages/react-static-plugin-jss) - Adds SSR support for JSS
   - [react-static-plugin-evergreen](/packages/react-static-plugin-evergreen) - Adds SSR support for evergreen-ui
   - [react-static-plugin-css-modules](/packages/react-static-plugin-css-modules) - Adds SSR support for CSS modules
