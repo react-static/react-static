@@ -125,8 +125,8 @@ function common(state) {
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
-        react: resolveFrom(config.paths.NODE_MODULES, 'react'),
-        'react-dom': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
+        react$: resolveFrom(config.paths.NODE_MODULES, 'react'),
+        'react-dom$': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
         'react-universal-component': resolveFrom(
           __dirname,
           'react-universal-component'
