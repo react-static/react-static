@@ -1,8 +1,25 @@
-# Unreleased
+# 7.1.0
+
+### New
+
+- `afterBundle` hook added
+- `react-static-plugin-evergreen`: A plugin for using evergreen-ui
+- `react-static-plugin-stylus` A plugin for using stylus
+- Added a styled-components guide
+- Added `react-static-plugin-google-tag-manager` to the list of 3rd party plugins
 
 ### Improved
 
+- CSS HMR support is now much more reliable.
 - `react-static-plugin-mdx`: Allow passing MDX options to webpack loader (e.g. `remarkPlugins` and `rehypePlugins`)
+- Failed builds will finally exit with a non-zero status code!
+- Updated Typescript Defs
+- The latest version of React Static will now be installed with new projects
+- Added postcss and autoprefixer to sass plugin
+- Less plugin should now build properly
+- React-Helmet version was bumped to fix a few upstream issues
+- Fix react/react-dom aliases to allow submodules
+- Prefetch now uses a proper `data-` prefix
 
 # 7.0.10
 
