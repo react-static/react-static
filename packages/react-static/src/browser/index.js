@@ -136,21 +136,35 @@ function init() {
   }
 }
 
+/**
+ * The preloader searches for all anchor elements on the page every poll
+ * interval, and, unless specified by data-prefetch, start a visibility observer
+ * for that element.
+ *
+ * The href of the anchor is preloaded when the element becomes visible.
+ */
 function startPreloader() {
-  if (typeof document !== 'undefined') {
-    const run = () => {
-      const els = [].slice.call(document.getElementsByTagName('a'))
-      els.forEach(el => {
-        const href = el.getAttribute('href')
-        const shouldPrefetch = !(el.getAttribute('prefetch') === 'false')
-        if (href && shouldPrefetch) {
-          onVisible(el, () => prefetch(href))
-        }
-      })
-    }
-
-    setInterval(run, Number(process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL))
+  if (typeof document === 'undefined') {
+    return
   }
+  const run = () => {
+    const els = [].slice.call(document.getElementsByTagName('a'))
+
+    els.forEach(el => {
+      const href = el.getAttribute('href')
+      const prefetchOption = el.getAttribute('data-prefetch')
+      const shouldPrefetch =
+        !prefetchOption ||
+        prefetchOption === 'true' ||
+        prefetchOption === 'visible'
+
+      if (href && shouldPrefetch) {
+        onVisible(el, () => prefetch(href))
+      }
+    })
+  }
+
+  setInterval(run, Number(process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL))
 }
 
 async function reloadClientData() {

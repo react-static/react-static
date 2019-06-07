@@ -131,9 +131,14 @@ export function buildConfig(state, config = {}) {
     basePath = cleanSlashes(config.basePath)
   }
   const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`)}/`
-  let assetsPath = cleanSlashes(config.assetsPath || paths.assets)
+  let assetsPath = config.assetsPath || paths.assets || ''
   if (assetsPath && !isAbsoluteUrl(assetsPath)) {
     assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
+  }
+
+  // add trailing slash only if assetsPath was supplied, but no trailing slash
+  if (assetsPath !== '' && !assetsPath.endsWith('/')) {
+    assetsPath = `${assetsPath}/`
   }
 
   // Add the project root as a plugin. This allows the dev
