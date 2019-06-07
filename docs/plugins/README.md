@@ -33,6 +33,10 @@ React Static ships with a plugin API to extend React Static's functionality.
 - Assets
   - [react-static-plugin-favicons](https://www.npmjs.com/package/react-static-plugin-favicons) - Generate (fav)icons in many different sizes for many different platforms, and add them to your site's metadata
 
+- Other
+
+  - [react-static-plugin-google-tag-manager](https://www.npmjs.com/package/react-static-plugin-google-tag-manager) - Easily add the GTM script tag to your HTML files
+
 ### Local Plugins via the `/plugins` directory
 
 If you have a custom plugin or are developing a plugin locally, you can place your plugin directory in the `/plugins` directory in your project root. It can then be used by React Static.
