@@ -3,20 +3,25 @@ import autoprefixer from 'autoprefixer'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 import semver from 'semver'
 
-export default ({ includePaths = [], ...rest }) => ({
+export default ({ cssLoaderOptions, ...rest }) => ({
   webpack: (config, { stage }) => {
     let loaders = []
-    const lessLoaderPath = require.resolve('less-loader')
+    const stylusLoaderPath = require.resolve('stylus-loader')
 
-    const lessLoader = {
-      loader: lessLoaderPath,
-      options: { includePaths: ['src/', ...includePaths], ...rest },
+    const stylusLoader = {
+      loader: stylusLoaderPath,
+      options: {
+        use: [require('nib')()],
+        ...rest,
+      },
     }
+
     const cssLoader = {
       loader: 'css-loader',
       options: {
         importLoaders: 1,
         sourceMap: false,
+        ...cssLoaderOptions,
       },
     }
     const postCssLoader = {
@@ -44,20 +49,15 @@ export default ({ includePaths = [], ...rest }) => ({
     if (stage === 'dev') {
       // Dev
       loaders = [
-        {
-          loader: ExtractCssChunks.loader,
-          options: {
-            hot: true,
-          },
-        },
+        ExtractCssChunks.loader,
         cssLoader,
         postCssLoader,
-        lessLoader,
+        stylusLoader,
       ]
     } else if (stage === 'node') {
       // Node
       // Don't extract css to file during node build process
-      loaders = [cssLoader, postCssLoader, lessLoader]
+      loaders = [cssLoader, postCssLoader, stylusLoader]
     } else {
       // Prod
 
@@ -68,11 +68,16 @@ export default ({ includePaths = [], ...rest }) => ({
         cssLoader.options.minimize = true
       }
 
-      loaders = [ExtractCssChunks.loader, cssLoader, postCssLoader, lessLoader]
+      loaders = [
+        ExtractCssChunks.loader,
+        cssLoader,
+        postCssLoader,
+        stylusLoader,
+      ]
     }
 
     config.module.rules[0].oneOf.unshift({
-      test: /\.less$/,
+      test: /\.styl$/,
       use: loaders,
     })
 

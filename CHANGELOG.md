@@ -1,3 +1,9 @@
+# Unreleased
+
+### Improved
+
+- `react-static-plugin-mdx`: Allow passing MDX options to webpack loader (e.g. `remarkPlugins` and `rehypePlugins`)
+
 # 7.0.10
 
 ### Improved

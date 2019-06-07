@@ -51,8 +51,8 @@ export default function({ config }) {
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
-        react: resolveFrom(NODE_MODULES, 'react'),
-        'react-dom': resolveFrom(NODE_MODULES, 'react-dom'),
+        react$: resolveFrom(NODE_MODULES, 'react'),
+        'react-dom$': resolveFrom(NODE_MODULES, 'react-dom'),
         // This is here so HMR modules use the same emitter instance.
         // Likely this is only needed for locally linked dev on RS, but still...
         'webpack/hot/emitter': resolveFrom(__dirname, 'webpack/hot/emitter'),

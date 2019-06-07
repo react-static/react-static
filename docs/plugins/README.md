@@ -11,7 +11,9 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-styled-components](/packages/react-static-plugin-styled-components) - Adds SSR support for Styled-Components
   - [react-static-plugin-sass](/packages/react-static-plugin-sass) - Adds SSR and general support for SASS
   - [react-static-plugin-less](/packages/react-static-plugin-less) - Adds SSR and general support for LESS
+  - [react-static-plugin-stylus](/packages/react-static-plugin-stylus) - Adds SSR and general support for Stylus
   - [react-static-plugin-jss](/packages/react-static-plugin-jss) - Adds SSR support for JSS
+  - [react-static-plugin-evergreen](/packages/react-static-plugin-evergreen) - Adds SSR support for evergreen-ui
   - [react-static-plugin-css-modules](/packages/react-static-plugin-css-modules) - Adds SSR support for CSS modules
 - React Alternatives
   - [react-static-plugin-preact](/packages/react-static-plugin-preact) - Adds preact support
@@ -26,11 +28,15 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-typescript](packages/react-static-plugin-typescript) - Allows you to write your components in TypeScript
 - Assets
   - [react-static-plugin-sitemap](packages/react-static-plugin-sitemap) - Exports sitemap information as XML
-  
+
 ### Unofficial Plugins via NPM
 
 - Assets
   - [react-static-plugin-favicons](https://www.npmjs.com/package/react-static-plugin-favicons) - Generate (fav)icons in many different sizes for many different platforms, and add them to your site's metadata
+
+- Other
+
+  - [react-static-plugin-google-tag-manager](https://www.npmjs.com/package/react-static-plugin-google-tag-manager) - Easily add the GTM script tag to your HTML files
 
 ### Local Plugins via the `/plugins` directory
 

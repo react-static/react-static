@@ -1,12 +1,8 @@
 {
-  "name": "react-static-plugin-css-modules",
+  "name": "react-static-plugin-stylus",
   "version": "7.0.10",
-  "description": "A React-Static plugin that adds SSR support for css modules",
-  "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
-  "author": "Zack Jackson <zack@scriptedAlchemy.com> (https://github.com/ScriptedAlchemy)",
+  "main": "index.js",
   "license": "MIT",
-  "private": false,
   "scripts": {
     "build": "babel src --out-dir .",
     "watch": "yarn build --watch",
@@ -20,8 +16,14 @@
     "@babel/preset-env": "^7.4.3"
   },
   "dependencies": {
-    "css-loader": "^2.0.1",
-    "extract-css-chunks-webpack-plugin": "^4.5.1"
+    "autoprefixer": "^9.5.1",
+    "css-loader": "^2.1.0",
+    "extract-css-chunks-webpack-plugin": "^4.3.2",
+    "nib": "^1.1.2",
+    "postcss-flexbugs-fixes": "^4.1.0",
+    "semver": "^6.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

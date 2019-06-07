@@ -96,6 +96,43 @@ describe('buildConfig', () => {
 
     spyProcess.mockRestore()
   })
+
+  describe('assetsPath is correct', () => {
+    test('when no user-supplied assetsPath exists', () => {
+      const { config } = buildConfig({}, { assetsPath: undefined })
+
+      expect(config.assetsPath).toBe('')
+    })
+    test('when relative user-supplied assetsPath exists without trailing slash', () => {
+      const { config } = buildConfig({}, { assetsPath: '/relative-path' })
+
+      expect(config.assetsPath).toBe('/relative-path/')
+    })
+
+    test('when relative user-supplied assetsPath exists with trailing slash', () => {
+      const { config } = buildConfig({}, { assetsPath: '/relative-path/' })
+
+      expect(config.assetsPath).toBe('/relative-path/')
+    })
+
+    test('when absolute user-supplied assetsPath exists without trailing slash', () => {
+      const { config } = buildConfig(
+        {},
+        { assetsPath: 'https://example.com/assets' }
+      )
+
+      expect(config.assetsPath).toBe('https://example.com/assets/')
+    })
+
+    test('when absolute user-supplied assetsPath exists with trailing slash', () => {
+      const { config } = buildConfig(
+        {},
+        { assetsPath: 'https://example.com/assets/' }
+      )
+
+      expect(config.assetsPath).toBe('https://example.com/assets/')
+    })
+  })
 })
 
 describe('getConfig', () => {
