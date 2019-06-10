@@ -25,5 +25,8 @@
   ],
   "devDependencies": {
     "lerna": "^3.6.0"
+  },
+  "resolutions": {
+    "fsevents": "^1.2.9"
   }
 }
