@@ -3,6 +3,9 @@ export default function({ stage, isNode }) {
     return {
       loader: 'url-loader',
       exclude: [/\.js$/, /\.html$/, /\.json$/],
+      options: {
+        limit: 10000,
+      }
       // Don't generate extra files during node build
     }
   }
