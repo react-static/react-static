@@ -15,6 +15,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [inlineCss](#inlinecss)
 - [Document](#document)
 - [devServer](#devserver)
+- [entry](#entry)
 - [paths](#paths)
 - [bundleAnalyzer](#bundleanalyzer)
 - [outputFileRate](#outputfilerate)
@@ -240,6 +241,17 @@ export default {
 ### `renderToHtml`
 
 **Warning:** This option will be removed in a future version. Please use the [Node API hook - beforeRenderToHtml](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertohtml-function) instead
+
+### `entry`
+
+The name of the entry file as a string, relative to `paths.src`. This defaults to:
+
+```javascript
+// static.config.js
+export default {
+  entry: 'index.js'
+}
+```
 
 ### `paths`
 
