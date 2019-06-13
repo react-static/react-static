@@ -16,7 +16,7 @@
     "@babel/preset-env": "^7.4.3"
   },
   "dependencies": {
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^9.6.0",
     "css-loader": "^2.1.0",
     "extract-css-chunks-webpack-plugin": "^4.3.2",
     "nib": "^1.1.2",

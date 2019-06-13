@@ -29,7 +29,7 @@ export default ({ includePaths = [], ...rest }) => ({
         plugins: () => [
           postcssFlexbugsFixes,
           autoprefixer({
-            browsers: [
+            overrideBrowserslist: [
               '>1%',
               'last 4 versions',
               'Firefox ESR',
