@@ -77,7 +77,7 @@ function common(state) {
           require.resolve('../../bootstrapApp'),
         ],
     output: {
-      filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
+      filename: '[name].[contenthash:8].js', // dont use chunkhash, its not a chunk
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: ASSETS,
       publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',

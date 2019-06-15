@@ -7,6 +7,7 @@
 - `react-static-plugin-stylus` A plugin for using stylus
 - Added a styled-components guide
 - Added `react-static-plugin-google-tag-manager` to the list of 3rd party plugins
+- `react-static`: Use `contenthash` over `hash` in output filename for deterministic filenames
 
 ### Improved
 
