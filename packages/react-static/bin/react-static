@@ -35,7 +35,7 @@ function init() {
 
   if (options.version) {
     console.log(pkg.version)
-    return
+    return new Promise(res => res(pkg.version))
   }
 
   if (commands[0] === 'create') {
