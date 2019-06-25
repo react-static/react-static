@@ -24,6 +24,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "husky": "^2.5.0",
     "lerna": "^3.6.0"
   }
 }
