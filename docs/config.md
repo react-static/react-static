@@ -249,7 +249,7 @@ The name of the entry file as a string, relative to `paths.src`. This defaults t
 ```javascript
 // static.config.js
 export default {
-  entry: 'index.js'
+  entry: 'index.js',
 }
 ```
 
