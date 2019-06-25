@@ -103,7 +103,7 @@ export default {
 
 ### `getSiteData`
 
-`getSiteData` is very similar to a route's `getData` function, but its result is made available to the entire site via the `SiteData` and `getSiteData` component/HOC. Any data you return here, although loaded once per session, will be embedded in every page that is exported on your site. So tread lightly ;)
+`getSiteData` is very similar to a route's `getData` function, but its result is made available to the entire site via the [`useSiteData`](api.md#usesitedata) hook, `SiteData` component and the `getSiteData` HOC. Any data you return here, although loaded once per session, will be embedded in every page that is exported on your site. So tread lightly ;)
 
 Example:
 
