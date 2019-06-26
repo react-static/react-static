@@ -66,6 +66,7 @@
     "inquirer": "^6.3.1",
     "inquirer-autocomplete-prompt": "^1.0.1",
     "intersection-observer": "^0.5.1",
+    "jsesc" : "^2.5.2",
     "match-sorter": "^3.0.0",
     "minimist": "^1.2.0",
     "mutation-observer": "^1.0.3",
