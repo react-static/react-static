@@ -39,3 +39,41 @@ export default {
   ]
 };
 ```
+
+
+## MDXProvider
+
+You are likely to want to customize the components you want to use in MDX.
+
+```bash
+yarn add @mdx-js/react
+```
+
+and to use it you just need to add a provider somewhere in your tree:
+
+```js
+import { MDXProvider } from '@mdx-js/react'
+import { Root, Routes } from "react-static"
+import React from "react"
+
+const Wrapper = ({children}) => <main style={{ padding: '20px'}} children={children} />
+const H1 = ({children}) => <h1 style={{ padding: '1rem', background: 'linear-gradient(to right, #1565C0, #b92b27)' }} children={children} />
+
+
+function App() {
+  return (
+    <Root>
+      <React.Suspense fallback={<em>Loading...</em>}>
+        <MDXProvider components={{ wrapper: Wrapper, h1: H1 }}>
+          <Router>
+            <Dynamic path="dynamic" />
+            <Routes path="*" />
+          </Router>
+        </MDXProvider>
+      </React.Suspense>
+    </Root>
+  )
+}
+```
+
+Typescript typings: https://github.com/mdx-js/mdx/issues/616
