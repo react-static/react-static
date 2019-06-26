@@ -66,7 +66,6 @@ function App() {
       <React.Suspense fallback={<em>Loading...</em>}>
         <MDXProvider components={{ wrapper: Wrapper, h1: H1 }}>
           <Router>
-            <Dynamic path="dynamic" />
             <Routes path="*" />
           </Router>
         </MDXProvider>
