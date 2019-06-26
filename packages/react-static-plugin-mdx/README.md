@@ -54,6 +54,7 @@ and to use it you just need to add a provider somewhere in your tree:
 ```js
 import { MDXProvider } from '@mdx-js/react'
 import { Root, Routes } from "react-static"
+import { Router } from "@reach/router"
 import React from "react"
 
 const Wrapper = ({children}) => <main style={{ padding: '20px'}} children={children} />
