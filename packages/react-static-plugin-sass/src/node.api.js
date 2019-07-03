@@ -75,6 +75,10 @@ export default ({ includePaths = [], ...rest }) => ({
       use: loaders,
     })
 
+    if (config.optimization.splitChunks.cacheGroups.styles) {
+      config.optimization.splitChunks.cacheGroups.styles.test = /\.(c|sc|sa)ss$/
+    }
+
     return config
   },
 })
