@@ -16,9 +16,11 @@ export default (async function extractTemplates(state) {
     if (!route.template) {
       return
     }
+
     route.template = slash(
-      path.relative(config.paths.ARTIFACTS, route.template)
+      path.resolve(config.paths.ARTIFACTS, route.template)
     )
+
     // Check if the template has already been added
     const index = templates.indexOf(route.template)
     if (index === -1) {
