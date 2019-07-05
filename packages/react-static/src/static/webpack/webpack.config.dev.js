@@ -46,7 +46,7 @@ export default function({ config }) {
         NODE_MODULES,
         SRC,
         DIST,
-        ...[NODE_MODULES, SRC, DIST].map(d => path.relative(__dirname, d)),
+        ...[NODE_MODULES, SRC, DIST].map(d => path.resolve(__dirname, d)),
         'node_modules',
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
