@@ -46,6 +46,7 @@ module.exports = (api, { external, hot, node, modules } = {}) => {
     return {
       presets: [
         r('@babel/preset-env'),
+        r('@babel/preset-flow'),
         [r('@babel/preset-react'), { development: false }],
       ],
       plugins: [
