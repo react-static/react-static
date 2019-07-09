@@ -66,7 +66,7 @@
     "inquirer": "^6.3.1",
     "inquirer-autocomplete-prompt": "^1.0.1",
     "intersection-observer": "^0.5.1",
-    "jsesc" : "^2.5.2",
+    "jsesc": "^2.5.2",
     "match-sorter": "^3.0.0",
     "minimist": "^1.2.0",
     "mutation-observer": "^1.0.3",
@@ -128,6 +128,12 @@
     "rimraf": "^2.6.2",
     "webpack-hot-middleware": "^2.24.3"
   },
+  "browserslist": [
+    ">1%",
+    "last 4 versions",
+    "Firefox ESR",
+    "not ie < 9"
+  ],
   "jest": {
     "verbose": true,
     "moduleDirectories": [

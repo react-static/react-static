@@ -24,5 +24,11 @@
     "postcss-flexbugs-fixes": "^4.1.0",
     "semver": "^6.0.0"
   },
+  "browserslist": [
+    ">1%",
+    "last 4 versions",
+    "Firefox ESR",
+    "not ie < 9"
+  ],
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }
