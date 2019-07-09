@@ -11,6 +11,8 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [stagingBasePath](#stagingbasepath)
 - [devBasePath](#devbasepath)
 - [assetsPath](#assetsPath)
+- [devAssetsPath](#devassetspath)
+- [stagingAssetsPath](#stagingassetspath)
 - [extractCssChunks](#extractcsschunks)
 - [inlineCss](#inlinecss)
 - [Document](#document)
@@ -163,6 +165,14 @@ Works exactly like `basePath`, but only when running the dev server.
 ### `assetsPath`
 
 Your `assetsPath` determines where your bundled JS and CSS will be loaded from. This is helpful if you want to host your assets in an external location such as a CDN.
+
+### `devAssetsPath`
+
+Works exactly like `assetsPath`, but only when running the dev server.
+
+### `stagingAssetsPath`
+
+Works exactly like `assetsPath`, but only when building with the `--staging` build flag.
 
 ### `extractCssChunks`
 
