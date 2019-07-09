@@ -15,6 +15,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [inlineCss](#inlinecss)
 - [Document](#document)
 - [devServer](#devserver)
+- [entry](#entry)
 - [paths](#paths)
 - [bundleAnalyzer](#bundleanalyzer)
 - [outputFileRate](#outputfilerate)
@@ -102,7 +103,7 @@ export default {
 
 ### `getSiteData`
 
-`getSiteData` is very similar to a route's `getData` function, but its result is made available to the entire site via the `SiteData` and `getSiteData` component/HOC. Any data you return here, although loaded once per session, will be embedded in every page that is exported on your site. So tread lightly ;)
+`getSiteData` is very similar to a route's `getData` function, but its result is made available to the entire site via the [`useSiteData`](api.md#usesitedata) hook, `SiteData` component and the `getSiteData` HOC. Any data you return here, although loaded once per session, will be embedded in every page that is exported on your site. So tread lightly ;)
 
 Example:
 
@@ -240,6 +241,17 @@ export default {
 ### `renderToHtml`
 
 **Warning:** This option will be removed in a future version. Please use the [Node API hook - beforeRenderToHtml](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertohtml-function) instead
+
+### `entry`
+
+The name of the entry file as a string, relative to `paths.src`. This defaults to:
+
+```javascript
+// static.config.js
+export default {
+  entry: 'index.js',
+}
+```
 
 ### `paths`
 
