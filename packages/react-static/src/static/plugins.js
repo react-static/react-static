@@ -18,6 +18,7 @@ const supportedHooks = [
   'beforeHtmlToDocument',
   'beforeDocumentToFile',
   'afterExport',
+  'plugins',
 ]
 
 export const validatePlugin = plugin => {
