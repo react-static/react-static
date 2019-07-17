@@ -102,4 +102,8 @@ export default {
     const hooks = getHooks(state.plugins, 'afterExport')
     return reduceHooks(hooks)(state)
   },
+  plugins: state => {
+    const hooks = getHooks(state.plugins, 'plugins')
+    return reduceHooks(hooks)(state)
+  },
 }
