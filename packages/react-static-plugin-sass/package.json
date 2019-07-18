@@ -23,7 +23,7 @@
     "autoprefixer": "^9.5.1",
     "css-loader": "^2.1.0",
     "extract-css-chunks-webpack-plugin": "^4.5.1",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.12.0",
     "postcss-flexbugs-fixes": "^4.1.0",
     "sass-loader": "^7.1.0",
     "semver": "^6.0.0"
