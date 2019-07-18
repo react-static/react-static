@@ -1,4 +1,10 @@
-# 7.1.0
+# Changelog
+
+## master
+
+- Add `plugins` to `plugin` hook so plugins can have plugins ([#1264](https://github.com/react-static/react-static/pull/1264)
+
+## 7.1.0
 
 ### New
 
@@ -21,7 +27,7 @@
 - Fix react/react-dom aliases to allow submodules
 - Prefetch now uses a proper `data-` prefix
 
-# 7.0.10
+## 7.0.10
 
 ### Improved
 
@@ -30,14 +36,14 @@
 - `react-static`: Hot reloading stability has been improved to better support hooks like React.useState and React.useEffect
 - `react-static`: Updated eslint rules and code to pass those rules.
 
-# 7.0.9
+## 7.0.9
 
 ### Improved
 
 - `react-static`: Alternative dev server port is now accurate
 - `react-static`: Dev server location is now logged in blue for more visibility
 
-# 7.0.8
+## 7.0.8
 
 ### Improved
 
@@ -48,14 +54,14 @@
 - `react-static-plugin-sitemap`: Removed invalid closing `</xml>` tag
 - `react-static-plugin-sitemap`: Improved minification of generated sitemap XML in production
 
-# 7.0.7
+## 7.0.7
 
 ### Improved
 
 - Fixed issues with siteData being fetched twice during dev mode
 - Updated typescript template to use latest depenencies
 
-# 7.0.6
+## 7.0.6
 
 ### Improved
 
@@ -65,39 +71,39 @@
 - config.paths are now more reliably detected and parsed
 - Typscript template is now more stable
 
-# 7.0.5
+## 7.0.5
 
 ### Improved
 
 - Fix bug where default `config.devServer` is not an object.
 
-# 7.0.4
+## 7.0.4
 
 ### Improved
 
 - You can now override the default `host` and `port` of the webpack dev server via `config.devServer`.
 
-# 7.0.3
+## 7.0.3
 
 ### Improved
 
 - `siteData` is now properly invalidated and refetched when `reloadClientData` is called and/or the `static.config.js` is updated.
 
-# 7.0.2
+## 7.0.2
 
 ### Improved
 
 - `blank` template now properly imports `app.css`
 - Updated pull request template to include CHANGELOG checkbox
 
-# 7.0.1
+## 7.0.1
 
 ### Improved
 
 - Updated dependencies of templates to use 7.0.0
 - Updated Readme to remove @next reference
 
-# 7.0.0
+## 7.0.0
 
 ### New
 
@@ -183,7 +189,7 @@ Migration tips are listed as sub-items if applicable.
 - Though still available, the `start`, `bundle` and `export` commands are being deprecated and have been removed from the documentation.
 - The child renderer and corresponding `getComponentForPath` utility previously provided via the `Routes` component has been deprecated.
 
-# 6.3.6
+## 6.3.6
 
 ### Fixes & Optimizations
 
@@ -193,7 +199,7 @@ Migration tips are listed as sub-items if applicable.
 - Use outputPath when inlineCss option is used
 - Move build artifacts out of the `dist` directory and into a new `artifacts` directory
 
-# 6.3.5
+## 6.3.5
 
 ### New Features
 
@@ -204,7 +210,7 @@ Migration tips are listed as sub-items if applicable.
 - Fix Shared-Data loading
 - Uprade to React 16.8
 
-# 6.2.0
+## 6.2.0
 
 ### New Features
 
@@ -215,7 +221,7 @@ Migration tips are listed as sub-items if applicable.
 - Fixed a security issue where `process.env` variables could be exported and distributed by accident.
 - Remove update-notifier. It was never that reliable and was presenting problems with multi-threading.
 
-# 6.1.0
+## 6.1.0
 
 ### New Features
 
@@ -227,51 +233,51 @@ Migration tips are listed as sub-items if applicable.
 
 - Various css-loader issues have been fixed in plugins for more stability with the latest features
 
-# 6.0.20
+## 6.0.20
 
 ### Deprecations
 
 - Silently deprecated both `config.renderToHtml` and `config.renderToElement` in favor of using the plugin API. Hope this doesn't annoy anyone too much. Better to do it now that later!
 
-# 6.0.10
+## 6.0.10
 
 ### Fixes & Optimizations
 
 - Reduced the size of npm installation by removing the `archives` directory from the npm tarball
 
-# 6.0.9
+## 6.0.9
 
 ### Fixes & Optimizations
 
 - Fixed an issue where helpers were not included in external node_modules imported through babel
 
-# 6.0.8
+## 6.0.8
 
 ### Fixes & Optimizations
 
 - Added Guides to documentation. All example except for the three main templates (located in `packages/react-static/templates` will be converted over to guides eventually.
 - Examples have been deprecated and are no longer available as templates for `react-static create`. They have been moved to `archives/old-examples`.
 
-# 6.0.7
+## 6.0.7
 
 ### Fixes & Optimizations
 
 - Fixed styled components example for V6 (#889)
 
-# 6.0.6
+## 6.0.6
 
 ### Fixes & Optimizations
 
 - Removed old website code
 - Fixed examples to import Link from external router modules
 
-# 6.0.1
+## 6.0.1
 
 ### Fixes & Optimizations
 
 - The CLI now uses `minimist` instead of `commander`. Along with this change, there is now only a single binary for all of react-static. This should cut down on inconsistencies between `npm` and `yarn` and how they treat multi-binary projects.
 
-# 6.0.0
+## 6.0.0
 
 ### New Features
 
@@ -323,7 +329,7 @@ Migration tips are listed as sub-items if applicable.
 - Removed `jsesc` until we can find a better way to handle utf-8 encoding for routeInfo
 - Removed a stray console.log
 
-# 5.9.6
+## 5.9.6
 
 ### Fixes & Optimizations
 
@@ -335,14 +341,14 @@ Migration tips are listed as sub-items if applicable.
 - Added various tests for parts of static/index.js
 - Upgraded snapshots for testing
 
-# 5.9.4 - 5.9.5
+## 5.9.4 - 5.9.5
 
 ### Fixes & Optimizations
 
 - Removed deprecated react-hot-loader/patch from webpack dev entry, but kept the `react-hot-loader` entry to ensure it is required before React.
 - Updated tests to work with regressions
 
-# 5.9.3
+## 5.9.3
 
 ### Fixes & Optimizations
 
@@ -350,7 +356,7 @@ Migration tips are listed as sub-items if applicable.
 - Add tests for building the config
 - Improved Gentics Mesh example
 
-# 5.9.2
+## 5.9.2
 
 ### Fixes & Optimizations
 
@@ -363,26 +369,26 @@ Migration tips are listed as sub-items if applicable.
 - An automated was added to test all examples build integrity
 - Upgraded some dependencies
 
-# 5.9.1
+## 5.9.1
 
 ### Fixes & Optimizations
 
 - Fix inifinite loading issue introduced with 5.9.0
 
-# 5.9.0
+## 5.9.0
 
 ### Features
 
 - The `<Loading>` component and the `onLoading` method now return a more detailed loading state. `0` for not loading, `1` for "soft" loading (when navigation is happening) and `2` for "hard" loading (when asynchronous assets are being requested).
 
-# 5.8.8
+## 5.8.8
 
 ### Fixes & Optimizations
 
 - Switch from `babel-preset-latest` to `babel-preset-env`.
 - Remove unnecessary `babel-preset-stage-3` since it's included already with `babel-preset-stage-0`.
 
-# 5.8.7
+## 5.8.7
 
 ### Fixes & Optimizations
 
@@ -395,38 +401,38 @@ Migration tips are listed as sub-items if applicable.
 - Upgraded `swimmer` to hide log messages.
 - Document-level rendering now uses `renderToStaticMarkup` instead of `renderToString`. This ensures there is no code comments or meta markup in the <head>
 
-# 5.8.5
+## 5.8.5
 
 ### Fixes & Optimizations
 
 - Upgrade Documentation example and expose some undocumented utilities to the outside world.
 
-# 5.8.4
+## 5.8.4
 
 ### Fixes & Optimizations
 
 - Remove console.log from `documentation` example
 
-# 5.8.3
+## 5.8.3
 
 ### Features
 
 - Added a `config.disableDuplicateRoutesWarning` option.
 
-# 5.8.1
+## 5.8.1
 
 ### Fixes & Optimizations
 
 - Improved `getPath` and `getRoutePath` methods, and added some simple tests for them.
 
-# 5.8.0
+## 5.8.0
 
 ### Features
 
 - Added the `pagination` example.
 - Added a `makePageRoutes` utility function on the `react-static/node` import to help with generating page routes from an array of items.
 
-# 5.7.6
+## 5.7.6
 
 ### Features
 
@@ -437,56 +443,56 @@ Migration tips are listed as sub-items if applicable.
 - Missing routeInfo.json requests do not throw in production now.
 - Fixed an error where router `path`s would not match as expected during static export. It now uses the same format (leading slash at root patsh) as react-router does by default during development.
 
-# 5.7.5
+## 5.7.5
 
 ### Fixes & Optimizations
 
 - New Error handler component and accompanying tests. Thanks @jasonlafferty!
 
-# 5.7.2-4
+## 5.7.2-4
 
 ### Fixes & Optimizations
 
 - Improved prefetch lifecycles and page responsiveness for slow networks.
 
-# 5.7.1
+## 5.7.1
 
 ### Features
 
 - Added hidden feature to rebuild routes and routeData automatically when the config is edited during development.
 
-# 5.7.0
+## 5.7.0
 
 ### Features
 
 - Added hidden feature to rebuild routes and routeData during development.
 
-# 5.6.8
+## 5.6.8
 
 ### Fixes & Optimizations
 
 - Fixed yet another issue in the dev server that could result in a 404 on first load.
 
-# 5.6.6 - 5.6.7
+## 5.6.6 - 5.6.7
 
 ### Fixes & Optimizations
 
 - Fixed gitignore files from not being generated
 
-# 5.6.5
+## 5.6.5
 
 ### Fixes & Optimizations
 
 - Fixed an issue in the dev server that would result in a 404 on first load.
 - Upgrade eslint rules to latest versions
 
-# 5.6.4
+## 5.6.4
 
 ### Fixes & Optimizations
 
 - Fix `gitignore` issues
 
-# 5.6.3
+## 5.6.3
 
 ### Fixes & Optimizations
 
@@ -496,7 +502,7 @@ Migration tips are listed as sub-items if applicable.
 - No more losing internal state in components during hash navigation
 - Dev server now serves `public` directly through webpack, allowing immediate feedback to changes in its files.
 
-# 5.6.2
+## 5.6.2
 
 ### Fixes & Optimizations
 
@@ -508,14 +514,14 @@ Migration tips are listed as sub-items if applicable.
 - TypeScript example now excludes node_modules in `tsconfig.json`
 - MaterialUI updated to use latest beta
 
-# 5.6.1
+## 5.6.1
 
 ### Fixes & Optimizations
 
 - In the `typescript` example, `ts-loader` is fixed for webpack 3
 - `less-antdesign` has been updated to run and work properly.
 
-# 5.6.0
+## 5.6.0
 
 ### Features
 
@@ -530,28 +536,28 @@ Migration tips are listed as sub-items if applicable.
 - Fetching route info for non-existent routes now has better logging.
 - Fixed a bug where an imported `woff2` file extension would crash babel.
 
-# 5.5.14
+## 5.5.14
 
 ### Fixes & Optimizations
 
 - Fixed a missing export of `propsByHash`.
 - Added `update-notifier` so people can keep up with all these updates!
 
-# 5.5.13
+## 5.5.13
 
 ### Fixes & Optimizations
 
 - Moved `gitdocs` to dev dependencies
 - Added `shrink-to-fit` to default `Document` meta.
 
-# 5.5.12
+## 5.5.12
 
 ### Fixes & Optimizations
 
 - Production code-split components that error will now log the correct error to the console.
 - Added `routeInfo` to the `config.Document` component.
 
-# 5.5.11
+## 5.5.11
 
 ### Fixes
 
@@ -559,21 +565,21 @@ Migration tips are listed as sub-items if applicable.
 - `compact: false` is now the default in `.babelrc`. Only a select few care about those compaction messages anyway.
 - Various `__dirname` references are now fixed with the correct number of `../`'s
 
-# 5.5.10
+## 5.5.10
 
 ### Fixes
 
 - Fixed a rare issue where hash links may not be scrolled to if navigation is fast enough (imagine that ;)
 - Added a `config.paths.root` option that is also rare.
 
-# 5.5.9
+## 5.5.9
 
 ### Fixes
 
 - Fixed a rare issue (in Gitdocs mostly) where a RouteData would not load even though routeInfo.allProps was synchronously
   accessible.
 
-# 5.5.1-8
+## 5.5.1-8
 
 ### Fixes
 
@@ -587,7 +593,7 @@ Migration tips are listed as sub-items if applicable.
 - Added a `key` prop to the rendered route in `react-static-routes.js` to avoid stale or mixed state for routes that happen to share the same top-level component.
 - Removed complexity from the user by making the `<Routes>` component's `getComponentForPath` render prop more robust. (Check documentation if you use custom rendering for your `react-static-routes`)
 
-# 5.5.0
+## 5.5.0
 
 ### Features
 
@@ -597,7 +603,7 @@ Migration tips are listed as sub-items if applicable.
 
 - `src='/'` paths are now also rewritten with siteRoot and basePath
 
-# 5.4.0
+## 5.4.0
 
 ### Features
 
@@ -619,7 +625,7 @@ Migration tips are listed as sub-items if applicable.
 - More reliable handling of path slashes throughout the codebase
 - Added react `key` props to head scripts, links and preloads
 
-# 5.2.0
+## 5.2.0
 
 ### Fixes & Optimizations
 
@@ -637,13 +643,13 @@ Migration tips are listed as sub-items if applicable.
 
 - CLI now supports using a `.git` address to clone for the template.
 
-# 5.1.14
+## 5.1.14
 
 ### Fixes
 
 - Fixed `component` style render props from not passing children
 
-# 5.1.13
+## 5.1.13
 
 ### Features
 
@@ -654,19 +660,19 @@ Migration tips are listed as sub-items if applicable.
 
 - Squashed some bugs
 
-# 5.1.8
+## 5.1.8
 
 ### Fixes & Optimizations
 
 - Removed the various `extract-hoc` related babel plugins in favor of the new `react-hot-loader` version 4.
 
-# 5.1.0
+## 5.1.0
 
 ### Features
 
 - Added `--staging` CLI argument to `react-static build` that does not perform build-time optimizations like siteRoot replacement on links assets, etc. If you are testing your site locally, you will likely want to use this option to allow your production site to be navigable on localhost.
 
-# 5.0.0
+## 5.0.0
 
 ### Features
 
@@ -696,26 +702,26 @@ Migration tips are listed as sub-items if applicable.
   - If you are using a custom `Document` be sure to replace the `siteProps` prop with `siteData`.
 - Note: To take advantage of auto-code-splitting, you cannot use custom routing for your static routes. I suggest migrating to the automatic routing strategy asap.
 
-# 4.8.2
+## 4.8.2
 
 ### Fixes & Optimizations
 
 - `getRouteProps` was fixed to always have access to the router props, thus supporting `getRouteProps` as nested components instead of top-level page components.
 
-# 4.8.1
+## 4.8.1
 
 ### Fixes & Optimizations
 
 - Node version was rolled back to `<=6.10.0`, to allow some existing users continued usage.
 
-# 4.8.0
+## 4.8.0
 
 ### Features
 
 - Preact can now be used in production by setting `preact: true` in your `static.config.js`! Remember to use `ReactDOM.render` instead of `hydrate` in production too :)
 - Added the `preact` example.
 
-# 4.7.2
+## 4.7.2
 
 ### Fixes & Optimizations
 
@@ -724,7 +730,7 @@ Migration tips are listed as sub-items if applicable.
 - When building for `node` stage, the `main` is now preferred in package imports, instead of `module`
 - Better module resolution locations, which allows overriding react-static module versions by installing them locally.
 
-# 4.7.1
+## 4.7.1
 
 ### Features
 
@@ -738,13 +744,13 @@ Migration tips are listed as sub-items if applicable.
 - Pass DOM props through in links (Thanks [@denis-sokolov](https://github/denis-sokolov)!)
 - Pass additional CLI arguments through to getSiteData() (Thanks [@etimberg](https://github/etimberg)!)
 
-# 4.7.0
+## 4.7.0
 
 ### Features
 
 - Common props returned by `getRouteProps` (props that `===` one another) now promoted to **shared props** and only requested once per session. Learn more in the docs: [Automatic Data and Prop Splitting](https://github.com/nozzle/react-static#automatic-data-and-prop-splitting). Depending on your site, this may significantly decrease site bandwidth and increase both initial page load speed and subsequent page load performance.
 
-# 4.6.0
+## 4.6.0
 
 ### Features
 
@@ -756,14 +762,14 @@ Migration tips are listed as sub-items if applicable.
 - `Link` and `NavLink` now properly render hash links and external links. (Thanks [@denis-sokolov](https://github/denis-sokolov)!)
 - `sass` example now uses a proper webpack loader configuration for style extraction. (Thanks [@talves](https://github/talves)!)
 
-# 4.5.1
+## 4.5.1
 
 ### Fixes & Optimizations
 
 - `Link` and `NavLink` now properly render hash links and external links. (Thanks [@denis-sokolov](https://github/denis-sokolov)!)
 - `sass` example now uses a proper webpack loader configuration for style extraction. (Thanks [@talves](https://github/talves)!)
 
-# 4.5.0
+## 4.5.0
 
 ### Features
 
@@ -778,7 +784,7 @@ Migration tips are listed as sub-items if applicable.
 - Added `manta.life` to list of sites built with React Static. (Thanks [@hql287](https://github/hql287)!)
 - Updated the `graphql-request` example to use `react-markdown` instead of `dangerouslySetInnterHTML`. (Thanks [@hmeissner](https://github/hmeissner)!)
 
-# 4.4.0
+## 4.4.0
 
 ### Features
 
@@ -788,31 +794,31 @@ Migration tips are listed as sub-items if applicable.
 
 - Use ReactDOM.render instead of ReactDOM.hydrate in dev (Thanks [@EmilTholin](https://github.com/emiltholin)!)
 
-# 4.3.4
+## 4.3.4
 
 ### Fixes & Optimizations
 
 - Cordova example's `res` directory is no longer included in the npm distribution making releases and installations much faster.
 
-# 4.3.3
+## 4.3.3
 
 ### Fixes & Optimizations
 
 - Fixed a bug where windows users could not serve or build a project. (Thanks [@karland](https://github/karland)!)
 
-# 4.3.2
+## 4.3.2
 
 ### Fixes & Optimizations
 
 - Fixed a bug where some directories or files weren't being included in npm distributions
 
-# 4.3.1
+## 4.3.1
 
 ### Fixes & Optimizations
 
 - Fixed a bug where component names with numbers would not render propertly. (Thanks [@muloka](https://github.com/muloka)!)
 
-# 4.3.0
+## 4.3.0
 
 ### Features
 
@@ -822,7 +828,7 @@ Migration tips are listed as sub-items if applicable.
 
 - `react-static-routes` imports are now relative, thus avoiding absolute path madness... hopefully? :)
 
-# 4.2.0
+## 4.2.0
 
 ### Features
 
@@ -836,7 +842,7 @@ Migration tips are listed as sub-items if applicable.
 - Helmet meta tags are more reliably extracted. [@EmilTholin](https://github.com/emiltholin)
 - Config server is no longer served separately, but piggybacks on webpack dev server. [@rileylnapier](https://github.com/rileylnapier)
 
-# 4.1.0
+## 4.1.0
 
 ### Features
 
@@ -860,7 +866,7 @@ Migration tips are listed as sub-items if applicable.
 - Fixed a bug where not defining a 404 component resulted in an error during production build. (Thanks [@mplis](https://github.com/mplis)!)
 - Fixed a bug where the webpack dev server would rebuild the app multiple times in a row when started up for the first time. (Thanks [@cgmx](https://github.com/cgmx)!)
 
-# 4.0.0
+## 4.0.0
 
 ### Breaking Changes
 
@@ -888,7 +894,7 @@ Migration tips are listed as sub-items if applicable.
 
 - Webpack files are now hashed for better cache invalidation. It's about time right?!
 
-# 3.0.0
+## 3.0.0
 
 ### Breaking Changes
 
@@ -906,7 +912,7 @@ Migration tips are listed as sub-items if applicable.
 - Exporting is now up to 2x faster after switching from a dual pass to a single pass render strategy.
 - Fixed a very elusive and angering bug where imported node_modules were not being shared between the node context and the node webpack build of the app used for exporting.
 
-# 2.0.0
+## 2.0.0
 
 ### Breaking Changes
 
