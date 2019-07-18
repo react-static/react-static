@@ -9,6 +9,7 @@
 ### Improved
 
 - Support Node 12 ([#1219](https://github.com/react-static/react-static/pull/1219))
+- Don't inline files larger than an arbitrary size ([#1222](https://github.com/react-static/react-static/pull/1222))
 
 ## 7.1.0
 
