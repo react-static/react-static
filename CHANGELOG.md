@@ -2,7 +2,13 @@
 
 ## master
 
-- Add `plugins` to `plugin` hook so plugins can have plugins ([#1264](https://github.com/react-static/react-static/pull/1264)
+### New
+
+- Add `plugins` to `plugin` hook so plugins can have plugins ([#1264](https://github.com/react-static/react-static/pull/1264))
+
+### Improved
+
+- Support Node 12 ([#1219](https://github.com/react-static/react-static/pull/1219))
 
 ## 7.1.0
 
