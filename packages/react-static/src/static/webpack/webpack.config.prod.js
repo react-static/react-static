@@ -119,7 +119,7 @@ function common(state) {
         SRC,
         DIST,
         ...[NODE_MODULES, SRC, DIST].map(d =>
-          DIST.startsWith(ROOT) ? path.relative(__dirname, d) : path.resolve(d)
+          DIST.startsWith(ROOT) ? path.resolve(__dirname, d) : path.resolve(d)
         ),
         'node_modules',
       ],
