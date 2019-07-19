@@ -13,7 +13,7 @@ exports[`BodyWithMeta when route is a redirect route 1`] = `
     </div>
   </body>
 </Component>
-`
+`;
 
 exports[`BodyWithMeta when route is a static route 1`] = `
 <Component
@@ -30,7 +30,7 @@ exports[`BodyWithMeta when route is a static route 1`] = `
       dangerouslySetInnerHTML={
         Object {
           "__html": "
-    window.__routeInfo = {\\"routeDate\\":\\"here\\"};",
+    window.__routeInfo = JSON.parse(\\"{\\\\\\"routeDate\\\\\\":\\\\\\"here\\\\\\"}\\");",
         }
       }
       type="text/javascript"
@@ -49,4 +49,4 @@ exports[`BodyWithMeta when route is a static route 1`] = `
     />
   </body>
 </Component>
-`
+`;

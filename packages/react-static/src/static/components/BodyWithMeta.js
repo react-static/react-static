@@ -1,6 +1,6 @@
 import React from 'react'
-import { pathJoin, makePathAbsolute } from '../../utils'
 import jsesc from 'jsesc';
+import { pathJoin, makePathAbsolute } from '../../utils'
 
 const generateRouteInformation = embeddedRouteInfo => ({
   __html: `
