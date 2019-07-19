@@ -5,11 +5,12 @@
 ### New
 
 - Add `plugins` to `plugin` hook so plugins can have plugins ([#1264](https://github.com/react-static/react-static/pull/1264))
+- Add Node 12 support ([#1219](https://github.com/react-static/react-static/pull/1219))
 
 ### Improved
 
-- Support Node 12 ([#1219](https://github.com/react-static/react-static/pull/1219))
-- Don't inline files larger than an arbitrary size ([#1222](https://github.com/react-static/react-static/pull/1222))
+- Remove file inline-ing when the file is larger than an arbitrary size ([#1222](https://github.com/react-static/react-static/pull/1222))
+- Fix relative paths when the should have been absolute ([#1250](https://github.com/react-static/react-static/pull/1250), [#1253](https://github.com/react-static/react-static/pull/1253), [#1254](https://github.com/react-static/react-static/pull/1254))
 
 ## 7.1.0
 
