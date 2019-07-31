@@ -63,7 +63,11 @@ export function pathJoin(...paths) {
 // resemble the same string as passed in the static.config.js routes
 export function getRoutePath(routePath) {
   // Detect falsey paths and the root path
-  if (!routePath || routePath === '/') {
+  if (
+    !routePath ||
+    routePath === '/' ||
+    routePath === process.env.REACT_STATIC_BASE_PATH
+  ) {
     return '/'
   }
 
