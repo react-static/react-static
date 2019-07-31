@@ -130,11 +130,13 @@ export function buildConfig(state, config = {}) {
     basePath = cleanSlashes(config.stagingBasePath)
     assetsPath = config.stagingAssetsPath || paths.assets || assetsPath
   } else {
-    siteRoot = cutPathToRoot(config.siteRoot, '$1')
+    siteRoot = cutPathToRoot(config.siteRoot || '/', '$1')
     basePath = cleanSlashes(config.basePath)
     assetsPath = config.assetsPath || paths.assets || assetsPath
   }
-  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`)}/`
+  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`, {
+    leading: false,
+  })}/`
 
   if (assetsPath && !isAbsoluteUrl(assetsPath)) {
     assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
