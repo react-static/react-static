@@ -133,6 +133,26 @@ describe('buildConfig', () => {
       expect(config.assetsPath).toBe('https://example.com/assets/')
     })
   })
+
+  describe('publicPath is absolute', () => {
+    test('when user supplies a site root', () => {
+      const { config } = buildConfig({}, { siteRoot: 'http://example.com' })
+      expect(config.publicPath).toBe('http://example.com/')
+    })
+
+    test('when user supplies a basePath', () => {
+      const { config } = buildConfig({}, { basePath: 'dist' })
+      expect(config.publicPath).toBe('/dist/')
+    })
+
+    test('when user supplies a site root and a basePath', () => {
+      const { config } = buildConfig(
+        {},
+        { siteRoot: 'http://example.com', basePath: 'dist' }
+      )
+      expect(config.publicPath).toBe('http://example.com/dist/')
+    })
+  })
 })
 
 describe('getConfig', () => {
