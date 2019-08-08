@@ -1,5 +1,5 @@
 export default {
-  siteRoot: '',
+  siteRoot: '/',
   basePath: '',
   assetsPath: '',
   prefetchRate: 5,

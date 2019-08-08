@@ -9,7 +9,7 @@ import {
   trimDoubleSlashes,
   makePathAbsolute,
   getFullRouteData,
-} from ".."
+} from '..'
 
 describe('browser/utils', () => {
   describe('pathJoin()', () => {
@@ -42,6 +42,10 @@ describe('browser/utils', () => {
 
     it('should return / for /', () => {
       expect(getRoutePath('/')).toEqual('/')
+    })
+
+    it('should return / for basePath', () => {
+      expect(getRoutePath('base/path')).toEqual('/')
     })
 
     it('should strip basePath', () => {
