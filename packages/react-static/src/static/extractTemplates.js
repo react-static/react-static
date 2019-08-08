@@ -24,6 +24,7 @@ export default (async function extractTemplates(state) {
     if (index === -1) {
       // If it's new, add it
       if (route.path === '404') {
+        // Make sure 404 template is the first one
         templates.unshift(route.template)
         notFoundPending = false
       } else {
@@ -39,7 +40,6 @@ export default (async function extractTemplates(state) {
     )
   }
 
-  // Make sure 404 template is the first one
   return {
     ...state,
     templates,
