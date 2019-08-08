@@ -24,6 +24,7 @@
 
 ### Improved
 
+- Fixed issue with react hot loader for IE
 - CSS HMR support is now much more reliable.
 - `react-static-plugin-mdx`: Allow passing MDX options to webpack loader (e.g. `remarkPlugins` and `rehypePlugins`)
 - Failed builds will finally exit with a non-zero status code!
