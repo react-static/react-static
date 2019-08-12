@@ -25,9 +25,9 @@ React Static ships with a plugin API to extend React Static's functionality.
   - [react-static-plugin-source-filesystem](/packages/react-static-plugin-source-filesystem) - Creates routes from files in a directory
   - [react-static-plugin-mdx](/packages/react-static-plugin-mdx) - Adds support for MDX
 - Type checking
-  - [react-static-plugin-typescript](packages/react-static-plugin-typescript) - Allows you to write your components in TypeScript
+  - [react-static-plugin-typescript](/packages/react-static-plugin-typescript) - Allows you to write your components in TypeScript
 - Assets
-  - [react-static-plugin-sitemap](packages/react-static-plugin-sitemap) - Exports sitemap information as XML
+  - [react-static-plugin-sitemap](/packages/react-static-plugin-sitemap) - Exports sitemap information as XML
 
 ### Unofficial Plugins via NPM
 
