@@ -47,7 +47,7 @@ A route is an `object` that represents a unique location in your site and is the
 It supports the following properties:
 
 - `path: String` - The **path** of the URL to match for this route, **excluding search parameters and hash fragments, relative to your `siteRoot + basePath` (if this is a child route, also relative to this route's parent path)**
-- `template: String` - The path of the component to be used to render this route. (Relative to the root of your project)
+- `template: String` - The path of the component to be used to render this route. (Relative to the root of your project or absolute)
 - `getData: async Function(resolvedRoute, { dev }) => Object` - An async function that returns or resolves an object of any necessary data for this route to render.
   - Arguments
     - `resolvedRoute: Object` - This is the resolved route this function is handling.
