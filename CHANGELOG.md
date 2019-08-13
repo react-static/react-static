@@ -11,6 +11,7 @@
 
 - Remove file inline-ing when the file is larger than an arbitrary size ([#1222](https://github.com/react-static/react-static/pull/1222))
 - Fix relative paths when the should have been absolute ([#1250](https://github.com/react-static/react-static/pull/1250), [#1253](https://github.com/react-static/react-static/pull/1253), [#1254](https://github.com/react-static/react-static/pull/1254))
+- Fixed issue with react hot loader for IE ([#1280](https://github.com/react-static/react-static/pull/1280)
 
 ## 7.1.0
 
@@ -24,7 +25,6 @@
 
 ### Improved
 
-- Fixed issue with react hot loader for IE
 - CSS HMR support is now much more reliable.
 - `react-static-plugin-mdx`: Allow passing MDX options to webpack loader (e.g. `remarkPlugins` and `rehypePlugins`)
 - Failed builds will finally exit with a non-zero status code!
