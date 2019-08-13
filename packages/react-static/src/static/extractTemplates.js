@@ -17,13 +17,14 @@ export default (async function extractTemplates(state) {
       return
     }
 
-    route.template = slash(path.resolve(config.paths.ARTIFACTS, route.template))
+    route.template = slash(path.resolve(config.paths.ROOT, route.template))
 
     // Check if the template has already been added
     const index = templates.indexOf(route.template)
     if (index === -1) {
       // If it's new, add it
       if (route.path === '404') {
+        // Make sure 404 template is the first one
         templates.unshift(route.template)
         notFoundPending = false
       } else {
@@ -39,7 +40,6 @@ export default (async function extractTemplates(state) {
     )
   }
 
-  // Make sure 404 template is the first one
   return {
     ...state,
     templates,
