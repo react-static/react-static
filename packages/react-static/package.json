@@ -66,7 +66,7 @@
     "inquirer": "^6.3.1",
     "inquirer-autocomplete-prompt": "^1.0.1",
     "intersection-observer": "^0.5.1",
-    "jsesc" : "^2.5.2",
+    "jsesc": "^2.5.2",
     "match-sorter": "^3.0.0",
     "minimist": "^1.2.0",
     "mutation-observer": "^1.0.3",
@@ -82,7 +82,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
-    "react-hot-loader": "^4.8.4",
+    "react-hot-loader": "^4.12.10",
     "react-universal-component": "^4.0.0",
     "resolve-from": "^5.0.0",
     "serve": "^11.0.0",
@@ -150,6 +150,6 @@
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4",
   "peerDependencies": {
-    "react-hot-loader": "^4.3.12"
+    "react-hot-loader": "^4.12.10"
   }
 }

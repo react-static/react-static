@@ -11,6 +11,7 @@
 
 - Remove file inline-ing when the file is larger than an arbitrary size ([#1222](https://github.com/react-static/react-static/pull/1222))
 - Fix relative paths when the should have been absolute ([#1250](https://github.com/react-static/react-static/pull/1250), [#1253](https://github.com/react-static/react-static/pull/1253), [#1254](https://github.com/react-static/react-static/pull/1254), [#1272](https://github.com/react-static/react-static/pull/1272) and [#1276](https://github.com/react-static/react-static/pull/1254))
+- Fixed issue with react hot loader for IE ([#1274](https://github.com/react-static/react-static/pull/1274))
 
 ## 7.1.0
 

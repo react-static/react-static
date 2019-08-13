@@ -27,7 +27,7 @@
     "@types/react-dom": "^16.8.0",
     "@types/react-hot-loader": "^4.1.0",
     "@types/webpack-env": "^1.13.6",
-    "react-hot-loader": "~4.12.5",
+    "react-hot-loader": "~4.12.10",
     "serve": "10.1.1",
     "typescript": "^3.4.1"
   }
