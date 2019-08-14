@@ -57,7 +57,8 @@ export default async function makeHeadWithMeta(state) {
         child.props.rel === 'stylesheet'
       ) {
         return true
-      } if (child.type === 'style') {
+      }
+      if (child.type === 'style') {
         return true
       }
       return false
@@ -71,9 +72,11 @@ export default async function makeHeadWithMeta(state) {
         child.props.rel === 'stylesheet'
       ) {
         return false
-      } if (child.type === 'style') {
+      }
+      if (child.type === 'style') {
         return false
-      } if (child.type === 'script') {
+      }
+      if (child.type === 'script') {
         return false
       }
       return true

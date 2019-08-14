@@ -200,9 +200,7 @@ export default (async function exportRoute(state) {
         'Components are not allowed to suspend during static export. Please ' +
         'make its data available synchronously and try again!'
     }
-    error.message = `Failed exporting HTML for URL ${route.path} (${
-      route.template
-    }): ${error.message}`
+    error.message = `Failed exporting HTML for URL ${route.path} (${route.template}): ${error.message}`
     throw error
   }
 

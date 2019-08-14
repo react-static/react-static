@@ -15,11 +15,11 @@
     "preversion": "yarn build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5"
   },
   "dependencies": {
-    "@mdx-js/loader": "^1.0.14"
+    "@mdx-js/loader": "^1.3.0"
   }
 }

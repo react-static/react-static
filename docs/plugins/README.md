@@ -32,6 +32,7 @@ React Static ships with a plugin API to extend React Static's functionality.
 ### Unofficial Plugins via NPM
 
 - Assets
+
   - [react-static-plugin-favicons](https://www.npmjs.com/package/react-static-plugin-favicons) - Generate (fav)icons in many different sizes for many different platforms, and add them to your site's metadata
 
 - Other
