@@ -14,6 +14,9 @@
     "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
+  "peerDependencies": {
+    "browserslist": "^4.6"
+  },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
@@ -22,11 +25,11 @@
   "dependencies": {
     "css-loader": "^2.1.0",
     "autoprefixer": "^9.6.1",
-    "extract-css-chunks-webpack-plugin": "^4.5.1",
+    "extract-css-chunks-webpack-plugin": "^4.6.0",
     "node-sass": "^4.12.0",
     "postcss-flexbugs-fixes": "^4.1.0",
     "sass-loader": "^7.2.0",
-    "semver": "^6.0.0"
+    "semver": "^6.3.0"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

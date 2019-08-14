@@ -10,6 +10,9 @@
     "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
+  "peerDependencies": {
+    "browserslist": "^4.6"
+  },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",

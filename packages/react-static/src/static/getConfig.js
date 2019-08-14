@@ -213,6 +213,8 @@ export function buildConfig(state, config = {}) {
   process.env.REACT_STATIC_DISABLE_RUNTIME = config.disableRuntime
   process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollIntervalw
 
+  process.env.REACT_STATIC_ROOT_PATH_READ_ONLY = paths.ROOT
+
   process.env.REACT_STATIC_TEMPLATES_PATH = nodePath.join(
     paths.ARTIFACTS,
     'react-static-templates.js'

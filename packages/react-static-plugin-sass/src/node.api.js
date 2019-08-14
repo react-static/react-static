@@ -2,6 +2,12 @@ import ExtractCssChunks from 'extract-css-chunks-webpack-plugin'
 import autoprefixer from 'autoprefixer'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 import semver from 'semver'
+import browserslist from 'browserslist'
+
+function fetchBrowsersList() {
+  const path = process.env.REACT_STATIC_ROOT_PATH_READ_ONLY
+  return browserslist(undefined, { path, env: process.env.NODE_ENV || 'production' })
+}
 
 export default ({ includePaths = [], ...rest }) => ({
   webpack: (config, { stage }) => {
@@ -27,16 +33,8 @@ export default ({ includePaths = [], ...rest }) => ({
         ident: 'postcss',
         plugins: () => [
           postcssFlexbugsFixes,
-          autoprefixer({
-            browsers: [
-              '>1%',
-              'last 4 versions',
-              'Firefox ESR',
-              'not ie < 9', // React doesn't support IE8 anyway
-            ],
-            flexbox: 'no-2009',
-          }),
-        ],
+          // TODO: remove in 8.0.0, enforcing browserslist in the root via a config file
+          autoprefixer({ overrideBrowserslist: fetchBrowsersList(), flexbox: 'no-2009' }),        ],
       },
     }
 
@@ -75,7 +73,7 @@ export default ({ includePaths = [], ...rest }) => ({
       use: loaders,
     })
 
-    if (config.optimization.splitChunks.cacheGroups.styles) {
+    if (config.optimization.splitChunks && config.optimization.splitChunks && config.optimization.splitChunks.cacheGroups.styles) {
       config.optimization.splitChunks.cacheGroups.styles.test = /\.(c|sc|sa)ss$/
     }
 
