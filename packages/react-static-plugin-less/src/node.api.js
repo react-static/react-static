@@ -6,7 +6,10 @@ import browserslist from 'browserslist'
 
 function fetchBrowsersList() {
   const path = process.env.REACT_STATIC_ROOT_PATH_READ_ONLY
-  return browserslist(undefined, { path, env: process.env.NODE_ENV || 'production' })
+  return browserslist(undefined, {
+    path,
+    env: process.env.NODE_ENV || 'production',
+  })
 }
 
 export default ({ includePaths = [], ...rest }) => ({
@@ -35,7 +38,10 @@ export default ({ includePaths = [], ...rest }) => ({
         plugins: () => [
           postcssFlexbugsFixes,
           // TODO: remove in 8.0.0, enforcing browserslist in the root via a config file
-          autoprefixer({ overrideBrowserslist: fetchBrowsersList(), flexbox: 'no-2009' })
+          autoprefixer({
+            overrideBrowserslist: fetchBrowsersList(),
+            flexbox: 'no-2009',
+          }),
         ],
       },
     }
