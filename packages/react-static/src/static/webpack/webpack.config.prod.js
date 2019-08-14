@@ -80,7 +80,7 @@ function common(state) {
       filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
       chunkFilename: 'templates/[name].[chunkHash:8].js',
       path: ASSETS,
-      publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
+      publicPath: process.env.REACT_STATIC_PUBLIC_PATH || '/',
     },
     optimization: {
       sideEffects: true,
@@ -119,14 +119,14 @@ function common(state) {
         SRC,
         DIST,
         ...[NODE_MODULES, SRC, DIST].map(d =>
-          DIST.startsWith(ROOT) ? path.relative(__dirname, d) : path.resolve(d)
+          DIST.startsWith(ROOT) ? path.resolve(__dirname, d) : path.resolve(d)
         ),
         'node_modules',
       ],
       extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
       alias: {
-        react: resolveFrom(config.paths.NODE_MODULES, 'react'),
-        'react-dom': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
+        react$: resolveFrom(config.paths.NODE_MODULES, 'react'),
+        'react-dom$': resolveFrom(config.paths.NODE_MODULES, 'react-dom'),
         'react-universal-component': resolveFrom(
           __dirname,
           'react-universal-component'

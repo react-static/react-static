@@ -121,19 +121,30 @@ export function buildConfig(state, config = {}) {
   // siteRoot, basePath, publicPath, and assetPath resolution
   let siteRoot = ''
   let basePath = ''
+  let assetsPath = ''
   if (process.env.REACT_STATIC_ENV === 'development') {
     basePath = cleanSlashes(config.devBasePath)
+    assetsPath = config.devAssetsPath || paths.assets || assetsPath
   } else if (state.staging) {
     siteRoot = cutPathToRoot(config.stagingSiteRoot || '/', '$1')
     basePath = cleanSlashes(config.stagingBasePath)
+    assetsPath = config.stagingAssetsPath || paths.assets || assetsPath
   } else {
-    siteRoot = cutPathToRoot(config.siteRoot, '$1')
+    siteRoot = cutPathToRoot(config.siteRoot || '/', '$1')
     basePath = cleanSlashes(config.basePath)
+    assetsPath = config.assetsPath || paths.assets || assetsPath
   }
-  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`)}/`
-  let assetsPath = cleanSlashes(config.assetsPath || paths.assets)
+  const publicPath = `${cleanSlashes(`${siteRoot}/${basePath}`, {
+    leading: false,
+  })}/`
+
   if (assetsPath && !isAbsoluteUrl(assetsPath)) {
     assetsPath = `/${cleanSlashes(`${basePath}/${assetsPath}`)}/`
+  }
+
+  // add trailing slash only if assetsPath was supplied, but no trailing slash
+  if (assetsPath && !assetsPath.endsWith('/')) {
+    assetsPath = `${assetsPath}/`
   }
 
   // Add the project root as a plugin. This allows the dev

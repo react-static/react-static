@@ -46,12 +46,9 @@ export default async function getRoutes(state, callback = d => d) {
     if (!has404 && !incremental) {
       allNormalizedRoutes.unshift({
         path: '404',
-        template: path.relative(
-          state.config.paths.ROOT,
-          path.resolve(
-            __dirname,
-            path.join('..', 'browser', 'components', 'Default404')
-          )
+        template: path.resolve(
+          __dirname,
+          path.join('..', 'browser', 'components', 'Default404')
         ),
       })
     }

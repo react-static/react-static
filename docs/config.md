@@ -11,10 +11,13 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [stagingBasePath](#stagingbasepath)
 - [devBasePath](#devbasepath)
 - [assetsPath](#assetsPath)
+- [devAssetsPath](#devassetspath)
+- [stagingAssetsPath](#stagingassetspath)
 - [extractCssChunks](#extractcsschunks)
 - [inlineCss](#inlinecss)
 - [Document](#document)
 - [devServer](#devserver)
+- [entry](#entry)
 - [paths](#paths)
 - [bundleAnalyzer](#bundleanalyzer)
 - [outputFileRate](#outputfilerate)
@@ -44,7 +47,7 @@ A route is an `object` that represents a unique location in your site and is the
 It supports the following properties:
 
 - `path: String` - The **path** of the URL to match for this route, **excluding search parameters and hash fragments, relative to your `siteRoot + basePath` (if this is a child route, also relative to this route's parent path)**
-- `template: String` - The path of the component to be used to render this route. (Relative to the root of your project)
+- `template: String` - The path of the component to be used to render this route. (Relative to the root of your project or absolute)
 - `getData: async Function(resolvedRoute, { dev }) => Object` - An async function that returns or resolves an object of any necessary data for this route to render.
   - Arguments
     - `resolvedRoute: Object` - This is the resolved route this function is handling.
@@ -102,7 +105,7 @@ export default {
 
 ### `getSiteData`
 
-`getSiteData` is very similar to a route's `getData` function, but its result is made available to the entire site via the `SiteData` and `getSiteData` component/HOC. Any data you return here, although loaded once per session, will be embedded in every page that is exported on your site. So tread lightly ;)
+`getSiteData` is very similar to a route's `getData` function, but its result is made available to the entire site via the [`useSiteData`](api.md#usesitedata) hook, `SiteData` component and the `getSiteData` HOC. Any data you return here, although loaded once per session, will be embedded in every page that is exported on your site. So tread lightly ;)
 
 Example:
 
@@ -162,6 +165,14 @@ Works exactly like `basePath`, but only when running the dev server.
 ### `assetsPath`
 
 Your `assetsPath` determines where your bundled JS and CSS will be loaded from. This is helpful if you want to host your assets in an external location such as a CDN.
+
+### `devAssetsPath`
+
+Works exactly like `assetsPath`, but only when running the dev server.
+
+### `stagingAssetsPath`
+
+Works exactly like `assetsPath`, but only when building with the `--staging` build flag.
 
 ### `extractCssChunks`
 
@@ -240,6 +251,17 @@ export default {
 ### `renderToHtml`
 
 **Warning:** This option will be removed in a future version. Please use the [Node API hook - beforeRenderToHtml](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertohtml-function) instead
+
+### `entry`
+
+The name of the entry file as a string, relative to `paths.src`. This defaults to:
+
+```javascript
+// static.config.js
+export default {
+  entry: 'index.js',
+}
+```
 
 ### `paths`
 

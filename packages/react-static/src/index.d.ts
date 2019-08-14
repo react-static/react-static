@@ -1,4 +1,4 @@
-// Type definitions for react-static 7.0.10
+// Type definitions for react-static 7.1.0
 // Project: https://github.com/nozzle/react-static
 // Definitions by: Various Contributors https://github.com/nozzle/react-static/blame/master/packages/react-static/src/index.d.ts
 //

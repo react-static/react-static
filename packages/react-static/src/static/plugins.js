@@ -18,6 +18,7 @@ const supportedHooks = [
   'beforeHtmlToDocument',
   'beforeDocumentToFile',
   'afterExport',
+  'plugins',
 ]
 
 export const validatePlugin = plugin => {
@@ -99,6 +100,10 @@ export default {
   },
   afterExport: state => {
     const hooks = getHooks(state.plugins, 'afterExport')
+    return reduceHooks(hooks)(state)
+  },
+  plugins: state => {
+    const hooks = getHooks(state.plugins, 'plugins')
     return reduceHooks(hooks)(state)
   },
 }

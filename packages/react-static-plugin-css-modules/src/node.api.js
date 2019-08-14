@@ -4,7 +4,6 @@ export default (options = {}) => ({
   webpack: (config, { stage }) => {
     let loaders = []
 
-    const styleLoader = { loader: 'style-loader' }
     const cssLoader = {
       loader: 'css-loader',
       options: {
@@ -16,7 +15,16 @@ export default (options = {}) => ({
 
     if (stage === 'dev') {
       // Dev
-      loaders = [styleLoader, cssLoader]
+      loaders = [
+        {
+          loader: ExtractCssChunks.loader,
+          options: {
+            hot: true,
+            reloadAll: true,
+          },
+        },
+        cssLoader,
+      ]
     } else if (stage === 'node') {
       loaders = [
         {

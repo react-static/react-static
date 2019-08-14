@@ -2,7 +2,10 @@
 const path = require('path')
 //
 
-init()
+init().catch(e => {
+  console.trace(e)
+  process.exit(1)
+})
 
 function init() {
   const pkg = require('../package.json')
@@ -32,7 +35,7 @@ function init() {
 
   if (options.version) {
     console.log(pkg.version)
-    return
+    return new Promise(res => res(pkg.version))
   }
 
   if (commands[0] === 'create') {

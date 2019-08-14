@@ -5,7 +5,7 @@ import path from 'path'
 // Typescript support in static.config.js is not yet supported, but is coming in a future update!
 
 export default {
-  entry: 'index.tsx',
+  entry: path.join(__dirname, 'src', 'index.tsx'),
   getRoutes: async () => {
     const { data: posts } /* :{ data: Post[] } */ = await axios.get(
       'https://jsonplaceholder.typicode.com/posts'

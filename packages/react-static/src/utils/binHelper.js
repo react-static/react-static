@@ -85,7 +85,7 @@ require('@babel/register')({
   ],
 })
 
-// necesarry at any entry point of the cli to ensure that Babel-register
+// necessary at any entry point of the cli to ensure that Babel-register
 // does not attempt to transform non JavaScript files.
 const ignoredExtensions = [
   'css',

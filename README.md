@@ -35,7 +35,6 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 - [Starbucks: Careers Hub](https://www.starbucks.com/careers/)([source](https://twitter.com/codehitchhiker/status/1097558315020832774))
 - [Starbucks: Rewards](https://www.starbucks.com/rewards/comingsoon)([source](https://twitter.com/davidbrunelle/status/1108041167935922176))
 - [Intuit Turbo](http://turbo.com)
-- [Nozzle.io](https://nozzle.io) ([source](https://github.com/nozzle/nozzle.io))
 - [Timber.io](https://timber.io)
 - [TannerLinsley.com](https://tannerlinsley.com) ([source](https://github.com/tannerlinsley/tannerlinsley.com))
 - [Manta.life](https://manta.life) ([source](https://github.com/MantaApp/Website))
@@ -63,6 +62,8 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 - [Stoplight: Best in class API Design, Docs, Mocking, and Testing](https://stoplight.io) ([source](https://github.com/stoplightio/stoplight.io))
 - [WordFlow: Copywriting service](https://www.wordflow.ie/) ([source](https://github.com/nathanpower/wordflow-site))
 - [Amplify Credit Union](https://www.goamplify.com)
+- [Rebel Breath](https://www.rebelbreath.com/)
+- [Fourth Drive - Music Artist](https://fourthdrive.com)  ([source](https://gitlab.com/galmargalit1/fourth-drive))
 
 ## Quick Start
 

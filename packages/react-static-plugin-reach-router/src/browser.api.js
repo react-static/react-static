@@ -23,7 +23,7 @@ export default ({ RouterProps: userRouterProps = {} }) => ({
 
     // If we're in SSR, use a manual server location
     return typeof document === 'undefined' ? (
-      <ServerLocation url={makePathAbsolute(staticInfo.path)}>
+      <ServerLocation url={makePathAbsolute(`${basepath}/${staticInfo.path}`)}>
         {renderedChildren}
       </ServerLocation>
     ) : (
