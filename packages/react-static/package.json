@@ -26,6 +26,9 @@
     "preversion": "yarn build && yarn test",
     "publishLink": "echo '{{event}} to {{changed}}' && yalc publish"
   },
+  "peerDependencies": {
+    "react-hot-loader": "^4.12.11"
+  },
   "dependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
@@ -125,6 +128,7 @@
     "onchange": "^6.0.0",
     "prettier": "1.18.2",
     "react-dev-utils": "^9.0.3",
+    "react-hot-loader": "^4.12.11",
     "rimraf": "^2.7.0",
     "webpack-hot-middleware": "^2.25.0"
   },
@@ -148,8 +152,5 @@
       "enzyme-to-json/serializer"
     ]
   },
-  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4",
-  "peerDependencies": {
-    "react-hot-loader": "^4.12.10"
-  }
+  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

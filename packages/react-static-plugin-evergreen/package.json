@@ -15,13 +15,15 @@
     "preversion": "yarn build"
   },
   "peerDependencies": {
-    "react": "^16.9",
-    "evergreen-ui": "^4.18.1"
+    "evergreen-ui": "^4.18.1",
+    "react": "^16.9.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@babel/preset-react": "^7.0.0"
+    "@babel/preset-react": "^7.0.0",
+    "evergreen-ui": "^4.18.1",
+    "react": "^16.9.0"
   }
 }

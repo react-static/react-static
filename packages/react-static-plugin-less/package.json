@@ -16,10 +16,11 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5"
+    "@babel/preset-env": "^7.5.5",
+    "browserslist": "^4.6.6"
   },
   "dependencies": {
-    "css-loader": "^2.1.0",
+    "css-loader": "^2.1.1",
     "autoprefixer": "^9.6.1",
     "extract-css-chunks-webpack-plugin": "^4.6.0",
     "less": "^3.9.0",
