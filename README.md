@@ -64,6 +64,7 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 - [Amplify Credit Union](https://www.goamplify.com)
 - [Rebel Breath](https://www.rebelbreath.com/)
 - [Fourth Drive - Music Artist](https://fourthdrive.com)  ([source](https://gitlab.com/galmargalit1/fourth-drive))
+- [Weekly Best of JavaScript](https://weekly.bestofjs.org/) ([source](https://github.com/bestofjs/bestofjs-weekly))
 
 ## Quick Start
 
