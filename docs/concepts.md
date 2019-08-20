@@ -114,7 +114,6 @@ Examples:
 
 Making a 404 page in React Static is extremely simple, but depending on your server can be served a few different ways:
 
-- Place a `404.js` react component in the `pages` directory. No configuration necessary!
 - Define a route with the following:
 
 ```javascript
@@ -123,6 +122,8 @@ Making a 404 page in React Static is extremely simple, but depending on your ser
   template: 'path/to/your/404/component.js'
 }
 ```
+
+- If using the [Source Filesystem plugin](https://github.com/react-static/react-static/tree/master/packages/react-static-plugin-source-filesystem), just place a `404.js` react component in the `pages` directory. No other configuration necessary!
 
 **How is the 404 component used?**
 
