@@ -146,7 +146,7 @@ Need some help? Have a quick question? [Click here to sign up for the React-Tool
 
 ## Contributing, Issues & Bugs
 
-We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have [found a bug, or have a feature request](https://github.com/react-stat/react-static/issues/new) let us know!
+We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have [found a bug, or have a feature request](https://github.com/react-static/react-static/issues/new) let us know!
 
 ## License
 
