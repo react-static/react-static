@@ -1,7 +1,7 @@
-![React Static Logo](https://github.com/nozzle/react-static/raw/master/media/react-static-logo-2x.png)
+![React Static Logo](https://github.com/react-static/react-static/raw/master/media/react-static-logo-2x.png)
 
-[![Travis CI Build Status](https://travis-ci.org/nozzle/react-static.svg?branch=master)](https://travis-ci.org/nozzle/react-static) [![David Dependancy Status](https://david-dm.org/nozzle/react-static.svg)](https://david-dm.org/nozzle/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-static)
-[![Github Stars](https://img.shields.io/github/stars/nozzle/react-static.svg?style=social&label=Star)](https://github.com/nozzle/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/nozzleio.svg?style=social&label=Follow)](https://twitter.com/nozzleio)
+[![Travis CI Build Status](https://travis-ci.org/react-static/react-static.svg?branch=master)](https://travis-ci.org/react-static/react-static) [![David Dependancy Status](https://david-dm.org/react-static/react-static.svg)](https://david-dm.org/react-static/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-static)
+[![Github Stars](https://img.shields.io/github/stars/react-static/react-static.svg?style=social&label=Star)](https://github.com/react-static/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/reactstaticjs.svg?style=social&label=Follow)](https://twitter.com/reactstaticjs)
 
 <br>
 <br>
@@ -65,6 +65,7 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 - [Rebel Breath](https://www.rebelbreath.com/)
 - [Fourth Drive - Music Artist](https://fourthdrive.com)  ([source](https://gitlab.com/galmargalit1/fourth-drive))
 - [Weekly Best of JavaScript](https://weekly.bestofjs.org/) ([source](https://github.com/bestofjs/bestofjs-weekly))
+- [United Income - Company Website](https://unitedincome.com/)
 
 ## Quick Start
 
@@ -115,7 +116,7 @@ Once a progressive static site page has loaded its React application it can then
 
 # How does it work?
 
-![Flow Chart](https://github.com/nozzle/react-static/raw/master/media/flow.png)
+![Flow Chart](https://github.com/react-static/react-static/raw/master/media/flow.png)
 
 React Static gathers your **data**, and **templates** together and intelligently splits them into bite-size static files using webpack and javascript. Once these files have been generated, React Static uses them to render and export a list of **routes** that you provide it into HTML files! After your site has been exported, the resulting **data**, **template**, and **html** files can be transfered to a static file server and browsed as an awesomely fast and performant static website!
 
@@ -145,7 +146,7 @@ Need some help? Have a quick question? [Click here to sign up for the React-Tool
 
 ## Contributing, Issues & Bugs
 
-We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have [found a bug, or have a feature request](https://github.com/nozzle/react-static/issues/new) let us know!
+We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have [found a bug, or have a feature request](https://github.com/react-static/react-static/issues/new) let us know!
 
 ## License
 
