@@ -24,7 +24,7 @@
     "react-static": "file:..\\react-static"
   },
   "dependencies": {
-    "chokidar": "^2.1.6",
+    "chokidar": "^3.0.2",
     "glob": "^7.1.4"
   }
 }

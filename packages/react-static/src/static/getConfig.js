@@ -285,7 +285,7 @@ export function buildConfig(state, config = {}) {
       () => {
         if (process.env.NODE_ENV === 'test') {
           // Allow plugins to be mocked
-          return 'mock-plugin'
+          return require('path').resolve('./src/static/__mocks__/mock-plugin')
         }
       },
     ].reduce((prev, curr) => prev || curr(), null)
@@ -316,7 +316,9 @@ export function buildConfig(state, config = {}) {
         buildPluginHooks = require(nodeLocation).default
       } else if (originalLocation !== paths.ROOT && !browserLocation) {
         throw new Error(
-          `Could not find a valid node.api.js or browser.api.js plugin file in "${location}"`
+          `Could not find a valid node.api.js or browser.api.js plugin file in "${location}". \n` +
+            `The original location: "${originalLocation}". \n` +
+            `The root location: "${paths.ROOT}".`
         )
       }
 

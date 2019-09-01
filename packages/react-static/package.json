@@ -57,7 +57,7 @@
     "chokidar": "^3.0.2",
     "circular-dependency-plugin": "^5.2.0",
     "cors": "^2.8.5",
-    "css-loader": "^2.0.1",
+    "css-loader": "^2.1.1",
     "file-loader": "3.0.1",
     "fs-extra": "^7.0.1",
     "download-git-repo": "^2.0.0",
@@ -70,7 +70,7 @@
     "inquirer-autocomplete-prompt": "^1.0.1",
     "intersection-observer": "^0.7.0",
     "jsesc": "^2.5.2",
-    "match-sorter": "^3.0.0",
+    "match-sorter": "^3.1.1",
     "minimist": "^1.2.0",
     "mutation-observer": "^1.0.3",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
@@ -140,10 +140,7 @@
     ],
     "testRegex": "(/__tests__/.*\\.(test))\\.jsx?$",
     "moduleNameMapper": {
-      "static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
-      "./path/to/static.config": "<rootDir>/src/static/__mocks__/static.config.mock.jsx",
-      "./path/to/static.config.js": "<rootDir>/src/static/__mocks__/static.config.mock.js",
-      "./path/to/configWithPluginWithOptions.mock.js": "<rootDir>/src/static/__mocks__/configWithPluginWithOptions.mock.js"
+      "static.config.js$": "<rootDir>/src/static/__mocks__/static.config.js.mock.js"
     },
     "setupFiles": [
       "<rootDir>/setupTests.js"

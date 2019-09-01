@@ -1,3 +1,4 @@
+import path from 'path'
 import extractTemplates from '../extractTemplates'
 
 const config = {
@@ -51,7 +52,10 @@ test('relative routes path resolves against the ROOT', async () => {
     routes: [{ path: '404', template: './src/templates/NotFound' }],
   })
 
-  expect(templates[0]).toBe(`${config.paths.ROOT}/src/templates/NotFound`)
+  expect(path.isAbsolute(templates[0])).toBe(true)
+  expect(path.normalize(templates[0])).toBe(
+    path.resolve(`${config.paths.ROOT}/src/templates/NotFound`)
+  )
 })
 
 test('absolute routes path are kept intact', async () => {
@@ -60,5 +64,8 @@ test('absolute routes path are kept intact', async () => {
     routes: [{ path: '404', template: '/home/src/templates/NotFound' }],
   })
 
-  expect(templates[0]).toBe('/home/src/templates/NotFound')
+  expect(path.isAbsolute(templates[0])).toBe(true)
+  expect(path.normalize(templates[0])).toBe(
+    path.resolve('/home/src/templates/NotFound')
+  )
 })

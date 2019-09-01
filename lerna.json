@@ -5,5 +5,6 @@
   "version": "7.1.0",
   "npmClient": "yarn",
   "registry": "https://registry.npmjs.org/",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "lerna": "2.0.0-rc.4"
 }
