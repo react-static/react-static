@@ -1,9 +1,10 @@
 ---
 name: Bug Report
-about: report a bug with React-Static
+about: Report a bug with React-Static
 title: "[Bug] TODO_CHANGE_BUG_TITLE"
-labels: Bug Report
+labels: 'bug :bug:'
 assignees: ''
+
 ---
 
 <!--
