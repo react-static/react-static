@@ -1,9 +1,9 @@
 {
   "name": "react-static-plugin-css-modules",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "description": "A React-Static plugin that adds SSR support for css modules",
   "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Zack Jackson <zack@scriptedAlchemy.com> (https://github.com/ScriptedAlchemy)",
   "license": "MIT",
   "private": false,
@@ -15,13 +15,13 @@
     "preversion": "yarn build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5"
   },
   "dependencies": {
-    "css-loader": "^2.0.1",
-    "extract-css-chunks-webpack-plugin": "^4.5.1"
+    "css-loader": "^2.1.1",
+    "extract-css-chunks-webpack-plugin": "^4.6.0"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

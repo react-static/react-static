@@ -1,9 +1,9 @@
 {
   "name": "react-static-plugin-evergreen",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "description": "A React-Static plugin that adds SSR support for evergreen",
   "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Ugo Onali <hello@onali-ugo.fr>",
   "license": "MIT",
   "private": false,
@@ -15,12 +15,15 @@
     "preversion": "yarn build"
   },
   "peerDependencies": {
-    "evergreen-ui": "^4.15.0"
+    "evergreen-ui": "^4.18.1",
+    "react": "^16.9.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.4.0",
-    "@babel/preset-env": "^7.4.2",
-    "@babel/preset-react": "^7.0.0"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "evergreen-ui": "^4.18.1",
+    "react": "^16.9.0"
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import jsesc from 'jsesc';
+import jsesc from 'jsesc'
 import { pathJoin, makePathAbsolute } from '../../utils'
 
 const generateRouteInformation = embeddedRouteInfo => ({
@@ -7,7 +7,7 @@ const generateRouteInformation = embeddedRouteInfo => ({
     window.__routeInfo = JSON.parse(${jsesc(JSON.stringify(embeddedRouteInfo), {
       isScriptContext: true,
       wrap: true,
-      json: true
+      json: true,
     })});`,
 })
 

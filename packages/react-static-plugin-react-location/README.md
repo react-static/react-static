@@ -1,6 +1,6 @@
 # react-static-plugin-react-location
 
-A [React-Static](https://react-static.js.org) plugin that adds support for [react-location](https://github.com/nozzle/react-static/tree/master/packages/react-static-plugin-react-location)
+A [React-Static](https://react-static.js.org) plugin that adds support for [react-location](https://github.com/react-static/react-static/tree/master/packages/react-static-plugin-react-location)
 
 ## Installation
 

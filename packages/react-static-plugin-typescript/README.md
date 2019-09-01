@@ -2,7 +2,7 @@
 
 A plugin for [React Static](https://react-static.js.org/) that allows you to use [TypeScript](https://www.typescriptlang.org/).
 
-There instructions for enabling this plugin on existing projects below. When setting up a new project using React Static, you can simply select the TypeScript [template](https://github.com/nozzle/react-static/tree/master/packages/react-static/templates) after running `react-static create`.
+There instructions for enabling this plugin on existing projects below. When setting up a new project using React Static, you can simply select the TypeScript [template](https://github.com/react-static/react-static/tree/master/packages/react-static/templates) after running `react-static create`.
 
 ## Installation
 
@@ -48,7 +48,7 @@ Finally, rename a file from `.js` to `.tsx`. You can then start using TypeScript
 
 ## Options
 
-Options [can be passed by using an array](https://github.com/nozzle/react-static/tree/master/docs/plugins#plugin-options), e.g.:
+Options [can be passed by using an array](https://github.com/react-static/react-static/tree/master/docs/plugins#plugin-options), e.g.:
 
 ```javascript
 // In static.config.js:

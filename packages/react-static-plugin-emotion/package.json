@@ -1,9 +1,9 @@
 {
   "name": "react-static-plugin-emotion",
-  "version": "7.0.10",
+  "version": "7.2.0",
   "description": "A React-Static plugin that adds CSS-in-JS/SSR support for emotion & react-emotion",
   "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,
@@ -14,18 +14,21 @@
     "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
+  "peerDependencies": {
+    "@emotion/core": "^10.0.15",
+    "emotion": "^10.0.14",
+    "react": "^16.9.0"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@emotion/core": "^10.0.15",
+    "emotion": "^10.0.14",
+    "react": "^16.9.0"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4",
-  "peerDependencies": {
-    "@emotion/core": "^10.0.10",
-    "emotion": "^10.0.9",
-    "react": "^16.8.5"
-  },
   "dependencies": {
-    "emotion-server": "^10.0.9"
+    "emotion-server": "^10.0.14"
   }
 }

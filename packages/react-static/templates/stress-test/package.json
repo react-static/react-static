@@ -13,23 +13,23 @@
   },
   "dependencies": {
     "@reach/router": "^1.2.1",
-    "axios": "^0.18.0",
-    "emotion": "^9.2.4",
-    "emotion-server": "^9.2.4",
-    "react": "^16.8.2",
-    "react-dom": "^16.8.2",
-    "react-emotion": "^9.2.4",
-    "react-hot-loader": "4.12.10",
-    "react-static": "^7.0.0",
-    "react-static-plugin-emotion": "^6.0.8",
-    "react-static-plugin-reach-router": "^7.0.0",
-    "react-static-plugin-sitemap": "^7.0.0",
-    "react-static-plugin-source-filesystem": "^7.0.0",
-    "react-static-plugin-styled-components": "^6.0.8",
-    "styled-components": "^4.1.1"
+    "axios": "^0.19.0",
+    "emotion": "^10.0.14",
+    "emotion-server": "^10.0.14",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-emotion": "^10.0.0",
+    "react-hot-loader": "^4.12.11",
+    "react-static": "^7.2.0",
+    "react-static-plugin-emotion": "^7.2.0",
+    "react-static-plugin-reach-router": "^7.2.0",
+    "react-static-plugin-sitemap": "^7.2.0",
+    "react-static-plugin-source-filesystem": "^7.2.0",
+    "react-static-plugin-styled-components": "^7.2.0",
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
-    "eslint-config-react-tools": "1.x.x",
-    "serve": "^10.1.1"
+    "eslint-config-react-tools": "^1.1.7",
+    "serve": "^11.1.0"
   }
 }

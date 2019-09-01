@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## 7.2.0
 
 ### New
 
@@ -12,6 +12,8 @@
 - Remove file inline-ing when the file is larger than an arbitrary size ([#1222](https://github.com/react-static/react-static/pull/1222))
 - Fix relative paths when the should have been absolute ([#1250](https://github.com/react-static/react-static/pull/1250), [#1253](https://github.com/react-static/react-static/pull/1253), [#1254](https://github.com/react-static/react-static/pull/1254), [#1272](https://github.com/react-static/react-static/pull/1272) and [#1276](https://github.com/react-static/react-static/pull/1254))
 - Fixed issue with react hot loader for IE ([#1274](https://github.com/react-static/react-static/pull/1274))
+- Fixed TypeScript definitions ([#1181](https://github.com/react-static/react-static/pull/1181))
+- Fixed component passing in `renderProp` of `Routes` ([#1181](https://github.com/react-static/react-static/pull/1181))
 
 ## 7.1.0
 
@@ -757,7 +759,7 @@ Migration tips are listed as sub-items if applicable.
 
 ### Features
 
-- Common props returned by `getRouteProps` (props that `===` one another) now promoted to **shared props** and only requested once per session. Learn more in the docs: [Automatic Data and Prop Splitting](https://github.com/nozzle/react-static#automatic-data-and-prop-splitting). Depending on your site, this may significantly decrease site bandwidth and increase both initial page load speed and subsequent page load performance.
+- Common props returned by `getRouteProps` (props that `===` one another) now promoted to **shared props** and only requested once per session. Learn more in the docs: [Automatic Data and Prop Splitting](https://github.com/react-static/react-static#automatic-data-and-prop-splitting). Depending on your site, this may significantly decrease site bandwidth and increase both initial page load speed and subsequent page load performance.
 
 ## 4.6.0
 

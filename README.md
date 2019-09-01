@@ -30,6 +30,9 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 
 ## Sites Built with React-Static
 
+<details>
+ <summary>See a list of sites</summary>
+
 - [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
 - [StaticGen.com](https://staticgen.com) ([source](https://github.com/netlify/staticgen))
 - [Starbucks: Careers Hub](https://www.starbucks.com/careers/)([source](https://twitter.com/codehitchhiker/status/1097558315020832774))
@@ -66,6 +69,8 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 - [Fourth Drive - Music Artist](https://fourthdrive.com)  ([source](https://gitlab.com/galmargalit1/fourth-drive))
 - [Weekly Best of JavaScript](https://weekly.bestofjs.org/) ([source](https://github.com/bestofjs/bestofjs-weekly))
 - [United Income - Company Website](https://unitedincome.com/)
+</details>
+
 
 ## Quick Start
 

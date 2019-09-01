@@ -32,6 +32,7 @@ React Static ships with a plugin API to extend React Static's functionality.
 ### Unofficial Plugins via NPM
 
 - Assets
+
   - [react-static-plugin-favicons](https://www.npmjs.com/package/react-static-plugin-favicons) - Generate (fav)icons in many different sizes for many different platforms, and add them to your site's metadata
 
 - Other
@@ -140,4 +141,4 @@ Only the `plugins` directory will be transformed by react-static's babel runtime
 
 Hence, when distributing your plugin, your plugin **must be ES5 compatible**.
 
-- An example of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/nozzle/react-static/tree/master/react-static-plugin-styled-components).
+- An example of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/react-static/react-static/tree/master/react-static-plugin-styled-components).

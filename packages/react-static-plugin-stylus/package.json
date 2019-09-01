@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-stylus",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -10,18 +10,22 @@
     "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
+  "peerDependencies": {
+    "browserslist": "^4.6"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "browserslist": "^4.6.6"
   },
   "dependencies": {
-    "autoprefixer": "^9.5.1",
-    "css-loader": "^2.1.0",
-    "extract-css-chunks-webpack-plugin": "^4.3.2",
+    "autoprefixer": "^9.6.1",
+    "css-loader": "^3.2.0",
+    "extract-css-chunks-webpack-plugin": "^4.6.0",
     "nib": "^1.1.2",
     "postcss-flexbugs-fixes": "^4.1.0",
-    "semver": "^6.0.0",
+    "semver": "^6.3.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2"
   },

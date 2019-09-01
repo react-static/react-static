@@ -1,9 +1,9 @@
 {
   "name": "react-static-plugin-reach-router",
-  "version": "7.0.10",
+  "version": "7.2.0",
   "description": "A React-Static plugin that adds @reach/router support for React Static",
   "main": "browser.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,
@@ -15,13 +15,18 @@
     "preversion": "yarn build"
   },
   "peerDependencies": {
-    "@reach/router": "^1.0.0"
+    "@reach/router": "^1.2.1",
+    "react": "^16.9.0",
+    "react-static": "^7.1.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "@babel/preset-react": "^7.0.0"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@reach/router": "^1.2.1",
+    "react": "^16.9.0",
+    "react-static": "file:..\\react-static"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

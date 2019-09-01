@@ -8,7 +8,7 @@ We're stoked that you want to help contribute to React Static! Below are a numbe
 - Help us write more tests!
 - Help us improve our documentation or codebase! You can submit PRs for anything from typos to code comments explaining what a part of the source code does.
 - Help others in our [Spectrum Support Community](https://spectrum.chat/react-static)
-- Review and help fix [issues](https://github.com/nozzle/react-static/issues)
+- Review and help fix [issues](https://github.com/react-static/react-static/issues)
 
 ## Getting started with the source code!
 
@@ -21,4 +21,3 @@ We're stoked that you want to help contribute to React Static! Below are a numbe
   - `yarn build` - Builds all packages for release
   - `yarn test` - Runs the testing suite for all packages
   - `yarn startDocs` - Starts the documentation site in development mode
-  

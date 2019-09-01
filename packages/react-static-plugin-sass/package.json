@@ -1,9 +1,9 @@
 {
   "name": "react-static-plugin-sass",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "description": "A React-Static plugin that adds SSR support for sass",
   "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,
@@ -14,19 +14,23 @@
     "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
+  "peerDependencies": {
+    "browserslist": "^4.6.6"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "browserslist": "^4.6.6"
   },
   "dependencies": {
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^9.6.1",
     "css-loader": "^2.1.0",
-    "extract-css-chunks-webpack-plugin": "^4.5.1",
+    "extract-css-chunks-webpack-plugin": "^4.6.0",
     "node-sass": "^4.12.0",
     "postcss-flexbugs-fixes": "^4.1.0",
-    "sass-loader": "^7.1.0",
-    "semver": "^6.0.0"
+    "sass-loader": "^7.2.0",
+    "semver": "^6.3.0"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

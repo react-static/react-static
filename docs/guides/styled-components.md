@@ -8,10 +8,11 @@ The benefits are:
 
 ## There's a plugin for that
 
-Get the plugin and install it according to it's [documentation](https://github.com/nozzle/react-static/tree/master/packages/react-static-plugin-styled-components).
+Get the plugin and install it according to it's [documentation](https://github.com/react-static/react-static/tree/master/packages/react-static-plugin-styled-components).
 
 ## Let's convert the basic example to use styled components
-The basic example can be found [here](https://github.com/nozzle/react-static/tree/280d7c0629c702e843039e9feaa68efa4058303e/packages/react-static/templates/basic).
+
+The basic example can be found [here](https://github.com/react-static/react-static/tree/280d7c0629c702e843039e9feaa68efa4058303e/packages/react-static/templates/basic).
 
 More detailed information on how to use styled components can be found [here](https://www.styled-components.com/docs/api).
 
@@ -30,7 +31,7 @@ Open `app.js` and remove the `import './app.css'` so we're not using that css an
 Import the global style function at the top.
 
 ```javascript
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components'
 ```
 
 Insert the css in the global style, this can be done inline or in a separate file.
@@ -57,7 +58,7 @@ const GlobalStyle = createGlobalStyle`
   img {
     max-width: 100%;
   }
-`;
+`
 ```
 
 Now add the `GlobalStyle` tag inside our app.
@@ -67,14 +68,10 @@ function App() {
   return (
     <Root>
       <GlobalStyle />
-      <nav>
-       ...
-      </nav>
-      <div className="content">
-        ...
-      </div>
+      <nav>...</nav>
+      <div className="content">...</div>
     </Root>
-  );
+  )
 }
 ```
 
@@ -89,11 +86,11 @@ const Nav = styled.nav`
     padding: 1rem;
     display: inline-block;
   }
-`;
+`
 
 const Content = styled.div`
   padding: 1rem;
-`;
+`
 ```
 
 And replace the divs in the render function with their new styled replacements.
@@ -103,14 +100,10 @@ function App() {
   return (
     <Root>
       <GlobalStyle />
-      <Nav>
-       ...
-      </Nav>
-      <Content>
-        ...
-      </Content>
+      <Nav>...</Nav>
+      <Content>...</Content>
     </Root>
-  );
+  )
 }
 ```
 

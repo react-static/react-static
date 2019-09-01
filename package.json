@@ -1,15 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "releaseNext": "lerna publish prerelease --preid beta --dist-tag next",
+    "release:next": "lerna publish prerelease --preid beta --dist-tag next",
     "release": "lerna publish",
-    "releaseForce": "lerna publish --force-publish react-static",
-    "build": "lerna run 'build'",
-    "watch": "lerna run 'watch' --parallel",
+    "release:force": "lerna publish --force-publish react-static",
+    "build": "lerna run build --stream",
+    "watch": "lerna run watch --parallel",
     "start": "yarn watch",
-    "startDocs": "cd www && yarn && yarn start",
-    "buildDocs": "cd www && yarn && yarn build",
-    "serveDocs": "serve www/dist -p 3000",
+    "start:docs": "cd www && yarn && yarn start",
+    "build:docs": "cd www && yarn && yarn build",
+    "serve:docs": "serve www/dist -p 3000",
     "test": "yarn format && lerna run test",
     "format": "prettier docs/** --write && lerna run format --stream",
     "precommit": "yarn format && git add",
@@ -24,7 +24,9 @@
     "packages/*"
   ],
   "devDependencies": {
-    "husky": "^2.5.0",
-    "lerna": "^3.6.0"
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-react-tools": "^1.1.7",
+    "husky": "^3.0.3",
+    "lerna": "^3.16.4"
   }
 }

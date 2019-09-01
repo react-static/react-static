@@ -1,5 +1,5 @@
 import makeWebpackConfig from '../webpack/makeWebpackConfig'
-import staticConfig from '../__mocks__/defaultConfigDevelopment.mock'
+import staticConfig from '../__mocks__/config.development.mock'
 
 describe('webpack', () => {
   it('should return after executing plugin hooks synchronously', () => {

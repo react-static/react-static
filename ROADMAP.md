@@ -1,6 +1,6 @@
 # Roadmap
 
-## V8
+## Feature versions
 
 Version 8 will be focused on becoming compatible with async React which includes both suspense and the expected async server-side-renderer that has yet to be released. The goals for this version may include:
 

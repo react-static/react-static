@@ -1,9 +1,9 @@
 {
   "name": "react-static-plugin-sitemap",
-  "version": "7.0.10",
+  "version": "7.2.0",
   "description": "A React-Static plugin for exporting sitemap information",
   "main": "dist/node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,
@@ -16,10 +16,18 @@
     "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
+  "peerDependencies": {
+    "react-static": "^7.1.0"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.2"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "react-static": "file:..\\react-static"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "fs-extra": "^8.1.0"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }

@@ -1,9 +1,9 @@
 {
   "name": "react-static-plugin-source-filesystem",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "description": "A React-Static plugin that adds support for creating routes from a directory",
   "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,
@@ -14,16 +14,17 @@
     "format": "prettier src/**/*.js --write",
     "preversion": "yarn build"
   },
+  "peerDependencies": {
+    "react-static": "^7.1.0"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "react-static": "file:..\\react-static"
   },
   "dependencies": {
-    "chokidar": "^2.1.5",
-    "glob": "^7.1.3"
-  },
-  "peerDependencies": {
-    "react-static": "^7"
+    "chokidar": "^3.0.2",
+    "glob": "^7.1.4"
   }
 }

@@ -138,7 +138,7 @@ const webpackConfig = {
 }
 ```
 
-The source for all default loaders can be found in [webpack/rules/ directory](https://github.com/nozzle/react-static/tree/master/packages/react-static/src/static/webpack/rules).
+The source for all default loaders can be found in [webpack/rules/ directory](https://github.com/react-static/react-static/tree/master/packages/react-static/src/static/webpack/rules).
 
 **Note:** Usage of the `oneOf` rule is recommended. This ensures each file is only handled by the first loader it matches, and not any loader. This also makes it easier to reutilize the default loaders, without having to fuss with `excludes`. Here are some examples of how to replace and modify the default loaders:
 
