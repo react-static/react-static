@@ -8,11 +8,11 @@ The benefits are:
 
 ## There's a plugin for that
 
-Get the plugin and install it according to it's [documentation](https://github.com/nozzle/react-static/tree/master/packages/react-static-plugin-styled-components).
+Get the plugin and install it according to it's [documentation](https://github.com/react-static/react-static/tree/master/packages/react-static-plugin-styled-components).
 
 ## Let's convert the basic example to use styled components
 
-The basic example can be found [here](https://github.com/nozzle/react-static/tree/280d7c0629c702e843039e9feaa68efa4058303e/packages/react-static/templates/basic).
+The basic example can be found [here](https://github.com/react-static/react-static/tree/280d7c0629c702e843039e9feaa68efa4058303e/packages/react-static/templates/basic).
 
 More detailed information on how to use styled components can be found [here](https://www.styled-components.com/docs/api).
 

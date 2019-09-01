@@ -30,6 +30,8 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 
 ## Sites Built with React-Static
 
+<details>
+
 - [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
 - [StaticGen.com](https://staticgen.com) ([source](https://github.com/netlify/staticgen))
 - [Starbucks: Careers Hub](https://www.starbucks.com/careers/)([source](https://twitter.com/codehitchhiker/status/1097558315020832774))

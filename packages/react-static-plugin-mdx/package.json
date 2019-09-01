@@ -3,7 +3,7 @@
   "version": "7.1.0",
   "description": "A plugin for React Static to transform MDX files (Markdown + React components).",
   "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Matteo Frana <f2@f2.net>",
   "license": "MIT",
   "private": false,

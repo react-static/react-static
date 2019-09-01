@@ -38,7 +38,7 @@ The routes that will be rendered are the **routes** returned by the `getRoutes` 
 
 ### Custom `Routes` Rendering
 
-Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/nozzle/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize a render prop:
+Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/react-static/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize a render prop:
 
 ```javascript
 import { Root, Routes } from 'react-static'

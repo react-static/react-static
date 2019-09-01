@@ -1,6 +1,6 @@
 // Type definitions for react-static 7.1.0
-// Project: https://github.com/nozzle/react-static
-// Definitions by: Various Contributors https://github.com/nozzle/react-static/blame/master/packages/react-static/src/index.d.ts
+// Project: https://github.com/react-static/react-static
+// Definitions by: Various Contributors https://github.com/react-static/react-static/blame/master/packages/react-static/src/index.d.ts
 //
 // VERY lightly maintained, we need all the help we can get
 
@@ -291,7 +291,7 @@ type AnyReactComponent = React.ComponentType<Record<string, any>>
 
 
 /**
- * @see https://github.com/nozzle/react-static/blob/master/docs/config.md
+ * @see https://github.com/react-static/react-static/blob/master/docs/config.md
  */
 export interface ReactStaticConfig {
   /**

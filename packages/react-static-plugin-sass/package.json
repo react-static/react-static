@@ -3,7 +3,7 @@
   "version": "7.1.0",
   "description": "A React-Static plugin that adds SSR support for sass",
   "main": "node.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,

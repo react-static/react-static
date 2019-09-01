@@ -3,7 +3,7 @@
   "version": "7.0.10",
   "description": "A React-Static plugin that adds @reach/router support for React Static",
   "main": "browser.api.js",
-  "repository": "https://github.com/nozzle/react-static.git",
+  "repository": "https://github.com/react-static/react-static.git",
   "author": "Tanner Linsley <tannerlinsley@gmail.com>",
   "license": "MIT",
   "private": false,
