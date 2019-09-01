@@ -33,7 +33,6 @@ export default ({ cssLoaderOptions, ...rest }) => ({
         ident: 'postcss',
         plugins: () => [
           postcssFlexbugsFixes,
-          // TODO: remove in 8.0.0, enforcing browserslist in the root via a config file
           autoprefixer({
             flexbox: 'no-2009',
           }),

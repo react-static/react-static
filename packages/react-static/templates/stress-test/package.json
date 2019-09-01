@@ -20,12 +20,12 @@
     "react-dom": "^16.9.0",
     "react-emotion": "^10.0.0",
     "react-hot-loader": "^4.12.11",
-    "react-static": "^7.1.0",
-    "react-static-plugin-emotion": "^7.0.10",
-    "react-static-plugin-reach-router": "^7.0.10",
-    "react-static-plugin-sitemap": "^7.0.10",
-    "react-static-plugin-source-filesystem": "^7.1.0",
-    "react-static-plugin-styled-components": "^7.0.10",
+    "react-static": "^7.2.0",
+    "react-static-plugin-emotion": "^7.2.0",
+    "react-static-plugin-reach-router": "^7.2.0",
+    "react-static-plugin-sitemap": "^7.2.0",
+    "react-static-plugin-source-filesystem": "^7.2.0",
+    "react-static-plugin-styled-components": "^7.2.0",
     "styled-components": "^4.3.2"
   },
   "devDependencies": {

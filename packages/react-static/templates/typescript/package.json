@@ -14,11 +14,11 @@
     "axios": "^0.19.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-static": "^7.1.0",
-    "react-static-plugin-reach-router": "^7.0.10",
-    "react-static-plugin-sitemap": "^7.0.10",
-    "react-static-plugin-source-filesystem": "^7.1.0",
-    "react-static-plugin-typescript": "^7.0.10"
+    "react-static": "^7.2.0",
+    "react-static-plugin-reach-router": "^7.2.0",
+    "react-static-plugin-sitemap": "^7.2.0",
+    "react-static-plugin-source-filesystem": "^7.2.0",
+    "react-static-plugin-typescript": "^7.2.0"
   },
   "devDependencies": {
     "@types/node": "^12.7.2",
