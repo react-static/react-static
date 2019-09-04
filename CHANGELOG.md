@@ -1,5 +1,11 @@
 # Changelog
 
+## master
+
+## Improved
+
+- Fixed `addPrefetchExcludes` type definition ([#1300](https://github.com/react-static/react-static/pull/1300))
+
 ## 7.2.0
 
 ### New
