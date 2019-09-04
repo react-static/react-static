@@ -8,7 +8,7 @@
  *
  * @param {...ReadonlyArray<string>} excludes
  */
-export function addPrefetchExcludes(...excludes: ReadonlyArray<string | RegExp>): void;
+export function addPrefetchExcludes(excludes: ReadonlyArray<string | RegExp>): void;
 
 /**
  * @private
