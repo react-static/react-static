@@ -4,6 +4,7 @@
 
 ## Improved
 
+- Force line endings to be LF ([`38ef613`](https://github.com/react-static/react-static/commit/38ef613c7b23e87da418eff115f8a505d274233d))
 - Fixed `addPrefetchExcludes` type definition ([#1300](https://github.com/react-static/react-static/pull/1300))
 
 ## 7.2.0
