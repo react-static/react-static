@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-mdx",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "description": "A plugin for React Static to transform MDX files (Markdown + React components).",
   "main": "node.api.js",
   "repository": "https://github.com/react-static/react-static.git",
