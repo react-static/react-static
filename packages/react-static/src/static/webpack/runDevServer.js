@@ -201,7 +201,7 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
           timeEnd(chalk.green('[\u2713] Application Bundled'))
           console.log(
             `${chalk.green('[\u2713] App serving at')} ${chalk.blue(
-              `${state.config.devServer.host}:${state.config.devServer.port}`
+              `http://${state.config.devServer.host}:${state.config.devServer.port}`
             )}`
           )
         } else {
