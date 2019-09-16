@@ -8,18 +8,12 @@ export default async state => {
     templates,
   } = state
 
-  // convert Windows-style path separators to the Unix style to ensure sure the
-  // string literal is valid and doesn't contain escaped characters
-  const reactStaticUniversalPath = process.env.REACT_STATIC_UNIVERSAL_PATH.split(
-    '\\'
-  ).join('/')
-
   const file = `
 ${
   process.env.NODE_ENV === 'production'
     ? `
 import React from 'react'
-import universal, { setHasBabelPlugin } from '${reactStaticUniversalPath}'
+import universal, { setHasBabelPlugin } from 'react-universal-component'
 
 setHasBabelPlugin()
 
@@ -57,7 +51,7 @@ export default {
 export const notFoundTemplate = ${JSON.stringify(templates[0])}
 `
     : `
-  
+
 // Template Map
 export default {
   ${templates
