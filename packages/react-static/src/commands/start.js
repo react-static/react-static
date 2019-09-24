@@ -1,6 +1,7 @@
 import getRoutes from '../static/getRoutes'
 import generateBrowserPlugins from '../static/generateBrowserPlugins'
 import runDevServer from '../static/webpack/runDevServer'
+import fetchSiteData from '../static/fetchSiteData'
 import getConfig from '../static/getConfig'
 import extractTemplates from '../static/extractTemplates'
 import generateTemplates from '../static/generateTemplates'
@@ -22,6 +23,7 @@ export default (async function start(state = {}) {
 
   // Use a callback (a subscription)
   getConfig(state, async state => {
+    state = await fetchSiteData(state)
     state = await createIndexPlaceholder(state)
     state = await generateBrowserPlugins(state)
 
