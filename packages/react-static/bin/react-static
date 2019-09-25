@@ -2,10 +2,12 @@
 const path = require('path')
 //
 
-init().catch(e => {
+try {
+  init()
+} catch (e) {
   console.trace(e)
   process.exit(1)
-})
+}
 
 function init() {
   const pkg = require('../package.json')
