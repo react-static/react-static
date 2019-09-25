@@ -221,7 +221,7 @@ export function RouteData<T extends object = any>(
  * @param {React.ComponentType<P>} Comp the component to wrap
  * @returns {(React.ComponentClass<P & { siteData: T }, S>)} tbe wrapped component
  */
-export function witeSiteData<T extends object = any, P extends object = {}, S extends object = {}>(
+export function withSiteData<T extends object = any, P extends object = {}, S extends object = {}>(
   Comp: React.ComponentType<P>
 ):  React.ComponentClass<P & { routeData: T }, S>;
 
