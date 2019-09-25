@@ -131,6 +131,7 @@ function common(state) {
           __dirname,
           'react-universal-component'
         ),
+        __react_static_root__: config.paths.ROOT,
       },
     },
     externals: [],
