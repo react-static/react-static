@@ -2,10 +2,19 @@
 
 ## master
 
-## Improved
+### Improved
+
+- Fix typings `withSiteData` ([#1319](https://github.com/react-static/react-static/pull/1319))
+- Fix "can not read property `catch` of `undefined`" ([#1313](https://github.com/react-static/react-static/pull/1313))
+- Fix missing state.siteData in dev ([#1148](https://github.com/react-static/react-static/pull/1148))
+- Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
+
+## 7.2.2
+
+### Improved
 
 - Force line endings to be LF ([`38ef613`](https://github.com/react-static/react-static/commit/38ef613c7b23e87da418eff115f8a505d274233d))
-- Fixed `addPrefetchExcludes` type definition ([#1300](https://github.com/react-static/react-static/pull/1300))
+- Fix `addPrefetchExcludes` type definition ([#1300](https://github.com/react-static/react-static/pull/1300))
 
 ## 7.2.0
 
@@ -18,9 +27,9 @@
 
 - Remove file inline-ing when the file is larger than an arbitrary size ([#1222](https://github.com/react-static/react-static/pull/1222))
 - Fix relative paths when the should have been absolute ([#1250](https://github.com/react-static/react-static/pull/1250), [#1253](https://github.com/react-static/react-static/pull/1253), [#1254](https://github.com/react-static/react-static/pull/1254), [#1272](https://github.com/react-static/react-static/pull/1272) and [#1276](https://github.com/react-static/react-static/pull/1254))
-- Fixed issue with react hot loader for IE ([#1274](https://github.com/react-static/react-static/pull/1274))
-- Fixed TypeScript definitions ([#1181](https://github.com/react-static/react-static/pull/1181))
-- Fixed component passing in `renderProp` of `Routes` ([#1181](https://github.com/react-static/react-static/pull/1181))
+- Fix issue with react hot loader for IE ([#1274](https://github.com/react-static/react-static/pull/1274))
+- Fix TypeScript definitions ([#1181](https://github.com/react-static/react-static/pull/1181))
+- Fix component passing in `renderProp` of `Routes` ([#1181](https://github.com/react-static/react-static/pull/1181))
 
 ## 7.1.0
 
@@ -29,17 +38,17 @@
 - `afterBundle` hook added
 - `react-static-plugin-evergreen`: A plugin for using evergreen-ui
 - `react-static-plugin-stylus` A plugin for using stylus
-- Added a styled-components guide
-- Added `react-static-plugin-google-tag-manager` to the list of 3rd party plugins
+- Add a styled-components guide
+- Add `react-static-plugin-google-tag-manager` to the list of 3rd party plugins
 
 ### Improved
 
 - CSS HMR support is now much more reliable.
 - `react-static-plugin-mdx`: Allow passing MDX options to webpack loader (e.g. `remarkPlugins` and `rehypePlugins`)
 - Failed builds will finally exit with a non-zero status code!
-- Updated Typescript Defs
+- Update Typescript Defs
 - The latest version of React Static will now be installed with new projects
-- Added postcss and autoprefixer to sass plugin
+- Add postcss and autoprefixer to sass plugin
 - Less plugin should now build properly
 - React-Helmet version was bumped to fix a few upstream issues
 - Fix react/react-dom aliases to allow submodules
@@ -52,7 +61,7 @@
 - `react-static-plugin-mdx`: Bump webpack loader version to v1
 - `react-static`: HMR dev server client is only required once, and HMR emitter now resolves to a single instance
 - `react-static`: Hot reloading stability has been improved to better support hooks like React.useState and React.useEffect
-- `react-static`: Updated eslint rules and code to pass those rules.
+- `react-static`: Update eslint rules and code to pass those rules.
 
 ## 7.0.9
 
