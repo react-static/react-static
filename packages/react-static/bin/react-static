@@ -63,7 +63,7 @@ function init() {
 React Static - ${pkg.description}
 Version: ${pkg.name}@${pkg.version}
 
-Usage: react-static [options] [command]
+Usage: react-static <command> [options]
 
 Options:
   -V, --version  output the version number
