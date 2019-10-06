@@ -211,7 +211,7 @@ export function buildConfig(state, config = {}) {
     config.disableRoutePrefixing
   process.env.REACT_STATIC_DISABLE_PRELOAD = config.disablePreload
   process.env.REACT_STATIC_DISABLE_RUNTIME = config.disableRuntime
-  process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollIntervalw
+  process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollInterval
 
   process.env.REACT_STATIC_ROOT_PATH_READ_ONLY = paths.ROOT
 
