@@ -6,10 +6,10 @@ Animated Routes can be achieved so many different ways. In this example, we'll s
 - Use the `Routes` component's `render` prop API to animate between routes:
 
 ```javascript
-import React from 'react';
-import {Root, Routes} from 'react-static';
-import {Link} from '@reach/router';
-import {Transition, animated} from 'react-spring/renderprops';
+import React from 'react'
+import { Root, Routes } from 'react-static'
+import { Link } from '@reach/router'
+import { Transition, animated } from 'react-spring/renderprops'
 
 const App = () => (
   <Root>
@@ -20,22 +20,22 @@ const App = () => (
     </nav>
     <div className="content">
       <Routes>
-        {({routePath, getComponentForPath}) => {
+        {({ routePath, getComponentForPath }) => {
           // Using the routePath as the key, both routes will render at the same time for the transition
           return (
             <Transition
               native
               items={routePath}
-              from={{transform: 'translateY(100px)', opacity: 0}}
-              enter={{transform: 'translateY(0px)', opacity: 1}}
-              leave={{transform: 'translateY(100px)', opacity: 0}}
+              from={{ transform: 'translateY(100px)', opacity: 0 }}
+              enter={{ transform: 'translateY(0px)', opacity: 1 }}
+              leave={{ transform: 'translateY(100px)', opacity: 0 }}
             >
-              {(item) => (props) => {
-                const element = getComponentForPath(item);
-                return <animated.div style={props}>{element}</animated.div>;
+              {item => props => {
+                const element = getComponentForPath(item)
+                return <animated.div style={props}>{element}</animated.div>
               }}
             </Transition>
-          );
+          )
         }}
       </Routes>
     </div>
