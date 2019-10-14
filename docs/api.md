@@ -38,31 +38,29 @@ The routes that will be rendered are the **routes** returned by the `getRoutes` 
 
 ### Custom `Routes` Rendering
 
-Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is illustrated in the [animated-routes](https://github.com/react-static/react-static/tree/master/examples/animated-routes) example transitions. To do this, utilize a render prop:
+Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is for rendering animated routes, described further in the [animated-routes](https://github.com/react-static/react-static/tree/master/examples/animated-routes) guide. To do this, utilize a `render` prop:
 
 ```javascript
+import React from 'react'
 import { Root, Routes } from 'react-static'
-
-// This is the default renderer for `<Routes>`
-const RenderRoutes =
 
 export default () => (
   <Root>
-    <Routes>
-      {({ getComponentForPath }) => {
-        // The pathname is used to retrieve the component for that path
-        let Comp = getComponentForPath(window.location.href)
-        // The component is rendered!
-        return <Comp />
+    <Routes
+      render={({ routePath, getComponentForPath }) => {
+        // The routePath is used to retrieve the component for that path
+        const element = getComponentForPath(routePath)
+        return element
       }}
-    </Routes>
+    />
   </Root>
 )
 ```
 
-**Render Props** - These special props are sent to your rendered component or render function:
+**Render Props** - These special props are sent to your `render` function:
 
-- `getComponentForPath(pathname) => Component` - Takes a pathname and returns the component (if it exists) to render that path. Returns `false` if no component is found.
+- `getComponentForPath(pathname) => ReactElement` - Takes a pathname and returns an element (if a route exists) to render that path. Returns `false` if no route is found.
+- `routePath: String` - The path of the current route. You can pass it to `getComponentForPath`.
 
 ## `useRouteData`
 

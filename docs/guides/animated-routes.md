@@ -3,13 +3,13 @@
 Animated Routes can be achieved so many different ways. In this example, we'll stick to something simple and use the `react-spring` package.
 
 - Install the `react-spring` module using npm or yarn
-- Use the `Routes` component's child-as-a-function api to animate between routes:
+- Use the `Routes` component's `render` prop API to animate between routes:
 
 ```javascript
 import React from 'react'
 import { Root, Routes } from 'react-static'
 import { Link } from '@reach/router'
-import { Transition, animated } from 'react-spring'
+import { Transition, animated } from 'react-spring/renderprops'
 
 const App = () => (
   <Root>
@@ -31,12 +31,8 @@ const App = () => (
               leave={{ transform: 'translateY(100px)', opacity: 0 }}
             >
               {item => props => {
-                const Comp = getComponentForPath(item)
-                return (
-                  <animated.div style={props}>
-                    <Comp />
-                  </animated.div>
-                )
+                const element = getComponentForPath(item)
+                return <animated.div style={props}>{element}</animated.div>
               }}
             </Transition>
           )
