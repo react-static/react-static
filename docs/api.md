@@ -41,21 +41,20 @@ The routes that will be rendered are the **routes** returned by the `getRoutes` 
 Occasionally, you may need to render the automatic `<Routes>` component in a custom way. The most common use-case is for rendering animated routes, described further in the [animated-routes](https://github.com/react-static/react-static/tree/master/examples/animated-routes) guide. To do this, utilize a `render` prop:
 
 ```javascript
-import React from 'react';
-
-import {Root, Routes} from 'react-static';
+import React from 'react'
+import { Root, Routes } from 'react-static'
 
 export default () => (
   <Root>
     <Routes
-      render={({routePath, getComponentForPath}) => {
+      render={({ routePath, getComponentForPath }) => {
         // The routePath is used to retrieve the component for that path
-        const element = getComponentForPath(routePath);
-        return element;
+        const element = getComponentForPath(routePath)
+        return element
       }}
     />
   </Root>
-);
+)
 ```
 
 **Render Props** - These special props are sent to your `render` function:
