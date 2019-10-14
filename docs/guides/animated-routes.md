@@ -40,8 +40,8 @@ const App = () => (
       </Routes>
     </div>
   </Root>
-);
+)
 
-export default App;
+export default App
 
 ```
