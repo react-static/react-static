@@ -9,6 +9,10 @@
 - Fix missing state.siteData in dev ([#1148](https://github.com/react-static/react-static/pull/1148))
 - Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
 
+### Fixes & Optimizations
+
+- Fix `output.publicPath` in dev build when `assetPath` is set ([#1329](https://github.com/react-static/react-static/pull/1329))
+
 ## 7.2.2
 
 ### Improved
