@@ -28,6 +28,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [disablePreload](#disablePreload)
 - [babelExcludes](#babelExcludes)
 - [productionSourceMaps](#productionSourceMaps)
+- [productionLog](#productionLog)
 
 ### `getRoutes`
 
@@ -388,6 +389,19 @@ Set this flag to `true` to include source maps in production.
 // static.config.js
 export default {
   productionSourceMaps: true,
+}
+```
+
+### `productionLog`
+
+Set this flag to `true` if you need to keep log in production.
+
+- Defaults to `false`
+
+```javascript
+// static.config.js
+export default {
+  productionLog: true,
 }
 ```
 
