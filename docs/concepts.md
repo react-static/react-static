@@ -108,7 +108,7 @@ Examples:
 
 - [Using Contentful Webhooks](https://www.contentful.com/developers/docs/concepts/webhooks/)
 - [Using GraphCMS Webhooks](https://graphcms.com/docs/concepts/#webhooks)
-- [Rebuilding on Netlify via Webhooks](https://www.netlify.com/docs/webhooks/)
+- [Rebuilding on Netlify via Webhooks](https://docs.netlify.com/configure-builds/build-hooks/)
 
 # 404 Handling
 
