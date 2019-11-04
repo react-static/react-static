@@ -35,6 +35,7 @@ export default async function getRoutes(state, callback = d => d) {
 
     // If no Index page was found, throw an error. This is required
     if (!hasIndex && !incremental) {
+      console.error('No index found!')
       throw new Error(
         'Could not find a route for the "index" page of your site! This is ' +
           'required. Please create a page or specify a route and template ' +
@@ -42,8 +43,12 @@ export default async function getRoutes(state, callback = d => d) {
       )
     }
 
+    console.log({ has404 })
+
     // If no 404 page was found, add one. This is required.
     if (!has404 && !incremental) {
+      console.warn('Creating default 404 because none was found...')
+
       allNormalizedRoutes.unshift({
         path: '404',
         template: path.resolve(
