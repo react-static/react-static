@@ -38,6 +38,7 @@ React Static ships with a plugin API to extend React Static's functionality.
 - Other
 
   - [react-static-plugin-google-tag-manager](https://www.npmjs.com/package/react-static-plugin-google-tag-manager) - Easily add the GTM script tag to your HTML files
+  - [react-static-plugin-file-watch-reload](https://www.npmjs.com/package/react-static-plugin-file-watch-reload) - Allows you to specify files, that, when changed, will trigger a route reload in development
   - [react-static-plugin-yandex-metrica](https://www.npmjs.com/package/react-static-plugin-yandex-metrica) - Add the [Yandex Metrica](https://metrica.yandex.com/about) script tag
 
 ### Local Plugins via the `/plugins` directory
