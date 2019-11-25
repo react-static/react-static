@@ -64,6 +64,7 @@ export default async function makeHeadWithMeta(state) {
       return false
     })
 
+    const childrenMeta = childrenArray.filter(child => child.type === 'meta')
     const childrenJS = childrenArray.filter(child => child.type === 'script')
     childrenArray = childrenArray.filter(child => {
       if (
@@ -79,6 +80,9 @@ export default async function makeHeadWithMeta(state) {
       if (child.type === 'script') {
         return false
       }
+      if (child.type === 'meta') {
+        return false
+      }
       return true
     })
 
@@ -87,6 +91,7 @@ export default async function makeHeadWithMeta(state) {
         <meta name="generator" content="React Static" />
         {head.base}
         {useHelmetTitle && head.title}
+        {childrenMeta}
         {head.meta}
         {childrenJS}
         {!route.redirect &&
