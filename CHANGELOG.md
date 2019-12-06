@@ -8,6 +8,7 @@
 - Fix "can not read property `catch` of `undefined`" ([#1313](https://github.com/react-static/react-static/pull/1313))
 - Fix missing state.siteData in dev ([#1148](https://github.com/react-static/react-static/pull/1148))
 - Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
+- Add unofficial plugin `react-static-plugin-file-watch-reload` to plugins list
 
 ## 7.2.2
 
