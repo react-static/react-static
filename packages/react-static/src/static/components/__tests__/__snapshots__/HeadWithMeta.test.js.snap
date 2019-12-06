@@ -16,6 +16,11 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
     >
       Helmet Title
     </title>
+    <meta
+      content="Helmet application"
+      key=".0"
+      name="description"
+    />
     <link
       as="script"
       href="/assets/path/main.js"
@@ -51,11 +56,6 @@ exports[`HeadWithMeta when route has inline CSS 1`] = `
         type="text/css"
       />
     </InlineStyle>
-    <meta
-      content="Helmet application"
-      key=".0"
-      name="description"
-    />
   </head>
 </Component>
 `;
@@ -70,6 +70,11 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
     <meta
       content="React Static"
       name="generator"
+    />
+    <meta
+      content="Helmet application"
+      key=".1"
+      name="description"
     />
     <link
       as="script"
@@ -110,11 +115,6 @@ exports[`HeadWithMeta when route has no helmet title 1`] = `
     >
       Document Title
     </title>
-    <meta
-      content="Helmet application"
-      key=".1"
-      name="description"
-    />
   </head>
 </Component>
 `;
@@ -135,6 +135,11 @@ exports[`HeadWithMeta when route has title as child 1`] = `
     >
       Helmet Title
     </title>
+    <meta
+      content="Helmet application"
+      key=".1"
+      name="description"
+    />
     <link
       as="script"
       href="/assets/path/main.js"
@@ -168,11 +173,6 @@ exports[`HeadWithMeta when route has title as child 1`] = `
       href="/assets/path/bootstrap.css"
       key="clientStyleSheet_bootstrap.css"
       rel="stylesheet"
-    />
-    <meta
-      content="Helmet application"
-      key=".1"
-      name="description"
     />
   </head>
 </Component>
@@ -219,6 +219,11 @@ exports[`HeadWithMeta when route is a static route 1`] = `
     >
       Helmet Title
     </title>
+    <meta
+      content="Helmet application"
+      key=".0"
+      name="description"
+    />
     <link
       as="script"
       href="/assets/path/main.js"
@@ -252,11 +257,6 @@ exports[`HeadWithMeta when route is a static route 1`] = `
       href="/assets/path/bootstrap.css"
       key="clientStyleSheet_bootstrap.css"
       rel="stylesheet"
-    />
-    <meta
-      content="Helmet application"
-      key=".0"
-      name="description"
     />
   </head>
 </Component>
