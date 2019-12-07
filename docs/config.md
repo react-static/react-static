@@ -392,16 +392,16 @@ export default {
 }
 ```
 
-### `productionLog`
+### `silent`
 
-Set this flag to `true` if you need to keep log in production.
+Set this flag to `true` if you need to hide message 'React Static: Templates Reloaded' from console.
 
 - Defaults to `false`
 
 ```javascript
 // static.config.js
 export default {
-  productionLog: true,
+  silent: true,
 }
 ```
 

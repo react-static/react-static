@@ -76,8 +76,7 @@ export const registerTemplates = async (tmps, notFoundKey) => {
 
   if (
     typeof document !== 'undefined' &&
-    (process.env.REACT_STATIC_PRODUCTION_LOG === 'true' ||
-      process.env.NODE_ENV === 'development')
+    process.env.REACT_STATIC_SILENT !== 'true'
   ) {
     console.log('React Static: Templates Reloaded')
   }

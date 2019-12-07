@@ -174,7 +174,7 @@ export function buildConfig(state, config = {}) {
     disableRuntime: false,
     preloadPollInterval: 300,
     productionSourceMaps: false,
-    productionLog: false,
+    silent: false,
     entry: DEFAULT_ENTRY,
 
     // Config Overrides
@@ -213,7 +213,7 @@ export function buildConfig(state, config = {}) {
   process.env.REACT_STATIC_DISABLE_PRELOAD = config.disablePreload
   process.env.REACT_STATIC_DISABLE_RUNTIME = config.disableRuntime
   process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollInterval
-  process.env.REACT_STATIC_PRODUCTION_LOG = config.productionLog
+  process.env.REACT_STATIC_SILENT = config.silent
 
   process.env.REACT_STATIC_ROOT_PATH_READ_ONLY = paths.ROOT
 
