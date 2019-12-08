@@ -28,7 +28,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [disablePreload](#disablePreload)
 - [babelExcludes](#babelExcludes)
 - [productionSourceMaps](#productionSourceMaps)
-- [productionLog](#productionLog)
+- [silent](#silent)
 
 ### `getRoutes`
 

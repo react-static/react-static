@@ -4,6 +4,7 @@
 
 ### Improved
 
+- Add `silent` option ([#1330](https://github.com/react-static/react-static/pull/1330))
 - Fix typings `withSiteData` ([#1319](https://github.com/react-static/react-static/pull/1319))
 - Fix "can not read property `catch` of `undefined`" ([#1313](https://github.com/react-static/react-static/pull/1313))
 - Fix missing state.siteData in dev ([#1148](https://github.com/react-static/react-static/pull/1148))
