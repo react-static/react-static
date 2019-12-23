@@ -10,6 +10,7 @@
 - Fix missing state.siteData in dev ([#1148](https://github.com/react-static/react-static/pull/1148))
 - Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
 - Add unofficial plugin `react-static-plugin-file-watch-reload` to plugins list
+- Enable configuring css loader from `react-static-plugin-sass` and `react-static-plugin-less` ([#1348](https://github.com/react-static/react-static/pull/1348))
 
 ## 7.2.2
 
