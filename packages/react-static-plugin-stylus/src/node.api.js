@@ -3,7 +3,7 @@ import autoprefixer from 'autoprefixer'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 import semver from 'semver'
 
-export default ({ cssLoaderOptions, ...rest }) => ({
+export default ({ cssLoaderOptions = {}, ...rest }) => ({
   webpack: (config, { stage }) => {
     let loaders = []
     const stylusLoaderPath = require.resolve('stylus-loader')
