@@ -3,7 +3,7 @@ import autoprefixer from 'autoprefixer'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 import semver from 'semver'
 
-export default ({ includePaths = [], cssLoaderOptions, ...rest }) => ({
+export default ({ includePaths = [], cssLoaderOptions = {}, ...rest }) => ({
   webpack: (config, { stage }) => {
     let loaders = []
 
