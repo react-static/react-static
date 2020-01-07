@@ -3,7 +3,7 @@ import autoprefixer from 'autoprefixer'
 import postcssFlexbugsFixes from 'postcss-flexbugs-fixes'
 import semver from 'semver'
 
-export default ({ includePaths = [], ...rest }) => ({
+export default ({ includePaths = [], cssLoaderOptions = {}, ...rest }) => ({
   webpack: (config, { stage }) => {
     let loaders = []
     const lessLoaderPath = require.resolve('less-loader')
@@ -17,6 +17,7 @@ export default ({ includePaths = [], ...rest }) => ({
       options: {
         importLoaders: 1,
         sourceMap: false,
+        ...cssLoaderOptions,
       },
     }
     const postCssLoader = {

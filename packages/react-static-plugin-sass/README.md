@@ -27,6 +27,7 @@ export default {
       "react-static-plugin-sass",
       {
         includePaths: ["..."] // always includes `src/`
+        cssLoaderOptions: {}, // options for the css-loader, like modules
         // other options for the sass-loader
       }
     ]
