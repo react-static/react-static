@@ -81,7 +81,7 @@ export function getRoutePath(routePath) {
   // Be sure to remove the base path
   if (process.env.REACT_STATIC_BASE_PATH) {
     routePath = routePath.replace(
-      new RegExp(`^\\/?${process.env.REACT_STATIC_BASE_PATH}\\/`),
+      new RegExp(`^\\/?${process.env.REACT_STATIC_BASE_PATH}(\\/|$)`),
       ''
     )
   }
