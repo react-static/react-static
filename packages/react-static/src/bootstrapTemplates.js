@@ -7,7 +7,12 @@ const { default: templates, notFoundTemplate } = require(process.env
 
 registerTemplates(templates, notFoundTemplate)
 
-if (typeof document !== 'undefined' && module && module.hot) {
+if (
+  process.env.NODE_ENV !== 'production' &&
+  typeof document !== 'undefined' &&
+  module &&
+  module.hot
+) {
   module.hot.accept(process.env.REACT_STATIC_TEMPLATES_PATH, () => {
     const { default: templates, notFoundTemplate } = require(process.env
       .REACT_STATIC_TEMPLATES_PATH)

@@ -5,7 +5,12 @@ const { registerPlugins } = require('./browser')
 
 registerPlugins(plugins)
 
-if (typeof document !== 'undefined' && module && module.hot) {
+if (
+  process.env.NODE_ENV !== 'production' &&
+  typeof document !== 'undefined' &&
+  module &&
+  module.hot
+) {
   module.hot.accept(process.env.REACT_STATIC_PLUGINS_PATH, () => {
     registerPlugins(require(process.env.REACT_STATIC_PLUGINS_PATH).default)
   })
