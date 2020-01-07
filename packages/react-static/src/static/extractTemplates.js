@@ -17,7 +17,12 @@ export default (async function extractTemplates(state) {
       return
     }
 
-    route.template = slash(path.resolve(config.paths.ROOT, route.template))
+    route.template = slash(
+      `__react_static_root__/${path.relative(
+        config.paths.ROOT,
+        route.template
+      )}`
+    )
 
     // Check if the template has already been added
     const index = templates.indexOf(route.template)

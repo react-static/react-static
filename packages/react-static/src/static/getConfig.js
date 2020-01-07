@@ -225,9 +225,6 @@ export function buildConfig(state, config = {}) {
     paths.ARTIFACTS,
     'react-static-browser-plugins.js'
   )
-  process.env.REACT_STATIC_UNIVERSAL_PATH = require.resolve(
-    'react-universal-component'
-  )
 
   const resolvePlugin = originalLocation => {
     let options = {}

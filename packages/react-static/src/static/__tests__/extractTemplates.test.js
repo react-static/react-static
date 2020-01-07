@@ -46,26 +46,30 @@ test('the 404 template is the first one', async () => {
   expect(state.templates[0]).toContain('src/templates/404')
 })
 
-test('relative routes path resolves against the ROOT', async () => {
+test('relative routes path are relative and use the __react_static_root__ alias', async () => {
   const { templates } = await extractTemplates({
     config,
     routes: [{ path: '404', template: './src/templates/NotFound' }],
   })
 
-  expect(path.isAbsolute(templates[0])).toBe(true)
-  expect(path.normalize(templates[0])).toBe(
-    path.resolve(`${config.paths.ROOT}/src/templates/NotFound`)
+  expect(templates[0]).toBe(
+    `__react_static_root__/${path.relative(
+      config.paths.ROOT,
+      './src/templates/NotFound'
+    )}`
   )
 })
 
-test('absolute routes path are kept intact', async () => {
+test('absolute routes path are relative and use the __react_static_root__ alias', async () => {
   const { templates } = await extractTemplates({
     config,
     routes: [{ path: '404', template: '/home/src/templates/NotFound' }],
   })
 
-  expect(path.isAbsolute(templates[0])).toBe(true)
-  expect(path.normalize(templates[0])).toBe(
-    path.resolve('/home/src/templates/NotFound')
+  expect(templates[0]).toBe(
+    `__react_static_root__/${path.relative(
+      config.paths.ROOT,
+      '/home/src/templates/NotFound'
+    )}`
   )
 })

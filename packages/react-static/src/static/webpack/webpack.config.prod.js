@@ -48,8 +48,8 @@ function common(state) {
   }
 
   let extrackCSSChunks = new ExtractCssChunks({
-    filename: '[name].[chunkHash:8].css',
-    chunkFilename: '[id].[chunkHash:8].css',
+    filename: '[name].[contentHash:8].css',
+    chunkFilename: '[id].[contentHash:8].css',
   })
 
   if (!config.extractCssChunks) {
@@ -62,7 +62,7 @@ function common(state) {
       },
     }
     extrackCSSChunks = new ExtractCssChunks({
-      filename: '[name].[chunkHash:8].css',
+      filename: '[name].[contentHash:8].css',
     })
   }
 
@@ -77,8 +77,8 @@ function common(state) {
           require.resolve('../../bootstrapApp'),
         ],
     output: {
-      filename: '[name].[hash:8].js', // dont use chunkhash, its not a chunk
-      chunkFilename: 'templates/[name].[chunkHash:8].js',
+      filename: '[name].[contentHash:8].js',
+      chunkFilename: 'templates/[name].[contentHash:8].js',
       path: ASSETS,
       publicPath: process.env.REACT_STATIC_PUBLIC_PATH || '/',
     },
@@ -131,6 +131,7 @@ function common(state) {
           __dirname,
           'react-universal-component'
         ),
+        __react_static_root__: config.paths.ROOT,
       },
     },
     externals: [],

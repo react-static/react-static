@@ -24,7 +24,12 @@ export default async state => {
           : -1
         if (pluginIndex === -1 && browserLocation) {
           pluginImports.push(
-            slash(path.resolve(config.paths.ARTIFACTS, browserLocation))
+            slash(
+              `__react_static_root__/${path.relative(
+                config.paths.ROOT,
+                browserLocation
+              )}`
+            )
           )
           pluginIndex = pluginImports.length - 1
         }
@@ -33,7 +38,9 @@ export default async state => {
 
         // IIF to return the final plugin
         return `{
-        location: "${slash(path.resolve(config.paths.ARTIFACTS, location))}",
+        location: "${slash(
+          `__react_static_root__/${path.relative(config.paths.ROOT, location)}`
+        )}",
         plugins: ${recurse(plugins || [])},
         hooks: ${
           browserLocation
