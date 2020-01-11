@@ -39,7 +39,6 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 - [Starbucks: Rewards](https://www.starbucks.com/rewards/comingsoon)([source](https://twitter.com/davidbrunelle/status/1108041167935922176))
 - [Intuit Turbo](http://turbo.com)
 - [Timber.io](https://timber.io)
-- [TannerLinsley.com](https://tannerlinsley.com) ([source](https://github.com/tannerlinsley/tannerlinsley.com))
 - [Manta.life](https://manta.life) ([source](https://github.com/MantaApp/Website))
 - [Manticore Games](http://manticoregames.com)
 - [BlackSandSolutions.co](https://www.blacksandsolutions.co)
