@@ -1,20 +1,20 @@
-# react-static-plugin-less
+# react-static-plugin-stylus
 
-A [React-Static](https://react-static.js.org) plugin that adds loader and SSR support for [less](https://github.com/developit/less)
+A [React-Static](https://react-static.js.org) plugin that adds loader and SSR support for [stylus](http://stylus-lang.com/)
 
 ## Installation
 
 In an existing react-static site run:
 
 ```bash
-$ yarn add react-static-plugin-less
+$ yarn add react-static-plugin-stylus
 ```
 
 Then add the plugin to your `static.config.js`:
 
 ```javascript
 export default {
-  plugins: ["react-static-plugin-less"]
+  plugins: ["react-static-plugin-stylus"]
 };
 ```
 
@@ -24,10 +24,10 @@ export default {
 export default {
   plugins: [
     [
-      "react-static-plugin-less",
+      "react-static-plugin-stylus",
       {
-        includePaths: ["..."] // always includes `src/`
-        // other options for the less-loader
+        cssLoaderOptions: {}, // options for the css-loader, like modules
+        // other options for the stylus-loader
       }
     ]
   ]
