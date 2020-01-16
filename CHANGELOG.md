@@ -4,6 +4,7 @@
 
 ### New
 
+- Allow dots in routes. ([#1365](https://github.com/react-static/react-static/pull/1365))
 - Add `silent` option ([#1330](https://github.com/react-static/react-static/pull/1330))
 - Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
 - Add unofficial plugin `react-static-plugin-file-watch-reload` to plugins list
