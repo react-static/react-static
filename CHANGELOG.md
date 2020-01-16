@@ -4,6 +4,7 @@
 
 ### New
 
+- Allow dots in routes. ([#1365](https://github.com/react-static/react-static/pull/1365))
 - Add `silent` option ([#1330](https://github.com/react-static/react-static/pull/1330))
 - Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
 - Add unofficial plugin `react-static-plugin-file-watch-reload` to plugins list
@@ -17,6 +18,7 @@
 - Fix missing state.siteData in dev ([#1148](https://github.com/react-static/react-static/pull/1148))
 - Fix empty or undefined error in sitemap plugin ([#1233](https://github.com/react-static/react-static/issues/1233) and [#1312](https://github.com/react-static/react-static/issues/1312))
 - Fix stderr pollution by progress module ([#1356](https://github.com/react-static/react-static/pull/1356))
+- Fix package.json and README for `react-static-plugin-stylus` ([#1244](https://github.com/react-static/react-static/issues/1244))
 
 ## 7.2.2
 

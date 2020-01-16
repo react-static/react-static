@@ -172,18 +172,18 @@ function startPreloader() {
 
 async function reloadClientData() {
   console.log('React Static: Reloading Data...')
-  // Delete all cached data
-  ;[
-    routeInfoByPath,
-    sharedDataByHash,
-    routeErrorByPath,
-    inflightRouteInfo,
-    inflightPropHashes,
-  ].forEach(part => {
-    Object.keys(part).forEach(key => {
-      delete part[key]
+    // Delete all cached data
+    ;[
+      routeInfoByPath,
+      sharedDataByHash,
+      routeErrorByPath,
+      inflightRouteInfo,
+      inflightPropHashes,
+    ].forEach(part => {
+      Object.keys(part).forEach(key => {
+        delete part[key]
+      })
     })
-  })
 
   // Prefetch the current route's data before you reload routes
   await prefetch(window.location.pathname)
@@ -440,9 +440,10 @@ export function isPrefetchableRoute(path) {
   }
 
   // deny all files with extension other than .html
-  if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
-    return false
-  }
+  // Reverting this change because of issue #1354
+  //if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
+  //  return false
+  //}
 
   return true
 }
