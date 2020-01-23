@@ -16,7 +16,7 @@
   },
   "peerDependencies": {
     "react": "^16.9.0",
-    "react-jss": "^8.6.1"
+    "react-jss": "^10.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -24,7 +24,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "react": "^16.9.0",
-    "react-jss": "^8.6.1"
+    "react-jss": "^10.0.3"
   },
   "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
 }
