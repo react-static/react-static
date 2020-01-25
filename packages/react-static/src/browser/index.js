@@ -441,9 +441,9 @@ export function isPrefetchableRoute(path) {
 
   // deny all files with extension other than .html
   // Reverting this change because of issue #1354
-  //if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
-  //  return false
-  //}
+  // if (link.pathname.includes('.') && !link.pathname.includes('.html')) {
+  //   return false
+  // }
 
   return true
 }
