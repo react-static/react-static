@@ -9,6 +9,8 @@
 - Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
 - Add unofficial plugin `react-static-plugin-file-watch-reload` to plugins list
 - Enable configuring css loader from `react-static-plugin-sass` and `react-static-plugin-less` ([#1348](https://github.com/react-static/react-static/pull/1348))
+- Update `react-static-plugin-jss` for react-jss v10+. ([#1367](https://github.com/react-static/react-static/pull/1367))
+
 
 ### Improved
 
