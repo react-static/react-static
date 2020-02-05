@@ -29,8 +29,7 @@ exports[`BodyWithMeta when route is a static route 1`] = `
     <script
       dangerouslySetInnerHTML={
         Object {
-          "__html": "
-    window.__routeInfo = JSON.parse(\\"{\\\\\\"routeDate\\\\\\":\\\\\\"here\\\\\\"}\\");",
+          "__html": "script",
         }
       }
       type="text/javascript"

@@ -8,8 +8,10 @@ describe('BodyWithMeta', () => {
     const BodyWithMeta = await makeBodyWithMeta({
       head: { bodyProps: { lang: 'en' } },
       route: { redirect: false },
-      embeddedRouteInfo: {
-        routeDate: 'here',
+      inlineScripts: {
+        routeInfo: {
+          script: 'script',
+        },
       },
       clientScripts: ['main.js', 'bootstrap.js'],
       plugins: [],
@@ -28,8 +30,10 @@ describe('BodyWithMeta', () => {
     const BodyWithMeta = await makeBodyWithMeta({
       head: { bodyProps: { lang: 'en' } },
       route: { redirect: true },
-      embeddedRouteInfo: {
-        routeDate: 'here',
+      inlineScripts: {
+        routeInfo: {
+          script: 'script',
+        },
       },
       clientScripts: ['main.js', 'bootstrap.js'],
       config: {},
