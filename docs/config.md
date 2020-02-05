@@ -211,7 +211,7 @@ Props
   { 
       "routeInfo": { 
           "script": "script", 
-          "hash": "sha256-<base64-value",
+          "hash": "sha256-<base64-value>"
       }
   }
   ```
