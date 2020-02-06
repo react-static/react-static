@@ -596,7 +596,7 @@ export interface InlineScript {
   hash: string
 }
 
-export interface InlineScripts {
+export interface InlineScripts extends Record<string, InlineScript> {
   routeInfo: InlineScript
 }
 
