@@ -21,3 +21,8 @@ We're stoked that you want to help contribute to React Static! Below are a numbe
   - `yarn build` - Builds all packages for release
   - `yarn test` - Runs the testing suite for all packages
   - `yarn startDocs` - Starts the documentation site in development mode
+* Install package from local source:
+  - Change dir to package dir, eg.: `cd packages/react-static`, then:
+  - `yarn build`
+  - `yarn link`
+  - Go to your project dir and then: `yarn link react-static`. This will use the version of `react-static` that you've just built.
