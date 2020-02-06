@@ -2,13 +2,27 @@
 
 ## 7.2.3
 
+### New
+
+- Allow dots in routes. ([#1365](https://github.com/react-static/react-static/pull/1365))
+- Add `silent` option ([#1330](https://github.com/react-static/react-static/pull/1330))
+- Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
+- Add unofficial plugin `react-static-plugin-file-watch-reload` to plugins list
+- Enable configuring css loader from `react-static-plugin-sass` and `react-static-plugin-less` ([#1348](https://github.com/react-static/react-static/pull/1348))
+- Update `react-static-plugin-jss` for react-jss v10+. ([#1367](https://github.com/react-static/react-static/pull/1367))
+- Add inline script hashes to `DocumentProps`. These hashes can be used to construct a Content Security Policy in a meta tag without `unsafe-inline` scripts. ([#1373](https://github.com/react-static/react-static/pull/1373))
+
+
 ### Improved
 
+- Fix `basePath` edge case ([#1344](https://github.com/react-static/react-static/pull/1344))
 - Fix typings `withSiteData` ([#1319](https://github.com/react-static/react-static/pull/1319))
 - Fix "can not read property `catch` of `undefined`" ([#1313](https://github.com/react-static/react-static/pull/1313))
 - Fix missing state.siteData in dev ([#1148](https://github.com/react-static/react-static/pull/1148))
-- Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
-- Fix build warnings breaking `start`
+- Fix empty or undefined error in sitemap plugin ([#1233](https://github.com/react-static/react-static/issues/1233) and [#1312](https://github.com/react-static/react-static/issues/1312))
+- Fix stderr pollution by progress module ([#1356](https://github.com/react-static/react-static/pull/1356))
+- Fix package.json and README for `react-static-plugin-stylus` ([#1244](https://github.com/react-static/react-static/issues/1244))
+- Fix Webpack stats output in environment that don't support color ([#1370](https://github.com/react-static/react-static/pull/1370))
 
 ## 7.2.2
 

@@ -53,6 +53,11 @@ export default function({ config }) {
       alias: {
         react$: resolveFrom(NODE_MODULES, 'react'),
         'react-dom$': resolveFrom(NODE_MODULES, 'react-dom'),
+        'react-universal-component': resolveFrom(
+          __dirname,
+          'react-universal-component'
+        ),
+        __react_static_root__: config.paths.ROOT,
         // This is here so HMR modules use the same emitter instance.
         // Likely this is only needed for locally linked dev on RS, but still...
         'webpack/hot/emitter': resolveFrom(__dirname, 'webpack/hot/emitter'),

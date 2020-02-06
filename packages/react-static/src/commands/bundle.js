@@ -46,7 +46,7 @@ Your app is now bundled! Here's what we suggest doing next:
 
 - Export your app in staging mode to test locally
   - ${chalk.green('react-static export --stage')}
-- Export your app in production mode for distrubution
+- Export your app in production mode for distribution
   - ${chalk.green('react-static export')}
 - Analyze your app's webpack bundles
   - ${chalk.green('react-static bundle --analyze')}

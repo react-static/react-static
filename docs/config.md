@@ -28,6 +28,7 @@ A `static.config.js` file is optional, but recommended at your project root to u
 - [disablePreload](#disablePreload)
 - [babelExcludes](#babelExcludes)
 - [productionSourceMaps](#productionSourceMaps)
+- [silent](#silent)
 
 ### `getRoutes`
 
@@ -204,7 +205,18 @@ Props
   - `routeInfo: Object` - All of the current route's information, including any `routeData`.
   - `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
   - `renderMeta: Object` - Any data optionally set via hooks or transformers during the render process.
-  - And much more!
+  - `inlineScripts: Object` - The source and hash of inline scripts added by `react-static`, eg.:
+  
+  ```json
+  { 
+      "routeInfo": { 
+          "script": "script", 
+          "hash": "sha256-<base64-value>"
+      }
+  }
+  ```
+  
+  You can add the hashes as CSP directives to make the site work without `unsafe-inline`.
 
 ```javascript
 // static.config.js
@@ -388,6 +400,19 @@ Set this flag to `true` to include source maps in production.
 // static.config.js
 export default {
   productionSourceMaps: true,
+}
+```
+
+### `silent`
+
+Set this flag to `true` if you need to hide message 'React Static: Templates Reloaded' from console.
+
+- Defaults to `false`
+
+```javascript
+// static.config.js
+export default {
+  silent: true,
 }
 ```
 

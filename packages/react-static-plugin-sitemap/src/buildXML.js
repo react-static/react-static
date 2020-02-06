@@ -19,13 +19,14 @@ export default async function main(state, options) {
       paths: { DIST },
       disableRoutePrefixing,
       siteRoot,
+      publicPath
     },
     staging,
   } = state
 
   const prefixPath = disableRoutePrefixing
     ? siteRoot
-    : process.env.REACT_STATIC_PUBLIC_PATH
+    : publicPath
 
   const filename = staging ? 'sitemap.staging.xml' : 'sitemap.xml'
 

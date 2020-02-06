@@ -48,7 +48,7 @@ export default async function buildProductionBundles(state) {
               entrypoints: false,
               chunkOrigins: false,
               chunkModules: false,
-              colors: true,
+              colors: chalk.supportsColor,
             })
           )
           if (buildErrors) {

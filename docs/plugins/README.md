@@ -38,6 +38,7 @@ React Static ships with a plugin API to extend React Static's functionality.
 - Other
 
   - [react-static-plugin-google-tag-manager](https://www.npmjs.com/package/react-static-plugin-google-tag-manager) - Easily add the GTM script tag to your HTML files
+  - [react-static-plugin-file-watch-reload](https://www.npmjs.com/package/react-static-plugin-file-watch-reload) - Allows you to specify files, that, when changed, will trigger a route reload in development
   - [react-static-plugin-yandex-metrica](https://www.npmjs.com/package/react-static-plugin-yandex-metrica) - Add the [Yandex Metrica](https://metrica.yandex.com/about) script tag
 
 ### Local Plugins via the `/plugins` directory
@@ -127,10 +128,10 @@ export default pluginOptions => ({
 
 ## What can plugins do?
 
-- [Modify your `static.config.js`](/docs/plugins/node-api.md#config-function)
-- [Transform your webpack config](/docs/plugins/node-api.md#webpack-functionfunction)
-- [Append JSX to the Head of the app](/docs/plugins/node-api.md#head-componentfunction)
-- [Customize your App's router](/docs/plugins/browser-api.md#router)
+- [Modify your `static.config.js`](/docs/plugins/node-api.md#aftergetconfig)
+- [Transform your webpack config](/docs/plugins/node-api.md#webpack)
+- [Append JSX to the Head of the app](/docs/plugins/node-api.md#headelements)
+- [Customize your App's router](/docs/plugins/browser-api.md#root)
 - and more!
 
 View the [browser API docs](/docs/plugins/browser-api.md) and the [node API docs](/docs/plugins/node-api.md) for full list of API methods that can be implemented.
@@ -141,4 +142,4 @@ Only the `plugins` directory will be transformed by react-static's babel runtime
 
 Hence, when distributing your plugin, your plugin **must be ES5 compatible**.
 
-- An example of a plugin compiled before distribution is [react-static-plugin-styled-components](https://github.com/react-static/react-static/tree/master/react-static-plugin-styled-components).
+- An example of a plugin compiled before distribution is [react-static-plugin-styled-components](/packages/react-static-plugin-styled-components).

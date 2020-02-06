@@ -1,6 +1,5 @@
 import React from 'react'
-import JssProvider from 'react-jss/lib/JssProvider'
-import { SheetsRegistry } from 'react-jss/lib/jss'
+import { JssProvider, SheetsRegistry } from 'react-jss'
 
 export default ({ providerProps = {} }) => ({
   // NOTE: This whole process could likely be extracted into a reusable
@@ -10,7 +9,7 @@ export default ({ providerProps = {} }) => ({
     // Create a sheetsRegistry instance.
     meta.jssSheetsRegistry = new SheetsRegistry()
 
-    // TODO we could actually add the style removal here too in a compoenntDidMount:
+    // TODO we could actually add the style removal here too in a componentDidMount:
     // https://github.com/cssinjs/examples/blob/gh-pages/react-ssr/src/client.js
     return (
       <JssProvider {...providerProps} registry={meta.jssSheetsRegistry}>

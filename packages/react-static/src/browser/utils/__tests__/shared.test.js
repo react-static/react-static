@@ -44,8 +44,20 @@ describe('browser/utils', () => {
       expect(getRoutePath('/')).toEqual('/')
     })
 
-    it('should return / for basePath', () => {
+    it('should return / for basePath without leading / without trailing /', () => {
       expect(getRoutePath('base/path')).toEqual('/')
+    })
+
+    it('should return / for basePath without leading / with trailing /', () => {
+      expect(getRoutePath('base/path/')).toEqual('/')
+    })
+
+    it('should return / for basePath with leading / without trailing /', () => {
+      expect(getRoutePath('/base/path')).toEqual('/')
+    })
+
+    it('should return / for basePath with leading / with trailing /', () => {
+      expect(getRoutePath('/base/path/')).toEqual('/')
     })
 
     it('should strip basePath', () => {

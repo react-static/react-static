@@ -9,7 +9,7 @@ export default (total, label, options) => {
       label ? `${label} ` : ''
     }[:bar] :current/:total :percent :rate/s :etas `
   }
-  const stream = options.stream || process.stderr
+  const stream = options.stream || process.stdout
   if (stream.isTTY && !options.forceNonTTY) {
     options.total = total
     return new Progress(options.format, options)

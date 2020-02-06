@@ -174,6 +174,7 @@ export function buildConfig(state, config = {}) {
     disableRuntime: false,
     preloadPollInterval: 300,
     productionSourceMaps: false,
+    silent: false,
     entry: DEFAULT_ENTRY,
 
     // Config Overrides
@@ -211,7 +212,8 @@ export function buildConfig(state, config = {}) {
     config.disableRoutePrefixing
   process.env.REACT_STATIC_DISABLE_PRELOAD = config.disablePreload
   process.env.REACT_STATIC_DISABLE_RUNTIME = config.disableRuntime
-  process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollIntervalw
+  process.env.REACT_STATIC_PRELOAD_POLL_INTERVAL = config.preloadPollInterval
+  process.env.REACT_STATIC_SILENT = config.silent
 
   process.env.REACT_STATIC_ROOT_PATH_READ_ONLY = paths.ROOT
 
@@ -222,9 +224,6 @@ export function buildConfig(state, config = {}) {
   process.env.REACT_STATIC_PLUGINS_PATH = nodePath.join(
     paths.ARTIFACTS,
     'react-static-browser-plugins.js'
-  )
-  process.env.REACT_STATIC_UNIVERSAL_PATH = require.resolve(
-    'react-universal-component'
   )
 
   const resolvePlugin = originalLocation => {
