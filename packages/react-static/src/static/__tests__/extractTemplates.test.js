@@ -53,7 +53,7 @@ test('relative routes path are relative and use the __react_static_root__ alias'
   })
 
   expect(templates[0]).toBe(
-    `__react_static_root__/${path.relative(
+    `__react_static_root__/${path.posix.relative(
       config.paths.ROOT,
       './src/templates/NotFound'
     )}`
@@ -67,7 +67,7 @@ test('absolute routes path are relative and use the __react_static_root__ alias'
   })
 
   expect(templates[0]).toBe(
-    `__react_static_root__/${path.relative(
+    `__react_static_root__/${path.posix.relative(
       config.paths.ROOT,
       '/home/src/templates/NotFound'
     )}`

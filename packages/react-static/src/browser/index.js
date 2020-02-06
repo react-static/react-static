@@ -172,18 +172,18 @@ function startPreloader() {
 
 async function reloadClientData() {
   console.log('React Static: Reloading Data...')
-    // Delete all cached data
-    ;[
-      routeInfoByPath,
-      sharedDataByHash,
-      routeErrorByPath,
-      inflightRouteInfo,
-      inflightPropHashes,
-    ].forEach(part => {
-      Object.keys(part).forEach(key => {
-        delete part[key]
-      })
+  // Delete all cached data
+  ;[
+    routeInfoByPath,
+    sharedDataByHash,
+    routeErrorByPath,
+    inflightRouteInfo,
+    inflightPropHashes,
+  ].forEach(part => {
+    Object.keys(part).forEach(key => {
+      delete part[key]
     })
+  })
 
   // Prefetch the current route's data before you reload routes
   await prefetch(window.location.pathname)

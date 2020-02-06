@@ -20,7 +20,7 @@
     "browserslist": "^4.6.6"
   },
   "dependencies": {
-    "autoprefixer": "^9.6.1",
+    "autoprefixer": "^9.7.4",
     "css-loader": "^2.1.1",
     "extract-css-chunks-webpack-plugin": "^4.6.0",
     "less": "^3.9.0",

@@ -8,7 +8,7 @@ describe('Embedded route info', () => {
 
   it('should include route info', () => {
     const info = 'my-route-info'
-    const res = getEmbeddedRouteInfoScript({routeInfo: info})
+    const res = getEmbeddedRouteInfoScript({ routeInfo: info })
     expect(res.script.includes(info)).toBeTruthy()
   })
 
