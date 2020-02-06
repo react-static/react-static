@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import Helmet from 'react-helmet'
@@ -5,6 +6,7 @@ import { ReportChunks } from 'react-universal-component'
 import flushChunks from 'webpack-flush-chunks'
 import nodePath from 'path'
 import fs from 'fs-extra'
+import jsesc from 'jsesc'
 
 import Redirect from './components/Redirect'
 import plugins from './plugins'
@@ -15,11 +17,35 @@ import makeHtmlWithMeta from './components/HtmlWithMeta'
 import makeHeadWithMeta from './components/HeadWithMeta'
 import makeBodyWithMeta from './components/BodyWithMeta'
 
-//
-
 let cachedBasePath
 let cachedHrefReplace
 let cachedSrcReplace
+
+function getSHA256(str) {
+  const hash = crypto.createHash('sha256')
+  hash.update(str)
+  return hash.digest('base64')
+}
+
+function getSubresourceHash(str) {
+  const sha256 = getSHA256(str)
+  return `sha256-${sha256}`
+}
+
+export function getEmbeddedRouteInfoScript(embeddedRouteInfo) {
+  const routeInfoJSON = jsesc(JSON.stringify(embeddedRouteInfo), {
+    isScriptContext: true,
+    wrap: true,
+    json: true,
+  })
+  const script = `window.__routeInfo = JSON.parse(${routeInfoJSON});`
+  const hash = getSubresourceHash(script)
+
+  return {
+    hash,
+    script,
+  }
+}
 
 export default (async function exportRoute(state) {
   const {
@@ -78,7 +104,6 @@ export default (async function exportRoute(state) {
     data,
     path: routePath,
   }
-
   // This embeddedRouteInfo will be inlined into the HTML for this route.
   // It should include all of the data, including shared data
   const embeddedRouteInfo = {
@@ -87,10 +112,15 @@ export default (async function exportRoute(state) {
     siteData,
   }
 
+  const inlineScripts = {
+    routeInfo: getEmbeddedRouteInfoScript(embeddedRouteInfo),
+  }
+
   state = {
     ...state,
     routeInfo,
     embeddedRouteInfo,
+    inlineScripts,
   }
 
   // Make a place to collect chunks, meta info and head tags

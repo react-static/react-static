@@ -10,6 +10,7 @@
 - Add unofficial plugin `react-static-plugin-file-watch-reload` to plugins list
 - Enable configuring css loader from `react-static-plugin-sass` and `react-static-plugin-less` ([#1348](https://github.com/react-static/react-static/pull/1348))
 - Update `react-static-plugin-jss` for react-jss v10+. ([#1367](https://github.com/react-static/react-static/pull/1367))
+- Add inline script hashes to `DocumentProps`. These hashes can be used to construct a Content Security Policy in a meta tag without `unsafe-inline` scripts. ([#1373](https://github.com/react-static/react-static/pull/1373))
 
 
 ### Improved

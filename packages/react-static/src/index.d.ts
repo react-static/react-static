@@ -584,6 +584,22 @@ export interface PathsConfig {
 
 export type DocumentComponent<T extends object = any> = React.ComponentType<DocumentProps<T>>
 
+export interface InlineScript {
+  /**
+   * The script as a string.
+   */
+  script: string
+  /**
+   * The script's sha256 hash in base64 using the subresource integrity format,
+   * eg.: 'sha256-<base64-value>'. This value can be directly used in a CSP.
+   */
+  hash: string
+}
+
+export interface InlineScripts extends Record<string, InlineScript> {
+  routeInfo: InlineScript
+}
+
 export interface DocumentProps<T extends object = any> {
   Html: JSX.IntrinsicElements['html']
   Head: JSX.IntrinsicElements['head']
@@ -592,7 +608,8 @@ export interface DocumentProps<T extends object = any> {
   state: {
     siteData: T
     routeInfo: unknown
-    renderMeta: unknown
+    renderMeta: unknown,
+    inlineScripts: InlineScripts
   }
 }
 

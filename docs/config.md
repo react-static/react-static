@@ -205,7 +205,18 @@ Props
   - `routeInfo: Object` - All of the current route's information, including any `routeData`.
   - `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
   - `renderMeta: Object` - Any data optionally set via hooks or transformers during the render process.
-  - And much more!
+  - `inlineScripts: Object` - The source and hash of inline scripts added by `react-static`, eg.:
+  
+  ```json
+  { 
+      "routeInfo": { 
+          "script": "script", 
+          "hash": "sha256-<base64-value>"
+      }
+  }
+  ```
+  
+  You can add the hashes as CSP directives to make the site work without `unsafe-inline`.
 
 ```javascript
 // static.config.js
