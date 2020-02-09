@@ -283,7 +283,7 @@ An **async** function to modify the CLI state after starting the development ser
 
 export default pluginOptions => ({
   beforeRenderToElement: async (App, state) => {
-    const NewApp => props => {
+    const NewApp = props => {
       return <App {...props} />
     }
 
