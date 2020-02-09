@@ -7,8 +7,8 @@ React-Static is packed with awesome components, hooks, and functions to help you
   - [useRouteData](#useroutedata)
   - [useSiteData](#usesitedata)
   - [Head](#head)
-  - [Prefetch](#prefetch)
-  - [prefetch](#prefetch-)
+  - [usePrefetch](#useprefetch)
+  - [prefetch](#prefetch)
   - [addPrefetchExcludes](#addprefetchexcludes)
 - `react-static/node`
   - [rebuildRoutes](#rebuildRoutes)
