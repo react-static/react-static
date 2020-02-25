@@ -34,7 +34,6 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
  <summary>See a list of sites</summary>
 
 - [HeadlessCMS.org](https://headlesscms.org) ([source](https://github.com/netlify/headlesscms.org))
-- [StaticGen.com](https://staticgen.com) ([source](https://github.com/netlify/staticgen))
 - [Starbucks: Careers Hub](https://www.starbucks.com/careers/)([source](https://twitter.com/codehitchhiker/status/1097558315020832774))
 - [Starbucks: Rewards](https://www.starbucks.com/rewards/comingsoon)([source](https://twitter.com/davidbrunelle/status/1108041167935922176))
 - [Intuit Turbo](http://turbo.com)
