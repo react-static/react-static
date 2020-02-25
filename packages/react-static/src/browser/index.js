@@ -114,8 +114,15 @@ function init() {
       try {
         const {
           data: { port },
-        } = await axios.get('/__react-static__/getMessagePort')
-        const socket = io(`http://localhost:${port}`)
+        } = await axios.get('/__react-static__/getMessagePort');
+
+        let host = 'http://localhost';
+
+        if(process.env.REACT_STATIC_MESSAGE_SOCKET_HOST){
+          host = process.env.REACT_STATIC_MESSAGE_SOCKET_HOST;
+        }
+
+        const socket = io(`${host}:${port}`)
         socket.on('connect', () => {
           // Do nothing
         })
