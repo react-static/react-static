@@ -9,7 +9,9 @@ import {
   prefetch,
   plugins,
   onReloadTemplates,
+  routeErrorByPath,
 } from '..'
+import { getCurrentRoutePath } from '../utils'
 import { useStaticInfo } from '../hooks/useStaticInfo'
 import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
 
@@ -74,6 +76,16 @@ const RoutesInner = ({ routePath, render: renderFn }) => {
       // In SRR and production, synchronously register the template for the
       // initial path
       registerTemplateForPath(path, template)
+
+      // For a 404 route we will register the current route as invalid
+      if (path === '404') {
+        const currentPath = getCurrentRoutePath()
+        // As long as we didn't navigate to the 404.html page directly
+        if (currentPath !== '404') {
+          routeErrorByPath[currentPath] = true
+          templateErrorByPath[currentPath] = true
+        }
+      }
     }
   })
 
@@ -88,7 +100,7 @@ const RoutesInner = ({ routePath, render: renderFn }) => {
     routePath = staticInfo.path
   } else if (!routePath) {
     // If a routePath is still not defined in the browser,
-    // use the window location as the defualt
+    // use the window location as the default
     routePath = decodeURIComponent(window.location.href)
   }
 

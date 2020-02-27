@@ -89,6 +89,13 @@ export function getRoutePath(routePath) {
   return pathJoin(routePath)
 }
 
+export function getCurrentRoutePath() {
+  // If in the browser, use the window
+  if (typeof document !== 'undefined') {
+    return getRoutePath(decodeURIComponent(window.location.href))
+  }
+}
+
 export function unwrapArray(arg, defaultValue) {
   arg = Array.isArray(arg) ? arg[0] : arg
   if (!arg && defaultValue) {

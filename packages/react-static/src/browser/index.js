@@ -114,12 +114,12 @@ function init() {
       try {
         const {
           data: { port },
-        } = await axios.get('/__react-static__/getMessagePort');
+        } = await axios.get('/__react-static__/getMessagePort')
 
-        let host = 'http://localhost';
+        let host = 'http://localhost'
 
-        if(process.env.REACT_STATIC_MESSAGE_SOCKET_HOST){
-          host = process.env.REACT_STATIC_MESSAGE_SOCKET_HOST;
+        if (process.env.REACT_STATIC_MESSAGE_SOCKET_HOST) {
+          host = process.env.REACT_STATIC_MESSAGE_SOCKET_HOST
         }
 
         const socket = io(`${host}:${port}`)
@@ -179,18 +179,18 @@ function startPreloader() {
 
 async function reloadClientData() {
   console.log('React Static: Reloading Data...')
-    // Delete all cached data
-    ;[
-      routeInfoByPath,
-      sharedDataByHash,
-      routeErrorByPath,
-      inflightRouteInfo,
-      inflightPropHashes,
-    ].forEach(part => {
-      Object.keys(part).forEach(key => {
-        delete part[key]
-      })
+  // Delete all cached data
+  ;[
+    routeInfoByPath,
+    sharedDataByHash,
+    routeErrorByPath,
+    inflightRouteInfo,
+    inflightPropHashes,
+  ].forEach(part => {
+    Object.keys(part).forEach(key => {
+      delete part[key]
     })
+  })
 
   // Prefetch the current route's data before you reload routes
   await prefetch(window.location.pathname)
