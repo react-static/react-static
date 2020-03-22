@@ -204,9 +204,10 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
       if (isSuccessful && !skipLog) {
         if (first) {
           timeEnd(chalk.green('[\u2713] Application Bundled'))
+          const protocol = state.config.devServer.https ? 'https' : 'http'
           console.log(
             `${chalk.green('[\u2713] App serving at')} ${chalk.blue(
-              `http://${state.config.devServer.host}:${state.config.devServer.port}`
+              `${protocol}://${state.config.devServer.host}:${state.config.devServer.port}`
             )}`
           )
         } else {

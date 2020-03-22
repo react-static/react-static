@@ -12,6 +12,7 @@
 - Update `react-static-plugin-jss` for react-jss v10+. ([#1367](https://github.com/react-static/react-static/pull/1367))
 - Add inline script hashes to `DocumentProps`. These hashes can be used to construct a Content Security Policy in a meta tag without `unsafe-inline` scripts. ([#1373](https://github.com/react-static/react-static/pull/1373))
 - Add environments variables (`REACT_STATIC_MESSAGE_SOCKET_PORT` and `REACT_STATIC_MESSAGE_SOCKET_HOST`) to change the xhr polling(socket.io) host and port (Only DevServer)
+- Update protocol shown in the "App serving at" message to display `https` when configured ([#1399](https://github.com/react-static/react-static/pull/1399))
 
 ### Improved
 
