@@ -258,6 +258,20 @@ export default {
 }
 ```
 
+This can also be used to enable HTTPS support for local development:
+
+```javascript
+// static.config.js
+export default {
+  devServer: {
+    // Enable HTTPS and provide certificates
+    https: true,
+    key: fs.readFileSync('/path/to/localhost.key'),
+    cert: fs.readFileSync('/path/to/localhost.crt'),
+  },
+}
+```
+
 ### `renderToElement`
 
 **Warning:** This option has been deprecated. Please use the [Node API hook - beforeRenderToElement](https://github.com/Vinnl/react-static/tree/patch-3/docs/plugins#beforerendertoelement-function) instead.
