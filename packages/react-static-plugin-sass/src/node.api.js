@@ -41,7 +41,7 @@ export default ({ includePaths = [], cssLoaderOptions = {}, ...rest }) => ({
         {
           loader: ExtractCssChunks.loader,
           options: {
-            hot: true,
+            hmr: true,
           },
         },
         cssLoader,
