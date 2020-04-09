@@ -6,7 +6,7 @@ import {
   onReloadClientData,
 } from '..'
 import { useRoutePath } from './useRoutePath'
-import { getFullRouteData } from '../utils'
+import { getFullRouteData, PATH_404 } from '../utils'
 
 const useRouteData = () => {
   const routePath = useRoutePath()
@@ -21,7 +21,7 @@ const useRouteData = () => {
 
   const routeError = routeErrorByPath[routePath]
   const routeInfo = routeError
-    ? routeInfoByPath['404']
+    ? routeInfoByPath[PATH_404]
     : routeInfoByPath[routePath]
 
   // If there was an error reported for this path, throw an error

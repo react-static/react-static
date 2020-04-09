@@ -11,7 +11,7 @@ import {
   onReloadTemplates,
   routeErrorByPath,
 } from '..'
-import { getCurrentRoutePath } from '../utils'
+import { getCurrentRoutePath, is404Path, PATH_404 } from '../utils'
 import { useStaticInfo } from '../hooks/useStaticInfo'
 import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
 
@@ -21,12 +21,12 @@ import { routePathContext, useRoutePath } from '../hooks/useRoutePath'
  * @returns {React.ComponentType<{}> | false}
  */
 function getTemplateForPath(path) {
-  let is404 = path === '404'
+  let is404 = is404Path(path)
   let Comp = templatesByPath[path] || false
 
   if (!Comp && templateErrorByPath[path]) {
     is404 = true
-    Comp = templatesByPath['404'] || false
+    Comp = templatesByPath[PATH_404] || false
   }
 
   return { is404, Comp }
@@ -78,10 +78,10 @@ const RoutesInner = ({ routePath, render: renderFn }) => {
       registerTemplateForPath(path, template)
 
       // For a 404 route we will register the current route as invalid
-      if (path === '404') {
+      if (is404Path(path)) {
         const currentPath = getCurrentRoutePath()
         // As long as we didn't navigate to the 404.html page directly
-        if (currentPath !== '404') {
+        if (is404Path(currentPath)) {
           routeErrorByPath[currentPath] = true
           templateErrorByPath[currentPath] = true
         }
@@ -104,7 +104,7 @@ const RoutesInner = ({ routePath, render: renderFn }) => {
     routePath = decodeURIComponent(window.location.href)
   }
 
-  routePath = useRoutePath(routePath)
+    routePath = useRoutePath(routePath)
 
   // Try and get the template
   const { Comp, is404 } = getTemplateForPath(routePath)
