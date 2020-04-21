@@ -91,6 +91,7 @@ Deploying a static site has never been easier on today's internet! There are so 
 
 - [Netlify](https://netlify.com) (Our favorite!)
 - [Zeit now](https://zeit.co/now)
+- [Tiiny Host](https://tiiny.host/)
 - [Github Pages](https://pages.github.com/)
 - [Heroku](http://blog.teamtreehouse.com/deploy-static-site-heroku)
 - [AWS (S3 + Cloudfront)](https://aws.amazon.com/getting-started/projects/host-static-website/)
