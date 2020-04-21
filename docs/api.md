@@ -250,7 +250,9 @@ rebuildRoutes()
 
 // Reload when files change
 import chokidar from 'chokidar'
-chokidar.watch('./docs').on('all', () => rebuildRoutes())
+// Ensure routes are built at least once before rebuilding routes 
+let areRoutesBuilt = false
+chokidar.watch('./docs').on('all', () => isReady  && rebuildRoutes())
 
 // Reload from API or CMS event
 YourFavoriteCMS.subscribe(rebuildRoutes)
@@ -262,6 +264,7 @@ setInterval(rebuildRoutes, 10 * 1000)
 
 export default {
   getRoutes: () => {
+    areRoutesBuilt = true
     // This will run each time `rebuildRoutes` is called
   },
 }
