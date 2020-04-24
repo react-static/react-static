@@ -134,7 +134,7 @@ async function runExpressServer(state) {
                 if (!route) {
                   const err = new Error(
                     `Route could not be found for: ${routePath}
-                    
+
 If you removed this route, disregard this error.
 If this is a dynamic route, consider adding it to the prefetchExcludes list:
 
@@ -226,6 +226,7 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   const socket = io()
 
   reloadClientData.current = async () => {
+    await buildDevRoutes(latestState);
     socket.emit('message', { type: 'reloadClientData' })
   }
 
