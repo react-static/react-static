@@ -3,16 +3,16 @@
 ## master
 
 ### New
-- Allow nested objects of enhanced items to sitemap data like images. ([#1381](https://github.com/react-static/react-static/pull/1381))
-- Allow dots in routes. ([#1365](https://github.com/react-static/react-static/pull/1365))
+
+- Add nested objects of enhanced items to sitemap data like images. ([#1381](https://github.com/react-static/react-static/pull/1381))
 - Add `silent` option ([#1330](https://github.com/react-static/react-static/pull/1330))
 - Add clickable dev-server url ([#1306](https://github.com/react-static/react-static/pull/1306))
 - Add unofficial plugin `react-static-plugin-file-watch-reload` to plugins list
-- Enable configuring css loader from `react-static-plugin-sass` and `react-static-plugin-less` ([#1348](https://github.com/react-static/react-static/pull/1348))
-- Update `react-static-plugin-jss` for react-jss v10+. ([#1367](https://github.com/react-static/react-static/pull/1367))
+- Add configuring css loader from `react-static-plugin-sass` and `react-static-plugin-less` ([#1348](https://github.com/react-static/react-static/pull/1348))
 - Add inline script hashes to `DocumentProps`. These hashes can be used to construct a Content Security Policy in a meta tag without `unsafe-inline` scripts. ([#1373](https://github.com/react-static/react-static/pull/1373))
 - Add environments variables (`REACT_STATIC_MESSAGE_SOCKET_PORT` and `REACT_STATIC_MESSAGE_SOCKET_HOST`) to change the xhr polling(socket.io) host and port (Only DevServer)
-- Update protocol shown in the "App serving at" message to display `https` when configured ([#1399](https://github.com/react-static/react-static/pull/1399))
+- Change `react-static-plugin-jss` to use react-jss v10+. ([#1367](https://github.com/react-static/react-static/pull/1367))
+- Change protocol shown in the "App serving at" message to display `https` when configured ([#1399](https://github.com/react-static/react-static/pull/1399))
 
 ### Improved
 
@@ -24,6 +24,8 @@
 - Fix stderr pollution by progress module ([#1356](https://github.com/react-static/react-static/pull/1356))
 - Fix package.json and README for `react-static-plugin-stylus` ([#1244](https://github.com/react-static/react-static/issues/1244))
 - Fix Webpack stats output in environment that don't support color ([#1370](https://github.com/react-static/react-static/pull/1370))
+- Fix HMR in sass plugin ([#1400](https://github.com/react-static/react-static/pull/1400))
+- Fix using dots in routes. ([#1365](https://github.com/react-static/react-static/pull/1365))
 
 ## 7.2.2
 
