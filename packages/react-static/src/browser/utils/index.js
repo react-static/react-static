@@ -89,6 +89,13 @@ export function getRoutePath(routePath) {
   return pathJoin(routePath)
 }
 
+export function getCurrentRoutePath() {
+  // If in the browser, use the window
+  if (typeof document !== 'undefined') {
+    return getRoutePath(decodeURIComponent(window.location.href))
+  }
+}
+
 export function unwrapArray(arg, defaultValue) {
   arg = Array.isArray(arg) ? arg[0] : arg
   if (!arg && defaultValue) {
@@ -225,4 +232,10 @@ export function getFullRouteData(routeInfo) {
     ...(routeInfo.sharedData ? routeInfo.sharedData : {}),
     ...routeInfo.data,
   }
+}
+
+export const PATH_404 = '404';
+
+export function is404Path(path) {
+  return path === PATH_404;
 }

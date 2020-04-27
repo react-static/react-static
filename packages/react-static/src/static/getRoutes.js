@@ -1,7 +1,14 @@
 import path from 'path'
 import chalk from 'chalk'
 //
-import { pathJoin, getRoutePath, time, timeEnd } from '../utils'
+import {
+  pathJoin,
+  getRoutePath,
+  time,
+  timeEnd,
+  PATH_404,
+  is404Path,
+} from '../utils'
 import plugins from './plugins'
 
 export const rebuildRoutes = () => {
@@ -45,7 +52,7 @@ export default async function getRoutes(state, callback = d => d) {
     // If no 404 page was found, add one. This is required.
     if (!has404 && !incremental) {
       allNormalizedRoutes.unshift({
-        path: '404',
+        path: PATH_404,
         template: path.resolve(
           __dirname,
           path.join('..', 'browser', 'components', 'Default404')
@@ -117,7 +124,7 @@ export function normalizeAllRoutes(routes, state) {
       hasIndex = true
     }
 
-    if (normalizedRoute.path === '404') {
+    if (is404Path(normalizedRoute.path)) {
       has404 = true
     }
 

@@ -10,7 +10,7 @@ import jsesc from 'jsesc'
 
 import Redirect from './components/Redirect'
 import plugins from './plugins'
-import { makePathAbsolute } from '../utils'
+import { makePathAbsolute, is404Path } from '../utils'
 import { absoluteToRelativeChunkName } from '../utils/chunkBuilder'
 
 import makeHtmlWithMeta from './components/HtmlWithMeta'
@@ -69,10 +69,10 @@ export default (async function exportRoute(state) {
   } = route
 
   if (incremental && remove) {
-    if (route.path === '404' || route.path === '/') {
+    if (is404Path(route.path) || route.path === '/') {
       throw new Error(
         `You are attempting to incrementally remove the ${
-          route.path === '404' ? '404' : 'index'
+          is404Path(route.path) ? '404' : 'index'
         } route from your export. This is currently not supported (or recommended) by React Static.`
       )
     }
@@ -269,10 +269,9 @@ export default (async function exportRoute(state) {
 
   // If the route is a 404 page, write it directly to 404.html, instead of
   // inside a directory.
-  const htmlFilename =
-    route.path === '404'
-      ? nodePath.join(config.paths.DIST, '404.html')
-      : nodePath.join(config.paths.DIST, route.path, 'index.html')
+  const htmlFilename = is404Path(route.path)
+    ? nodePath.join(config.paths.DIST, '404.html')
+    : nodePath.join(config.paths.DIST, route.path, 'index.html')
 
   // Make the routeInfo sit right next to its companion html file
   const routeInfoFilename = nodePath.join(
