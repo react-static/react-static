@@ -47,6 +47,10 @@ describe('generateXML', () => {
             sitemap: {
               lastmod: '10/10/2010',
               priority: '0.5',
+              'image:image': {
+                'image:loc': `https://raw.githubusercontent.com/react-static/react-static/master/media/react-static-logo-2x.png`,
+                'image:caption': 'React Static',
+              },
             },
           },
         ],

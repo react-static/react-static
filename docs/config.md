@@ -202,20 +202,21 @@ Props
 - `Body: ReactComponent` - **Required** - An enhanced version of the default `body` tag.
 - `children: ReactComponent` - **Required** - The main content of your site, including layout, routes, etc.
 - `state: Object` - The current state of the export.
+
   - `routeInfo: Object` - All of the current route's information, including any `routeData`.
   - `siteData: Object` - Any data optionally resolved via the `getSiteData` function in this config file.
   - `renderMeta: Object` - Any data optionally set via hooks or transformers during the render process.
   - `inlineScripts: Object` - The source and hash of inline scripts added by `react-static`, eg.:
-  
+
   ```json
-  { 
-      "routeInfo": { 
-          "script": "script", 
-          "hash": "sha256-<base64-value>"
-      }
+  {
+    "routeInfo": {
+      "script": "script",
+      "hash": "sha256-<base64-value>"
+    }
   }
   ```
-  
+
   You can add the hashes as CSP directives to make the site work without `unsafe-inline`.
 
 ```javascript
