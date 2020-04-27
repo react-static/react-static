@@ -12,6 +12,7 @@ import fetchSiteData from '../fetchSiteData'
 
 let devServer
 let latestState
+let buildSiteDataRoute = () => {}
 let buildDevRoutes = () => {}
 
 export const reloadClientData = () => {
@@ -104,21 +105,27 @@ async function runExpressServer(state) {
           port: messagePort,
         })
       })
-      // Since routes may change during dev, this function can rebuild all of the config
-      // routes. It also references the original config when possible, to make sure it
-      // uses any up to date getData callback generated from new or replacement routes.
-      buildDevRoutes = async newState => {
-        latestState = await fetchSiteData(newState)
 
+      // This is kept separate from buildDevRoutes (but included in there) so that it
+      // can be called when the user makes a call to reloadClientData in their config
+      buildSiteDataRoute = async currentState => {
         app.get('/__react-static__/siteData', async (req, res, next) => {
           try {
-            res.send(latestState.siteData)
+            res.send(currentState.siteData)
           } catch (err) {
             res.status(500)
             res.send(err)
             next(err)
           }
         })
+      }
+
+      // Since routes may change during dev, this function can rebuild all of the config
+      // routes. It also references the original config when possible, to make sure it
+      // uses any up to date getData callback generated from new or replacement routes.
+      buildDevRoutes = async newState => {
+        latestState = await fetchSiteData(newState)
+        buildSiteDataRoute(latestState)
 
         // Serve each routes data
         latestState.routes.forEach(({ path: routePath }) => {
@@ -226,7 +233,8 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   const socket = io()
 
   reloadClientData.current = async () => {
-    await buildDevRoutes(latestState);
+    latestState = await fetchSiteData(latestState)
+    await buildSiteDataRoute(latestState);
     socket.emit('message', { type: 'reloadClientData' })
   }
 
