@@ -14,6 +14,7 @@ let devServer
 let latestState
 let buildSiteDataRoute = () => {}
 let buildDevRoutes = () => {}
+const getLatestState = () => latestState
 
 export const reloadClientData = () => {
   if (reloadClientData.current) {
@@ -106,26 +107,20 @@ async function runExpressServer(state) {
         })
       })
 
-      // This is kept separate from buildDevRoutes (but included in there) so that it
-      // can be called when the user makes a call to reloadClientData in their config
-      buildSiteDataRoute = async currentState => {
+      // Since routes may change during dev, this function can rebuild all of the config
+      // routes. It also references the original config when possible, to make sure it
+      // uses any up to date getData callback generated from new or replacement routes.
+      buildDevRoutes = async newState => {
+        latestState = await fetchSiteData(newState)
         app.get('/__react-static__/siteData', async (req, res, next) => {
           try {
-            res.send(currentState.siteData)
+            res.send(getLatestState().siteData)
           } catch (err) {
             res.status(500)
             res.send(err)
             next(err)
           }
         })
-      }
-
-      // Since routes may change during dev, this function can rebuild all of the config
-      // routes. It also references the original config when possible, to make sure it
-      // uses any up to date getData callback generated from new or replacement routes.
-      buildDevRoutes = async newState => {
-        latestState = await fetchSiteData(newState)
-        buildSiteDataRoute(latestState)
 
         // Serve each routes data
         latestState.routes.forEach(({ path: routePath }) => {
