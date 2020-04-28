@@ -12,9 +12,7 @@ import fetchSiteData from '../fetchSiteData'
 
 let devServer
 let latestState
-let buildSiteDataRoute = () => {}
 let buildDevRoutes = () => {}
-const getLatestState = () => latestState
 
 export const reloadClientData = () => {
   if (reloadClientData.current) {
@@ -112,9 +110,10 @@ async function runExpressServer(state) {
       // uses any up to date getData callback generated from new or replacement routes.
       buildDevRoutes = async newState => {
         latestState = await fetchSiteData(newState)
+
         app.get('/__react-static__/siteData', async (req, res, next) => {
           try {
-            res.send(getLatestState().siteData)
+            res.send(latestState.siteData)
           } catch (err) {
             res.status(500)
             res.send(err)
@@ -130,7 +129,7 @@ async function runExpressServer(state) {
             )}`,
             async (req, res, next) => {
               // Make sure we have the most up to date route from the config, not
-              // an out of dat object.
+              // an out of date object.
               let route = latestState.routes.find(d => d.path === routePath)
               try {
                 if (!route) {
@@ -229,7 +228,6 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
 
   reloadClientData.current = async () => {
     latestState = await fetchSiteData(latestState)
-    await buildSiteDataRoute(latestState);
     socket.emit('message', { type: 'reloadClientData' })
   }
 
