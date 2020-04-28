@@ -81,9 +81,7 @@ export function generateXML(
       })
       return [
         '<url>',
-        ...attributesArr.map(
-          ({ key, value }) => `<${key}>${encode(value)}</${key}>`
-        ),
+        xmlArrayOutput(attributesArr, staging),
         '</url>',
       ].join(staging ? '\n' : '')
     })
@@ -91,7 +89,7 @@ export function generateXML(
 
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
-    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">`,
     xmlRoutes,
     `</urlset>`,
   ].join(staging ? '\n' : '')
@@ -100,6 +98,27 @@ export function generateXML(
 export function getPermaLink(path, prefixPath) {
   const permalink = `${prefixPath}${pathJoin(path)}`
   return `${permalink}/`.replace(REGEX_TO_GET_LAST_SLASH, '/')
+}
+
+function checkNestedValue (value) {
+  if (!value) return false
+
+  if (typeof value === 'object' && value !== null) {
+    return true
+  } else {
+    return false
+  }
+}
+
+function convertNestedValue (values, staging) {
+  const _values = []
+  Object.keys(values).forEach(key => {
+    if (typeof values[key] !== 'undefined') {
+      _values.push({ key, value: values[key] })
+    }
+  })
+
+  return xmlArrayOutput(_values, staging)
 }
 
 function encode(val) {
@@ -120,3 +139,10 @@ function encode(val) {
     }
   })
 }
+
+function xmlArrayOutput (values, staging) {
+  return [...values.map(
+    ({ key, value }) => `<${key}>${checkNestedValue(value) ? convertNestedValue(value, staging) : encode(value) }</${key}>`
+  ).join(staging ? '\n' : '')].join(staging ? '\n' : '')
+}
+

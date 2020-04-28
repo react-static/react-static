@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import slash from 'slash'
 import path from 'path'
-import { time, timeEnd } from '../utils'
+import { time, timeEnd, is404Path } from '../utils'
 
 export default (async function extractTemplates(state) {
   const { config, routes, incremental } = state
@@ -28,7 +28,7 @@ export default (async function extractTemplates(state) {
     const index = templates.indexOf(route.template)
     if (index === -1) {
       // If it's new, add it
-      if (route.path === '404') {
+      if (is404Path(route.path)) {
         // Make sure 404 template is the first one
         templates.unshift(route.template)
         notFoundPending = false

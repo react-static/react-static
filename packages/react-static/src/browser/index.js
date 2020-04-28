@@ -8,6 +8,7 @@ import {
   makePathAbsolute,
   getHooks,
   reduceHooks,
+  PATH_404,
 } from './utils'
 import onVisible from './utils/Visibility'
 
@@ -63,7 +64,7 @@ export const registerTemplates = async (tmps, notFoundKey) => {
   Object.keys(tmps).forEach(key => {
     templates[key] = tmps[key]
   })
-  templatesByPath['404'] = templates[notFoundKey]
+  templatesByPath[PATH_404] = templates[notFoundKey]
 
   if (
     process.env.NODE_ENV === 'development' &&
@@ -114,12 +115,12 @@ function init() {
       try {
         const {
           data: { port },
-        } = await axios.get('/__react-static__/getMessagePort');
+        } = await axios.get('/__react-static__/getMessagePort')
 
-        let host = 'http://localhost';
+        let host = 'http://localhost'
 
-        if(process.env.REACT_STATIC_MESSAGE_SOCKET_HOST){
-          host = process.env.REACT_STATIC_MESSAGE_SOCKET_HOST;
+        if (process.env.REACT_STATIC_MESSAGE_SOCKET_HOST) {
+          host = process.env.REACT_STATIC_MESSAGE_SOCKET_HOST
         }
 
         const socket = io(`${host}:${port}`)
@@ -179,18 +180,18 @@ function startPreloader() {
 
 async function reloadClientData() {
   console.log('React Static: Reloading Data...')
-    // Delete all cached data
-    ;[
-      routeInfoByPath,
-      sharedDataByHash,
-      routeErrorByPath,
-      inflightRouteInfo,
-      inflightPropHashes,
-    ].forEach(part => {
-      Object.keys(part).forEach(key => {
-        delete part[key]
-      })
+  // Delete all cached data
+  ;[
+    routeInfoByPath,
+    sharedDataByHash,
+    routeErrorByPath,
+    inflightRouteInfo,
+    inflightPropHashes,
+  ].forEach(part => {
+    Object.keys(part).forEach(key => {
+      delete part[key]
     })
+  })
 
   // Prefetch the current route's data before you reload routes
   await prefetch(window.location.pathname)
@@ -256,8 +257,8 @@ export async function getRouteInfo(path, { priority } = {}) {
     routeErrorByPath[path] = true
     // Unless we already fetched the 404 page,
     // try to load info for the 404 page
-    if (!routeInfoByPath['404'] && !routeErrorByPath['404']) {
-      getRouteInfo('404', { priority })
+    if (!routeInfoByPath[PATH_404] && !routeErrorByPath[PATH_404]) {
+      getRouteInfo(PATH_404, { priority })
       return
     }
 
