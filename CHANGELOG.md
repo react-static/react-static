@@ -26,6 +26,7 @@
 - Fix Webpack stats output in environment that don't support color ([#1370](https://github.com/react-static/react-static/pull/1370))
 - Fix HMR in sass plugin ([#1400](https://github.com/react-static/react-static/pull/1400))
 - Fix using dots in routes. ([#1365](https://github.com/react-static/react-static/pull/1365))
+- Fix reloadClientData to call fetchSiteData runDevserver.js ([#1409](https://github.com/react-static/react-static/pull/1409))
 
 ## 7.2.2
 

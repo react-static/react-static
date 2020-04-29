@@ -104,6 +104,7 @@ async function runExpressServer(state) {
           port: messagePort,
         })
       })
+
       // Since routes may change during dev, this function can rebuild all of the config
       // routes. It also references the original config when possible, to make sure it
       // uses any up to date getData callback generated from new or replacement routes.
@@ -128,13 +129,13 @@ async function runExpressServer(state) {
             )}`,
             async (req, res, next) => {
               // Make sure we have the most up to date route from the config, not
-              // an out of dat object.
+              // an out of date object.
               let route = latestState.routes.find(d => d.path === routePath)
               try {
                 if (!route) {
                   const err = new Error(
                     `Route could not be found for: ${routePath}
-                    
+
 If you removed this route, disregard this error.
 If this is a dynamic route, consider adding it to the prefetchExcludes list:
 
@@ -226,6 +227,7 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   const socket = io()
 
   reloadClientData.current = async () => {
+    latestState = await fetchSiteData(latestState)
     socket.emit('message', { type: 'reloadClientData' })
   }
 
