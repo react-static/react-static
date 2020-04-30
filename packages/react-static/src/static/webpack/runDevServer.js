@@ -52,6 +52,9 @@ async function runExpressServer(state) {
   // Find an available port for messages, as long as it's not the devServer port
   const messagePort = await findAvailablePort(defaultMessagePort, [port])
 
+  const messageHost =
+    process.env.REACT_STATIC_MESSAGE_SOCKET_HOST || 'http://localhost'
+
   if (intendedPort !== port) {
     console.log(
       chalk.red(
@@ -87,6 +90,13 @@ async function runExpressServer(state) {
     noInfo: true,
     ...state.config.devServer,
     hotOnly: true,
+    proxy: {
+      '/socket.io': {
+        target: `${messageHost}:${messagePort}`,
+        ws: true,
+      },
+      ...(state.config.devServer ? state.config.devServer.proxy || {} : {}),
+    },
     watchOptions: {
       ...(state.config.devServer
         ? state.config.devServer.watchOptions || {}
@@ -98,13 +108,6 @@ async function runExpressServer(state) {
       ],
     },
     before: app => {
-      // Serve the site data
-      app.get('/__react-static__/getMessagePort', async (req, res) => {
-        res.send({
-          port: messagePort,
-        })
-      })
-
       // Since routes may change during dev, this function can rebuild all of the config
       // routes. It also references the original config when possible, to make sure it
       // uses any up to date getData callback generated from new or replacement routes.
