@@ -18,9 +18,9 @@
     "packages/*"
   ],
   "devDependencies": {
-    "eslint-config-prettier": "^6.5.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-config-react-tools": "^1.1.7",
-    "husky": "^3.0.9",
-    "lerna": "^3.18.3"
+    "husky": "^4.2.5",
+    "lerna": "^3.21.0"
   }
 }

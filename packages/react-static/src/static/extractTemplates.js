@@ -18,7 +18,7 @@ export default (async function extractTemplates(state) {
     }
 
     route.template = slash(
-      `__react_static_root__/${path.posix.relative(
+      `__react_static_root__/${path.relative(
         config.paths.ROOT,
         route.template
       )}`
