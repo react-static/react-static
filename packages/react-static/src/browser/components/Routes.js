@@ -104,7 +104,7 @@ const RoutesInner = ({ routePath, render: renderFn }) => {
     routePath = decodeURIComponent(window.location.href)
   }
 
-    routePath = useRoutePath(routePath)
+  routePath = useRoutePath(routePath)
 
   // Try and get the template
   const { Comp, is404 } = getTemplateForPath(routePath)

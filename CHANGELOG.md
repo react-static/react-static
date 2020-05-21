@@ -4,6 +4,12 @@
 
 ### New
 
+### Improved
+
+## 7.4.0
+
+### New
+
 - Add nested objects of enhanced items to sitemap data like images. ([#1381](https://github.com/react-static/react-static/pull/1381))
 - Add environments variables (`REACT_STATIC_MESSAGE_SOCKET_PORT` and `REACT_STATIC_MESSAGE_SOCKET_HOST`) to change the xhr polling(socket.io) host and port (Only DevServer)
 - Change protocol shown in the "App serving at" message to display `https` when configured ([#1399](https://github.com/react-static/react-static/pull/1399))
