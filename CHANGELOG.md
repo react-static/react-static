@@ -27,6 +27,7 @@
 - Fix HMR in sass plugin ([#1400](https://github.com/react-static/react-static/pull/1400))
 - Fix using dots in routes. ([#1365](https://github.com/react-static/react-static/pull/1365))
 - Fix reloadClientData to call fetchSiteData runDevserver.js ([#1409](https://github.com/react-static/react-static/pull/1409))
+- Fix WebSocket connection when running over HTTPS in Safari ([#1418](https://github.com/react-static/react-static/pull/1418))
 
 ## 7.2.2
 
