@@ -21,7 +21,7 @@ const DEFAULT_EXTENSIONS = ['.js', '.jsx']
 // Retrieves the static.config.js from the current project directory
 export default function getConfig(
   state,
-  callback = config => {
+  callback = async config => {
     if (state.debug) {
       console.log('getConfig():')
       console.log(state)
@@ -47,7 +47,7 @@ export default function getConfig(
   if (noConfig) {
     // last
     state = buildConfig(state, defaultConfig)
-    return callback(state)
+    return callback(state).catch(console.error)
   }
 
   state = buildConfigFromPath(state, resolvedPath || configPath)
@@ -61,11 +61,11 @@ export default function getConfig(
         console.log('')
         console.log(`Updating static.config.js`)
         state = buildConfigFromPath(state, resolvedPath)
-        callback(state)
+        callback(state).catch(console.error)
       })
   }
 
-  return callback(state)
+  return callback(state).catch(console.error)
 }
 
 function buildConfigFromPath(state, configPath) {

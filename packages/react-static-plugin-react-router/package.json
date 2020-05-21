@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-react-router",
-  "version": "7.2.2",
+  "version": "7.2.3",
   "description": "A React-Static plugin that adds react-router support for React Static",
   "main": "browser.api.js",
   "repository": "https://github.com/react-static/react-static.git",

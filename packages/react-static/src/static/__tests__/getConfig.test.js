@@ -142,7 +142,7 @@ describe('getConfig', () => {
 
   describe('when no path or configuration is not provided', () => {
     it('should return a configuration using default file', async () => {
-      const state = getConfig(defaultConfig)
+      const state = await getConfig(defaultConfig)
 
       testConfiguration(state.config, defaultConfigProduction)
     })
@@ -150,7 +150,7 @@ describe('getConfig', () => {
 
   describe('when provided a path to configuration', () => {
     it('should find the configuration file using any supported extension', async () => {
-      const state = getConfig({
+      const state = await getConfig({
         configPath: path.resolve(
           './src/static/__mocks__/static.config.jsx.mock.jsx'
         ),
@@ -161,7 +161,7 @@ describe('getConfig', () => {
     })
 
     it('should pass on plugin options to those plugins', async () => {
-      getConfig({
+      await getConfig({
         configPath: path.resolve(
           './src/static/__mocks__/config.with-plugin.mock.js'
         ),
@@ -173,7 +173,7 @@ describe('getConfig', () => {
     xit('should throw an error', () => {
       // TODO mock / inject a promise-plugin
 
-      expect(() => getConfig(defaultConfig)).toThrow(
+      expect(() => getConfig(defaultConfig)).toReject(
         'Expected hook to return a value, but received promise instead. A plugin is attempting to use a sync plugin with an async function!'
       )
     })

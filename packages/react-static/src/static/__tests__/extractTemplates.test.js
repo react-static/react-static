@@ -1,4 +1,5 @@
 import path from 'path'
+import slash from 'slash'
 import extractTemplates from '../extractTemplates'
 
 const config = {
@@ -52,12 +53,7 @@ test('relative routes path are relative and use the __react_static_root__ alias'
     routes: [{ path: '404', template: './src/templates/NotFound' }],
   })
 
-  expect(templates[0]).toBe(
-    `__react_static_root__/${path.relative(
-      config.paths.ROOT,
-      './src/templates/NotFound'
-    )}`
-  )
+  expect(templates[0]).toBe('__react_static_root__/src/templates/NotFound')
 })
 
 test('absolute routes path are relative and use the __react_static_root__ alias', async () => {
@@ -67,9 +63,11 @@ test('absolute routes path are relative and use the __react_static_root__ alias'
   })
 
   expect(templates[0]).toBe(
-    `__react_static_root__/${path.relative(
-      config.paths.ROOT,
-      '/home/src/templates/NotFound'
-    )}`
+    slash(
+      `__react_static_root__/${path.relative(
+        config.paths.ROOT,
+        '/home/src/templates/NotFound'
+      )}`
+    )
   )
 })

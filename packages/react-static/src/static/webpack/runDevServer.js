@@ -203,10 +203,23 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
     },
     stats => {
       const messages = stats.toJson({}, true)
-      const isSuccessful = !messages.errors.length && !messages.warnings.length
+      const isSuccessful = !messages.errors.length
+      const hasWarnings = messages.warnings.length
 
       if (isSuccessful && !skipLog) {
         if (first) {
+          // Print out any dev compiler warnings
+          if (hasWarnings) {
+            console.log(
+              chalk.yellowBright(
+                `\n[\u0021] There were ${messages.warnings.length} warnings during compilation\n`
+              )
+            )
+            messages.warnings.forEach((message, index) => {
+              console.warn(`[warning ${index}]: ${message}\n`)
+            })
+          }
+
           timeEnd(chalk.green('[\u2713] Application Bundled'))
           const protocol = state.config.devServer.https ? 'https' : 'http'
           console.log(
@@ -217,6 +230,10 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
         } else {
           timeEnd(chalk.green('[\u2713] Bundle Updated'))
         }
+      } else if (!skipLog) {
+        console.log(chalk.redBright('[\u274C] Application bundling failed'))
+        console.error(chalk.redBright(messages.errors.join('\n')))
+        console.warn(chalk.yellowBright(messages.warnings.join('\n')))
       }
 
       first = false
@@ -237,6 +254,7 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   await new Promise((resolve, reject) => {
     devServer.listen(port, null, err => {
       if (err) {
+        console.error(`Listening on ${port} failed: ${err}`)
         return reject(err)
       }
       resolve()
@@ -248,6 +266,7 @@ If this is a dynamic route, consider adding it to the prefetchExcludes list:
   // port that opens up for their preview window.
   socket.listen(messagePort)
 
+  console.log('Running plugins...')
   state = await plugins.afterDevServerStart(state)
 
   return state
