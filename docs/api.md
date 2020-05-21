@@ -1,6 +1,6 @@
 # API
 
-React-Static is packed with awesome components, hooks, and functions to help you be productive. Exports located in the `react-static` package are meant to be used in the **browser** context, **in your application code** and in `browser.api.js`. Exports located in the `react-static/node` package are meant to be used in the **node** context like `static.config.js` and **api.node.js**)
+React-Static is packed with awesome components, hooks, and functions to help you be productive. Exports located in the `react-static` package are meant to be used in the **browser** context, **in your application code** and in `browser.api.js`. Exports located in the `react-static/node` package are meant to be used in the **node** context like `static.config.js` and **node.api.js**)
 
 - `react-static`
   - [Routes](#routes)
