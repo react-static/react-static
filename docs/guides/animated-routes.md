@@ -19,25 +19,27 @@ const App = () => (
       <Link to="/blog">Blog</Link>
     </nav>
     <div className="content">
-      <Routes>
-        {({ routePath, getComponentForPath }) => {
-          // Using the routePath as the key, both routes will render at the same time for the transition
-          return (
-            <Transition
-              native
-              items={routePath}
-              from={{ transform: 'translateY(100px)', opacity: 0 }}
-              enter={{ transform: 'translateY(0px)', opacity: 1 }}
-              leave={{ transform: 'translateY(100px)', opacity: 0 }}
-            >
-              {item => props => {
-                const element = getComponentForPath(item)
-                return <animated.div style={props}>{element}</animated.div>
-              }}
-            </Transition>
-          )
-        }}
-      </Routes>
+      <Routes
+          path="*"
+          render={({ routePath, getComponentForPath }) => {
+              // The routePath is used to retrieve the component for that path
+              // Using the routePath as the key, both routes will render at the same time for the transition
+              const element = getComponentForPath(routePath);
+              return (
+                  <Transition
+                      native
+                      items={routePath}
+                      from={{ transform: 'translateY(100px)', opacity: 0 }}
+                      enter={{ transform: 'translateY(0px)', opacity: 1 }}
+                      leave={{ transform: 'translateY(100px)', opacity: 0 }}
+                  >
+                      {item => props => {
+                          return <animated.div style={props}>{element}</animated.div>
+                      }}
+                  </Transition>
+              )
+          }}
+      />
     </div>
   </Root>
 )
