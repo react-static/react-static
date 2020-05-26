@@ -16,6 +16,9 @@
 - Fix WebSocket connection when running over HTTPS in Safari ([#1418](https://github.com/react-static/react-static/pull/1418))
 - Fix wrong image route in production build. ([#1425](https://github.com/react-static/react-static/pull/1425))
 
+### Bugfix
+- Fix static rendering
+
 ## 7.3.0
 
 ### New
