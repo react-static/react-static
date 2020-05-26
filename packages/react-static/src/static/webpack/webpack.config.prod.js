@@ -176,7 +176,9 @@ export default function(state) {
       }
       callback()
     },
-    nodeExternals(),
+    nodeExternals({
+      whitelist: ['react-universal-component'],
+    }),
   ]
   result.module.rules = rules(state)
   result.plugins = [
