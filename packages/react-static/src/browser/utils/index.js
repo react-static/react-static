@@ -234,8 +234,8 @@ export function getFullRouteData(routeInfo) {
   }
 }
 
-export const PATH_404 = '404';
+export const PATH_404 = '404'
 
 export function is404Path(path) {
-  return path === PATH_404;
+  return path === PATH_404
 }

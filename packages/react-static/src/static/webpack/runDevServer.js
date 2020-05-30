@@ -44,10 +44,10 @@ async function runExpressServer(state) {
   const intendedPort = Number(state.config.devServer.port)
   const port = await findAvailablePort(intendedPort)
 
-  let defaultMessagePort = 4000;
+  let defaultMessagePort = 4000
 
-  if(process.env.REACT_STATIC_MESSAGE_SOCKET_PORT){
-    defaultMessagePort = process.env.REACT_STATIC_MESSAGE_SOCKET_PORT;
+  if (process.env.REACT_STATIC_MESSAGE_SOCKET_PORT) {
+    defaultMessagePort = process.env.REACT_STATIC_MESSAGE_SOCKET_PORT
   }
   // Find an available port for messages, as long as it's not the devServer port
   const messagePort = await findAvailablePort(defaultMessagePort, [port])
