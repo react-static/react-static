@@ -2,12 +2,10 @@
 const path = require('path')
 //
 
-try {
-  init()
-} catch (e) {
+init().catch(e => {
   console.trace(e)
   process.exit(1)
-}
+})
 
 function init() {
   const pkg = require('../package.json')
@@ -87,6 +85,8 @@ Examples:
   $ react-static export
 
   `)
+
+  return Promise.resolve()
 }
 
 function create(options, help) {
