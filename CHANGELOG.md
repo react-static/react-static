@@ -4,6 +4,8 @@
 
 ### New
 
+- Updated browser support docs for IE11 support ([#1361])
+
 ### Improved
 
 ### Bugfix
