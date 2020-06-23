@@ -150,18 +150,18 @@ React-Static dually relies on lowest common browser support between React itself
 - All latest versions of modern browsers (Chrome, Firefox, Safari) are supported out of the box.
 - Internet Explorer is supported, but requires using `babel-polyfill` to work (mainly relying on the `Promise` polyfill)
 
-To extend `static.config.js` for compatibility with Internet Explorer, first install `babel-polyfill`:
-`yarn add babel-polyfill`
+To extend `static.config.js` for compatibility with Internet Explorer, first install `babel-polyfill` and `core-js`:
+`yarn add babel-polyfill core-js`
 
 Then add the following webpack object to the default export of `static.config.js` to extend the existing webpack configuration:
 
 ```javascript
-webpack: (config, { stage }) => {
-  if (stage === 'prod') {
-    config.entry = ['babel-polyfill', config.entry]
-  } else if (stage === 'dev') {
-    config.entry = ['babel-polyfill', ...config.entry]
-  }
+webpack: (config) => {
+  config.entry = [
+    'babel-polyfill',
+    'core-js/web/url',
+    ...(Array.isArray(config.entry) ? config.entry : [config.entry]),
+  ];
   return config
 },
 ```
