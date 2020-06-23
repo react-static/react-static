@@ -4,12 +4,12 @@
 
 ### New
 
-- Updated browser support docs for IE11 support
-
 ### Improved
 
 ### Bugfix
+
 - Ensure a non-zero exit status code when build has errors ([#1451](https://github.com/react-static/react-static/pull/1451))
+- Updated browser support docs for IE11 support ([#1461](https://github.com/react-static/react-static/pull/1461))
 
 ## 7.4.0
 
