@@ -4,7 +4,7 @@
 
 ### New
 
-- Updated browser support docs for IE11 support ([#1361])
+- Updated browser support docs for IE11 support
 
 ### Improved
 
