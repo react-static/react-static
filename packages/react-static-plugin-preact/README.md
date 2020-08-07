@@ -17,3 +17,27 @@ export default {
   plugins: ["react-static-plugin-preact"]
 };
 ```
+
+As final step, depending on the template you started with, you might need to remove the React Hot Reload component from `index.js`. Change:
+
+```
+  const render = Comp => {
+    renderMethod(
+      <AppContainer>
+        <Comp />
+      </AppContainer>,
+      target
+    )
+  }
+```
+
+to:
+
+```
+  const render = Comp => {
+    renderMethod(
+      <Comp />,
+      target
+    )
+  }
+```

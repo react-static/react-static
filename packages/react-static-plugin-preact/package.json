@@ -15,12 +15,11 @@
     "preversion": "yarn build"
   },
   "peerDependencies": {
-    "preact": "^8.5.1",
-    "preact-compat": "^3.19.0"
+    "preact": "^10.4.7"
   },
   "dependencies": {
-    "preact": "^8.5.1",
-    "preact-compat": "3.19.0"
+    "@prefresh/webpack": "^0.8.2",
+    "preact": "^10.4.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
