@@ -6,7 +6,14 @@
 
 ### Improved
 
+- Update preact to latest version and removed outdated compat dependency ([#1486](https://github.com/react-static/react-static/pull/1486))
+- Add prefresh to replace react hot loader when using preact plugin ([#1486](https://github.com/react-static/react-static/pull/1486))
+
+
 ### Bugfix
+
+- Fix wrong react alias for preact plugin in webpack config ([#1486](https://github.com/react-static/react-static/pull/1486))
+- Fix eslintignore not ignorning package files ([#1486](https://github.com/react-static/react-static/pull/1486))
 
 ## 7.4.1
 
