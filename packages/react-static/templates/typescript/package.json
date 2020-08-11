@@ -25,7 +25,6 @@
     "@types/reach__router": "^1.2",
     "@types/react": "^16.9.1",
     "@types/react-dom": "^16.8.5",
-    "@types/react-hot-loader": "^4.1.0",
     "@types/webpack-env": "^1.14.0",
     "react-hot-loader": "^4.12.11",
     "serve": "^11.1.0",

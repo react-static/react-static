@@ -8,6 +8,8 @@
 
 ### Bugfix
 
+- Remove `@types/react-hot-loader` from TypeScript template ([#1485](https://github.com/react-static/react-static/pull/1485))
+
 ## 7.4.1
 
 ### Bugfix
