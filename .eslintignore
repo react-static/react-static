@@ -10,5 +10,5 @@ tmp
 *.d.ts
 
 # Packages build into their root
-packages/*/node.api.js
-packages/*/browser.api.js
+packages/**/node.api.js
+packages/**/browser.api.js
