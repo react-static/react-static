@@ -17,3 +17,6 @@ export default {
   plugins: ["react-static-plugin-styled-components"]
 };
 ```
+
+You need to install the `styled-components` dependency yourself. 
+Plugin has been tested with styled-components 4.x.y.
