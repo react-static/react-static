@@ -429,7 +429,9 @@ export function isPrefetchableRoute(path) {
     link = new URL(path, location.href)
   } catch (e) {
     if (typeof URL !== 'function') {
-      console.error('URL polyfill is required for this browser. https://github.com/react-static/react-static/blob/master/docs/concepts.md#browser-support');
+      console.error(
+        'URL polyfill is required for this browser. https://github.com/react-static/react-static/blob/master/docs/concepts.md#browser-support'
+      )
     }
     // Return false on invalid URLs
     return false
