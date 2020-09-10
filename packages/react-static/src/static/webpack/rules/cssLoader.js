@@ -44,6 +44,7 @@ export default function({ stage, isNode }) {
       loader: ExtractCssChunks.loader,
       options: {
         hot: true,
+        hmr: true,
       },
     },
     ...cssLoader,
