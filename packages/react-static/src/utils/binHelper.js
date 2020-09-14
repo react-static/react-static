@@ -19,7 +19,7 @@ const needsWorkspaceCheck = __dirname.includes(
 
 // Recursively checks a module to see if it originated from a
 // react-static package in the repo
-const inRepo = mod => {
+const inRepo = (mod) => {
   if (
     !mod.filename.includes('react-static/packages/react-static/') &&
     mod.filename.includes('react-static/packages/')
@@ -35,7 +35,7 @@ const inRepo = mod => {
 // The following ensures that there is always only a single (and same)
 // copy of React in an app at any given moment.
 // eslint-disable-next-line
-Module.prototype.require = function(modulePath) {
+Module.prototype.require = function (modulePath) {
   // If we are running in the repo, we need to make sure
   // module resolutions coming from other react-static packages
   // are first attempted from the
@@ -47,7 +47,7 @@ Module.prototype.require = function(modulePath) {
       // If module is in the repo try and redirect
       isInWorkspace ||
       // Always try and redirect react and react-dom resolutions
-      ['react', 'react-dom'].some(d => modulePath.includes(d))
+      ['react', 'react-dom'].some((d) => modulePath.includes(d))
     ) {
       try {
         modulePath = resolveFrom(
@@ -110,17 +110,21 @@ const ignoredExtensions = [
   'md',
   'yaml',
 ]
-ignoredExtensions.forEach(ext => {
+ignoredExtensions.forEach((ext) => {
   require.extensions[`.${ext}`] = () => {}
 })
 
 console.error = (err, ...rest) => {
-  console.log(new PrettyError().render(err), ...rest)
+  if (err) {
+    console.log(new PrettyError().render(err), ...rest)
+  } else {
+    console.log(err, ...rest)
+  }
 }
 
 // Be sure to log useful information about unhandled exceptions. This should seriously
 // be a default: https://github.com/nodejs/node/issues/9523#issuecomment-259303079
-process.on('unhandledRejection', r => {
+process.on('unhandledRejection', (r) => {
   console.error(r)
 })
 
