@@ -8,6 +8,7 @@
 
 - Update preact to latest version and removed outdated compat dependency ([#1486](https://github.com/react-static/react-static/pull/1486))
 - Add prefresh to replace react hot loader when using preact plugin ([#1486](https://github.com/react-static/react-static/pull/1486))
+- Add an instruction how to make it work with preact 10 ([#1497](https://github.com/react-static/react-static/pull/1500))
 
 
 ### Bugfix
