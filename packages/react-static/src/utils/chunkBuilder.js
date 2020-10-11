@@ -28,7 +28,7 @@ export const absoluteToRelativeChunkName = (ROOT, chunkName) => {
 
   // inner components can simply be added aswell
   if (!chunkName.startsWith(pathPrefix)) {
-    return chunkName
+    return chunkNameFromFile(chunkName)
   }
 
   // The templates starts with the absolute path, that's the one we want to
