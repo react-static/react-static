@@ -11,7 +11,7 @@ export default ({ RouterProps: userRouterProps = {} }) => ({
     const staticInfo = useStaticInfo()
 
     const routerProps = {
-      basepath, // Required
+      basename: basepath, // Required
     }
 
     // Test for document to detect the node stage
