@@ -17,6 +17,7 @@
 - Fix eslintignore not ignorning package files ([#1486](https://github.com/react-static/react-static/pull/1486))
 - Remove `@types/react-hot-loader` from TypeScript template ([#1485](https://github.com/react-static/react-static/pull/1485))
 - Expand `styled-components` peer dependency version range in `react-static-plugin-styled-components` to allow newer versions of styled-components to be used ([#1473](https://github.com/react-static/react-static/pull/1473))
+- Bump `git-promise` to 1.0.0, fixing a security vulnerability ([#1522](https://github.com/react-static/react-static/pull/1522))
 
 
 ## 7.4.1

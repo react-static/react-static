@@ -7171,13 +7171,10 @@ git-clone@^0.1.0:
   resolved "https://registry.yarnpkg.com/git-clone/-/git-clone-0.1.0.tgz#0d76163778093aef7f1c30238f2a9ef3f07a2eb9"
   integrity sha1-DXYWN3gJOu9/HDAjjyqe8/B6Lrk=
 
-git-promise@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/git-promise/-/git-promise-0.3.1.tgz#0c6dbd16acbb35ecaf407311bb790f923f62891f"
-  integrity sha1-DG29Fqy7NeyvQHMRu3kPkj9iiR8=
-  dependencies:
-    q "~1.4.1"
-    shelljs "~0.5.3"
+git-promise@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/git-promise/-/git-promise-1.0.0.tgz#6337fa79b72f9a2370863d43059a6259e01922eb"
+  integrity sha512-GAhWltNB3/sf/48MwE7MbObDM2tDls9YIvVlUmga3gyqSMZG3wHEMhGSQB6genvmnbbHMxCkpVVl5YP6qGQn3w==
 
 git-raw-commits@2.0.0:
   version "2.0.0"
@@ -12056,11 +12053,6 @@ q@^1.1.2, q@^1.5.1:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-q@~1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/q/-/q-1.4.1.tgz#55705bcd93c5f3673530c2c2cbc0c2b3addc286e"
-  integrity sha1-VXBbzZPF82c1MMLCy8DCs63cKG4=
-
 qs@6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
@@ -12392,7 +12384,7 @@ react-side-effect@^1.1.0:
     extract-css-chunks-webpack-plugin "^4.6.0"
     file-loader "3.0.1"
     fs-extra "^7.0.1"
-    git-promise "^0.3.1"
+    git-promise "^1.0.0"
     glob "^7.1.4"
     gunzip-maybe "^1.4.1"
     html-webpack-plugin "^3.2.0"
@@ -13370,11 +13362,6 @@ shell-quote@1.6.1:
     array-map "~0.0.0"
     array-reduce "~0.0.0"
     jsonify "~0.0.0"
-
-shelljs@~0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.5.3.tgz#c54982b996c76ef0c1e6b59fbdc5825f5b713113"
-  integrity sha1-xUmCuZbHbvDB5rWfvcWCX1txMRM=
 
 shellwords@^0.1.1:
   version "0.1.1"
