@@ -9,14 +9,13 @@
 - Update preact to latest version and removed outdated compat dependency ([#1486](https://github.com/react-static/react-static/pull/1486))
 - Add prefresh to replace react hot loader when using preact plugin ([#1486](https://github.com/react-static/react-static/pull/1486))
 
-
 ### Bugfix
 
 - Fix wrong react alias for preact plugin in webpack config ([#1486](https://github.com/react-static/react-static/pull/1486))
 - Fix eslintignore not ignorning package files ([#1486](https://github.com/react-static/react-static/pull/1486))
 - Remove `@types/react-hot-loader` from TypeScript template ([#1485](https://github.com/react-static/react-static/pull/1485))
 - Expand `styled-components` peer dependency version range in `react-static-plugin-styled-components` to allow newer versions of styled-components to be used ([#1473](https://github.com/react-static/react-static/pull/1473))
-
+- Fix bug when calling `console.error` without arguments
 
 ## 7.4.1
 
@@ -42,6 +41,7 @@
 - Fix wrong image route in production build. ([#1425](https://github.com/react-static/react-static/pull/1425))
 
 ### Bugfix
+
 - Fix static rendering
 
 ## 7.3.0
