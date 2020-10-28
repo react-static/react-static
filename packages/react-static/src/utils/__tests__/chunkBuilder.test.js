@@ -53,5 +53,34 @@ describe('utils/chunkBuilder', () => {
         absoluteToRelativeChunkName('C:\\foo\\bar\\bazz\\', 'src-bar')
       ).toBe('src-bar')
     })
+    it('generates relative chunk names on absolute routes', () => {
+      expect(
+        absoluteToRelativeChunkName(
+          '/foo/bar/bazz/',
+          '/foo/bar/bazz/src/component.jsx'
+        )
+      ).toBe('src-component')
+    })
+
+    it('generates relative chunk names on absolute routes on windows', () => {
+      expect(
+        absoluteToRelativeChunkName(
+          'C:\\foo\\bar\\bazz\\',
+          'C:\\foo\\bar\\bazz\\src\\component.jsx'
+        )
+      ).toBe('src-component')
+    })
+
+    it('generates relative chunk names on relative routes', () => {
+      expect(absoluteToRelativeChunkName('/foo/bar/bazz/', 'src/bar')).toBe(
+        'src-bar'
+      )
+    })
+
+    it('generates relative chunk names on relative routes on windows', () => {
+      expect(
+        absoluteToRelativeChunkName('C:\\foo\\bar\\bazz\\', 'src\\bar')
+      ).toBe('src-bar')
+    })
   })
 })

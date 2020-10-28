@@ -25,6 +25,7 @@ export const chunkNameFromFile = filename => {
 
 export const absoluteToRelativeChunkName = (ROOT, chunkName) => {
   const pathPrefix = chunkNameFromFile(ROOT)
+  chunkName = chunkNameFromFile(chunkName)
 
   // inner components can simply be added aswell
   if (!chunkName.startsWith(pathPrefix)) {
@@ -33,5 +34,5 @@ export const absoluteToRelativeChunkName = (ROOT, chunkName) => {
 
   // The templates starts with the absolute path, that's the one we want to
   // replace. It's length + 1 because otherwise it would start with a hyphen
-  return chunkNameFromFile(chunkName).substring(pathPrefix.length + 1)
+  return chunkName.substring(pathPrefix.length + 1)
 }
