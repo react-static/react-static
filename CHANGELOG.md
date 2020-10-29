@@ -19,6 +19,7 @@
 - Fix basepath configuration for React Router ([#1520](https://github.com/react-static/react-static/pull/1520))
 - Fix mismatched chunk names between bundle and export ([#1518](https://github.com/react-static/react-static/pull/1518))
 - Bump `git-promise` to 1.0.0, fixing a security vulnerability ([#1522](https://github.com/react-static/react-static/pull/1522))
+- Fix misconfigured HMR option for extract-css-chunks-webpack-plugin ([#1505](https://github.com/react-static/react-static/pull/1505))
 
 ## 7.4.1
 
