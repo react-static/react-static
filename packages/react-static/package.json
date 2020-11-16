@@ -84,7 +84,7 @@
     "prop-types": "^15.7.2",
     "raf": "^3.4.1",
     "raw-loader": "^3.1.0",
-    "react-helmet": "^5.2.1",
+    "react-helmet": "^6.1.0",
     "react-universal-component": "^4.0.0",
     "resolve-from": "^5.0.0",
     "serve": "^11.1.0",
@@ -106,7 +106,7 @@
   },
   "devDependencies": {
     "@types/react": "^16.9.1",
-    "@types/react-helmet": "^5.0.9",
+    "@types/react-helmet": "^6.1.0",
     "babel-jest": "^24.8.0",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
