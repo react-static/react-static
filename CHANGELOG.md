@@ -13,6 +13,8 @@
 - Add ability to configure hreflang links to Sitemap ([#1539](https://github.com/react-static/react-static/1539))
 - Move react to peerDependencies ([#1560](https://github.com/react-static/react-static/pull/1560))
 - Add preliminary support for React 17 ([#1560](https://github.com/react-static/react-static/pull/1560))
+- Upgrade react-helmet to 6.1.0 to remove NullComponent warnings ([#1531](https://github.com/react-static/react-static/pull/1531))
+
 ### Bugfix
 
 - Fix wrong react alias for preact plugin in webpack config ([#1486](https://github.com/react-static/react-static/pull/1486))
