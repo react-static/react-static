@@ -34,6 +34,7 @@ export default {
           remarkPlugins: [/* ... */],
           rehypePlugins: [/* ... */],
         },
+        parseFrontMatter: false, // Extract front matter from markdown. Disabled by default.
       }
     ]
   ]
@@ -77,3 +78,19 @@ function App() {
 ```
 
 Typescript typings: https://github.com/mdx-js/mdx/issues/616
+
+## Frontmatter
+With `parseFrontMatter` enabled, if you have a markdown file like
+```markdown
+---
+title: Awesome!
+---
+# About page
+```
+Then you can write a React component like
+```javascript
+import about, { frontMatter } from 'path/to/about.md';
+console.log(frontMatter); // Will output { title: 'Awesome!' }
+
+export default about; // A React component for (<h1>About page</h1>)
+```
