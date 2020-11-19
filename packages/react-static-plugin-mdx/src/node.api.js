@@ -1,3 +1,5 @@
+const path = require('path');
+
 export default ({
   includePaths = [],
   extensions = ['.md', '.mdx'],
@@ -18,6 +20,7 @@ export default ({
           loader: mdxLoaderPath,
           options: mdxOptions,
         },
+        path.join(__dirname, './fm-loader'),
       ],
     })
 
