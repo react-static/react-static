@@ -4,6 +4,7 @@ export default ({
   includePaths = [],
   extensions = ['.md', '.mdx'],
   mdxOptions = {},
+  parseFrontMatter = false,
 }) => ({
   afterGetConfig: ({ config }) => {
     config.extensions = [...config.extensions, ...extensions]
@@ -20,8 +21,8 @@ export default ({
           loader: mdxLoaderPath,
           options: mdxOptions,
         },
-        path.join(__dirname, './fm-loader'),
-      ],
+        parseFrontMatter && path.join(__dirname, './fm-loader'),
+      ].filter(x => x), // Remove falsy value when not parsing front matter
     })
 
     return webpackConfig
