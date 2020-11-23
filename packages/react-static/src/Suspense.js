@@ -10,4 +10,4 @@ function Suspense({ key, children, ...rest }) {
   )
 }
 
-export default Suspense;
+export default Suspense
