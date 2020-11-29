@@ -49,6 +49,10 @@ export default {
     <loc>https://hello.com/blog/post/1</loc>
     <lastmod>10/10/2010</lastmod>
     <priority>0.5</priority>
+    <image:image>
+      <iamge:loc>https://raw.githubusercontent.com/react-static/react-static/master/media/react-static-logo-2x.png</iamge:loc>
+      <iamge:caption>React Static</iamge:caption>
+    </image:image>
   </url>
   ```
 
