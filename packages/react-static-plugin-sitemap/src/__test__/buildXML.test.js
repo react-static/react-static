@@ -113,4 +113,26 @@ describe('generateXML', () => {
 
     expect(xml.includes('<test>foobar</test>')).toEqual(true)
   })
+  it('should support hreflang links ', () => {
+    const xml = generateXML(
+      {
+        routes: [
+          {
+            path: '/path/to/somewhere',
+            sitemap: {
+              hreflang: [
+                { language: 'x-default', url: '/path/to/somewhere' },
+                { language: 'en', url: '/path/to/somewhere' },
+                { language: 'de', url: '/de/path/to/somewhere' },
+              ],
+            },
+          },
+        ],
+      },
+      undefined,
+      '/blog/'
+    )
+
+    expect(xml).toMatchSnapshot()
+  })
 })
