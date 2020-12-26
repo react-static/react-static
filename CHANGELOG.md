@@ -10,6 +10,7 @@
 - Add prefresh to replace react hot loader when using preact plugin ([#1486](https://github.com/react-static/react-static/pull/1486))
 - Add an instruction how to make it work with preact 10 ([#1497](https://github.com/react-static/react-static/pull/1500))
 - Add ability to parse frontmatter in MDX plugin ([#1533](https://github.com/react-static/react-static/pull/1533))
+- Add ability to configure hreflang links to Sitemap ([#1539](https://github.com/react-static/react-static/1539))
 
 ### Bugfix
 

@@ -6,7 +6,7 @@ import chalk from 'chalk'
 const REGEX_TO_GET_LAST_SLASH = /\/{1,}$/gm
 
 const defaultGetUrlAttributes = (route, { prefixPath }) => {
-  const { sitemap: { loc, ...rest } = {} } = route
+  const { sitemap: { loc, hreflang, ...rest } = {} } = route
   return {
     loc: getPermaLink(loc || route.path, prefixPath),
     ...rest,
@@ -77,9 +77,14 @@ export function generateXML(
           attributesArr.push({ key, value: attributes[key] })
         }
       })
+      const hrefLangLinks = (route.sitemap && route.sitemap.hreflang
+        ? buildHrefLangLinks(route.sitemap.hreflang, prefixPath)
+        : []
+      ).join(staging ? '\n' : '')
       return [
         '<url>',
         xmlArrayOutput(attributesArr, staging),
+        hrefLangLinks,
         '</url>',
       ].join(staging ? '\n' : '')
     })
@@ -87,7 +92,7 @@ export function generateXML(
 
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
-    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">`,
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">`,
     xmlRoutes,
     `</urlset>`,
   ].join(staging ? '\n' : '')
@@ -98,7 +103,7 @@ export function getPermaLink(path, prefixPath) {
   return `${permalink}/`.replace(REGEX_TO_GET_LAST_SLASH, '/')
 }
 
-function checkNestedValue (value) {
+function checkNestedValue(value) {
   if (!value) return false
 
   if (typeof value === 'object' && value !== null) {
@@ -108,7 +113,7 @@ function checkNestedValue (value) {
   }
 }
 
-function convertNestedValue (values, staging) {
+function convertNestedValue(values, staging) {
   const _values = []
   Object.keys(values).forEach(key => {
     if (typeof values[key] !== 'undefined') {
@@ -138,9 +143,27 @@ function encode(val) {
   })
 }
 
-function xmlArrayOutput (values, staging) {
-  return [...values.map(
-    ({ key, value }) => `<${key}>${checkNestedValue(value) ? convertNestedValue(value, staging) : encode(value) }</${key}>`
-  ).join(staging ? '\n' : '')].join(staging ? '\n' : '')
+function buildHrefLangLinks(hrefLangConfig, prefixPath) {
+  return hrefLangConfig.map(
+    ({ language, url }) =>
+      `<xhtml:link rel="alternate" hreflang="${language}" href="${getPermaLink(
+        url,
+        prefixPath
+      )}" />`
+  )
 }
 
+function xmlArrayOutput(values, staging) {
+  return [
+    ...values
+      .map(
+        ({ key, value }) =>
+          `<${key}>${
+            checkNestedValue(value)
+              ? convertNestedValue(value, staging)
+              : encode(value)
+          }</${key}>`
+      )
+      .join(staging ? '\n' : ''),
+  ].join(staging ? '\n' : '')
+}
