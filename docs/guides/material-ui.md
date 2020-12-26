@@ -9,11 +9,10 @@ To use Material UI's server-side rendering (SSR) with React Static:
 ```js
 // your_app/plugins/jss-provider/node.api.js
 
-import { ServerStyleSheets } from '@material-ui/core';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 
 export default () => ({
   beforeRenderToHtml: (App, { meta }) => {
-    // eslint-disable-next-line no-param-reassign
     meta.muiSheets = new ServerStyleSheets();
     return meta.muiSheets.collect(App);
   },
