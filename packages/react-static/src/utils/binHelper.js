@@ -114,8 +114,18 @@ ignoredExtensions.forEach(ext => {
   require.extensions[`.${ext}`] = () => {}
 })
 
-console.error = (err, ...rest) => {
-  console.log(new PrettyError().render(err), ...rest)
+const originalConsoleError = console.error
+console.error = (...args) => {
+  if(args.length === 0){
+    return undefined
+  }
+  const [err, ...rest] = args
+  if(err instanceof Error){
+    console.log(new PrettyError().render(err), ...rest)
+    return
+  }
+  
+  return originalConsoleError(err, ...rest)
 }
 
 // Be sure to log useful information about unhandled exceptions. This should seriously
