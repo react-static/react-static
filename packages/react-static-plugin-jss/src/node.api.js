@@ -2,9 +2,6 @@ import React from 'react'
 import { JssProvider, SheetsRegistry } from 'react-jss'
 
 export default ({ providerProps = {} }) => ({
-  // NOTE: This whole process could likely be extracted into a reusable
-  // react-static-plugin-jss plugin. Thoughts?
-
   beforeRenderToElement: (App, { meta }) => props => {
     // Create a sheetsRegistry instance.
     meta.jssSheetsRegistry = new SheetsRegistry()
