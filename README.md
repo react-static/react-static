@@ -1,7 +1,7 @@
 ![React Static Logo](https://github.com/react-static/react-static/raw/master/media/react-static-logo-2x.png)
 
 [![Travis CI Build Status](https://travis-ci.org/react-static/react-static.svg?branch=master)](https://travis-ci.org/react-static/react-static) [![David Dependancy Status](https://david-dm.org/react-static/react-static.svg)](https://david-dm.org/react-static/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-static)
-[![Github Stars](https://img.shields.io/github/stars/react-static/react-static.svg?style=social&label=Star)](https://github.com/react-static/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/reactstaticjs.svg?style=social&label=Follow)](https://twitter.com/reactstaticjs)
+[![Github Stars](https://img.shields.io/github/stars/react-static/react-static.svg?style=social&label=Star)](https://github.com/react-static/react-static) [![Twitter Follow](https://img.shields.io/twitter/follow/reactstaticjs.svg?style=social&label=Follow)](https://twitter.com/reactstaticjs) [![Meercode CI Score](https://meercode.io/badge/react-static/react-static?type=ci-score&branch=master)](https://meercode.io/react-static/react-static)
 
 <br>
 <br>
