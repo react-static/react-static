@@ -16,7 +16,7 @@
   },
   "peerDependencies": {
     "@reach/router": "^1.2.1",
-    "react": "^16.9.0",
+    "react": "^16.9.0 || ^17.0.0",
     "react-static": "^7.1.0"
   },
   "devDependencies": {
