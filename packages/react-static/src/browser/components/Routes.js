@@ -40,7 +40,7 @@ function getTemplateForPath(path) {
  */
 function getComponentForPath(path) {
   const { Comp, is404 } = getTemplateForPath(path)
-  if (is404 || !Comp) {
+  if (is404 && !Comp) {
     return false
   }
 

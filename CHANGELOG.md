@@ -23,6 +23,7 @@
 - Fix mismatched chunk names between bundle and export ([#1518](https://github.com/react-static/react-static/pull/1518))
 - Bump `git-promise` to 1.0.0, fixing a security vulnerability ([#1522](https://github.com/react-static/react-static/pull/1522))
 - Fix misconfigured HMR option for extract-css-chunks-webpack-plugin ([#1505](https://github.com/react-static/react-static/pull/1505))
+- Make `getComponentForPath` properly return 404 page when route is invalid and 404 page exists ([#1557](https://github.com/react-static/react-static/pull/1557))
 
 ## 7.4.1
 
