@@ -11,7 +11,8 @@
 - Add an instruction how to make it work with preact 10 ([#1497](https://github.com/react-static/react-static/pull/1500))
 - Add ability to parse frontmatter in MDX plugin ([#1533](https://github.com/react-static/react-static/pull/1533))
 - Add ability to configure hreflang links to Sitemap ([#1539](https://github.com/react-static/react-static/1539))
-
+- Move react to peerDependencies ([#1560](https://github.com/react-static/react-static/pull/1560))
+- Add preliminary support for React 17 ([#1560](https://github.com/react-static/react-static/pull/1560))
 ### Bugfix
 
 - Fix wrong react alias for preact plugin in webpack config ([#1486](https://github.com/react-static/react-static/pull/1486))
@@ -24,6 +25,7 @@
 - Bump `git-promise` to 1.0.0, fixing a security vulnerability ([#1522](https://github.com/react-static/react-static/pull/1522))
 - Fix misconfigured HMR option for extract-css-chunks-webpack-plugin ([#1505](https://github.com/react-static/react-static/pull/1505))
 - Make `getComponentForPath` properly return 404 page when route is invalid and 404 page exists ([#1557](https://github.com/react-static/react-static/pull/1557))
+- Bump `axios` to 0.21.1, fiing a security vulnerability ([#1562](https://github.com/react-static/react-static/pull/1562))
 
 ## 7.4.1
 
