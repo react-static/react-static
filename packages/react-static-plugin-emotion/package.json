@@ -17,7 +17,7 @@
   "peerDependencies": {
     "@emotion/core": "^10.0.15",
     "emotion": "^10.0.14",
-    "react": "^16.9.0"
+    "react": "^16.9.0 || ^17.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",

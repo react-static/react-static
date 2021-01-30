@@ -15,7 +15,7 @@
     "preversion": "yarn build"
   },
   "peerDependencies": {
-    "react": "^16.9.0",
+    "react": "^16.9.0 || ^17.0.0",
     "react-jss": "^10.0.3"
   },
   "devDependencies": {

@@ -27,6 +27,8 @@
     "publishLink": "echo '{{event}} to {{changed}}' && yalc publish"
   },
   "peerDependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-hot-loader": "^4.12.11"
   },
   "dependencies": {
@@ -82,10 +84,7 @@
     "prop-types": "^15.7.2",
     "raf": "^3.4.1",
     "raw-loader": "^3.1.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1",
-    "react-hot-loader": "^4.12.11",
     "react-universal-component": "^4.0.0",
     "resolve-from": "^5.0.0",
     "serve": "^11.1.0",
@@ -127,7 +126,9 @@
     "lerna": "^3.16.4",
     "onchange": "^6.0.0",
     "prettier": "1.18.2",
+    "react": "^16.9.0",
     "react-dev-utils": "^9.0.3",
+    "react-dom": "^16.9.0",
     "react-hot-loader": "^4.12.11",
     "rimraf": "^2.7.0",
     "webpack-hot-middleware": "^2.25.0"

@@ -12391,10 +12391,7 @@ react-side-effect@^1.1.0:
     prop-types "^15.7.2"
     raf "^3.4.1"
     raw-loader "^3.1.0"
-    react "^16.9.0"
-    react-dom "^16.9.0"
     react-helmet "^5.2.1"
-    react-hot-loader "^4.12.11"
     react-universal-component "^4.0.0"
     resolve-from "^5.0.0"
     serve "^11.1.0"
@@ -12448,6 +12445,15 @@ react-universal-component@^4.0.0:
   dependencies:
     hoist-non-react-statics "^3.3.0"
     prop-types "^15.7.2"
+
+react@16.9.0:
+  version "16.9.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.9.0.tgz#40ba2f9af13bc1a38d75dbf2f4359a5185c4f7aa"
+  integrity sha512-+7LQnFBwkiw+BobzOF6N//BdoNw0ouwmSJTEm9cglOOmsg/TMiFHZLe2sEoN5M7LgJTj9oHH0gxklfnQe66S1w==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
 
 react@^16.9.0:
   version "16.14.0"
