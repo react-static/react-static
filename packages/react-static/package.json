@@ -78,7 +78,7 @@
     "mutation-observer": "^1.0.3",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "portfinder": "^1.0.21",
-    "postcss-flexbugs-fixes": "^5.1.0",
+    "postcss-flexbugs-fixes": "^4.1.0",
     "postcss-loader": "^4.2.0",
     "pretty-error": "^2.1.1",
     "progress": "^2.0.3",
