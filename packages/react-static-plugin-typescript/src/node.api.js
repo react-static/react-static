@@ -114,7 +114,8 @@ function getTypeScriptLoader(jsLoader) {
 function getTypecheckPlugin(tsconfigPath) {
   return new ForkTsCheckerWebpackPlugin({
     async: false,
-    checkSyntacticErrors: true,
-    tsconfig: tsconfigPath,
+    typescript: {
+      configFile: tsconfigPath,
+    },
   })
 }
