@@ -80,7 +80,7 @@ That takes care of the global styling, now we need to add the styling for the Na
 First Add styled import back at the top
 
 ```javascript
-import styled,  { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 ```
 
 ```javascript
