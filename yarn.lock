@@ -12379,7 +12379,7 @@ react-side-effect@^2.1.0:
   resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.1.tgz#66c5701c3e7560ab4822a4ee2742dee215d72eb3"
   integrity sha512-2FoTQzRNTncBVtnzxFOk2mCpcfxQpenBMbk5kSVBg5UcPqV9fRbgY2zhb7GTWWOlpFmAxhClBDlIq8Rsubz1yQ==
 
-"react-static@file:packages/react-static-plugin-reach-router/../react-static", "react-static@file:packages/react-static-plugin-react-location/../react-static", "react-static@file:packages/react-static-plugin-react-router/../react-static", "react-static@file:packages/react-static-plugin-sitemap/../react-static", "react-static@file:packages/react-static-plugin-source-filesystem/../react-static", "react-static@file:packages/react-static-plugin-typescript/../react-static":
+"react-static@file:packages/react-static":
   version "7.4.2"
   dependencies:
     "@babel/cli" "^7.5.5"
@@ -12435,7 +12435,6 @@ react-side-effect@^2.1.0:
     raf "^3.4.1"
     raw-loader "^3.1.0"
     react-helmet "^6.1.0"
-    react-hot-loader "^4.12.11"
     react-universal-component "^4.0.0"
     resolve-from "^5.0.0"
     serve "^11.1.0"
