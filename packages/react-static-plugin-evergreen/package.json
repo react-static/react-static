@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-evergreen",
-  "version": "7.2.2",
+  "version": "7.5.0",
   "description": "A React-Static plugin that adds SSR support for evergreen",
   "main": "node.api.js",
   "repository": "https://github.com/react-static/react-static.git",
