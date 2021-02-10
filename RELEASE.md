@@ -9,10 +9,10 @@ yarn test
 ```bash
 yarn build
 
-cd src/packages/react-static
+cd packages/react-static
 ```
 
-Now update the blank template to use a local version:
+Now update the blank template (`./templates/blank`) to use a local version:
 
 ```json
 "react-static": "../../react-static"
@@ -32,14 +32,10 @@ yarn build
 # inspect
 ```
 
-## Bump versions in templates
-
-In each template, bump the package versions to the correct version.
-
 ## Inspect CHANGELOG.md
 
 Make sure all changes are listed here
 
 ## Run lerna publish
 
-
+Only maintainers can do this.

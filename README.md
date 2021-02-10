@@ -64,11 +64,10 @@ React-Static is a fast, lightweight, and powerful progressive static site genera
 - [WordFlow: Copywriting service](https://www.wordflow.ie/) ([source](https://github.com/nathanpower/wordflow-site))
 - [Amplify Credit Union](https://www.goamplify.com)
 - [Rebel Breath](https://www.rebelbreath.com/)
-- [Fourth Drive - Music Artist](https://fourthdrive.com)  ([source](https://gitlab.com/galmargalit1/fourth-drive))
+- [Fourth Drive - Music Artist](https://fourthdrive.com) ([source](https://gitlab.com/galmargalit1/fourth-drive))
 - [Weekly Best of JavaScript](https://weekly.bestofjs.org/) ([source](https://github.com/bestofjs/bestofjs-weekly))
 - [United Income - Company Website](https://unitedincome.com/)
-</details>
-
+  </details>
 
 ## Quick Start
 
@@ -145,11 +144,11 @@ React Static is also a great replacement for the ever popular Create React App C
 
 ## Support, Community & Chat
 
-Need some help? Have a quick question? [Click here to sign up for the React-Tools spectrum community](https://spectrum.chat/react-static)! We are constantly answering questions, discussing features and helping each other out!
+Need some help? Have a quick question? [Click here to go to GitHub Discussions](https://github.com/react-static/react-static/issues/1564)! We are constantly answering questions, discussing features and helping each other out!
 
 ## Contributing, Issues & Bugs
 
-We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have [found a bug, or have a feature request](https://github.com/react-static/react-static/issues/new) let us know!
+We are always looking for people to help us grow `react-static`'s capabilities and examples. If you have [found a bug, or have a feature request](https://github.com/react-static/react-static/issues/new) let us know! Please follow [CONTRIBUTING.md](./CONTRIBUTING.md) if you want to help out.
 
 ## License
 
