@@ -7,7 +7,6 @@
 ### Improved
 
 ### Bugfix
-- Make sure assetsPath is used for webpack build and template generation
 
 ## 7.5.0
 
