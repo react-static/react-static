@@ -7,6 +7,7 @@
 ### Improved
 
 ### Bugfix
+Fix publicPath is used for webpack output publicPath instead of assetsPath
 
 ## 7.5.0
 
