@@ -17,7 +17,7 @@ function common(state) {
   process.env.REACT_STATIC_ENTRY_PATH = config.entry
   process.env.REACT_STATIC_SITE_ROOT = config.siteRoot
   process.env.REACT_STATIC_BASE_PATH = config.basePath
-  process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
+  process.env.REACT_STATIC_PUBLIC_PATH = config.assetsPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
   if (!DIST.startsWith(ROOT)) {

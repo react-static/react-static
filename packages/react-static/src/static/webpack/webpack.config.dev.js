@@ -11,7 +11,7 @@ export default function({ config }) {
   const { DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
 
   process.env.REACT_STATIC_BASE_PATH = config.basePath
-  process.env.REACT_STATIC_PUBLIC_PATH = config.publicPath
+  process.env.REACT_STATIC_PUBLIC_PATH = config.assetsPath
   process.env.REACT_STATIC_ASSETS_PATH = config.assetsPath
 
   return {
