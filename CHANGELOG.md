@@ -8,6 +8,14 @@
 
 ### Bugfix
 
+## 7.5.2
+
+### Improved
+
+- Add routeInfo hook ([#1572](https://github.com/react-static/react-static/pull/1572))
+
+### Bugfix
+
 ## 7.5.0
 
 ### Improved
