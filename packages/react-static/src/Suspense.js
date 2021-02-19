@@ -1,10 +1,12 @@
 import * as React from 'react'
 
+const OriginalSuspense = React.Suspense
+
 function Suspense({ key, children, ...rest }) {
   return typeof document !== 'undefined' ? (
-    <React.Suspense key={key} {...rest}>
+    <OriginalSuspense key={key} {...rest}>
       {children}
-    </React.Suspense>
+    </OriginalSuspense>
   ) : (
     <React.Fragment key={key}>{children}</React.Fragment>
   )
