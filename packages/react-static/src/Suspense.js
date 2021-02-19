@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const OriginalSuspense = React.Suspense;
+const OriginalSuspense = React.Suspense
 
 function Suspense({ key, children, ...rest }) {
   return typeof document !== 'undefined' ? (
