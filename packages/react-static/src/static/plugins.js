@@ -1,39 +1,6 @@
 import { getHooks, reduceHooks } from '../utils'
 
-const supportedHooks = [
-  'afterGetConfig',
-  'beforePrepareBrowserPlugins',
-  'afterPrepareBrowserPlugins',
-  'beforePrepareRoutes',
-  'getRoutes',
-  'normalizeRoute',
-  'afterPrepareRoutes',
-  'webpack',
-  'afterBundle',
-  'afterDevServerStart',
-  'beforeRenderToElement',
-  'beforeRenderToHtml',
-  'htmlProps',
-  'headElements',
-  'beforeHtmlToDocument',
-  'beforeDocumentToFile',
-  'afterExport',
-  'plugins',
-]
-
-export const validatePlugin = plugin => {
-  const hookKeys = Object.keys(plugin.hooks)
-  const badKeys = hookKeys.filter(key => !supportedHooks.includes(key))
-  if (badKeys.length) {
-    throw new Error(
-      `Unknown plugin hooks: "${badKeys.join(', ')}" found in plugin: ${
-        plugin.location
-      }`
-    )
-  }
-}
-
-export default {
+const hooks = {
   afterGetConfig: state => {
     const hooks = getHooks(state.plugins, 'afterGetConfig')
     return reduceHooks(hooks, { sync: true })(state)
@@ -74,6 +41,10 @@ export default {
     const hooks = getHooks(state.plugins, 'afterDevServerStart')
     return reduceHooks(hooks)(state)
   },
+  routeInfo: (routeInfo, state) => {
+    const hooks = getHooks(state.plugins, 'routeInfo')
+    return reduceHooks(hooks)(routeInfo)
+  },
   beforeRenderToElement: (Comp, state) => {
     const hooks = getHooks(state.plugins, 'beforeRenderToElement')
     return reduceHooks(hooks)(Comp, state)
@@ -106,4 +77,19 @@ export default {
     const hooks = getHooks(state.plugins, 'plugins')
     return reduceHooks(hooks)(state)
   },
+}
+
+export default hooks
+
+export const validatePlugin = plugin => {
+  const validHookKeys = Object.keys(hooks);
+  const hookKeys = Object.keys(plugin.hooks)
+  const badKeys = hookKeys.filter(key => !validHookKeys.includes(key))
+  if (badKeys.length) {
+    throw new Error(
+        `Unknown plugin hooks: "${badKeys.join(', ')}" found in plugin: ${
+            plugin.location
+        }`
+    )
+  }
 }
