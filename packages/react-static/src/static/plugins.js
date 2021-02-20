@@ -82,14 +82,14 @@ const hooks = {
 export default hooks
 
 export const validatePlugin = plugin => {
-  const validHookKeys = Object.keys(hooks);
+  const validHookKeys = Object.keys(hooks)
   const hookKeys = Object.keys(plugin.hooks)
   const badKeys = hookKeys.filter(key => !validHookKeys.includes(key))
   if (badKeys.length) {
     throw new Error(
-        `Unknown plugin hooks: "${badKeys.join(', ')}" found in plugin: ${
-            plugin.location
-        }`
+      `Unknown plugin hooks: "${badKeys.join(', ')}" found in plugin: ${
+        plugin.location
+      }`
     )
   }
 }

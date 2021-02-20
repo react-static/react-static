@@ -98,13 +98,15 @@ export default (async function exportRoute(state) {
 
   // This routeInfo will be saved to disk. It should only include the
   // data and hashes to construct all of the props later.
-  const routeInfo = await plugins.routeInfo({
-    template,
-    sharedHashesByProp,
-    data,
-    path: routePath,
-  }, state)
-
+  const routeInfo = await plugins.routeInfo(
+    {
+      template,
+      sharedHashesByProp,
+      data,
+      path: routePath,
+    },
+    state
+  )
 
   // This embeddedRouteInfo will be inlined into the HTML for this route.
   // It should include all of the data, including shared data
