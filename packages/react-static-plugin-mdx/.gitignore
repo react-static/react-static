@@ -4,3 +4,4 @@ lib.js
 /node.api.js
 /browser.api.js
 /fm-loader.js
+/loader
