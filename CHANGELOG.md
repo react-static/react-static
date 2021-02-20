@@ -12,6 +12,8 @@
 
 ### Improved
 
+- Add routeInfo hook ([#1572](https://github.com/react-static/react-static/pull/1572))
+
 ### Bugfix
 
 - Fix endless suspense loop in production build ([#1573](https://github.com/react-static/react-static/pull/1573))
