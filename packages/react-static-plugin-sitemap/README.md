@@ -55,8 +55,8 @@ export default {
     <lastmod>10/10/2010</lastmod>
     <priority>0.5</priority>
     <image:image>
-      <iamge:loc>https://raw.githubusercontent.com/react-static/react-static/master/media/react-static-logo-2x.png</iamge:loc>
-      <iamge:caption>React Static</iamge:caption>
+      <image:loc>https://raw.githubusercontent.com/react-static/react-static/master/media/react-static-logo-2x.png</image:loc>
+      <image:caption>React Static</image:caption>
     </image:image>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://hello.com/blog/post/1" />
     <xhtml:link rel="alternate" hreflang="en" href="https://hello.com/blog/post/1" />
