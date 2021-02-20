@@ -269,6 +269,33 @@ export default pluginOptions => ({
 })
 ```
 
+## `routeInfo`
+
+An **async** function to modify the routeInfo after it has been generated.
+
+- Arguments:
+  - `routeInfo` - The routeInfo
+  - `state` - The current state of the CLI
+- Returns a new routeInfo object
+
+```javascript
+// node.api.js
+
+export default pluginOptions => ({
+  routeInfo: async (routeInfo, state) => {
+    routeInfo = {
+        ...routeInfo,
+        data: {
+            ...routeInfo.data,
+            somethingElse: 'Data added in hook',
+        },
+    }
+
+    return routeInfo
+  },
+})
+```
+
 ## `beforeRenderToElement`
 
 An **async** function to modify the CLI state after starting the development server.
