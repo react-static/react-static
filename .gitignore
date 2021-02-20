@@ -38,3 +38,4 @@ yarn-debug.log*
 yarn-error.log*
 yalc.lock
 packages/react-static/templates/basic/yarn.lock
+/my-static-site

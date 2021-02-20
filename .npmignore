@@ -37,3 +37,4 @@ templates/yarn.lock
 tmp/
 yarn-debug.log*
 yarn-error.log*
+/my-static-site
