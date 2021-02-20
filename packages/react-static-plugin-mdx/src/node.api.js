@@ -21,7 +21,7 @@ export default ({
           loader: mdxLoaderPath,
           options: mdxOptions,
         },
-        parseFrontMatter && path.join(__dirname, './fm-loader'),
+        parseFrontMatter && path.join(__dirname, './loader/fm-loader'),
       ].filter(x => x), // Remove falsy value when not parsing front matter
     })
 
