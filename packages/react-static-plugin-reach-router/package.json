@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-reach-router",
-  "version": "7.5.1",
+  "version": "7.5.2",
   "description": "A React-Static plugin that adds @reach/router support for React Static",
   "main": "browser.api.js",
   "repository": "https://github.com/react-static/react-static.git",
