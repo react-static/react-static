@@ -18,10 +18,11 @@
 /examples/*/dist
 /examples/*/package-lock.json
 /examples/*/yarn.lock
+/packages/react-static/templates/*/yarn.lock
 /archives
 /src
 /test
-docs-dist/ 
+docs-dist/
 docs/
 node_modules
 npm-debug.log*
