@@ -80,7 +80,7 @@ function common(state) {
       filename: '[name].[contentHash:8].js',
       chunkFilename: 'templates/[name].[contentHash:8].js',
       path: ASSETS,
-      publicPath: process.env.REACT_STATIC_PUBLIC_PATH || '/',
+      publicPath: process.env.REACT_STATIC_ASSETS_PATH || '/',
     },
     optimization: {
       sideEffects: true,

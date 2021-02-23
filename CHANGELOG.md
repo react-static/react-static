@@ -7,6 +7,7 @@
 ### Improved
 
 ### Bugfix
+Fix publicPath is used for webpack output publicPath instead of assetsPath ([#1569](https://github.com/react-static/react-static/pull/1569))
 
 ## 7.5.3
 
