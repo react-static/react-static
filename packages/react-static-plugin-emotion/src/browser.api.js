@@ -1,11 +1,17 @@
-import { sheet } from 'emotion'
+import React from 'react';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
-// For now, speedy must be disabled for hydration to work correctly with react-statics
-if (
-  typeof document !== 'undefined' &&
-  !document.getElementById('root').hasChildNodes()
-) {
-  sheet.speedy(false)
-}
+const cache = createCache({
+  key: 'react-static-styles',
+  speedy: false
+});
 
-export default () => ({})
+
+export default () => ({
+  beforeRenderToElement: (App) => (props) => (
+    <CacheProvider value={cache}>
+      <App {...props} />
+    </CacheProvider>
+  ),
+});
