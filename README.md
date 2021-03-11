@@ -145,7 +145,7 @@ React Static is also a great replacement for the ever popular Create React App C
 
 ## Support, Community & Chat
 
-Need some help? Have a quick question? [Click here to go to GitHub Discussions](https://github.com/react-static/react-static/issues/1564)! We are constantly answering questions, discussing features and helping each other out!
+Need some help? Have a quick question? [Click here to go to GitHub Discussions](https://github.com/react-static/react-static/discussions)! We are constantly answering questions, discussing features and helping each other out!
 
 ## Contributing, Issues & Bugs
 
