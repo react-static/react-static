@@ -63,6 +63,9 @@ export const registerTemplates = async (tmps, notFoundKey) => {
   })
   Object.keys(tmps).forEach(key => {
     templates[key] = tmps[key]
+    if (!templates[key]) {
+      console.warn(`Template registered without default export: ${key.replace(/__react_static_root__\//, '')}`)
+    }
   })
   templatesByPath[PATH_404] = templates[notFoundKey]
 
