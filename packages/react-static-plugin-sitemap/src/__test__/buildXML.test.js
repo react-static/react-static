@@ -1,4 +1,3 @@
-import fsExtra from 'fs-extra'
 import { getPermaLink, generateXML } from '../buildXML'
 
 describe('getPermaLink', () => {
@@ -163,6 +162,26 @@ describe('documentation example', () => {
       undefined,
       'https://hello.com/'
     )
+    expect(xml).toMatchSnapshot()
+  })
+})
+
+describe('staging', () => {
+  it('should return an xml string', () => {
+    const xml = generateXML(
+      {
+        routes: [
+          {
+            path: '/path/to/somewhere',
+          },
+        ],
+        staging: true,
+      },
+      undefined,
+      '/blog/'
+    )
+
+    expect(typeof xml).toEqual('string')
     expect(xml).toMatchSnapshot()
   })
 })
