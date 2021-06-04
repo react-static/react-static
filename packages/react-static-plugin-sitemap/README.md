@@ -37,7 +37,7 @@ export default {
           {language:'x-default', url: '/blog/post/1'},
           {language:'en', url: '/blog/post/1'},
           {language:'de-DE', url: '/de/blog/post/1'},
-        ]
+        ],
         lastmod: '10/10/2010',
         priority: 0.5,
         'image:image': {
@@ -47,22 +47,27 @@ export default {
       },
     },
   ]
+  ```
 
-  // Would result in the <url>:
+  Would result in the following XML:
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://hello.com/blog/post/1</loc>
+    <loc>https://hello.com/blog/post/1/</loc>
     <lastmod>10/10/2010</lastmod>
     <priority>0.5</priority>
     <image:image>
       <image:loc>https://raw.githubusercontent.com/react-static/react-static/master/media/react-static-logo-2x.png</image:loc>
       <image:caption>React Static</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://hello.com/blog/post/1" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://hello.com/blog/post/1" />
-    <xhtml:link rel="alternate" hreflang="de-DE" href="https://hello.com/de/blog/post/1" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hello.com/blog/post/1/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://hello.com/blog/post/1/" />
+    <xhtml:link rel="alternate" hreflang="de-DE" href="https://hello.com/de/blog/post/1/" />
   </url>
-  ```
+</urlset>
+```
 
 ## With Options
 
