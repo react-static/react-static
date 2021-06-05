@@ -108,9 +108,8 @@ function checkNestedValue(value) {
 
   if (typeof value === 'object' && value !== null) {
     return true
-  } else {
-    return false
   }
+  return false
 }
 
 function convertNestedValue(values, staging) {
@@ -155,15 +154,13 @@ function buildHrefLangLinks(hrefLangConfig, prefixPath) {
 
 function xmlArrayOutput(values, staging) {
   return [
-    ...values
-      .map(
-        ({ key, value }) =>
-          `<${key}>${
-            checkNestedValue(value)
-              ? convertNestedValue(value, staging)
-              : encode(value)
-          }</${key}>`
-      )
-      .join(staging ? '\n' : ''),
+    ...values.map(
+      ({ key, value }) =>
+        `<${key}>${
+          checkNestedValue(value)
+            ? convertNestedValue(value, staging)
+            : encode(value)
+        }</${key}>`
+    ),
   ].join(staging ? '\n' : '')
 }

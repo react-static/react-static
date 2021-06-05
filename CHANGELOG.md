@@ -10,7 +10,8 @@
 - Corrected mismatch between Sitemap documentation and implementation ([#1618](https://github.com/react-static/react-static/pull/1618))
 
 ### Bugfix
-Fix publicPath is used for webpack output publicPath instead of assetsPath ([#1569](https://github.com/react-static/react-static/pull/1569))
+- Fix publicPath is used for webpack output publicPath instead of assetsPath ([#1569](https://github.com/react-static/react-static/pull/1569))
+- Fix sitemap generation for staging context ([#1616](https://github.com/react-static/react-static/pull/1616))
 
 ## 7.5.3
 
