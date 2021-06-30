@@ -46,6 +46,12 @@ export default {
         },
       },
     },
+    {
+      path: '/blog/draft/2',
+      sitemap: {
+        noindex: true // Excludes route from sitemap.xml
+      },
+    },
   ]
   ```
 

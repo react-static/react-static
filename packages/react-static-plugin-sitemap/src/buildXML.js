@@ -54,7 +54,7 @@ export function generateXML(
         return false
       }
       // Don't include routes with noindex: true
-      if (r.noindex) {
+      if (r.sitemap && r.sitemap.noindex) {
         return false
       }
       return true

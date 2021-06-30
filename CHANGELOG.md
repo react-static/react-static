@@ -13,6 +13,7 @@
 ### Bugfix
 - Fix publicPath is used for webpack output publicPath instead of assetsPath ([#1569](https://github.com/react-static/react-static/pull/1569))
 - Fix sitemap generation for staging context ([#1616](https://github.com/react-static/react-static/pull/1616))
+- Ensure sitemap generation properly ignores `noindex` routes ([#1620](https://github.com/react-static/react-static/pull/1620))
 
 ## 7.5.3
 

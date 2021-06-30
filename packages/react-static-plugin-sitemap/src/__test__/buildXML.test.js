@@ -82,7 +82,8 @@ describe('generateXML', () => {
       {
         routes: [
           { path: '/path/to/article/' },
-          { path: '/path/to/somewhere/', noindex: true },
+          { path: '/path/to/hidden/', sitemap: { noindex: true } },
+          { path: '/path/to/somewhere/', sitemap: { noindex: false } },
           { path: '404' },
         ],
       },
@@ -90,7 +91,8 @@ describe('generateXML', () => {
       '/blog/'
     )
 
-    expect(xml.split('<loc>').length).toEqual(2)
+    expect(xml.split('<loc>').length).toEqual(3)
+    expect(xml).not.toContain('/path/to/hidden')
   })
 
   it('should support a custom getAttributes option ', () => {
