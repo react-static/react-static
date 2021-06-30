@@ -8,6 +8,7 @@
 - Update emotion plugin to support 11 version ([#1558](https://github.com/react-static/react-static/pull/1558))
 - Show warning for missing template default export ([#1599](https://github.com/react-static/react-static/pull/1599))
 - Corrected mismatch between Sitemap documentation and implementation ([#1618](https://github.com/react-static/react-static/pull/1618))
+- Migrate usage of node-sass to Dart Sass ([#1621](https://github.com/react-static/react-static/pull/1621))
 
 ### Bugfix
 - Fix publicPath is used for webpack output publicPath instead of assetsPath ([#1569](https://github.com/react-static/react-static/pull/1569))
