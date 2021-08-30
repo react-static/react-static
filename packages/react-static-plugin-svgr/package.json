@@ -1,0 +1,22 @@
+{
+  "name": "react-static-plugin-svgr",
+  "version": "1.0.0",
+  "description": "A React-Static plugin that adds support for @svgr/webpack",
+  "main": "node.api.js",
+  "repository": "https://github.com/h0tw4t3r/react-static",
+  "author": "Vladyslav Dalechyn <vlad.dalechin@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "babel src --out-dir .",
+    "watch": "yarn build --watch",
+    "test": "yarn format",
+    "format": "prettier src/**/*.js --write",
+    "preversion": "yarn build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0"
+  }
+}
