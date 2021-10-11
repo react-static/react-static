@@ -11,7 +11,12 @@ export default ({ includePaths = [], cssLoaderOptions = {}, ...rest }) => ({
 
     const sassLoader = {
       loader: sassLoaderPath,
-      options: { includePaths: ['src/', ...includePaths], ...rest },
+      options: {
+        sassOptions: {
+          includePaths: ['src/', ...includePaths],
+          ...rest,
+        },
+      },
     }
     const cssLoader = {
       loader: 'css-loader',

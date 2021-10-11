@@ -1,16 +1,53 @@
 # Changelog
 
+<!-- markdownlint-disable MD024 -->
+
 ## master
 
 ### New
 
 ### Improved
-- Update emotion plugin to support 11 version ([#1558](https://github.com/react-static/react-static/pull/1558))
-- Show warning for missing template default export ([#1599](https://github.com/react-static/react-static/pull/1599))
-- Fix routeInfo hook ([#1608](https://github.com/react-static/react-static/pull/1608))
 
 ### Bugfix
-Fix publicPath is used for webpack output publicPath instead of assetsPath ([#1569](https://github.com/react-static/react-static/pull/1569))
+
+## 7.6.3
+
+### Bugfix
+
+- Fix routeInfo hook ([#1608](https://github.com/react-static/react-static/pull/1608))
+
+## 7.6.2
+
+### Bugfix
+
+- Disable `react-static-plugin-svgr`, because we have no publish rights.
+
+## 7.6.1
+
+### Improved
+
+- Update all browserlists
+
+## 7.6.0
+
+### New
+
+- Add react-static-plugin-svgr ([#1626](https://github.com/react-static/react-static/pull/1626))
+- Add image import example for TypeScript template ([#1597](https://github.com/react-static/react-static/pull/1597))
+
+### Improved
+
+- Update emotion plugin to support 11 version ([#1558](https://github.com/react-static/react-static/pull/1558))
+- Show warning for missing template default export ([#1599](https://github.com/react-static/react-static/pull/1599))
+- Corrected mismatch between Sitemap documentation and implementation ([#1618](https://github.com/react-static/react-static/pull/1618))
+- Migrate usage of node-sass to Dart Sass ([#1621](https://github.com/react-static/react-static/pull/1621))
+- Add React.Suspense wrapper to router guides. ([#1593](https://github.com/react-static/react-static/pull/1593))
+
+### Bugfix
+
+- Fix publicPath is used for webpack output publicPath instead of assetsPath ([#1569](https://github.com/react-static/react-static/pull/1569))
+- Fix sitemap generation for staging context ([#1616](https://github.com/react-static/react-static/pull/1616))
+- Ensure sitemap generation properly ignores `noindex` routes ([#1620](https://github.com/react-static/react-static/pull/1620))
 
 ## 7.5.3
 
@@ -449,7 +486,7 @@ Migration tips are listed as sub-items if applicable.
 - Fixed an issue where XML sitemaps contained invalid characters
 - Refactored many files to be more easily testable
 
-# 5.9.7
+## 5.9.7
 
 ### Fixes & Optimizations
 
@@ -521,12 +558,12 @@ Migration tips are listed as sub-items if applicable.
 
 - Expose the react-static babel settings as a `babel-preset.js` file for more complex babel setups. `.babelrc` uses this preset for backwards compatibility.
 
-# 5.8.6
+## 5.8.6
 
 ### Fixes & Optimizations
 
 - Upgraded `swimmer` to hide log messages.
-- Document-level rendering now uses `renderToStaticMarkup` instead of `renderToString`. This ensures there is no code comments or meta markup in the <head>
+- Document-level rendering now uses `renderToStaticMarkup` instead of `renderToString`. This ensures there is no code comments or meta markup in the `<head>`
 
 ## 5.8.5
 
@@ -998,8 +1035,10 @@ Migration tips are listed as sub-items if applicable.
 ### Breaking Changes
 
 - The `webpack` function in `static.config.js` has a new function signature.
+
   - Each function is now **not** required to return a new config object. If a falsey value is returned, the transformation will be ignored, and the next transformation will carry on as normal. Even so, avoid mutating the config object at all costs ;)
   - A new argument is now available in the `args` parameter called `defaultLoaders`:
+
   ```javascript
     webpack: (
       config, {
@@ -1011,6 +1050,7 @@ Migration tips are listed as sub-items if applicable.
       }
     ) => {...}
   ```
+
   These loaders are here for convenience. Please read the documentation for more information.
 
 ### Features
@@ -1051,11 +1091,8 @@ Migration tips are listed as sub-items if applicable.
 
 Now that the `webpack` callback accepts an array of transformer functions, the concept of plugins has been introduced. These transformer functions are applied in order from top to bottom and have total control over the webpack config. For more information see [Webpack Config and Plugins](#webpack-config-and-plugins)
 
-```
-webpack: [
-  withCssLoader,
-  withFileLoader
-]
+```javascript
+webpack: [withCssLoader, withFileLoader]
 ```
 
 ### Fixes & Optimizations

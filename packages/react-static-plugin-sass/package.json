@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-sass",
-  "version": "7.3.0",
+  "version": "7.6.2",
   "description": "A React-Static plugin that adds SSR support for sass",
   "main": "node.api.js",
   "repository": "https://github.com/react-static/react-static.git",
@@ -27,10 +27,10 @@
     "autoprefixer": "^9.7.4",
     "css-loader": "^2.1.0",
     "extract-css-chunks-webpack-plugin": "^4.6.0",
-    "node-sass": "^4.12.0",
     "postcss-flexbugs-fixes": "^4.1.0",
-    "sass-loader": "^7.2.0",
+    "sass": "^1.35.1",
+    "sass-loader": "10.x",
     "semver": "^6.3.0"
   },
-  "gitHead": "ca9f2162257fe67a8b4ffcbb1350695345940da4"
+  "gitHead": "875004e6e75d36043382b8ec8bba27a766c1a83a"
 }

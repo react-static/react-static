@@ -28,9 +28,10 @@ export default {
       {
         includePaths: ["..."] // always includes `src/`
         cssLoaderOptions: {}, // options for the css-loader, like modules
-        // other options for the sass-loader
+        // other options for the sass-loader (https://github.com/sass/dart-sass#javascript-api)
       }
     ]
   ]
 };
 ```
+

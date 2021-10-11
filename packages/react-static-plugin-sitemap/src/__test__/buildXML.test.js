@@ -1,4 +1,3 @@
-import fsExtra from 'fs-extra'
 import { getPermaLink, generateXML } from '../buildXML'
 
 describe('getPermaLink', () => {
@@ -83,7 +82,8 @@ describe('generateXML', () => {
       {
         routes: [
           { path: '/path/to/article/' },
-          { path: '/path/to/somewhere/', noindex: true },
+          { path: '/path/to/hidden/', sitemap: { noindex: true } },
+          { path: '/path/to/somewhere/', sitemap: { noindex: false } },
           { path: '404' },
         ],
       },
@@ -91,7 +91,8 @@ describe('generateXML', () => {
       '/blog/'
     )
 
-    expect(xml.split('<loc>').length).toEqual(2)
+    expect(xml.split('<loc>').length).toEqual(3)
+    expect(xml).not.toContain('/path/to/hidden')
   })
 
   it('should support a custom getAttributes option ', () => {
@@ -133,6 +134,56 @@ describe('generateXML', () => {
       '/blog/'
     )
 
+    expect(xml).toMatchSnapshot()
+  })
+})
+
+describe('documentation example', () => {
+  it('should be valid', () => {
+    const xml = generateXML(
+      {
+        routes: [
+          {
+            path: '/blog/post/1',
+            sitemap: {
+              hreflang: [
+                { language: 'x-default', url: '/blog/post/1' },
+                { language: 'en', url: '/blog/post/1' },
+                { language: 'de-DE', url: '/de/blog/post/1' },
+              ],
+              lastmod: '10/10/2010',
+              priority: 0.5,
+              'image:image': {
+                'image:loc': `https://raw.githubusercontent.com/react-static/react-static/master/media/react-static-logo-2x.png`,
+                'image:caption': 'React Static',
+              },
+            },
+          },
+        ],
+      },
+      undefined,
+      'https://hello.com/'
+    )
+    expect(xml).toMatchSnapshot()
+  })
+})
+
+describe('staging', () => {
+  it('should return an xml string', () => {
+    const xml = generateXML(
+      {
+        routes: [
+          {
+            path: '/path/to/somewhere',
+          },
+        ],
+        staging: true,
+      },
+      undefined,
+      '/blog/'
+    )
+
+    expect(typeof xml).toEqual('string')
     expect(xml).toMatchSnapshot()
   })
 })
