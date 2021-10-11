@@ -468,7 +468,7 @@ Migration tips are listed as sub-items if applicable.
 - Fixed an issue where XML sitemaps contained invalid characters
 - Refactored many files to be more easily testable
 
-# 5.9.7
+## 5.9.7
 
 ### Fixes & Optimizations
 
@@ -540,12 +540,12 @@ Migration tips are listed as sub-items if applicable.
 
 - Expose the react-static babel settings as a `babel-preset.js` file for more complex babel setups. `.babelrc` uses this preset for backwards compatibility.
 
-# 5.8.6
+## 5.8.6
 
 ### Fixes & Optimizations
 
 - Upgraded `swimmer` to hide log messages.
-- Document-level rendering now uses `renderToStaticMarkup` instead of `renderToString`. This ensures there is no code comments or meta markup in the <head>
+- Document-level rendering now uses `renderToStaticMarkup` instead of `renderToString`. This ensures there is no code comments or meta markup in the `<head>`
 
 ## 5.8.5
 
@@ -1017,8 +1017,10 @@ Migration tips are listed as sub-items if applicable.
 ### Breaking Changes
 
 - The `webpack` function in `static.config.js` has a new function signature.
+
   - Each function is now **not** required to return a new config object. If a falsey value is returned, the transformation will be ignored, and the next transformation will carry on as normal. Even so, avoid mutating the config object at all costs ;)
   - A new argument is now available in the `args` parameter called `defaultLoaders`:
+
   ```javascript
     webpack: (
       config, {
@@ -1030,6 +1032,7 @@ Migration tips are listed as sub-items if applicable.
       }
     ) => {...}
   ```
+
   These loaders are here for convenience. Please read the documentation for more information.
 
 ### Features
@@ -1070,11 +1073,8 @@ Migration tips are listed as sub-items if applicable.
 
 Now that the `webpack` callback accepts an array of transformer functions, the concept of plugins has been introduced. These transformer functions are applied in order from top to bottom and have total control over the webpack config. For more information see [Webpack Config and Plugins](#webpack-config-and-plugins)
 
-```
-webpack: [
-  withCssLoader,
-  withFileLoader
-]
+```javascript
+webpack: [withCssLoader, withFileLoader]
 ```
 
 ### Fixes & Optimizations
