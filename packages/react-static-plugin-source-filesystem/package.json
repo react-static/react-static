@@ -21,10 +21,11 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "react-static": "file:..\\react-static"
+    "react-static": "^7.6.1"
   },
   "dependencies": {
     "chokidar": "^3.0.2",
     "glob": "^7.1.4"
-  }
+  },
+  "gitHead": "875004e6e75d36043382b8ec8bba27a766c1a83a"
 }

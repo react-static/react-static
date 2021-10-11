@@ -18,5 +18,6 @@
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0"
-  }
+  },
+  "gitHead": "875004e6e75d36043382b8ec8bba27a766c1a83a"
 }

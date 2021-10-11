@@ -25,5 +25,6 @@
     "@babel/preset-react": "^7.0.0",
     "evergreen-ui": "^4.18.1",
     "react": "^16.9.0"
-  }
+  },
+  "gitHead": "875004e6e75d36043382b8ec8bba27a766c1a83a"
 }

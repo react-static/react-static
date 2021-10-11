@@ -10,6 +10,12 @@
 
 ### Bugfix
 
+## 7.6.2
+
+### Bugfix
+
+- Disable `react-static-plugin-svgr`, because we have no publish rights.
+
 ## 7.6.1
 
 ### Improved
