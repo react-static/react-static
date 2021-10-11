@@ -60,11 +60,7 @@ export default (async function exportRoute(state) {
   let { Comp } = state
 
   const {
-    sharedHashesByProp,
-    template,
-    data,
     sharedData,
-    path: routePath,
     remove,
   } = route
 
