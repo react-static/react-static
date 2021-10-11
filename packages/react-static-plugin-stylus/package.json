@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-stylus",
-  "version": "7.3.0",
+  "version": "7.6.0",
   "main": "node.api.js",
   "license": "MIT",
   "scripts": {
