@@ -10,6 +10,12 @@
 
 ### Bugfix
 
+## 7.6.1
+
+### Improved
+
+- Update all browserlists
+
 ## 7.6.0
 
 ### New

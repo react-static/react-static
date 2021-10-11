@@ -22,5 +22,6 @@
     "eslint-config-react-tools": "^1.1.7",
     "husky": "^4.2.5",
     "lerna": "^3.22.1"
-  }
+  },
+  "dependencies": {}
 }
