@@ -284,11 +284,11 @@ An **async** function to modify the routeInfo after it has been generated.
 export default pluginOptions => ({
   routeInfo: async (routeInfo, state) => {
     routeInfo = {
-        ...routeInfo,
-        data: {
-            ...routeInfo.data,
-            somethingElse: 'Data added in hook',
-        },
+      ...routeInfo,
+      data: {
+        ...routeInfo.data,
+        somethingElse: 'Data added in hook',
+      },
     }
 
     return routeInfo
