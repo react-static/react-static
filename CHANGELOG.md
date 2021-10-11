@@ -1,16 +1,32 @@
 # Changelog
 
+<!-- markdownlint-disable MD024 -->
+
 ## master
 
 ### New
 
 ### Improved
+
+### Bugfix
+
+## 7.6.0
+
+### New
+
+- Add react-static-plugin-svgr ([#1626](https://github.com/react-static/react-static/pull/1626))
+- Add image import example for TypeScript template ([#1597](https://github.com/react-static/react-static/pull/1597))
+
+### Improved
+
 - Update emotion plugin to support 11 version ([#1558](https://github.com/react-static/react-static/pull/1558))
 - Show warning for missing template default export ([#1599](https://github.com/react-static/react-static/pull/1599))
 - Corrected mismatch between Sitemap documentation and implementation ([#1618](https://github.com/react-static/react-static/pull/1618))
 - Migrate usage of node-sass to Dart Sass ([#1621](https://github.com/react-static/react-static/pull/1621))
+- Add React.Suspense wrapper to router guides. ([#1593](https://github.com/react-static/react-static/pull/1593))
 
 ### Bugfix
+
 - Fix publicPath is used for webpack output publicPath instead of assetsPath ([#1569](https://github.com/react-static/react-static/pull/1569))
 - Fix sitemap generation for staging context ([#1616](https://github.com/react-static/react-static/pull/1616))
 - Ensure sitemap generation properly ignores `noindex` routes ([#1620](https://github.com/react-static/react-static/pull/1620))
