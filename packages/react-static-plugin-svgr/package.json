@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-svgr",
-  "version": "7.6.0",
+  "version": "7.6.1",
   "description": "A React-Static plugin that adds support for @svgr/webpack",
   "main": "node.api.js",
   "repository": "https://github.com/h0tw4t3r/react-static",
