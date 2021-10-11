@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-react-location",
-  "version": "7.6.1",
+  "version": "7.6.2",
   "description": "A React-Static plugin that adds react-location support for React Static",
   "main": "browser.api.js",
   "repository": "https://github.com/react-static/react-static.git",
@@ -26,7 +26,7 @@
     "@babel/preset-react": "^7.0.0",
     "react": "^16.9.0",
     "react-location": "^2.0.5",
-    "react-static": "^7.6.1"
+    "react-static": "^7.6.2"
   },
   "gitHead": "875004e6e75d36043382b8ec8bba27a766c1a83a"
 }

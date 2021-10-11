@@ -1,6 +1,6 @@
 {
   "name": "react-static-plugin-typescript",
-  "version": "7.6.1",
+  "version": "7.6.2",
   "description": "A React-Static plugin that adds support for typescript",
   "main": "node.api.js",
   "repository": "https://github.com/react-static/react-static.git",
@@ -22,7 +22,7 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "react-static": "^7.6.1",
+    "react-static": "^7.6.2",
     "typescript": "^3.5.3"
   },
   "dependencies": {
