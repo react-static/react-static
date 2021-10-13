@@ -275,7 +275,7 @@ An **async** function to modify the routeInfo after it has been generated.
 
 - Arguments:
   - `storedRouteInfo` - The routeInfo that is stored, should only contain data that can be sent to the client
-  - `options.route` - This is the routeInfo object with additional information that is not sent to the client, but can be used by the hook
+  - `options.routeInfo` - This is the routeInfo object with additional information that is not sent to the client, but can be used by the hook
   - `options.state` - The current state of the CLI
 - Returns a new routeInfo object
 
@@ -283,7 +283,7 @@ An **async** function to modify the routeInfo after it has been generated.
 // node.api.js
 
 export default pluginOptions => ({
-  routeInfo: async (storedRouteInfo, {route, state}) => {
+  routeInfo: async (storedRouteInfo, {routeInfo, state}) => {
     storedRouteInfo = {
       ...storedRouteInfo,
       data: {
@@ -292,7 +292,7 @@ export default pluginOptions => ({
       },
     }
 
-    return routeInfo
+    return storedRouteInfo
   },
 })
 ```
