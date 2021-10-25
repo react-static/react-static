@@ -41,9 +41,9 @@ const hooks = {
     const hooks = getHooks(state.plugins, 'afterDevServerStart')
     return reduceHooks(hooks)(state)
   },
-  routeInfo: (routeInfo, state) => {
+  routeInfo: (routeInfo, state, storedRouteInfo) => {
     const hooks = getHooks(state.plugins, 'routeInfo')
-    return reduceHooks(hooks)(routeInfo)
+    return reduceHooks(hooks)(storedRouteInfo, {routeInfo, state})
   },
   beforeRenderToElement: (Comp, state) => {
     const hooks = getHooks(state.plugins, 'beforeRenderToElement')

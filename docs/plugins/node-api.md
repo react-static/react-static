@@ -274,24 +274,25 @@ export default pluginOptions => ({
 An **async** function to modify the routeInfo after it has been generated.
 
 - Arguments:
-  - `routeInfo` - The routeInfo
-  - `state` - The current state of the CLI
+  - `storedRouteInfo` - The routeInfo that is stored, should only contain data that can be sent to the client
+  - `options.routeInfo` - This is the routeInfo object with additional information that is not sent to the client, but can be used by the hook
+  - `options.state` - The current state of the CLI
 - Returns a new routeInfo object
 
 ```javascript
 // node.api.js
 
 export default pluginOptions => ({
-  routeInfo: async (routeInfo, state) => {
-    routeInfo = {
-      ...routeInfo,
+  routeInfo: async (storedRouteInfo, {routeInfo, state}) => {
+    storedRouteInfo = {
+      ...storedRouteInfo,
       data: {
-        ...routeInfo.data,
+        ...storedRouteInfo.data,
         somethingElse: 'Data added in hook',
       },
     }
 
-    return routeInfo
+    return storedRouteInfo
   },
 })
 ```
