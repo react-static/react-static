@@ -5,6 +5,8 @@
 ## master
 
 ### New
+- Update react-router to v6.2.1 ([#1657](https://github.com/react-static/react-static/pull/1657)) 
+(This is a breaking change and will require users to migrate their router config https://github.com/remix-run/react-router/blob/main/docs/upgrading/v5.md)
 
 ### Improved
 
