@@ -16,8 +16,8 @@
   },
   "peerDependencies": {
     "react": "^16.9.0 || ^17.0.0",
-    "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1",
+    "react-router": "^6.2.1",
+    "react-router-dom": "^6.2.1",
     "react-static": "^7.1.0"
   },
   "devDependencies": {
@@ -26,8 +26,8 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "react": "^16.9.0",
-    "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1",
+    "react-router": "^6.2.1",
+    "react-router-dom": "^6.2.1",
     "react-static": "^7.6.2"
   },
   "gitHead": "875004e6e75d36043382b8ec8bba27a766c1a83a"
