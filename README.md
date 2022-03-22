@@ -1,3 +1,10 @@
+## This is now in maintenance only mode. No new major versions will be released.
+_Remix and NextJS are good alternatives._
+
+[Where is react-static 8? The state of react-static -- and its inevitable death. #1661](https://github.com/react-static/react-static/discussions/1661)
+
+----------------
+
 ![React Static Logo](https://github.com/react-static/react-static/raw/master/media/react-static-logo-2x.png)
 
 [![Travis CI Build Status](https://travis-ci.org/react-static/react-static.svg?branch=master)](https://travis-ci.org/react-static/react-static) [![npm package v](https://img.shields.io/npm/v/react-static.svg)](https://www.npmjs.org/package/react-static) [![npm package dm](https://img.shields.io/npm/dm/react-static.svg)](https://npmjs.com/package/react-static)
