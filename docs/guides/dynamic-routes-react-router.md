@@ -9,7 +9,7 @@
 ```javascript
 import React from 'react'
 import { Root, Routes } from 'react-static'
-import { Switch, Route, Link } from 'react-router-dom'
+import ReactRouter, { Route, Link } from 'react-router-dom'
 
 import './app.css'
 
@@ -26,10 +26,10 @@ function App() {
       </nav>
       <div className="content">
         <React.Suspense fallback={<em>Loading...</em>}>
-          <Switch>
-            <Route path="/dynamic" component={Dynamic} />
+          <ReactRouter.Routes>
+            <Route path="/dynamic" element={<Dynamic />} />
             <Route render={() => <Routes />} />
-          </Switch>
+          </ReactRouter.Routes>
         </React.Suspense>
       </div>
     </Root>
